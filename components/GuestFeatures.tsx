@@ -5,7 +5,7 @@ import styles, { layout } from "@/styles/style";
 import { guestFeatures } from "@/constants";
 import Button from "./Button";
 import Image from "next/image";
-import { FeatredCardProps } from "@types";
+import { FeatredCardProps } from "@/types";
 import GlowButton from "./GlowButton";
 
 const FeaturesCard: React.FC<FeatredCardProps> = ({ icon, title, content, index }) => {

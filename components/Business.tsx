@@ -2,7 +2,8 @@ import styles, { layout } from "@/styles/style";
 import { features } from "@/constants";
 import Button from "./Button";
 import Image from "next/image";
-import { FeatredCardProps } from "@types";
+import { FeatredCardProps } from "@/types";
+// import { FeatredCardProps } from "@/types";
 
 const FeaturesCard: React.FC<FeatredCardProps> = ({ icon, title, content, index }) => (
   <div

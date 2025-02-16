@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { FaStar, FaChevronLeft, FaChevronRight, FaExternalLinkAlt } from 'react-icons/fa';
+import { Star } from 'lucide-react';
 import { Marquee } from './magicui/marquee';
+import { ExternalLink } from 'lucide-react';
 
-const TestimonialCard = ({ review }) => {
+const TestimonialCard = ({ review }: { review: any }) => {
   return (
     <motion.div
       whileHover={{ 
@@ -16,11 +17,13 @@ const TestimonialCard = ({ review }) => {
         {/* Rating */}
         <div className="flex mb-3">
           {[...Array(5)].map((_, i) => (
-            <FaStar 
-              key={i} 
-              className={i < review.rating ? "text-yellow-400" : "text-gray-700"} 
-              size={18} 
-            />
+              <Star 
+                key={i} 
+                // className={i < review.rating ? "text-yellow-400" : "text-gray-700"} 
+                size={18}
+                fill={i < review.rating ? "#FACC15" : "none"}
+                className={i < review.rating ? "text-yellow-400" : "text-gray-700"}
+              />
           ))}
         </div>
         
@@ -61,7 +64,7 @@ const TestimonialCard = ({ review }) => {
               <span className="text-blue-400 text-xs group-hover:text-blue-300">
                 View original review
               </span>
-              <FaExternalLinkAlt className="ml-1 text-gray-500 group-hover:text-gray-400" size={10} />
+              <ExternalLink className="ml-1 text-gray-500 group-hover:text-gray-400" size={12} />
             </div>
           </a>
         </div>
@@ -122,7 +125,7 @@ const SimpleTestimonialCarousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
   
-  const goToSlide = useCallback((index) => {
+  const goToSlide = useCallback((index: number) => {
     setActiveIndex(index);
     setAutoplay(false);
   }, []);
@@ -139,7 +142,7 @@ const SimpleTestimonialCarousel = () => {
   
   // Keyboard navigation
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowLeft') {
         prevSlide();
       } else if (e.key === 'ArrowRight') {
@@ -153,7 +156,7 @@ const SimpleTestimonialCarousel = () => {
   
   // Autoplay
   useEffect(() => {
-    let interval;
+    let interval: NodeJS.Timeout;
     if (autoplay) {
       interval = setInterval(() => {
         setActiveIndex((prevIndex) => (prevIndex + 1) % reviews.length);
@@ -186,7 +189,7 @@ const SimpleTestimonialCarousel = () => {
         </div>
 
         <Marquee pauseOnHover className="[--duration:20s]"> 
-          {reviews.map((review) => (
+          {reviews.map((review: any) => (
             <TestimonialCard key={review.id} review={review} />
           ))}
         </Marquee>

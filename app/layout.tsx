@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 export const metadata = {
-  title: "HooBank",
-  description: "Hoobank is an Modern Landing Page built with Next JS and Typescript",
+  title: "CodeMate.ai",
+  description: "CodeMate.ai is an AI-powered coding assistant that helps you code faster and smarter.",
 };
 
 const RootLayout = ({ children }: { children: React.ReactNode; }) => {

@@ -18,6 +18,7 @@ import SimpleTestimonialCarousel from "@/components/Testimonials copy";
 import AnimatedLogoCloud from "@/components/AnimatedLogoCloud";
 import AnimatedRecognitionCloud from "@/components/AnimatedRecognitionCloud";
 import { OrbitingCirclesIcons } from "@/components/OrbitingIcons";
+import ScrollToTop from "@/components/ScrollToTop";
 const Home: React.FC = () => {
   return (
     <>
@@ -35,7 +36,7 @@ const Home: React.FC = () => {
         <div className={`bg-primary ${styles.paddingX} ${styles.flexStart}`}>
           <div className={`${styles.boxWidth}`}>
             {/* <Stats /> */}
-            
+            <ScrollToTop />
             <StudentFeatures />
             <div className="mt-10"></div>
             <TeacherFeatures/>
