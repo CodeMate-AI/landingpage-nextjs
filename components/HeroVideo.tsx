@@ -8,6 +8,7 @@ export function SafariDemo() {
         url="CodeMate.ai"
         className="w-[100%] h-[min-content]"
         videoSrc="/assets/heroVideo.mp4"
+        // imageSrc="/assets/hero.png"
       />
     </div>
   );
