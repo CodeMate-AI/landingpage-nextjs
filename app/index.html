@@ -538,6 +538,13 @@ a,
           padding-right: 0rem !important;
           padding-left: 0rem !important;
         }
+
+        @media (min-width: 500px) {
+          #NavbarResponsive {
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+          }
+        }
       </style>
 
     </div>
@@ -562,7 +569,8 @@ a,
     </div>
     <div style="margin-top: 2rem;" data-collapse="small" data-animation="default" data-duration="400" data-easing="ease"
       data-easing2="ease-in-out" role="banner" class="navbar_component w-nav">
-      <div  class="" style="width: fit-content !important;">
+      <div id="NavbarResponsive" class="z-[5000000] navbar_menu-button  flex flex-row justify-between items-center w-full rounded-xl top-navbar_link bg-[#161616] px-2 pr-4 w-inline-block
+      " style="border: 1px solid #ffffff26; background-color: #161616cc;backdrop-filter: blur(16px); z-index: 5000000;" >
         <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo show-tablet" />
         <nav role="navigation" class="w-nav-menu">
           <div class="button is-secondary is-small is-icon w-inline-block -link-wrapper">
@@ -1770,8 +1778,8 @@ a,
                         </div>
                       </div>
                       <a href="https://app.codemate.ai/app/pricing" target="_blank">
-                      <div class="get_started rounded-lg z-[100000] mt-20 sm:mt-0">
-                        <button class="z-[100000] group/button relative overflow-hidden transition-all duration-150  hover:text-black active:scale-95 text-center w-full transform-none py-3  border-2 text-xl bg-transparent !height-fit rounded-md font-semibold" style="border:2px solid white">
+                      <div class="get_started rounded-lg z-[100] mt-20 sm:mt-0">
+                        <button class="z-[10] group/button relative overflow-hidden transition-all duration-150  hover:text-black active:scale-95 text-center w-full transform-none py-3  border-2 text-xl bg-transparent !height-fit rounded-md font-semibold" style="border:2px solid white">
                           <span class="absolute bottom-0 left-0 z-0 h-0 w-full bg-white transition-all duration-500 group-hover/button:h-full" ></span>
                           <span class="relative z-10 transition-all duration-500 group-hover/button:text-black">Subscribe</span>
                         </button>
@@ -1849,8 +1857,8 @@ a,
                         </div>
                       </div>
                       <a href="https://app.codemate.ai/app/pricing" target="_blank">
-                      <div class="get_started  rounded-lg z-[100000]">
-                        <button class="z-[100000] group/button relative transition-all duration-300 ease-in-out hover:scale-[1.03]  overflow-hidden rounded-md text-center w-full transform-none py-3 bg-gradient-to-r from-sky-500 to-cyan-300 text-xl bg-transparent !height-fit font-semibold">
+                      <div class="get_started  rounded-lg z-[100]">
+                        <button class="z-[100] group/button relative transition-all duration-300 ease-in-out hover:scale-[1.03]  overflow-hidden rounded-md text-center w-full transform-none py-3 bg-gradient-to-r from-sky-500 to-cyan-300 text-xl bg-transparent !height-fit font-semibold">
                           <span>Subscribe</span>
                           <div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-13deg)_translateX(-100%)] group-hover/button:duration-1000 group-hover/button:[transform:skew(-13deg)_translateX(100%)]">
                             <div class="relative h-full w-8 bg-white/20"></div>
@@ -1919,7 +1927,7 @@ a,
                       </div>
                       <a href="https://cal.com/ayushsinghal/enterprise-cm">
                       <div class="get_started rounded-lg z-[100000]">
-                        <button class="z-[100000] group/button  relative overflow-hidden text-center w-full transform-none py-3 text-xl bg-white text-black hover:text-white font-bold !height-fit transition-all duration-150  active:scale-95 rounded-md">
+                        <button class="z-[10] group/button  relative overflow-hidden text-center w-full transform-none py-3 text-xl bg-white text-black hover:text-white font-bold !height-fit transition-all duration-150  active:scale-95 rounded-md">
                           <span class="absolute bottom-0 left-0 z-0 h-0 w-full bg-black transition-all duration-500 group-hover/button:h-full" ></span>
                           <span class="relative z-10 transition-all duration-500 group-hover/button:text-white">
                             Contact Us
