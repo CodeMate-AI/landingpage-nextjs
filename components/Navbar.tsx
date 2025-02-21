@@ -47,7 +47,7 @@ const navLinks = [
     },
     {
         id: "product",
-        title: "Product",
+        title: "Products",
     },
     {
         id: "clients",
