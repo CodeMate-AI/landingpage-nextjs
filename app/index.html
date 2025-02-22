@@ -546,10 +546,11 @@ a,
             padding-right: 0px !important;
           }
         }
+
         @media (width > 500px) {
-            #products-dropdown-mobile{
-                display: none !important;
-            }
+          #products-dropdown-mobile {
+            display: none !important;
+          }
         }
 
         @media (max-width: 500px) {
@@ -560,15 +561,79 @@ a,
           .w-nav-menu div {
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-start;
             justify-content: center;
           }
 
           #products-dropdown {
             display: none;
           }
-          
+
         }
+
+
+        .mobile-nav {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-radius: 0.5rem;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.submenu {
+  background: #1a1a1a;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  margin-top: 0.25rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.submenu-item {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 0.375rem;
+  transition: all 0.3s ease;
+}
+
+.submenu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.submenu-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-right: 0.75rem;
+}
+
+@media (min-width: 768px) {
+  .mobile-nav {
+    flex-direction: row;
+    align-items: center;
+  }
+  
+  .submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    min-width: 200px;
+  }
+}
       </style>
 
     </div>
@@ -598,15 +663,14 @@ a,
         style="border: 1px solid #ffffff26; background-color: #161616cc;backdrop-filter: blur(16px); z-index: 5000000;">
         <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo show-tablet" />
         <nav role="navigation" class="w-nav-menu">
-          <div class="button is-secondary is-small is-icon w-inline-block -link-wrapper">
+          <div
+            class="button is-secondary is-small w-inline-block flex flex-row justify-between items-start -link-wrapper">
             <a href="#features" class="top-navbar_link w-nav-link">Features</a>
             <a href="#pricing" class="top-navbar_link w-nav-link">Pricing</a>
             <a href="#contactus" target="_blank" class="top-navbar_link w-nav-link">Contact</a>
             <button class="top-navbar_link w-nav-link" id="products">Products</button>
-            <div id="products-dropdown-mobile"
-              style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; align-items: baseline;"
-              class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
-
+            <div id="products-dropdown-mobile" class="submenu hidden">
+              <!-- Submenu items will be inserted here via JS -->
             </div>
             <!-- <a href="edu" class="top-navbar_link bg-white/80 hover:bg-white  w-inline-block"
               style="padding-inline: 10px;opacity: 100; color: black;">For Education</a> -->
@@ -624,7 +688,8 @@ a,
               class="absolute left-1/2 transform -translate-x-1/2 top-12 w-full max-w-2xl bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50 hidden opacity-0 transition-opacity duration-200">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
                 <!-- Product 1 -->
-                <a href="https://cli.codemate.ai/" class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
+                <a href="https://cli.codemate.ai/"
+                  class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
                   <div class="flex items-center mb-2">
                     <span class="text-2xl mr-3">🖥️</span>
                     <h3 class="font-medium text-lg">CodeMate Terminal</h3>
@@ -634,7 +699,8 @@ a,
                 </a>
 
                 <!-- Product 2 -->
-                <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details" class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
+                <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details"
+                  class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
                   <div class="flex items-center mb-2">
                     <span class="text-2xl mr-3">🧩</span>
                     <h3 class="font-medium text-lg">CodeMate VS Code Extension</h3>
@@ -644,7 +710,8 @@ a,
                 </a>
 
                 <!-- Product 3 -->
-                <a href="https://app.codemate.ai" class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
+                <a href="https://app.codemate.ai"
+                  class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
                   <div class="flex items-center mb-2">
                     <span class="text-2xl mr-3">💬</span>
                     <h3 class="font-medium text-lg">CodeMate Web App</h3>
@@ -4531,44 +4598,39 @@ a,
         title: "CodeMate Terminal",
         description: "Boost your productivity with our advanced AI-powered terminal assistant.",
         link: "https://cli.codemate.ai/",
-        icon: "🖥️"
+        icon: ""
       },
       {
         title: "CodeMate VS Code Extension",
         description: "Enhance your coding experience in VS Code with AI-driven autocompletions.",
         link: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details",
-        icon: "🧩"
+        icon: ""
       },
       {
         title: "CodeMate Web App",
         description: "CodeMate Web App is a web-based code editor for AI-powered development.",
         link: "https://app.codemate.ai/",
-        icon: "💬"
+        icon: ""
       },
       {
         title: "CodeMate for Education",
         description: "Empower students and educators with our AI-driven learning tools.",
         link: "/edu",
-        icon: "🎓"
+        icon: ""
       }
     ];
 
     productsDropdownMobile = document.getElementById('products-dropdown-mobile');
     productsDropdownMobile.style.display = 'none';
-    productsDropdownMobile.innerHTML = products.map((product) => (
-      `
-                                                              <div className="flex items-center subProduct">
-                                                                  <a
-                                                                    href="${product.link}" 
-                                                                    key="${product.title}"
-                                                                    className="block py-2 text-sm text-zinc-300 hover:text-white hover:bg-gray-500"
-                                                                >
-                                                                        <span className="mr-2">${product.icon}</span>
-                                                                        ${product.title}
-                                                                        </a>
-                                                                        </div>`
-    )).join('');
-
+    productsDropdownMobile.innerHTML = products.map((product) => `
+  <a href="${product.link}" class="submenu-item">
+    ${product.icon ? `<span class="submenu-icon">${product.icon}</span>` : ''}
+    <div>
+      <div class="font-medium">${product.title}</div>
+      <div class="text-sm text-left text-gray-400">${product.description}</div>
+    </div>
+  </a>
+`).join('');
     const productsButton = document.getElementById('products');
     const productsDropdown = document.getElementById('products-dropdown');
     const dropdownArrow = document.getElementById('dropdown-arrow');
