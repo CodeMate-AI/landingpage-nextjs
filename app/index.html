@@ -590,6 +590,25 @@ a,
             <a href="#pricing" class="top-navbar_link w-nav-link">Pricing</a>
             <a href="#contactus" target="_blank" class="top-navbar_link w-nav-link">Contact</a>
             <button class="top-navbar_link w-nav-link" id="products">Products</button>
+            <!--mobile products-->
+          <div id="productDropdown" class="!hidden dropdown-exit pl-4 space-y-2 border-l border-zinc-700 flex-col jusitfy-left">
+              <a href="/" class="block py-2 text-sm mr-auto">
+                  <span class="mr-2" role="img" aria-hidden="true">🖥️</span>
+                  CodeMate Terminal
+              </a>
+              <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details" class="block py-2 text-sm mr-auto">
+                  <span class="mr-2" role="img" aria-hidden="true">🧩</span>
+                  CodeMate VS Code Extension
+              </a>
+              <a href="https://app.codemate.ai/" class="block py-2 text-sm mr-auto">
+                  <span class="mr-2" role="img" aria-hidden="true">💬</span>
+                  CodeMate Web App
+              </a>
+              <a href="https://codemate.ai/edu/" class="block py-2 text-sm mr-auto">
+                  <span class="mr-2" role="img" aria-hidden="true">🎓</span>
+                  CodeMate for Education
+              </a>
+          </div>
             <a href="edu" class="top-navbar_link bg-white/80 hover:bg-white  w-inline-block" style="padding-inline: 10px;opacity: 100; color: black;">For Education</a>
             <!-- <a href="https://blog.codemate.ai" target="_blank" class="top-navbar_link w-nav-link">Blogs</a> -->
             <!-- <a href="https://codemate.ai/edu" data-w-id="1b87565d-005b-b34d-0495-100a1e723a14"
@@ -601,53 +620,56 @@ a,
               </div>
             </a> -->
              <!-- Products Dropdown -->
-    <div id="products-dropdown" class="absolute left-1/2 transform -translate-x-1/2 top-12 w-full max-w-2xl bg-gray-800 border border-gray-700 rounded-lg shadow-lg z-50 hidden opacity-0 transition-opacity duration-200">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
-        <!-- Product 1 -->
-        <a href="#" class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
-          <div class="flex items-center mb-2">
-            <span class="text-2xl mr-3">🖥️</span>
-            <h3 class="font-medium text-lg">CodeMate Terminal</h3>
+             <div  id="products-dropdown" class="hidden top-16 absolute w-full max-w-2xl z-[-40000] opacity-0 sm:!opacity-100 sm:z-50 bg-zinc-900  border border-zinc-700 rounded-xl shadow-xl overflow-hidden">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
+                  <!-- Product 1 -->
+                  <a href="/" class="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
+                      <div class="flex items-center space-x-3 mb-2">
+                          <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🖥️</span>
+                          <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate Terminal</h3>
+                      </div>
+                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                          Boost your productivity with our advanced AI-powered terminal assistant.
+                      </p>
+                  </a>
+      
+                  <!-- Product 2 -->
+                  <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details" 
+                     class="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
+                      <div class="flex items-center space-x-3 mb-2">
+                          <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🧩</span>
+                          <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate VS Code Extension</h3>
+                      </div>
+                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                          Enhance your coding experience in VS Code with AI-driven autocompletions.
+                      </p>
+                  </a>
+      
+                  <!-- Product 3 -->
+                  <a href="https://app.codemate.ai/" 
+                     class="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
+                      <div class="flex items-center space-x-3 mb-2">
+                          <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">💬</span>
+                          <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate Web App</h3>
+                      </div>
+                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                          CodeMate Web App is a web-based code editor for AI-powered development.
+                      </p>
+                  </a>
+      
+                  <!-- Product 4 -->
+                  <a href="https://codemate.ai/edu/" 
+                     class="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
+                      <div class="flex items-center space-x-3 mb-2">
+                          <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🎓</span>
+                          <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate for Education</h3>
+                      </div>
+                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                          Empower students and educators with our AI-driven learning tools.
+                      </p>
+                  </a>
+              </div>
           </div>
-          <p class="text-sm text-gray-400">Boost your productivity with our advanced AI-powered terminal assistant.</p>
-        </a>
-
-        <!-- Product 2 -->
-        <a href="#" class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
-          <div class="flex items-center mb-2">
-            <span class="text-2xl mr-3">🧩</span>
-            <h3 class="font-medium text-lg">CodeMate VS Code Extension</h3>
-          </div>
-          <p class="text-sm text-gray-400">Enhance your coding experience in VS Code with AI-driven autocompletions.</p>
-        </a>
-
-        <!-- Product 3 -->
-        <a href="#" class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
-          <div class="flex items-center mb-2">
-            <span class="text-2xl mr-3">💬</span>
-            <h3 class="font-medium text-lg">CodeMate Web App</h3>
-          </div>
-          <p class="text-sm text-gray-400">CodeMate Web App is a web-based code editor for AI-powered development.</p>
-        </a>
-
-        <!-- Product 4 -->
-        <a href="#" class="flex flex-col p-4 rounded-lg hover:bg-gray-700 transition-colors">
-          <div class="flex items-center mb-2">
-            <span class="text-2xl mr-3">🎓</span>
-            <h3 class="font-medium text-lg">CodeMate for Education</h3>
-          </div>
-          <p class="text-sm text-gray-400">Empower students and educators with our AI-driven learning tools.</p>
-        </a>
-      </div>
-      <div class="p-4 border-t border-gray-700">
-        <a href="/products" class="text-sm text-gray-400 hover:text-white flex items-center">
-          <span>View all products</span>
-          <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-          </svg>
-        </a>
-      </div>
-    </div>
           </div>
         </nav>
         <div class="navbar_menu-button w-nav-button">
@@ -4108,24 +4130,47 @@ discountButton2.addEventListener('click', function() {
       const productsDropdown = document.getElementById('products-dropdown');
       const dropdownArrow = document.getElementById('dropdown-arrow');
       let isDropdownOpen = false;
+      const menuToggle = document.getElementById("menuToggle")
+
+  const productDropdown = document.getElementById("productDropdown")
+
+  function isMobile() {
+    return window.innerWidth < 640 // Tailwind's sm breakpoint
+  }
+
+  function toggleProductDropdown() {
+    if (isMobile()) {
+      if(productDropdown.classList.contains("!hidden"))
+      {
+        productDropdown.classList.remove("!hidden")
+        productDropdown.classList.remove('dropdown-exit');
+        productDropdown.classList.add('dropdown-enter');
+      }
+      else
+      {
+
+      productDropdown.classList.add('dropdown-exit');
+ 
+      setTimeout(()=>{
+        productDropdown.classList.add("!hidden")
+      },300)
+      }
+    }
+  }
 
       // Function to open dropdown
       function openDropdown() {
+        toggleProductDropdown()
         productsDropdown.classList.remove('hidden');
-        // Use setTimeout to ensure the transition works properly
-        setTimeout(() => {
-          productsDropdown.classList.remove('opacity-0');
-          dropdownArrow.classList.add('rotate-180');
-        }, 10);
         isDropdownOpen = true;
       }
 
       // Function to close dropdown
       function closeDropdown() {
-        productsDropdown.classList.add('opacity-0');
+        toggleProductDropdown()
+        //productsDropdown.classList.add('opacity-0');
         setTimeout(() => {
           productsDropdown.classList.add('hidden');
-          dropdownArrow.classList.remove('rotate-180');
         }, 200); // Match this with the transition duration
         isDropdownOpen = false;
       }
@@ -4152,6 +4197,24 @@ discountButton2.addEventListener('click', function() {
         e.stopPropagation();
       });
 
+</script>
+<style>
+
+  .dropdown-enter {
+    opacity: 1;
+    transform: translateY(0);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .dropdown-exit {
+    opacity: 0;
+    transform: translateY(-1rem);
+    transition: all 0.3s ease-in-out;
+  }
+
+</style>
+<script>
+   
 </script>
   <!-- <script>
     function togglePopup() {
