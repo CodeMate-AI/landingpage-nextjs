@@ -13,7 +13,7 @@ const products: { title: ProductType; description: string; link: string; icon: s
     {
         title: "CodeMate Terminal",
         description: "Boost your productivity with our advanced AI-powered terminal assistant.",
-        link: "/",
+        link: "https://cli.codemate.ai/",
         icon: "🖥️"
     },
     {
@@ -31,7 +31,7 @@ const products: { title: ProductType; description: string; link: string; icon: s
     {
         title: "CodeMate for Education",
         description: "Empower students and educators with our AI-driven learning tools.",
-        link: "https://codemate.ai/edu/",
+        link: "#",
         icon: "🎓"
     }
 ];
