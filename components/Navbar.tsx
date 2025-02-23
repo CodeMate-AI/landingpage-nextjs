@@ -13,7 +13,7 @@ const products: { title: ProductType; description: string; link: string; icon: s
     {
         title: "CodeMate Terminal",
         description: "Boost your productivity with our advanced AI-powered terminal assistant.",
-        link: "/",
+        link: "https://cli.codemate.ai",
         icon: "🖥️"
     },
     {
@@ -101,6 +101,22 @@ const ProductDropdown = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                                 </p>
                             </Link>
                         ))}
+                        {/* didnot put this in map coz of the comign soon badge */}
+                            <div className="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
+      <div className="flex items-center space-x-3 mb-2">
+        <span className="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🤖</span>
+        <h3 className="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">
+          CodeMate Agent
+          <span className="ml-2 px-1.5 py-0.5 text-xs font-medium bg-emerald-900/60 text-emerald-400 rounded-md">
+            coming soon
+          </span>
+        </h3>
+      </div>
+      <p className="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+        Generate full-stack applications with your choice of tech stack, from React to Django, Node to PostgreSQL, and
+        everything in between.
+      </p>
+    </div>
                     </div>
                     {/* <div className="p-4 bg-zinc-800/30 border-t border-zinc-800">
                         <Link href="/products" className="text-sm text-zinc-400 hover:text-zinc-200 flex items-center">
@@ -236,6 +252,16 @@ const Navbar: React.FC = () => {
                                                                     </div>
                                                                 </Link>
                                                             ))}
+                                                            {/* not putting in map coz of coming soo badge */}
+                                                            <div className="flex items-center py-2 text-sm mr-auto">
+    <span className="mr-2" role="img" aria-hidden="true">
+      🤖
+    </span>
+    CodeMate Agent
+    <span className="ml-2 px-1.5 py-0.5 text-xs font-medium bg-emerald-900/60 text-emerald-400 rounded-md">
+      coming soon
+    </span>
+  </div>
                                                         </motion.div>
                                                     )}
                                                 </AnimatePresence>
