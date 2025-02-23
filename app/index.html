@@ -586,30 +586,52 @@ a,
         <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo show-tablet" />
         <nav role="navigation" class="w-nav-menu">
           <div class="button is-secondary is-small is-icon w-inline-block -link-wrapper">
-            <a href="#features" class="top-navbar_link w-nav-link">Features</a>
-            <a href="#pricing" class="top-navbar_link w-nav-link">Pricing</a>
-            <a href="#contactus" target="_blank" class="top-navbar_link w-nav-link">Contact</a>
-            <button class="top-navbar_link w-nav-link" id="products">Products</button>
-            <!--mobile products-->
-          <div id="productDropdown" class="!hidden dropdown-exit pl-4 space-y-2 border-l border-zinc-700 flex-col jusitfy-left">
-              <a href="/" class="block py-2 text-sm mr-auto">
-                  <span class="mr-2" role="img" aria-hidden="true">🖥️</span>
-                  CodeMate Terminal
-              </a>
-              <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details" class="block py-2 text-sm mr-auto">
-                  <span class="mr-2" role="img" aria-hidden="true">🧩</span>
-                  CodeMate VS Code Extension
-              </a>
-              <a href="https://app.codemate.ai/" class="block py-2 text-sm mr-auto">
-                  <span class="mr-2" role="img" aria-hidden="true">💬</span>
-                  CodeMate Web App
-              </a>
-              <a href="https://codemate.ai/edu/" class="block py-2 text-sm mr-auto">
-                  <span class="mr-2" role="img" aria-hidden="true">🎓</span>
-                  CodeMate for Education
-              </a>
+            <a href="#features" class="top-navbar_link w-nav-link justify-start border-b-zinc-400 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto">Features</a>
+            <a href="#pricing" class="top-navbar_link w-nav-link justify-start border-b-zinc-400 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto">Pricing</a>
+            <a href="#contactus" target="_blank" class="top-navbar_link w-nav-link justify-start border-b-zinc-400 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto">Contact</a>
+            <button class="top-navbar_link w-nav-link justify-start border-b-zinc-400 border-b-[1px] sm:border-b-0  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto" id="products">Products</button>
+            <!--mobile products dropdown not for desktop  , trigger remains same-->
+            <div
+            id="productDropdown"
+            class="!hidden dropdown-exit pl-4 space-y-2 border-l border-zinc-700 flex-col jusitfy-left w-full"
+          >
+            <a href="https://cli.codemate.ai" class="block py-2 text-sm mr-auto">
+              <span class="mr-2" role="img" aria-hidden="true">
+                🖥️
+              </span>
+              CodeMate Terminal
+            </a>
+            <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details"
+              class="block py-2 text-sm mr-auto"
+            >
+              <span class="mr-2" role="img" aria-hidden="true">
+                🧩
+              </span>
+              CodeMate VS Code Extension
+            </a>
+            <a href="https://app.codemate.ai/" class="block py-2 text-sm mr-auto">
+              <span class="mr-2" role="img" aria-hidden="true">
+                💬
+              </span>
+              CodeMate Web App
+            </a>
+            <a href="https://codemate.ai/edu/" class="block py-2 text-sm mr-auto">
+              <span class="mr-2" role="img" aria-hidden="true">
+                🎓
+              </span>
+              CodeMate for Education
+            </a>
+            <div class="!flex items-center py-2 text-sm mr-auto !flex-row">
+              <span class="mr-2" role="img" aria-hidden="true">
+                🤖
+              </span>
+              CodeMate Agent
+              <span class="ml-2 px-1.5 py-0.5 text-sm font-medium bg-emerald-900/60 text-emerald-400 rounded-md">
+                coming soon
+              </span>
+            </div>
           </div>
-            <a href="edu" class="top-navbar_link bg-white/80 hover:bg-white  w-inline-block" style="padding-inline: 10px;opacity: 100; color: black;">For Education</a>
+            <a href="https://app.codemate.ai" class="top-navbar_link w-full bg-white/80 hover:bg-white  w-inline-block" style="padding-inline: 10px;opacity: 100; color: black;">Get Started</a>
             <!-- <a href="https://blog.codemate.ai" target="_blank" class="top-navbar_link w-nav-link">Blogs</a> -->
             <!-- <a href="https://codemate.ai/edu" data-w-id="1b87565d-005b-b34d-0495-100a1e723a14"
               class="top-navbar_link is-primary w-inline-block">
@@ -619,11 +641,11 @@ a,
                 </div>
               </div>
             </a> -->
-             <!-- Products Dropdown -->
+             <!-- Products Dropdown for desktop not for mobile-->
              <div  id="products-dropdown" class="hidden top-16 absolute w-full max-w-2xl z-[-40000] opacity-0 sm:!opacity-100 sm:z-50 bg-zinc-900  border border-zinc-700 rounded-xl shadow-xl overflow-hidden">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
                   <!-- Product 1 -->
-                  <a href="/" class="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
+                  <a href="https://cli.codemate.ai" class="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
                       <div class="flex items-center space-x-3 mb-2">
                           <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🖥️</span>
                           <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate Terminal</h3>
@@ -668,6 +690,21 @@ a,
                           Empower students and educators with our AI-driven learning tools.
                       </p>
                   </a>
+                  <!--product 5-->
+                  <div class="group p-4 w-[300px] rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
+                    <div class="flex items-center space-x-3 mb-2">
+                      <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🤖</span>
+                      <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">
+                        CodeMate Agent
+                        <span class="ml-2 px-1.5 py-0.5 text-sm font-medium bg-emerald-900/60 text-emerald-400 rounded-md">
+                          coming soon
+                        </span>
+                      </h3>
+                    </div>
+                    <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                      Generate full-stack applications with your choice of tech stack.
+                    </p>
+                  </div>
               </div>
           </div>
           </div>
