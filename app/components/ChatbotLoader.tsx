@@ -38,7 +38,9 @@ export default function ChatbotLoader() {
       };
       
       // Check if initAiCoPilot function exists and call it
+      // @ts-ignore
       if (typeof window.initAiCoPilot === 'function') {
+        // @ts-ignore
         window.initAiCoPilot(options);
       } else {
         console.error('initAiCoPilot function not found');
