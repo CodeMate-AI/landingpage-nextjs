@@ -19,6 +19,9 @@ import AnimatedLogoCloud from "@/components/AnimatedLogoCloud";
 import AnimatedRecognitionCloud from "@/components/AnimatedRecognitionCloud";
 import { OrbitingCirclesIcons } from "@/components/OrbitingIcons";
 import ScrollToTop from "@/components/ScrollToTop";
+import MetricsComponent from "@/components/MetricsComponent";
+import CodemateForOrg from "@/components/CodemateForOrg";
+import FeatureSection from "@/components/Features2";
 const Home: React.FC = () => {
   return (
     <>
@@ -37,22 +40,23 @@ const Home: React.FC = () => {
           <div className={`${styles.boxWidth}`}>
             {/* <Stats /> */}
             <ScrollToTop />
-            <StudentFeatures />
+            <FeatureSection/>
             <div className="mt-10"></div>
-            <TeacherFeatures/>
+            {/* <TeacherFeatures/>
             <div className="mt-10"></div>
-            <GuestFeatures />
-
+            <GuestFeatures /> */}
+            <MetricsComponent/>
             {/* <OrbitingCirclesIcons /> */}
             <SimpleTestimonialCarousel />
-            <AnimatedLogoCloud />
-            <AnimatedRecognitionCloud/>
+            {/* <AnimatedLogoCloud />
+            <AnimatedRecognitionCloud/> */}
             {/* <Business />
             <Billing />
             <CardDeal />
             <Testimonials />
             <Clients /> */}
-            <CTA />
+            <CodemateForOrg/>
+            {/* <CTA /> */}
             <Footer />
           </div>
         </div>

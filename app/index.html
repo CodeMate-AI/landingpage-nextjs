@@ -544,6 +544,7 @@ a,
             padding-left: 0px !important;
             padding-right: 0px !important;
           }
+     
         }
 
         @media (max-width: 500px) {
@@ -555,6 +556,28 @@ a,
             flex-direction: column;
             align-items: center;
             justify-content: center;
+          }
+          #NavbarResponsiveParent{
+            width: 100% !important;
+            position: relative !important;
+            background-color: #161616 !important;
+            margin-top: 0px !important;
+          }
+          .header26_component{
+            padding-top: 30px !important;
+          }
+          #NavbarResponsive{
+            border-radius: 0px !important;
+            border: none !important;
+          }
+          a.top-navbar_link{
+            padding-left: 4px !important;
+            padding-right: 0px !important;
+          }
+          button.top-navbar_link{
+            padding-left: 4px !important;
+            border-radius: 0px !important;
+            padding-right: 0px !important;
           }
         }
       </style>
@@ -579,49 +602,53 @@ a,
       <img src="https://assets.website-files.com/63f5d36e1bfb159570f6408c/6403d854fecdefd2fb045a8c_figma-cursor.svg"
         loading="lazy" alt="" class="cursor" />
     </div>
-    <div style="margin-top: 6.5rem;" data-collapse="small" data-animation="default" data-duration="400" data-easing="ease"
+    <div style="margin-top: 2.1rem;" id="NavbarResponsiveParent" data-collapse="small" data-animation="default" data-duration="400" data-easing="ease"
       data-easing2="ease-in-out" role="banner" class="navbar_component w-nav">
       <div id="NavbarResponsive" class="z-[5000000] navbar_menu-button  flex flex-row justify-between items-center w-full rounded-xl top-navbar_link bg-[#161616] px-2 pr-4 w-inline-block
       " style="border: 1px solid #ffffff26; background-color: #161616cc;backdrop-filter: blur(16px); z-index: 5000000;" >
         <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo show-tablet" />
         <nav role="navigation" class="w-nav-menu">
           <div class="button is-secondary is-small is-icon w-inline-block -link-wrapper">
-            <a href="#features" class="top-navbar_link w-nav-link justify-start border-b-zinc-400 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto">Features</a>
-            <a href="#pricing" class="top-navbar_link w-nav-link justify-start border-b-zinc-400 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto">Pricing</a>
-            <a href="#contactus" target="_blank" class="top-navbar_link w-nav-link justify-start border-b-zinc-400 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto">Contact</a>
-            <button class="top-navbar_link w-nav-link justify-start border-b-zinc-400 border-b-[1px] sm:border-b-0  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto" id="products">Products</button>
+            <a href="#features" class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Features</a>
+            <a href="#pricing" class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Pricing</a>
+            <a href="#contactus" target="_blank" class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Contact</a>
+            <button class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0  !mb-0 pb-3 sm:!pb-[0.375rem] sm:rounded-none sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0" id="products">Products</button>
             <!--mobile products dropdown not for desktop  , trigger remains same-->
             <div
             id="productDropdown"
-            class="!hidden dropdown-exit pl-4 space-y-2 border-l border-zinc-700 flex-col jusitfy-left w-full"
+            class="!hidden dropdown-exit -mt-3 pl-4  flex-col jusitfy-left w-full"
           >
-            <a href="https://cli.codemate.ai" class="block py-2 text-sm mr-auto">
+            <a href="https://cli.codemate.ai" class="block hover:bg-[#ffffff1a]
+            rounded-sm w-full px-2 py-2 text-sm text-left mr-auto">
               <span class="mr-2" role="img" aria-hidden="true">
                 🖥️
               </span>
               CodeMate Terminal
             </a>
             <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details"
-              class="block py-2 text-sm mr-auto"
+            class="block hover:bg-[#ffffff1a]
+            rounded-sm w-full px-2 py-2 text-sm text-left mr-auto"
             >
               <span class="mr-2" role="img" aria-hidden="true">
                 🧩
               </span>
               CodeMate VS Code Extension
             </a>
-            <a href="https://app.codemate.ai/" class="block py-2 text-sm mr-auto">
+            <a href="https://app.codemate.ai/" class="block hover:bg-[#ffffff1a]
+            rounded-sm w-full px-2 py-2 text-sm text-left mr-auto">
               <span class="mr-2" role="img" aria-hidden="true">
                 💬
               </span>
               CodeMate Web App
             </a>
-            <a href="https://codemate.ai/edu/" class="block py-2 text-sm mr-auto">
+            <a href="https://codemate.ai/edu/" class="block hover:bg-[#ffffff1a]
+            rounded-sm w-full px-2 py-2 text-sm text-left mr-auto">
               <span class="mr-2" role="img" aria-hidden="true">
                 🎓
               </span>
               CodeMate for Education
             </a>
-            <div class="!flex items-center py-2 text-sm mr-auto !flex-row">
+            <a href="#" disabled class="block rounded-sm w-full px-2 py-2 text-sm text-left mr-auto">
               <span class="mr-2" role="img" aria-hidden="true">
                 🤖
               </span>
@@ -629,7 +656,10 @@ a,
               <span class="ml-2 px-1.5 py-0.5 text-sm font-medium bg-emerald-900/60 text-emerald-400 rounded-md">
                 coming soon
               </span>
-            </div>
+            </a>
+            <!-- <div class="!flex items-center py-2 text-sm mr-auto !flex-row">
+              
+            </div> -->
           </div>
             <a href="https://app.codemate.ai" class="top-navbar_link w-full bg-white/80 hover:bg-white  w-inline-block" style="padding-inline: 10px;opacity: 100; color: black;">Get Started</a>
             <!-- <a href="https://blog.codemate.ai" target="_blank" class="top-navbar_link w-nav-link">Blogs</a> -->
@@ -650,7 +680,7 @@ a,
                           <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🖥️</span>
                           <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate Terminal</h3>
                       </div>
-                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200 text-left">
                           Boost your productivity with our advanced AI-powered terminal assistant.
                       </p>
                   </a>
@@ -662,7 +692,7 @@ a,
                           <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🧩</span>
                           <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate VS Code Extension</h3>
                       </div>
-                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200 text-left">
                           Enhance your coding experience in VS Code with AI-driven autocompletions.
                       </p>
                   </a>
@@ -674,7 +704,7 @@ a,
                           <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">💬</span>
                           <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate Web App</h3>
                       </div>
-                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200 text-left">
                           CodeMate Web App is a web-based code editor for AI-powered development.
                       </p>
                   </a>
@@ -686,7 +716,7 @@ a,
                           <span class="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🎓</span>
                           <h3 class="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">CodeMate for Education</h3>
                       </div>
-                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                      <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200 text-left">
                           Empower students and educators with our AI-driven learning tools.
                       </p>
                   </a>
@@ -701,7 +731,7 @@ a,
                         </span>
                       </h3>
                     </div>
-                    <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
+                    <p class="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200 text-left">
                       Generate full-stack applications with your choice of tech stack.
                     </p>
                   </div>
