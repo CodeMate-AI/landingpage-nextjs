@@ -56,7 +56,7 @@ const Hero: React.FC = () => (
             </h1>
             {/* <span className="bg-gray-900 font-[Montserrat] px-2 py-1 rounded-lg underline underline-offset-4"></span> */}
             <span className="text-gradient ss:text-[82px] text-[50px] inline-block md:my-2 w-[80%] md:w-[100%]">
-              <Image src={CodeMateDark} alt="CodeMate" width={400} height={100} quality={100} />
+              <Image src={"/assets/CodeMateDark.png"} alt="CodeMate" width={400} height={100} quality={100} />
             </span>{" "}
             <br className="sm:block hidden" />
             {/* <span className="ss:text-[64px] text-[36px]">Education</span> */}

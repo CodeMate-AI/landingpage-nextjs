@@ -56,7 +56,7 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description ,gif
       ];
     
       return (
-          <div className=" min-h-screen">
+          <div className=" min-h-screen" id='features'>
                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white text-center my-5 mt-10">What<span className="text-gradient font-Poppins text-transparent font-bold bg-clip-text ">{ " CodeMate "}</span> Offers</h1>
           <div className="container mx-auto px-4">
             {features.map((feature, index) => (
