@@ -43,8 +43,8 @@ const Footer = () => (
         {/* Logo and Description */}
         <div className="flex flex-col space-y-6 max-w-md">
           <Link href="https://codemate.ai" target="_blank" rel="noopener noreferrer">
-            <Image
-              src={CodeMateDark}
+            <img
+              src={"/CodeMateDark.png"}
               alt="CodeMate.ai"
               className="h-14 w-auto hover:opacity-90 transition-opacity"
               width={170}

@@ -149,12 +149,11 @@ const Navbar: React.FC = () => {
     return (
         <nav className="w-full flex py-6 justify-between items-center navbar relative px-6 md:px-12">
             <div className="flex items-center">
-                <Image 
+                <img 
                     src={"/CodeMateDark.png"} 
                     alt="CodeMate" 
                     width={150} 
                     height={52} 
-                    priority
                 />
             </div>
             
