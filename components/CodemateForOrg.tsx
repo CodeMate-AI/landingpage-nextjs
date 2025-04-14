@@ -29,7 +29,7 @@ export default function CodemateForOrg() {
           </div>
 
                   <div className="flex flex-col sm:flex-row gap-4 mt-4">
-                      <a href="https://edu.codemate.ai">
+                      <a target="_blank" href="https://edu.codemate.ai/org-signup">
                           <GlowButton text="Get Started as Organization" />
                           </a>
           </div>

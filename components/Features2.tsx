@@ -1,15 +1,15 @@
 import React from 'react';
-import { LineChart, Code, GitBranch, Package2  } from 'lucide-react';
+import { LineChart, Code, GitBranch, Package2 } from 'lucide-react';
 
 // Individual Feature Component
 interface FeatureItemProps {
   icon: React.ReactNode;
-  title: string;
   gif: string;
+  title: string;
   description: string;
 }
 
-const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description, gif }) => {
+const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description ,gif}) => {
 
       return (
         <div className="py-12 border-b border-gray-800">
@@ -51,7 +51,8 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description, gif
           gif:"/assets/playground.gif",
           icon: <Package2 className="text-pink-500" size={24} />,  
           title: "Experiment with Multiple Frameworks",  
-          description: "Explore various frameworks like React and Angular in our playground, allowing you to broaden your knowledge and enhance your development skills."  }
+          description: "Explore various frameworks like React and Angular in our playground, allowing you to broaden your knowledge and enhance your development skills." 
+        }
       ];
     
       return (
