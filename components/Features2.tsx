@@ -1,14 +1,15 @@
 import React from 'react';
-import { LineChart, Code, GitBranch } from 'lucide-react';
+import { LineChart, Code, GitBranch, Package2 } from 'lucide-react';
 
 // Individual Feature Component
 interface FeatureItemProps {
   icon: React.ReactNode;
+  gif: string;
   title: string;
   description: string;
 }
 
-const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description }) => {
+const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description ,gif}) => {
 
       return (
         <div className="py-12 border-b border-gray-800">
@@ -16,7 +17,7 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description }) =
             {/* Larger GIF container */}
             <div className="w-full md:w-1/2 aspect-video bg-gray-800 rounded-lg flex items-center justify-center mb-6 md:mb-0 min-h-64">
               {/* Placeholder for GIF/Image */}
-              <img src="/api/placeholder/480/270" alt="placeholder" className="rounded-lg" />
+              <img src={gif} alt="placeholder" className="rounded-lg" />
             </div>
             
             <div className="w-full md:w-1/2">
@@ -35,29 +36,33 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description }) =
     const FeatureSection = () => {
       const features = [
         {
+          gif:"/assets/ai.gif",
           icon: <Code className="text-green-500" size={24} />,
           title: "AI Coding Assistant",
           description: "Get instant hints and tailored feedback on your assignments. Our AI assistant acts as your personal guide, helping you overcome coding challenges and deepen your understanding of complex concepts."
         },
         {
+          gif:"/assets/graph.gif",
           icon: <LineChart className="text-blue-500" size={24} />,
           title: "Interactive Activity Graph",
           description: "Visualize your daily progress with our dynamic activity graph. Track your submission rate and identify trends in your learning habits, empowering you to optimize your study routine."
         },
         {
-          icon: <GitBranch className="text-pink-500" size={24} />,
-          title: "Step-by-Step Roadmaps",
-          description: "Follow expertly curated learning paths designed to transform you into a better developer. Our structured roadmaps break down complex skills into manageable steps, ensuring steady and consistent growth."
+          gif:"/assets/playground.gif",
+          icon: <Package2 className="text-pink-500" size={24} />,  
+          title: "Experiment with Multiple Frameworks",  
+          description: "Explore various frameworks like React and Angular in our playground, allowing you to broaden your knowledge and enhance your development skills." 
         }
       ];
     
       return (
-          <div className=" min-h-screen">
+          <div className=" min-h-screen" id='features'>
                <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white text-center my-5 mt-10">What<span className="text-gradient font-Poppins text-transparent font-bold bg-clip-text ">{ " CodeMate "}</span> Offers</h1>
           <div className="container mx-auto px-4">
             {features.map((feature, index) => (
               <FeatureItem 
                 key={index}
+                gif={feature.gif}
                 icon={feature.icon}
                 title={feature.title}
                 description={feature.description}

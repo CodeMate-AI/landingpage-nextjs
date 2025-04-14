@@ -1,11 +1,12 @@
 import styles from "@/styles/style";
 import { discount, robot } from "@/public/assets";
 import GetStarted from "./GetStarted";
-import Image from "next/image";
+// import Image from "next/image";
 import { CodeMateDark } from "@/public/assets";
 import { SafariDemo } from "./HeroVideo";
 import { BlurFade } from "./magicui/blur-fade";
 import { Sparkles } from "./Sparkles";
+import Image from "next/image";
 
 const Hero: React.FC = () => (
   <BlurFade delay={0.25} inView>
@@ -56,7 +57,7 @@ const Hero: React.FC = () => (
             </h1>
             {/* <span className="bg-gray-900 font-[Montserrat] px-2 py-1 rounded-lg underline underline-offset-4"></span> */}
             <span className="text-gradient ss:text-[82px] text-[50px] inline-block md:my-2 w-[80%] md:w-[100%]">
-              <Image src={CodeMateDark} alt="CodeMate" width={400} height={100} quality={100} />
+              <img src={"/CodeMateDark.png"} alt="CodeMate" width={400} height={100} />
             </span>{" "}
             <br className="sm:block hidden" />
             {/* <span className="ss:text-[64px] text-[36px]">Education</span> */}

@@ -9,27 +9,27 @@ const footerLinks = [
     title: "Platform",
     links: [
       { name: "For Students", link: "#" },
-      { name: "For Teachers", link: "#" },
-      { name: "For Guests", link: "#" },
-      { name: "Pricing", link: "#" },
+      // { name: "For Teachers", link: "#" },
+      { name: "For Organizations", link: "#organization" },
+      // { name: "Pricing", link: "#" },
     ],
   },
   {
     title: "Resources",
     links: [
-      { name: "Documentation", link: "#" },
-      { name: "Blog", link: "#" },
-      { name: "Community", link: "#" },
-      { name: "Roadmap", link: "#" },
+      { name: "Documentation", link: "https://docs.codemate.ai/" },
+      // { name: "Blog", link: "https://codemate.ai#blog" },
+      { name: "Discord", link: "https://discord.com/invite/WM55rRufNP" },
+      // { name: "Roadmap", link: "#" },
     ],
   },
   {
     title: "Company",
     links: [
-      { name: "About Us", link: "#" },
-      { name: "Contact", link: "#" },
-      { name: "Privacy Policy", link: "#" },
-      { name: "Terms of Service", link: "#" },
+      { name: "About Us", link: "https://docs.codemate.ai/#what-is-codemate" },
+      { name: "Contact", link: "mailto:contact@codemate.ai" },
+      { name: "Privacy Policy", link: "https://docs.codemate.ai/policies/privacy-policy" },
+      { name: "Terms of Service", link: "https://docs.codemate.ai/policies/terms-of-service" },
     ],
   },
 ];
@@ -43,8 +43,8 @@ const Footer = () => (
         {/* Logo and Description */}
         <div className="flex flex-col space-y-6 max-w-md">
           <Link href="https://codemate.ai" target="_blank" rel="noopener noreferrer">
-            <Image
-              src={CodeMateDark}
+            <img
+              src={"/CodeMateDark.png"}
               alt="CodeMate.ai"
               className="h-14 w-auto hover:opacity-90 transition-opacity"
               width={170}
@@ -107,8 +107,9 @@ const Footer = () => (
                   {group.links.map((link) => (
                     <li key={link.name}>
                       <a
+                        target="_blank"
                         href={link.link}
-                        className="text-md leading-6 text-gray-400 hover:text-blue-400 transition-colors duration-200"
+                        className="text-md whitespace-nowrap leading-6 text-gray-400 hover:text-blue-400 transition-colors duration-200"
                       >
                         {link.name}
                       </a>
@@ -145,7 +146,7 @@ const Footer = () => (
       {/* Copyright */}
       <div className="mt-16 border-t border-gray-800/10 pt-8">
         <p className="text-xs leading-5 text-gray-400">
-          &copy; {new Date().getFullYear()} CodeMate.ai. All rights reserved.
+          &copy; {new Date().getFullYear()} CodeMate Inc. All rights reserved.
         </p>
       </div>
     </div>
