@@ -3,7 +3,7 @@ import GlowButton from "./GlowButton"
 
 export default function CodemateForOrg() {
   return (
-    <section className="w-full  text-white py-16 md:py-24">
+    <section id="organization" className="w-full  text-white py-16 md:py-24">
       <div className="container px-4 md:px-6 mx-auto">
         <div className="flex flex-col items-center text-center space-y-8 max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight"><span className="text-gradient font-Poppins text-transparent font-bold bg-clip-text">CodeMate</span> for Organization</h1>
