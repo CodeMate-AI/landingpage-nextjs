@@ -1,11 +1,12 @@
 import styles from "@/styles/style";
 import { discount, robot } from "@/public/assets";
 import GetStarted from "./GetStarted";
-import Image from "next/image";
+// import Image from "next/image";
 import { CodeMateDark } from "@/public/assets";
 import { SafariDemo } from "./HeroVideo";
 import { BlurFade } from "./magicui/blur-fade";
 import { Sparkles } from "./Sparkles";
+import Image from "next/image";
 
 const Hero: React.FC = () => (
   <BlurFade delay={0.25} inView>
