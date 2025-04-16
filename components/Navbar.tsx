@@ -50,8 +50,8 @@ const navLinks = [
         title: "Products",
     },
     {
-        id: "clients",
-        title: "Clients",
+        id: "footer",
+        title: "Contact",
     },
 ];
 
@@ -149,7 +149,12 @@ const Navbar: React.FC = () => {
     return (
         <nav className="w-full flex py-6 justify-between items-center navbar relative px-6 md:px-12">
             <div className="flex items-center">
-                <Image src={CodeMateDark} alt="CodeMate" width={150} height={52} />
+                <img 
+                    src={"/CodeMateDark.png"} 
+                    alt="CodeMate" 
+                    width={150} 
+                    height={52} 
+                />
             </div>
             
             <ul className="list-none sm:flex hidden justify-center items-center flex-1">

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { ArrowRight, Terminal } from 'lucide-react';
 
 const GetStarted: React.FC = () => (
-  <button className=" px-8 py-4 font-medium tracking-wide text-white transition-all duration-500 bg-blue-gradient rounded-full w-fit transition-all duration-500 ease-in-out transform">
+  <button onClick={() => window.open('https://edu.codemate.ai', '_blank')} className=" px-8 py-4 font-medium tracking-wide text-white transition-all duration-500 bg-blue-gradient rounded-full w-fit transition-all duration-500 ease-in-out transform">
     <span className="relative flex text-primary font-bold items-center space-x-3">
       Get Started
       <svg

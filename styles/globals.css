@@ -125,7 +125,10 @@
   filter: blur(750px);
 }
 
-
+#opencopilot-root{
+  width: fit-content !important;
+  height: fit-content !important;
+}
 
 @layer base {
   :root {
