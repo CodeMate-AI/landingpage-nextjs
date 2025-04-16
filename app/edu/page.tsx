@@ -22,6 +22,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import MetricsComponent from "@/components/MetricsComponent";
 import CodemateForOrg from "@/components/CodemateForOrg";
 import FeatureSection from "@/components/Features2";
+import GlowButton from "@/components/GlowButton";
 const Home: React.FC = () => {
   return (
     <>
@@ -40,12 +41,12 @@ const Home: React.FC = () => {
           <div className={`${styles.boxWidth}`}>
             {/* <Stats /> */}
             <ScrollToTop />
-            <FeatureSection/>
+            <FeatureSection />
             <div className="mt-10"></div>
             {/* <TeacherFeatures/>
             <div className="mt-10"></div>
             <GuestFeatures /> */}
-            <MetricsComponent/>
+            <MetricsComponent />
             {/* <OrbitingCirclesIcons /> */}
             <SimpleTestimonialCarousel />
             {/* <AnimatedLogoCloud />
@@ -55,7 +56,29 @@ const Home: React.FC = () => {
             <CardDeal />
             <Testimonials />
             <Clients /> */}
-            <CodemateForOrg/>
+            <CodemateForOrg />
+            <div id="contactus" className="mt-16 bg-gradient-to-b from-gray-900 to-black text-white py-16">
+              <div className="text-center">
+                <div className="max-w-2xl mx-auto px-4">
+                  <div className="mb-6">
+                    <h4 className="text-[2rem] leading-tight font-semibold tracking-tight m-0 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                      Still have questions?
+                    </h4>
+                  </div>
+                  <p className="text-lg text-gray-300 mb-8">
+                    Get in touch with our team.
+                  </p>
+                  <div className="mt-8">
+                    <a 
+                      href="mailto:contact@codemate.ai" 
+                      className="w-fit"
+                    >
+                      <GlowButton text="Contact Us" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
             {/* <CTA /> */}
             <Footer />
           </div>
