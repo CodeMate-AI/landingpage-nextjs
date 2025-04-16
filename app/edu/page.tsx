@@ -57,7 +57,7 @@ const Home: React.FC = () => {
             <Testimonials />
             <Clients /> */}
             <CodemateForOrg />
-            <div id="contactus" className="mt-16 bg-gradient-to-b from-gray-900 to-black text-white py-16">
+            <div id="contactus" className="mt-16 text-white py-16">
               <div className="text-center">
                 <div className="max-w-2xl mx-auto px-4">
                   <div className="mb-6">
