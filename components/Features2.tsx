@@ -15,7 +15,7 @@ const FeatureItem: React.FC<FeatureItemProps> = ({ icon, title, description ,gif
         <div className="py-12 border-b border-gray-800">
           <div className="flex flex-col md:flex-row gap-8 max-w-full mx-auto">
             {/* Larger GIF container */}
-            <div className="w-full md:w-1/2 aspect-video bg-gray-800 rounded-lg flex items-center justify-center mb-6 md:mb-0 min-h-64">
+            <div className="w-full md:w-1/2 aspect-video rounded-lg flex items-center justify-center mb-6 md:mb-0 min-h-64">
               {/* Placeholder for GIF/Image */}
               <img src={gif} alt="placeholder" className="rounded-lg" />
             </div>
