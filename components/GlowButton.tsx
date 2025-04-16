@@ -8,7 +8,7 @@ interface GlowButtonProps {
 
 const GlowButton: React.FC<GlowButtonProps> = ({ text = "Get Started", onClick }) => {
   return (
-    <div className="relative group mt-4 sm:mt-6">
+    <div className="relative group mt-4 mx-auto sm:mt-6 w-fit">
       {/* Glow effect container */}
       <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg blur opacity-75 group-hover:opacity-100 transition duration-1000 group-hover:duration-200 animate-tilt"></div>
       
