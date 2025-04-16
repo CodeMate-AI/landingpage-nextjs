@@ -50,7 +50,7 @@ const navLinks = [
         title: "Products",
     },
     {
-        id: "footer",
+        id: "contactus",
         title: "Contact",
     },
 ];
