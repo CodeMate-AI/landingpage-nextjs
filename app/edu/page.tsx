@@ -61,7 +61,8 @@ const Home: React.FC = () => {
               <div className="text-center">
                 <div className="max-w-2xl mx-auto px-4">
                   <div className="mb-6">
-                    <h4 className="text-[2rem] leading-tight font-semibold tracking-tight m-0 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
+                    {/* <h4 className="text-[2rem] leading-tight font-semibold tracking-tight m-0 bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"> */}
+                    <h4 className="text-[2rem] leading-tight font-semibold tracking-tight m-0  text-white">
                       Still have questions?
                     </h4>
                   </div>
