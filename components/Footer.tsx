@@ -35,7 +35,7 @@ const footerLinks = [
 ];
 
 const Footer = () => (
-  <footer className="relative mt-20 border-t border-gray-800">
+  <footer className="relative mt-20 border-t border-gray-800" id="footer">
     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary/50 to-primary pointer-events-none" />
     
     <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 relative">

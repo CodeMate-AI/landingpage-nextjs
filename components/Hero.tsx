@@ -22,7 +22,7 @@ const Hero: React.FC = () => (
         </p>
       </div> */}
 
-        <div className="absolute bottom-[20%] hidden ss:block right-[5%] animate-float-slow">
+        {/* <div className="absolute bottom-[20%] hidden ss:block right-[5%] animate-float-slow">
           <div className="bg-gradient-to-r from-teal-500/20 to-blue-500/20 p-3 rounded-lg backdrop-blur-sm">
             <span className="text-sm text-teal-400">🚀 AI-Powered Learning</span>
           </div>
@@ -36,7 +36,7 @@ const Hero: React.FC = () => (
           <div className="bg-gray-800/50 p-3 rounded-lg backdrop-blur-sm ">
             <span className="text-sm text-purple-400">🤖 AI Assistant</span>
           </div>
-        </div>
+        </div> */}
 
         {/* Main Hero Content */}
         <div className="flex flex-col justify-between w-full gap-5">
@@ -49,16 +49,19 @@ const Hero: React.FC = () => (
           />
 
           <div className="flex flex-col md:mt-10">
-            <h1 className="font-[Montserrat] font-semibold ss:text-[46px] text-[25px] text-white ss:leading-[20px] mt-0 md:mt-10 leading-[50px] tracking-normal">
-              ReImagine Coding
+            <h1 className="font-[Montserrat] font-normal ss:text-[46px] text-[25px] text-white ss:leading-[20px] mt-0 md:mt-10 leading-[50px] tracking-normal">
+            Your AI-powered
             </h1>
-            <h1 className="font-[Montserrat] font-semibold ss:text-[40px] text-[25px] text-white italic ss:leading-[20px] md:mt-10 leading-[30px] tracking-normal">
+            <h1 className="font-[Montserrat] font-bold ss:text-[56px] text-[35px] mt-0 md:mt-10 leading-[60px]  bg-gradient-to-r from-[#00C2FF] to-white  text-transparent bg-clip-text">
+            Coding Companion
+            </h1>
+            {/* <h1 className="font-[Montserrat] font-semibold ss:text-[40px] text-[25px] text-white italic ss:leading-[20px] md:mt-10 leading-[30px] tracking-normal">
               with
-            </h1>
+            </h1> */}
             {/* <span className="bg-gray-900 font-[Montserrat] px-2 py-1 rounded-lg underline underline-offset-4"></span> */}
-            <span className="text-gradient ss:text-[82px] text-[50px] inline-block md:my-2 w-[80%] md:w-[100%]">
+            {/* <span className="text-gradient ss:text-[82px] text-[50px] inline-block md:my-2 w-[80%] md:w-[100%]">
               <img src={"/CodeMateDark.png"} alt="CodeMate" width={400} height={100} />
-            </span>{" "}
+            </span>{" "} */}
             <br className="sm:block hidden" />
             {/* <span className="ss:text-[64px] text-[36px]">Education</span> */}
             {/* </h1> */}
