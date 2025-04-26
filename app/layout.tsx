@@ -1,6 +1,6 @@
 import "@/styles/globals.css";
 export const metadata = {
-  title: "CodeMate.ai",
+  title: "CodeMate | Your personalised and secured AI Pair Programmer",
   description: "CodeMate.ai is an AI-powered coding assistant that helps you code faster and smarter.",
 };
 
