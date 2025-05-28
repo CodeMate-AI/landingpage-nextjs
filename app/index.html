@@ -4144,7 +4144,7 @@ discountButton2.addEventListener('click', function() {
     let countValue;
 
     document.addEventListener("DOMContentLoaded", (event) => {
-      fetch("https://backend.codemate.ai/getLines")
+      fetch("https://backend.v3.codemate.ai/get_linesṣ")
         .then((res) => res.json())
         .then((data) => {
           let startValue = parseInt(data.value) - 100;
@@ -4168,7 +4168,7 @@ discountButton2.addEventListener('click', function() {
     const lineHolder = document.getElementById("totalLines");
 
     function logJSONData() {
-      fetch("https://backend.codemate.ai/getLines")
+      fetch("https://backend.v3.codemate.ai/get_linesṣ")
         .then((res) => res.json())
         .then((data) => {
           let value = data.value;
