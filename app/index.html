@@ -4144,7 +4144,7 @@ discountButton2.addEventListener('click', function() {
     let countValue;
 
     document.addEventListener("DOMContentLoaded", (event) => {
-      fetch("https://backend.v3.codemate.ai/get_linesṣ")
+      fetch("https://backend.v3.codemate.ai/get_lines")
         .then((res) => res.json())
         .then((data) => {
           let startValue = parseInt(data.value) - 100;
