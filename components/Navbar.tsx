@@ -23,17 +23,23 @@ const products: { title: ProductType; description: string; link: string; icon: s
         icon: "🧩"
     },
     {
-        title: "CodeMate Web App",
-        description: "CodeMate Web App is a web-based code editor for AI-powered development.",
-        link: "https://app.codemate.ai/",
-        icon: "💬"
+        title: "CodeMate Agent",
+        description: "Convert your ideas into working prototypes with your desired tech stack",
+        link: "https://app.codemate.ai/build",
+        icon: "🤖"
     },
     {
         title: "CodeMate for Education",
         description: "Empower students and educators with our AI-driven learning tools.",
         link: "https://codemate.ai/edu/",
         icon: "🎓"
-    }
+    },
+    {
+        title: "CodeMate Web App",
+        description: "Check detailed analytics or interact with your synced knowledge bases right from your browser.",
+        link: "https://app.codemate.ai/",
+        icon: "💬"
+    },
 ];
 
 const navLinks = [
@@ -102,7 +108,7 @@ const ProductDropdown = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
                             </Link>
                         ))}
                         {/* didnot put this in map coz of the comign soon badge */}
-                            <div className="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
+                            {/* <div className="group p-4 rounded-lg transition-all duration-300 ease-in-out hover:bg-zinc-800/50 hover:scale-[1.02] hover:shadow-lg hover:shadow-zinc-900/20">
       <div className="flex items-center space-x-3 mb-2">
         <span className="text-2xl transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-3">🤖</span>
         <h3 className="font-medium text-zinc-100 transition-colors duration-300 group-hover:text-white">
@@ -113,10 +119,10 @@ const ProductDropdown = ({ isVisible, onClose }: { isVisible: boolean; onClose: 
         </h3>
       </div>
       <p className="text-sm text-zinc-400 transition-colors duration-300 group-hover:text-zinc-200">
-        Generate full-stack applications with your choice of tech stack, from React to Django, Node to PostgreSQL, and
+      Convert your ideas into working prototypes with your desired tech stack, from React to Django, Node to PostgreSQL, and
         everything in between.
       </p>
-    </div>
+    </div> */}
                     </div>
                     {/* <div className="p-4 bg-zinc-800/30 border-t border-zinc-800">
                         <Link href="/products" className="text-sm text-zinc-400 hover:text-zinc-200 flex items-center">
