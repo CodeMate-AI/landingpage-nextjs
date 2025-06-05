@@ -22,7 +22,7 @@ const products: { title: ProductType; description: string; link: string; icon: s
     },
     {
         title: "CodeMate Web App",
-        description: "CodeMate Web App is a web-based code editor for AI-powered development. Collaborate seamlessly with your team and get instant coding assistance with our AI chat.",
+        description: "Check detailed analytics or interact with your synced knowledge bases right from your browser. Collaborate seamlessly with your team and get instant coding assistance with our AI chat.",
         link: "https://app.codemate.ai/",
         icon: "💬"
     },
