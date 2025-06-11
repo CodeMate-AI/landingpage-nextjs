@@ -5,7 +5,7 @@ import { motion } from 'framer-motion'
 import { RainbowButton } from "@/components/magicui/rainbow-button"
 import Link from 'next/link'
 
-type ProductType = "CodeMate Terminal" | "CodeMate VS Code Extension" | "CodeMate Web App" | "CodeMate for Education";
+type ProductType = "CodeMate Terminal" | "CodeMate VS Code Extension" | "CodeMate Web App" | "CodeMate for Education" | "CodeMate Agent";
 
 const products: { title: ProductType; description: string; link: string; icon: string }[] = [
     {
