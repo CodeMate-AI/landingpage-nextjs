@@ -17,7 +17,7 @@ export default async function LandingPage() {
           __html: htmlContent,
         }}
       />
-      <ChatbotLoader />
+      {/* <ChatbotLoader /> */}
     </>
   );
 }
