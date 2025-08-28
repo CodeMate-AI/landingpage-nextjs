@@ -7,6 +7,7 @@ import { SafariDemo } from "./HeroVideo";
 import { BlurFade } from "./magicui/blur-fade";
 import { Sparkles } from "./Sparkles";
 import Image from "next/image";
+import { FloatingDockDemo } from "./Navbar2";
 
 const Hero: React.FC = () => (
   <BlurFade delay={0.25} inView>
@@ -48,6 +49,7 @@ const Hero: React.FC = () => (
             className='absolute inset-x-0 top-0 h-full w-full [mask-image:radial-gradient(50%_50%,white,transparent_85%)]'
           />
 
+           
           <div className="flex flex-col md:mt-10">
             <h1 className="font-[Montserrat] font-normal ss:text-[46px] text-[25px] text-white ss:leading-[20px] mt-0 md:mt-10 leading-[50px] tracking-normal">
             Your AI-powered

@@ -593,7 +593,7 @@ a,
       </style>
 
     </div>
-    <div class- "hide-tablet" style="padding: .5rem; background-color: rgb(72, 174, 243); width: 100vw;">
+    <!-- <div class- "hide-tablet" style="padding: .5rem; background-color: rgb(72, 174, 243); width: 100vw;">
       <p style="text-align: center; color: black;">
         <style>
           .IMG {
@@ -607,7 +607,7 @@ a,
         <b>Limited Time Deal</b>- Now try CodeMate Pro for as low as $17/mo! <a href="https://codemate.ai/#pricing"
           style="text-decoration: underline;"><b>Know more</b></a>
       </p>
-    </div>
+    </div> -->
     <div class="cursor-wrapper pointer-events-off">
       <img src="https://assets.website-files.com/63f5d36e1bfb159570f6408c/6403d854fecdefd2fb045a8c_figma-cursor.svg"
         loading="lazy" alt="" class="cursor" />
@@ -618,21 +618,42 @@ a,
       "
         style="border: 1px solid #ffffff26; background-color: #161616cc;backdrop-filter: blur(16px); z-index: 5000000;">
         <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo show-tablet" />
-        <nav role="navigation" class="w-nav-menu">
-          <div class="button is-secondary is-small is-icon w-inline-block -link-wrapper">
+
+        <div class="navbar_menu-button w-nav-button !block lg:!hidden">
+          <div class="menu-icon1">
+            <div class="menu-icon1_line-top"></div>
+            <div class="menu-icon1_line-middle">
+              <div class="menu-icon_line-middle-inner"></div>
+            </div>
+            <div class="menu-icon1_line-bottom"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main class="main-wrapper">
+      <div 
+      style="background-color:#161616;"
+      class="section_topbar fixed top-0 z-50">
+        <a href="#" class="topbar_logo-link w-nav-brand">
+          <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo"
+            style="height: auto; width: 200px;" />
+        </a>
+                <nav role="navigation" class=" flex ">
+
+                        <button
+              class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0  !mb-0 pb-3 sm:!pb-[0.375rem] sm:rounded-none sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0 "
+              id="products">Products</button>      
             <a href="#features"
               class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Features</a>
             <a href="#pricing"
               class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Pricing</a>
             <a href="#contactus" target="_blank"
               class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Contact</a>
-            <button
-              class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0  !mb-0 pb-3 sm:!pb-[0.375rem] sm:rounded-none sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0 "
-              id="products">Products</button>
+
             <!--mobile products dropdown not for desktop  , trigger remains same-->
-            <div id="productDropdown" class="!hidden dropdown-exit -mt-3 pl-4  flex-col jusitfy-left w-full">
+            <div id="productDropdown" class="!hidden dropdown-exit -mt-3 pl-4 flex-col jusitfy-left w-full z-50">
               <a href="https://cli.codemate.ai" class="block hover:bg-[#ffffff1a]
-            rounded-sm w-full px-2 py-2 text-sm text-left mr-auto">
+            rounded-sm w-full px-2 py-2 text-sm text-left mr-auto ">
                 <span class="mr-2" role="img" aria-hidden="true">
                   🖥️
                 </span>
@@ -694,7 +715,7 @@ a,
             </a> -->
             <!-- Products Dropdown for desktop not for mobile-->
             <div id="products-dropdown"
-              class="hidden top-16 absolute w-full max-w-2xl z-[-40000] opacity-0 sm:!opacity-100 sm:z-50 bg-zinc-900  border border-zinc-700 rounded-xl shadow-xl overflow-hidden">
+              class="hidden top-20 absolute w-full max-w-xl z-[-40000] opacity-0 sm:!opacity-100 sm:z-50 bg-zinc-900  border border-zinc-700 rounded-xl shadow-xl overflow-hidden ">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
                 <!-- Product 1 -->
                 <a target="_blank" href="https://cli.codemate.ai"
@@ -785,50 +806,46 @@ a,
 
               </div>
             </div>
-          </div>
+          
         </nav>
-        <div class="navbar_menu-button w-nav-button !block lg:!hidden">
-          <div class="menu-icon1">
-            <div class="menu-icon1_line-top"></div>
-            <div class="menu-icon1_line-middle">
-              <div class="menu-icon_line-middle-inner"></div>
-            </div>
-            <div class="menu-icon1_line-bottom"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <main class="main-wrapper">
-      <div class="section_topbar">
-        <a href="#" class="topbar_logo-link w-nav-brand">
-          <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo"
-            style="height: auto; width: 250px;" />
-        </a>
-        <a href="https://cal.com/ayushsinghal/book-a-demo" target="_blank" class="button is-secondary is-small is-icon w-inline-block">
-          <!-- <div class="icon-embed-xsmall w-embed">
-                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--iconoir" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
-                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
-                                    <path d="M6 6a3 3 0 0 1 3-3h3v6H9a3 3 0 0 1-3-3Zm6-3h3a3 3 0 0 1 0 6h-3V3Z"></path>
-                                    <path d="M12 12a3 3 0 1 1 6 0a3 3 0 0 1-6 0v0Zm-6 6a3 3 0 0 1 3-3h3v3a3 3 0 0 1-6 0Zm0-6a3 3 0 0 1 3-3h3v6H9a3 3 0 0 1-3-3Z"></path>
-                                </g>
-                            </svg>
-                        </div> -->
+        <!-- <a href="https://cal.com/ayushsinghal/book-a-demo" target="_blank" class="button is-secondary is-small is-icon w-inline-block">
+
           <div>Book a Demo</div>
-        </a>
+        </a> -->
       </div>
       <header data-w-id="b9fe15d6-f8c1-87f2-e9aa-9450eac2c926" class="section_header26">
-        <div class="padding-global">
-          <div class="container-large">
+        <div class="">
+          <div class="">
             <div class="padding-bottom padding-xhuge">
               <div class="header26_component">
                 <div class="margin-bottom margin-xxlarge">
                   <div class="text-align-center">
-                    <div data-w-id="b9fe15d6-f8c1-87f2-e9aa-9450eac2c92d" class="max-width-xlarge">
-                      <div class="margin-bottom margin-small flex flex-col items-center">
-                        <img style="width: 25vw; min-width: 350px; max-width: max-content; margin-bottom: 15px;"
-                          class="max-width-small" src="assets/topSVG.png" alt="Achievements">
-                        <h1 class="H1 heading-fade-2lines m-0 text-[5.5rem] font-normal"
-                          style="letter-spacing: -.04em;line-height:1.1">
+                    <div data-w-id="b9fe15d6-f8c1-87f2-e9aa-9450eac2c92d" class="mt-[2rem] pl-[4.7rem] mb-14 md:pr-[28vw] pr-[15vw]">
+                      
+                  <div style="display: none;" class="xl-show flex absolute top-32 xl:-right-6 md:-right-[15vw] -right-[30vw] z-40">
+                    <div class="relative">
+                    <img src="assets/build.svg" class="absolute -left-[21rem] object-cover object-left  md:size-[80%] xl:size-[67%] size-[70%]  -z-10 bottom-5" alt="build">
+                     <img src="assets/blur.svg" class="absolute bottom-0 h-auto" alt="">
+                     <img src="assets/blur.svg" class="absolute bottom-0 -left-[21rem] h-auto" alt="">
+                    <img src="assets/chat.svg" class="object-cover object-top size-[95%] mt-2 md:size-[80%] xl:size-[95%] size-[70%]"  alt="">
+
+                    <style>
+                    @media (min-width: 1280px) {
+                    .xl-show { display: flex !important; }
+                     }
+                    </style>
+
+                    </div>
+                  </div>
+                      <!-- hero title -->
+                      <div class="z-50">
+                      <div class="margin-bottom margin-small flex flex-col z-50 ">
+                        <!-- <img style="width: 25vw; min-width: 350px; max-width: max-content; margin-bottom: 15px;"
+                          class="max-width-small" src="assets/topSVG.png" alt="Achievements"> -->
+                          <!-- <span style="text-align: left;" class="text-sm">Ship products 20x faster with CodeMate AI — accelerating your entire
+                        development lifecycle.</span> -->
+                        <div class="H1 heading-fade-2lines m-0 text-[5.6rem] md:pr-[25vw] font-normal text-left z-50"
+                          style="letter-spacing: -.04em;line-height:1.2">
                           <style>
                             @media screen and (max-width: 479px) {
                               .H1 {
@@ -848,20 +865,25 @@ a,
                               }
                             }
                           </style>
-                          Your <span class="text-highlight-purple">full-stack</span>
+                          Your <span style="color: black;" class=" text-highlight-purple">full-stack</span>
                           AI Coding <span class="text-highlight-orange">Agent</span>
-                        </h1>
+                        </div>
                       </div>
-                      <p class="text-size-large">Ship products 20x faster with CodeMate AI — accelerating your entire
-                        development lifecycle.</p>
 
-                      <div class="margin-top margin-medium">
-                        <div class="button-group is-center">
-                          <div class="demo-container">
+                     </div>
+                     <!-- hero title -->
+                      <div class="pt-10 z-50">
+                        <div class="z-50">
+
+                          <div class="text-left md:text-[1.19rem] mb-2 flex flex-col opacity-90 z-50">
+                          <span class="z-50"><span class="md:text-2xl z-50 ">Codemate.ai</span> — your one-stop destination for AI.</span>
+                                </div>                  
+                          <div class="flex gap-2 z-50">
+                            
                             <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate"
-                              class="button is-icon w-inline-block">
+                              class="bg-black flex justify-center items-center py-3 border-2 hover:opacity-80 border-cyan-500 px-4 is-icon w-inline-block gap-1 rounded-lg md:text-lg text-nowrap z-50">
                               <div class="icon-embed-xsmall w-embed">
-                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="96" height="96"
+                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="115" height="115"
                                   viewBox="0 0 48 48">
                                   <path fill="#29b6f6"
                                     d="M44,11.11v25.78c0,1.27-0.79,2.4-1.98,2.82l-8.82,4.14L34,33V15L33.2,4.15l8.82,4.14 C43.21,8.71,44,9.84,44,11.11z">
@@ -874,11 +896,11 @@ a,
                                   </path>
                                 </svg>
                               </div>
-                              <div>Install our VS Code Extension</div>
+                              <div>Install our <span class="text-cyan-300">VS Code Extension </span></div>
                             </a>
 
-                            <div class="demo-text">
-                              <a href="https://build.codemate.ai" target="_blank"
+                            <div class="z-50">
+                              <!-- <a href="https://build.codemate.ai" target="_blank"
                                 class="cta-button   ">
                                 <div class="icon-embed-xsmall w-embed">
                                   <svg width="28" height="37" viewBox="0 0 28 37" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -894,7 +916,11 @@ a,
                                     <path d="M10.5 26.4818L25.5 11.4818M25.5 11.4818H12M25.5 11.4818V24.9818" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
                                   </svg>
                                 </div>
-                              </a>
+                              </a> -->
+                                    <a href="https://cal.com/ayushsinghal/book-a-demo" target="_blank" class="">
+
+          <div class="bg-white px-4 text-center text-nowrap py-[0.97rem] md:text-lg text-black font-semibold rounded-lg hover:opacity-80">Book a Demo</div>
+        </a>
                             </div>
                           </div>
                         </div>
@@ -973,9 +999,22 @@ a,
                         </style>
                       </div>
                     </div>
+
+                    <div  class="xl-show2 flex justify-center items-center z-40">
+                    <div class="relative w-[80%]">
+                    <img src="assets/mobile.svg" class="object-cover size-[100%] mt-2 ml-3"  alt="">
+
+                    <style>
+                    @media (min-width: 780px) {
+                    .xl-show2 { display: none !important; }
+                     }
+                    </style>
+
+                    </div>
+                  </div>
                   </div>
 
-                  <div style="text-align: center;">
+                  <div style="text-align: center;" class="mt-[10vw] xl:mt-[15vw]">
                     <p class="text-size-large" style="margin-top: 1rem;"><span
                         style="padding:.5rem; border-radius: 10px; margin-right: .5rem; background-color: rgb(230, 70, 69, 15%); color:red;"
                         id="totalLines"></span>lines of code generated so far</p>
@@ -993,13 +1032,15 @@ a,
                                                 <img src="https://i.ibb.co/WckRZLG/image.png" alt="" style="height:auto; width: 1500px;"class="layout239_image">
                                             </div>
                                         </div> -->
+               <div class="w-full flex justify-center ">                         
               <div
-                style="width:100%; max-width:1300px; aspect-ratio:16/9; overflow:hidden; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.1);">
-                <div style="position:relative; width:100%; height:0; padding-bottom:56.25%;">
+                style="width:100%; max-width:1300px; aspect-ratio:16/9; overflow:hidden; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.1);display: flex; justify-content: center; align-items: center;">
+                <div style="position:relative; width:100%; height:0; padding-bottom:56.25%;display: flex; justify-content: center; align-items: center;">
                   <iframe style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;"
                     src="https://www.youtube.com/embed/Tj8KKNL1Ke4?autoplay=1&mute=1&loop=1&rel=0&controls=0&modestbranding=1&showinfo=0&disablekb=1&playlist=Tj8KKNL1Ke4"
                     allow="autoplay; encrypted-media" allowfullscreen></iframe>
                 </div>
+              </div>
               </div>
 
       </header>
@@ -1149,7 +1190,7 @@ a,
                     </div>
                   </div>
                 </div>
-                <div class="w-layout-grid layout239_list">
+                <!-- <div class="w-layout-grid layout239_list">
                   <div class="layout239_item">
                     <div class="margin-bottom margin-medium">
                       <div class="layout239_image-wrapper">
@@ -1163,7 +1204,6 @@ a,
                     <div class="margin-bottom margin-small">
                       <h3 class="heading-style-h4">Buy back your time to become 20x more productive</h3>
                     </div>
-                    <!-- <p>CodeMate's advanced autocorrection technology ensures error-free code, preventing project delays and enabling you to get paid faster</p> -->
                   </div>
                   <div class="layout239_item">
                     <div class="margin-bottom margin-medium">
@@ -1183,7 +1223,7 @@ a,
                       font-weight: 400;
                       letter-spacing: -.02em;">Go from idea to deployment in record time </h4>
                     </div>
-                    <!-- <p>CodeMate fixes your errors in seconds making you spend less time on tedious debugging and more time on innovation and growth for your skills and career.</p> -->
+
                   </div>
                   <div class="layout239_item">
                     <div class="margin-bottom margin-medium">
@@ -1198,12 +1238,24 @@ a,
                     <div class="margin-bottom margin-small">
                       <h3 class="heading-style-h4">Enterprise grade software vibe coded with in-built security measures 
                       </h3>
-                      <!-- </div>
-                                        <p>CodeMate's automated code review and debugging features ensure an efficient workflow, allowing you to be 10x more productive while programming.</p>
-                                    </div> -->
+
                     </div>
                   </div>
-                </div>
+                </div> -->
+              
+                <div class="flex w-full justify-center items-center">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+  <!-- First row - 3 items -->
+  <div class="bg-blue-500 p-44">Item 1</div>
+  <div class="bg-blue-500 p-44">Item 2</div>
+  <div class="bg-blue-500 p-44">Item 3</div>
+  
+  <!-- Second row - 2 items, each spanning 1.5 columns -->
+  <div class="bg-green-500 p-44 col-span-1 col-start-1">Item 4</div>
+  <div class="bg-green-500 p-44 col-span-2">Item 5</div>
+              </div>
+              </div>
+
               </div>
             </div>
       </section>
@@ -1960,8 +2012,8 @@ a,
                       line-height: 1.1;
                       font-weight: 400;
                       letter-spacing: -.04em">
-                        Choose a <span class="text-highlight-orange is-descender">pricing</span>
-                        plan
+                        Choose a <span class="text-highlight-orange is-descender">Pricing</span>
+                        Plan
                       </h2>
                     </div>
                     <!--                     <p class="text-size-medium px-3 text-lg sm:text-xl"> Limited-time massive discounts with additional Flat 30% off on all our plans. Use coupon code "GET30". Grab it as low as $8/mo, Upgrade now!</p>
@@ -1996,10 +2048,10 @@ a,
                 <div class="monthly_annually_pricing flex flex-wrap gap-x-[22px] justify-center items-end gap-y-[5vh]"
                   :class="isAnnual=='one-time' ? 'hidden':'' ">
                   <div
-                    class="pro-plan relative overflow-hidden flex flex-col w-[360px] sm:w-[412px] sm:h-fit rounded-lg bg-[white] bg-opacity-10">
+                    class="pro-plan relative overflow-hidden flex flex-col w-[360px] sm:w-[412px] sm:h-fit rounded-3xl border-2 border-red-500 bg-[white] bg-opacity-10">
                     <div
                       class="title_and_desc flex flex-col p-5 pt-8 gap-y-2 border-b-2 border-[#595959] border-dotted">
-                      <div class="text-orange-400 text-3xl font-medium">Pro Plan</div>
+                      <div class="text-red-500 text-3xl font-medium">Pro Plan</div>
                       <div class="text-base text-[#a2a2a2]">For individual developers and freelancers</div>
                     </div>
                     <div class="price_props_getstarted py-5 px-[32px] flex flex-col gap-y-3">
@@ -2015,7 +2067,7 @@ a,
                             xmlns="http://www.w3.org/2000/svg">
                             <path opacity="0.5"
                               d="M10 18.3333C6.07164 18.3333 4.10746 18.3333 2.88708 17.1129C1.66669 15.8926 1.66669 13.9283 1.66669 9.99999C1.66669 6.07161 1.66669 4.10743 2.88708 2.88705C4.10746 1.66666 6.07164 1.66666 10 1.66666C13.9284 1.66666 15.8926 1.66666 17.1129 2.88705C18.3334 4.10743 18.3334 6.07161 18.3334 9.99999C18.3334 13.9283 18.3334 15.8926 17.1129 17.1129C15.8926 18.3333 13.9284 18.3333 10 18.3333Z"
-                              fill="#FB8500" />
+                              fill="#EF4444" />
                             <path
                               d="M13.3586 7.47471C13.6026 7.71879 13.6026 8.11452 13.3586 8.35857L9.19189 12.5252C8.94781 12.7693 8.55214 12.7693 8.30804 12.5252L6.64137 10.8586C6.39729 10.6145 6.39729 10.2188 6.64137 9.97474C6.88544 9.73065 7.28118 9.73065 7.52525 9.97474L8.74998 11.1994L12.4747 7.47471C12.7188 7.23064 13.1145 7.23064 13.3586 7.47471Z"
                               fill="white" />
@@ -2028,7 +2080,7 @@ a,
                             xmlns="http://www.w3.org/2000/svg">
                             <path opacity="0.5"
                               d="M10 18.3333C6.07164 18.3333 4.10746 18.3333 2.88708 17.1129C1.66669 15.8926 1.66669 13.9283 1.66669 9.99999C1.66669 6.07161 1.66669 4.10743 2.88708 2.88705C4.10746 1.66666 6.07164 1.66666 10 1.66666C13.9284 1.66666 15.8926 1.66666 17.1129 2.88705C18.3334 4.10743 18.3334 6.07161 18.3334 9.99999C18.3334 13.9283 18.3334 15.8926 17.1129 17.1129C15.8926 18.3333 13.9284 18.3333 10 18.3333Z"
-                              fill="#FB8500" />
+                              fill="#EF4444" />
                             <path
                               d="M13.3586 7.47471C13.6026 7.71879 13.6026 8.11452 13.3586 8.35857L9.19189 12.5252C8.94781 12.7693 8.55214 12.7693 8.30804 12.5252L6.64137 10.8586C6.39729 10.6145 6.39729 10.2188 6.64137 9.97474C6.88544 9.73065 7.28118 9.73065 7.52525 9.97474L8.74998 11.1994L12.4747 7.47471C12.7188 7.23064 13.1145 7.23064 13.3586 7.47471Z"
                               fill="white" />
@@ -2041,7 +2093,7 @@ a,
                             xmlns="http://www.w3.org/2000/svg">
                             <path opacity="0.5"
                               d="M10 18.3333C6.07164 18.3333 4.10746 18.3333 2.88708 17.1129C1.66669 15.8926 1.66669 13.9283 1.66669 9.99999C1.66669 6.07161 1.66669 4.10743 2.88708 2.88705C4.10746 1.66666 6.07164 1.66666 10 1.66666C13.9284 1.66666 15.8926 1.66666 17.1129 2.88705C18.3334 4.10743 18.3334 6.07161 18.3334 9.99999C18.3334 13.9283 18.3334 15.8926 17.1129 17.1129C15.8926 18.3333 13.9284 18.3333 10 18.3333Z"
-                              fill="#FB8500" />
+                              fill="#EF4444" />
                             <path
                               d="M13.3586 7.47471C13.6026 7.71879 13.6026 8.11452 13.3586 8.35857L9.19189 12.5252C8.94781 12.7693 8.55214 12.7693 8.30804 12.5252L6.64137 10.8586C6.39729 10.6145 6.39729 10.2188 6.64137 9.97474C6.88544 9.73065 7.28118 9.73065 7.52525 9.97474L8.74998 11.1994L12.4747 7.47471C12.7188 7.23064 13.1145 7.23064 13.3586 7.47471Z"
                               fill="white" />
@@ -2054,7 +2106,7 @@ a,
                             xmlns="http://www.w3.org/2000/svg">
                             <path opacity="0.5"
                               d="M10 18.3333C6.07164 18.3333 4.10746 18.3333 2.88708 17.1129C1.66669 15.8926 1.66669 13.9283 1.66669 9.99999C1.66669 6.07161 1.66669 4.10743 2.88708 2.88705C4.10746 1.66666 6.07164 1.66666 10 1.66666C13.9284 1.66666 15.8926 1.66666 17.1129 2.88705C18.3334 4.10743 18.3334 6.07161 18.3334 9.99999C18.3334 13.9283 18.3334 15.8926 17.1129 17.1129C15.8926 18.3333 13.9284 18.3333 10 18.3333Z"
-                              fill="#FB8500" />
+                              fill="#EF4444" />
                             <path
                               d="M13.3586 7.47471C13.6026 7.71879 13.6026 8.11452 13.3586 8.35857L9.19189 12.5252C8.94781 12.7693 8.55214 12.7693 8.30804 12.5252L6.64137 10.8586C6.39729 10.6145 6.39729 10.2188 6.64137 9.97474C6.88544 9.73065 7.28118 9.73065 7.52525 9.97474L8.74998 11.1994L12.4747 7.47471C12.7188 7.23064 13.1145 7.23064 13.3586 7.47471Z"
                               fill="white" />
@@ -2067,7 +2119,7 @@ a,
                             xmlns="http://www.w3.org/2000/svg">
                             <path opacity="0.5"
                               d="M10 18.3333C6.07164 18.3333 4.10746 18.3333 2.88708 17.1129C1.66669 15.8926 1.66669 13.9283 1.66669 9.99999C1.66669 6.07161 1.66669 4.10743 2.88708 2.88705C4.10746 1.66666 6.07164 1.66666 10 1.66666C13.9284 1.66666 15.8926 1.66666 17.1129 2.88705C18.3334 4.10743 18.3334 6.07161 18.3334 9.99999C18.3334 13.9283 18.3334 15.8926 17.1129 17.1129C15.8926 18.3333 13.9284 18.3333 10 18.3333Z"
-                              fill="#FB8500" />
+                              fill="#EF4444" />
                             <path
                               d="M13.3586 7.47471C13.6026 7.71879 13.6026 8.11452 13.3586 8.35857L9.19189 12.5252C8.94781 12.7693 8.55214 12.7693 8.30804 12.5252L6.64137 10.8586C6.39729 10.6145 6.39729 10.2188 6.64137 9.97474C6.88544 9.73065 7.28118 9.73065 7.52525 9.97474L8.74998 11.1994L12.4747 7.47471C12.7188 7.23064 13.1145 7.23064 13.3586 7.47471Z"
                               fill="white" />
@@ -2092,7 +2144,7 @@ a,
                     <svg class="absolute right-0 bottom-0" width="322" height="312" viewBox="0 0 322 312" fill="none"
                       xmlns="http://www.w3.org/2000/svg">
                       <g filter="url(#filter0_f_15_105)">
-                        <circle cx="321.5" cy="321.5" r="157.5" fill="#FB8500" fill-opacity="0.15" />
+                        <circle cx="321.5" cy="321.5" r="157.5" fill="#EF4444" fill-opacity="0.15" />
                       </g>
                       <defs>
                         <filter id="filter0_f_15_105" x="0" y="0" width="643" height="643" filterUnits="userSpaceOnUse"
@@ -2105,20 +2157,20 @@ a,
                     </svg>
                   </div>
                   <div
-                    class="teams-plan relative overflow-hidden flex flex-col w-[360px] sm:w-[412px] sm:h-fit rounded-lg  bg-[white] bg-opacity-10">
+                    class="teams-plan relative overflow-hidden flex flex-col w-[360px] sm:w-[412px] sm:h-fit rounded-3xl  bg-[white] bg-opacity-10">
                     <div class="top flex bg-black bg-opacity-[.45]">
                       <div
-                        class="most_recommended w-fit text-white text-xl rounded-t-lg p-3 bg-gradient-to-r from-cyan-600 to-sky-400">
+                        class="most_recommended w-fit  text-white text-xl rounded-t-3xl p-3 bg-gradient-to-r from-cyan-600 to-sky-400">
                         Most Recommended</div>
                     </div>
                     <div
-                      class="title_and_desc flex flex-col p-5 pt-8 gap-y-2 rounded-tr-lg !border-b-[#595959] border-b-[1px] border-t-[#48aef3] border-l-[#48aef3] border-r-[#48aef3] border-2"
+                      class="title_and_desc flex flex-col p-5 pt-8 gap-y-2 rounded-tr-3xl !border-b-[#595959] border-b-[1px] border-t-[#48aef3] border-l-[#48aef3] border-r-[#48aef3] border-2"
                       style="border-bottom:dotted">
                       <div class="text-[#48aef3] text-3xl font-medium">Teams Plan</div>
                       <div class="text-base text-[#a2a2a2]">For smaller development teams and startups</div>
                     </div>
                     <div
-                      class="price_props_getstarted py-5 px-[32px] flex flex-col gap-y-3 rounded-b-lg border-b-[#48aef3] border-l-[#48aef3] border-r-[#48aef3] border-2 border-t-0">
+                      class="price_props_getstarted py-5 px-[32px] flex flex-col gap-y-3 rounded-b-3xl border-b-[#48aef3] border-l-[#48aef3] border-r-[#48aef3] border-2 border-t-0">
                       <div class="price flex items-baseline gap-x-1">
                         <span class="text-5xl font-semibold" x-text="isAnnual=='annual' ? '$31' : '$37'"></span>
                         <span class="font-medium text-2xl">/month</span>
@@ -2222,7 +2274,7 @@ a,
 
                   </div>
                   <div
-                    class="enterprise_plan relative overflow-hidden flex flex-col w-[360px] sm:w-[412px] sm:h-fit rounded-lg  bg-[white] bg-opacity-10">
+                    class="enterprise_plan relative overflow-hidden flex flex-col w-[360px] sm:w-[412px] sm:h-fit rounded-3xl border-2 border-[#fcbf49]  bg-[white] bg-opacity-10">
                     <div
                       class="title_and_desc flex flex-col px-5 py-6 pt-8 gap-y-2 border-b-2 border-[#595959] border-dotted">
                       <div class="text-[#fcbf49] text-3xl font-medium">Organisation</div>
