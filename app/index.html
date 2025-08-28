@@ -1246,13 +1246,58 @@ a,
                 <div class="flex w-full justify-center items-center">
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
   <!-- First row - 3 items -->
-  <div class="bg-blue-500 p-44">Item 1</div>
-  <div class="bg-blue-500 p-44">Item 2</div>
-  <div class="bg-blue-500 p-44">Item 3</div>
+  <div class="relative bg-green-600 p-52 rounded-3xl overflow-hidden">
+      <div class="absolute top-3 left-5">  
+  <span class="text-3xl font-semibold">CodeMate Plugin</span>
+  <p class="w-[20rem]">Full-stack AI pair programmer, helps with building, debugging, reviewing, and optimizing code.</p>
+  </div>
+      <img src="assets/build.svg" alt="" class="absolute -bottom-16 -right-10">
+  </div>
+  <div class="relative bg-red-600 p-52 rounded-3xl overflow-hidden">      
+  <div class="absolute top-3 left-5">  
+  <span class="text-3xl font-semibold">CodeMate Plugin</span>
+  <p class="w-[20rem]">Full-stack AI pair programmer, helps with building, debugging, reviewing, and optimizing code.</p>
+  </div>
+      <img src="assets/build.svg" alt="" class="absolute -bottom-16 -right-10"></div>
+  <div class="relative bg-purple-700 rounded-3xl p-52 overflow-hidden">      
+  <div class="absolute top-3 left-5">  
+  <span class="text-3xl font-semibold">CodeMate Plugin</span>
+  <p class="w-[20rem]">Full-stack AI pair programmer, helps with building, debugging, reviewing, and optimizing code.</p>
+  </div>
+      <img src="assets/build.svg" alt="" class="absolute -bottom-16 -right-10"></div>
   
   <!-- Second row - 2 items, each spanning 1.5 columns -->
-  <div class="bg-green-500 p-44 col-span-1 col-start-1">Item 4</div>
-  <div class="bg-green-500 p-44 col-span-2">Item 5</div>
+  <div class="relative bg-blue-600 rounded-3xl p-52 col-span-1 col-start-1 overflow-hidden">      
+  <div class="absolute top-3 left-5">  
+  <span class="text-3xl font-semibold">CodeMate Plugin</span>
+  <p class="w-[20rem]">Full-stack AI pair programmer, helps with building, debugging, reviewing, and optimizing code.</p>
+  </div>
+      <img src="assets/build.svg" alt="" class="absolute -bottom-16 -right-10"></div>
+  <div class="box relative rounded-3xl bg-gradient-to-r from-[#232526] to-[#414345] p-44 overflow-hidden">
+  <div class="absolute top-5 left-5">  
+  <span class="text-3xl font-semibold">CodeMate Plugin</span>
+  <p class="w-[20rem]">Full-stack AI pair programmer, helps with building, debugging, reviewing, and optimizing code.</p>
+  </div>
+    <img src="assets/pulgin.svg" alt="" class="absolute size-[110%] xl:size-[150%] top-36 xl:top-10 -right-10 xl:-right-[11rem]">
+  </div>
+  <style>
+  .container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+    gap: 1rem;
+  }
+
+  .box {
+    grid-column: span 1; /* default = span 1 col */
+
+  }
+
+  @media (min-width: 1280px) { /* xl breakpoint */
+    .box {
+      grid-column: span 2;
+    }
+  }
+</style>
               </div>
               </div>
 
