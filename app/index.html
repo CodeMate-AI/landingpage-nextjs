@@ -612,48 +612,27 @@ a,
       <img src="https://assets.website-files.com/63f5d36e1bfb159570f6408c/6403d854fecdefd2fb045a8c_figma-cursor.svg"
         loading="lazy" alt="" class="cursor" />
     </div>
-    <div style="margin-top: 2.1rem;" id="NavbarResponsiveParent" data-collapse="small" data-animation="default"
-      data-duration="400" data-easing="ease" data-easing2="ease-in-out" role="banner" class="navbar_component w-nav">
+    <div id="NavbarResponsiveParent" data-collapse="small" data-animation="default"
+      data-duration="400" data-easing="ease" data-easing2="ease-in-out" role="banner" class="navbar_component w-nav right-0 pr-12">
       <div id="NavbarResponsive" class="z-[5000000] navbar_menu-button  flex flex-row justify-between items-center w-full rounded-xl top-navbar_link bg-[#161616] px-2 pr-4 w-inline-block
       "
-        style="border: 1px solid #ffffff26; background-color: #161616cc;backdrop-filter: blur(16px); z-index: 5000000;">
-        <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo show-tablet" />
-
-        <div class="navbar_menu-button w-nav-button !block lg:!hidden">
-          <div class="menu-icon1">
-            <div class="menu-icon1_line-top"></div>
-            <div class="menu-icon1_line-middle">
-              <div class="menu-icon_line-middle-inner"></div>
-            </div>
-            <div class="menu-icon1_line-bottom"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <main class="main-wrapper">
-      <div 
-      style="background-color:#161616;"
-      class="section_topbar fixed top-0 z-50">
-        <a href="#" class="topbar_logo-link w-nav-brand">
-          <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo"
-            style="height: auto; width: 200px;" />
-        </a>
-                <nav role="navigation" class=" flex ">
-
-                        <button
-              class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0  !mb-0 pb-3 sm:!pb-[0.375rem] sm:rounded-none sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0 "
-              id="products">Products</button>      
+        style=" background-color: #161616cc;backdrop-filter: blur(16px); z-index: 5000000;">
+        <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo show-tablet pl-12" />
+        <nav role="navigation" class="w-nav-menu">
+          <div style="border-color: transparent;" class="button is-secondary is-small is-icon w-inline-block -link-wrapper">
             <a href="#features"
               class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Features</a>
             <a href="#pricing"
               class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Pricing</a>
             <a href="#contactus" target="_blank"
               class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0 rounded-none  !mb-0 pb-3 sm:!pb-[0.375rem] sm:!rounded-lg sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0">Contact</a>
-
+            <button
+              class="top-navbar_link w-nav-link justify-start border-b-zinc-600 border-b-[1px] sm:border-b-0  !mb-0 pb-3 sm:!pb-[0.375rem] sm:rounded-none sm:mb-0 text-base sm:text-lg text-white font-semibold w-full sm:w-auto pl-1 sm:pl-0 "
+              id="products">Products</button>
             <!--mobile products dropdown not for desktop  , trigger remains same-->
-            <div id="productDropdown" class="!hidden dropdown-exit -mt-3 pl-4 flex-col jusitfy-left w-full z-50">
+            <div id="productDropdown" class="!hidden dropdown-exit -mt-3 pl-4  flex-col jusitfy-left w-full">
               <a href="https://cli.codemate.ai" class="block hover:bg-[#ffffff1a]
-            rounded-sm w-full px-2 py-2 text-sm text-left mr-auto ">
+            rounded-sm w-full px-2 py-2 text-sm text-left mr-auto">
                 <span class="mr-2" role="img" aria-hidden="true">
                   🖥️
                 </span>
@@ -715,7 +694,7 @@ a,
             </a> -->
             <!-- Products Dropdown for desktop not for mobile-->
             <div id="products-dropdown"
-              class="hidden top-20 absolute w-full max-w-xl z-[-40000] opacity-0 sm:!opacity-100 sm:z-50 bg-zinc-900  border border-zinc-700 rounded-xl shadow-xl overflow-hidden ">
+              class="hidden top-16 absolute w-full max-w-2xl z-[-40000] opacity-0 sm:!opacity-100 sm:z-50 bg-zinc-900  border border-zinc-700 rounded-xl shadow-xl overflow-hidden">
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4">
                 <!-- Product 1 -->
                 <a target="_blank" href="https://cli.codemate.ai"
@@ -806,8 +785,28 @@ a,
 
               </div>
             </div>
-          
+          </div>
         </nav>
+        <div class="navbar_menu-button w-nav-button !block lg:!hidden">
+          <div class="menu-icon1">
+            <div class="menu-icon1_line-top"></div>
+            <div class="menu-icon1_line-middle">
+              <div class="menu-icon_line-middle-inner"></div>
+            </div>
+            <div class="menu-icon1_line-bottom"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <main class="main-wrapper">
+      <div 
+      style="background-color:#161616;"
+      class="section_topbar fixed top-0 z-50">
+        <a href="#" class="topbar_logo-link w-nav-brand">
+          <img src="https://drive.codemate.ai/cmdark.png" loading="lazy" alt="" class="navbar_logo"
+            style="height: auto; width: 200px;" />
+        </a>
+
         <!-- <a href="https://cal.com/ayushsinghal/book-a-demo" target="_blank" class="button is-secondary is-small is-icon w-inline-block">
 
           <div>Book a Demo</div>
@@ -1261,7 +1260,7 @@ a,
                 <div class="flex w-full justify-center items-center">
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
   <!-- First row - 3 items -->
-  <div class="relative bg-green-600 px-44 sm:px-52 md:px-[20rem] py-52 rounded-3xl overflow-hidden">
+  <div class="relative bg-green-600  sm:px-52 md:px-[20rem] py-52 rounded-3xl overflow-hidden">
       <div class="absolute top-5 left-5">  
   <span class="text-2xl md:text-3xl font-semibold">CodeMate Pulgin</span>
   <p class="w-[20rem]">Full-stack AI pair programmer, helps with building, debugging, reviewing, and optimizing code.</p>
