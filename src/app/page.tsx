@@ -902,7 +902,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
 
      <div className='pb-3'><motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
   animate={{ opacity: 1, filter: "blur(0px)" }}
-  transition={{ duration: 0.1,delay:0.9 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>Developer's</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+  transition={{ duration: 0.1,delay:0.9 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>Coding</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
   animate={{ opacity: 1, filter: "blur(0px)" }}
   transition={{ duration: 0.1,delay:1 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>Agent</motion.span></div>
      
@@ -1787,16 +1787,16 @@ For Enterprises
         WebkitBackdropFilter: 'blur(20px)',
         zIndex:99999,
         }}
-  className='relative  h-[65vh]  lg:h-[35rem] lg:w-[70%] rounded-[4rem] px-8 border-y-[1px]  border-white border-opacity-50'>
+  className='relative    lg:h-[35rem] lg:w-[70%] rounded-[4rem] px-8 border-y-[1px]  border-white border-opacity-50'>
       <h1 className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-left text-9xl font-semibold mt-5">
 “
 </h1>
-<div className='text-[1.45rem] lg:text-[2.75rem] leading-[1] font-semibold'>
+<div className='text-[6vw] lg:text-[2.75rem] leading-[1] font-semibold'>
 Through the insights Codemate provides, teams are inspired to achieve what truly matters <span className='opacity-60'>— building impactful solutions, shaping future growth, and delivering measurable value.</span>
 </div>
 
 
-<div className='absolute bottom-10'>
+<div className='mt-10 mb-10 lg:mt-[7vw]'>
   <h1 className='font-semibold'>Ayush Singhal</h1>
   <p className='opacity-50'>Founder of Codemate</p>
 </div>
@@ -1882,7 +1882,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 <div className={`${montserrat.className} lg:pb-32 pb-20  w-full bg-zinc-950 text-white z-50`}>
  <div className='pt-[5rem] lg:pt-[15rem]'>
  <h1 className='text-center text-[10vw] lg:text-7xl font-bold text-white  opacity-45'>Trusted By</h1>
- <p className='text-center mt-2  lg:text-xl opacity-30'>The Developers from the well known orgs around the globe</p>
+ <p className='text-center mt-2  lg:text-xl opacity-30'>Developers from startups to Fortune 500 companies</p>
      
      
      <div className='flex flex-col justify-center items-center w-full'>
@@ -1978,10 +1978,10 @@ className='relative h-full w-full flex  items-center justify-center    py-3 over
 
      <motion.div 
      style={{y:tdiv1X}}
-     className='absolute h-[38vh] w-[90vw]  lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
+     className='absolute    lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
       <motion.div 
       animate={{rotate:10}}
-      className='h-[70%] w-[99%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
+      className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
        <div className='flex w-full gap-4 items-center'>
        <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/ayushbansal.jpeg" alt="" className='size-20 rounded-full' /></div>
       <div className='flex flex-col'>
@@ -1998,10 +1998,10 @@ className='relative h-full w-full flex  items-center justify-center    py-3 over
      </motion.div>
      <motion.div
      style={{y:tdiv2X}} 
-     className='absolute  h-[38vh] w-[90vw]  lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
+     className='absolute     lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
             <motion.div 
       animate={{rotate:5}}
-      className='h-[70%] w-[99%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+      className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
        <div className='flex w-full gap-4 items-center'>
        <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/hani.webp" alt="" className='size-20 rounded-full' /></div>
       <div className='flex flex-col'>
@@ -2016,10 +2016,10 @@ className='relative h-full w-full flex  items-center justify-center    py-3 over
        </div>
       </motion.div>
      </motion.div>
-     <motion.div style={{y:tdiv3X}} className='absolute h-[38vh] w-[90vw]  lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+     <motion.div style={{y:tdiv3X}} className='absolute lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
       <motion.div 
       animate={{rotate:0}}
-      className='h-[70%] w-[99%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+      className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
        <div className='flex w-full gap-4 items-center'>
        <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/vilkho_appsumo.webp" alt="" className='size-20 rounded-full' /></div>
       <div className='flex flex-col w-[50%]'>
@@ -2034,10 +2034,10 @@ className='relative h-full w-full flex  items-center justify-center    py-3 over
        </div>
       </motion.div>
       </motion.div>  
-     <motion.div style={{y:tdiv4X}} className='absolute  h-[38vh] w-[90vw]  lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+     <motion.div style={{y:tdiv4X}} className='absolute   lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
             <motion.div 
       animate={{rotate:-5}}
-      className='h-[70%] w-[99%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+      className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
        <div className='flex w-full gap-4 items-center'>
        <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=kitty.liu" alt="" className='size-20 rounded-full' /></div>
       <div className='flex flex-col'>
@@ -2052,10 +2052,10 @@ className='relative h-full w-full flex  items-center justify-center    py-3 over
        </div>
       </motion.div>
      </motion.div>
-     <motion.div style={{y:tdiv5X}} className='absolute  h-[38vh] w-[90vw]  lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+     <motion.div style={{y:tdiv5X}} className='absolute    lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                   <motion.div 
       animate={{rotate:-10}}
-      className='h-[70%] w-[99%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+      className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
        <div className='flex w-full gap-4 items-center'>
        <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=david.kim" alt="" className='size-20 rounded-full' /></div>
       <div className='flex flex-col'>
