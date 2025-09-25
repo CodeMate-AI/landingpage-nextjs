@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: "CodeMate AI | Your Professional And Secured AI Pair Programmer",
   description: "This is my Next.js app",
   icons: {
-    icon: "/Union.svg", // path relative to public/
+    icon: "/logoC.svg", // path relative to public/
   },
 };
 

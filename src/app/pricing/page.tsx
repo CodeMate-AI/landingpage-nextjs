@@ -76,7 +76,8 @@ className='hidden lg:flex  fixed  top-0 justify-center items-center w-full'>
     <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
     <div className='flex   justify-between items-center w-full h-10'>
     <div className="h-full w-[13rem] flex justify-center overflow-hidden">
-      {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
+      <img onClick={()=>router.push('/')} src="/codemateLogo.svg" alt="" className="cursor-pointer"/>
+      {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
      {IsMascot && <motion.div initial={{opacity:0,filter:'blur(20px)',x:50}} animate={{opacity:1,filter:'blur(0px)',x:-80}} transition={{duration:0.5}}>
 <svg width="50" height="40" viewBox="0 0 153 150" fill="none" xmlns="http://www.w3.org/2000/svg">
 
@@ -106,7 +107,7 @@ className='hidden lg:flex  fixed  top-0 justify-center items-center w-full'>
 </svg>
 
 
-      </motion.div>}
+      </motion.div>} */}
     
     </div>
     <div className={`flex gap-5 text-md  justify-center items-center cursor-pointer text-right `}>

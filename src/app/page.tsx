@@ -572,7 +572,8 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
     <div className='flex gap-[51vw]  justify-between items-center w-full h-10'>
       
     <div className="h-full w-[13vw] flex justify-center overflow-hidden">
-      {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
+      <img onClick={()=>router.push("/")} src="/codemateLogo.svg" alt=""  className='cursor-pointer'/>
+      {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
      {IsMascot && <motion.div initial={{opacity:0,filter:'blur(20px)',x:50}} animate={{opacity:1,filter:'blur(0px)',x:-80}} transition={{duration:0.5}}>
 <svg width="50" height="40" viewBox="0 0 153 150" fill="none" xmlns="http://www.w3.org/2000/svg">
 
@@ -602,7 +603,7 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
 </svg>
 
 
-      </motion.div>}
+      </motion.div>} */}
     
     </div>
     <div className={`${montserrat.className} relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50`}>
@@ -1134,7 +1135,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     
 
      <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-     <img src="pulgin.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
+     <img src="cora.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
      </div>
     </div>
     <h1 className='mt-1 text-lg font-semibold'>CORA- AI Agent inside your IDE</h1>
@@ -1150,7 +1151,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     
 
      <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-     <img src="eduD.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
+     <img src="edu.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
      </div>
     </div>
     <h1 className='mt-1 text-lg font-semibold'>Introducing Education</h1>
@@ -1868,8 +1869,8 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
   <h1>to invest in Codemate tools</h1> */}
         <a href="https://calendar.app.google/Gyyh913R8hyczmBFA" target="_blank" >
       <motion.button
-      whileHover={{opacity:1}} 
-      className='px-4 py-2  bg-[#FFFFFF] text-black  rounded-full   opacity-80 mt-2 font-semibold'>Book a Call</motion.button>
+      whileHover={{opacity:0.7}} 
+      className='px-4 py-2  bg-[#FFFFFF] text-black  rounded-full    mt-2 font-semibold'>Book a Call</motion.button>
       </a>
 </div>
 
