@@ -1151,7 +1151,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     
 
      <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-     <img src="edu.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
+     <img src="edu1.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
      </div>
     </div>
     <h1 className='mt-1 text-lg font-semibold'>Introducing Education</h1>
