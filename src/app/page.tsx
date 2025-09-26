@@ -2082,7 +2082,7 @@ className='relative h-full w-full flex  items-center justify-center    py-3 over
       </div>
        </div>
 
-       <div className='leading-[1.1] text-[4vw] lg:text-2xl'><span className='text-[#00BFFF]'>Codemate</span> is doing a great job with its simplicity. I can't wait to see more features they are going to release soon.</div>
+       <div className='leading-[1.1] text-[4vw] lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate</span> is doing a great job with its simplicity. I can't wait to see more features they are going to release soon.</div>
 
        <div className='w-full flex justify-between'>
        </div>
