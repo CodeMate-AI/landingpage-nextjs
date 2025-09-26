@@ -1168,6 +1168,19 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <h1 className='mt-1 text-lg font-semibold'>CodeMate Education</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Smart, AI-powered classroom management made easy.</p>
     </div>
+        <div>
+    <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+     
+     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600'/>
+    
+
+     <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
+     <img src="pulgin.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
+     </div>
+    </div>
+    <h1 className='mt-1 text-lg font-semibold'>CodeMate Assistant</h1>
+    <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Assistant is your AI-powered coding partner, built as an IDE plugin to help you manage code, debug errors, and accelerate development.</p>
+    </div> 
     <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
      
@@ -1181,19 +1194,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <h1 className='mt-1 text-lg font-semibold'>CodeMate Chat</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Chat turns your prompts into working code, helping you build faster.</p>
     </div>
-    <div>
-    <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-     
-     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600'/>
-    
 
-     <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-     <img src="pulgin.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
-     </div>
-    </div>
-    <h1 className='mt-1 text-lg font-semibold'>CodeMate Assistant</h1>
-    <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Assistant is your AI-powered coding partner, built as an IDE plugin to help you manage code, debug errors, and accelerate development.</p>
-    </div> 
   </div>
 {/* features of products */} 
  </div>
