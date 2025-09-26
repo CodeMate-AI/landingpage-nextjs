@@ -35,7 +35,7 @@ function Footer() {
         <div className="flex-2 flex flex-col sm:flex-row gap-6 md:gap-12">
           <div className="mb-6 sm:mb-0">
             <h4 className="font-semibold mb-3 text-white text-sm md:text-base">COMMUNITY</h4>
-            <ul className="space-y-2 text-xs md:text-sm">
+            <ul className="space-y-2 text-xs md:text-xs">
               <li><a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" className="hover:underline">Instagram</a></li>
               <li><a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" className="hover:underline">Linkedin</a></li>
               <li><a href="https://twitter.com/codemateai" target="_blank" rel="noopener noreferrer" className="hover:underline">Twitter</a></li>
@@ -44,7 +44,7 @@ function Footer() {
           </div>
           <div className="mb-6 sm:mb-0">
             <h4 className="font-semibold mb-3 text-white text-sm md:text-base">OTHERS</h4>
-            <ul className="space-y-2 text-xs md:text-sm">
+            <ul className="space-y-2 text-xs md:text-xs">
               <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="hover:underline">Hugging Face</a></li>
               <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Refund Policy</a></li>
             </ul>
@@ -54,7 +54,7 @@ function Footer() {
         {/* Right: Legal */}
         <div className="flex-2 min-w-[180px] mb-6 md:mb-0">
           <h4 className="font-semibold mb-3 text-white text-sm md:text-base">LEGAL</h4>
-          <ul className="space-y-2 text-xs md:text-sm">
+          <ul className="space-y-2 text-xs md:text-xs">
             <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Privacy Policy</a></li>
             <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="hover:underline">Terms of Service</a></li>
           </ul>
