@@ -1896,7 +1896,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
  <div className='pt-[5rem] lg:pt-[15rem]'>
  <div className="px-8 lg:px-16 ">
  <h1 className=' text-2xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Trusted</span> by more than</h1>
- <p className=' mt-2  lg:text-4xl opacity-60'><span className=''>100,000 Developers</span> from startups to Fortune 500 companies</p>
+ <p className=' mt-2  lg:text-2xl opacity-60'><span className=''>100,000 Developers around the globe and </span> from startups to Fortune 500 companies</p>
  </div>
 
 
