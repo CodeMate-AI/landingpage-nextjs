@@ -87,7 +87,16 @@ html {
 
 @theme inline {
   --animate-aurora: aurora 8s ease-in-out infinite alternate;
- 
+  --animate-marquee: marquee var(--duration) infinite linear;
+  
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(calc(-100% - var(--gap)));
+    }
+  }
   @keyframes aurora {
     0% {
       background-position: 0% 50%;
@@ -111,6 +120,8 @@ html {
     }
   }
 }
+
+
 
 ::-webkit-scrollbar {
   width: 4px;

@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord } from "react-icons/fa6";
+import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord,FaYoutube } from "react-icons/fa6";
 import { motion } from 'framer-motion';
 
 function Footer() {
@@ -21,6 +21,12 @@ function Footer() {
             </a>
             <a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
               <FaLinkedin size={32} className="md:w-10 md:h-10" />
+            </a>
+              <a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
+              <FaInstagram size={32} className="md:w-10 md:h-10" />
+            </a>
+            <a href="https://www.youtube.com/@codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
+              <FaYoutube size={32} className="md:w-10 md:h-10" />
             </a>
           </div>
         </div>

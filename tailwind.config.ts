@@ -13,6 +13,7 @@ export default {
         'preserve-3d': 'preserve-3d',
       },
 	   animation: {
+		marquee: 'marquee var(--duration) infinite linear', 
 		shine: 'shine var(--duration) infinite linear',
         first: "moveVertical 30s ease infinite",
         second: "moveInCircle 20s reverse infinite",
@@ -71,6 +72,10 @@ export default {
   			sm: 'calc(var(--radius) - 4px)'
   		},
  keyframes: {
+	    marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(calc(-100% - var(--gap)))' },
+        },
 	    shine: {
           '0%': { backgroundPosition: '0% 0%' },
           '50%': { backgroundPosition: '100% 100%' },

@@ -22,6 +22,8 @@ import Footer from '@/components/footer';
 
 import VideoEmbed from '@/components/video';
 import ReviewCodeEditor from '@/components/motion-components/rEditor';
+import Counter from '@/components/ui/counter';
+import { Marquee } from '@/components/ui/marquee';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -160,10 +162,13 @@ const AutoCompleteComponent = [
   const heroRef2 = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
   const MFRef = useRef<HTMLDivElement>(null);
-  const [d,setD] = useState(false); 
-  const [r,setR] = useState(false);
-  const [a,setA] = useState(false);
+  // const [d,setD] = useState(false); 
+  // const [r,setR] = useState(false);
+  // const [a,setA] = useState(false);
   const [lastScroll,setLastScroll] = useState(0);
+  const [mat1,setMat1] = useState(0);
+  const [mat2,setMat2] = useState(0);
+  const [mat3,setMat3] = useState(0);
   const [IsMascot,setIsMascot] = useState(false);
   const [isNBack,setIsNBack] = useState(false);
   const [isMenu,setMenu] = useState(false);
@@ -816,9 +821,15 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
        <div className='absolute bottom-0 pl-5 pb-8'>
         <h1 className='text-[5vw]  opacity-65 mb-3'>Socials</h1>
          <div className='flex text-[5vw] gap-4 opacity-90 group'>
+          <a href="https://www.instagram.com/codemateai" target='_blank'>
           <h1 className='group-hover:opacity-20 hover:!opacity-100 hover:text-[#00BFFF]'>Insta</h1>
+          </a>
+          <a href='https://twitter.com/codemateai' target='_blank'>
           <h1 className='group-hover:opacity-20 hover:!opacity-100 hover:text-[#00BFFF]'>Twitter</h1>
+          </a>
+          <a href='https://www.linkedin.com/company/codemateai/' target='_blank'>
           <h1 className='group-hover:opacity-20 hover:!opacity-100 hover:text-[#00BFFF]'>Linkedin</h1>
+          </a>
          </div> 
        </div>
 
@@ -921,12 +932,12 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
           animate={{ opacity: 1, filter: "blur(0px)",y:0 }}
           transition={{ duration: 1,delay:0.5}} className={`${montserrat.className} flex gap-5 text-sm mt-10`}>
       <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target='_blank'>      
-      <motion.button whileHover={{opacity:1,scale:1.05}} className='px-4 py-3  bg-black text-white  rounded-sm bg-opacity-90 text-opacity-60'>Download CORA</motion.button>
+      <motion.button whileHover={{opacity:0.7}} className='px-4 py-3  bg-black text-white  rounded-sm  text-opacity-80'>Download CORA</motion.button>
       </a>
       <a href="https://app.codemate.ai" target="_blank" >
       <motion.button
-      whileHover={{opacity:1,scale:1.05}} 
-      className='px-4 py-3  bg-[#FFFFFF] text-black  rounded-sm   opacity-80 font-semibold'>Try Build 2.0</motion.button>
+      whileHover={{opacity:0.7,}} 
+      className='px-4 py-3  bg-[#FFFFFF] text-black  rounded-sm    font-semibold'>Try Build 2.0</motion.button>
       </a>
       </motion.div>
      </motion.div>
@@ -1154,11 +1165,11 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
      <img src="edu1.svg" className='object-fit size-[90%] shadow-2xl'  alt="" />
      </div>
     </div>
-    <h1 className='mt-1 text-lg font-semibold'>Introducing Education</h1>
+    <h1 className='mt-1 text-lg font-semibold'>CodeMate Education</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Smart, AI-powered classroom management made easy.</p>
     </div>
 
-    <div>
+    {/* <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
      
      <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600'/>
@@ -1170,7 +1181,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     </div>
     <h1 className='mt-1 text-lg font-semibold'>Introducing Education</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Codemate Education is your AI-powered classroom for managing courses, assignments, and learning.</p>
-    </div>
+    </div> */}
 
     <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
@@ -1265,10 +1276,11 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
    
    className='relative h-[200vw] w-full bg-zinc-950'>
    
- <div className={`${montserrat.className} sticky top-0 z-20  text-[2.7rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-20 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
-  <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2'>
+ <div className={`${montserrat.className} sticky top-5 z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-20 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
+  <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-5'>
    <span className='z-50'> 
-   What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> with CodeMate AI.</span>
+   What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> </span>
+    <h1>with  CodeMate AI.</h1>
    <div className='top-0 absolute w-full h-full bg-zinc-950 -z-10'/>
   </div>
  </div>
@@ -1372,8 +1384,8 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
  <div className={`${montserrat.className} sticky top-7  text-3xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pr-16 mb-6 pt-20 text-right pl-[50vw]  pb-1 z-40`}>
  <div className='bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent relative h-full w-full pb-2'>
   <span className='z-40'>
-  Seamlessly <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent pb-1'>Integrated </span> in your
-  <h1>existing environment.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</h1>
+  Seamlessly <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent pb-1'>Integrated &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> 
+  <h1>in your existing environment.&nbsp;&nbsp;</h1>
   </span>
   
   <div className='h-full w-full absolute  z-50'/>
@@ -1882,11 +1894,51 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 {/* trusted by section */}
 <div className={`${montserrat.className} lg:pb-32 pb-20  w-full bg-zinc-950 text-white z-50`}>
  <div className='pt-[5rem] lg:pt-[15rem]'>
- <h1 className='text-center text-[10vw] lg:text-7xl font-bold text-white  opacity-45'>Trusted By</h1>
- <p className='text-center mt-2  lg:text-xl opacity-30'>Developers from startups to Fortune 500 companies</p>
-     
-     
-     <div className='flex flex-col justify-center items-center w-full'>
+ <div className="px-8 lg:px-16 ">
+ <h1 className=' text-2xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>Trusted by more than</h1>
+ <p className=' mt-2  lg:text-4xl opacity-60'><span className='text-[#00BFFF]'>1,000 Developers</span> from startups to Fortune 500 companies</p>
+ </div>
+
+ <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 py-10'>
+  <div className=' w-[50vw] lg:size-[13rem]'>
+      <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter   
+       className='text-8xl'
+       direction="up"
+       targetValue={55}/>%</h1>   
+      <p className='text-xl opacity-70 mt-3 text-center'>Faster coding</p>
+    </div>
+  <div className=' w-[50vw] lg:size-[13rem]'>
+
+       <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter   
+       className='text-8xl'
+       direction="up"
+       targetValue={39}/>%</h1>      
+      <p className='text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
+    </div>
+  <div className=' w-[50vw] lg:size-[13rem]'>
+
+       <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter   
+       className='text-8xl'
+       direction="up"
+       targetValue={68}/>%</h1>      
+      <p className='text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
+    </div>
+ </div>
+
+      <div className='bg-gradient-to-t from-[#00BFFF]/80 from-5% to-transparent to-95% bg-opacity-10 h-[32vw] lg:h-[19rem] flex justify-center items-center'>
+      
+     <Marquee reverse pauseOnHover className="[--duration:20s] flex justify-center items-center">
+       <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Dell_Logo.svg/256px-Dell_Logo.svg.png?20160807135325'  className='object-fit mt-[13vw] size-[22vw] lg:size-[12vw] brightness-0 invert opacity-70 lg:mt-20'/>
+       <img src='qul.svg'  className='object-fit w-[70vw] lg:w-[28vw] mb-[2vw] brightness-0 invert opacity-70 lg:mt-9'/>
+       <img src='paytm.svg'  className='object-fit w-[40vw] lg:w-[18vw] brightness-0 invert opacity-70'/>
+       <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw] brightness-0 invert opacity-70 mt-5 lg:mt-10'/>
+       <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw] brightness-0 invert opacity-70'/>
+       <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] brightness-0 invert opacity-70'/>
+        <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw] brightness-0 invert opacity-70'/>
+     </Marquee>
+      </div>
+
+     {/* <div className='flex flex-col justify-center items-center w-full'>
       <div className='flex lg:gap-10 justify-center items-center mt-4'>
        <img src='paytm.svg' className='object-fit w-[30vw] lg:w-[25vw]'/>
        <img src='amazon.svg' className='object-fit w-[30vw] lg:w-[25vw]'/>
@@ -1896,28 +1948,12 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
         <img src='inno.svg' className='object-fit w-[35vw] lg:w-[25vw]]'/>
         <img src='atl.svg' className='object-fit w-[35vw] lg:w-[25vw]'/>
       </div>
-     </div>
+     </div> */}
 
  </div>
 
 
- <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16'>
-  <div className=' w-[50vw] lg:size-[13rem]'>
 
-      <h1 className="text-8xl text-center w-full font-semibold opacity-70">55%</h1>   
-      <p className='text-xl opacity-70 mt-3 text-center'>Faster coding</p>
-    </div>
-  <div className=' w-[50vw] lg:size-[13rem]'>
-
-      <h1 className="text-8xl text-center w-full font-semibold opacity-70">39%</h1>   
-      <p className='text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
-    </div>
-  <div className=' w-[50vw] lg:size-[13rem]'>
-
-         <h1 className="text-8xl text-center w-full font-semibold opacity-70">68%</h1>   
-      <p className='text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
-    </div>
- </div>
 </div> 
 {/* trusted by section */}
 
