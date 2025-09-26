@@ -1927,7 +1927,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
       <div className='bg-gradient-to-t from-[#00BFFF]/80 from-5% to-transparent to-95% bg-opacity-10 h-[32vw] lg:h-[19rem] flex justify-center items-center'>
       
-     <Marquee reverse pauseOnHover className="[--duration:20s] flex justify-center items-center">
+     <Marquee  pauseOnHover className="[--duration:20s] flex justify-center items-center">
        <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Dell_Logo.svg/256px-Dell_Logo.svg.png?20160807135325'  className='object-fit mt-[13vw] size-[22vw] lg:size-[12vw] brightness-0 invert opacity-70 lg:mt-20'/>
        <img src='qul.svg'  className='object-fit w-[70vw] lg:w-[28vw] mb-[2vw] brightness-0 invert opacity-70 lg:mt-9'/>
        <img src='paytm.svg'  className='object-fit w-[40vw] lg:w-[18vw] brightness-0 invert opacity-70'/>
