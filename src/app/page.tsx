@@ -1698,7 +1698,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
    <div className={`${montserrat.className}   z-20 leading-[1]  text-[7.7vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  mb-6 pt-20 2xl:pr-[55vw] pb-1`}>
   <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2 text-center pr-2 pl-[5vw]'>
    <span className='z-50'> 
-   We got<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Everything</span> for you.</span>
+   What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> with CodeMate AI.</span>
    <div className='top-0 absolute w-full h-full bg-zinc-950 -z-10'/>
   </div>
  </div>
@@ -1744,10 +1744,11 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
 
 
  <div className=' w-full py-10'>
-   <div className={`${montserrat.className}   z-20 leading-[1]  text-[7.7vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent   mb-6 pt-20 2xl:pr-[55vw] pb-1`}>
+   <div className={`${montserrat.className}   z-20 leading-[1.15]  text-[7.5vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent   mb-6 pt-20 2xl:pr-[55vw] pb-1`}>
   <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2 text-center '>
    <span className='z-50'> 
-   Everthing means<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Everything</span> right?</span>
+   Seamlessly<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Integrated</span> </span>
+   <h1>in your existing environment</h1>
    <div className='top-0 absolute w-full h-full bg-zinc-950 -z-10'/>
   </div>
  </div>
@@ -1772,7 +1773,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
         initial={{opacity:0,filter:'blur(10px)'}}
         whileInView={{opacity:1,filter:'blur(0px)'}}
         transition={{delay:0.2,duration:0.6}}
-        className={`${montserrat.className}  text-[5vw]  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-left`}>To<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-2xl'>Web-App</span></motion.div>
+        className={`${montserrat.className}  text-[5vw]  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-left`}>To<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-2xl'> Web-App</span></motion.div>
    </div>
   
 
@@ -1786,7 +1787,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
 <h1 className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent lg:text-[2rem] font-semibold ">
 For Enterprises
 </h1>
-<div className='mt-1 text-[6.5vw] lg:text-[2.5vw] lg:text-6xl flex flex-col lg:gap-1 font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent pb-1'>
+<div className='mt-5 lg:mt-1 text-sm lg:text-[2.5vw] lg:text-6xl flex flex-col lg:gap-1 font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent pb-1'>
 <h1>From Legacy Systems to Next-Gen Apps -</h1>
 <h1>CodeMate AI Accelerates Your Enterprise Journey.</h1>
 </div>
@@ -1810,7 +1811,7 @@ Through the insights CodeMate provides, teams are inspired to achieve what truly
 
 <div className='mt-10 mb-10 lg:mt-[7vw]'>
   <h1 className='font-semibold'>Ayush Singhal</h1>
-  <p className='opacity-50'>Founder of Codemate</p>
+  <p className='opacity-50'>Founder of CodeMate AI</p>
 </div>
   </div>
   
