@@ -1121,7 +1121,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
      </div>
     </div>
     <h1 className='mt-1 text-lg font-semibold'>CodeMate Build</h1>
-    <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Codemate Build turns your prompts into working, deployable applications.</p>
+    <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Build turns your prompts into working, deployable applications.</p>
     </div>
 
     <div>
@@ -1179,7 +1179,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
      </div>
     </div>
     <h1 className='mt-1 text-lg font-semibold'>CodeMate Chat</h1>
-    <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Codemate Chat turns your prompts into working code, helping you build faster.</p>
+    <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Chat turns your prompts into working code, helping you build faster.</p>
     </div>
     <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
@@ -1803,7 +1803,7 @@ For Enterprises
 “
 </h1>
 <div className='text-[6vw] lg:text-[2.75rem] leading-[1] font-semibold'>
-Through the insights Codemate provides, teams are inspired to achieve what truly matters <span className='opacity-60'>— building impactful solutions, shaping future growth, and delivering measurable value.</span>
+Through the insights CodeMate provides, teams are inspired to achieve what truly matters <span className='opacity-60'>— building impactful solutions, shaping future growth, and delivering measurable value.</span>
 </div>
 
 

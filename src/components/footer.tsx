@@ -13,7 +13,7 @@ function Footer() {
             <img src="/codemateLogo.svg" alt="codemate Logo" className="w-50 h-10" />
           </div>
           <p className="text-gray-400 mb-4 text-sm md:text-lg w-full md:w-1/2">
-            Codemate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
+            CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
           </p>
           <div className="flex gap-3 mt-2">
             <a href="https://twitter.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="X" className="hover:text-white">
