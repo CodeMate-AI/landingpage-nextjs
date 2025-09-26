@@ -1895,11 +1895,13 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 <div className={`${montserrat.className} lg:pb-32 pb-20  w-full bg-zinc-950 text-white z-50`}>
  <div className='pt-[5rem] lg:pt-[15rem]'>
  <div className="px-8 lg:px-16 ">
- <h1 className=' text-2xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>Trusted by more than</h1>
- <p className=' mt-2  lg:text-4xl opacity-60'><span className='text-[#00BFFF]'>1,000 Developers</span> from startups to Fortune 500 companies</p>
+ <h1 className=' text-2xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Trusted</span> by more than</h1>
+ <p className=' mt-2  lg:text-4xl opacity-60'><span className=''>100,000 Developers</span> from startups to Fortune 500 companies</p>
  </div>
 
- <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 py-10'>
+
+
+ <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
   <div className=' w-[50vw] lg:size-[13rem]'>
       <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter   
        className='text-8xl'
@@ -1925,16 +1927,19 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
     </div>
  </div>
 
-      <div className='bg-gradient-to-t from-[#00BFFF]/80 from-5% to-transparent to-95% bg-opacity-10 h-[32vw] lg:h-[19rem] flex justify-center items-center'>
+      <div className='relative flex justify-center items-center overflow-hidden'>
       
-     <Marquee  pauseOnHover className="[--duration:20s] flex justify-center items-center">
-       <img src='https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Dell_Logo.svg/256px-Dell_Logo.svg.png?20160807135325'  className='object-fit mt-[13vw] size-[22vw] lg:size-[12vw] brightness-0 invert opacity-70 lg:mt-20'/>
-       <img src='qul.svg'  className='object-fit w-[70vw] lg:w-[28vw] mb-[2vw] brightness-0 invert opacity-70 lg:mt-9'/>
-       <img src='paytm.svg'  className='object-fit w-[40vw] lg:w-[18vw] brightness-0 invert opacity-70'/>
-       <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw] brightness-0 invert opacity-70 mt-5 lg:mt-10'/>
-       <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw] brightness-0 invert opacity-70'/>
-       <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] brightness-0 invert opacity-70'/>
-        <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw] brightness-0 invert opacity-70'/>
+      <div className="absolute -left-10 top-0 bg-zinc-950 h-full w-[10%] blur-2xl z-50"/>
+      <div className="absolute -right-10 top-0 bg-zinc-950 h-full w-[10%] blur-2xl z-50"/>
+
+     <Marquee  pauseOnHover className="[--duration:20s] flex justify-center items-center mt-5">
+       <img src='dell.svg'  className='object-fit  size-[30vw] lg:size-[12vw]  opacity-70 lg:mt-0'/>
+       <img src='qual.svg'  className='object-fit w-[65vw] lg:w-[20vw] mb-[2vw]  opacity-70 lg:mt-9'/>
+       <img src='paytm.svg'  className='object-fit w-[40vw] lg:w-[18vw]  opacity-70'/>
+       <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw]  opacity-70 mt-5 lg:mt-10'/>
+       <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw]  opacity-70'/>
+       <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-70'/>
+        <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw]  opacity-70'/>
      </Marquee>
       </div>
 
