@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord } from "react-icons/fa6";
+import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord,FaYoutube } from "react-icons/fa6";
 import { motion } from 'framer-motion';
 
 function Footer() {
@@ -13,7 +13,7 @@ function Footer() {
             <img src="/codemateLogo.svg" alt="codemate Logo" className="w-50 h-10" />
           </div>
           <p className="text-gray-400 mb-4 text-sm md:text-lg w-full md:w-1/2">
-            Codemate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
+            CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
           </p>
           <div className="flex gap-3 mt-2">
             <a href="https://twitter.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="X" className="hover:text-white">
@@ -22,6 +22,12 @@ function Footer() {
             <a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
               <FaLinkedin size={32} className="md:w-10 md:h-10" />
             </a>
+              <a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
+              <FaInstagram size={32} className="md:w-10 md:h-10" />
+            </a>
+            <a href="https://www.youtube.com/@codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
+              <FaYoutube size={32} className="md:w-10 md:h-10" />
+            </a>
           </div>
         </div>
 
@@ -29,7 +35,7 @@ function Footer() {
         <div className="flex-2 flex flex-col sm:flex-row gap-6 md:gap-12">
           <div className="mb-6 sm:mb-0">
             <h4 className="font-semibold mb-3 text-white text-sm md:text-base">COMMUNITY</h4>
-            <ul className="space-y-2 text-xs md:text-sm">
+            <ul className="space-y-2 text-xs md:text-xs">
               <li><a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" className="hover:underline">Instagram</a></li>
               <li><a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" className="hover:underline">Linkedin</a></li>
               <li><a href="https://twitter.com/codemateai" target="_blank" rel="noopener noreferrer" className="hover:underline">Twitter</a></li>
@@ -38,7 +44,7 @@ function Footer() {
           </div>
           <div className="mb-6 sm:mb-0">
             <h4 className="font-semibold mb-3 text-white text-sm md:text-base">OTHERS</h4>
-            <ul className="space-y-2 text-xs md:text-sm">
+            <ul className="space-y-2 text-xs md:text-xs">
               <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="hover:underline">Hugging Face</a></li>
               <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Refund Policy</a></li>
             </ul>
@@ -48,7 +54,7 @@ function Footer() {
         {/* Right: Legal */}
         <div className="flex-2 min-w-[180px] mb-6 md:mb-0">
           <h4 className="font-semibold mb-3 text-white text-sm md:text-base">LEGAL</h4>
-          <ul className="space-y-2 text-xs md:text-sm">
+          <ul className="space-y-2 text-xs md:text-xs">
             <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Privacy Policy</a></li>
             <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="hover:underline">Terms of Service</a></li>
           </ul>
