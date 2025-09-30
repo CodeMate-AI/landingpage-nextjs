@@ -896,7 +896,8 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
       </a>
       </div>
        
-       <div className='absolute bottom-0 pl-5 pb-8'>
+       <div className='absolute bottom-0 w-full bg-zinc-900'>
+        <div className='pl-5 pb-8'>
         <h1 className='text-[5vw]  opacity-65 mb-3'>Socials</h1>
          <div className='flex text-[5vw] gap-4 opacity-90 group'>
           <a href="https://www.instagram.com/codemateai" target='_blank'>
@@ -910,7 +911,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
           </a>
          </div> 
        </div>
-
+       </div>
 
        </div>       
       </motion.div>
