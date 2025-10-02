@@ -1051,9 +1051,9 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
             </motion.div>
             </a>
           </div>
-                   <div className='relative border-b-[1px] border-white overflow-hidden'> 
-             <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate&ssr=false#review-details">       
-            <motion.h1  className='z-20'>Vs Code Extension</motion.h1>
+                   <div className='relative text-sm text-left overflow-hidden mb-2'> 
+             <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate">       
+            <motion.h1  className='z-20 opacity-90'>Chat Extension</motion.h1>
             <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
               <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
               <h1>Chat Extension</h1>
