@@ -1,6 +1,7 @@
 'use client'
 import React, { useEffect, useState,useRef,useMemo } from 'react'
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
+import { ChevronUp, Weight } from 'lucide-react';
 import { FloatingNav } from '@/components/ui/floating-navbar';
 import { IconArrowLeft,IconArrowRight,IconArrowBadgeDown } from '@tabler/icons-react';
 import StaggeredMenu from '@/components/ui/Menu';
@@ -24,6 +25,8 @@ import VideoEmbed from '@/components/video';
 import ReviewCodeEditor from '@/components/motion-components/rEditor';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
+import Achivements from '@/components/achivements';
+import { Opacity } from '@tsparticles/engine';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -174,6 +177,7 @@ const AutoCompleteComponent = [
   const [isMenu,setMenu] = useState(false);
   const [isArrowV,setIsArrowV] = useState(false);
   const [isProducts,setIsProducts] = useState(false);
+  const [isOS,setIsOS] = useState(false);
    const [isArrow,setIsArrow] = useState(false);
   const [isP1,setIsP1] = useState(false);
   const [isP2,setIsP2] = useState(false);
@@ -574,7 +578,7 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
         }}
   className={`mt-5 w-fit bg-opacity-65 z-[9999999999] rounded-lg ${isNBack? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''}`}>
     <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
-    <div className='flex gap-[51vw]  justify-between items-center w-full h-10'>
+    <div className='flex gap-[40vw]  justify-between items-center w-full h-10'>
       
     <div className="h-full w-[13vw] flex justify-center overflow-hidden">
       <img onClick={()=>router.push("/")} src="/codemateLogo.svg" alt=""  className='cursor-pointer'/>
@@ -613,28 +617,45 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
     </div>
     <div className={`${montserrat.className} relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50`}>
       <span className=' flex gap-3 justify-center items-center z-50'>
-       <motion.h1 onClick={()=>setIsProducts(state=>!state)}  whileHover={{opacity:1}} animate={{y:isProducts? 55 : 0 ,x:isProducts? 35 : 0,scale:isProducts? 1.50 : 1,opacity:isProducts? 1 : ''}} transition={{duration:0.2}} className={`flex text-center justify-center items-center opacity-65 z-50 ${isProducts? 'font-bold bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent' : ''}`}>Products</motion.h1>
+       <motion.h1 onMouseEnter={()=>{setIsProducts(state=>!state);setIsOS(false)}} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center opacity-100 gap-1 justify-center items-center  z-50  ${isProducts? '' : 'opacity-65' }`}>Products  <motion.span
+  initial={{rotate:180}}
+  animate={{rotate:!isProducts?180:0}}
+  >
+  <ChevronUp
+    className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+  />
+  </motion.span></motion.h1>
+         <motion.h1 onMouseEnter={()=>{setIsOS(state=>!state);setIsProducts(false);}} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center opacity-100 gap-1 justify-center items-center text-nowrap  z-50  ${isProducts? '' : 'opacity-65' }`}>Open-Source  <motion.span
+  initial={{rotate:180}}
+  animate={{rotate:!isOS?180:0}}
+  >
+  <ChevronUp
+    className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+  />
+  </motion.span></motion.h1>
+        {/* <motion.h1 onMouseEnter={()=>setIsProducts(state=>!state)} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center  justify-center items-center opacity-65 z-50 `}>OpenSource</motion.h1> */}
        <motion.h1 onClick={() => productShowRef.current?.scrollIntoView({ behavior: "smooth" })} whileHover={{opacity:1}} className='opacity-65'>Features</motion.h1>
        <motion.h1 whileHover={{opacity:1}}  onClick={()=>{router.push('pricing')}} className='opacity-65'>Pricing</motion.h1>
        <a href='https://edu.codemate.ai/' target='_blank'>
        <motion.h1 whileHover={{opacity:1}}  className='opacity-65'>Education</motion.h1>
        </a>
        <a href="https://app.codemate.ai" target='_blank'>
-       <motion.button  whileHover={{opacity:1,scale:1.05}} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85`}>Get Started</motion.button>
+       <motion.button  whileHover={{opacity:1,scale:1.05}} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap`}>Get Started</motion.button>
        </a>
        </span>
 
       {isProducts &&  
+      <div className='absolute  h-[20rem] w-[33%] mt-[22rem] -left-11 rounded-md -z-10 '>
        <motion.div 
-        initial={{scale:0}}
-        animate={{scale:1}}
-        transition={{duration:0.5}}
+        initial={{opacity:0}}
+        animate={{opacity:1}}
+        transition={{duration:0.3}}
         style={{ 
         boxShadow: '0 14px 25px rgba(0, 0, 0, 0.1)',
         backdropFilter: 'blur(50px)',
         WebkitBackdropFilter: 'blur(50px)'
-        }} className='absolute h-[17.8rem] w-[70%] mt-[22rem] left-0 rounded-md -z-10 bg-zinc-900 bg-opacity-95'>
-        <div className="mt-10 px-5 flex flex-col gap-2">
+        }} className=' h-[14rem] w-full  left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl'>
+        <div className="mt-5 px-5 flex flex-col gap-2">
         <div className='flex justify-between w-full'> 
           {/* <a target="_blank" href="https://cli.codemate.ai">
           <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Terminal</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
@@ -648,8 +669,8 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
           </a> */}
         </div>
           <div className='w-full mb-1'> 
-            <h1 className="text-left font-semibold">Web-Application</h1>
-          <div className="flex gap-5 w-full"> 
+            <h1 className="text-left font-semibold mb-2">Web-Application</h1>
+          <div className="flex flex-col gap-2 items-start"> 
           <a  href="https://app.codemate.ai/chat" target="_blank">
           <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Chat</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
           <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -663,9 +684,9 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
           </div>
         </div>
         
-                  <div className='w-full mb-1'> 
-            <h1 className="text-left font-semibold">VS Code Extension</h1>
-          <div className="flex gap-5 w-full"> 
+        <div className='w-full mb-1'> 
+            <h1 className="text-left font-semibold mb-2">VS Code Extension</h1>
+          <div className="flex flex-col gap-2 items-start w-full"> 
           <a  href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">
           <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>CORA</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
           <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -679,7 +700,7 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
           </div>
         </div>
 
-            <div className='w-full mb-1'> 
+            {/* <div className='w-full mb-1'> 
             <h1 className="text-left font-semibold">Open-Source</h1>
           <div className="flex gap-5 w-full"> 
           <a  href=" hf.co/codemateai" target="_blank">
@@ -693,19 +714,87 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
           </div></motion.span>
           </a>
           </div>
-        </div>
-        <a href='app.codemate.ai' target='_blank' className='w-full'>
+        </div> */}
+        {/* <a href='app.codemate.ai' target='_blank' className='w-full'>
         <button className='flex gap-1 justify-center items-center bg-gray-300 hover:opacity-80 text-zinc-950 rounded-sm font-semibold w-full'>Manage<svg  xmlns="http://www.w3.org/2000/svg"  width={18}  height={18}  viewBox="0 0 24 24"  fill="currentColor"  className="icon icon-tabler icons-tabler-filled icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.647 4.081a.724 .724 0 0 0 1.08 .448c2.439 -1.485 5.23 1.305 3.745 3.744a.724 .724 0 0 0 .447 1.08c2.775 .673 2.775 4.62 0 5.294a.724 .724 0 0 0 -.448 1.08c1.485 2.439 -1.305 5.23 -3.744 3.745a.724 .724 0 0 0 -1.08 .447c-.673 2.775 -4.62 2.775 -5.294 0a.724 .724 0 0 0 -1.08 -.448c-2.439 1.485 -5.23 -1.305 -3.745 -3.744a.724 .724 0 0 0 -.447 -1.08c-2.775 -.673 -2.775 -4.62 0 -5.294a.724 .724 0 0 0 .448 -1.08c-1.485 -2.439 1.305 -5.23 3.744 -3.745a.722 .722 0 0 0 1.08 -.447c.673 -2.775 4.62 -2.775 5.294 0zm-2.647 4.919a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" /></svg></button>
-        </a>
+        </a> */}
         </div>
        </motion.div>
+       </div>
         }
+
+      {isOS &&  
+      <div className='absolute  h-[20rem] w-[25%] mt-[22rem] left-[5.8rem] rounded-md -z-10 '>
+       <motion.div 
+        initial={{opacity:0}}
+        animate={{opacity:1}}
+        transition={{duration:0.3}}
+        style={{ 
+        boxShadow: '0 14px 25px rgba(0, 0, 0, 0.1)',
+        backdropFilter: 'blur(50px)',
+        WebkitBackdropFilter: 'blur(50px)'
+        }} className=' h-[5.4rem] w-full  left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl'>
+        <div className="mt-5 px-5 flex flex-col gap-2">
+        <div className='flex justify-between w-full'> 
+          {/* <a target="_blank" href="https://cli.codemate.ai">
+          <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Terminal</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+          <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+          </div></motion.span>
+          </a> */}
+          {/* <a target="_blank" href='https://edu.codemate.ai/'>
+          <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Education</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+          <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+          </div></motion.span>
+          </a> */}
+        </div>
+          <div className='w-full mb-1 mt-1'> 
+            {/* <h1 className="text-left font-semibold mb-2">Web-Application</h1> */}
+          <div className="flex flex-col gap-2 items-start"> 
+          <a  href="https://huggingface.co/codemateai" target="_blank">
+          <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Models</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+          <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+          </div></motion.span>
+          </a>
+          <a href='https://cli.codemate.ai/' target='_blank'>
+          <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Terminal</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+          <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+          </div></motion.span>
+          </a>
+          </div>
+        </div>
+        
+
+
+            {/* <div className='w-full mb-1'> 
+            <h1 className="text-left font-semibold">Open-Source</h1>
+          <div className="flex gap-5 w-full"> 
+          <a  href=" hf.co/codemateai" target="_blank">
+          <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Models</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+          <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+          </div></motion.span>
+          </a>
+          <a href='cli.codemate.ai' target='_blank'>
+          <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80 text-nowrap"><h1>Terminal</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+          <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+          </div></motion.span>
+          </a>
+          </div>
+        </div> */}
+        {/* <a href='app.codemate.ai' target='_blank' className='w-full'>
+        <button className='flex gap-1 justify-center items-center bg-gray-300 hover:opacity-80 text-zinc-950 rounded-sm font-semibold w-full'>Manage<svg  xmlns="http://www.w3.org/2000/svg"  width={18}  height={18}  viewBox="0 0 24 24"  fill="currentColor"  className="icon icon-tabler icons-tabler-filled icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.647 4.081a.724 .724 0 0 0 1.08 .448c2.439 -1.485 5.23 1.305 3.745 3.744a.724 .724 0 0 0 .447 1.08c2.775 .673 2.775 4.62 0 5.294a.724 .724 0 0 0 -.448 1.08c1.485 2.439 -1.305 5.23 -3.744 3.745a.724 .724 0 0 0 -1.08 .447c-.673 2.775 -4.62 2.775 -5.294 0a.724 .724 0 0 0 -1.08 -.448c-2.439 1.485 -5.23 -1.305 -3.745 -3.744a.724 .724 0 0 0 -.447 -1.08c-2.775 -.673 -2.775 -4.62 0 -5.294a.724 .724 0 0 0 .448 -1.08c-1.485 -2.439 1.305 -5.23 3.744 -3.745a.722 .722 0 0 0 1.08 -.447c.673 -2.775 4.62 -2.775 5.294 0zm-2.647 4.919a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" /></svg></button>
+        </a> */}
+        </div>
+       </motion.div>
+       </div>
+        }  
     </div>
 
-        {isProducts && 
-        <div onClick={()=>setIsProducts(false)} className='fixed h-screen w-full z-40'/>
+        {isProducts  && 
+        <div onMouseEnter={()=>setIsProducts(false)} className='fixed h-screen w-full z-40'/>
         }
-
+        {isOS  && 
+        <div onMouseEnter={()=>setIsOS(false)} className='fixed h-screen w-full z-40'/>
+        }
     </div>
      {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
     </div>
@@ -715,7 +804,7 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
 
   {/*navBar for mobile*/}
 <div 
-style={{zIndex:999999999999,}}
+style={{zIndex:999999,}}
 className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <motion.div
    initial={{y:-100}}
@@ -728,11 +817,11 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
         boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)',
-        zIndex:999999999999,
+        zIndex:99999999,
         }}
-  className={`w-full bg-opacity-65 z-[9999999999]  ${isNBack? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''}`}>
+  className={`w-full bg-opacity-65 z-[99999999]  ${isNBack? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''}`}>
     <div className='flex  h-full w-full text-white px-[2rem] py-2 '>
-    <div className='flex justify-between w-full h-10'>
+    <div className='flex justify-between items-center w-full h-10'>
       
     <div className="h-full w-[30vw] flex justify-center overflow-hidden">
        <img src="/codemateLogo.svg" alt="" />
@@ -754,10 +843,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     
     </div>
 
-    <div onClick={()=> setMenu(state => !state)} className={`${montserrat.className} flex gap-2 text-[4vw]  justify-center items-center cursor-pointer text-right `}>
-     Menu
-     <motion.svg  style={{ width: "5vw", height: "5vw" }} animate={{rotate: isMenu? 45 : 0}} transition={{duration:0.2}} xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></motion.svg>
-    </div>
+
 
 
     </div>
@@ -768,19 +854,27 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
 
 {/* mobile menu */}
 <AnimatePresence>
+      <motion.div 
+      initial={{y:-100}}
+      animate={{y:0}}
+      transition={{duration:1,delay:0.5}}
+      onClick={()=> setMenu(state => !state)} className={`${montserrat.className} lg:hidden fixed right-[2rem] flex gap-2 text-[4vw] top-[1.2rem] justify-center items-center cursor-pointer text-right  z-[99999999999]`}>
+     Menu
+     <motion.svg  style={{ width: "5vw", height: "5vw" }} animate={{rotate: isMenu? 45 : 0}} transition={{duration:0.2}} xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-plus"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M5 12l14 0" /></motion.svg>
+    </motion.div>
   {isMenu && (
     <div 
        
-      className="fixed top-0 h-screen w-full left-0 z-[9999999999] flex"
+      className="fixed top-0 h-screen w-full left-0 z-[999999999] flex"
     >
-      <div className='h-full w-[70%]'>
+      <div className='h-full w-[100%]'>
       <motion.div
         key={1}
         initial={{ x: -400 }}
         animate={{ x: 0 }}
         exit={{ x: -400 }}
         transition={{ duration: 0.2 }}
-        className="absolute h-full w-[70%] bg-white"
+        className="absolute h-full w-[100%] bg-white"
       />
       <motion.div
         key={2}
@@ -788,7 +882,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
         animate={{ x: 0 }}
         exit={{ x: -400 }}
         transition={{ duration: 0.2, delay: 0.1 }}
-        className="absolute h-full w-[70%] bg-cyan-600 z-10"
+        className="absolute h-full w-[100%] bg-cyan-600 z-10"
       />
       <motion.div
         key={3}
@@ -796,24 +890,37 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
         animate={{ x: 0 }}
         exit={{ x: -400 }}
         transition={{ duration: 0.2, delay: 0.2 }}
-        className="absolute h-full w-[70%] bg-zinc-900 z-50"
+        className="absolute h-full w-[100%] bg-zinc-900 z-50"
       >
+        
       <div className='relative h-full w-full'>
-      <div className='flex flex-col leading-[1] text-[8vw] pt-10 pl-5 gap-7'>
-      <motion.div whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
-      <motion.div  className='flex flex-col gap-2 cursor-pointer'>
-        <motion.div onClick={()=>setIsProducts(state => !state)} whileHover={{opacity:0.6}} className='flex gap-2'>
-        <h1 className='MenuText'>PRODUCTS</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>02</p>
+
+      <div className='flex flex-col leading-[1] text-[8vw] pt-14 pl-5 gap-10 overflow-y-auto'>
+      <motion.div onClick={()=>router.push('/')} whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
+            <motion.div  className='flex flex-col gap-2 cursor-pointer'>
+        <motion.div onClick={()=>{setIsOS(state => !state);setIsProducts(false)}} whileHover={{opacity:0.6}} className='flex justify-between items-center'>
+        <div className='flex gap-2'>
+        <h1 className='MenuText'>OPEN-SOURCE</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>02</p>
+        </div>
+          <motion.span
+          initial={{rotate:180}}
+          animate={{rotate:!isOS?180:0}}
+          className='mr-3'
+          >
+          <ChevronUp
+            className="h-5 w-5 shrink-0 grow-0 text-zinc-950  transition-transform duration-200 group-data-expanded:-rotate-180 opacity-60 dark:text-zinc-50"
+          />
+          </motion.span>
         </motion.div>
     
-        {isProducts && 
-        <motion.div  initial={{ height:0,opacity:0 }} animate={{height:385,opacity:1}} transition={{duration:0.3}} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
+        {isOS && 
+        <motion.div  initial={{ height:0,opacity:0 }} animate={{height:50,opacity:1}} transition={{duration:0.3}} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
            
-           <h1 className='text-lg text-left mb-1 font-semibold'>Web-Application</h1>
+           
 
-          <div className='relative border-b-[1px] border-zinc-500 overflow-hidden '> 
-            <a href="https://app.codemate.ai/chat" target='_blank'>
-            <motion.h1  className='z-20 opacity-90'>Chat</motion.h1>
+          <div className='relative text-sm text-left overflow-hidden '> 
+            <a href="https://huggingface.co/codemateai" target='_blank'>
+            <motion.h1  className='z-20 opacity-90'>Models</motion.h1>
             <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
               <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
               <h1>Chat</h1>
@@ -823,9 +930,9 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
           </div>
 
 
-                    <div className='relative border-b-[1px] border-zinc-500 overflow-hidden mb-2'> 
-             <a href="https://build.codemateai.dev/secure__?session__id__=1e79d863e85850ddad011af939f79137:ifr7GFfV29hp6Frs5FpwvPtObmg8HHmIXq2cJ9uv5/3bUIQvNeQ4/PS4bUUqZk8a" target="_blank">         
-            <motion.h1  className='z-20 opacity-90'>Build</motion.h1>
+                    <div className='relative text-sm text-left overflow-hidden mb-2'> 
+             <a href="https://cli.codemate.ai/" target="_blank">         
+            <motion.h1  className='z-20 opacity-90'>Terminal</motion.h1>
             <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
               <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
               <h1>Build</h1>
@@ -835,9 +942,9 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
           </div>
 
 
-            <h1 className='text-lg text-left mb-1 font-semibold'>VS Code Extension</h1>
+            {/* <h1 style={{fontWeight:500}} className='text-[1rem]  text-left mb-1'>VS Code Extension</h1>
 
-                    <div className='relative border-b-[1px] border-zinc-500 overflow-hidden'> 
+                    <div className='relative text-sm text-left overflow-hidden'> 
             <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">          
             <motion.h1  className='z-20 opacity-90'>CORA</motion.h1>
             <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
@@ -847,7 +954,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
             </motion.div>
             </a>
           </div>
-                   <div className='relative border-b-[1px] border-zinc-500 overflow-hidden mb-2'> 
+                   <div className='relative text-sm text-left overflow-hidden mb-2'> 
              <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate">       
             <motion.h1  className='z-20 opacity-90'>Chat Extension</motion.h1>
             <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
@@ -856,9 +963,9 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
               </motion.div>
             </motion.div>
             </a>
-          </div>
+          </div> */}
 
-         <h1 className='text-lg text-left mb-1 font-semibold'>Open-Source</h1>
+         {/* <h1 className='text-lg text-left mb-1 font-semibold'>Open-Source</h1>
 
                              <div className='relative border-b-[1px] border-zinc-500 overflow-hidden'> 
             <a href="hf.co/codemateai" target="_blank">          
@@ -879,20 +986,117 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
               </motion.div>
             </motion.div>
             </a>
-          </div>
+          </div> */}
 
-                  <a href='app.codemate.ai' target='_blank' className='w-full mt-3'>
+                  {/* <a href='app.codemate.ai' target='_blank' className='w-full mt-3'>
         <button className='flex gap-1 justify-center items-center  bg-gray-300 hover:opacity-80 text-zinc-950 rounded-sm font-semibold w-full'>Manage<svg  xmlns="http://www.w3.org/2000/svg"  width={18}  height={18}  viewBox="0 0 24 24"  fill="currentColor"  className="icon icon-tabler icons-tabler-filled icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.647 4.081a.724 .724 0 0 0 1.08 .448c2.439 -1.485 5.23 1.305 3.745 3.744a.724 .724 0 0 0 .447 1.08c2.775 .673 2.775 4.62 0 5.294a.724 .724 0 0 0 -.448 1.08c1.485 2.439 -1.305 5.23 -3.744 3.745a.724 .724 0 0 0 -1.08 .447c-.673 2.775 -4.62 2.775 -5.294 0a.724 .724 0 0 0 -1.08 -.448c-2.439 1.485 -5.23 -1.305 -3.745 -3.744a.724 .724 0 0 0 -.447 -1.08c-2.775 -.673 -2.775 -4.62 0 -5.294a.724 .724 0 0 0 .448 -1.08c-1.485 -2.439 1.305 -5.23 3.744 -3.745a.722 .722 0 0 0 1.08 -.447c.673 -2.775 4.62 -2.775 5.294 0zm-2.647 4.919a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" /></svg></button>
-        </a>
+        </a> */}
         </motion.div>  
         }
       </motion.div>
-      <motion.div  onClick={()=> router.push('/pricing')} whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>03</p></motion.div>
+      <motion.div  className='flex flex-col gap-2 cursor-pointer'>
+        <motion.div onClick={()=>{setIsProducts(state => !state);setIsOS(false)}} whileHover={{opacity:0.6}} className='flex justify-between items-center'>
+        <div className='flex gap-2'>
+        <h1 className='MenuText'>PRODUCTS</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>03</p>
+        </div>
+          <motion.span
+          initial={{rotate:180}}
+          animate={{rotate:!isProducts?180:0}}
+          className='mr-3'
+          >
+          <ChevronUp
+            className="h-5 w-5 shrink-0 grow-0 text-zinc-950  transition-transform duration-200 group-data-expanded:-rotate-180 opacity-60 dark:text-zinc-50"
+          />
+          </motion.span>
+        </motion.div>
+    
+        {isProducts && 
+        <motion.div  initial={{ height:0,opacity:0 }} animate={{height:185,opacity:1}} transition={{duration:0.3}} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
+           
+           <h1 style={{fontWeight:500}} className='text-[1rem] text-left mb-1'>Web-Application</h1>
+
+          <div className='relative text-sm text-left overflow-hidden '> 
+            <a href="https://app.codemate.ai/chat" target='_blank'>
+            <motion.h1  className='z-20 opacity-90'>Chat</motion.h1>
+            <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
+              <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
+              <h1>Chat</h1>
+              </motion.div>
+            </motion.div>
+            </a>
+          </div>
+
+
+                    <div className='relative text-sm text-left overflow-hidden mb-2'> 
+             <a href="https://build.codemateai.dev/secure__?session__id__=1e79d863e85850ddad011af939f79137:ifr7GFfV29hp6Frs5FpwvPtObmg8HHmIXq2cJ9uv5/3bUIQvNeQ4/PS4bUUqZk8a" target="_blank">         
+            <motion.h1  className='z-20 opacity-90'>Build</motion.h1>
+            <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
+              <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
+              <h1>Build</h1>
+              </motion.div>
+            </motion.div>
+            </a>
+          </div>
+
+
+            <h1 style={{fontWeight:500}} className='text-[1rem]  text-left mb-1'>VS Code Extension</h1>
+
+                    <div className='relative text-sm text-left overflow-hidden'> 
+            <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">          
+            <motion.h1  className='z-20 opacity-90'>CORA</motion.h1>
+            <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
+              <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
+              <h1>CORA</h1>
+              </motion.div>
+            </motion.div>
+            </a>
+          </div>
+                   <div className='relative text-sm text-left overflow-hidden mb-2'> 
+             <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate">       
+            <motion.h1  className='z-20 opacity-90'>Chat Extension</motion.h1>
+            <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
+              <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
+              <h1>Chat Extension</h1>
+              </motion.div>
+            </motion.div>
+            </a>
+          </div>
+
+         {/* <h1 className='text-lg text-left mb-1 font-semibold'>Open-Source</h1>
+
+                             <div className='relative border-b-[1px] border-zinc-500 overflow-hidden'> 
+            <a href="hf.co/codemateai" target="_blank">          
+            <motion.h1  className='z-20 opacity-90'>Models</motion.h1>
+            <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
+              <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
+              <h1>Models</h1>
+              </motion.div>
+            </motion.div>
+            </a>
+          </div>
+                   <div className='relative border-b-[1px] border-zinc-500 overflow-hidden'> 
+             <a href="cli.codemate.ai">       
+            <motion.h1  className='z-20 opacity-90'>Terminal</motion.h1>
+            <motion.div whileHover={{y:-50}} transition={{duration:0.8}} className='absolute h-full w-full  top-0 '>
+              <motion.div initial={{y:50}} className= 'h-full w-full rounded-t-md bg-cyan-600'>
+              <h1>Terminal</h1>
+              </motion.div>
+            </motion.div>
+            </a>
+          </div> */}
+
+                  {/* <a href='app.codemate.ai' target='_blank' className='w-full mt-3'>
+        <button className='flex gap-1 justify-center items-center  bg-gray-300 hover:opacity-80 text-zinc-950 rounded-sm font-semibold w-full'>Manage<svg  xmlns="http://www.w3.org/2000/svg"  width={18}  height={18}  viewBox="0 0 24 24"  fill="currentColor"  className="icon icon-tabler icons-tabler-filled icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.647 4.081a.724 .724 0 0 0 1.08 .448c2.439 -1.485 5.23 1.305 3.745 3.744a.724 .724 0 0 0 .447 1.08c2.775 .673 2.775 4.62 0 5.294a.724 .724 0 0 0 -.448 1.08c1.485 2.439 -1.305 5.23 -3.744 3.745a.724 .724 0 0 0 -1.08 .447c-.673 2.775 -4.62 2.775 -5.294 0a.724 .724 0 0 0 -1.08 -.448c-2.439 1.485 -5.23 -1.305 -3.745 -3.744a.724 .724 0 0 0 -.447 -1.08c-2.775 -.673 -2.775 -4.62 0 -5.294a.724 .724 0 0 0 .448 -1.08c-1.485 -2.439 1.305 -5.23 3.744 -3.745a.722 .722 0 0 0 1.08 -.447c.673 -2.775 4.62 -2.775 5.294 0zm-2.647 4.919a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" /></svg></button>
+        </a> */}
+        </motion.div>  
+        }
+      </motion.div>
+      <motion.div  onClick={()=> router.push('/pricing')} whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>04</p></motion.div>
        <a href='https://edu.codemate.ai/' target='_blank'>
-      <motion.div   whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>04</p></motion.div>
+      <motion.div   whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
        </a>
       <a href="https://app.codemate.ai" target="_blank"> 
-      <motion.div whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>GET STARTED</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
+      <motion.div whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>GET STARTED</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
       </a>
       </div>
        
@@ -2061,6 +2265,9 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
   </div>  */}
 {/* bento   */}
+
+ <Achivements/>
+
 
 <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-20 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
 
