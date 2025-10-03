@@ -724,7 +724,7 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
        </div>
         }
 
-      {!isOS &&  
+      {isOS &&  
       <div className='absolute  h-[20rem] w-[25%] mt-[22rem] left-[5.8rem] rounded-md -z-10 '>
        <motion.div 
         initial={{opacity:0}}
