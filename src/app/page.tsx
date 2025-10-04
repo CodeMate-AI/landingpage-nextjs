@@ -635,10 +635,10 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
   />
   </motion.span></motion.h1>
         {/* <motion.h1 onMouseEnter={()=>setIsProducts(state=>!state)} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center  justify-center items-center opacity-65 z-50 `}>OpenSource</motion.h1> */}
-       <motion.h1 onClick={() => productShowRef.current?.scrollIntoView({ behavior: "smooth" })} whileHover={{opacity:1}} className='opacity-65'>Features</motion.h1>
-       <motion.h1 whileHover={{opacity:1}}  onClick={()=>{router.push('pricing')}} className='opacity-65'>Pricing</motion.h1>
+       <motion.h1 onMouseEnter={()=>{setIsProducts(false);setIsOS(false)}} onClick={() => productShowRef.current?.scrollIntoView({ behavior: "smooth" })} whileHover={{opacity:1}} className='opacity-65'>Features</motion.h1>
+       <motion.h1 onMouseEnter={()=>{setIsProducts(false);setIsOS(false)}} whileHover={{opacity:1}}  onClick={()=>{router.push('pricing')}} className='opacity-65'>Pricing</motion.h1>
        <a href='https://edu.codemate.ai/' target='_blank'>
-       <motion.h1 whileHover={{opacity:1}}  className='opacity-65'>Education</motion.h1>
+       <motion.h1 onMouseEnter={()=>{setIsProducts(false);setIsOS(false)}} whileHover={{opacity:1}}  className='opacity-65'>Education</motion.h1>
        </a>
        <a href="https://app.codemate.ai" target='_blank'>
        <motion.button  whileHover={{opacity:1,scale:1.05}} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap`}>Get Started</motion.button>
