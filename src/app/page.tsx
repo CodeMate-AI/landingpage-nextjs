@@ -859,8 +859,8 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
         initial={{y:-100}}
       animate={{y:0}}
       transition={{duration:1,delay:0.5}}
-  className='lg:hidden fixed flex w-full px-5 top-[1.2rem] justify-between items-center z-[99999999999]'> 
-      <img src="/codemateLogo.svg" alt="" className='w-[30vw]' /> 
+  className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 py-[1.1rem] justify-between items-center z-[99999999999] `}> 
+      <img src="/codemateLogo.svg" alt="" className='h-full w-[30vw]' /> 
       <motion.div 
       onClick={()=> {setMenu(state => !state);setIsNBack(false)}} className={`${montserrat.className}   flex gap-2 text-[4vw]  justify-center items-center cursor-pointer text-right  `}>
      Menu
