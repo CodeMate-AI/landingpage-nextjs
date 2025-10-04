@@ -621,6 +621,7 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
        <motion.h1 onMouseEnter={()=>{setIsProducts(state=>!state);setIsOS(false)}} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center  z-50  ${isProducts? '' : 'opacity-65' }`}>Products  <motion.span
   initial={{rotate:180}}
   animate={{rotate:!isProducts?180:0}}
+  transition={{duration:0.3}}
   >
   <ChevronUp
     className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
@@ -629,6 +630,7 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
          <motion.h1 onMouseEnter={()=>{setIsOS(state=>!state);setIsProducts(false);}} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isOS? '' : 'opacity-65' }`}>Open-Source  <motion.span
   initial={{rotate:180}}
   animate={{rotate:!isOS?180:0}}
+  transition={{duration:0.3}}
   >
   <ChevronUp
     className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
@@ -1398,6 +1400,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
 
   <div className={`h-full  flex flex-col pt-10 lg:pt-24  gap-[3rem] items-center  ${montserrat.className} `}>
     
+        <a href="https://build.codemateai.dev/build" target="_blank" className='cursor-pointer'>
         <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
      
@@ -1411,7 +1414,9 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <h1 className='mt-1 text-lg font-semibold'>CodeMate Build</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Build turns your prompts into working, deployable applications.</p>
     </div>
+       </a>
 
+       <a href="https://cli.codemate.ai/" target="_blank" className='cursor-pointer'>
     <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
      
@@ -1425,8 +1430,9 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <h1 className='mt-1 text-lg font-semibold'>AI Terminal</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Run code and scripts instantly with AI-powered terminal.</p>
     </div>
+  </a>
 
-
+    <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank" className='cursor-pointer'>
     <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
      
@@ -1440,9 +1446,9 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <h1 className='mt-1 text-lg font-semibold'>CORA- AI Agent inside your IDE</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Your AI coding agent in VS Code that turns prompts into working code instantly.</p>
     </div>
+    </a>
 
-
-
+    <a href="https://edu.codemate.ai/" target="_blank" className='cursor-pointer'>
     <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
      
@@ -1456,6 +1462,9 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <h1 className='mt-1 text-lg font-semibold'>CodeMate Education</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Smart, AI-powered classroom management made easy.</p>
     </div>
+    </a>
+
+    <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate" target="_blank" className='cursor-pointer'>
         <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
      
@@ -1469,6 +1478,8 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <h1 className='mt-1 text-lg font-semibold'>CodeMate Assistant</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Assistant is your AI-powered coding partner, built as an IDE plugin to help you manage code, debug errors, and accelerate development.</p>
     </div> 
+    </a>
+    <a href="https://app.codemate.ai/chat" target="_blank" className='cursor-pointer'>
     <div>
     <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
      
@@ -1482,7 +1493,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
     <h1 className='mt-1 text-lg font-semibold'>CodeMate Chat</h1>
     <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Chat turns your prompts into working code, helping you build faster.</p>
     </div>
-
+    </a>
   </div>
 {/* features of products */} 
  </div>
@@ -1889,9 +1900,9 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
         <div className='mt-10'>
         <LoaderOne/>
         </div>
-        </motion.span>  :         <button ref={debugBtnRef} onClick={handleOverlay} className={`${montserrat.className} bg-gradient-to-br border-y-[0.1px]  border-[#F0EAD6]/80 from-[#F0EAD6]/90  to-[#FAF9F6]/25  text-lg rounded-[25px] px-6 text-black py-2 mt-10 hover:opacity-70 z-[99999996]`}>
+        </motion.span>  :         <motion.button whileHover={{opacity:0.7}} ref={debugBtnRef} onClick={handleOverlay} className={`${montserrat.className} bg-gradient-to-br border-y-[0.1px]  border-[#F0EAD6]/80 from-[#F0EAD6]/90  to-[#FAF9F6]/45   text-lg rounded-[25px] px-6 text-black py-2 mt-10  z-[99999996]`}>
           <span className='font-semibold  text-zinc-950'>Debug</span> this code
-        </button>} 
+        </motion.button>} 
         </div>
 
       </div>
@@ -1919,7 +1930,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
         <LoaderOne/>
         </motion.span>  :         }  */}
         <AnimatePresence>
-        {reviewBtn &&  <motion.button exit={{opacity:0,filter:'blur(20px)'}} transition={{duration:0.5}}  onClick={handleOverlayR} className={`${montserrat.className} bg-gradient-to-br border-y-[0.1px] border-[#F0EAD6]/80 from-[#F0EAD6]/80 to-[#FAF9F6]/25 text-lg rounded-[25px] px-6 text-black py-2 mt-10 hover:opacity-70 z-[99999996]`}>
+        {reviewBtn &&  <motion.button whileHover={{opacity:0.7}} exit={{opacity:0,filter:'blur(20px)'}} transition={{duration:0.5}}  onClick={handleOverlayR} className={`${montserrat.className} bg-gradient-to-br border-y-[0.1px] border-[#F0EAD6]/80 from-[#F0EAD6]/80 to-[#FAF9F6]/45 text-lg rounded-[25px] px-6 text-black py-2 mt-10  z-[99999996]`}>
             <span className='font-semibold  text-zinc-950'>Review</span> this code
         </motion.button>}
         </AnimatePresence>

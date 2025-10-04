@@ -170,7 +170,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
         
        <div className='flex justify-center  mt-10 mb-10'>
         <div className='relative border-[3px] border-zinc-500 text-xl px-5 py-2 rounded-full flex gap-5  items-center '>
-        <motion.div initial={{x:-9,width:'6.6rem',color:'black'}} animate={ isPlan1? {x:-9,width:'6.3rem'} : isPlan2? {x:92,width:'5rem'} : {x:176,width:'7rem'} } transition={{duration:0.5}}  className='absolute h-9  rounded-3xl bg-gradient-to-b from-[#00BFFF] to-[#1E90FF]'/>  
+        <motion.div initial={{x:-15.7,width:'7.1rem',color:'black'}} animate={ isPlan1? {x:-15.7,width:'7.1rem'} : isPlan2? {x:92,width:'5rem'} : {x:169,width:'7.95rem'} } transition={{duration:0.5}}  className='absolute h-9  rounded-3xl bg-gradient-to-b from-[#00BFFF] to-[#1E90FF]'/>  
         <h1 onClick={()=> handleCurrPlan(1)} className={`${isPlan1? 'text-black font-semibold' : 'text-white'} z-20 text-black cursor-pointer`}>Monthly</h1>
         <h1 onClick={()=> handleCurrPlan(2)} className={`${isPlan2? 'text-black font-semibold' : 'text-white'} z-20 text-black cursor-pointer`}>Yearly</h1>
         <h1 onClick={()=> handleCurrPlan(3)} className={`${isPlan3? 'text-black font-semibold' : 'text-white'} z-20 text-black cursor-pointer`}>One-time</h1>
