@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 function Footer() {
   return (
-    <motion.footer className="relative text-gray-200 pb-0 pt-16 overflow-hide bg-[#121214] border-t-[1px] border-zinc-500 rounded-t-[3rem] z-[9999999999]">
+    <motion.footer className="relative text-gray-200 pb-0 pt-16 overflow-hide bg-[#121214] border-t-[1px] border-zinc-500 rounded-t-[3rem] z-[999999] lg:z-[9999999999]">
       <motion.div className="w-full px-10 mx-auto flex flex-col md:flex-row md:justify-center gap-10 md:gap-12 pb-10">
         {/* Left: Logo, tagline, social */}
         <div className="flex-1 min-w-[220px] ml-0 md:ml-8">
