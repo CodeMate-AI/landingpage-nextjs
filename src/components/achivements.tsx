@@ -2,7 +2,8 @@
 import React, { useEffect } from 'react'
 import { Montserrat } from 'next/font/google';
 import { Car } from 'lucide-react';
-import { useState } from 'react';
+import { useState,useRef } from 'react';
+import { useInView } from 'framer-motion';
 import {motion} from 'framer-motion'
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -13,7 +14,10 @@ const montserrat = Montserrat({
 function Achivements() {
 
 const [currCards,setCurrCards] = useState(0)
-
+  const [isPaused, setIsPaused] = useState(false);
+  const isMobile = window.innerWidth <= 1024;
+  const carouselRef = useRef(null);
+  const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
   const cards = [
   {
     image: "https://drive.codemate.ai/asean2.jpeg",
@@ -286,6 +290,31 @@ const [currCards,setCurrCards] = useState(0)
 ];
 
      
+  // ---- Auto slide effect ----
+  useEffect(() => {
+
+let interval
+
+if (!isMobile) {
+  interval = setInterval(() => {
+    setCurrCards((prev) => {
+      const next = prev - 375;
+      return next <= -13500 ? 0 : next; // loop back to start
+    });
+  }, 5000);
+} else {
+  interval = setInterval(() => {
+    setCurrCards((prev) => {
+      const next = prev - 345;
+      return next <= -12765 ? 0 : next; // loop back to start
+    });
+  }, 5000);
+}
+
+    return () => clearInterval(interval);
+  }, [isInView, isPaused]);
+
+
 useEffect(()=>{
   console.log(currCards);
 },[currCards])
@@ -312,11 +341,18 @@ function handleArrow2(e:string){
     }
 }
   return (
-    <div className='relative flex flex-col justify-center items-center mb-20'>
+    <div 
+
+
+    className='relative flex flex-col justify-center items-center mb-20'>
     <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-20 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent lg:text-7xl'>Talk</span> of the Town</div>
       <p className='text-xs w-[80%] mt-3 lg:mt-0 lg:text-lg lg:w-[50%] text-center text-zinc-500 '>We are recognized by some of the most recognised tech, content, and news platforms, organisations and industry experts around the globe.</p>
 
-    <div className='mt-20 flex w-[20rem] lg:w-[75.5%] overflow-hidden gap-1 lg:gap-6'>
+    <div
+      ref={carouselRef}
+      onMouseEnter={() => setIsPaused(true)} // pause on hover
+      onMouseLeave={() => setIsPaused(false)} // resume when hover ends
+    className='mt-20 flex w-[20rem] lg:w-[80.5%] overflow-hidden gap-1 lg:gap-6'>
      <motion.div animate={{x:currCards}} transition={{ type: "spring", stiffness: 300, damping: 30}} className='flex gap-6'>   
      {cards.map((e,idx)=>(
         <div key={idx}>
@@ -326,11 +362,11 @@ function handleArrow2(e:string){
      </motion.div>
     </div>
 
-    <motion.div onClick={()=>handleArrow('left')} whileHover={{opacity:1}} className='absolute hidden lg:flex  size-16 left-24 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
+    <motion.div onClick={()=>handleArrow('left')} whileHover={{opacity:1}} className='absolute hidden lg:flex  size-16 left-16 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
         <svg  xmlns="http://www.w3.org/2000/svg"  width={60}  height={60}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={1}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M21 12h-12" /><path d="M13 16l-4 -4l4 -4" /><path d="M12 3a9 9 0 1 0 0 18" /></svg>
     </motion.div>
 
-    <motion.div onClick={()=>handleArrow('right')} whileHover={{opacity:1}} className='absolute hidden lg:flex size-16 right-24 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
+    <motion.div onClick={()=>handleArrow('right')} whileHover={{opacity:1}} className='absolute hidden lg:flex size-16 right-16 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
     <svg  xmlns="http://www.w3.org/2000/svg"  width={60}  height={60}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={1}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12h12" /><path d="M11 8l4 4l-4 4" /><path d="M12 21a9 9 0 0 0 0 -18" /></svg>
     </motion.div>
 

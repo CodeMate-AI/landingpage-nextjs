@@ -563,7 +563,7 @@ function handleArrow() {
   {/*navBar*/}
 <div 
 style={{zIndex:999999999999,}}
-className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
+className='hidden lg:flex fixed  top-0 justify-center items-center w-full cursor-default'>
     <motion.div
    initial={{y:-100}}
    animate={{y:0}}
@@ -1649,7 +1649,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
                 <motion.div 
                 style={{opacity:op4}}
                 className='text-white flex flex-col gap-2'>
-          <h1 className='text-2xl'>Gonna help you in your shit..</h1>
+          <h1 className='text-2xl'>Gonna help you write quality code 20x faster</h1>
 
           <p className='text-sm opacity-50 w-[33rem]'>
             It Surely does that...
@@ -2099,16 +2099,17 @@ For Enterprises
         WebkitBackdropFilter: 'blur(20px)',
         zIndex:99999,
         }}
-  className='relative    lg:h-[35rem] lg:w-[70%] rounded-[4rem] px-8 border-y-[1px]  border-white border-opacity-50'>
+  className='lg:h-[35rem] lg:w-[70%] rounded-[4rem] px-8 border-y-[1px]  border-white border-opacity-50 flex flex-col gap-10 pb-5'>
+    <div>
       <h1 className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-left text-9xl font-semibold mt-5">
 “
 </h1>
-<div className='text-[6vw] lg:text-[2.75rem] leading-[1] font-semibold'>
+<div className='text-[6vw] lg:text-[2.75rem] leading-[1.1] font-semibold'>
 Through the insights CodeMate provides, teams are inspired to achieve what truly matters <span className='opacity-60'>— building impactful solutions, shaping future growth, and delivering measurable value.</span>
 </div>
+</div>
 
-
-<div className='mt-10 mb-10 lg:mt-[7vw]'>
+<div className=''>
   <h1 className='font-semibold'>Ayush Singhal</h1>
   <p className='opacity-50'>Founder of CodeMate AI</p>
 </div>
@@ -2194,8 +2195,11 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 <div className={`${montserrat.className} lg:pb-32 pb-20  w-full bg-zinc-950 text-white z-50`}>
  <div className='pt-[5rem] lg:pt-[15rem]'>
  <div className="px-8 lg:px-16 ">
- <h1 className=' text-2xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Trusted</span> by more than</h1>
- <p className=' mt-2  lg:text-2xl opacity-60'><span className=''>100,000 Developers around the globe and </span> from startups to Fortune 500 companies</p>
+ <h1 className=' text-2xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Trusted </span> by <Counter   
+       className='text-2xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
+       direction="up"
+       targetValue={100000}/>+</h1>
+ <p className=' mt-2  lg:text-2xl opacity-60'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
  </div>
 
 
