@@ -2083,10 +2083,13 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
 
 {/* enterprises section  */}
 <div className=' w-full pt-16 px-8 lg:px-14 overflow-hidden'>
-<h1 className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent lg:text-[2rem] font-semibold ">
-For Enterprises
+<h1 className="text-3xl lg:text-[2rem] text-center lg:text-start font-bold">
+  <span className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">For </span>
+  <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+    Enterprises
+  </span>
 </h1>
-<div className='mt-5 lg:mt-1 text-sm lg:text-[2.5vw] lg:text-6xl flex flex-col lg:gap-1 font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent pb-1'>
+<div className='mt-5 lg:mt-7 text-sm lg:text-[2.1vw] lg:text-6xl flex flex-col lg:gap-1 font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent pb-1 text-center lg:text-start'>
 <h1>From Legacy Systems to Next-Gen Apps -</h1>
 <h1>CodeMate AI Accelerates Your Enterprise Journey.</h1>
 </div>
@@ -2195,11 +2198,11 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 <div className={`${montserrat.className} lg:pb-32 pb-20  w-full bg-zinc-950 text-white z-50`}>
  <div className='pt-[5rem] lg:pt-[15rem]'>
  <div className="px-8 lg:px-16 ">
- <h1 className=' text-2xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Trusted </span> by <Counter   
-       className='text-2xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
+ <h1 className=' text-3xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter   
+       className='text-3xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
        direction="up"
        targetValue={100000}/>+</h1>
- <p className=' mt-2  lg:text-2xl opacity-60'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
+ <p className=' mt-2  lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
  </div>
 
 
