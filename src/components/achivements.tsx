@@ -15,7 +15,7 @@ function Achivements() {
 
 const [currCards,setCurrCards] = useState(0)
   const [isPaused, setIsPaused] = useState(false);
-  const isMobile = window.innerWidth <= 1024;
+  const [isMobile,setIsMobile] = useState(false);
   const carouselRef = useRef(null);
   const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
   const cards = [
@@ -318,6 +318,17 @@ if (!isMobile) {
 useEffect(()=>{
   console.log(currCards);
 },[currCards])
+
+useEffect(() => {
+  // This will run only on the client
+  setIsMobile(window.innerWidth <= 1024? true : false);
+
+  // Optional: handle resize
+  const handleResize = () => setIsMobile(window.innerWidth <= 1024? true : false);
+  window.addEventListener('resize', handleResize);
+
+  return () => window.removeEventListener('resize', handleResize);
+}, []);
 
  function handleArrow(e:string){
     if(e === 'left'){
