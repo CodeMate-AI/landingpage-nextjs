@@ -291,28 +291,31 @@ const [currCards,setCurrCards] = useState(0)
 
      
   // ---- Auto slide effect ----
-  useEffect(() => {
+useEffect(() => {
+  let interval: number; // ← use number for browser environment
 
-let interval
+  if (isInView && !isPaused) {
+    if (!isMobile) {
+      interval = window.setInterval(() => {
+        setCurrCards((prev) => {
+          const next = prev - 375;
+          return next <= -13500 ? 0 : next;
+        });
+      }, 5000);
+    } else {
+      interval = window.setInterval(() => {
+        setCurrCards((prev) => {
+          const next = prev - 345;
+          return next <= -12765 ? 0 : next;
+        });
+      }, 5000);
+    }
+  }
 
-if (!isMobile) {
-  interval = setInterval(() => {
-    setCurrCards((prev) => {
-      const next = prev - 375;
-      return next <= -13500 ? 0 : next; // loop back to start
-    });
-  }, 5000);
-} else {
-  interval = setInterval(() => {
-    setCurrCards((prev) => {
-      const next = prev - 345;
-      return next <= -12765 ? 0 : next; // loop back to start
-    });
-  }, 5000);
-}
+  return () => window.clearInterval(interval); // ← clearInterval works with number
+}, [isInView, isPaused, isMobile]);
 
-    return () => clearInterval(interval);
-  }, [isInView, isPaused]);
+
 
 
 useEffect(()=>{
