@@ -1529,7 +1529,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
       className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
         {/* <Safari url='codemate.ai' imageSrc='chatss.png' className='dark'/> */}
         {/* <img src="https://drive.codemate.ai/playground.gif" className='w-full h-full object-fit rounded-xl' alt="" /> */}
-        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='cora.mp4'></motion.video>
+        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/CORA.mp4'></motion.video>
         </motion.div>}
      
        {isShowProd &&      <motion.div 
@@ -1540,7 +1540,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
      animate={{opacity:1,filter:'blur(0px)'}}
      className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
       {/* <Safari url='codemate.ai' imageSrc='buildss.png' className='dark'/> */}
-        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='prR.mp4'></motion.video>
+        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/PR_review.mp4'></motion.video>
       </motion.div>}  
 
      {isShowProd && <motion.div
@@ -1552,7 +1552,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
      className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl  overflow-hidden'>
       {/* <Safari url='codemate.ai' className='dark object-cover 
       object-left-top' imageSrc='eduation.png'/> */}
-        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='doc.mp4'></motion.video>
+        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/Documentation.mp4'></motion.video>
      </motion.div>}
         
       {!isRef2 && !isRef3 &&      
@@ -2005,7 +2005,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
  <motion.div style={{x:mx}} className='flex pl-16 gap-5'>
    <div className='flex flex-col gap-2'>
    <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-    <img src="https://drive.codemate.ai/debug-code.gif" alt="" className='h-full w-full'/>
+    <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/Debug.mp4'></motion.video>
    </div>
    <h1 className='font-bold text-2xl'>Debug</h1>
    <p className='w-full text-sm opacity-70'>Your AI debugger that identifies and resolves errors quickly, so you can keep building without interruptions.</p>
@@ -2014,7 +2014,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
 
    <div className='flex flex-col gap-2'>
       <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-    <img src="https://drive.codemate.ai/review-code.gif" alt="" className='h-full w-full'/>
+        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/CodeReview.mp4'></motion.video>
    </div>
    <h1 className='font-bold text-2xl'>Review</h1>
    <p className='w-full text-sm opacity-70'>Your AI reviewer that ensures cleaner, more reliable code so you can ship with confidence.</p>
@@ -2022,7 +2022,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
 
    <div className='flex flex-col gap-2'>
       <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-    <img src="https://drive.codemate.ai/optimise-code.gif" alt="" className='h-full w-full'/>
+            <motion.video autoPlay loop muted playsInline  initial={{scale:1.05}} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/optimize.mp4'></motion.video>
    </div>
    <h1 className='font-bold text-2xl'>Optimize</h1>
    <p className='w-full text-sm opacity-70'>Your AI optimizer that refactors and enhances code performance so you can deliver faster, smoother applications.</p>
