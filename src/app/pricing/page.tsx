@@ -405,7 +405,7 @@ function YearlyPlans() {
        
 
        <div className='pl-5 pt-5'>
-        <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl font-semibold mb-1'>Orgnisation</span>
+        <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl font-semibold mb-1'>Organization</span>
           <p className='opacity-70'>For SMBs and Enterprises</p>
           <div className='text-4xl font-bold mt-5 '>Let's Talk</div>
          
@@ -687,7 +687,7 @@ function MonthlyPlans() {
        
 
        <div className='pl-5 pt-5'>
-       <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl font-semibold mb-1'>Orgnisation</span>
+       <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl font-semibold mb-1'>Organization</span>
           <p className='opacity-70'>For SMBs and Enterprises</p>
           <div className='text-4xl font-bold mt-5 '>Let's Talk</div>
          

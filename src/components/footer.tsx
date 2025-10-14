@@ -57,6 +57,7 @@ function Footer() {
           <ul className="space-y-2 text-xs md:text-xs">
             <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Privacy Policy</a></li>
             <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="hover:underline">Terms of Service</a></li>
+            <li><img src="https://skypro.co.id/wp-content/uploads/2019/01/iso-27001.png" alt=""  className="object-fit size-24 mt-5 invert brightness-0 opacity-80"/></li>
           </ul>
         </div>
       </motion.div>

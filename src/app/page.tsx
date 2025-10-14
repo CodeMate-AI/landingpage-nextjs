@@ -563,7 +563,7 @@ function handleArrow() {
   {/*navBar*/}
 <div 
 style={{zIndex:999999999999,}}
-className='hidden lg:flex fixed  top-0 justify-center items-center w-full'>
+className='hidden lg:flex fixed  top-0 justify-center items-center w-full cursor-default'>
     <motion.div
    initial={{y:-100}}
    animate={{y:0}}
@@ -1529,7 +1529,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
       className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
         {/* <Safari url='codemate.ai' imageSrc='chatss.png' className='dark'/> */}
         {/* <img src="https://drive.codemate.ai/playground.gif" className='w-full h-full object-fit rounded-xl' alt="" /> */}
-        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='cora.mp4'></motion.video>
+        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/CORA.mp4'></motion.video>
         </motion.div>}
      
        {isShowProd &&      <motion.div 
@@ -1540,7 +1540,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
      animate={{opacity:1,filter:'blur(0px)'}}
      className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
       {/* <Safari url='codemate.ai' imageSrc='buildss.png' className='dark'/> */}
-        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='prR.mp4'></motion.video>
+        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/PR_review.mp4'></motion.video>
       </motion.div>}  
 
      {isShowProd && <motion.div
@@ -1552,7 +1552,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
      className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl  overflow-hidden'>
       {/* <Safari url='codemate.ai' className='dark object-cover 
       object-left-top' imageSrc='eduation.png'/> */}
-        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='doc.mp4'></motion.video>
+        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/Documentation.mp4'></motion.video>
      </motion.div>}
         
       {!isRef2 && !isRef3 &&      
@@ -1649,7 +1649,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
                 <motion.div 
                 style={{opacity:op4}}
                 className='text-white flex flex-col gap-2'>
-          <h1 className='text-2xl'>Gonna help you in your shit..</h1>
+          <h1 className='text-2xl'>Gonna help you write quality code 20x faster</h1>
 
           <p className='text-sm opacity-50 w-[33rem]'>
             It Surely does that...
@@ -2005,7 +2005,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
  <motion.div style={{x:mx}} className='flex pl-16 gap-5'>
    <div className='flex flex-col gap-2'>
    <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-    <img src="https://drive.codemate.ai/debug-code.gif" alt="" className='h-full w-full'/>
+    <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/Debug.mp4'></motion.video>
    </div>
    <h1 className='font-bold text-2xl'>Debug</h1>
    <p className='w-full text-sm opacity-70'>Your AI debugger that identifies and resolves errors quickly, so you can keep building without interruptions.</p>
@@ -2014,7 +2014,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
 
    <div className='flex flex-col gap-2'>
       <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-    <img src="https://drive.codemate.ai/review-code.gif" alt="" className='h-full w-full'/>
+        <motion.video autoPlay loop muted playsInline initial={{scale:1.05}} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/CodeReview.mp4'></motion.video>
    </div>
    <h1 className='font-bold text-2xl'>Review</h1>
    <p className='w-full text-sm opacity-70'>Your AI reviewer that ensures cleaner, more reliable code so you can ship with confidence.</p>
@@ -2022,7 +2022,7 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
 
    <div className='flex flex-col gap-2'>
       <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-    <img src="https://drive.codemate.ai/optimise-code.gif" alt="" className='h-full w-full'/>
+            <motion.video autoPlay loop muted playsInline  initial={{scale:1.05}} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/optimize.mp4'></motion.video>
    </div>
    <h1 className='font-bold text-2xl'>Optimize</h1>
    <p className='w-full text-sm opacity-70'>Your AI optimizer that refactors and enhances code performance so you can deliver faster, smoother applications.</p>
@@ -2083,10 +2083,13 @@ Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops
 
 {/* enterprises section  */}
 <div className=' w-full pt-16 px-8 lg:px-14 overflow-hidden'>
-<h1 className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent lg:text-[2rem] font-semibold ">
-For Enterprises
+<h1 className="text-3xl lg:text-[2rem] text-center lg:text-start font-bold">
+  <span className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">For </span>
+  <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+    Enterprises
+  </span>
 </h1>
-<div className='mt-5 lg:mt-1 text-sm lg:text-[2.5vw] lg:text-6xl flex flex-col lg:gap-1 font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent pb-1'>
+<div className='mt-5 lg:mt-7 text-sm lg:text-[2.1vw] lg:text-6xl flex flex-col lg:gap-1 font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent pb-1 text-center lg:text-start'>
 <h1>From Legacy Systems to Next-Gen Apps -</h1>
 <h1>CodeMate AI Accelerates Your Enterprise Journey.</h1>
 </div>
@@ -2099,16 +2102,17 @@ For Enterprises
         WebkitBackdropFilter: 'blur(20px)',
         zIndex:99999,
         }}
-  className='relative    lg:h-[35rem] lg:w-[70%] rounded-[4rem] px-8 border-y-[1px]  border-white border-opacity-50'>
+  className='lg:h-[35rem] lg:w-[70%] rounded-[4rem] px-8 border-y-[1px]  border-white border-opacity-50 flex flex-col gap-10 pb-5'>
+    <div>
       <h1 className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-left text-9xl font-semibold mt-5">
 “
 </h1>
-<div className='text-[6vw] lg:text-[2.75rem] leading-[1] font-semibold'>
+<div className='text-[6vw] lg:text-[2.75rem] leading-[1.1] font-semibold'>
 Through the insights CodeMate provides, teams are inspired to achieve what truly matters <span className='opacity-60'>— building impactful solutions, shaping future growth, and delivering measurable value.</span>
 </div>
+</div>
 
-
-<div className='mt-10 mb-10 lg:mt-[7vw]'>
+<div className=''>
   <h1 className='font-semibold'>Ayush Singhal</h1>
   <p className='opacity-50'>Founder of CodeMate AI</p>
 </div>
@@ -2194,8 +2198,11 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 <div className={`${montserrat.className} lg:pb-32 pb-20  w-full bg-zinc-950 text-white z-50`}>
  <div className='pt-[5rem] lg:pt-[15rem]'>
  <div className="px-8 lg:px-16 ">
- <h1 className=' text-2xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Trusted</span> by more than</h1>
- <p className=' mt-2  lg:text-2xl opacity-60'><span className=''>100,000 Developers around the globe and </span> from startups to Fortune 500 companies</p>
+ <h1 className=' text-3xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter   
+       className='text-3xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
+       direction="up"
+       targetValue={100000}/>+</h1>
+ <p className=' mt-2  lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
  </div>
 
 
