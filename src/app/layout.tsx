@@ -14,7 +14,7 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   title: "CodeMate AI | Your Professional And Secured AI Pair Programmer",
-  description: "This is my Next.js app",
+  description: "Code 10x faster as CodeMate search, navigate and understand complex codebases for you.",
   icons: {
     icon: "/logoC.svg", // path relative to public/
   },
