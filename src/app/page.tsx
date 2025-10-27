@@ -638,7 +638,8 @@ className='hidden lg:flex fixed  top-0 justify-center items-center w-full cursor
   </motion.span></motion.h1>
         {/* <motion.h1 onMouseEnter={()=>setIsProducts(state=>!state)} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center  justify-center items-center opacity-65 z-50 `}>OpenSource</motion.h1> */}
        <motion.h1 onMouseEnter={()=>{setIsProducts(false);setIsOS(false)}} onClick={() => productShowRef.current?.scrollIntoView({ behavior: "smooth" })} whileHover={{opacity:1}} className='opacity-65'>Features</motion.h1>
-       <motion.h1 onMouseEnter={()=>{setIsProducts(false);setIsOS(false)}} whileHover={{opacity:1}}  onClick={()=>{router.push('pricing')}} className='opacity-65'>Pricing</motion.h1>
+      <motion.h1 onMouseEnter={()=>{setIsProducts(false);setIsOS(false)}} whileHover={{opacity:1}}  onClick={()=>{router.push('pricing')}} className='opacity-65'>Pricing</motion.h1>
+       <motion.h1 onMouseEnter={()=>{setIsProducts(false);setIsOS(false)}} whileHover={{opacity:1}}  onClick={()=>{router.push('blog')}} className='opacity-65'>Blog</motion.h1>
        <a href='https://edu.codemate.ai/' target='_blank'>
        <motion.h1 onMouseEnter={()=>{setIsProducts(false);setIsOS(false)}} whileHover={{opacity:1}}  className='opacity-65'>Education</motion.h1>
        </a>
@@ -1099,8 +1100,11 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
         }
       </motion.div>
       <motion.div  onClick={()=> router.push('/pricing')} whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>04</p></motion.div>
+
+      <motion.div  onClick={()=> router.push('/blog')} whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>BLOG</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
+
        <a href='https://edu.codemate.ai/' target='_blank'>
-      <motion.div   whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
+      <motion.div   whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
        </a>
       <a href="https://app.codemate.ai" target="_blank"> 
       <motion.div whileHover={{opacity:0.6}} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>GET STARTED</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
@@ -1139,7 +1143,7 @@ className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
 
 
   {/* hero section  */}
-  <div ref={heroRef2} className='h-[100vh] w-full overflow-x-hidden'>
+  <div  ref={heroRef2} className='h-[100vh] w-full overflow-x-hidden'>
   <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
    <div style={{cursor:`url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto`}} ref={heroRef} className='relative h-screen w-full z-50 overflow-hidden cursor-default'>
 
