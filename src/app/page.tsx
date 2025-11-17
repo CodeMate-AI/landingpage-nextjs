@@ -27,7 +27,6 @@ import ReviewCodeEditor from '@/components/motion-components/rEditor';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
 import Achivements from '@/components/achivements';
-import { Opacity } from '@tsparticles/engine';
 import { cn } from './utils/cn';
 
 const montserrat = Montserrat({
