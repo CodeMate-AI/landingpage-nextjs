@@ -563,11 +563,14 @@ function Page() {
   return (
     <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className={`${montserrat.className} bg-zinc-950`} >
       {/* SWE Bench announcement banner */}
-      <div className="relative z-[999999]">
+      <div
+        className="relative z-[999999]">
         {showAnnouncement && (
-          <div
-            ref={announcementRef}
-            className="z-70 relative w-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] text-white">
+          <motion.div
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.3, delay: 0.5 }}
+            className="z-70 ease-in-out relative w-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] text-white">
             <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-3 px-4 py-2 text-center sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:text-left md:px-6 md:py-3">
               <p className="text-xs font-medium leading-snug md:text-sm lg:text-base">
                 Cora ranked <span className="font-semibold">#1 amongst proprietary coding agents on SWE Bench</span> — verified benchmarking.
@@ -591,7 +594,7 @@ function Page() {
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
 
 
@@ -607,38 +610,14 @@ function Page() {
         </AnimatePresence>
         {/* arrow for going to hero section */}
 
-
-        {/* bottom blur */}
-        {/* <div className='fixed h-[2%] w-full bg-gradient-to-t from-white/30 to-transparent backdrop-blur-[5px] bottom-0 z-40 opacity-100'>
-</div>
-<div className='fixed h-[4%] w-full bg-gradient-to-t from-white/30 to-transparent backdrop-blur-[10px] bottom-0 z-40 opacity-100'>
-</div>
-<div className='fixed h-[6%] w-full bg-gradient-to-t from-zinc-950/30 to-transparent backdrop-blur-[9px] bottom-0 z-40 opacity-100'>
-</div>
-<div className='fixed h-[8%] w-full bg-gradient-to-t from-zinc-950/30 to-transparent backdrop-blur-[6px] bottom-0 z-40 opacity-100'>
-</div>
-<div className='fixed h-[10%] w-full bg-gradient-to-t from-zinc-950/30 to-transparent backdrop-blur-[5px] bottom-0 z-40 opacity-100'>
-</div>
-<div className='fixed h-[12%] w-full bg-gradient-to-t from-zinc-950/30 to-transparent backdrop-blur-[4px] bottom-0 z-40 opacity-100'>
-</div>
-<div className='fixed h-[14%] w-full bg-gradient-to-t from-zinc-950/30 to-transparent backdrop-blur-[3px] bottom-0 z-40 opacity-100'>
-</div>
-<div className='fixed h-[16%] w-full bg-gradient-to-t from-zinc-950/30 to-transparent backdrop-blur-[2px] bottom-0 z-40 opacity-100'>
-</div>
-<div className='fixed h-[18%] w-full bg-gradient-to-t from-zinc-950/30 to-transparent backdrop-blur-[1px] bottom-0 z-40 opacity-100'>
-</div> */}
-        {/* bottom blur */}
-
-
-
         {/*navBar*/}
         <div
           style={{ top: `${desktopNavTop}px` }}
-          className="hidden lg:flex fixed justify-center items-center w-full cursor-default z-70 transition-all duration-300">
+          className="hidden lg:flex fixed justify-center items-center w-full cursor-default z-70 transition-all duration-300 linear relative">
           <motion.div
-            initial={{ y: -100 }}
+            initial={{ y: -110 }}
             animate={{ y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            transition={{ duration:0.2, delay: 0}}
             // initial={{opacity:0,filter:'blur(10px)'}}
             // animate={{opacity:1,filter:'blur(0px)'}}
             // transition={{duration:1,delay:7}}
