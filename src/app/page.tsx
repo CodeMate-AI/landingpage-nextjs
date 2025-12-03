@@ -650,7 +650,7 @@ function Page() {
             }}
             className={`${hasScrolled ? 'mt-5' : 'mt-2'} w-fit bg-opacity-65 z-[9999999999] rounded-lg ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''} transition-all duration-300`}>
             <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
-              <div className='flex gap-[35vw]  justify-between items-center w-full h-10'>
+              <div className='flex justify-between items-center w-full h-10 gap-[18vw] xl:gap-[28vw] 2xl:gap-[35vw]'>
 
                 <div className="h-full w-[13vw] flex justify-center overflow-hidden">
                   <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="" className='cursor-pointer' />
