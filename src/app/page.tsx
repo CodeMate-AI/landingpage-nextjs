@@ -37,7 +37,7 @@ const montserrat = Montserrat({
 
 const montserrat2 = Montserrat({
   subsets: ['latin'],
-  weight: ['200'], // Add what you need
+  weight: ['200'], 
   variable: '--font-montserrat', // Optional, for CSS variable usage
 });
 
