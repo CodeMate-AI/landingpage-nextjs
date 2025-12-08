@@ -565,7 +565,7 @@ function Page() {
       {/* SWE Bench announcement banner */}
       <div
         className="relative z-[999999]">
-        {showAnnouncement && (
+        {showAnnouncement && !isMenu && (
           <motion.div
           initial={{ y: -100 }}
           animate={{ y: 0 }}
@@ -961,7 +961,7 @@ function Page() {
           <img src="/codemateLogo.svg" alt="" className='h-full w-[30vw]' />
           <motion.div
             onClick={() => { setMenu(state => !state); setIsNBack(false) }} className={`${montserrat.className}   flex gap-2 text-[4vw]  justify-center items-center cursor-pointer text-right  `}>
-            Menu
+            {/* Menu */}
             <Menu
               className={cn(
                 " w-[5vw] h-[5vw] transition-all duration-200",
