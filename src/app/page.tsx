@@ -574,7 +574,7 @@ function Page() {
   >
     <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-2 md:px-6 md:py-2.5">
       <div className="flex items-center gap-3 flex-1 min-w-0">
-       <p className="text-xs font-medium leading-snug md:text-sm lg:text-base truncate">
+       <p className="text-xs font-medium leading-snug md:text-sm lg:text-base line-clamp-2">
                   Cora ranked <span className="font-semibold">#1 amongst proprietary coding agents on SWE Bench</span> — verified benchmarking.
                 </p>
       </div>
