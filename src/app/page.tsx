@@ -575,15 +575,7 @@ function Page() {
               <p className="text-xs font-medium leading-snug md:text-sm lg:text-base">
                 Cora ranked <span className="font-semibold">#1 amongst proprietary coding agents on SWE Bench</span> — verified benchmarking.
               </p>
-              <div className="flex w-full flex-col items-stretch gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
-                <a
-                  href={SWE_BENCH_BLOG_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-black shadow-sm transition hover:bg-zinc-100 md:px-4 md:py-1.5 md:text-sm"
-                >
-                  Read blog
-                </a>
+              <div className="flex w-full flex items-stretch justify-center gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
                 <button
                   type="button"
                   aria-label="Close announcement"
@@ -592,6 +584,14 @@ function Page() {
                 >
                   <X className="h-3 w-3 md:h-4 md:w-4" />
                 </button>
+                <a
+                  href={SWE_BENCH_BLOG_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-black shadow-sm transition hover:bg-zinc-100 md:px-4 md:py-1.5 md:text-sm"
+                >
+                  Read blog
+                </a>
               </div>
             </div>
           </motion.div>
@@ -902,7 +902,7 @@ function Page() {
         {/*navBar for mobile*/}
         <div
           style={{ zIndex: 999999, top: `${mobileNavTop}px` }}
-          className="lg:hidden fixed flex justify-center items-center w-full transition-all duration-300">
+          className="hidden fixed flex justify-center items-center w-full transition-all duration-300">
           <motion.div
             initial={{ y: -100 }}
             animate={{ y: 0 }}
@@ -957,7 +957,7 @@ function Page() {
           initial={{ y: -100 }}
           animate={{ y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
-          className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 py-[1.1rem] justify-between items-center z-[99999999999] `}>
+          className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 py-[1.1rem] justify-between items-center z-[99999999999] sticky top-0`}>
           <img src="/codemateLogo.svg" alt="" className='h-full w-[30vw]' />
           <motion.div
             onClick={() => { setMenu(state => !state); setIsNBack(false) }} className={`${montserrat.className}   flex gap-2 text-[4vw]  justify-center items-center cursor-pointer text-right  `}>
@@ -1402,7 +1402,7 @@ function Page() {
 
 
             </div>
-            <motion.div style={{ height: shadingHeight }} className="absolute -bottom-2 left-0 right-0  bg-gradient-to-b from-zinc-950/0 to-zinc-950 z-50" />
+            {/* <motion.div style={{ height: shadingHeight }} className="absolute -bottom-2 left-0 right-0  bg-gradient-to-b from-zinc-950/0 to-zinc-950 z-50" /> */}
           </div>
         </BackgroundGradientAnimation>
       </div>
