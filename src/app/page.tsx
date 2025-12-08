@@ -565,37 +565,41 @@ function Page() {
       {/* SWE Bench announcement banner */}
       <div
         className="relative z-[999999]">
-        {showAnnouncement && !isMenu && (
-          <motion.div
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 0.3, delay: 0.5 }}
-            className="z-70 ease-in-out relative w-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] text-white">
-            <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-3 px-4 py-2 text-center sm:flex-row sm:items-center sm:justify-between sm:gap-4 sm:text-left md:px-6 md:py-3">
-              <p className="text-xs font-medium leading-snug md:text-sm lg:text-base">
-                Cora ranked <span className="font-semibold">#1 amongst proprietary coding agents on SWE Bench</span> — verified benchmarking.
-              </p>
-              <div className="flex w-full flex items-stretch justify-center gap-2 sm:w-auto sm:flex-row sm:items-center sm:justify-end">
-                <button
-                  type="button"
-                  aria-label="Close announcement"
-                  onClick={() => setShowAnnouncement(false)}
-                  className="flex items-center justify-center rounded-full bg-white/10 p-1 text-white transition hover:bg-white/20"
-                >
-                  <X className="h-3 w-3 md:h-4 md:w-4" />
-                </button>
-                <a
-                  href={SWE_BENCH_BLOG_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-black shadow-sm transition hover:bg-zinc-100 md:px-4 md:py-1.5 md:text-sm"
-                >
-                  Read blog
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
+       {showAnnouncement && !isMenu && (
+  <motion.div
+    initial={{ y: -100 }}
+    animate={{ y: 0 }}
+    transition={{ duration: 0.3, delay: 0.5 }}
+    className="z-70 ease-in-out relative w-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] text-white"
+  >
+    <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-3 md:px-6 md:py-4 gap-4">
+      {/* Center content */}
+      <div className="flex flex-1 flex-col items-center gap-2.5">
+        <p className="text-xs font-medium leading-snug md:text-sm lg:text-base text-center">
+          Cora ranked <span className="font-semibold">#1 amongst proprietary coding agents on SWE Bench</span> — verified benchmarking.
+        </p>
+        <a
+          href={SWE_BENCH_BLOG_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-black shadow-sm transition hover:bg-zinc-100 md:px-4 md:py-1.5 md:text-sm whitespace-nowrap"
+        >
+          Read blog
+        </a>
+      </div>
+
+      {/* Close button - right side */}
+      <button
+        type="button"
+        aria-label="Close announcement"
+        onClick={() => setShowAnnouncement(false)}
+        className="flex-shrink-0 flex items-center justify-center rounded-full bg-white/10 p-1 text-white transition hover:bg-white/20"
+      >
+        <X className="h-3 w-3 md:h-4 md:w-4" />
+      </button>
+    </div>
+  </motion.div>
+)}
 
 
         {/* arrow for going to hero section */}
@@ -613,7 +617,7 @@ function Page() {
         {/*navBar*/}
         <div
           style={{ top: `${desktopNavTop}px` }}
-          className="hidden lg:flex fixed justify-center items-center w-full cursor-default z-70 transition-all duration-300 linear relative">
+          className="hidden lg:flex fixed justify-center items-center w-full cursor-default z-70 transition-all duration-300 linear ">
           <motion.div
             initial={{ y: -110 }}
             animate={{ y: 0 }}
@@ -957,6 +961,13 @@ function Page() {
           initial={{ y: -100 }}
           animate={{ y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
+            style={{
+              background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
+              boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              zIndex: 99999999999,
+            }}
           className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 py-[1.1rem] justify-between items-center z-[99999999999] sticky top-0`}>
           <img src="/codemateLogo.svg" alt="" className='h-full w-[30vw]' />
           <motion.div
