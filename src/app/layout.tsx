@@ -83,8 +83,7 @@ export default function RootLayout({
             name: "CodeMate AI",
             description:
               "Code 10x faster as CodeMate search, navigate and understand complex codebases for you.",
-            operatingSystem: "Web",
-            offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+            operatingSystem: ["Web", "iOS", "Android", "Windows", "MacOS", "Linux", "VS Code Extension"],
           }),
         }}
       />
