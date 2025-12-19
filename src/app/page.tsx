@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
-import { ChevronUp, Menu, Weight, X } from 'lucide-react';
+import { ChevronUp, Menu, Weight, X, ChevronRight } from 'lucide-react';
 import { FloatingNav } from '@/components/ui/floating-navbar';
 import { IconArrowLeft, IconArrowRight, IconArrowBadgeDown } from '@tabler/icons-react';
 import StaggeredMenu from '@/components/ui/Menu';
@@ -186,6 +186,7 @@ function Page() {
   const [isP1, setIsP1] = useState(false);
   const [isP2, setIsP2] = useState(false);
   const [isAuto, setIsAuto] = useState(false);
+  const [isCoraBlocked, setIsCoraBlocked] = useState(true);
   const [isShowProd, setIsShowProd] = useState(true);
   const [isProds, setIsProds] = useState(false);
   const [isFix, setIsFix] = useState(false);
@@ -205,6 +206,8 @@ function Page() {
   const Ref2 = useRef<HTMLDivElement>(null);
   const Ref3 = useRef<HTMLDivElement>(null);
   const productShowRef = useRef<HTMLDivElement>(null);
+  const codeMateImageRef = useRef<HTMLImageElement>(null);
+  const unlockCopyRef = useRef<HTMLParagraphElement>(null);
   const codeOverlayRef = useRef<HTMLDivElement>(null);
   const codeOverlayRef2 = useRef<HTMLDivElement>(null);
   const [isLoad, setIsLoad] = useState(false);
@@ -231,6 +234,21 @@ function Page() {
   const { scrollYProgress: PShowYProg } = useScroll({
     target: productShowRef,
     offset: ['start start', 'end start']
+  });
+
+  const { scrollYProgress: PShowVYProg } = useScroll({
+    target: productShowRef,
+    offset: ['start end', 'end start']
+  });
+
+  const { scrollYProgress: codeMateImageProg } = useScroll({
+    target: codeMateImageRef,
+    offset: ['start end', 'end start']
+  });
+
+  const { scrollYProgress: unlockYProg } = useScroll({
+    target: unlockCopyRef,
+    offset: ['start end', 'end start']
   });
 
   const { scrollYProgress: testiYProg } = useScroll({
@@ -263,18 +281,32 @@ function Page() {
 
 
   ///for productShowcase 
-  const div1X = useTransform(PShowYProg, [0, 0.3], [1200, 0]);
-  const div2X = useTransform(PShowYProg, [0.3, 0.6], [1800, 0]);
-  const div3X = useTransform(PShowYProg, [0.5, 0.7], [2400, 0]);
+  // const div1X = useTransform(PShowYProg, [0, 0.3], [1200, 0]);
+  // const div2X = useTransform(PShowYProg, [0.3, 0.6], [1800, 0]);
+  // const div3X = useTransform(PShowYProg, [0.5, 0.7], [2400, 0]);
 
   const height = useTransform(PShowYProg, [0, 1], [0, 600]);
 
   const titlesX = useTransform(PShowYProg, [0, 1], [0, -550]);
+  const headerY = useTransform(PShowYProg, [0.6, 0.8], [0, -200]);
 
   const op1 = useTransform(PShowYProg, [0, 0.2, 0.4], [1, 1, 0]);
   const op2 = useTransform(PShowYProg, [0.2, 0.3, 0.6], [0.2, 1, 0]);
-  const op3 = useTransform(PShowYProg, [0.4, 0.5, 0.8], [0.2, 1, 0]);
+  const op3 = useTransform(PShowYProg, [0.4, 0.5, 0.85, 0.9], [0.2, 1, 1, 0]); // Kept opaque longer
   const op4 = useTransform(PShowYProg, [0.6, 0.8], [0.2, 1]);
+
+  // Video overlap fixes - fade out previous videos
+  const opVideo1 = useTransform(PShowYProg, [0, 0.2, 0.25], [1, 1, 0]);
+
+  const opVideo2 = useTransform(PShowYProg, [0.2, 0.25, 0.45, 0.5], [0, 1, 1, 0]);
+  const scaleVideo2 = useTransform(PShowYProg, [0.2, 0.25], [0.8, 1]);
+
+  const opVideo3 = useTransform(PShowYProg, [0.45, 0.5, 0.95, 1], [0, 1, 1, 0]);
+  const scaleVideo3 = useTransform(PShowYProg, [0.45, 0.5], [0.8, 1]);
+  const xVideo3 = useTransform(PShowYProg, [0.85, 1], [0, -350]); // Delay slide until text is up
+
+  const opVideo4 = useTransform(PShowYProg, [0.75, 0.97, 1.0], [0, 1, 1]);
+  const scaleVideo4 = useTransform(PShowYProg, [0.8, 0.97], [0.8, 1]);
 
   ///for mobile feature section
   const mx = useTransform(MFYProg, [0, 1], [0, -1200]);
@@ -400,7 +432,7 @@ function Page() {
       setIsRef2(true);
       editor2Ref.current?.classList.remove('hidden');
 
-    } else if (latest > 0.1) {
+    } else if (latest > 0) {
       // Show Ref1 as flex, hide Ref2, hide editor2, keep drawer2 visible
       drawer2Ref.current?.classList.remove('hidden');
       setIsRef1(true);
@@ -438,19 +470,54 @@ function Page() {
   ///for new products section
 
 
-  useMotionValueEvent(PShowYProg, 'change', (latest) => {
-    if (latest > 0 && latest < 0.9) {
+  useMotionValueEvent(PShowVYProg, 'change', (latest) => {
+    if (latest > 0 && latest < 1.0) {
       setIsProds(true);
-    } else {
+    }
+    if (latest <= 0) {
       setIsProds(false);
     }
 
-    if (latest > 0.3) {
+  });
+
+  // Extend persistence via p1YProg
+  useMotionValueEvent(p1YProg, 'change', (latest) => {
+    // Extended to 0.9 to cover the full "Seemlessly integrated" / Debug section
+    if (latest < 0.9 && latest > 0) {
+      setIsProds(true);
+    }
+    // Hide as soon as we scroll above the section
+    if (latest <= 0) {
+      setIsProds(false);
+    }
+    // Turn off when we scroll past the debug section
+    if (latest >= 0.9) {
+      setIsProds(false);
+    }
+  });
+
+
+  useMotionValueEvent(PShowYProg, 'change', (latest) => {
+
+    if (latest >= 0.79) {
       setIsShowProd(false);
     } else {
       setIsShowProd(true);
     }
+    // Prevent video overlay from lingering when scrolling outside the section
+    if (latest <= 0.2 || latest >= 0.95) {
+      setIsProds(false);
+    }
   });
+
+  // Block CORA.mp4 while the CodeMate Chat image is on screen
+  useMotionValueEvent(codeMateImageProg, 'change', (latest) => {
+    const imageVisible = latest > 0 && latest < 1;
+    setIsCoraBlocked(imageVisible);
+  });
+
+  // Hide product overlay once the unlock paragraph leaves view (e.g., scrolling up past it)
+
 
   ////for new prods
   useMotionValueEvent(PYProg, 'change', (latest) => {
@@ -491,6 +558,7 @@ function Page() {
       setHasScrolled(false);
     }
   });
+  const shouldShowAnnouncement = showAnnouncement;
 
   // Track announcement banner height for responsive navbar offset
   useEffect(() => {
@@ -560,83 +628,84 @@ function Page() {
     });
   }
 
+  const handleAnnouncementClick = () => {
+    window.open(SWE_BENCH_BLOG_URL, '_blank', 'noopener,noreferrer');
+  };
+
+
   return (
-    <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className={`${montserrat.className} bg-zinc-950`} >
-      {/* SWE Bench announcement banner */}
-      <div
-        className="relative z-[999999]">
-      {showAnnouncement && !isMenu && (
-  <motion.div
-    initial={{ y: -100 }}
-    animate={{ y: 0 }}
-    transition={{ duration: 0.3, delay: 0.5 }}
-    className="z-70 ease-in-out relative w-full bg-gradient-to-r from-[#8b5cf6] via-[#a855f7] to-[#ec4899] text-white"
-  >
-    <div className="mx-auto flex w-full max-w-6xl items-center justify-between gap-4 px-4 py-2 md:px-6 md:py-2.5">
-      <div className="flex items-center gap-3 flex-1 min-w-0">
-       <p className="text-xs font-medium leading-snug md:text-sm lg:text-base line-clamp-2">
-                  Cora ranked <span className="font-semibold">#1 amongst proprietary coding agents on SWE Bench</span> — verified benchmarking.
-                </p>
-      </div>
-      
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <a
-          href={SWE_BENCH_BLOG_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rounded-full bg-white px-3 py-1 text-xs font-semibold text-black shadow-sm transition hover:bg-zinc-100 md:px-4 md:py-1.5 md:text-sm whitespace-nowrap"
-        >
-          Read blog
-        </a>
-        <button
-          type="button"
-          aria-label="Close announcement"
-          onClick={() => setShowAnnouncement(false)}
-          className="flex items-center justify-center rounded-full bg-white/10 p-1.5 text-white transition hover:bg-white/20 flex-shrink-0"
-        >
-          <X className="h-3 w-3 md:h-4 md:w-4" />
-        </button>
-      </div>
-    </div>
-  </motion.div>
-)}
+    <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className={`${montserrat.className} bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]`} >
 
-        {/* arrow for going to hero section */}
-        <AnimatePresence>
-          {isArrowV &&
-            <motion.div initial={{ opacity: 0, filter: 'blur(20px)' }} animate={{ opacity: 1, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(20px)' }} transition={{ duration: 1 }} className="fixed bottom-7 right-7 z-[9999999999]">
-              <motion.div onClick={handleArrow} whileTap={{ scale: 1 }} whileHover={{ scale: 1.1 }} className='hidden lg:flex cursor-pointer  justify-center items-center  size-10 rounded-full bg-[#EDEADE]/90  text-black'>
-                <motion.svg animate={{ rotate: isArrow ? 180 : 0 }} transition={{ duration: 0.5 }} xmlns="http://www.w3.org/2000/svg" width={30} height={30} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-              </motion.div>
+      {/* arrow for going to hero section */}
+      <AnimatePresence>
+        {isArrowV &&
+          <motion.div initial={{ opacity: 0, filter: 'blur(20px)' }} animate={{ opacity: 1, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(20px)' }} transition={{ duration: 1 }} className="fixed bottom-7 right-7 z-[9999999999]">
+            <motion.div onClick={handleArrow} whileTap={{ scale: 1 }} whileHover={{ scale: 1.1 }} className='hidden lg:flex cursor-pointer  justify-center items-center  size-10 rounded-full bg-[#EDEADE]/90  text-black'>
+              <motion.svg animate={{ rotate: isArrow ? 180 : 0 }} transition={{ duration: 0.5 }} xmlns="http://www.w3.org/2000/svg" width={30} height={30} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
             </motion.div>
-          }
-        </AnimatePresence>
-        {/* arrow for going to hero section */}
+          </motion.div>
+        }
+      </AnimatePresence>
+      {/* arrow for going to hero section */}
 
-        {/*navBar*/}
-        <div
-          style={{ top: `${desktopNavTop}px` }}
-          className={`hidden lg:flex fixed justify-center items-center w-full cursor-default z-70 transition-all duration-300 linear ${hasScrolled ? "" : "relative"}`}>
-          <motion.div
-            initial={{ y: -110 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.2, delay: 0 }}
-            // initial={{opacity:0,filter:'blur(10px)'}}
-            // animate={{opacity:1,filter:'blur(0px)'}}
-            // transition={{duration:1,delay:7}}
-            style={{
-              background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-              boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-            }}
-            className={`${hasScrolled ? 'mt-5' : 'mt-2'} w-fit bg-opacity-65 z-[9999999999] rounded-lg ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''} transition-all duration-300`}>
-            <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
-              <div className='flex justify-between items-center w-full h-10 gap-[18vw] xl:gap-[28vw] 2xl:gap-[35vw]'>
+      {/* Announcement*/}
+      {shouldShowAnnouncement && (
+        <motion.div
+          ref={announcementRef}
+          initial={{ y: -12, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ duration: 0.3, delay: 0.4 }}
+          className="w-full flex justify-center px-1 sm:px-2 z-[999999]"
+        >
+          <div className="relative p-[1px] rounded-xl bg-[#48AEF3] w-fit max-w-[calc(100vw-1.5rem)] shadow-[0_16px_50px_rgba(0,0,0,0.45)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.55)] transition group">
+            <div
+              role="button"
+              tabIndex={0}
+              onClick={handleAnnouncementClick}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleAnnouncementClick(); } }}
+              className="flex w-full h-full items-center justify-center gap-2 rounded-xl bg-[#000000] px-2.5 py-1.5 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+            >
+              <div className="flex min-w-0 flex-1 items-center gap-1.5">
+                <span className="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/90">
+                  <div className="h-1.5 w-1.5 rounded-xl bg-[#00BFFF]" />
+                  Update
+                </span>
+                <div className="flex min-w-0 items-center gap-1 text-[12px] font-medium leading-snug">
+                  <p className="truncate max-w-[250px] text-center sm:text-left text-zinc-300">
+                    Cora is now <span className="font-semibold text-white">State-of-the-Art</span>
+                  </p>
+                  <ChevronRight className="ml-1 text-white shrink-0" size={15} strokeWidth={2} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      )}
 
-                <div className="h-full w-[13vw] flex justify-center overflow-hidden">
-                  <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="" className='cursor-pointer' />
-                  {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
+      {/*navBar*/}
+      <div
+        style={{ top: 0 }}
+        className="hidden lg:flex fixed justify-center items-center w-full cursor-default z-[999999] transition-all duration-300 linear">
+        <motion.div
+          initial={{ y: -110 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 0.2, delay: 0 }}
+          // initial={{opacity:0,filter:'blur(10px)'}}
+          // animate={{opacity:1,filter:'blur(0px)'}}
+          // transition={{duration:1,delay:7}}
+          style={{
+            background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
+            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+          }}
+          className={`${hasScrolled ? 'mt-5' : 'mt-2'} w-fit bg-opacity-65 z-[9999999999] rounded-lg ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''} transition-all duration-300`}>
+          <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
+            <div className='flex justify-between items-center w-full h-10 gap-[18vw] xl:gap-[28vw] 2xl:gap-[35vw]'>
+
+              <div className="h-full w-[13vw] flex justify-center overflow-hidden">
+                <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="" className='cursor-pointer' />
+                {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
      {IsMascot && <motion.div initial={{opacity:0,filter:'blur(20px)',x:50}} animate={{opacity:1,filter:'blur(0px)',x:-80}} transition={{duration:0.5}}>
 <svg width="50" height="40" viewBox="0 0 153 150" fill="none" xmlns="http://www.w3.org/2000/svg">
 
@@ -668,97 +737,97 @@ function Page() {
 
       </motion.div>} */}
 
-                </div>
-                <div className={`${montserrat.className} relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50`}>
-                  <span className=' flex gap-5 justify-center items-center z-50'>
-                    <motion.h1
-                      onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center  z-50  ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
-                        initial={{ rotate: 180 }}
-                        animate={{ rotate: !isProducts ? 180 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ChevronUp
-                          className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                        />
-                      </motion.span></motion.h1>
-                    <motion.h1
-                      onMouseEnter={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false) }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
-                        initial={{ rotate: 180 }}
-                        animate={{ rotate: !isOS ? 180 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ChevronUp
-                          className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                        />
-                      </motion.span></motion.h1>
-                    <motion.h1
-                      onMouseEnter={() => { setIsResources(state => !state); setIsOS(false); setIsProducts(false) }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
-                        initial={{ rotate: 180 }}
-                        animate={{ rotate: !isResources ? 180 : 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        <ChevronUp
-                          className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                        />
-                      </motion.span></motion.h1>
-                    {/* <motion.h1 onMouseEnter={()=>setIsProducts(state=>!state)} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center  justify-center items-center opacity-65 z-50 `}>OpenSource</motion.h1> */}
-                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} onClick={() => productShowRef.current?.scrollIntoView({ behavior: "smooth" })} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
-                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} onClick={() => { router.push('pricing') }} className='opacity-65'>Pricing</motion.h1>
-                    <a href='https://edu.codemate.ai/' target='_blank'>
-                      <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Education</motion.h1>
-                    </a>
-                    <a href="https://app.codemate.ai" target='_blank'>
-                      <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap`}>Get Started</motion.button>
-                    </a>
-                  </span>
+              </div>
+              <div className={`${montserrat.className} relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50`}>
+                <span className=' flex gap-5 justify-center items-center z-50'>
+                  <motion.h1
+                    onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center  z-50  ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
+                      initial={{ rotate: 180 }}
+                      animate={{ rotate: !isProducts ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ChevronUp
+                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                      />
+                    </motion.span></motion.h1>
+                  <motion.h1
+                    onMouseEnter={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false) }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
+                      initial={{ rotate: 180 }}
+                      animate={{ rotate: !isOS ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ChevronUp
+                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                      />
+                    </motion.span></motion.h1>
+                  <motion.h1
+                    onMouseEnter={() => { setIsResources(state => !state); setIsOS(false); setIsProducts(false) }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
+                      initial={{ rotate: 180 }}
+                      animate={{ rotate: !isResources ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ChevronUp
+                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                      />
+                    </motion.span></motion.h1>
+                  {/* <motion.h1 onMouseEnter={()=>setIsProducts(state=>!state)} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center  justify-center items-center opacity-65 z-50 `}>OpenSource</motion.h1> */}
+                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} onClick={() => productShowRef.current?.scrollIntoView({ behavior: "smooth" })} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
+                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} onClick={() => { router.push('pricing') }} className='opacity-65'>Pricing</motion.h1>
+                  <a href='https://edu.codemate.ai/' target='_blank'>
+                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Education</motion.h1>
+                  </a>
+                  <a href="https://app.codemate.ai" target='_blank'>
+                    <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap`}>Get Started</motion.button>
+                  </a>
+                </span>
 
-                  {isProducts &&
-                    <div className='absolute  h-[20rem] w-[31.5%] mt-[22rem] -left-11 rounded-md -z-10 '>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                        style={{
-                          boxShadow: '0 14px 25px rgba(0, 0, 0, 0.1)',
-                          backdropFilter: 'blur(50px)',
-                          WebkitBackdropFilter: 'blur(50px)'
-                        }} className=' h-[14rem] w-full   left-5 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl'>
-                        <div className="mt-5 px-5 py-1 flex flex-col gap-2">
-                          <div className='flex justify-between w-full'>
+                {isProducts &&
+                  <div className='absolute  h-[20rem] w-[31.5%] mt-[22rem] -left-11 rounded-md -z-10 '>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      style={{
+                        boxShadow: '0 14px 25px rgba(0, 0, 0, 0.1)',
+                        backdropFilter: 'blur(50px)',
+                        WebkitBackdropFilter: 'blur(50px)'
+                      }} className=' h-[14rem] w-full   left-5 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl'>
+                      <div className="mt-5 px-5 py-1 flex flex-col gap-2">
+                        <div className='flex justify-between w-full'>
+                        </div>
+                        <div className='w-full mb-1'>
+                          <h1 style={{ fontWeight: 450 }} className="text-left  mb-2">Web-Application</h1>
+                          <div className="flex flex-col gap-2 items-start">
+                            <a href="https://app.codemate.ai/chat" target="_blank">
+                              <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center gap-[6rem] opacity-70  w-full"><h1>Chat</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.div>
+                            </a>
+                            <a href='https://build.codemateai.dev/build' target='_blank'>
+                              <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[5.8rem] opacity-70"><h1>Build</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.span>
+                            </a>
                           </div>
-                          <div className='w-full mb-1'>
-                            <h1 style={{ fontWeight: 450 }} className="text-left  mb-2">Web-Application</h1>
-                            <div className="flex flex-col gap-2 items-start">
-                              <a href="https://app.codemate.ai/chat" target="_blank">
-                                <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center gap-[6rem] opacity-70  w-full"><h1>Chat</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.div>
-                              </a>
-                              <a href='https://build.codemateai.dev/build' target='_blank'>
-                                <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[5.8rem] opacity-70"><h1>Build</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.span>
-                              </a>
-                            </div>
-                          </div>
+                        </div>
 
-                          <div className='w-full '>
-                            <h1 style={{ fontWeight: 450 }} className="text-left  mb-2">VS Code Extension</h1>
-                            <div className="flex flex-col gap-2 items-start w-full">
-                              <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">
-                                <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[5.5rem] opacity-70"><h1>CORA</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.span>
-                              </a>
-                              <a href='https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate' target='_blank'>
-                                <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[0.90rem] opacity-70 text-nowrap"><h1>Chat Extension</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.span>
-                              </a>
-                            </div>
+                        <div className='w-full '>
+                          <h1 style={{ fontWeight: 450 }} className="text-left  mb-2">VS Code Extension</h1>
+                          <div className="flex flex-col gap-2 items-start w-full">
+                            <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">
+                              <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[5.5rem] opacity-70"><h1>CORA</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.span>
+                            </a>
+                            <a href='https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate' target='_blank'>
+                              <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[0.90rem] opacity-70 text-nowrap"><h1>Chat Extension</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.span>
+                            </a>
                           </div>
+                        </div>
 
-                          {/* <div className='w-full mb-1'> 
+                        {/* <div className='w-full mb-1'> 
             <h1 className="text-left font-semibold">Open-Source</h1>
           <div className="flex gap-5 w-full"> 
           <a  href=" hf.co/codemateai" target="_blank">
@@ -773,57 +842,57 @@ function Page() {
           </a>
           </div>
         </div> */}
-                          {/* <a href='app.codemate.ai' target='_blank' className='w-full'>
+                        {/* <a href='app.codemate.ai' target='_blank' className='w-full'>
         <button className='flex gap-1 justify-center items-center bg-gray-300 hover:opacity-80 text-zinc-950 rounded-sm font-semibold w-full'>Manage<svg  xmlns="http://www.w3.org/2000/svg"  width={18}  height={18}  viewBox="0 0 24 24"  fill="currentColor"  className="icon icon-tabler icons-tabler-filled icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.647 4.081a.724 .724 0 0 0 1.08 .448c2.439 -1.485 5.23 1.305 3.745 3.744a.724 .724 0 0 0 .447 1.08c2.775 .673 2.775 4.62 0 5.294a.724 .724 0 0 0 -.448 1.08c1.485 2.439 -1.305 5.23 -3.744 3.745a.724 .724 0 0 0 -1.08 .447c-.673 2.775 -4.62 2.775 -5.294 0a.724 .724 0 0 0 -1.08 -.448c-2.439 1.485 -5.23 -1.305 -3.745 -3.744a.724 .724 0 0 0 -.447 -1.08c-2.775 -.673 -2.775 -4.62 0 -5.294a.724 .724 0 0 0 .448 -1.08c-1.485 -2.439 1.305 -5.23 3.744 -3.745a.722 .722 0 0 0 1.08 -.447c.673 -2.775 4.62 -2.775 5.294 0zm-2.647 4.919a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" /></svg></button>
         </a> */}
-                        </div>
-                      </motion.div>
-                    </div>
-                  }
+                      </div>
+                    </motion.div>
+                  </div>
+                }
 
-                  {isOS &&
-                    <div className='absolute  h-[20rem] w-[25%] mt-[22rem] left-[5.8rem] rounded-md -z-10 '>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                        style={{
-                          boxShadow: '0 14px 25px rgba(0, 0, 0, 0.1)',
-                          backdropFilter: 'blur(50px)',
-                          WebkitBackdropFilter: 'blur(50px)'
-                        }} className=' h-[4.95rem] w-full  left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl'>
-                        <div className="mt-5 px-5 flex flex-col gap-2">
-                          <div className='flex justify-between w-full'>
-                            {/* <a target="_blank" href="https://cli.codemate.ai">
+                {isOS &&
+                  <div className='absolute  h-[20rem] w-[25%] mt-[22rem] left-[5.8rem] rounded-md -z-10 '>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      style={{
+                        boxShadow: '0 14px 25px rgba(0, 0, 0, 0.1)',
+                        backdropFilter: 'blur(50px)',
+                        WebkitBackdropFilter: 'blur(50px)'
+                      }} className=' h-[4.95rem] w-full  left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl'>
+                      <div className="mt-5 px-5 flex flex-col gap-2">
+                        <div className='flex justify-between w-full'>
+                          {/* <a target="_blank" href="https://cli.codemate.ai">
           <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Terminal</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
           <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
           </div></motion.span>
           </a> */}
-                            {/* <a target="_blank" href='https://edu.codemate.ai/'>
+                          {/* <a target="_blank" href='https://edu.codemate.ai/'>
           <motion.span whileHover={{opacity:1}} className="flex justify-center items-center gap-2 opacity-80"><h1>Education</h1><div className="size-7 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
           <motion.svg initial={{rotate:50,opacity:0.7}} xmlns="http://www.w3.org/2000/svg"  width={20}  height={20}  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth={2}  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
           </div></motion.span>
           </a> */}
+                        </div>
+                        <div className='w-full mb-1 mt-1'>
+                          {/* <h1 className="text-left font-semibold mb-2">Web-Application</h1> */}
+                          <div className="flex flex-col gap-2 items-start">
+                            <a href="https://huggingface.co/codemateai" target="_blank">
+                              <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[2.2rem] opacity-80"><h1>Models</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.span>
+                            </a>
+                            <a href='https://cli.codemate.ai/' target='_blank'>
+                              <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[1.5rem] opacity-80"><h1>Terminal</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.span>
+                            </a>
                           </div>
-                          <div className='w-full mb-1 mt-1'>
-                            {/* <h1 className="text-left font-semibold mb-2">Web-Application</h1> */}
-                            <div className="flex flex-col gap-2 items-start">
-                              <a href="https://huggingface.co/codemateai" target="_blank">
-                                <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[2.2rem] opacity-80"><h1>Models</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.span>
-                              </a>
-                              <a href='https://cli.codemate.ai/' target='_blank'>
-                                <motion.span whileHover={{ opacity: 1 }} className="flex justify-center items-center gap-[1.5rem] opacity-80"><h1>Terminal</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.span>
-                              </a>
-                            </div>
-                          </div>
+                        </div>
 
 
 
-                          {/* <div className='w-full mb-1'> 
+                        {/* <div className='w-full mb-1'> 
             <h1 className="text-left font-semibold">Open-Source</h1>
           <div className="flex gap-5 w-full"> 
           <a  href=" hf.co/codemateai" target="_blank">
@@ -838,96 +907,96 @@ function Page() {
           </a>
           </div>
         </div> */}
-                          {/* <a href='app.codemate.ai' target='_blank' className='w-full'>
+                        {/* <a href='app.codemate.ai' target='_blank' className='w-full'>
         <button className='flex gap-1 justify-center items-center bg-gray-300 hover:opacity-80 text-zinc-950 rounded-sm font-semibold w-full'>Manage<svg  xmlns="http://www.w3.org/2000/svg"  width={18}  height={18}  viewBox="0 0 24 24"  fill="currentColor"  className="icon icon-tabler icons-tabler-filled icon-tabler-settings"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14.647 4.081a.724 .724 0 0 0 1.08 .448c2.439 -1.485 5.23 1.305 3.745 3.744a.724 .724 0 0 0 .447 1.08c2.775 .673 2.775 4.62 0 5.294a.724 .724 0 0 0 -.448 1.08c1.485 2.439 -1.305 5.23 -3.744 3.745a.724 .724 0 0 0 -1.08 .447c-.673 2.775 -4.62 2.775 -5.294 0a.724 .724 0 0 0 -1.08 -.448c-2.439 1.485 -5.23 -1.305 -3.745 -3.744a.724 .724 0 0 0 -.447 -1.08c-2.775 -.673 -2.775 -4.62 0 -5.294a.724 .724 0 0 0 .448 -1.08c-1.485 -2.439 1.305 -5.23 3.744 -3.745a.722 .722 0 0 0 1.08 -.447c.673 -2.775 4.62 -2.775 5.294 0zm-2.647 4.919a3 3 0 1 0 0 6a3 3 0 0 0 0 -6z" /></svg></button>
         </a> */}
-                        </div>
-                      </motion.div>
-                    </div>
-                  }
-
-                  {isResources &&
-                    <div className='absolute  h-[20rem] w-[25%] mt-[22rem] left-[14.8rem] rounded-md -z-10 '>
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.3 }}
-                        style={{
-                          boxShadow: '0 14px 25px rgba(0, 0, 0, 0.1)',
-                          backdropFilter: 'blur(50px)',
-                          WebkitBackdropFilter: 'blur(50px)'
-                        }} className=' h-[6.95rem] w-full  left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl'>
-                        <div className="mt-5 px-5 flex flex-col gap-2">
-                          <div className='flex justify-between w-full'>
-                          </div>
-                          <div className='w-full mb-1 mt-1'>
-                            {/* <h1 className="text-left font-semibold mb-2">Web-Application</h1> */}
-                            <div className="flex flex-col gap-2 items-start">
-                              <a href="https://docs.codemate.ai/" target="_blank" className='w-[80%]'>
-                                <motion.span whileHover={{ opacity: 1 }} className="flex justify-between items-center gap-[2.2rem] opacity-80"><h1>Docs</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.span>
-                              </a>
-                              <a href='https://blog.codemate.ai/' target='_blank' className='w-[80%]'>
-                                <motion.span whileHover={{ opacity: 1 }} className="flex justify-between items-center gap-[1.5rem] opacity-80"><h1>Blogs</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.span>
-                              </a>
-                              <a href='https://calendar.app.google/Gyyh913R8hyczmBFA' target='_blank' className='w-[80%]'>
-                                <motion.span whileHover={{ opacity: 1 }} className="flex justify-between items-center gap-[1.5rem] opacity-80"><h1>Contact</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
-                                  <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                                </div></motion.span>
-                              </a>
-                            </div>
-                          </div>
-                        </div>
-                      </motion.div>
-                    </div>
-                  }
-                </div>
-
-                {isProducts &&
-                  <div onMouseEnter={() => setIsProducts(false)} className='fixed h-screen w-full z-40' />
+                      </div>
+                    </motion.div>
+                  </div>
                 }
-                {isOS &&
-                  <div onMouseEnter={() => setIsOS(false)} className='fixed h-screen w-full z-40' />
-                }
+
                 {isResources &&
-                  <div onMouseEnter={() => setIsResources(false)} className='fixed h-screen w-full z-40' />
+                  <div className='absolute  h-[20rem] w-[25%] mt-[22rem] left-[14.8rem] rounded-md -z-10 '>
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                      style={{
+                        boxShadow: '0 14px 25px rgba(0, 0, 0, 0.1)',
+                        backdropFilter: 'blur(50px)',
+                        WebkitBackdropFilter: 'blur(50px)'
+                      }} className=' h-[6.95rem] w-full  left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl'>
+                      <div className="mt-5 px-5 flex flex-col gap-2">
+                        <div className='flex justify-between w-full'>
+                        </div>
+                        <div className='w-full mb-1 mt-1'>
+                          {/* <h1 className="text-left font-semibold mb-2">Web-Application</h1> */}
+                          <div className="flex flex-col gap-2 items-start">
+                            <a href="https://docs.codemate.ai/" target="_blank" className='w-[80%]'>
+                              <motion.span whileHover={{ opacity: 1 }} className="flex justify-between items-center gap-[2.2rem] opacity-80"><h1>Docs</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.span>
+                            </a>
+                            <a href='https://blog.codemate.ai/' target='_blank' className='w-[80%]'>
+                              <motion.span whileHover={{ opacity: 1 }} className="flex justify-between items-center gap-[1.5rem] opacity-80"><h1>Blogs</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.span>
+                            </a>
+                            <a href='https://calendar.app.google/Gyyh913R8hyczmBFA' target='_blank' className='w-[80%]'>
+                              <motion.span whileHover={{ opacity: 1 }} className="flex justify-between items-center gap-[1.5rem] opacity-80"><h1>Contact</h1><div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center">
+                                <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                              </div></motion.span>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </motion.div>
+                  </div>
                 }
               </div>
-              {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
+
+              {isProducts &&
+                <div onMouseEnter={() => setIsProducts(false)} className='fixed h-screen w-full z-40' />
+              }
+              {isOS &&
+                <div onMouseEnter={() => setIsOS(false)} className='fixed h-screen w-full z-40' />
+              }
+              {isResources &&
+                <div onMouseEnter={() => setIsResources(false)} className='fixed h-screen w-full z-40' />
+              }
             </div>
-          </motion.div>
-        </div>
-        {/*navBar*/}
+            {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
+          </div>
+        </motion.div>
+      </div>
+      {/*navBar*/}
 
-        {/*navBar for mobile*/}
-        <div
-          style={{ zIndex: 999999, top: `${mobileNavTop}px` }}
-          className="hidden fixed flex justify-center items-center w-full transition-all duration-300">
-          <motion.div
-            initial={{ y: -100 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
-            // initial={{opacity:0,filter:'blur(10px)'}}
-            // animate={{opacity:1,filter:'blur(0px)'}}
-            // transition={{duration:1,delay:7}}
-            style={{
-              background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-              boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              zIndex: 99999999999,
-            }}
-            className={`w-full bg-opacity-65 z-[99999999999] ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''}`}>
-            <div className='flex  h-full w-full text-white px-[2rem] py-2 '>
-              <div className='flex justify-between items-center w-full h-10'>
+      {/*navBar for mobile*/}
+      <div
+        style={{ zIndex: 999999, top: 0 }}
+        className="lg:hidden fixed flex justify-center items-center w-full transition-all duration-300">
+        <motion.div
+          initial={{ y: -100 }}
+          animate={{ y: 0 }}
+          transition={{ duration: 1, delay: 0.5 }}
+          // initial={{opacity:0,filter:'blur(10px)'}}
+          // animate={{opacity:1,filter:'blur(0px)'}}
+          // transition={{duration:1,delay:7}}
+          style={{
+            background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
+            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            zIndex: 99999999999,
+          }}
+          className={`w-full bg-opacity-65 z-[99999999999] ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''}`}>
+          <div className='flex  h-full w-full text-white px-[2rem] py-2 '>
+            <div className='flex justify-between items-center w-full h-10'>
 
-                <div className="h-full w-[30vw] flex justify-center overflow-hidden">
-                  <img src="/codemateLogo.svg" alt="" className='hidden' />
+              <div className="h-full w-[30vw] flex justify-center overflow-hidden">
+                <img src="/codemateLogo.svg" alt="" className='hidden' />
 
-                  {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
+                {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
      {IsMascot && <motion.div initial={{opacity:0,filter:'blur(20px)',x:50}} animate={{opacity:1,filter:'blur(0px)',x:0}} transition={{duration:0.5}}>
 <svg width="155" height="150" viewBox="0 0 53 50" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M131.78 150H39.4727L60.2412 110.845H152.55L131.78 150ZM39.4727 39.0674V150L0.242188 125.04V14.1074L39.4727 39.0674ZM71.7422 64C77.8173 64 82.7422 68.9249 82.7422 75C82.7422 81.0751 77.8173 86 71.7422 86C65.6671 86 60.7422 81.0751 60.7422 75C60.7422 68.9249 65.6671 64 71.7422 64ZM111.742 64C117.817 64 122.742 68.9249 122.742 75C122.742 81.0751 117.817 86 111.742 86C105.667 86 100.742 81.0751 100.742 75C100.742 68.9249 105.667 64 111.742 64ZM131.78 39.1553H39.4727L60.2412 0H152.55L131.78 39.1553Z" fill="url(#paint0_linear_2014_66)"/>
@@ -942,16 +1011,15 @@ function Page() {
 
       </motion.div>} */}
 
-                </div>
-
-
-
-
               </div>
-              {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
+
+
+
+
             </div>
-          </motion.div>
-        </div>
+            {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
+          </div>
+        </motion.div>
       </div>
 
       {/* mobile menu */}
@@ -965,8 +1033,9 @@ function Page() {
             boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
+            top: 0
           }}
-          className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 py-[1.1rem] justify-between items-center z-[99999999999] sticky top-0`}>
+          className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 py-[1.1rem] justify-between items-center z-[99999999999]`}>
           <img src="/codemateLogo.svg" alt="" className='h-full w-[30vw]' />
           <motion.div
             onClick={() => { setMenu(state => !state); setIsNBack(false) }} className={`${montserrat.className}   flex gap-2 text-[4vw]  justify-center items-center cursor-pointer text-right  `}>
@@ -1317,8 +1386,8 @@ function Page() {
                 <motion.div
                   // animate={{y:[120,35]}}
                   // transition={{duration:1,delay:6}}    
-                  className='absolute top-[16vh] lg:left-[3.3vw] 
-      text-[14vw]   lg:text-[8vw] leading-[1] font-semibold flex flex-col pb-1  pl-[8vw]  lg:pl-12  mt-5 z-50 !xxlHerotext'>
+                  className='absolute top-[8vh] lg:left-[3.3vw] 
+      text-[14vw]   lg:text-[8vw] leading-[1] font-semibold flex flex-col pb-1  pl-[8vw]  lg:pl-12  mt-0 z-50 !xxlHerotext'>
                   <div className={`${montserrat.className} `}>
                     {/* {title.map((e,idx)=>(
       <motion.h1
@@ -1482,7 +1551,7 @@ function Page() {
                     </motion.div>
                     <span className={`${montserrat.className} text-4xl flex flex-col gap-2 mt-3`}>
                       {/* <h1>Codemate Webapp</h1> */}
-                      <p className='opacity-70 text-[1rem] w-[57vw] leading-[1.125]'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
+                      <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-[57vw] leading-[1.125]'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
                     </span>
                   </div>
 
@@ -1641,7 +1710,7 @@ function Page() {
 
 
                     <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="chat.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                      <img ref={codeMateImageRef} src="chat.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CodeMate Chat</h1>
@@ -1672,14 +1741,12 @@ function Page() {
               initial={{ opacity: 0, filter: 'blur(20px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 0.8 }}
-              className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-50'>
+              className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-10'>
 
 
-              {isShowProd && <motion.div
+              {isShowProd && !isCoraBlocked && <motion.div
                 key={1}
-                exit={{ opacity: 0, filter: 'blur(20px)' }}
-                initial={{ opacity: 0, filter: 'blur(20px)' }}
-                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                style={{ opacity: opVideo1 }}
                 className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
                 {/* <Safari url='codemate.ai' imageSrc='chatss.png' className='dark'/> */}
                 {/* <img src="https://drive.codemate.ai/playground.gif" className='w-full h-full object-fit rounded-xl' alt="" /> */}
@@ -1688,10 +1755,7 @@ function Page() {
 
               {isShowProd && <motion.div
                 key={2}
-                style={{ x: div1X }}
-                exit={{ opacity: 0, filter: 'blur(20px)' }}
-                initial={{ opacity: 0, filter: 'blur(20px)' }}
-                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                style={{ scale: scaleVideo2, opacity: opVideo2 }}
                 className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
                 {/* <Safari url='codemate.ai' imageSrc='buildss.png' className='dark'/> */}
                 <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/PR_review.mp4'></motion.video>
@@ -1699,10 +1763,7 @@ function Page() {
 
               {isShowProd && <motion.div
                 key={3}
-                style={{ x: div2X }}
-                exit={{ opacity: 0, filter: 'blur(20px)' }}
-                initial={{ opacity: 0, filter: 'blur(20px)' }}
-                animate={{ opacity: 1, filter: 'blur(0px)' }}
+                style={{ scale: scaleVideo3, opacity: opVideo3, x: xVideo3 }}
                 className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl  overflow-hidden'>
                 {/* <Safari url='codemate.ai' className='dark object-cover 
       object-left-top' imageSrc='eduation.png'/> */}
@@ -1711,7 +1772,7 @@ function Page() {
 
               {!isRef2 && !isRef3 &&
                 <motion.div
-                  style={{ x: div3X }} exit={{ opacity: 0, filter: 'blur(20px)' }} key={4} className='absolute left-[30rem] h-[30vw] w-[58vw] rounded-xl  text-white z-50'>
+                  style={{ scale: scaleVideo4, opacity: opVideo4 }} exit={{ opacity: 0, filter: 'blur(20px)' }} key={4} className='absolute left-[30rem] h-[30vw] w-[58vw] rounded-xl  text-white z-50'>
                   <motion.div style={{ x: xE }} className='h-full w-full overflow-y-auto'>
                     <CodeOverlay ref={codeOverlayRef} />
 
@@ -1729,12 +1790,12 @@ function Page() {
           className='relative h-[200vw] w-full bg-zinc-950'>
 
           <div className={`${montserrat.className} sticky top-5 z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-20 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
-            <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-5'>
+            {/* Added motion.div and headerY style for alignment fix */}
+            <motion.div style={{ y: headerY }} className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-5'>
               <span className='z-50'>
                 What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> </span>
               <h1>with  CodeMate AI.</h1>
-              <div className='top-0 absolute w-full h-full bg-zinc-950 -z-10' />
-            </div>
+            </motion.div>
           </div>
 
 
@@ -2287,7 +2348,7 @@ function Page() {
         </div>
 
         <div className='w-full flex flex-col lg:flex-row  justify-center items-center gap-5  lg:gap-[1.25] mt-10 '>
-          <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col  gap-2  border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3'
+          <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6  border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
             style={{
               background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
               boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -2296,15 +2357,15 @@ function Page() {
               zIndex: 99999,
             }}
           >
-            <h1 className='text-left text-2xl lg:text-3xl font-semibold mt-[5.5rem] lg:mt-24  bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>Long-term code memory that learns from your legacy systems.</h1>
+            <motion.img initial={{ scale: 1.2 }} src="1st icon (3).svg" alt="" className="object-fit brightness-90 size-[20%]" />
+            <h1 className='text-left text-2xl lg:text-3xl font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>Long-term code memory that learns from your legacy systems.</h1>
             {/* <p className='text-xs lg:text-sm opacity-50'>
     Codemate helps you streamline and synchronize your codebase across knowledge bases, ensuring consistency, reducing redundancy, and enabling your team to focus on innovation and faster delivery.
   </p> */}
-            <motion.img initial={{ scale: 1.2 }} src="1st icon (3).svg" alt="" className="absolute object-fit top-5 left-7 lg:top-5 lg:left-1 brightness-90 size-[17%]" />
           </div>
 
           <div className='flex flex-col gap-5 lg:flex-row lg:gap-[1.25]'>
-            <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col gap-2   border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3'
+            <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6   border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
               style={{
                 background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
                 boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -2313,13 +2374,13 @@ function Page() {
                 zIndex: 99999,
               }}
             >
-              <h1 className=' text-left text-2xl lg:text-3xl font-semibold  mt-[5.5rem] lg:mt-24  bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>Hybrid, on-device architecture — secure, scalable, and cost-efficient.</h1>
+              <motion.img initial={{ scale: 1 }} src="icon2.svg" alt="" className="object-fit brightness-90 size-[25%]" />
+              <h1 className=' text-left text-2xl lg:text-3xl font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>Hybrid, on-device architecture — secure, scalable, and cost-efficient.</h1>
               {/* <p className='text-xs lg:text-sm opacity-50'>
 Run it seamlessly in your environment with Codemate, ensuring smooth integration with your existing workflows. Codemate adapts to your setup, minimizing disruption while maximizing efficiency, so your team can maintain focus on delivering quality code without added complexity.
   </p> */}
-              <motion.img initial={{ scale: 1 }} src="icon2.svg" alt="" className="object-fit absolute top-5 left-6 lg:left-0 brightness-90 size-[20%]" />
             </div>
-            <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col  border-x-[1px] border-y-[0.5px]   border-white border-opacity-20 gap-2 px-7 lg:px-3'
+            <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start border-x-[1px] border-y-[0.5px]   border-white border-opacity-20 gap-6 px-7 lg:px-3 py-5'
               style={{
                 background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
                 boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -2328,11 +2389,11 @@ Run it seamlessly in your environment with Codemate, ensuring smooth integration
                 zIndex: 99999,
               }}
             >
-              <h1 className=' text-left text-2xl lg:text-3xl font-semibold mt-[5.5rem] lg:mt-24  bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>AI coding made accessible for both developers and non-developers.</h1>
+              <motion.img initial={{ scale: 1 }} src="e3.svg" alt="" className="object-fit brightness-90 size-[25%]" />
+              <h1 className=' text-left text-2xl lg:text-3xl font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>AI coding made accessible for both developers and non-developers.</h1>
               {/* <p className='text-xs lg:text-sm opacity-50'>
 Codemate’s full-stack nature bridges the gap between developers and non-developers, enabling seamless collaboration, simplifying workflows, and boosting productivity across projects.
   </p> */}
-              <motion.img initial={{ scale: 1 }} src="e3.svg" alt="" className="object-fit absolute top-5 left-6 lg:left-0 brightness-90 size-[20%]" />
             </div>
           </div>
         </div>
