@@ -657,7 +657,7 @@ function Page() {
           transition={{ duration: 0.3, delay: 0.4 }}
           className="w-full flex justify-center px-1 sm:px-2 z-[999999]"
         >
-          <div className="relative p-[1px] rounded-xl bg-[#48AEF3] w-fit max-w-[calc(100vw-1.5rem)] shadow-[0_16px_50px_rgba(0,0,0,0.45)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.55)] transition group">
+          <div className="relative p-[0.5px] rounded-xl bg-[#48AEF3] w-fit max-w-[calc(100vw-1.5rem)] shadow-[0_16px_50px_rgba(0,0,0,0.45)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.55)] transition group">
             <div
               role="button"
               tabIndex={0}
