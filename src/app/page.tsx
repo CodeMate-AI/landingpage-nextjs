@@ -1741,7 +1741,7 @@ function Page() {
               initial={{ opacity: 0, filter: 'blur(20px)' }}
               animate={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ duration: 0.8 }}
-              className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-10'>
+              className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-10 pointer-events-none'>
 
 
               {isShowProd && !isCoraBlocked && <motion.div
