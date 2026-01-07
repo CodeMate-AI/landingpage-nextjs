@@ -535,7 +535,7 @@ function MonthlyPlans() {
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
       <path d="M12 7a5 5 0 1 1 -4.995 5.217l-.005 -.217l.005 -.217a5 5 0 0 1 4.995 -4.783z" />
     </svg>
-    <span>Unlimited internet seaches.</span>
+    <span>Unlimited internet searches.</span>
   </div>
 
   <div className="flex gap-1 items-center">
