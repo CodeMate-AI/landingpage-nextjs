@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
 
-import { Montserrat } from 'next/font/google';
+import { Montserrat, Mulish } from 'next/font/google';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -53,6 +53,9 @@ export default function RootLayout({
     <html lang="en" className="">
       <head>
         <title>CodeMate AI | Your Professional And Secured AI Pair Programmer</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet"></link>
       </head>
       <body
         className={`${montserrat.className} antialiased bg-zinc-950 text-white dark`}
