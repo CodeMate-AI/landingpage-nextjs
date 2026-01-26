@@ -38,6 +38,7 @@ html {
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -71,6 +72,7 @@ html {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -80,6 +82,7 @@ html {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -88,25 +91,29 @@ html {
 @theme inline {
   --animate-aurora: aurora 8s ease-in-out infinite alternate;
 
-  
+
 
   @keyframes aurora {
     0% {
       background-position: 0% 50%;
       transform: rotate(-5deg) scale(0.9);
     }
+
     25% {
       background-position: 50% 100%;
       transform: rotate(5deg) scale(1.1);
     }
+
     50% {
       background-position: 100% 50%;
       transform: rotate(-3deg) scale(0.95);
     }
+
     75% {
       background-position: 50% 0%;
       transform: rotate(3deg) scale(1.05);
     }
+
     100% {
       background-position: 0% 50%;
       transform: rotate(-5deg) scale(0.9);
@@ -121,18 +128,22 @@ html {
 }
 
 ::-webkit-scrollbar-track {
-  background-color: black; /* scrollbar track background */
+  background-color: black;
+  /* scrollbar track background */
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #3f3f46;  /* the draggable bar */
+  background-color: #3f3f46;
+  /* the draggable bar */
   border-radius: 1px;
   min-height: 60px;
 }
 
 body {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;     /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .white-space-pre-line {
@@ -140,22 +151,22 @@ body {
 }
 
 .logo {
-            display: inline-block;
-            height: 100px;
-            width: 350px;
-            /* Added width to make logos of equal height and width */
-          
-            vertical-align: middle;
-            filter: grayscale(100%) brightness(0) invert(1);
-            object-fit: contain;
-            /* Ensures logos do not look stretched or shrunk */
-          }
+  display: inline-block;
+  height: 100px;
+  width: 350px;
+  /* Added width to make logos of equal height and width */
+
+  vertical-align: middle;
+  filter: grayscale(100%) brightness(0) invert(1);
+  object-fit: contain;
+  /* Ensures logos do not look stretched or shrunk */
+}
 
 
 
 .custom-cursor {
   cursor: url("/cursor.svg") 16 16, auto;
-}       
+}
 
 
 @media (min-width: 768px) {
@@ -171,14 +182,124 @@ body {
 }
 
 .MenuText {
-  font-weight: 510; /* bold */
+  font-weight: 510;
+  /* bold */
 }
 
 @media (min-width: 1400px) and (min-height: 900px) {
-  .xxlHero{
-     margin-top: 4.5vw;
+  .xxlHero {
+    margin-top: 4.5vw;
   }
-  .xxlHerotext{
+
+  .xxlHerotext {
     font-size: 15vw;
   }
+}
+
+/* Custom Slider Styles */
+.slider::-webkit-slider-thumb {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 3px solid #1e293b;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  transition: all 0.2s ease;
+}
+
+.slider::-webkit-slider-thumb:hover {
+  background: #2563eb;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.3);
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3b82f6;
+  cursor: pointer;
+  border: 3px solid #1e293b;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
+  transition: all 0.2s ease;
+}
+
+.slider::-moz-range-thumb:hover {
+  background: #2563eb;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.3);
+}
+
+/* Text Gradient Utilities */
+
+/* Bright Gradients */
+.text-gradient-cyan {
+  background: linear-gradient(90deg, #06b6d4 0%, #ffffff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-blue {
+  background: linear-gradient(90deg, #3b82f6 0%, #60a5fa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-purple {
+  background: linear-gradient(90deg, #8b5cf6 0%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-rainbow {
+  background: linear-gradient(90deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gray & Darker Gradients */
+.text-gradient-gray {
+  background: linear-gradient(90deg, #71717a 0%, #e4e4e7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-dark-gray {
+  background: linear-gradient(90deg, #27272a 0%, #71717a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-muted {
+  background: linear-gradient(90deg, #52525b 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-slate {
+  background: linear-gradient(90deg, #475569 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-dark-blue {
+  background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-dark-purple {
+  background: linear-gradient(90deg, #581c87 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
