@@ -146,20 +146,22 @@ export async function fetchAndCategorizePlans(): Promise<CategorizedPlans> {
 
 const STATIC_BUILD_FEATURES: Record<string, string[]> = {
     'pro': [
-        "Unlimited internet searches",
-        "Unlimited cloud knowledge base",
-        "Unlimited autocomplete",
-        "Chat access",
-        "Knowledge Base",
-        "Pro mode access",
+        "200 requests per day",
+        "Unlimited image uploads and processing",
+        "Figma-to-code conversion",
+        "Document (PDF, DOC, TXT, DOCX )Support",
+        "Instant deployment with shareable links",
+        "Source code download capability",
     ],
     'teams': [
-        "Everything in Pro",
-        "Team Management",
-        "Centralized Billing",
-        "Priority Support",
-        "Shared Knowledge Base",
-        "Admin Console"
+        "400 requests per day",
+        "Unlimited image uploads and processing",
+        "Figma-to-code conversion",
+        "Voice Input Support",
+        "Document (PDF, DOC, TXT, DOCX )Support",
+        "Custom Domain",
+        "Instant deployment with shareable links",
+        "Source code download capability"
     ]
 }
 
