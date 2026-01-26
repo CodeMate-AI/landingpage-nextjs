@@ -119,9 +119,9 @@ function Page() {
 
   const coraPlan = {
     id: 4,
-    name: "Cora Addons",
-    title: "Cora Addons",
-    description: "Pay-as-you-go AI assistance credits",
+    name: "Cora",
+    title: "Cora",
+    description: "Low-code AI Coding Agent for complex SDLC tasks",
     currency: "USD",
     highlight: false,
     features: [

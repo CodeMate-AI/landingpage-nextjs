@@ -141,7 +141,7 @@ const PlanCard = ({ planInfo }: any) => {
                             </div>
                         ) : (
                             <div className="w-full">
-                                <div className="text-3xl font-bold text-white"> {planInfo.title == "Cora Credits" ? "Starts at $20" : "Let's Talk"}</div>
+                                <div className="text-3xl font-bold text-white"> {planInfo.title == "Cora" ? "Pay-as you go" : "Let's Talk"}</div>
                             </div>
                         )}
 
