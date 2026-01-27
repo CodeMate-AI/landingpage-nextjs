@@ -110,7 +110,7 @@ export default function EventOffer({
                                     {/* CTA & Toggle Row */}
                                     <div className="flex flex-col sm:flex-row items-center gap-4 lg:justify-start justify-center">
                                         <motion.a
-                                            href="https://app.codemate.ai"
+                                            href="https://codemate.ai/pricing"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             whileHover={{ scale: 1.05 }}
