@@ -18,6 +18,7 @@ import CompactCustomCredits from './components/CompactCustomCredits';
 import { fetchAndCategorizePlans, convertToPlanInfo, formatLimitValue, type CategorizedPlans, type Plan, type PlanLimits } from '@/utils/planUtils';
 import CustomPlanBuilder from './components/CustomPlanBuilder';
 import FreeTrialBanner from './components/FreeTrialBanner';
+import EventOffer from './components/EventOffer';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -34,6 +35,7 @@ function Page() {
   const [isPlan2, setIsPlan2] = useState(false);
   const [isPlan3, setIsPlan3] = useState(false);
   const [IsMascot, setIsMascot] = useState(false);
+  const [showEventPopup, setShowEventPopup] = useState(true);
 
   // State for API plans
   const [categorizedPlans, setCategorizedPlans] = useState<CategorizedPlans | null>(null);
@@ -254,6 +256,13 @@ function Page() {
 
       {/* Free Trial Promotional Banner */}
       {/* <FreeTrialBanner /> */}
+      {/* <EventOffer
+        isOpen={showEventPopup}
+        onClose={() => setShowEventPopup(false)}
+        badgeText="Republic Day Special"
+        offerText="Flat 50% OFF • Save $500"
+        discountLabel="50% OFF"
+      /> */}
 
       <div className='flex justify-center mt-10 mb-10 border border-zinc-500 w-fit mx-auto rounded-full p-1 bg-white/5'>
         <div
