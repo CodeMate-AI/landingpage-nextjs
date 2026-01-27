@@ -28,6 +28,7 @@ import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
 import Achivements from '@/components/achivements';
 import { cn } from './utils/cn';
+import EventOffer from './pricing/components/EventOffer';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -187,6 +188,7 @@ function Page() {
   const [isP2, setIsP2] = useState(false);
   const [isAuto, setIsAuto] = useState(false);
   const [isCoraBlocked, setIsCoraBlocked] = useState(true);
+  const [showEventPopup, setShowEventPopup] = useState(true);
   const [isShowProd, setIsShowProd] = useState(true);
   const [isProds, setIsProds] = useState(false);
   const [isFix, setIsFix] = useState(false);
@@ -1506,9 +1508,18 @@ function Page() {
    </div> */}
       {/* enter section */}
 
-
-
       {/* scrolling bento */}
+
+
+      <EventOffer
+        isOpen={showEventPopup}
+        onClose={() => setShowEventPopup(false)}
+        badgeText="Republic Day Special"
+        offerText="Flat 77% OFF"
+        discountLabel="50% OFF"
+        imageSrc='https://backend.v3.codemateai.dev/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
+      />
+
       <div ref={prodRef} className='lg:h-[410vh] w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
         <h1 className=' font-mono pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
 
