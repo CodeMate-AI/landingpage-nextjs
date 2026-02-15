@@ -191,7 +191,7 @@ function Page() {
           className={`mt-5 w-[90%]  bg-opacity-65 z-[9999999999] rounded-lg border-y-[1px]   border-gray-400 border-opacity-10`}>
           <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
             <div className='flex   justify-between items-center w-full h-10'>
-              <div className="h-full w-[13rem] flex justify-center overflow-hidden">
+              <div className="h-fit w-[14rem] flex justify-center overflow-hidden">
                 <img onClick={() => router.push('/')} src="/codemateLogo.svg" alt="" className="cursor-pointer" />
               </div>
               <div className={`flex gap-5 text-md  justify-center items-center cursor-pointer text-right `}>
@@ -229,8 +229,8 @@ function Page() {
           }}
           className={`mt-5 w-[90%]  bg-opacity-65 z-[9999999999] rounded-lg border-y-[1px]   border-gray-400 border-opacity-10`}>
           <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
-            <div className='flex   justify-between items-center w-full h-10'>
-              <div className="h-full w-[25vw] flex justify-center overflow-hidden">
+            <div className='flex   justify-between items-center w-full h-fit'>
+              <div className="h-fit w-[30vw] flex justify-center overflow-hidden">
                 <img src="/codemateLogo.svg" alt="" />
 
 
@@ -348,7 +348,7 @@ function Page() {
               {categorizedPlans.build.map((plan, index) => {
                 // Mark the middle plan as recommended
                 // const isRecommended = index === Math.floor(categorizedPlans.build.length / 2 - 1);
-                const isRecommended = true;
+                const isRecommended = false;
                 return (
                   <PlanCard
                     key={plan._id}
@@ -415,7 +415,7 @@ function Page() {
               {categorizedPlans.c0.map((plan, index) => {
                 // Mark the middle plan as recommended
                 // const isRecommended = index === Math.floor(categorizedPlans.c0.length / 2 - 1);
-                const isRecommended = true;
+                const isRecommended = false;
                 return (
                   <PlanCard
                     key={plan._id}
@@ -794,7 +794,7 @@ function FAQ() {
   return (
     <div className='pb-10 w-full  flex flex-col items-center mt-32 mb-10'>
       <div className='w-fullflex justify-between  h-[8rem] px-10'>
-        <h1 className='text-[8vw] lg:text-[3vw] font-semibold mb-2 text-center'>
+        <h1 className='text-3xl lg:text-5xl font-semibold text-center'>
           Frequently
           <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Asked</span> Questions</h1>
 

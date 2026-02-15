@@ -34,7 +34,7 @@ const PlanCard = ({ planInfo }: any) => {
     const currentCtaLink = isAnnual ? planInfo.yearlyCtaLink : planInfo.monthlyCtaLink
     // const isProMonthly = planInfo.name === 'PRO' && !isAnnual && planInfo.monthlyPrice;
 
-    const isProMonthly = (planInfo.name === 'Enterprise' || planInfo.name === 'Cora Addons') ? false : true;
+    const isProMonthly = (planInfo.name === 'Enterprise' || planInfo.name === 'Cora Addons') ? false : false;
 
 
     return (
