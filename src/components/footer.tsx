@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord,FaYoutube } from "react-icons/fa6";
+import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube } from "react-icons/fa6";
 import { motion } from 'framer-motion';
 
 function Footer() {
@@ -10,7 +10,7 @@ function Footer() {
         {/* Left: Logo, tagline, social */}
         <div className="flex-1 min-w-[220px] ml-0 md:ml-8">
           <div className="flex items-center gap-2 mb-2">
-            <img src="/codemateLogo.svg" alt="codemate Logo" className="w-50 h-10" />
+            <img src="/codemateLogo.svg" alt="codemate Logo" className="w-50 h-14 -ml-4" />
           </div>
           <p className="text-gray-400 mb-4 text-sm md:text-lg w-full md:w-1/2">
             CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
@@ -22,7 +22,7 @@ function Footer() {
             <a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
               <FaLinkedin size={32} className="md:w-10 md:h-10" />
             </a>
-              <a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
+            <a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
               <FaInstagram size={32} className="md:w-10 md:h-10" />
             </a>
             <a href="https://www.youtube.com/@codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
@@ -57,7 +57,7 @@ function Footer() {
           <ul className="space-y-2 text-xs md:text-xs">
             <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Privacy Policy</a></li>
             <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="hover:underline">Terms of Service</a></li>
-            <li><img src="https://skypro.co.id/wp-content/uploads/2019/01/iso-27001.png" alt=""  className="object-fit size-24 mt-5 invert brightness-0 opacity-80"/></li>
+            <li><img src="https://skypro.co.id/wp-content/uploads/2019/01/iso-27001.png" alt="" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
           </ul>
         </div>
       </motion.div>

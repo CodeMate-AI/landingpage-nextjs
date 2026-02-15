@@ -188,7 +188,7 @@ function Page() {
   const [isP2, setIsP2] = useState(false);
   const [isAuto, setIsAuto] = useState(false);
   const [isCoraBlocked, setIsCoraBlocked] = useState(true);
-  const [showEventPopup, setShowEventPopup] = useState(true);
+  const [showEventPopup, setShowEventPopup] = useState(false);
   const [isShowProd, setIsShowProd] = useState(true);
   const [isProds, setIsProds] = useState(false);
   const [isFix, setIsFix] = useState(false);
@@ -659,24 +659,23 @@ function Page() {
           transition={{ duration: 0.3, delay: 0.4 }}
           className="w-full flex justify-center px-1 sm:px-2 z-[999999]"
         >
-          <div className="relative p-[0.8px] rounded-xl bg-[#48AEF3] w-fit max-w-[calc(100vw-1.5rem)] shadow-[0_16px_50px_rgba(0,0,0,0.45)] hover:shadow-[0_20px_60px_rgba(0,0,0,0.55)] transition group">
+          <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-1.5rem)] shadow-lg hover:shadow-xl transition group">
             <div
               role="button"
               tabIndex={0}
-              onClick={handleAnnouncementClick}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleAnnouncementClick(); } }}
-              className="flex w-full h-full items-center justify-center gap-2 rounded-xl bg-[#000000] px-2.5 py-1.5 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+              onClick={() => window.open('https://app.codemate.ai', '_blank')}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
+              className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-2 py-2 sm:py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
             >
-              <div className="flex min-w-0 flex-1 items-center gap-1.5">
-                <span className="inline-flex items-center gap-1.5 rounded-md bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/90">
-                  <div className="h-1.5 w-1.5 rounded-xl bg-[#00BFFF]" />
-                  Update
+              <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2 justify-center sm:justify-start">
+                <span className="inline-flex items-center gap-1 rounded-sm bg-white px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-bold text-black uppercase tracking-wide shrink-0">
+                  Limited Offer
                 </span>
-                <div className="flex min-w-0 items-center gap-1 text-[12px] font-medium leading-snug">
-                  <p className="truncate max-w-[250px] text-center sm:text-left text-zinc-300">
-                    Cora is now <span className="font-semibold text-white">State-of-the-Art</span>
+                <div className="flex min-w-0 items-center gap-0.5 text-[11px] sm:text-[13px] font-medium leading-snug">
+                  <p className="truncate max-w-[200px] xs:max-w-[260px] sm:max-w-none text-center sm:text-left text-neutral-300">
+                    Get <span className="text-white font-semibold">60 Days of PRO</span> for free
                   </p>
-                  <ChevronRight className="ml-1 text-white shrink-0" size={15} strokeWidth={2} />
+                  <ChevronRight className="ml-0.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
                 </div>
               </div>
             </div>
@@ -701,11 +700,11 @@ function Page() {
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
           }}
-          className={`${hasScrolled ? 'mt-5' : 'mt-2'} w-fit bg-opacity-65 z-[9999999999] rounded-lg ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''} transition-all duration-300`}>
+          className={`${hasScrolled ? 'mt-5' : 'mt-2'} w-full bg-opacity-65 z-[9999999999] rounded-lg ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''} transition-all duration-300`}>
           <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
-            <div className='flex justify-between items-center w-full h-10 gap-[18vw] xl:gap-[28vw] 2xl:gap-[35vw]'>
+            <div className='flex justify-between items-center w-full h-10'>
 
-              <div className="h-full w-[13vw] flex justify-center overflow-hidden">
+              <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
                 <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="" className='cursor-pointer' />
                 {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
      {IsMascot && <motion.div initial={{opacity:0,filter:'blur(20px)',x:50}} animate={{opacity:1,filter:'blur(0px)',x:-80}} transition={{duration:0.5}}>
@@ -1037,8 +1036,8 @@ function Page() {
             WebkitBackdropFilter: 'blur(10px)',
             top: 0
           }}
-          className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 py-[1.1rem] justify-between items-center z-[99999999999]`}>
-          <img src="/codemateLogo.svg" alt="" className='h-full w-[30vw]' />
+          className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 py-[1.1rem] justify-between items-center z-[99999999999]`}>
+          <img src="/codemateLogo.svg" alt="" className='h-full w-[50vw]' />
           <motion.div
             onClick={() => { setMenu(state => !state); setIsNBack(false) }} className={`${montserrat.className}   flex gap-2 text-[4vw]  justify-center items-center cursor-pointer text-right  `}>
             {/* Menu */}
@@ -1390,6 +1389,8 @@ function Page() {
                   // transition={{duration:1,delay:6}}    
                   className='absolute top-[8vh] lg:left-[3.3vw] 
       text-[14vw]   lg:text-[8vw] leading-[1] font-semibold flex flex-col pb-1  pl-[8vw]  lg:pl-12  mt-0 z-50 !xxlHerotext'>
+
+
                   <div className={`${montserrat.className} `}>
                     {/* {title.map((e,idx)=>(
       <motion.h1
@@ -1438,14 +1439,47 @@ function Page() {
                     initial={{ opacity: 0, filter: "blur(10px)" }}
                     animate={{ opacity: 1, filter: "blur(0px)" }}
                     transition={{ duration: 0.4, delay: 1.5 }}
-                    className={`flex flex-col ${montserrat.className} text-[2.8vw] lg:text-[1.5vw] gap-1 leading-[1.] mt-5 opacity-60 `}>
+                    className={`flex flex-col ${montserrat.className} text-xs lg:text-[1.5vw] gap-1 leading-[1.] mt-5 opacity-60 `}>
                     <p>Build and ship 20x faster with CodeMate AI</p>
                     <p>Your all-in-one accelerator to turn your ideas into code</p>
                   </motion.div>
+
+
+                  {/* State-of-the-Art Badge */}
+                  <motion.div
+                    ref={announcementRef}
+                    initial={{ y: -12, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.4 }}
+                    className="w-full flex-1 flex justify-left mt-8 z-[999999]"
+                  >
+                    <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-1.5rem)] shadow-lg hover:shadow-xl transition group">
+                      <div
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => window.open('https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/', '_blank')}
+                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
+                        className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-2.5 sm:px-4 py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                      >
+                        <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2 justify-center sm:justify-start">
+                          <div className="flex min-w-0 items-center gap-0.5 text-[11px] sm:text-[13px] font-medium leading-snug">
+                            <p className="truncate max-w-[200px] xs:max-w-[260px] sm:max-w-none text-center sm:text-left text-neutral-300">
+                              Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
+                            </p>
+                            <ChevronRight className="ml-0.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+
+
+
+
                   <motion.div
                     initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                     animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                    transition={{ duration: 1, delay: 0.5 }} className={`${montserrat.className} flex gap-5 text-sm mt-10`}>
+                    transition={{ duration: 1, delay: 0.5 }} className={`${montserrat.className} flex gap-5 text-sm mt-10 -ml-4 sm:ml-0 `}>
                     <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target='_blank'>
                       <motion.button whileHover={{ opacity: 0.7 }} className='px-4 py-3  bg-black text-white  rounded-sm  text-opacity-80'>Download CORA</motion.button>
                     </a>
@@ -2549,7 +2583,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
      </motion.div> */}
 
 
-            <img src="/codemateLogoB.svg" className='absolute object-fit w-[95vw] brightness-[0.6]' alt="" />
+            <img src="/codemateLogo.svg" className='absolute object-fit w-[95vw] brightness-[0.6]' alt="" />
 
 
 
