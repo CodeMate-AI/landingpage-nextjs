@@ -203,7 +203,7 @@ const PlanCard = ({ planInfo }: any) => {
 
                 {/* CTA Button */}
                 {/* <a href={currentCtaLink} className="block"> */}
-                <a href={planInfo.title == "Enterprise" ? "https://cal.com/ayushsinghal/book-a-demo" : planInfo.title == "Cora Credits" ? "https://app.codemate.ai/addon-cora?credits=100" : `https://app.codemate.ai/payments?plan_id=${currentCtaLink}`} className="block">
+                <a href={planInfo.title == "Enterprise" ? "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4" : planInfo.title == "Cora Credits" ? "https://app.codemate.ai/addon-cora?credits=100" : `https://app.codemate.ai/payments?plan_id=${currentCtaLink}`} className="block">
                     <motion.button
                         whileHover={{
                             scale: 1.02,
