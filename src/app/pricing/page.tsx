@@ -162,9 +162,9 @@ function Page() {
 
     ],
     monthlyCtaText: "Contact Us",
-    monthlyCtaLink: "https://cal.com/ayushsinghal/book-a-demo",
+    monthlyCtaLink: "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4",
     yearlyCtaText: "Contact Us",
-    yearlyCtaLink: "https://cal.com/ayushsinghal/book-a-demo",
+    yearlyCtaLink: "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4",
   }
 
 
