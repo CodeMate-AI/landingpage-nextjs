@@ -42,6 +42,7 @@ const CORA_PLANS = [
   {
     id: 'cora-free',
     name: 'Free',
+    title: "Free",
     description: 'Get started with Cora at no cost',
     yearlyPrice: '',
     currency: 'USD',
@@ -71,9 +72,9 @@ const CORA_PLANS = [
     yearlyCtaText: 'Get Pro',
     yearlyCtaLink: 'https://app.codemate.ai',
     billingPeriods: [
-      { label: 'Daily',   price: '1',   ctaText: 'Get Pro – $1/day',   ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_daily' },
-      { label: 'Weekly',  price: '5',   ctaText: 'Get Pro – $5/week',  ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_weekly' },
-      { label: 'Monthly', price: '20',  ctaText: 'Get Pro – $20/mo',   ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_monthly' },
+      { label: 'Daily', price: '1', ctaText: 'Get Pro – $1/day', ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_daily' },
+      { label: 'Weekly', price: '5', ctaText: 'Get Pro – $5/week', ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_weekly' },
+      { label: 'Monthly', price: '20', ctaText: 'Get Pro – $20/mo', ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_monthly' },
     ],
   },
   {
@@ -93,9 +94,9 @@ const CORA_PLANS = [
     yearlyCtaText: 'Get Pro Plus',
     yearlyCtaLink: 'https://app.codemate.ai',
     billingPeriods: [
-      { label: 'Daily',   price: '5',   ctaText: 'Get Pro Plus – $5/day',   ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_plus_daily' },
-      { label: 'Weekly',  price: '25',  ctaText: 'Get Pro Plus – $25/week', ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_plus_weekly' },
-      { label: 'Monthly', price: '100', ctaText: 'Get Pro Plus – $100/mo',  ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_plus_monthly' },
+      { label: 'Daily', price: '5', ctaText: 'Get Pro Plus – $5/day', ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_plus_daily' },
+      { label: 'Weekly', price: '25', ctaText: 'Get Pro Plus – $25/week', ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_plus_weekly' },
+      { label: 'Monthly', price: '100', ctaText: 'Get Pro Plus – $100/mo', ctaLink: 'https://app.codemate.ai/payments?plan_id=cora_pro_plus_monthly' },
     ],
   },
 ]
@@ -388,7 +389,15 @@ function Page() {
       {selectedProduct === 'cora' && (
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw] w-full'>
           {CORA_PLANS.map((plan) => (
-            <PlanCard key={plan.id} planInfo={plan} />
+            <PlanCard
+              key={plan.id}
+              planInfo={{
+                ...plan,
+                _id: plan.id,
+                isCustom: false,
+                stripe_plan_id: plan.id, // 👈 IMPORTANT (same pattern as build)
+              }}
+            />
           ))}
         </div>
       )}
