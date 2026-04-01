@@ -72,9 +72,9 @@ const CORA_PLANS = [
     yearlyCtaText: 'Get Pro',
     yearlyCtaLink: '#',
     billingPeriods: [
-      { label: 'Daily',   price: '1',  ctaText: 'Get Pro – $1/day',  ctaLink: 'price_1TGcot2MAnHBwrIO2pZPF9HA' },
-      { label: 'Weekly',  price: '5',  ctaText: 'Get Pro – $5/week', ctaLink: 'price_1TGcuB2MAnHBwrIOMbjAPwkd' },
-      { label: 'Monthly', price: '20', ctaText: 'Get Pro – $20/mo',  ctaLink: 'price_1TGcvU2MAnHBwrIOEOL7Lwwa' },
+      { label: 'Daily', price: '1', ctaText: 'Get Pro – $1/day', ctaLink: '' },
+      { label: 'Weekly', price: '5', ctaText: 'Get Pro – $5/week', ctaLink: '' },
+      { label: 'Monthly', price: '20', ctaText: 'Get Pro – $20/mo', ctaLink: '' },
     ],
   },
   {
@@ -94,12 +94,13 @@ const CORA_PLANS = [
     yearlyCtaText: 'Get Pro Plus',
     yearlyCtaLink: '#',
     billingPeriods: [
-      { label: 'Daily',   price: '5',   ctaText: 'Get Pro Plus – $5/day',   ctaLink: 'price_1TGcst2MAnHBwrIOnGW9xtBA' },
-      { label: 'Weekly',  price: '25',  ctaText: 'Get Pro Plus – $25/week', ctaLink: 'price_1TGctJ2MAnHBwrIOQ4VLvixr' },
-      { label: 'Monthly', price: '100', ctaText: 'Get Pro Plus – $100/mo',  ctaLink: 'price_1TGcwE2MAnHBwrIOd4PbRjv3' },
+      { label: 'Daily', price: '5', ctaText: 'Get Pro Plus – $5/day', ctaLink: '' },
+      { label: 'Weekly', price: '25', ctaText: 'Get Pro Plus – $25/week', ctaLink: '' },
+      { label: 'Monthly', price: '100', ctaText: 'Get Pro Plus – $100/mo', ctaLink: '' },
     ],
   },
 ]
+
 // ─────────────────────────────────────────────────────────────────────────────
 
 function Page() {
@@ -204,7 +205,6 @@ function Page() {
     yearlyCtaText: "Contact Us",
     yearlyCtaLink: "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4",
   }
-
 
   return (
     <div ref={ref} className={`${montserrat.className} h-screen w-full bg-zinc-950`}>
@@ -388,22 +388,38 @@ function Page() {
       {/* ── Cora plans ──────────────────────────────────────────────────────── */}
       {selectedProduct === 'cora' && (
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw] w-full'>
-          {CORA_PLANS.map((plan) => (
-            <PlanCard
-              key={plan.id}
-              planInfo={{
-                ...plan,
-                _id: plan.id,
-                isCustom: false,
-                stripe_plan_id: plan.id,
-              }}
-            />
-          ))}
+          {CORA_PLANS.map((plan) => {
+            // Find matching backend plan by display_name (case-insensitive)
+            const backendPlan = categorizedPlans?.cora?.find(
+              (p) => p.display_name.toLowerCase() === plan.name.toLowerCase()
+            )
+
+            // Hydrate billingPeriods ctaLink from backend stripe_id if available
+            const hydratedBillingPeriods = plan.billingPeriods?.map((period) => {
+              const key = period.label.toLowerCase() as 'daily' | 'weekly' | 'monthly'
+              const stripeId = (backendPlan as any)?.stripe_id?.[key]
+              return stripeId ? { ...period, ctaLink: stripeId } : period
+            })
+
+            return (
+              <PlanCard
+                key={plan.id}
+                planInfo={{
+                  ...plan,
+                  _id: plan.id,
+                  isCustom: false,
+                  stripe_plan_id: plan.id,
+                  ...(hydratedBillingPeriods && { billingPeriods: hydratedBillingPeriods }),
+                }}
+              />
+            )
+          })}
         </div>
       )}
 
 
       {/* ── C0 plans ────────────────────────────────────────────────────────── */}
+      
       {selectedProduct === 'c0' &&
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw]'>
           {isLoadingPlans ? (
