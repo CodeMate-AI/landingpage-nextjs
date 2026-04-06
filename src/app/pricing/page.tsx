@@ -169,7 +169,7 @@ function Page() {
 
 
   return (
-    <div ref={ref} className={`${montserrat.className} h-screen w-full bg-zinc-950`}>
+    <div ref={ref} className={`${montserrat.className} w-full bg-zinc-950`}>
       {/* navbar */}
       <div
         style={{ zIndex: 999999999999, }}
