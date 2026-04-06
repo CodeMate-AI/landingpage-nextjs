@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord,FaYoutube } from "react-icons/fa6";
+import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube } from "react-icons/fa6";
 import { motion } from 'framer-motion';
 
 function Footer() {
@@ -9,8 +9,8 @@ function Footer() {
       <motion.div className="w-full px-10 mx-auto flex flex-col md:flex-row md:justify-center gap-10 md:gap-12 pb-10">
         {/* Left: Logo, tagline, social */}
         <div className="flex-1 min-w-[220px] ml-0 md:ml-8">
-          <div className="flex items-center gap-2 mb-2">
-            <img src="/codemateLogo.svg" alt="codemate Logo" className="w-50 h-10" />
+          <div className="flex items-center gap-2 mb-0">
+            <img src="/codemateLogo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
           </div>
           <p className="text-gray-400 mb-4 text-sm md:text-lg w-full md:w-1/2">
             CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
@@ -22,7 +22,7 @@ function Footer() {
             <a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
               <FaLinkedin size={32} className="md:w-10 md:h-10" />
             </a>
-              <a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
+            <a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
               <FaInstagram size={32} className="md:w-10 md:h-10" />
             </a>
             <a href="https://www.youtube.com/@codemateai" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="hover:text-white">
@@ -45,6 +45,7 @@ function Footer() {
           <div className="mb-6 sm:mb-0">
             <h4 className="font-semibold mb-3 text-white text-sm md:text-base">OTHERS</h4>
             <ul className="space-y-2 text-xs md:text-xs">
+              <li><a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4" target="_blank" rel="noopener noreferrer" className="hover:underline">Contact Us</a></li>
               <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="hover:underline">Hugging Face</a></li>
               <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Refund Policy</a></li>
             </ul>
@@ -57,7 +58,7 @@ function Footer() {
           <ul className="space-y-2 text-xs md:text-xs">
             <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Privacy Policy</a></li>
             <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="hover:underline">Terms of Service</a></li>
-            <li><img src="https://skypro.co.id/wp-content/uploads/2019/01/iso-27001.png" alt=""  className="object-fit size-24 mt-5 invert brightness-0 opacity-80"/></li>
+            <li><img src="https://skypro.co.id/wp-content/uploads/2019/01/iso-27001.png" alt="" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
           </ul>
         </div>
       </motion.div>

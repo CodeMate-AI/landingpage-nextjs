@@ -3,9 +3,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-   eslint: {
-      ignoreDuringBuilds:true, 
-    },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = {
@@ -13,9 +13,10 @@ module.exports = {
     domains: ['assets.aceternity.com',
       "api.microlink.io",
       "images.unsplash.com",
-      "assests.aceternity.com"
+      "assests.aceternity.com",
+      "backend.v3.codemateai.dev"
     ],
-     // Add the external domain here
+    // Add the external domain here
   },
 };
 export default withNextVideo(nextConfig, { folder: 'video' });
