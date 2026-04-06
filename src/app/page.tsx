@@ -802,7 +802,7 @@ function Page() {
                               <div className="w-8 flex justify-center">
                                 <img src="/Co_Logo.png" alt="Chat" className="size-5 object-contain" />
                               </div>
-                              <h1>Chat</h1>
+                              <h1>C0</h1>
                             </div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -841,9 +841,9 @@ function Page() {
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/Co_Logo.png" alt="Chat Extension" className="size-5 object-contain" />
+                                <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 object-contain" />
                               </div>
-                              <h1 className="text-nowrap">Chat Extension</h1>
+                              <h1 className="text-nowrap">C0 Extension</h1>
                             </div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -1116,14 +1116,14 @@ function Page() {
                                 <div className="w-8 flex justify-center">
                                   <img src="/Co_Logo.png" alt="Chat" className="size-5 object-contain" />
                                 </div>
-                                <motion.h1>Chat</motion.h1>
+                                <motion.h1>C0</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 flex justify-center">
-                                    <img src="/Co_Logo.png" alt="Chat" className="size-5 object-contain" />
+                                    <img src="/Co_Logo.png" alt="C0" className="size-5 object-contain" />
                                   </div>
-                                  <h1>Chat</h1>
+                                  <h1>C0</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -1174,16 +1174,16 @@ function Page() {
                             <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 flex justify-center">
-                                  <img src="/Co_Logo.png" alt="Chat Extension" className="size-5 object-contain" />
+                                  <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 object-contain" />
                                 </div>
-                                <motion.h1>Chat Extension</motion.h1>
+                                <motion.h1>C0 Extension</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 flex justify-center">
-                                    <img src="/Co_Logo.png" alt="Chat Extension" className="size-5 object-contain" />
+                                    <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 object-contain" />
                                   </div>
-                                  <h1>Chat Extension</h1>
+                                  <h1>C0 Extension</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -1786,7 +1786,7 @@ function Page() {
                       <img src="pulgin.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate Assistant</h1>
+                  <h1 className='mt-1 text-lg font-semibold'>CodeMate C0 Extension</h1>
                   <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Assistant is your AI-powered coding partner, built as an IDE plugin to help you manage code, debug errors, and accelerate development.</p>
                 </div>
               </a>
@@ -1801,8 +1801,8 @@ function Page() {
                       <img ref={codeMateImageRef} src="chat.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate Chat</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Chat turns your prompts into working code, helping you build faster.</p>
+                  <h1 className='mt-1 text-lg font-semibold'>CodeMate C0</h1>
+                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate C0 on the web, turns your prompts into working code, helping you build faster.</p>
                 </div>
               </a>
             </div>
