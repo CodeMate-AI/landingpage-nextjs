@@ -20,6 +20,41 @@ function Achivements() {
   const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
   const cards = [
     {
+      image: "/AI_Summit.jpg",
+      alt: "India AI Summit 2026",
+      title: "India AI Summit 2026 - Hosted Global AI Leaders at CodeMate Booth",
+      description: "CodeMate AI engaged with Yann LeCun, Defence Minister Rajnath Singh, CM Chandrababu Naidu, and other top global leaders - showcasing India's first full-stack, self-hosted enterprise AI coding agent.",
+      link: "https://www.linkedin.com/posts/theayushsinghal_codemate-ai-at-ai-impact-summit-ugcPost-7435550359072231424-xc7A?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
+    },
+    {
+      image: "/IMC_2025.jpg",
+      alt: "Qualcomm × CodeMate AI Partnership at IMC 2025",
+      title: "Qualcomm × CodeMate AI Partnership at IMC 2025",
+      description: "CodeMate AI announced a strategic collaboration with Qualcomm at India Mobile Congress 2025, which is one of Asia's largest tech event to empower developers, students, and institutions in AI and Edge Computing.",
+      link: "https://www.linkedin.com/posts/shama-ahlawat-b40a72134_technology-event-partnership-activity-7387477019929997313-0mhe?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
+    },
+    {
+      image: "/UIPT_2025.jpg",
+      alt: "UPITS 2025 - UP International Trade Show",
+      title: "UPITS 2025 - UP International Trade Show, Greater Noida",
+      description: "CodeMate AI showcased its full developer ecosystem such as VS Code Extension, Web App, AI PR Review Agent, and Education Platform to thousands of industry leaders and innovators at India Expo Centre.",
+      link: "https://www.linkedin.com/posts/theayushsinghal_codemate-upits2025-ai-activity-7389356209650450432-mG2X?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
+    },
+    {
+      image: "/TIDE.jpg",
+      alt: "MeitY TIDE 2.0 - Pravartan 2025",
+      title: "MeitY TIDE 2.0 - Pravartan 2025, Featured Startup",
+      description: "CodeMate AI was presented to Union Minister \"Jitin Prasada\" and Senior MeitY officials among the top TIDE-funded startups in India, showcasing : How AI automates the end-to-end Software Development Lifecycle.",
+      link: "https://www.linkedin.com/posts/shama-ahlawat-b40a72134_meity-startupindia-deeptech-activity-7428403894055092224-PAw6?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
+    },
+    {
+      image: "/RAISE 2025.jpg",
+      alt: "Selected in Top 5 AI Startups - RAISE 2025 by L&T Finance",
+      title: "Selected in Top 5 AI Startups - RAISE 2025 by L&T Finance",
+      description: "CodeMate AI was recognized among the Top 5 from 100+ startups at L&T Finance's flagship BFSI AI competition, presenting to a jury including Rajan Anandan (Peak XV) and top enterprise leaders.",
+      link: "https://www.linkedin.com/posts/theayushsinghal_codemate-ai-was-recognized-among-the-top-ugcPost-7411405483816751104-pf56?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
+    },
+    {
       image: "https://drive.codemate.ai/asean2.jpeg",
       alt: "ASEAN-India Scalehub 2024",
       title: "ASEAN-India Scalehub 2024 in Bali, Indonesia",
@@ -290,30 +325,38 @@ function Achivements() {
   ];
 
 
+  // ---- Dynamic scroll limits based on card count ----
+  const DESKTOP_CARD_WIDTH = 376; // 352px (22rem) + 24px (gap-6)
+  const MOBILE_CARD_WIDTH = 344;  // 320px (20rem) + 24px (gap-6)
+  const DESKTOP_VISIBLE = 3;
+  const MOBILE_VISIBLE = 1;
+  const maxDesktop = -((cards.length - DESKTOP_VISIBLE) * DESKTOP_CARD_WIDTH);
+  const maxMobile = -((cards.length - MOBILE_VISIBLE) * MOBILE_CARD_WIDTH);
+
   // ---- Auto slide effect ----
   useEffect(() => {
-    let interval: number; // ← use number for browser environment
+    let interval: number;
 
     if (isInView && !isPaused) {
       if (!isMobile) {
         interval = window.setInterval(() => {
           setCurrCards((prev) => {
-            const next = prev - 375;
-            return next <= -13500 ? 0 : next;
+            const next = prev - DESKTOP_CARD_WIDTH;
+            return next <= maxDesktop ? 0 : next;
           });
         }, 5000);
       } else {
         interval = window.setInterval(() => {
           setCurrCards((prev) => {
-            const next = prev - 345;
-            return next <= -12765 ? 0 : next;
+            const next = prev - MOBILE_CARD_WIDTH;
+            return next <= maxMobile ? 0 : next;
           });
         }, 5000);
       }
     }
 
-    return () => window.clearInterval(interval); // ← clearInterval works with number
-  }, [isInView, isPaused, isMobile]);
+    return () => window.clearInterval(interval);
+  }, [isInView, isPaused, isMobile, cards.length]);
 
   useEffect(() => {
     // This will run only on the client
@@ -328,23 +371,19 @@ function Achivements() {
 
   function handleArrow(e: string) {
     if (e === 'left') {
-      currCards !== 0 ? setCurrCards(state => state + 375) : null;
+      currCards !== 0 ? setCurrCards(state => state + DESKTOP_CARD_WIDTH) : null;
     }
     if (e === 'right') {
-      currCards !== -13500 ? setCurrCards(state => state - 375) : null;
-      // setCurrCards(state => state-375); 
+      currCards > maxDesktop ? setCurrCards(state => state - DESKTOP_CARD_WIDTH) : null;
     }
   }
 
   function handleArrow2(e: string) {
     if (e === 'left') {
-      currCards !== 0 ? setCurrCards(state => state + 345) : null;
+      currCards !== 0 ? setCurrCards(state => state + MOBILE_CARD_WIDTH) : null;
     }
     if (e === 'right') {
-      currCards !== -12765 ? setCurrCards(state => state - 345) : null;
-
-
-
+      currCards > maxMobile ? setCurrCards(state => state - MOBILE_CARD_WIDTH) : null;
     }
   }
   return (
@@ -359,7 +398,7 @@ function Achivements() {
         ref={carouselRef}
         onMouseEnter={() => setIsPaused(true)} // pause on hover
         onMouseLeave={() => setIsPaused(false)} // resume when hover ends
-        className='mt-20 flex w-[20rem] lg:w-[80.5%] overflow-hidden gap-1 lg:gap-6'>
+        className='mt-20 flex w-[20rem] lg:w-[80.5%] overflow-hidden'>
         <motion.div animate={{ x: currCards }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className='flex gap-6'>
           {cards.map((e, idx) => (
             <div key={idx}>
@@ -397,7 +436,7 @@ export default Achivements
 
 function Card({ image, alt, title, description, link }: { image: String, alt: String, title: String, description: String, link: String }) {
   return (
-    <motion.div className='relative h-[33rem] w-[20rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl'>
+    <motion.div className='relative h-[33rem] w-[20rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
       <img src={image as string} alt={alt as string} className='h-[40%] w-full object-cover ' />
 
       <div className='px-5 flex flex-col gap-2 mt-4'>
@@ -405,9 +444,11 @@ function Card({ image, alt, title, description, link }: { image: String, alt: St
         <p className='text-zinc-500 text-xs'>{description}</p>
       </div>
 
-      <a href={link as string} target='_blank'>
-        <motion.button whileHover={{ opacity: 0.7 }} className='absolute text-lg px-5 bottom-8 text-[#00BFFF]'>Read More</motion.button>
-      </a>
+      {link && link !== "" && (
+        <a href={link as string} target='_blank'>
+          <motion.button whileHover={{ opacity: 0.7 }} className='absolute text-lg px-5 bottom-8 text-[#00BFFF]'>Read More</motion.button>
+        </a>
+      )}
     </motion.div>
   )
 }
