@@ -115,7 +115,11 @@ export function categorizePlansByProduct(plans: any): CategorizedPlans {
     plans.forEach((plan: any) => {
 
         // Check which products this plan belongs to
-        if (!(plan.display_name.toLocaleLowerCase() === "pro" || plan.display_name.toLocaleLowerCase() === "teams")) {
+        if (!(
+            plan.display_name.toLocaleLowerCase() === "pro" ||
+            plan.display_name.toLocaleLowerCase() === "pro plus" ||
+            plan.display_name.toLocaleLowerCase() === "teams"
+        )) {
             return
         }
         plan.product.forEach((productName: any) => {

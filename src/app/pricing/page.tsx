@@ -22,9 +22,86 @@ import EventOffer from './components/EventOffer';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], // Add what you need
-  variable: '--font-montserrat', // Optional, for CSS variable usage
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-montserrat',
 });
+
+// ─── Static Cora plan definitions ────────────────────────────────────────────
+const CORA_SHARED_FEATURES = [
+  "Uninterrupted Access to SOTA proprietary Models",
+  "Architect mode",
+  "Generate architectural and system diagrams with SVG Export",
+  "Integration with file system, terminal and browser",
+  "Access to Knowledge base",
+  "Agentic Search",
+  "Jetbrains and VS Code Plugins",
+]
+
+// Cora plans now use billingPeriods inside each card
+const CORA_PLANS = [
+  {
+    id: 'cora-free',
+    name: 'Free',
+    title: "Free",
+    description: 'Get started with Cora at no cost',
+    yearlyPrice: '',
+    currency: 'USD',
+    highlight: false,
+    isAnnual: true,
+    features: ["B0 Unlimited requests", ...CORA_SHARED_FEATURES],
+    monthlyCtaText: 'Get Started',
+    monthlyCtaLink: '#',
+    yearlyCtaText: 'Get Started',
+    yearlyCtaLink: '#',
+  },
+  {
+    id: 'cora-pro',
+    name: 'Pro',
+    title: 'Pro',
+    description: 'Unlimited access — B0 + classifier-based X2',
+    yearlyPrice: '20',
+    currency: 'USD',
+    highlight: false,
+    features: [
+      "B0 Unlimited requests",
+      "X2 Classifier-based access",
+      ...CORA_SHARED_FEATURES,
+    ],
+    monthlyCtaText: 'Get Pro',
+    monthlyCtaLink: '#',
+    yearlyCtaText: 'Get Pro',
+    yearlyCtaLink: '#',
+    billingPeriods: [
+      { label: 'Daily', price: '1', ctaText: 'Get Pro – $1/day', ctaLink: '' },
+      { label: 'Weekly', price: '5', ctaText: 'Get Pro – $5/week', ctaLink: '' },
+      { label: 'Monthly', price: '20', ctaText: 'Get Pro – $20/mo', ctaLink: '' },
+    ],
+  },
+  {
+    id: 'cora-pro-plus',
+    name: 'Pro Plus',
+    title: 'Pro Plus',
+    description: 'Unlimited access — X2 only',
+    yearlyPrice: '100',
+    currency: 'USD',
+    highlight: false,
+    features: [
+      "X2 Unlimited requests",
+      ...CORA_SHARED_FEATURES,
+    ],
+    monthlyCtaText: 'Get Pro Plus',
+    monthlyCtaLink: '#',
+    yearlyCtaText: 'Get Pro Plus',
+    yearlyCtaLink: '#',
+    billingPeriods: [
+      { label: 'Daily', price: '5', ctaText: 'Get Pro Plus – $5/day', ctaLink: '' },
+      { label: 'Weekly', price: '25', ctaText: 'Get Pro Plus – $25/week', ctaLink: '' },
+      { label: 'Monthly', price: '100', ctaText: 'Get Pro Plus – $100/mo', ctaLink: '' },
+    ],
+  },
+]
+
+// ─────────────────────────────────────────────────────────────────────────────
 
 function Page() {
   const router = useRouter();
@@ -48,25 +125,11 @@ function Page() {
   const plan2Ref = useRef<HTMLButtonElement>(null);
   const plan3Ref = useRef<HTMLButtonElement>(null);
   const [pillPosition, setPillPosition] = useState({ x: 0, width: 0 });
+
   function handleCurrPlan(e: number) {
-    if (e === 1) {
-      setSelectedProduct('build');
-      // setIsPlan1(true);
-      // setIsPlan2(false);
-      // setIsPlan3(false);
-    }
-    if (e === 2) {
-      setSelectedProduct('cora');
-      // setIsPlan2(true);
-      // setIsPlan1(false);
-      // setIsPlan3(false);
-    }
-    if (e === 3) {
-      setSelectedProduct('c0');
-      // setIsPlan3(true);
-      // setIsPlan2(false);
-      // setIsPlan1(false);
-    }
+    if (e === 1) setSelectedProduct('build');
+    if (e === 2) setSelectedProduct('cora');
+    if (e === 3) setSelectedProduct('c0');
   }
 
   const { scrollYProgress } = useScroll({
@@ -79,7 +142,7 @@ function Page() {
     if (e <= 0.3) setIsMascot(false);
   });
 
-  // Calculate pill position dynamically
+  // Calculate product pill position dynamically
   useLayoutEffect(() => {
     const updatePillPosition = () => {
       const container = containerRef.current;
@@ -119,38 +182,15 @@ function Page() {
     loadPlans();
   }, []);
 
-  const coraPlan = {
-    id: 4,
-    name: "Cora",
-    title: "Cora",
-    description: "Low-code AI Coding Agent for complex SDLC tasks",
-    currency: "USD",
-    highlight: false,
-    features: [
-      "Uninterrupted Access to SOTA proprietary Models",
-      "Architect mode",
-      "Generate architectural and system diagrams with SVG Export",
-      "Integration with file system, terminal and browser",
-      "Access to Knowledge base",
-      "Agentic Search",
-      "Jetbrains and VS Code Plugins",
-    ],
-    monthlyCtaText: "Buy Credits",
-    monthlyCtaLink: "/download",
-    yearlyCtaText: "Buy Credits",
-    yearlyCtaLink: "https://app.codemate.ai/addon-cora?credits=100",
-    yearlyPrice: ""
-  }
-
   const enterprisePlan = {
     id: 5,
     name: "Enterprise",
     title: "Enterprise",
     description: "For large teams and organizations",
-    yearlyPrice: "", // No price shown
+    yearlyPrice: "",
     currency: "USD",
     highlight: false,
-    isAnnual: true, // Force annual view
+    isAnnual: true,
     features: [
       "Dedicated Account Manager.",
       "On-premises Deployment.",
@@ -159,14 +199,12 @@ function Page() {
       "Priority Support.",
       "Custom LLM Models",
       "Rule based Code Review",
-
     ],
     monthlyCtaText: "Contact Us",
     monthlyCtaLink: "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4",
     yearlyCtaText: "Contact Us",
     yearlyCtaLink: "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4",
   }
-
 
   return (
     <div ref={ref} className={`${montserrat.className} w-full bg-zinc-950`}>
@@ -178,9 +216,6 @@ function Page() {
           initial={{ y: -100 }}
           animate={{ y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
-          // initial={{opacity:0,filter:'blur(10px)'}}
-          // animate={{opacity:1,filter:'blur(0px)'}}
-          // transition={{duration:1,delay:7}}
           style={{
             background: 'rgba(15, 20, 20, 0.45)',
             boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -200,10 +235,7 @@ function Page() {
                   <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85`}>Get Started</motion.button>
                 </a>
               </div>
-
-
             </div>
-            {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
           </div>
         </motion.div>
       </div>
@@ -217,9 +249,6 @@ function Page() {
           initial={{ y: -100 }}
           animate={{ y: 0 }}
           transition={{ duration: 1, delay: 0.5 }}
-          // initial={{opacity:0,filter:'blur(10px)'}}
-          // animate={{opacity:1,filter:'blur(0px)'}}
-          // transition={{duration:1,delay:7}}
           style={{
             background: 'rgba(15, 20, 20, 0.45)',
             boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -232,17 +261,12 @@ function Page() {
             <div className='flex   justify-between items-center w-full h-fit'>
               <div className="h-fit w-[30vw] flex justify-center overflow-hidden">
                 <img src="/codemateLogo.svg" alt="" />
-
-
               </div>
               <div className={`flex gap-5 text-md  justify-center items-center cursor-pointer text-right `}>
                 <motion.h1 onClick={() => router.push("/")} whileHover={{ opacity: 1 }} className='flex text-center justify-center items-center opacity-65 gap-1'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /><path d="M5 12l4 4" /><path d="M5 12l4 -4" /></svg>Back</motion.h1>
                 <button className={` px-2 py-1  bg-[#FFFFFF] text-black text-sm rounded-sm font-semibold opacity-85`}>Get Started</button>
               </div>
-
-
             </div>
-            {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
           </div>
         </motion.div>
       </div>
@@ -253,17 +277,7 @@ function Page() {
         <p className='text-center text-4xl mt-1 opacity-60'>Choose a plan which feels right for you.</p>
       </div>
 
-
-      {/* Free Trial Promotional Banner */}
-      {/* <FreeTrialBanner /> */}
-      {/* <EventOffer
-        isOpen={showEventPopup}
-        onClose={() => setShowEventPopup(false)}
-        badgeText="Republic Day Special"
-        offerText="Flat 50% OFF • Save $500"
-        discountLabel="50% OFF"
-      /> */}
-
+      {/* Product selector pill */}
       <div className='flex justify-center mt-10 mb-10 border border-zinc-500 w-fit mx-auto rounded-full p-1 bg-white/5'>
         <div
           ref={containerRef}
@@ -332,6 +346,7 @@ function Page() {
       </div>
 
 
+      {/* ── Build plans ─────────────────────────────────────────────────────── */}
       {selectedProduct === 'build' && (
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw]'>
           {isLoadingPlans ? (
@@ -346,8 +361,6 @@ function Page() {
           ) : categorizedPlans && categorizedPlans.build.length > 0 && (
             <>
               {categorizedPlans.build.map((plan, index) => {
-                // Mark the middle plan as recommended
-                // const isRecommended = index === Math.floor(categorizedPlans.build.length / 2 - 1);
                 const isRecommended = false;
                 return (
                   <PlanCard
@@ -363,9 +376,6 @@ function Page() {
         </div>
       )}
 
-      {/* <CustomPlanBuilder /> */}
-
-
       {/* Comparison Table for Build */}
       {selectedProduct === 'build' && categorizedPlans && categorizedPlans.build.length > 0 && (
         <div>
@@ -375,30 +385,41 @@ function Page() {
       )}
 
 
+      {/* ── Cora plans ──────────────────────────────────────────────────────── */}
+      {selectedProduct === 'cora' && (
+        <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw] w-full'>
+          {CORA_PLANS.map((plan) => {
+            // Find matching backend plan by display_name (case-insensitive)
+            const backendPlan = categorizedPlans?.cora?.find(
+              (p) => p.display_name.toLowerCase() === plan.name.toLowerCase()
+            )
 
+            // Hydrate billingPeriods ctaLink from backend stripe_id if available
+            const hydratedBillingPeriods = plan.billingPeriods?.map((period) => {
+              const key = period.label.toLowerCase() as 'daily' | 'weekly' | 'monthly'
+              const stripeId = (backendPlan as any)?.stripe_id?.[key]
+              return stripeId ? { ...period, ctaLink: stripeId } : period
+            })
 
-      {selectedProduct === 'cora' &&
-        <div className='w-full px-4 lg:px-6'>
-          {/* Top Section: Feature Card + Quick Presets */}
-          <div className='max-w-7xl mx-auto mb-10'>
-            <div className='grid lg:grid-cols-2 gap-6'>
-              {/* Left: Feature Plan Card */}
-              <div className='flex justify-center items-start'>
-                <PlanCard planInfo={coraPlan} />
-              </div>
-
-              {/* Right: Quick Presets */}
-              <div className='flex flex-col w-full items-center justify-start pt-0 lg:pt-10'>
-                <QuickPresetsGrid />
-                <CompactCustomCredits />
-              </div>
-            </div>
-          </div>
-
-          {/* Bottom Section: Custom Credits */}
+            return (
+              <PlanCard
+                key={plan.id}
+                planInfo={{
+                  ...plan,
+                  _id: plan.id,
+                  isCustom: false,
+                  stripe_plan_id: plan.id,
+                  ...(hydratedBillingPeriods && { billingPeriods: hydratedBillingPeriods }),
+                }}
+              />
+            )
+          })}
         </div>
-      }
+      )}
 
+
+      {/* ── C0 plans ────────────────────────────────────────────────────────── */}
+      
       {selectedProduct === 'c0' &&
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw]'>
           {isLoadingPlans ? (
@@ -413,8 +434,6 @@ function Page() {
           ) : categorizedPlans && categorizedPlans.c0.length > 0 && (
             <>
               {categorizedPlans.c0.map((plan, index) => {
-                // Mark the middle plan as recommended
-                // const isRecommended = index === Math.floor(categorizedPlans.c0.length / 2 - 1);
                 const isRecommended = false;
                 return (
                   <PlanCard
@@ -436,6 +455,7 @@ function Page() {
           <ComparePlansMobile plans={categorizedPlans.c0} selectedProduct="c0" />
         </div>
       )}
+
       <FAQ />
       <Footer />
 
@@ -449,14 +469,11 @@ export default Page
 
 
 function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProduct: string }) {
-  // Find Pro and Teams plans from the provided plans array
   const proPlan = plans.find(p => p.display_name.toLowerCase() === 'pro')
   const teamsPlan = plans.find(p => p.display_name.toLowerCase() === 'teams')
 
-  // Define all possible features (both limit-based and access-based)
   type FeatureKey = keyof PlanLimits | 'seats' | 'byok' | 'chat' | 'code_evaluation'
 
-  // Define which features to show for each product
   const buildFeatures = [
     'rpd',
     'image',
@@ -476,12 +493,11 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProdu
     'local_kb',
   ]
 
-  // Get the features to display based on selected product
   const featuresToShow = selectedProduct === 'build' ? buildFeatures : c0Features
-  // Enterprise plan data (all features unlimited/checked)
+
   const enterprisePlan = {
     display_name: 'Enterprise',
-    price: { monthly: 0, yearly: 0 }, // Custom pricing
+    price: { monthly: 0, yearly: 0 },
     limits: {
       cloud_kb: -1,
       image: -1,
@@ -490,8 +506,8 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProdu
       internet_search: -1,
       rpm: -1,
       cepm: -1,
-      rpd: -1, // Requests per day
-      rot: -1, // Rate of tokens
+      rpd: -1,
+      rot: -1,
       access: {
         chat: true,
         context: { git: true, commits: true, docs: true, codebase: { local: true, cloud: true, current: true } },
@@ -506,7 +522,6 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProdu
 
   const allPlans = [proPlan, teamsPlan, enterprisePlan].filter(Boolean)
 
-  // Feature configuration map - defines how each feature is rendered
   const featureConfig: Record<any, {
     label: string
     render: (plan: any) => React.ReactNode
@@ -556,7 +571,7 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProdu
       render: (plan) => plan.limits?.access?.chat ? (
         <img src='/tick.svg' className='object-fit size-[48%]' alt="Available" />
       ) : (
-        <svg xmlns="http://www.w3.org/2000/svg" width={36} height={36} viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-circle-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-6.489 5.8a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width={36} height={36} viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-circle-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /><path d="M5 12l4 4" /><path d="M5 12l4 -4" /></svg>
       )
     },
     code_evaluation: {
@@ -564,7 +579,7 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProdu
       render: (plan) => plan.limits?.access?.code_evaluation ? (
         <img src='/tick.svg' className='object-fit size-[48%]' alt="Available" />
       ) : (
-        <svg xmlns="http://www.w3.org/2000/svg" width={36} height={36} viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-circle-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-6.489 5.8a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" /></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width={36} height={36} viewBox="0 0 24 24" fill="currentColor" className="icon icon-tabler icons-tabler-filled icon-tabler-circle-x"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /><path d="M5 12l4 4" /><path d="M5 12l4 -4" /></svg>
       )
     },
     image: {
@@ -579,7 +594,6 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProdu
 
   return (
     <div className='hidden lg:flex pb-10 w-full flex-col items-center'>
-      {/* Header with plan names and prices */}
       <div className='w-full flex justify-between border-b-[1px] border-gray-500 border-opacity-35 h-[8rem] px-10 py-10'>
         <h1 className='text-5xl font-semibold mb-2'>
           <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Compare</span> Plans
@@ -600,7 +614,6 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProdu
       </div>
 
       <div className='w-full'>
-        {/* Dynamically render features in the order specified by featuresToShow */}
         {featuresToShow.map((featureKey) => {
           const feature = featureConfig[featureKey]
           if (!feature) return null
@@ -625,11 +638,9 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProdu
 
 
 function ComparePlansMobile({ plans, selectedProduct }: { plans: Plan[], selectedProduct: string }) {
-  // Find Pro and Teams plans
   const proPlan = plans.find(p => p.display_name.toLowerCase() === 'pro')
   const teamsPlan = plans.find(p => p.display_name.toLowerCase() === 'teams')
 
-  // Define feature arrays (same as desktop)
   type FeatureKey = keyof PlanLimits | 'seats' | 'byok' | 'chat' | 'code_evaluation'
 
   const buildFeatures = [
@@ -653,7 +664,6 @@ function ComparePlansMobile({ plans, selectedProduct }: { plans: Plan[], selecte
 
   const featuresToShow = selectedProduct === 'build' ? buildFeatures : c0Features
 
-  // Enterprise plan
   const enterprisePlan = {
     display_name: 'Enterprise',
     price: { monthly: 0, yearly: 0 },
@@ -681,7 +691,6 @@ function ComparePlansMobile({ plans, selectedProduct }: { plans: Plan[], selecte
 
   const allPlans = [proPlan, teamsPlan, enterprisePlan].filter(Boolean)
 
-  // Feature config (same as desktop)
   const featureConfig: Record<any, {
     label: string
     render: (plan: any) => React.ReactNode
@@ -761,7 +770,6 @@ function ComparePlansMobile({ plans, selectedProduct }: { plans: Plan[], selecte
       </div>
 
       <Accordion className='flex w-[90%] flex-col gap-3' transition={{ duration: 0.2, ease: 'easeInOut' }}>
-        {/* Dynamically render features */}
         {featuresToShow.map((featureKey) => {
           const feature = featureConfig[featureKey]
           if (!feature) return null
@@ -797,29 +805,16 @@ function FAQ() {
         <h1 className='text-3xl lg:text-5xl font-semibold text-center'>
           Frequently
           <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Asked</span> Questions</h1>
-
-        {/* <div className='flex gap-[3.7rem] text-2xl'>
-      <div className='flex flex-col justify-center items-center gap-2'>
-        <h1 className='font-semibold'>Pro Plan</h1>
-        
-      </div>
-      <div className='flex flex-col justify-center items-center gap-2'>
-        <h1 className='font-semibold'>Teams Plan</h1>
-        
-      </div>
-      </div> */}
       </div>
 
       <Accordion className='flex w-[90%] lg:w-[50%] flex-col  gap-3'
         transition={{ duration: 0.2, ease: 'easeInOut' }}>
-
 
         <AccordionItem value='Seats' className='border-b-[1px] pb-3'>
           <AccordionTrigger className='w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 font-semibold'>
             What kind of coding errors does your tool help fix?
           </AccordionTrigger>
           <AccordionContent className='mt-4 pb-5'>
-
             <div className='flex flex-col w-full justify-center items-center gap-8 text-zinc-500'>
               <p>Our tool can help fix a variety of coding errors, including syntax errors, logical errors, performance issues and even run-time errors. We use advanced algorithms and machine learning techniques to analyze your code and provide suggestions for improvement.</p>
             </div>
@@ -831,7 +826,6 @@ function FAQ() {
             How does your tool perform code reviews?
           </AccordionTrigger>
           <AccordionContent className='mt-4 pb-5'>
-
             <div className='flex flex-col w-full justify-center items-center gap-8 text-zinc-500'>
               <p>CodeMate can analyze your code against best practices and industry standards to help identify potential issues and improve the overall quality of your code. We can provide feedback on things like code style, naming guidelines, formatting, documentation, and more.</p>
             </div>
