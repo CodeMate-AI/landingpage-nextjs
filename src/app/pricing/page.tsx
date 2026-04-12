@@ -49,22 +49,22 @@ const CORA_PLANS = [
     currency: 'USD',
     highlight: false,
     isAnnual: true,
-    features: ["Base Model with Unlimited requests", ...CORA_SHARED_FEATURES],
+    features: ["Base Model with Generous Limits", ...CORA_SHARED_FEATURES],
     monthlyCtaText: 'Get Started',
-    monthlyCtaLink: '#',
+    monthlyCtaLink: 'https://app.codemate.ai',
     yearlyCtaText: 'Get Started',
-    yearlyCtaLink: '#',
+    yearlyCtaLink: 'https://app.codemate.ai',
   },
   {
     id: 'cora-pro',
     name: 'Pro',
     title: 'Pro',
-    description: 'Pro Model with Unlimited access',
+    description: 'Pro Model with Generous Limits',
     yearlyPrice: '20',
     currency: 'USD',
     highlight: false,
     features: [
-      "Pro Model with Unlimited access",
+      "Pro Model with Generous Limits",
       // "+ All features of Free Plan",
       ...CORA_SHARED_FEATURES,
     ],
@@ -82,12 +82,12 @@ const CORA_PLANS = [
     id: 'max',
     name: 'Max',
     title: 'Max',
-    description: 'Advanced Model with Unlimited requests',
+    description: 'Advanced Model with Generous Limits',
     yearlyPrice: '100',
     currency: 'USD',
     highlight: false,
     features: [
-      "Advanced Model with Unlimited requests",
+      "Advanced Model with Generous Limits",
       ...CORA_SHARED_FEATURES,
     ],
     monthlyCtaText: 'Get Max',
@@ -396,11 +396,11 @@ function Page() {
               ...MAX_PLAN_DATA,
               monthlyPrice: categorizedPlans.ultimatePlan.price.monthly.toString(),
               yearlyPrice: categorizedPlans.ultimatePlan.price.yearly.toString(),
-              monthlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.monthly 
-                ? `https://app.codemate.ai/payments?plan_id=${(categorizedPlans.ultimatePlan as any).stripe_id.monthly}` 
+              monthlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.monthly
+                ? `https://app.codemate.ai/payments?plan_id=${(categorizedPlans.ultimatePlan as any).stripe_id.monthly}`
                 : '#',
-              yearlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.yearly 
-                ? `https://app.codemate.ai/payments?plan_id=${(categorizedPlans.ultimatePlan as any).stripe_id.yearly}` 
+              yearlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.yearly
+                ? `https://app.codemate.ai/payments?plan_id=${(categorizedPlans.ultimatePlan as any).stripe_id.yearly}`
                 : '#',
             } : MAX_PLAN_DATA}
           />
@@ -421,8 +421,8 @@ function Page() {
       {selectedProduct === 'cora' && (<>
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw] w-full'>
           {CORA_PLANS.map((plan) => {
-            { console.log(plan) }
-            { console.log(categorizedPlans) }
+            // { console.log(plan) }
+            // { console.log(categorizedPlans) }
 
             // Find matching backend plan by display_name (case-insensitive)
             const backendPlan = categorizedPlans?.cora?.find(

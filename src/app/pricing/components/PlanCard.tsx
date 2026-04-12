@@ -241,7 +241,7 @@ const PlanCard = ({ planInfo }: { planInfo: any }) => {
             href={
               planInfo.title === 'Enterprise'
                 ? 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4'
-                : `https://app.codemate.ai/payments?plan_id=${currentCtaLink}`
+                : planInfo.id === "cora-free" ? `https://app.codemate.ai` : `https://app.codemate.ai/payments?plan_id=${currentCtaLink}`
             }
             className="block"
           >
