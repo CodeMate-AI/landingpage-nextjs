@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/accordion';
 import { ChevronUp } from 'lucide-react';
 import PlanCard from './components/PlanCard';
+import MaxPlanCard from './components/MaxPlanCard';
 import QuickPresetsGrid from './components/QuickPresetsGrid';
 import CompactCustomCredits from './components/CompactCustomCredits';
 import { fetchAndCategorizePlans, convertToPlanInfo, formatLimitValue, type CategorizedPlans, type Plan, type PlanLimits } from '@/utils/planUtils';
@@ -48,7 +49,7 @@ const CORA_PLANS = [
     currency: 'USD',
     highlight: false,
     isAnnual: true,
-    features: ["B0 Unlimited requests", ...CORA_SHARED_FEATURES],
+    features: ["Base Model with Unlimited requests", ...CORA_SHARED_FEATURES],
     monthlyCtaText: 'Get Started',
     monthlyCtaLink: '#',
     yearlyCtaText: 'Get Started',
@@ -58,13 +59,13 @@ const CORA_PLANS = [
     id: 'cora-pro',
     name: 'Pro',
     title: 'Pro',
-    description: 'Unlimited access — B0 + classifier-based X2',
+    description: 'Pro Model with Unlimited access',
     yearlyPrice: '20',
     currency: 'USD',
     highlight: false,
     features: [
-      "B0 Unlimited requests",
-      "X2 Classifier-based access",
+      "Pro Model with Unlimited access",
+      // "+ All features of Free Plan",
       ...CORA_SHARED_FEATURES,
     ],
     monthlyCtaText: 'Get Pro',
@@ -78,30 +79,43 @@ const CORA_PLANS = [
     ],
   },
   {
-    id: 'cora-pro-plus',
-    name: 'Pro Plus',
-    title: 'Pro Plus',
-    description: 'Unlimited access — X2 only',
+    id: 'max',
+    name: 'Max',
+    title: 'Max',
+    description: 'Advanced Model with Unlimited requests',
     yearlyPrice: '100',
     currency: 'USD',
     highlight: false,
     features: [
-      "X2 Unlimited requests",
+      "Advanced Model with Unlimited requests",
       ...CORA_SHARED_FEATURES,
     ],
-    monthlyCtaText: 'Get Pro Plus',
+    monthlyCtaText: 'Get Max',
     monthlyCtaLink: '#',
-    yearlyCtaText: 'Get Pro Plus',
+    yearlyCtaText: 'Get Max',
     yearlyCtaLink: '#',
     billingPeriods: [
-      { label: 'Daily', price: '5', ctaText: 'Get Pro Plus – $5/day', ctaLink: '' },
-      { label: 'Weekly', price: '25', ctaText: 'Get Pro Plus – $25/week', ctaLink: '' },
-      { label: 'Monthly', price: '100', ctaText: 'Get Pro Plus – $100/mo', ctaLink: '' },
+      { label: 'Daily', price: '5', ctaText: 'Get Max – $5/day', ctaLink: '' },
+      { label: 'Weekly', price: '25', ctaText: 'Get Max – $25/week', ctaLink: '' },
+      { label: 'Monthly', price: '100', ctaText: 'Get Max – $100/mo', ctaLink: '' },
     ],
   },
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
+
+// ─────────────────────────────────────────────────────────────────────────────
+
+const MAX_PLAN_DATA = {
+  title: 'CodeMate Max',
+  description: 'The command center for your entire local AI stack. Seamlessly manage IDE integrations, dynamically load edge modules (like speech-to-text), and enjoy zero-friction authentication across all CodeMate apps without endless redirects.',
+  monthlyPrice: '250',
+  yearlyPrice: '2500',
+  ctaText: 'Buy Now',
+  monthlyCtaLink: 'https://app.codemate.ai/payments?plan_id=max_all_in_one_monthly',
+  yearlyCtaLink: 'https://app.codemate.ai/payments?plan_id=max_all_in_one_yearly',
+  features: ['Cora Max', 'CO Agent Max', 'C0 Build Max']
+}
 
 function Page() {
   const router = useRouter();
@@ -347,7 +361,7 @@ function Page() {
 
 
       {/* ── Build plans ─────────────────────────────────────────────────────── */}
-      {selectedProduct === 'build' && (
+      {selectedProduct === 'build' && (<>
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw]'>
           {isLoadingPlans ? (
             <div className="text-white text-center py-20">
@@ -361,6 +375,7 @@ function Page() {
           ) : categorizedPlans && categorizedPlans.build.length > 0 && (
             <>
               {categorizedPlans.build.map((plan, index) => {
+                if (plan.display_name.toLocaleLowerCase() === "codemate max") return;
                 const isRecommended = false;
                 return (
                   <PlanCard
@@ -374,6 +389,23 @@ function Page() {
             </>
           )}
         </div>
+        {/* CodeMate Max Plan */}
+        <div className="w-full mt-1">
+          <MaxPlanCard
+            planInfo={categorizedPlans?.ultimatePlan ? {
+              ...MAX_PLAN_DATA,
+              monthlyPrice: categorizedPlans.ultimatePlan.price.monthly.toString(),
+              yearlyPrice: categorizedPlans.ultimatePlan.price.yearly.toString(),
+              monthlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.monthly 
+                ? `https://app.codemate.ai/payments?plan_id=${(categorizedPlans.ultimatePlan as any).stripe_id.monthly}` 
+                : '#',
+              yearlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.yearly 
+                ? `https://app.codemate.ai/payments?plan_id=${(categorizedPlans.ultimatePlan as any).stripe_id.yearly}` 
+                : '#',
+            } : MAX_PLAN_DATA}
+          />
+        </div>
+      </>
       )}
 
       {/* Comparison Table for Build */}
@@ -386,9 +418,12 @@ function Page() {
 
 
       {/* ── Cora plans ──────────────────────────────────────────────────────── */}
-      {selectedProduct === 'cora' && (
+      {selectedProduct === 'cora' && (<>
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw] w-full'>
           {CORA_PLANS.map((plan) => {
+            { console.log(plan) }
+            { console.log(categorizedPlans) }
+
             // Find matching backend plan by display_name (case-insensitive)
             const backendPlan = categorizedPlans?.cora?.find(
               (p) => p.display_name.toLowerCase() === plan.name.toLowerCase()
@@ -415,12 +450,25 @@ function Page() {
             )
           })}
         </div>
+        {/* CodeMate Max Plan */}
+        <div className="w-full mt-1">
+          <MaxPlanCard
+            planInfo={categorizedPlans?.ultimatePlan ? {
+              ...MAX_PLAN_DATA,
+              monthlyPrice: categorizedPlans.ultimatePlan.price.monthly.toString(),
+              yearlyPrice: categorizedPlans.ultimatePlan.price.yearly.toString(),
+              monthlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.monthly || '#',
+              yearlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.yearly || '#',
+            } : MAX_PLAN_DATA}
+          />
+        </div>
+      </>
       )}
 
 
       {/* ── C0 plans ────────────────────────────────────────────────────────── */}
-      
-      {selectedProduct === 'c0' &&
+
+      {selectedProduct === 'c0' && <>
         <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw]'>
           {isLoadingPlans ? (
             <div className="text-white text-center py-20">
@@ -434,6 +482,7 @@ function Page() {
           ) : categorizedPlans && categorizedPlans.c0.length > 0 && (
             <>
               {categorizedPlans.c0.map((plan, index) => {
+                if (plan.display_name.toLocaleLowerCase() === "codemate max") return;
                 const isRecommended = false;
                 return (
                   <PlanCard
@@ -446,7 +495,21 @@ function Page() {
               <PlanCard planInfo={enterprisePlan} />
             </>
           )}
-        </div>}
+        </div>
+        {/* CodeMate Max Plan */}
+        <div className="w-full mt-1">
+          <MaxPlanCard
+            planInfo={categorizedPlans?.ultimatePlan ? {
+              ...MAX_PLAN_DATA,
+              monthlyPrice: categorizedPlans.ultimatePlan.price.monthly.toString(),
+              yearlyPrice: categorizedPlans.ultimatePlan.price.yearly.toString(),
+              monthlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.monthly || '#',
+              yearlyCtaLink: (categorizedPlans.ultimatePlan as any).stripe_id?.yearly || '#',
+            } : MAX_PLAN_DATA}
+          />
+        </div>
+      </>
+      }
 
       {/* Comparison Table for C0 */}
       {selectedProduct === 'c0' && categorizedPlans && categorizedPlans.c0.length > 0 && (

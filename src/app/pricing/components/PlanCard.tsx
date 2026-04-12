@@ -64,9 +64,9 @@ const PlanCard = ({ planInfo }: { planInfo: any }) => {
 
   const visibleFeatures = showAllFeatures
     ? planInfo.features
-    : planInfo.features.slice(0, VISIBLE_FEATURES_COUNT)
+    : planInfo?.features?.slice(0, VISIBLE_FEATURES_COUNT)
 
-  const hiddenCount = planInfo.features.length - VISIBLE_FEATURES_COUNT
+  const hiddenCount = planInfo?.features?.length - VISIBLE_FEATURES_COUNT
 
   // Dynamic spacer text for Free and Enterprise
   const getSpacerText = () => {
@@ -97,11 +97,10 @@ const PlanCard = ({ planInfo }: { planInfo: any }) => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         className={`relative flex flex-col w-[90%] max-w-[600px] bg-gradient-to-br from-zinc-900 to-zinc-950 
-                    rounded-3xl p-8 shadow-xl h-full ${
-          planInfo.highlight
+                    rounded-3xl p-8 shadow-xl h-full ${planInfo.highlight
             ? 'rounded-tl-none ring-2 ring-orange-500 ring-offset-4 ring-offset-zinc-950'
             : ''
-        }`}
+          }`}
       >
         {planInfo.highlight && <MostRecommendedBadge />}
 
@@ -122,9 +121,8 @@ const PlanCard = ({ planInfo }: { planInfo: any }) => {
                     key={period.label}
                     ref={(el) => { periodButtonRefs.current[idx] = el }}
                     onClick={() => setSelectedPeriodIdx(idx)}
-                    className={`relative z-10 px-3 py-1 text-xs font-semibold rounded-full capitalize transition-colors duration-150 focus:outline-none ${
-                      selectedPeriodIdx === idx ? 'text-black' : 'text-white'
-                    }`}
+                    className={`relative z-10 px-3 py-1 text-xs font-semibold rounded-full capitalize transition-colors duration-150 focus:outline-none ${selectedPeriodIdx === idx ? 'text-black' : 'text-white'
+                      }`}
                   >
                     {period.label}
                   </button>
@@ -138,9 +136,8 @@ const PlanCard = ({ planInfo }: { planInfo: any }) => {
               <span className="text-sm font-medium text-zinc-400">Annual</span>
               <motion.button
                 onClick={() => setIsAnnual(!isAnnual)}
-                className={`relative w-12 h-6 rounded-full transition-colors ${
-                  isAnnual ? 'bg-zinc-700' : 'bg-zinc-400'
-                }`}
+                className={`relative w-12 h-6 rounded-full transition-colors ${isAnnual ? 'bg-zinc-700' : 'bg-zinc-400'
+                  }`}
                 whileTap={{ scale: 0.95 }}
               >
                 <motion.div
@@ -203,7 +200,7 @@ const PlanCard = ({ planInfo }: { planInfo: any }) => {
 
           <div className="flex-1 space-y-3">
             <AnimatePresence initial={false}>
-              {visibleFeatures.map((feature: string, index: number) => (
+              {visibleFeatures?.map((feature: string, index: number) => (
                 <motion.div
                   key={feature}
                   initial={{ opacity: 0, x: -20 }}

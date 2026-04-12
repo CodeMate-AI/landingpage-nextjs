@@ -52,6 +52,7 @@ export interface CategorizedPlans {
     build: Plan[]
     c0: Plan[]
     cora: Plan[]
+    ultimatePlan?: Plan
 }
 
 /**
@@ -113,19 +114,24 @@ export function categorizePlansByProduct(plans: any): CategorizedPlans {
     // plans = plans.filter((plan) => !plan?.parent_license_id)
     plans = plans.filter((plan: any) => !plan?.parent_license_id)
     plans.forEach((plan: any) => {
+        // Record ultimate plan if found
+        if (plan.is_ultimate || plan.display_name.toLocaleLowerCase() === "codemate max") {
+            categorized.ultimatePlan = plan
+        }
 
         // Check which products this plan belongs to
         if (!(
+            plan.is_ultimate ||
+            plan.display_name.toLocaleLowerCase() === "codemate max" ||
             plan.display_name.toLocaleLowerCase() === "pro" ||
             plan.display_name.toLocaleLowerCase() === "pro plus" ||
+            (plan.display_name.toLocaleLowerCase() === "max" && plan.product.includes("cora")) ||
             plan.display_name.toLocaleLowerCase() === "teams"
         )) {
             return
         }
         plan.product.forEach((productName: any) => {
-
             const normalizedProduct = productName.toLowerCase()
-
             if (normalizedProduct === 'build' && !categorized.build.find(p => p._id === plan._id)) {
                 categorized.build.push(plan)
             } else if (normalizedProduct === 'c0' && !categorized.c0.find(p => p._id === plan._id)) {
@@ -151,6 +157,14 @@ export async function fetchAndCategorizePlans(): Promise<CategorizedPlans> {
 const STATIC_BUILD_FEATURES: Record<string, string[]> = {
     'pro': [
         "200 requests per day",
+        "Unlimited image uploads and processing",
+        "Figma-to-code conversion",
+        "Document (PDF, DOC, TXT, DOCX )Support",
+        "Instant deployment with shareable links",
+        "Source code download capability",
+    ],
+    'max': [
+        "400 requests per day",
         "Unlimited image uploads and processing",
         "Figma-to-code conversion",
         "Document (PDF, DOC, TXT, DOCX )Support",
