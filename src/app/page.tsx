@@ -5,7 +5,8 @@ import { ChevronUp, Menu, Weight, X, ChevronRight } from 'lucide-react';
 import { FloatingNav } from '@/components/ui/floating-navbar';
 import { IconArrowLeft, IconArrowRight, IconArrowBadgeDown } from '@tabler/icons-react';
 import StaggeredMenu from '@/components/ui/Menu';
-import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube } from "react-icons/fa6";
+import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
+import { VscAzureDevops } from "react-icons/vsc";
 import AutoCodeEditor from '@/components/motion-components/aEditor';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import { TextAnimate } from '@/components/ui/textAnimate'
@@ -1597,7 +1598,7 @@ function Page() {
         imageSrc='https://backend.v3.codemateai.dev/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
       />
 
-      <div ref={prodRef} className='lg:h-[410vh] w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
+      <div ref={prodRef} className='lg:h-[470vh] w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
         <h1 className=' font-mono pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
 
 
@@ -1798,11 +1799,32 @@ function Page() {
 
 
                     <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img ref={codeMateImageRef} src="chat.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                      <img src="chat.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CodeMate C0</h1>
                   <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate C0 on the web, turns your prompts into working code, helping you build faster.</p>
+                </div>
+              </a>
+              <a href="https://app.codemate.ai/pr-review" target="_blank" className='cursor-pointer'>
+                <div>
+                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+
+                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
+
+
+                    <div className="absolute -bottom-14 lg:-bottom-[3rem] w-full flex items-center justify-center shadow-2xl">
+                      <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="" />
+                    </div>
+                  </div>
+                  <h1 className="mt-1 text-lg font-semibold">CodeMate PR Review Agent</h1>
+                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate PR Review Agent automates your code review process, analyzing pull requests for bugs, security issues, and performance improvements directly on Github/Bitbucket/Gitlab/Azure-devops.</p>
+                  <div className='flex items-center gap-4 mt-3 opacity-50'>
+                    <FaGithub className='w-5 h-5' title='GitHub' />
+                    <FaBitbucket className='w-5 h-5' title='Bitbucket' />
+                    <FaGitlab className='w-5 h-5' title='GitLab' />
+                    <VscAzureDevops className='w-5 h-5' title='Azure DevOps' />
+                  </div>
                 </div>
               </a>
             </div>

@@ -29,7 +29,7 @@ export default function VideoEmbed() {
               height: "100%",
               border: "none",
             }}
-            src="https://www.youtube.com/embed/WLFXalppvLY?autoplay=1&mute=1&loop=1&rel=0&controls=0&modestbranding=1&showinfo=0&disablekb=1&playlist=WLFXalppvLY"
+            src="https://www.youtube.com/embed/ux5jJgNkslE?autoplay=1&mute=1&loop=1&rel=0&controls=0&modestbranding=1&showinfo=0&disablekb=1&playlist=ux5jJgNkslE"
             allow="autoplay; encrypted-media"
             allowFullScreen
             className="pointer-events-none"
