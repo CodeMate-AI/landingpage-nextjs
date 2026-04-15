@@ -20,11 +20,12 @@ function Achivements() {
   const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
   const cards = [
     {
-      image: "/AI_Summit.jpg",
+      image: "/AI_Summit.png",
       alt: "India AI Summit 2026",
       title: "India AI Summit 2026 - Hosted Global AI Leaders at CodeMate Booth",
       description: "CodeMate AI engaged with Yann LeCun, Defence Minister Rajnath Singh, CM Chandrababu Naidu, and other top global leaders - showcasing India's first full-stack, self-hosted enterprise AI coding agent.",
-      link: "https://www.linkedin.com/posts/theayushsinghal_codemate-ai-at-ai-impact-summit-ugcPost-7435550359072231424-xc7A?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
+      link: "https://www.linkedin.com/posts/theayushsinghal_codemate-ai-at-ai-impact-summit-ugcPost-7435550359072231424-xc7A?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU",
+      imagePosition: "top"
     },
     {
       image: "/IMC_2025.jpg",
@@ -41,7 +42,7 @@ function Achivements() {
       link: "https://www.linkedin.com/posts/theayushsinghal_codemate-upits2025-ai-activity-7389356209650450432-mG2X?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
     },
     {
-      image: "/TIDE.jpg",
+      image: "/Pravartan.png",
       alt: "MeitY TIDE 2.0 - Pravartan 2025",
       title: "MeitY TIDE 2.0 - Pravartan 2025, Featured Startup",
       description: "CodeMate AI was presented to Union Minister \"Jitin Prasada\" and Senior MeitY officials among the top TIDE-funded startups in India, showcasing : How AI automates the end-to-end Software Development Lifecycle.",
@@ -402,7 +403,7 @@ function Achivements() {
         <motion.div animate={{ x: currCards }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className='flex gap-6'>
           {cards.map((e, idx) => (
             <div key={idx}>
-              <Card title={e.title} image={e.image} alt={e.alt} description={e.description} link={e.link} />
+              <Card title={e.title} image={e.image} alt={e.alt} description={e.description} link={e.link} imagePosition={(e as any).imagePosition} />
             </div>
           ))}
         </motion.div>
@@ -434,10 +435,10 @@ function Achivements() {
 export default Achivements
 
 
-function Card({ image, alt, title, description, link }: { image: String, alt: String, title: String, description: String, link: String }) {
+function Card({ image, alt, title, description, link, imagePosition }: { image: String, alt: String, title: String, description: String, link: String, imagePosition?: string }) {
   return (
     <motion.div className='relative h-[33rem] w-[20rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
-      <img src={image as string} alt={alt as string} className='h-[40%] w-full object-cover ' />
+      <img src={image as string} alt={alt as string} className={`h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : ''}`} />
 
       <div className='px-5 flex flex-col gap-2 mt-4'>
         <h1 className='text-xl font-semibold '>{title}</h1>
