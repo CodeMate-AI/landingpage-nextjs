@@ -217,12 +217,12 @@ const PlanCard = ({
               : planInfo.id === 'cora-free' ? 'https://app.codemate.ai'
               : `https://app.codemate.ai/payments?plan_id=${currentCtaLink}`
           }
-          className="block mb-5"
+          className="mb-5 flex justify-center sm:block"
         >
           <motion.button
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.98 }}
-            className={`w-full py-2 rounded-lg text-sm font-semibold transition-all ${
+            className={`w-fit px-6 sm:w-full py-2 rounded-lg text-sm font-semibold transition-all ${
               planInfo.highlight || planInfo.isRecommended
                 ? 'bg-white text-black hover:bg-zinc-100'
                 : isFreeOrFirstPlan

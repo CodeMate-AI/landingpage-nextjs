@@ -126,11 +126,11 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
             </div>
           </div>
 
-          <a href={currentCtaLink} className="flex-shrink-0 w-full lg:w-[200px]">
+          <a href={currentCtaLink} className="flex-shrink-0 w-fit lg:w-[200px] mx-auto lg:mx-0">
             <motion.button
               whileHover={{ scale: 1.02, backgroundColor: '#f4f4f5' }}
               whileTap={{ scale: 0.95 }}
-              className="w-full bg-white text-black font-bold text-lg py-4 rounded-full 
+              className="w-fit px-8 lg:w-full bg-white text-black font-bold text-sm lg:text-lg py-2 lg:py-4 rounded-full
                          flex items-center justify-center gap-3 transition-all shadow-xl hover:shadow-white/10"
             >
               {planInfo.ctaText}

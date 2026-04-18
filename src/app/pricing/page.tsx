@@ -289,8 +289,8 @@ function Page() {
       {/* mobile responsivess */}
 
       <div className='flex flex-col'>
-        <h1 className='text-4xl font-semibold text-center pt-32 pb-1 text-primary'>Pricing</h1>
-        <p className='text-center text-4xl mt-1 opacity-60'>Choose a plan which feels right for you.</p>
+        <h1 className='text-xl lg:text-4xl font-semibold text-center pt-32 pb-1 text-primary'>Pricing</h1>
+        <p className='text-center text-lg lg:text-4xl mt-1 opacity-60'>Choose a plan which feels right for you.</p>
       </div>
 
       {/* Product selector pill */}
@@ -361,7 +361,7 @@ function Page() {
         </div>
       </div>
 
-{/* ── Build plans ─────────────────────────────────────────────────────── */}
+      {/* ── Build plans ─────────────────────────────────────────────────────── */}
       {selectedProduct === 'build' && (
         <div className="flex flex-col gap-4 w-full">
           <div className="px-4 lg:px-[6vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 w-full max-w-[1400px] mx-auto">
