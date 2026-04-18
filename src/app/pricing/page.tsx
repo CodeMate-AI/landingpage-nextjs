@@ -359,38 +359,34 @@ function Page() {
         </div>
       </div>
 
-
-      {/* ── Build plans ─────────────────────────────────────────────────────── */}
-      {selectedProduct === 'build' && (<>
-        <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw]'>
-          {isLoadingPlans ? (
-            <div className="text-white text-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-              <p>Loading plans...</p>
-            </div>
-          ) : plansError ? (
-            <div className="text-red-400 text-center py-20">
-              <p>{plansError}</p>
-            </div>
-          ) : categorizedPlans && categorizedPlans.build.length > 0 && (
-            <>
-              {categorizedPlans.build.map((plan, index) => {
-                if (plan.display_name.toLocaleLowerCase() === "codemate max") return;
-                const isRecommended = false;
-                return (
-                  <PlanCard
-                    key={plan._id}
-                    planInfo={convertToPlanInfo(plan, isRecommended)}
-                  />
-                );
-              })}
-              {/* Enterprise Plan */}
-              <PlanCard planInfo={enterprisePlan} />
-            </>
-          )}
-        </div>
-        {/* CodeMate Max Plan */}
-        <div className="w-full mt-1">
+{/* ── Build plans ─────────────────────────────────────────────────────── */}
+      {selectedProduct === 'build' && (
+        <div className="flex flex-col gap-4 w-full">
+          <div className="px-4 lg:px-[6vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 w-full max-w-[1400px] mx-auto">
+            {isLoadingPlans ? (
+              <div className="col-span-full text-white text-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+                <p>Loading plans...</p>
+              </div>
+            ) : plansError ? (
+              <div className="col-span-full text-red-400 text-center py-20">
+                <p>{plansError}</p>
+              </div>
+            ) : categorizedPlans && categorizedPlans.build.length > 0 && (
+              <>
+                {categorizedPlans.build.map((plan, index) => {
+                  if (plan.display_name.toLocaleLowerCase() === "codemate max") return null;
+                  return (
+                    <PlanCard
+                      key={plan._id}
+                      planInfo={convertToPlanInfo(plan, false)}
+                    />
+                  );
+                })}
+                <PlanCard planInfo={enterprisePlan} />
+              </>
+            )}
+          </div>
           <MaxPlanCard
             planInfo={categorizedPlans?.ultimatePlan ? {
               ...MAX_PLAN_DATA,
@@ -405,7 +401,6 @@ function Page() {
             } : MAX_PLAN_DATA}
           />
         </div>
-      </>
       )}
 
       {/* Comparison Table for Build */}
@@ -416,42 +411,33 @@ function Page() {
         </div>
       )}
 
-
       {/* ── Cora plans ──────────────────────────────────────────────────────── */}
-      {selectedProduct === 'cora' && (<>
-        <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw] w-full'>
-          {CORA_PLANS.map((plan) => {
-            // { console.log(plan) }
-            // { console.log(categorizedPlans) }
-
-            // Find matching backend plan by display_name (case-insensitive)
-            const backendPlan = categorizedPlans?.cora?.find(
-              (p) => p.display_name.toLowerCase() === plan.name.toLowerCase()
-            )
-
-            // Hydrate billingPeriods ctaLink from backend stripe_id if available
-            const hydratedBillingPeriods = plan.billingPeriods?.map((period) => {
-              const key = period.label.toLowerCase() as 'daily' | 'weekly' | 'monthly'
-              const stripeId = (backendPlan as any)?.stripe_id?.[key]
-              return stripeId ? { ...period, ctaLink: stripeId } : period
-            })
-
-            return (
-              <PlanCard
-                key={plan.id}
-                planInfo={{
-                  ...plan,
-                  _id: plan.id,
-                  isCustom: false,
-                  stripe_plan_id: plan.id,
-                  ...(hydratedBillingPeriods && { billingPeriods: hydratedBillingPeriods }),
-                }}
-              />
-            )
-          })}
-        </div>
-        {/* CodeMate Max Plan */}
-        <div className="w-full mt-1">
+      {selectedProduct === 'cora' && (
+        <div className="flex flex-col gap-4 w-full">
+          <div className="px-4 lg:px-[6vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 w-full max-w-[1400px] mx-auto">
+            {CORA_PLANS.map((plan) => {
+              const backendPlan = categorizedPlans?.cora?.find(
+                (p) => p.display_name.toLowerCase() === plan.name.toLowerCase()
+              )
+              const hydratedBillingPeriods = plan.billingPeriods?.map((period) => {
+                const key = period.label.toLowerCase() as 'daily' | 'weekly' | 'monthly'
+                const stripeId = (backendPlan as any)?.stripe_id?.[key]
+                return stripeId ? { ...period, ctaLink: stripeId } : period
+              })
+              return (
+                <PlanCard
+                  key={plan.id}
+                  planInfo={{
+                    ...plan,
+                    _id: plan.id,
+                    isCustom: false,
+                    stripe_plan_id: plan.id,
+                    ...(hydratedBillingPeriods && { billingPeriods: hydratedBillingPeriods }),
+                  }}
+                />
+              )
+            })}
+          </div>
           <MaxPlanCard
             planInfo={categorizedPlans?.ultimatePlan ? {
               ...MAX_PLAN_DATA,
@@ -462,42 +448,36 @@ function Page() {
             } : MAX_PLAN_DATA}
           />
         </div>
-      </>
       )}
 
-
       {/* ── C0 plans ────────────────────────────────────────────────────────── */}
-
-      {selectedProduct === 'c0' && <>
-        <div className='flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-center items-center lg:items-start gap-6 px-4 lg:px-[6vw]'>
-          {isLoadingPlans ? (
-            <div className="text-white text-center py-20">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-              <p>Loading plans...</p>
-            </div>
-          ) : plansError ? (
-            <div className="text-red-400 text-center py-20">
-              <p>{plansError}</p>
-            </div>
-          ) : categorizedPlans && categorizedPlans.c0.length > 0 && (
-            <>
-              {categorizedPlans.c0.map((plan, index) => {
-                if (plan.display_name.toLocaleLowerCase() === "codemate max") return;
-                const isRecommended = false;
-                return (
-                  <PlanCard
-                    key={plan._id}
-                    planInfo={convertToPlanInfo(plan, isRecommended)}
-                  />
-                );
-              })}
-              {/* Enterprise Plan */}
-              <PlanCard planInfo={enterprisePlan} />
-            </>
-          )}
-        </div>
-        {/* CodeMate Max Plan */}
-        <div className="w-full mt-1">
+      {selectedProduct === 'c0' && (
+        <div className="flex flex-col gap-4 w-full">
+          <div className="px-4 lg:px-[6vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 w-full max-w-[1400px] mx-auto">
+            {isLoadingPlans ? (
+              <div className="col-span-full text-white text-center py-20">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+                <p>Loading plans...</p>
+              </div>
+            ) : plansError ? (
+              <div className="col-span-full text-red-400 text-center py-20">
+                <p>{plansError}</p>
+              </div>
+            ) : categorizedPlans && categorizedPlans.c0.length > 0 && (
+              <>
+                {categorizedPlans.c0.map((plan, index) => {
+                  if (plan.display_name.toLocaleLowerCase() === "codemate max") return null;
+                  return (
+                    <PlanCard
+                      key={plan._id}
+                      planInfo={convertToPlanInfo(plan, false)}
+                    />
+                  );
+                })}
+                <PlanCard planInfo={enterprisePlan} />
+              </>
+            )}
+          </div>
           <MaxPlanCard
             planInfo={categorizedPlans?.ultimatePlan ? {
               ...MAX_PLAN_DATA,
@@ -508,8 +488,7 @@ function Page() {
             } : MAX_PLAN_DATA}
           />
         </div>
-      </>
-      }
+      )}
 
       {/* Comparison Table for C0 */}
       {selectedProduct === 'c0' && categorizedPlans && categorizedPlans.c0.length > 0 && (
@@ -527,8 +506,6 @@ function Page() {
 }
 
 export default Page
-
-
 
 
 function ComparePlans({ plans, selectedProduct }: { plans: Plan[], selectedProduct: string }) {
