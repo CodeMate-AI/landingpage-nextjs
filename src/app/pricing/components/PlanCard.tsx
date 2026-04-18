@@ -44,10 +44,17 @@ const getPreviousPlanName = (planTitle: string): string | null => {
   return hierarchy[planTitle.toLowerCase()] ?? null
 }
 
-const PlanCard = ({ planInfo }: { planInfo: any }) => {
+const PlanCard = ({
+  planInfo,
+  showAllFeatures = false,
+  onToggleFeatures,
+}: {
+  planInfo: any
+  showAllFeatures?: boolean
+  onToggleFeatures?: () => void
+}) => {
   const [isAnnual, setIsAnnual] = useState(planInfo.isAnnual ?? (!planInfo.monthlyPrice ? true : false))
   const [selectedPeriodIdx, setSelectedPeriodIdx] = useState(0)
-  const [showAllFeatures, setShowAllFeatures] = useState(false)
 
   const periodContainerRef = useRef<HTMLDivElement>(null)
   const periodButtonRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -266,7 +273,7 @@ const PlanCard = ({ planInfo }: { planInfo: any }) => {
           {/* Show more / less toggle */}
           {hiddenCount > 0 && (
             <button
-              onClick={() => setShowAllFeatures(!showAllFeatures)}
+              onClick={onToggleFeatures}
               className="mt-3 flex items-center gap-1 text-zinc-500 hover:text-zinc-300 text-xs font-medium transition-colors"
             >
               <motion.span

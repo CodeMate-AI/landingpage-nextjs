@@ -127,6 +127,7 @@ function Page() {
   const [isPlan3, setIsPlan3] = useState(false);
   const [IsMascot, setIsMascot] = useState(false);
   const [showEventPopup, setShowEventPopup] = useState(true);
+  const [showAllFeatures, setShowAllFeatures] = useState(false);
 
   // State for API plans
   const [categorizedPlans, setCategorizedPlans] = useState<CategorizedPlans | null>(null);
@@ -144,6 +145,7 @@ function Page() {
     if (e === 1) setSelectedProduct('build');
     if (e === 2) setSelectedProduct('cora');
     if (e === 3) setSelectedProduct('c0');
+    setShowAllFeatures(false);
   }
 
   const { scrollYProgress } = useScroll({
@@ -380,10 +382,16 @@ function Page() {
                     <PlanCard
                       key={plan._id}
                       planInfo={convertToPlanInfo(plan, false)}
+                      showAllFeatures={showAllFeatures}
+                      onToggleFeatures={() => setShowAllFeatures(s => !s)}
                     />
                   );
                 })}
-                <PlanCard planInfo={enterprisePlan} />
+                <PlanCard
+                  planInfo={enterprisePlan}
+                  showAllFeatures={showAllFeatures}
+                  onToggleFeatures={() => setShowAllFeatures(s => !s)}
+                />
               </>
             )}
           </div>
@@ -434,6 +442,8 @@ function Page() {
                     stripe_plan_id: plan.id,
                     ...(hydratedBillingPeriods && { billingPeriods: hydratedBillingPeriods }),
                   }}
+                  showAllFeatures={showAllFeatures}
+                  onToggleFeatures={() => setShowAllFeatures(s => !s)}
                 />
               )
             })}
@@ -471,10 +481,16 @@ function Page() {
                     <PlanCard
                       key={plan._id}
                       planInfo={convertToPlanInfo(plan, false)}
+                      showAllFeatures={showAllFeatures}
+                      onToggleFeatures={() => setShowAllFeatures(s => !s)}
                     />
                   );
                 })}
-                <PlanCard planInfo={enterprisePlan} />
+                <PlanCard
+                  planInfo={enterprisePlan}
+                  showAllFeatures={showAllFeatures}
+                  onToggleFeatures={() => setShowAllFeatures(s => !s)}
+                />
               </>
             )}
           </div>
