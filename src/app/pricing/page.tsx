@@ -257,35 +257,32 @@ function Page() {
       </div>
       {/* navbar */}
 
-      {/* mobile Navbar */}
-      <div
-        style={{ zIndex: 999999999999, }}
-        className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
-        <motion.div
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          style={{
-            background: 'rgba(15, 20, 20, 0.45)',
-            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(5px)',
-            WebkitBackdropFilter: 'blur(5px)',
-            zIndex: 999999999999,
-          }}
-          className={`mt-5 w-[90%]  bg-opacity-65 z-[9999999999] rounded-lg border-y-[1px]   border-gray-400 border-opacity-10`}>
-          <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
-            <div className='flex   justify-between items-center w-full h-fit'>
-              <div className="h-fit w-[30vw] flex justify-center overflow-hidden">
-                <img src="/codemateLogo.svg" alt="" />
-              </div>
-              <div className={`flex gap-5 text-md  justify-center items-center cursor-pointer text-right `}>
-                <motion.h1 onClick={() => router.push("/")} whileHover={{ opacity: 1 }} className='flex text-center justify-center items-center opacity-65 gap-1'><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-left"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M5 12l14 0" /><path d="M5 12l4 4" /><path d="M5 12l4 -4" /></svg>Back</motion.h1>
-                <button className={` px-2 py-1  bg-[#FFFFFF] text-black text-sm rounded-sm font-semibold opacity-85`}>Get Started</button>
-              </div>
-            </div>
-          </div>
-        </motion.div>
+{/* mobile Navbar */}
+<div
+  style={{ zIndex: 999999999999, }}
+  className='lg:hidden fixed flex top-0 justify-center items-center w-full'>
+  <motion.div
+    initial={{ y: -100 }}
+    animate={{ y: 0 }}
+    transition={{ duration: 1, delay: 0.5 }}
+    style={{
+      background: 'rgba(15, 20, 20, 0.45)',
+      boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
+      backdropFilter: 'blur(5px)',
+      WebkitBackdropFilter: 'blur(5px)',
+      zIndex: 999999999999,
+    }}
+    className={`mt-5 w-[90%] bg-opacity-65 z-[9999999999] rounded-lg border-y-[1px] border-gray-400 border-opacity-10`}>
+    <div className='flex justify-between items-center h-full w-full text-white px-[0.5rem] py-2'>
+      <div className="h-fit w-[30vw] flex justify-start overflow-hidden">
+        <img src="/codemateLogo.svg" alt="" />
       </div>
+      <a href="https://app.codemate.ai" target='_blank'>
+        <button className={`px-1.5 py-0.5 bg-[#FFFFFF] text-black text-sm rounded-lg font-semibold opacity-85 mr-1`}>Get Started</button>
+      </a>
+    </div>
+  </motion.div>
+</div>
       {/* mobile responsivess */}
 
       <div className='flex flex-col'>
