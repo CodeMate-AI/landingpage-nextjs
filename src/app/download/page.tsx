@@ -38,7 +38,7 @@ const DownloadPage = () => {
         <div className="min-h-screen bg-background text-foreground font-sans flex flex-col items-center pt-28 px-4 pb-20 relative">
             {/* Global Navbar */}
             <nav className="absolute top-0 w-full flex items-center justify-between px-6 py-5 md:px-10 z-50">
-                <div onClick={() => { window.location.href = "https://app.codemate.ai/dashboard" }} className="flex items-center gap-2 cursor-pointer">
+                <div onClick={() => { window.location.href = "https://codemate.ai" }} className="flex items-center gap-2 cursor-pointer">
                     <Image
                         src="/codemateLogo.svg"
                         alt="Codemate Logo"
