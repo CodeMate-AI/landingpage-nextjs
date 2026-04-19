@@ -1523,14 +1523,24 @@ function Page() {
                   <motion.div
                     initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                     animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                    transition={{ duration: 1, delay: 0.5 }} className={`${montserrat.className} flex gap-5 text-sm mt-10 -ml-4 sm:ml-0 `}>
+                    transition={{ duration: 1, delay: 0.5 }} 
+                    className={`${montserrat.className} flex items-center gap-4 text-sm mt-10 -ml-4 sm:ml-0`}
+                  >
                     <a href="/download">
-                      <motion.button whileHover={{ opacity: 0.7 }} className='px-4 py-3  bg-black text-white  rounded-sm  text-opacity-80'>Download ToolBox</motion.button>
+                      <motion.button 
+                        whileHover={{ opacity: 0.8 }} 
+                        className="h-12 px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5"
+                      >
+                        Download
+                      </motion.button>
                     </a>
-                    <a href="https://app.codemate.ai" target="_blank" >
+                    <a href="https://app.codemate.ai" target="_blank">
                       <motion.button
-                        whileHover={{ opacity: 0.7, }}
-                        className='px-4 py-3  bg-[#FFFFFF] text-black  rounded-sm    font-semibold'>Try Build 2.0</motion.button>
+                        whileHover={{ opacity: 0.9 }}
+                        className="h-12 px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold"
+                      >
+                        Try Build 2.0
+                      </motion.button>
                     </a>
                   </motion.div>
                 </motion.div>

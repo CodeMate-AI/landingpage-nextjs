@@ -13,6 +13,7 @@ const montserrat = Montserrat({
 
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://codemate.ai'),
   title: "CodeMate AI | Your Professional and Secured AI Pair Programmer",
   description: "Code 10x faster as CodeMate search, navigate and understand complex codebases for you.",
   alternates: {
@@ -59,6 +60,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${montserrat.className} antialiased bg-zinc-950 text-white dark`}
+        suppressHydrationWarning
       >
         {children}
       </body>

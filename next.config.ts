@@ -6,17 +6,16 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'assets.aceternity.com' },
+      { protocol: 'https', hostname: 'api.microlink.io' },
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'assests.aceternity.com' },
+      { protocol: 'https', hostname: 'backend.v3.codemateai.dev' },
+    ],
+  },
+  allowedDevOrigins: ['127.0.0.1:3000', 'localhost:3000'],
 };
 
-module.exports = {
-  images: {
-    domains: ['assets.aceternity.com',
-      "api.microlink.io",
-      "images.unsplash.com",
-      "assests.aceternity.com",
-      "backend.v3.codemateai.dev"
-    ],
-    // Add the external domain here
-  },
-};
 export default withNextVideo(nextConfig, { folder: 'video' });

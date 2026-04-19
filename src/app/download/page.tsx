@@ -91,10 +91,10 @@ const DownloadPage = () => {
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6, delay: 0.1 }}
                         >
-                            <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight mb-1.5 text-foreground">
+                            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-1.5 text-foreground">
                                 Download ToolBox
                             </h1>
-                            <p className="text-[15px] sm:text-muted-foreground max-w-lg font-light mb-5">
+                            <p className="text-base sm:text-lg text-muted-foreground max-w-lg mb-6">
                                 Available for macOS, Windows, and Linux.
                             </p>
                         </motion.div>
@@ -157,9 +157,9 @@ const DownloadPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 px-0 text-left">
                         {/* Windows Column */}
                         <div className="flex flex-col relative group pt-6 md:pt-0">
-                            <div className="flex items-center gap-3 mb-5 px-2">
+                            <div className="flex items-center gap-3 mb-6 px-2">
                                 <FaWindows className="w-4 h-4 text-foreground" />
-                                <h3 className="text-base font-medium tracking-tight">Windows</h3>
+                                <h3 className="text-lg font-semibold tracking-tight">Windows</h3>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <DownloadRow label="Windows (ARM)" link='https://storage.devdash.codemateai.dev/uploads/800a8138-bf96-4e08-af58-b80486064f14/download' />
@@ -170,9 +170,9 @@ const DownloadPage = () => {
                         </div>
                         {/* macOS Column */}
                         <div className="flex flex-col relative group">
-                            <div className="flex items-center gap-3 mb-5 px-2">
+                            <div className="flex items-center gap-3 mb-6 px-2">
                                 <FaApple className="w-5 h-5 text-foreground" />
-                                <h3 className="text-base font-medium tracking-tight">macOS</h3>
+                                <h3 className="text-lg font-semibold tracking-tight">macOS</h3>
                                 {/* <span className="px-2 py-0.5 text-xs font-lighter lowercase tracking-tight text-muted-foreground bg-foreground/10 rounded-full ml-auto">Coming Soon</span> */}
                             </div>
                             <div className="flex flex-col gap-1">
@@ -185,9 +185,9 @@ const DownloadPage = () => {
                         </div>
                         {/* Linux Column */}
                         <div className="flex flex-col relative group md:pl-6 pt-6 md:pt-0">
-                            <div className="flex items-center gap-3 mb-5 px-2">
+                            <div className="flex items-center gap-3 mb-6 px-2">
                                 <FaLinux className="w-5 h-5 text-foreground" />
-                                <h3 className="text-base font-medium tracking-tight">Linux</h3>
+                                <h3 className="text-lg font-semibold tracking-tight">Linux</h3>
                                 {/* <span className="px-2 py-0.5 text-xs font-lighter lowercase tracking-tight text-muted-foreground bg-foreground/10 rounded-full ml-auto">Coming Soon</span> */}
                             </div>
                             <div className="flex flex-col gap-1">
@@ -210,7 +210,7 @@ const DownloadRow = ({ label, link, isComingSoon = false }: { label: string, lin
     if (isComingSoon || !link) {
         return (
             <div className="group flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-white/[0.04] cursor-pointer transition-all duration-200">
-                <span className="text-[14px] text-foreground group-hover:text-emerald-50 transition-colors">{label}</span>
+                <span className="text-[14px] text-foreground transition-colors">{label}</span>
             </div>
         );
     }
@@ -221,8 +221,8 @@ const DownloadRow = ({ label, link, isComingSoon = false }: { label: string, lin
             rel="noopener noreferrer"
             className="group flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-white/[0.04] cursor-pointer transition-all duration-200"
         >
-            <span className="text-[14px] text-foreground group-hover:text-emerald-50 transition-colors">{label}</span>
-            <Download className="w-3.5 h-3.5 text-foreground opacity-0 group-hover:opacity-100 group-hover:text-emerald-400 transition-all transform group-hover:translate-y-0.5" />
+            <span className="text-[14px] text-foreground transition-colors">{label}</span>
+            <Download className="w-3.5 h-3.5 text-foreground opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-0.5" />
         </a>
     );
 };
