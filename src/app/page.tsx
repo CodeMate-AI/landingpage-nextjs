@@ -1524,8 +1524,8 @@ function Page() {
                     initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                     animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                     transition={{ duration: 1, delay: 0.5 }} className={`${montserrat.className} flex gap-5 text-sm mt-10 -ml-4 sm:ml-0 `}>
-                    <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target='_blank'>
-                      <motion.button whileHover={{ opacity: 0.7 }} className='px-4 py-3  bg-black text-white  rounded-sm  text-opacity-80'>Download CORA</motion.button>
+                    <a href="/download">
+                      <motion.button whileHover={{ opacity: 0.7 }} className='px-4 py-3  bg-black text-white  rounded-sm  text-opacity-80'>Download ToolBox</motion.button>
                     </a>
                     <a href="https://app.codemate.ai" target="_blank" >
                       <motion.button
