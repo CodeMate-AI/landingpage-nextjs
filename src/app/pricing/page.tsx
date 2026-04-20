@@ -440,8 +440,6 @@ function Page() {
   )
 }
 
-export default Page
-
 // ─── Compare Plans ────────────────────────────────────────────────────────────
 
 const ENTERPRISE_COMPARE = {
@@ -621,3 +619,13 @@ function FAQ() {
     </div>
   )
 }
+
+function PricingPage() {
+  return (
+    <React.Suspense fallback={<div className="w-full h-screen bg-zinc-950" />}>
+      <Page />
+    </React.Suspense>
+  )
+}
+
+export default PricingPage
