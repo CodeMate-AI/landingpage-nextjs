@@ -1808,8 +1808,12 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="chat.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="absolute bottom-0 w-full flex items-center justify-center px-4 translate-y-4 lg:translate-y-8">
+                      <img
+                        src="/C0 Web app.gif"
+                        className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+                        alt="CodeMate C0 Web App Interface"
+                      />
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CodeMate C0</h1>
