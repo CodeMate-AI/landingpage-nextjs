@@ -1407,9 +1407,9 @@ function Page() {
 
 
       {/* hero section  */}
-      <div ref={heroRef2} className='h-[100vh] w-full overflow-x-hidden'>
+      <div ref={heroRef2} className='h-[75vh] lg:h-[100vh] w-full overflow-x-hidden'>
         <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
-          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-screen w-full z-50 overflow-hidden cursor-default'>
+          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-[75vh] lg:h-screen w-full z-50 overflow-hidden cursor-default'>
 
 
 
@@ -1837,7 +1837,7 @@ function Page() {
                   </div>
                 </div>
               </a>
-              <div className="h-32 w-full" />
+              <div className="h-0 lg:h-32 w-full" />
             </div>
             {/* features of products */}
           </div>
@@ -2329,8 +2329,8 @@ function Page() {
       <div className='lg:hidden'>
 
         <div ref={MFRef} className='h-[200vh]'>
-          <div className='sticky top-0 w-full py-10 overflow-hidden'>
-            <div className={`${montserrat.className}   z-20 leading-[1]  text-[7.7vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  mb-6 pt-20 2xl:pr-[55vw] pb-1`}>
+          <div className='sticky top-0 w-full py-4 lg:py-10 overflow-hidden'>
+            <div className={`${montserrat.className}   z-20 leading-[1]  text-[7.7vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  mb-6 pt-10 lg:pt-20 2xl:pr-[55vw] pb-1`}>
               <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2 text-center pr-2 pl-[5vw]'>
                 <span className='z-50'>
                   What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> with CodeMate AI.</span>
