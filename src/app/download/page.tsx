@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Download, CheckCircle2 } from 'lucide-react';
 import { FaWindows, FaApple, FaLinux } from 'react-icons/fa';
 import Image from 'next/image';
+import { HeroVideoDialog } from '@/components/ui/hero-video-dialog';
 
 type OS = 'Windows' | 'macOS' | 'Linux' | 'Unknown';
 
@@ -218,16 +219,14 @@ const DownloadPage = () => {
                             Follow this step-by-step video guide to install and set up CodeMate Toolbox on your system.
                         </p>
                     </div>
-                    <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-900/50">
-                        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
-                            <iframe
-                                src="https://www.youtube.com/embed/ux5jJgNkslE"
-                                title="CodeMate Toolbox Installation Guide"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                allowFullScreen
-                                className="absolute top-0 left-0 w-full h-full"
-                            />
-                        </div>
+                    <div className="relative w-full max-w-4xl mx-auto">
+                        <HeroVideoDialog
+                            className="block"
+                            animationStyle="from-center"
+                            videoSrc="https://www.youtube.com/embed/ux5jJgNkslE?si=cncb-cbfFznvtGhV"
+                            thumbnailSrc="/toolbox.png"
+                            thumbnailAlt="CodeMate Toolbox Installation Guide"
+                        />
                     </div>
 
                 </motion.div>
