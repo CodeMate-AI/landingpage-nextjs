@@ -1734,7 +1734,7 @@ function Page() {
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CodeMate Build</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Build turns your prompts into working, deployable applications.</p>
+                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Build turns your prompts into working, deployable applications with design mode, Figma import, custom URL renaming, and direct deployment to Netlify.</p>
                 </div>
               </a>
 
@@ -1766,7 +1766,7 @@ function Page() {
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CORA- AI Agent inside your IDE</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Your AI coding agent in VS Code that turns prompts into working code instantly.</p>
+                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CORA is an AI coding agent in your IDE that turns prompts into working code instantly with MCP servers, rules, workflows, skills, and custom rules.</p>
                 </div>
               </a>
 
@@ -1798,7 +1798,7 @@ function Page() {
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CodeMate C0 Extension</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Assistant is your AI-powered coding partner, built as an IDE plugin to help you manage code, debug errors, and accelerate development.</p>
+                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate CO Extension is your AI-powered coding partner in your IDE that helps you manage code, debug errors, optimize performance, review code, generate test cases, create codemaps, and integrate seamlessly with Jira to accelerate development.</p>
                 </div>
               </a>
               <a href="https://app.codemate.ai/chat" target="_blank" className='cursor-pointer'>
@@ -1813,10 +1813,10 @@ function Page() {
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CodeMate C0</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate C0 on the web, turns your prompts into working code, helping you build faster.</p>
+                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate C0 on the web turns your prompts into working code, helping you build faster with a knowledge base and deep research capabilities.</p>
                 </div>
               </a>
-              <a href="https://app.codemate.ai/pr-review" target="_blank" className='cursor-pointer'>
+              <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer'>
                 <div>
                   <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
