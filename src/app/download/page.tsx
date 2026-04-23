@@ -202,6 +202,35 @@ const DownloadPage = () => {
                         </div>
                     </div>
                 </motion.div>
+
+                {/* Installation Guide Video Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7 }}
+                    className="w-full mt-16 mb-8"
+                >
+                    <div className="text-center mb-8">
+                        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                            Steps to Install ToolBox
+                        </h2>
+                        <p className="text-base text-muted-foreground mt-2 max-w-md mx-auto">
+                            Follow this step-by-step video guide to install and set up CodeMate Toolbox on your system.
+                        </p>
+                    </div>
+                    <div className="relative w-full max-w-4xl mx-auto rounded-2xl overflow-hidden border border-white/10 shadow-2xl bg-zinc-900/50">
+                        <div className="relative w-full" style={{ paddingBottom: '56.25%' }}>
+                            <iframe
+                                src="https://www.youtube.com/embed/ux5jJgNkslE"
+                                title="CodeMate Toolbox Installation Guide"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                                className="absolute top-0 left-0 w-full h-full"
+                            />
+                        </div>
+                    </div>
+
+                </motion.div>
             </div>
         </div>
     );
