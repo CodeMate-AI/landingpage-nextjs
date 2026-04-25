@@ -1671,13 +1671,13 @@ function Page() {
 
               <a href="https://build.codemateai.dev/build" target="_blank" className='cursor-pointer'>
                 <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-6 lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="/Build+project+Mode.gif" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="absolute bottom-[0.4rem] lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
+                      <img src="/build_gif.gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
                   <div className="flex items-center flex-wrap gap-2 mt-3">
@@ -1690,12 +1690,12 @@ function Page() {
 
               <a href="https://cli.codemate.ai/" target="_blank" className='cursor-pointer'>
                 <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-2 lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="term.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
@@ -1709,12 +1709,12 @@ function Page() {
 
               <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank" className='cursor-pointer'>
                 <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-6 lg:bottom-[0.5rem] w-full flex items-center justify-center px-4 shadow-2xl">
+                    <div className="absolute bottom-[0.4rem] lg:bottom-[0.5rem] w-full flex items-center justify-center px-4 shadow-2xl">
                       <img src="/CORA+FULL.gif" className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]" alt="CORA AI Agent Interface" />
                     </div>
                   </div>
@@ -1728,12 +1728,12 @@ function Page() {
 
               <a href="https://edu.codemate.ai/" target="_blank" className='cursor-pointer'>
                 <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-6 lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="edu1.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
@@ -1747,12 +1747,12 @@ function Page() {
 
               <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate" target="_blank" className='cursor-pointer'>
                 <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-6 lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-[0.4rem] lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="/Codemaps (1).gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
@@ -1765,12 +1765,12 @@ function Page() {
               </a>
               <a href="https://app.codemate.ai/chat" target="_blank" className='cursor-pointer'>
                 <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-6 lg:bottom-[0.5rem] w-full flex items-center justify-center px-4">
+                    <div className="absolute bottom-[0.4rem] lg:bottom-[0.5rem] w-full flex items-center justify-center px-4">
                       <img
                         src="/C0 Web app1.gif"
                         className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
@@ -1787,12 +1787,12 @@ function Page() {
               </a>
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer'>
                 <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-6 lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
                       <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="" />
                     </div>
                   </div>

@@ -241,6 +241,14 @@ function Page() {
       .finally(() => setIsLoadingPlans(false))
   }, [])
 
+  // Auto-scroll to FAQ after plans load (because plans dynamically expand page height)
+  useEffect(() => {
+    if (!isLoadingPlans && window.location.hash === '#faq') {
+      const el = document.getElementById('faq')
+      if (el) el.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [isLoadingPlans])
+
   const maxPlanInfo = buildMaxPlanInfo(categorizedPlans?.ultimatePlan)
 
   return (
@@ -600,7 +608,7 @@ const FAQ_ITEMS = [
 function FAQ() {
   return (
     <div className="pb-10 w-full flex flex-col items-center mt-32 mb-10">
-      <h1 className="text-3xl lg:text-5xl font-semibold text-center mb-8 px-10">
+      <h1 id="faq" className="scroll-mt-32 text-3xl lg:text-5xl font-semibold text-center mb-8 px-10">
         Frequently
         <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent"> Asked</span> Questions
       </h1>
@@ -625,83 +633,6 @@ function PricingPage() {
     <React.Suspense fallback={<div className="w-full h-screen bg-zinc-950" />}>
       <Page />
     </React.Suspense>
-    <div id="faq" className='scroll-mt-32 pb-10 w-full flex flex-col items-center mt-32 mb-10'>
-      <div className='w-fullflex justify-between  h-[8rem] px-10'>
-        <h1 className='text-3xl lg:text-5xl font-semibold text-center'>
-          Frequently
-          <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Asked</span> Questions</h1>
-      </div>
-
-      <Accordion className='flex w-[90%] lg:w-[50%] flex-col  gap-3'
-        transition={{ duration: 0.2, ease: 'easeInOut' }}>
-
-        <AccordionItem value='Seats' className='border-b-[1px] pb-3'>
-          <AccordionTrigger className='w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 font-semibold'>
-            What kind of coding errors does your tool help fix?
-          </AccordionTrigger>
-          <AccordionContent className='mt-4 pb-5'>
-            <div className='flex flex-col w-full justify-center items-center gap-8 text-zinc-500'>
-              <p>Our tool can help fix a variety of coding errors, including syntax errors, logical errors, performance issues and even run-time errors. We use advanced algorithms and machine learning techniques to analyze your code and provide suggestions for improvement.</p>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value='Tokens' className='border-b-[1px] pb-3'>
-          <AccordionTrigger className='w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 font-semibold'>
-            How does your tool perform code reviews?
-          </AccordionTrigger>
-          <AccordionContent className='mt-4 pb-5'>
-            <div className='flex flex-col w-full justify-center items-center gap-8 text-zinc-500'>
-              <p>CodeMate can analyze your code against best practices and industry standards to help identify potential issues and improve the overall quality of your code. We can provide feedback on things like code style, naming guidelines, formatting, documentation, and more.</p>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value='Knowledge bases' className='border-b-[1px] pb-3'>
-          <AccordionTrigger className='w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 font-semibold'>
-            Can your tool optimize code automatically?
-          </AccordionTrigger>
-          <AccordionContent className='mt-4 pb-5'>
-            <div className='flex flex-col w-full justify-center items-center gap-8 text-zinc-500'>
-              <p>CodeMate can analyze your code against best practices and industry standards to help identify potential issues and improve the overall quality of your code. We can provide feedback on things like code style, naming guidelines, formatting, documentation, and more.</p>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value='Storage space' className='border-b-[1px] pb-3'>
-          <AccordionTrigger className='w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 font-semibold'>
-            Is my code kept private and secure?
-          </AccordionTrigger>
-          <AccordionContent className='mt-4 pb-5'>
-            <div className='flex flex-col w-full justify-center items-center gap-8 text-zinc-500'>
-              <p>Our tool supports all programming languages and frameworks including but not limited to Python, JavaScript, Java, C++, C#, PHP, TypeScript, Ruby, Swift, Go, Kotlin, Rust, R, MATLAB, Perl, Shell scripting, SQL, Objective-C, Scala, Haskell, Dart, Elixir, Erlang, Fortran and Prolog. and many more. We're constantly adding support for new languages, so if you don't see your language working with CodeMate, please contact us and let us know. Moreover, you can also add the documentation of any new language/framework in your Knowledge base and refer it while asking questions to get up-to-date information.</p>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value='Debug, Review and Refactor Code' className='border-b-[1px] pb-3'>
-          <AccordionTrigger className='w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 font-semibold'>
-            How do I get started with your tool?
-          </AccordionTrigger>
-          <AccordionContent className='mt-4 pb-5'>
-            <div className='flex flex-col w-full justify-center items-center gap-8 text-zinc-500'>
-              <p>CodeMate offers a quick and easy way to fix your coding errors, without the need for switching your existing environment. If you are working in Visual Studio Code, you can simply install CodeMate extension there and start using. Or else, you can use our own IDE to code and fix your errors.</p>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
-        <AccordionItem value='Integrations' className='border-b-[1px] pb-3'>
-          <AccordionTrigger className='w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 font-semibold'>
-            How accurate is results generated by CodeMate?
-          </AccordionTrigger>
-          <AccordionContent className='mt-4 pb-5'>
-            <div className='flex flex-col w-full justify-center items-center gap-8 text-zinc-500'>
-              <p>The accuracy of the results generated by CodeMate depends on several factors, including the quality and specificity of the code description provided by the user. Our models are trained on the latest data available from sources such as Stack Overflow and open-source repositories, but it's important to note that they may not always produce perfect results. However, users can edit and refine the results as needed to ensure that they meet their specific requirements. Overall, we strive to provide the most accurate and useful results possible to help developers improve their code</p>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-      </Accordion>
-    </div>
   )
 }
 
