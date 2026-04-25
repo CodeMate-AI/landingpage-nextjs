@@ -1,4 +1,5 @@
-// Types for the plan data structure
+// ─── Types ────────────────────────────────────────────────────────────────────
+
 export interface PlanPrice {
     monthly: number
     yearly: number
@@ -10,17 +11,9 @@ export interface PlanAccess {
         git: boolean
         commits: boolean
         docs: boolean
-        codebase: {
-            local: boolean
-            cloud: boolean
-            current: boolean
-        }
+        codebase: { local: boolean; cloud: boolean; current: boolean }
     }
-    modes: {
-        eco: boolean
-        normal: boolean
-        pro: boolean
-    }
+    modes: { eco: boolean; normal: boolean; pro: boolean }
     internet_search: boolean
     byok: boolean
     access_tokens: boolean
@@ -34,7 +27,7 @@ export interface PlanLimits {
     cloud_kb: number
     autocomplete: number
     local_kb: number
-    rpd: number // Requests per day
+    rpd: number
     access: PlanAccess
 }
 
@@ -55,141 +48,154 @@ export interface CategorizedPlans {
     ultimatePlan?: Plan
 }
 
-/**
- * Fetches all plans from the backend API
- * @returns Promise with array of plans
- */
+// ─── Feature header type ──────────────────────────────────────────────────────
+// Controls what renders above the feature list in PlanCard:
+//   "INCLUDES"             → "INCLUDES" label only (base / standalone tiers)
+//   "INCLUDES_WITH_PARENT" → "Everything in Teams, plus" (enterprise)
+//   null                   → "Everything in <parent>, plus" (inheriting tiers)
+export type FeaturesHeader = 'INCLUDES' | 'INCLUDES_WITH_PARENT' | null
+
+// ─── Static feature data ──────────────────────────────────────────────────────
+
+const BUILD_FEATURES: Record<string, string[]> = {
+    pro: [
+        '200 requests per day',
+        'Unlimited image uploads and processing',
+        'Figma-to-code conversion',
+        'Document (PDF, DOC, TXT, DOCX) Support',
+        'Instant deployment with shareable links',
+        'Source code download capability',
+    ],
+    max: ['400 requests per day'],
+    teams: ['400 requests per day', 'Voice Input Support', 'Custom Domain'],
+    enterprise: [
+        'Dedicated account manager',
+        'Custom integrations',
+        'SLA & priority support',
+        'Advanced security & compliance',
+        'Custom billing options',
+    ],
+}
+
+const C0_FEATURES: Record<string, string[]> = {
+    hobby: ['Chat access', 'Local knowledge base'],
+    pro: [
+        '10 cloud knowledge bases',
+        'Unlimited autocomplete',
+        'Unlimited internet searches',
+        'Code evaluation',
+    ],
+    teams: ['25 cloud knowledge bases'],
+    enterprise: [
+        'Unlimited cloud knowledge bases',
+        'Unlimited code evaluations/month',
+        'Dedicated account manager',
+        'Custom integrations',
+        'SLA & priority support',
+        'Advanced security & compliance',
+    ],
+}
+
+// Pro and hobby are standalone (no "Everything in Free, plus").
+// Enterprise always shows "Everything in Teams, plus".
+const BUILD_HEADER: Record<string, FeaturesHeader> = {
+    pro:        'INCLUDES',
+    max:        null,
+    teams:      null,
+    enterprise: 'INCLUDES_WITH_PARENT',
+}
+
+const C0_HEADER: Record<string, FeaturesHeader> = {
+    hobby:      'INCLUDES',
+    pro:        'INCLUDES',
+    teams:      null,
+    enterprise: 'INCLUDES_WITH_PARENT',
+}
+
+// Plans allowed through the category filter
+const ALLOWED_PLAN_NAMES = new Set([
+    'pro', 'pro plus', 'teams', 'enterprise', 'codemate max',
+])
+
+// ─── API ──────────────────────────────────────────────────────────────────────
+
 export async function fetchPlans(): Promise<Plan[]> {
-    try {
-        const response = await fetch('https://backend.v3.codemate.ai/v2/plans', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            cache: 'no-store', // Ensure fresh data
-        })
-
-        if (!response.ok) {
-            throw new Error(`Failed to fetch plans: ${response.status} ${response.statusText}`)
-        }
-
-        const data = await response.json()
-        return data as Plan[]
-    } catch (error) {
-        console.error('Error fetching plans:', error)
-        throw error
+    const response = await fetch('https://backend.v3.codemate.ai/v2/plans', {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
+    })
+    if (!response.ok) {
+        throw new Error(`Failed to fetch plans: ${response.status} ${response.statusText}`)
     }
+    return response.json()
 }
 
-/**
- * Categorizes plans by product type (build, c0, cora)
- * @param plans - Array of plans to categorize
- * @returns Object with plans categorized by product
- */
+// ─── Categorization ───────────────────────────────────────────────────────────
 
-function fetchPlanById(allPlans: Plan[], planId: string) {
-    try {
-        return allPlans.find((plan) => plan.plan_id === planId)
-    } catch (error) {
-        console.error('Error fetching plan:', error)
-        throw error
-    }
-}
+export function categorizePlansByProduct(plans: any[]): CategorizedPlans {
+    const categorized: CategorizedPlans = { build: [], c0: [], cora: [] }
 
-export function categorizePlansByProduct(plans: any): CategorizedPlans {
-    const categorized: CategorizedPlans = {
-        build: [],
-        c0: [],
-        cora: [],
-    }
-    plans = plans.map((plan: any) => {
-        const isLicensePlan = (plan.available_licenses?.length > 0) ? plan.available_licenses[0].license_id : null
-
-        if (isLicensePlan) {
-            const LicensePlanlimits = fetchPlanById(plans, isLicensePlan)
-            plan.limits = LicensePlanlimits?.limits
+    // Resolve license plan limits
+    const resolved = plans.map((plan) => {
+        const licenseId = plan.available_licenses?.[0]?.license_id
+        if (licenseId) {
+            const licensePlan = plans.find((p) => p.plan_id === licenseId)
+            if (licensePlan) plan.limits = licensePlan.limits
         }
         return plan
     })
-    // plans = plans.filter((plan) => !plan?.parent_license_id)
-    plans = plans.filter((plan: any) => !plan?.parent_license_id)
-    plans.forEach((plan: any) => {
-        // Record ultimate plan if found
-        if (plan.is_ultimate || plan.display_name.toLocaleLowerCase() === "codemate max") {
+
+    // Strip child license plans
+    const filtered = resolved.filter((plan) => !plan?.parent_license_id)
+
+    for (const plan of filtered) {
+        const name = plan.display_name.toLowerCase()
+
+        if (plan.is_ultimate || name === 'codemate max') {
             categorized.ultimatePlan = plan
         }
 
-        // Check which products this plan belongs to
-        if (!(
-            plan.is_ultimate ||
-            plan.display_name.toLocaleLowerCase() === "codemate max" ||
-            plan.display_name.toLocaleLowerCase() === "pro" ||
-            plan.display_name.toLocaleLowerCase() === "pro plus" ||
-            (plan.display_name.toLocaleLowerCase() === "max" && plan.product.includes("cora")) ||
-            plan.display_name.toLocaleLowerCase() === "teams"
-        )) {
-            return
-        }
-        plan.product.forEach((productName: any) => {
-            const normalizedProduct = productName.toLowerCase()
-            if (normalizedProduct === 'build' && !categorized.build.find(p => p._id === plan._id)) {
-                categorized.build.push(plan)
-            } else if (normalizedProduct === 'c0' && !categorized.c0.find(p => p._id === plan._id)) {
-                categorized.c0.push(plan)
-            } else if (normalizedProduct === 'cora' && !categorized.cora.find(p => p._id === plan._id)) {
-                categorized.cora.push(plan)
+        const isCoraMax = name === 'max' && plan.product.includes('cora')
+        const isAllowed = plan.is_ultimate || isCoraMax || ALLOWED_PLAN_NAMES.has(name)
+        if (!isAllowed) continue
+
+        for (const product of plan.product) {
+            const key = product.toLowerCase() as 'build' | 'c0' | 'cora'
+            if (!['build', 'c0', 'cora'].includes(key)) continue
+            if (!categorized[key].find((p) => p._id === plan._id)) {
+                categorized[key].push(plan)
             }
-        })
-    })
+        }
+    }
 
     return categorized
 }
 
-/**
- * Fetches and categorizes all plans in one call
- * @returns Promise with categorized plans
- */
 export async function fetchAndCategorizePlans(): Promise<CategorizedPlans> {
     const plans = await fetchPlans()
     return categorizePlansByProduct(plans)
 }
 
-const STATIC_BUILD_FEATURES: Record<string, string[]> = {
-    'pro': [
-        "200 requests per day",
-        "Unlimited image uploads and processing",
-        "Figma-to-code conversion",
-        "Document (PDF, DOC, TXT, DOCX )Support",
-        "Instant deployment with shareable links",
-        "Source code download capability",
-    ],
-    'max': [
-        "400 requests per day",
-        "Unlimited image uploads and processing",
-        "Figma-to-code conversion",
-        "Document (PDF, DOC, TXT, DOCX )Support",
-        "Instant deployment with shareable links",
-        "Source code download capability",
-    ],
-    'teams': [
-        "400 requests per day",
-        "Unlimited image uploads and processing",
-        "Figma-to-code conversion",
-        "Voice Input Support",
-        "Document (PDF, DOC, TXT, DOCX )Support",
-        "Custom Domain",
-        "Instant deployment with shareable links",
-        "Source code download capability"
-    ]
-}
+// ─── Plan conversion ──────────────────────────────────────────────────────────
 
-/**
- * Converts API plan data to the PlanInfo format used by PlanCard component
- * @param plan - Plan from API
- * @param isRecommended - Whether this plan should be marked as recommended
- * @returns PlanInfo object for PlanCard component
- */
-export function convertToPlanInfo(plan: any, isRecommended: boolean = false) {
+export function convertToPlanInfo(plan: any, isRecommended = false) {
+    const key = plan.display_name.toLowerCase()
+    const isBuild = plan.product.includes('build')
+    const isC0 = plan.product.some((p: string) => p.toLowerCase() === 'c0')
+
+    const features = isBuild
+        ? (BUILD_FEATURES[key] ?? [])
+        : isC0
+        ? (C0_FEATURES[key] ?? [])
+        : extractFeatures(plan)
+
+    const featuresHeader: FeaturesHeader = isBuild
+        ? (BUILD_HEADER[key] ?? null)
+        : isC0
+        ? (C0_HEADER[key] ?? null)
+        : null
+
     return {
         id: plan._id,
         name: plan.display_name,
@@ -197,79 +203,43 @@ export function convertToPlanInfo(plan: any, isRecommended: boolean = false) {
         description: `For ${plan.type} users`,
         monthlyPrice: plan.price.monthly.toString(),
         yearlyPrice: plan.price.yearly.toString(),
-        currency: "USD",
+        currency: 'USD',
         highlight: isRecommended,
-        features: (plan.product.includes('build')) ? STATIC_BUILD_FEATURES[plan.display_name.toLowerCase()] : extractFeatures(plan),
-        monthlyCtaText: "Get Started",
-        monthlyCtaLink: (plan.stripe_id?.monthly ? plan.stripe_id.monthly : "#"),
-        yearlyCtaText: "Get Started",
-        yearlyCtaLink: (plan.stripe_id?.yearly ? plan.stripe_id.yearly : "#"),
+        features,
+        featuresHeader,
+        monthlyCtaText: 'Get Started',
+        monthlyCtaLink: plan.stripe_id?.monthly ?? '#',
+        yearlyCtaText: 'Get Started',
+        yearlyCtaLink: plan.stripe_id?.yearly ?? '#',
     }
 }
 
-/**
- * Extracts feature list from plan limits
- * @param plan - Plan object
- * @returns Array of feature strings
- */
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
 function extractFeatures(plan: Plan): string[] {
     const features: string[] = []
+    const { limits } = plan
 
-    // Add limit-based features
-    if (plan?.limits?.internet_search === -1) {
-        features.push("Unlimited internet searches")
-    } else if (plan?.limits?.internet_search > 0) {
-        features.push(`${plan.limits.internet_search} internet searches`)
-    }
+    if (limits?.internet_search === -1)       features.push('Unlimited internet searches')
+    else if (limits?.internet_search > 0)     features.push(`${limits.internet_search} internet searches`)
 
-    if (plan?.limits?.cloud_kb === -1) {
-        features.push("Unlimited cloud knowledge base")
-    } else if (plan?.limits?.cloud_kb > 0) {
-        features.push(`${plan.limits.cloud_kb} cloud KB storage`)
-    }
+    if (limits?.cloud_kb === -1)              features.push('Unlimited cloud knowledge base')
+    else if (limits?.cloud_kb > 0)            features.push(`${limits.cloud_kb} cloud KB storage`)
 
-    if (plan?.limits?.autocomplete === -1) {
-        features.push("Unlimited autocomplete")
-    } else if (plan?.limits?.autocomplete > 0) {
-        features.push(`${plan.limits.autocomplete} autocomplete suggestions`)
-    }
+    if (limits?.autocomplete === -1)          features.push('Unlimited autocomplete')
+    else if (limits?.autocomplete > 0)        features.push(`${limits.autocomplete} autocomplete suggestions`)
 
-    // Add access-based features
-    if (plan?.limits?.access?.chat) {
-        features.push("Chat access")
-    }
-
-    if (plan?.limits?.access?.context?.codebase?.cloud) {
-        features.push("Knowledge Base")
-    }
-
-    if (plan?.limits?.access?.code_evaluation) {
-        features.push("Code Evaluation")
-    }
-
-    if (plan?.limits?.access?.modes?.pro) {
-        features.push("Pro mode access")
-    }
+    if (limits?.access?.chat)                 features.push('Chat access')
+    if (limits?.access?.context?.codebase?.cloud) features.push('Knowledge Base')
+    if (limits?.access?.code_evaluation)      features.push('Code Evaluation')
+    if (limits?.access?.modes?.pro)           features.push('Pro mode access')
 
     return features
 }
 
-/**
- * Formats a limit value for display in comparison tables
- * @param value - The limit value from API (-1 for unlimited)
- * @param unit - Optional unit to append (e.g., "/month", "GB", "Total")
- * @returns Formatted string for display
- */
-export function formatLimitValue(value: number | undefined, unit: string = ''): string {
-    if (value === undefined || value === null) {
-        return 'N/A'
-    }
-
-    if (value === -1) {
-        return 'Unlimited'
-    }
-
-    // Format large numbers with commas
+export function formatLimitValue(value: number | undefined, unit = ''): string {
+    if (value === undefined || value === null) return 'N/A'
+    if (value === -1) return 'Unlimited'
     const formatted = value.toLocaleString()
     return unit ? `${formatted}${unit}` : formatted
 }
