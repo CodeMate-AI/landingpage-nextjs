@@ -1730,7 +1730,7 @@ function Page() {
 
 
                     <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="build2.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                      <img src="/Build+project+Mode.gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CodeMate Build</h1>
@@ -1761,8 +1761,8 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="cora.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="absolute bottom-0 w-full flex items-center justify-center px-4 translate-y-4 lg:translate-y-8 shadow-2xl">
+                      <img src="/CORA+FULL.gif" className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]" alt="CORA AI Agent Interface" />
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CORA- AI Agent inside your IDE</h1>
@@ -1794,7 +1794,7 @@ function Page() {
 
 
                     <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="pulgin.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                      <img src="/Codemaps (1).gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
                   <h1 className='mt-1 text-lg font-semibold'>CodeMate C0 Extension</h1>
@@ -1810,7 +1810,7 @@ function Page() {
 
                     <div className="absolute bottom-0 w-full flex items-center justify-center px-4 translate-y-4 lg:translate-y-8">
                       <img
-                        src="/C0 Web app.gif"
+                        src="/C0 Web app1.gif"
                         className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
                         alt="CodeMate C0 Web App Interface"
                       />
@@ -1832,12 +1832,12 @@ function Page() {
                     </div>
                   </div>
                   <h1 className="mt-1 text-lg font-semibold">CodeMate PR Review Agent</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Deployment & Release</strong>, CodeMate PR Review is a Review and Deployment Engine that automates code reviews and security analysis across GitHub, Bitbucket, GitLab, and Azure DevOps.</p>
-                  <div className='flex items-center gap-6 mt-6 opacity-100 text-white'>
-                    <FaGithub className='w-6 h-6 hover:scale-110 transition-transform cursor-pointer' title='GitHub' />
-                    <FaBitbucket className='w-6 h-6 hover:scale-110 transition-transform cursor-pointer' title='Bitbucket' />
-                    <FaGitlab className='w-6 h-6 hover:scale-110 transition-transform cursor-pointer' title='GitLab' />
-                    <VscAzureDevops className='w-6 h-6 hover:scale-110 transition-transform cursor-pointer' title='Azure DevOps' />
+                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Deployment & Release</strong>, CodeMate PR Review Agent is a Review and Deployment Engine that automates code reviews and security analysis across GitHub, Bitbucket, GitLab, and Azure DevOps.</p>
+                  <div className='flex items-center gap-4 mt-3 opacity-70 text-white'>
+                    <FaGithub className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='GitHub' />
+                    <FaBitbucket className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='Bitbucket' />
+                    <FaGitlab className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='GitLab' />
+                    <VscAzureDevops className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='Azure DevOps' />
                   </div>
                 </div>
               </a>

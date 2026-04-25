@@ -863,7 +863,7 @@ function ComparePlansMobile({ plans, selectedProduct }: { plans: Plan[], selecte
 
 function FAQ() {
   return (
-    <div className='pb-10 w-full  flex flex-col items-center mt-32 mb-10'>
+    <div id="faq" className='scroll-mt-32 pb-10 w-full flex flex-col items-center mt-32 mb-10'>
       <div className='w-fullflex justify-between  h-[8rem] px-10'>
         <h1 className='text-3xl lg:text-5xl font-semibold text-center'>
           Frequently
