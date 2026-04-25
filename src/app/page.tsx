@@ -1407,9 +1407,9 @@ function Page() {
 
 
       {/* hero section  */}
-      <div ref={heroRef2} className='h-[100vh] w-full overflow-x-hidden'>
+      <div ref={heroRef2} className='h-[75vh] lg:h-[100vh] w-full overflow-x-hidden'>
         <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
-          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-screen w-full z-50 overflow-hidden cursor-default'>
+          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-[75vh] lg:h-screen w-full z-50 overflow-hidden cursor-default'>
 
 
 
@@ -1523,14 +1523,24 @@ function Page() {
                   <motion.div
                     initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                     animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                    transition={{ duration: 1, delay: 0.5 }} className={`${montserrat.className} flex gap-5 text-sm mt-10 -ml-4 sm:ml-0 `}>
-                    <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target='_blank'>
-                      <motion.button whileHover={{ opacity: 0.7 }} className='px-4 py-3  bg-black text-white  rounded-sm  text-opacity-80'>Download CORA</motion.button>
-                    </a>
-                    <a href="https://app.codemate.ai" target="_blank" >
+                    transition={{ duration: 1, delay: 0.5 }}
+                    className={`${montserrat.className} flex items-center gap-4 text-sm mt-10 -ml-4 sm:ml-0`}
+                  >
+                    <a href="/download">
                       <motion.button
-                        whileHover={{ opacity: 0.7, }}
-                        className='px-4 py-3  bg-[#FFFFFF] text-black  rounded-sm    font-semibold'>Try Build 2.0</motion.button>
+                        whileHover={{ opacity: 0.8 }}
+                        className="h-12 px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5"
+                      >
+                        Download
+                      </motion.button>
+                    </a>
+                    <a href="https://app.codemate.ai" target="_blank">
+                      <motion.button
+                        whileHover={{ opacity: 0.9 }}
+                        className="h-12 px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold"
+                      >
+                        Try Build 2.0
+                      </motion.button>
                     </a>
                   </motion.div>
                 </motion.div>
@@ -1598,13 +1608,13 @@ function Page() {
         imageSrc='https://backend.v3.codemateai.dev/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
       />
 
-      <div ref={prodRef} className='lg:h-[470vh] w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
+      <div ref={prodRef} className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
         <h1 className=' font-mono pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
 
 
         <div className={`${montserrat.className} mt-4 leading-[1] text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
 
-        <div className='relative h-full w-full  flex flex-col justify-center items-center'>
+        <div className='relative w-full  flex flex-col justify-center items-center'>
           {/* <div className='h-[30%] w-full flex gap-10 px-10'>
        <Safari className='dark h-[27vw] w-fit' />
        <div>
@@ -1613,9 +1623,9 @@ function Page() {
        </div>
     </div> */}
 
-          <div className='relative h-full w-full flex justify-center  gap-8 '>
+          <div className='relative w-full flex justify-center items-start gap-8 '>
             {/* section for products */}
-            <div className='hidden lg:flex sticky  pt-24  top-0 h-screen
+            <div className='hidden lg:flex sticky  pt-20  top-0 h-screen
         '>
 
 
@@ -1643,59 +1653,6 @@ function Page() {
                       <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-[57vw] leading-[1.125]'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
                     </span>
                   </div>
-
-
-                  {/* {!isP1 && !isP2 && 
-          <div  key={3} className="flex flex-col gap-2 ">
-          <motion.div 
-          key={1} 
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw] rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>
-         }          
-          
-          {isP1 && 
-          <div  key={2} className="flex flex-col gap-2 ">
-          <motion.div 
-         
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw]  rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>}  
-
-         {isP2 &&           
-         <div  key={3}  className="flex flex-col gap-2 ">
-          <motion.div 
-         
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw]  rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>}         */}
                 </AnimatePresence>
               </motion.div>
               <motion.div
@@ -1710,7 +1667,7 @@ function Page() {
 
             {/* features of product */}
 
-            <div className={`h-full  flex flex-col pt-10 lg:pt-24  gap-[3rem] items-center  ${montserrat.className} `}>
+            <div className={`flex flex-col pt-10 lg:pt-20  gap-[3rem] items-center  ${montserrat.className} `}>
 
               <a href="https://build.codemateai.dev/build" target="_blank" className='cursor-pointer'>
                 <div>
@@ -1719,12 +1676,15 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="build2.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="absolute bottom-6 lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
+                      <img src="/Build+project+Mode.gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate Build</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Build turns your prompts into working, deployable applications.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate Build</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Planning & Architecture</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Turns prompts and Figma designs into deployable apps instantly with full design mode support.</p>
                 </div>
               </a>
 
@@ -1735,12 +1695,15 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-2 lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="term.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>AI Terminal</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Run code and scripts instantly with AI-powered terminal.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>AI Terminal</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Execution</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Run code and scripts instantly through an AI-powered command-line interface.</p>
                 </div>
               </a>
 
@@ -1751,12 +1714,15 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="cora.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="absolute bottom-6 lg:bottom-[0.5rem] w-full flex items-center justify-center px-4 shadow-2xl">
+                      <img src="/CORA+FULL.gif" className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]" alt="CORA AI Agent Interface" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CORA- AI Agent inside your IDE</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Your AI coding agent in VS Code that turns prompts into working code instantly.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate CORA</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Verification</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE.</p>
                 </div>
               </a>
 
@@ -1767,12 +1733,15 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-6 lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="edu1.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate Education</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Smart, AI-powered classroom management made easy.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate Education</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Learning & Upskilling</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>AI-powered classroom management built for educators and students to master modern development.</p>
                 </div>
               </a>
 
@@ -1783,12 +1752,15 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="pulgin.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="absolute bottom-6 lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
+                      <img src="/Codemaps (1).gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate C0 Extension</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Assistant is your AI-powered coding partner, built as an IDE plugin to help you manage code, debug errors, and accelerate development.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate C0 Extension</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Optimization</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Your in-IDE AI partner for code management, debugging, and performance optimization.</p>
                 </div>
               </a>
               <a href="https://app.codemate.ai/chat" target="_blank" className='cursor-pointer'>
@@ -1798,35 +1770,46 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="chat.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="absolute bottom-6 lg:bottom-[0.5rem] w-full flex items-center justify-center px-4">
+                      <img
+                        src="/C0 Web app1.gif"
+                        className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
+                        alt="CodeMate C0 Web App Interface"
+                      />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate C0</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate C0 on the web, turns your prompts into working code, helping you build faster.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate C0</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Discovery & Research</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Turns deep research and feasibility into production-ready code through AI-driven intelligence.</p>
                 </div>
               </a>
-              <a href="https://app.codemate.ai/pr-review" target="_blank" className='cursor-pointer'>
+              <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer'>
                 <div>
                   <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
 
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem] w-full flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-6 lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
                       <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="" />
                     </div>
                   </div>
-                  <h1 className="mt-1 text-lg font-semibold">CodeMate PR Review Agent</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate PR Review Agent automates your code review process, analyzing pull requests for bugs, security issues, and performance improvements directly on Github/Bitbucket/Gitlab/Azure-devops.</p>
-                  <div className='flex items-center gap-4 mt-3 opacity-50'>
-                    <FaGithub className='w-5 h-5' title='GitHub' />
-                    <FaBitbucket className='w-5 h-5' title='Bitbucket' />
-                    <FaGitlab className='w-5 h-5' title='GitLab' />
-                    <VscAzureDevops className='w-5 h-5' title='Azure DevOps' />
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate PR Review Agent</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Deployment & Release</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
+                  <div className='flex items-center gap-4 mt-3 opacity-70 text-white'>
+                    <FaGithub className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='GitHub' />
+                    <FaBitbucket className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='Bitbucket' />
+                    <FaGitlab className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='GitLab' />
+                    <VscAzureDevops className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='Azure DevOps' />
                   </div>
                 </div>
               </a>
+              <div className="h-0 lg:h-32 w-full" />
             </div>
             {/* features of products */}
           </div>
@@ -2318,8 +2301,8 @@ function Page() {
       <div className='lg:hidden'>
 
         <div ref={MFRef} className='h-[200vh]'>
-          <div className='sticky top-0 w-full py-10 overflow-hidden'>
-            <div className={`${montserrat.className}   z-20 leading-[1]  text-[7.7vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  mb-6 pt-20 2xl:pr-[55vw] pb-1`}>
+          <div className='sticky top-0 w-full py-4 lg:py-10 overflow-hidden'>
+            <div className={`${montserrat.className}   z-20 leading-[1]  text-[7.7vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  mb-6 pt-10 lg:pt-20 2xl:pr-[55vw] pb-1`}>
               <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2 text-center pr-2 pl-[5vw]'>
                 <span className='z-50'>
                   What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> with CodeMate AI.</span>
