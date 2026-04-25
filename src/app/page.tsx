@@ -1623,9 +1623,9 @@ function Page() {
        </div>
     </div> */}
 
-          <div className='relative w-full flex justify-center  gap-8 '>
+          <div className='relative w-full flex justify-center items-start gap-8 '>
             {/* section for products */}
-            <div className='hidden lg:flex sticky  pt-24  top-0 h-screen
+            <div className='hidden lg:flex sticky  pt-20  top-0 h-screen
         '>
 
 
@@ -1653,59 +1653,6 @@ function Page() {
                       <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-[57vw] leading-[1.125]'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
                     </span>
                   </div>
-
-
-                  {/* {!isP1 && !isP2 && 
-          <div  key={3} className="flex flex-col gap-2 ">
-          <motion.div 
-          key={1} 
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw] rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>
-         }          
-          
-          {isP1 && 
-          <div  key={2} className="flex flex-col gap-2 ">
-          <motion.div 
-         
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw]  rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>}  
-
-         {isP2 &&           
-         <div  key={3}  className="flex flex-col gap-2 ">
-          <motion.div 
-         
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw]  rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>}         */}
                 </AnimatePresence>
               </motion.div>
               <motion.div
@@ -1720,7 +1667,7 @@ function Page() {
 
             {/* features of product */}
 
-            <div className={`flex flex-col pt-10 lg:pt-24  gap-[3rem] items-center  ${montserrat.className} `}>
+            <div className={`flex flex-col pt-10 lg:pt-20  gap-[3rem] items-center  ${montserrat.className} `}>
 
               <a href="https://build.codemateai.dev/build" target="_blank" className='cursor-pointer'>
                 <div>
@@ -1729,7 +1676,7 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-6 lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="/Build+project+Mode.gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
@@ -1745,7 +1692,7 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-2 lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="term.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
@@ -1761,7 +1708,7 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-0 w-full flex items-center justify-center px-4 translate-y-4 lg:translate-y-8 shadow-2xl">
+                    <div className="absolute bottom-6 lg:bottom-[0.5rem] w-full flex items-center justify-center px-4 shadow-2xl">
                       <img src="/CORA+FULL.gif" className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]" alt="CORA AI Agent Interface" />
                     </div>
                   </div>
@@ -1777,7 +1724,7 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-6 lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="edu1.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
@@ -1793,7 +1740,7 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-6 lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
                       <img src="/Codemaps (1).gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
@@ -1808,7 +1755,7 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-0 w-full flex items-center justify-center px-4 translate-y-4 lg:translate-y-8">
+                    <div className="absolute bottom-6 lg:bottom-[0.5rem] w-full flex items-center justify-center px-4">
                       <img
                         src="/C0 Web app1.gif"
                         className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
@@ -1827,7 +1774,7 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem] w-full flex items-center justify-center shadow-2xl">
+                    <div className="absolute bottom-6 lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
                       <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="" />
                     </div>
                   </div>
