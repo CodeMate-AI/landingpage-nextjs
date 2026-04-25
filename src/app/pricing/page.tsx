@@ -618,8 +618,10 @@ function FAQ() {
             <AccordionTrigger className="w-full py-0.5 text-left text-zinc-950 dark:text-zinc-50 font-semibold">
               {item.q}
             </AccordionTrigger>
-            <AccordionContent className="mt-4 pb-5">
-              <p className="text-zinc-500">{item.a}</p>
+            <AccordionContent>
+              <div className="pt-4 pb-5">
+                <p className="text-zinc-500">{item.a}</p>
+              </div>
             </AccordionContent>
           </AccordionItem>
         ))}

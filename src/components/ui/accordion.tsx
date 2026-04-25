@@ -139,35 +139,26 @@ function AccordionTrigger({
   ...props
 }: AccordionTriggerProps) {
   const { toggleItem, expandedValue } = useAccordion();
-  const [isArrow,setIsArrow] = useState(false);
   const value = (props as { value?: React.Key }).value;
   const isExpanded = value === expandedValue;
 
-   
-   
   return (
-   <button
-  onClick={() => {
-  if (value !== undefined) {
-    toggleItem(value);
-    setIsArrow((state) => !state);
-  }
-}}
-  aria-expanded={isExpanded}
-  type="button"
-  className={cn("group flex gap-3 justify-between items-center", className)}
-  {...(isExpanded ? { "data-expanded": "" } : { "data-closed": "" })}
->
-  {children}
-  <motion.span
-  initial={{rotate:180}}
-  animate={{rotate:!isArrow?180:0}}
-  >
-  <ChevronUp
-    className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-  />
-  </motion.span>
-   </button>
+    <button
+      onClick={() => {
+        if (value !== undefined) {
+          toggleItem(value);
+        }
+      }}
+      aria-expanded={isExpanded}
+      type="button"
+      className={cn("group flex gap-3 justify-between items-center", className)}
+      {...(isExpanded ? { "data-expanded": "" } : { "data-closed": "" })}
+    >
+      {children}
+      <ChevronUp
+        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+      />
+    </button>
   );
 }
 
@@ -204,6 +195,7 @@ function AccordionContent({
           exit='collapsed'
           variants={combinedVariants}
           className={className}
+          style={{ overflow: 'hidden' }}
         >
           {children}
         </motion.div>
