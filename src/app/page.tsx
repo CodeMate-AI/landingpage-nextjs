@@ -1680,8 +1680,11 @@ function Page() {
                       <img src="/Build+project+Mode.gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate Build</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Planning & Architecture</strong>, CodeMate Build is a Design-to-Prototype engine that transforms your prompts into working, deployable applications with design mode and Figma import.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate Build</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Planning & Architecture</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Turns prompts and Figma designs into deployable apps instantly with full design mode support.</p>
                 </div>
               </a>
 
@@ -1696,8 +1699,11 @@ function Page() {
                       <img src="term.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>AI Terminal</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Development & Execution</strong>, AI Terminal allows you to run code and scripts instantly with an AI-powered interface.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>AI Terminal</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Execution</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Run code and scripts instantly through an AI-powered command-line interface.</p>
                 </div>
               </a>
 
@@ -1712,8 +1718,11 @@ function Page() {
                       <img src="/CORA+FULL.gif" className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]" alt="CORA AI Agent Interface" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CORA- AI Agent inside your IDE</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Development & Verification</strong>, CodeMate CORA is an AI Powered Software Development agent for end-to-end coding, security alignment, and quality gates using MCP servers and custom workflows.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate CORA</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Verification</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE.</p>
                 </div>
               </a>
 
@@ -1728,8 +1737,11 @@ function Page() {
                       <img src="edu1.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate Education</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Learning & Upskilling</strong>, CodeMate Education makes smart, AI-powered classroom management easy for educators and students.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate Education</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Learning & Upskilling</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>AI-powered classroom management built for educators and students to master modern development.</p>
                 </div>
               </a>
 
@@ -1744,8 +1756,11 @@ function Page() {
                       <img src="/Codemaps (1).gif" className='object-fit size-[90%] shadow-2xl' alt="" />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate C0 Extension</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Development & Optimization</strong>, CodeMate C0 Extension is your AI-powered coding partner in your IDE that helps you manage code, debug errors, and optimize performance.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate C0 Extension</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Optimization</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Your in-IDE AI partner for code management, debugging, and performance optimization.</p>
                 </div>
               </a>
               <a href="https://app.codemate.ai/chat" target="_blank" className='cursor-pointer'>
@@ -1763,8 +1778,11 @@ function Page() {
                       />
                     </div>
                   </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate C0</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Discovery & Research</strong>, CodeMate C0 is an AI Research Intelligence & Feasibility Engine that leverages deep research and a knowledge base to turn prompts into working code.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate C0</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Discovery & Research</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Turns deep research and feasibility into production-ready code through AI-driven intelligence.</p>
                 </div>
               </a>
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer'>
@@ -1778,8 +1796,11 @@ function Page() {
                       <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="" />
                     </div>
                   </div>
-                  <h1 className="mt-1 text-lg font-semibold">CodeMate PR Review Agent</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Catering to <strong>Deployment & Release</strong>, CodeMate PR Review Agent is a Review and Deployment Engine that automates code reviews and security analysis across GitHub, Bitbucket, GitLab, and Azure DevOps.</p>
+                  <div className="flex items-center flex-wrap gap-2 mt-3">
+                    <h1 className='text-lg font-semibold'>CodeMate PR Review Agent</h1>
+                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Deployment & Release</span>
+                  </div>
+                  <p className='opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
                   <div className='flex items-center gap-4 mt-3 opacity-70 text-white'>
                     <FaGithub className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='GitHub' />
                     <FaBitbucket className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='Bitbucket' />
