@@ -198,6 +198,9 @@ function Page() {
   const [isRef1, setIsRef1] = useState(false);
   const [isRef2, setIsRef2] = useState(false);
   const [isRef3, setIsRef3] = useState(false);
+  const [isRefNew1, setIsRefNew1] = useState(false);
+  const [isRefNew2, setIsRefNew2] = useState(false);
+  const [isRefNew3, setIsRefNew3] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
   const feature1Ref = useRef<HTMLDivElement>(null);
   const drawer1Ref = useRef<HTMLDivElement>(null);
@@ -288,28 +291,36 @@ function Page() {
   // const div2X = useTransform(PShowYProg, [0.3, 0.6], [1800, 0]);
   // const div3X = useTransform(PShowYProg, [0.5, 0.7], [2400, 0]);
 
-  const height = useTransform(PShowYProg, [0, 1], [0, 600]);
+  const height = useTransform(PShowYProg, [0, 0.75], ['0vh', '15vh']); 
 
-  const titlesX = useTransform(PShowYProg, [0, 1], [0, -550]);
-  const headerY = useTransform(PShowYProg, [0.6, 0.8], [0, -200]);
+  const titlesX = useTransform(PShowYProg, [0, 0.75], ['0vh', '-180vh']); 
+  const headerY = useTransform(PShowYProg, [0.6, 0.72], [0, -200]);
 
-  const op1 = useTransform(PShowYProg, [0, 0.2, 0.4], [1, 1, 0]);
-  const op2 = useTransform(PShowYProg, [0.2, 0.3, 0.6], [0.2, 1, 0]);
-  const op3 = useTransform(PShowYProg, [0.4, 0.5, 0.85, 0.9], [0.2, 1, 1, 0]); // Kept opaque longer
-  const op4 = useTransform(PShowYProg, [0.6, 0.8], [0.2, 1]);
+  // --- Text opacities for 6 items mapped to [0, 0.75] ---
+  // Segment width = 0.125, boundaries: 0, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75
+  const opNew1 = useTransform(PShowYProg, [0, 0.03, 0.06, 0.125], [0, 0, 1, 0]);
+  const opNew2 = useTransform(PShowYProg, [0.06, 0.125, 0.25], [0, 1, 0]);
+  const opNew3 = useTransform(PShowYProg, [0.19, 0.25, 0.375], [0, 1, 0]);
+  const op1 = useTransform(PShowYProg, [0.31, 0.375, 0.50], [0, 1, 0]);
+  const op2 = useTransform(PShowYProg, [0.44, 0.50, 0.625], [0, 1, 0]);
+  const op3 = useTransform(PShowYProg, [0.56, 0.625, 0.74, 0.78], [0, 1, 1, 0]);
 
-  // Video overlap fixes - fade out previous videos
-  const opVideo1 = useTransform(PShowYProg, [0, 0.2, 0.25], [1, 1, 0]);
+  // --- Video/GIF opacities for 6 items ---
+  const opVideoNew1 = useTransform(PShowYProg, [0, 0.03, 0.06, 0.125], [0, 0, 1, 0]);
 
-  const opVideo2 = useTransform(PShowYProg, [0.2, 0.25, 0.45, 0.5], [0, 1, 1, 0]);
-  const scaleVideo2 = useTransform(PShowYProg, [0.2, 0.25], [0.8, 1]);
+  const opVideoNew2 = useTransform(PShowYProg, [0.125, 0.145, 0.25], [0, 1, 0]);
+  const scaleVideoNew2 = useTransform(PShowYProg, [0.125, 0.145], [0.8, 1]);
 
-  const opVideo3 = useTransform(PShowYProg, [0.45, 0.5, 0.95, 1], [0, 1, 1, 0]);
-  const scaleVideo3 = useTransform(PShowYProg, [0.45, 0.5], [0.8, 1]);
-  const xVideo3 = useTransform(PShowYProg, [0.85, 1], [0, -350]); // Delay slide until text is up
+  const opVideoNew3 = useTransform(PShowYProg, [0.25, 0.27, 0.375], [0, 1, 0]);
+  const scaleVideoNew3 = useTransform(PShowYProg, [0.25, 0.27], [0.8, 1]);
 
-  const opVideo4 = useTransform(PShowYProg, [0.75, 0.97, 1.0], [0, 1, 1]);
-  const scaleVideo4 = useTransform(PShowYProg, [0.8, 0.97], [0.8, 1]);
+  const opVideo1 = useTransform(PShowYProg, [0.375, 0.395, 0.50], [0, 1, 0]);
+
+  const opVideo2 = useTransform(PShowYProg, [0.50, 0.52, 0.625], [0, 1, 0]);
+  const scaleVideo2 = useTransform(PShowYProg, [0.50, 0.52], [0.8, 1]);
+
+  const opVideo3 = useTransform(PShowYProg, [0.625, 0.645, 0.74, 0.78], [0, 1, 1, 0]);
+  const scaleVideo3 = useTransform(PShowYProg, [0.625, 0.645], [0.8, 1]);
 
   ///for mobile feature section
   const mx = useTransform(MFYProg, [0, 1], [0, -1200]);
@@ -420,34 +431,61 @@ function Page() {
 
 
   useMotionValueEvent(p1YProg, 'change', (latest) => {
-    // --- Main state handling ---
-    if (latest > 0.6) {
-      // Show Ref3 as flex, hide Ref1/Ref2, hide drawer2
+    // --- Main state handling (6 items: 3 new + 3 existing) ---
+    if (latest > 0.83) {
       setIsRef3(true);
       setIsRef2(false);
       setIsRef1(false);
+      setIsRefNew1(false);
+      setIsRefNew2(false);
+      setIsRefNew3(false);
       drawer2Ref.current?.classList.add('hidden');
-    } else if (latest > 0.3) {
-      // Show Ref2, hide Ref1 & Ref3, show editor2, keep drawer2 visible
-      drawer2Ref.current?.classList.remove('hidden');
+    } else if (latest > 0.67) {
+      setIsRef2(true);
       setIsRef1(false);
       setIsRef3(false);
-      setIsRef2(true);
-      editor2Ref.current?.classList.remove('hidden');
-
-    } else if (latest > 0) {
-      // Show Ref1 as flex, hide Ref2, hide editor2, keep drawer2 visible
+      setIsRefNew1(false);
+      setIsRefNew2(false);
+      setIsRefNew3(false);
       drawer2Ref.current?.classList.remove('hidden');
+      editor2Ref.current?.classList.remove('hidden');
+    } else if (latest > 0.5) {
       setIsRef1(true);
       setIsRef2(false);
       setIsRef3(false);
-      editor2Ref.current?.classList.add('hidden');
-
-    } else {
-      // Hide everything in the lowest range
+      setIsRefNew1(false);
+      setIsRefNew2(false);
+      setIsRefNew3(false);
       drawer2Ref.current?.classList.remove('hidden');
+      editor2Ref.current?.classList.add('hidden');
+    } else if (latest > 0.33) {
+      setIsRefNew3(true);
+      setIsRefNew1(false);
+      setIsRefNew2(false);
       setIsRef1(false);
-
+      setIsRef2(false);
+      setIsRef3(false);
+    } else if (latest > 0.17) {
+      setIsRefNew2(true);
+      setIsRefNew1(false);
+      setIsRefNew3(false);
+      setIsRef1(false);
+      setIsRef2(false);
+      setIsRef3(false);
+    } else if (latest > 0) {
+      setIsRefNew1(true);
+      setIsRefNew2(false);
+      setIsRefNew3(false);
+      setIsRef1(false);
+      setIsRef2(false);
+      setIsRef3(false);
+    } else {
+      // Hide everything
+      drawer2Ref.current?.classList.remove('hidden');
+      setIsRefNew1(false);
+      setIsRefNew2(false);
+      setIsRefNew3(false);
+      setIsRef1(false);
       setIsRef2(false);
       setIsRef3(false);
       editor2Ref.current?.classList.add('hidden');
@@ -474,13 +512,9 @@ function Page() {
 
 
   useMotionValueEvent(PShowVYProg, 'change', (latest) => {
-    if (latest > 0 && latest < 1.0) {
-      setIsProds(true);
-    }
     if (latest <= 0) {
       setIsProds(false);
     }
-
   });
 
   // Extend persistence via p1YProg
@@ -501,15 +535,14 @@ function Page() {
 
 
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
-
-    if (latest >= 0.79) {
-      setIsShowProd(false);
-    } else {
+    // Activate overlay when section enters viewport (progress > 0)
+    if (latest > 0 && latest < 0.78) {
+      setIsProds(true);
       setIsShowProd(true);
     }
-    // Prevent video overlay from lingering when scrolling outside the section
-    if (latest <= 0.2 || latest >= 0.95) {
-      setIsProds(false);
+    // Hide Section 1 videos after animations complete
+    if (latest >= 0.78) {
+      setIsShowProd(false);
     }
   });
 
@@ -1836,13 +1869,35 @@ function Page() {
               transition={{ duration: 0.8 }}
               className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-10'>
 
+              {/* --- NEW: Design Mode GIF --- */}
+              {isShowProd && <motion.div
+                key={'new1'}
+                style={{ opacity: opVideoNew1 }}
+                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
+                <img src='/design mode build.gif' className='h-full w-full object-cover rounded-xl' alt='Design Mode' />
+              </motion.div>}
 
-              {isShowProd && !isCoraBlocked && <motion.div
+              {/* --- NEW: Figma Mode GIF --- */}
+              {isShowProd && <motion.div
+                key={'new2'}
+                style={{ scale: scaleVideoNew2, opacity: opVideoNew2 }}
+                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
+                <img src='/build_figma_GIF.gif' className='h-full w-full object-cover rounded-xl' alt='Figma Mode' />
+              </motion.div>}
+
+              {/* --- NEW: Skills GIF --- */}
+              {isShowProd && <motion.div
+                key={'new3'}
+                style={{ scale: scaleVideoNew3, opacity: opVideoNew3 }}
+                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
+                <img src='/skills_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Skills' />
+              </motion.div>}
+
+              {/* --- EXISTING: CORA --- */}
+              {isShowProd && <motion.div
                 key={1}
                 style={{ opacity: opVideo1 }}
                 className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                {/* <Safari url='codemate.ai' imageSrc='chatss.png' className='dark'/> */}
-                {/* <img src="https://drive.codemate.ai/playground.gif" className='w-full h-full object-fit rounded-xl' alt="" /> */}
                 <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/CORA.mp4'></motion.video>
               </motion.div>}
 
@@ -1856,22 +1911,12 @@ function Page() {
 
               {isShowProd && <motion.div
                 key={3}
-                style={{ scale: scaleVideo3, opacity: opVideo3, x: xVideo3 }}
+                style={{ scale: scaleVideo3, opacity: opVideo3 }}
                 className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl  overflow-hidden'>
                 {/* <Safari url='codemate.ai' className='dark object-cover 
       object-left-top' imageSrc='eduation.png'/> */}
                 <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/Documentation.mp4'></motion.video>
               </motion.div>}
-
-              {!isRef2 && !isRef3 &&
-                <motion.div
-                  style={{ scale: scaleVideo4, opacity: opVideo4 }} exit={{ opacity: 0, filter: 'blur(20px)' }} key={4} className='absolute left-[30rem] h-[30vw] w-[58vw] rounded-xl  text-white z-50'>
-                  <motion.div style={{ x: xE }} className='h-full w-full overflow-y-auto'>
-                    <CodeOverlay ref={codeOverlayRef} />
-
-                    <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix} />
-                  </motion.div>
-                </motion.div>}
             </motion.div>
           </AnimatePresence>}
 
@@ -1880,7 +1925,7 @@ function Page() {
         <div
           ref={productShowRef}
 
-          className='relative h-[200vw] w-full bg-zinc-950'>
+          className='relative h-[280vw] w-full bg-zinc-950'>
 
           <div className={`${montserrat.className} sticky top-5 z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-20 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
             {/* Added motion.div and headerY style for alignment fix */}
@@ -1920,11 +1965,45 @@ function Page() {
 
                   <motion.div
                     style={{ y: titlesX }}
-                    className='h-full w-full flex flex-col gap-[13rem]'>
+                    className='h-full w-full flex flex-col gap-[15vh] pt-[15vh]'>
 
+                    {/* --- NEW: Design Mode --- */}
+                    <motion.div
+                      style={{ opacity: opNew1 }}
+                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
+                      <h1 className='text-2xl'>Design Mode</h1>
+
+                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                        Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready React code without writing boilerplate.
+                      </p>
+                    </motion.div>
+
+                    {/* --- NEW: Figma to Code --- */}
+                    <motion.div
+                      style={{ opacity: opNew2 }}
+                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
+                      <h1 className='text-2xl'>Figma to Code</h1>
+
+                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                        Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.
+                      </p>
+                    </motion.div>
+
+                    {/* --- NEW: Custom AI Skills --- */}
+                    <motion.div
+                      style={{ opacity: opNew3 }}
+                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
+                      <h1 className='text-2xl'>Custom AI Skills</h1>
+
+                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                        Teach CodeMate specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.
+                      </p>
+                    </motion.div>
+
+                    {/* --- EXISTING: CORA --- */}
                     <motion.div
                       style={{ opacity: op1 }}
-                      className='text-white flex flex-col gap-2'>
+                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
                       <h1 className='text-2xl'>Ship Autonomously with CORA</h1>
 
                       <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
@@ -1932,9 +2011,10 @@ function Page() {
                       </p>
                     </motion.div>
 
+                    {/* --- EXISTING: PR Reviews --- */}
                     <motion.div
                       style={{ opacity: op2 }}
-                      className='text-white flex flex-col gap-2'>
+                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
                       <h1 className='text-2xl'>Automated PR Reviews</h1>
 
                       <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
@@ -1942,25 +2022,14 @@ function Page() {
                       </p>
                     </motion.div>
 
-
+                    {/* --- EXISTING: Documentation --- */}
                     <motion.div
                       style={{ opacity: op3 }}
-                      className='text-white flex flex-col gap-2'>
+                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
                       <h1 className='text-2xl'>Documentation</h1>
 
                       <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
                         Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.
-                      </p>
-                    </motion.div>
-
-
-                    <motion.div
-                      style={{ opacity: op4 }}
-                      className='text-white flex flex-col gap-2'>
-                      <h1 className='text-2xl'>Gonna help you write quality code 20x faster</h1>
-
-                      <p className='text-sm opacity-50 w-[33rem]'>
-                        It Surely does that...
                       </p>
                     </motion.div>
 
@@ -1978,7 +2047,7 @@ function Page() {
         </div>
         {/* products showcase */}
 
-        <div ref={productRef} className='relative h-[550vh] w-full bg-zinc-950 text-white flex  flex-col mb-32'>
+        <div ref={productRef} className='relative h-[900vh] w-full bg-zinc-950 text-white flex  flex-col mb-32'>
 
 
           <div className='sticky  top-[85vh]  z-50'>
@@ -2054,12 +2123,41 @@ function Page() {
 
 
 
-                {/* {isRef1 && <motion.div className='absolute h-full w-full rounded-xl '>
-          <CodeOverlay ref={codeOverlayRef}/> 
+                {isRef1 && <motion.div
+                  initial={{ opacity: 0, filter: 'blur(20px)' }}
+                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 0.8 }}
+                  className='absolute h-full w-full rounded-xl overflow-hidden'>
+                  <CodeOverlay ref={codeOverlayRef} />
+                  <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix} />
+                </motion.div>}
 
-        <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix}/>
-        </motion.div>} */}
+                {/* --- NEW: Codemaps GIF --- */}
+                {isRefNew1 && <motion.div
+                  initial={{ opacity: 0, filter: 'blur(20px)' }}
+                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 0.8 }}
+                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex opacity-100 overflow-hidden'>
+                  <img src='/Codemaps (1).gif' className='h-full w-full object-cover rounded-xl' alt='Codemaps' />
+                </motion.div>}
 
+                {/* --- NEW: Deepwiki GIF --- */}
+                {isRefNew2 && <motion.div
+                  initial={{ opacity: 0, filter: 'blur(20px)' }}
+                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 0.8 }}
+                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex opacity-100 overflow-hidden'>
+                  <img src='/deepwiki_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Deepwiki' />
+                </motion.div>}
+
+                {/* --- NEW: MCP GIF --- */}
+                {isRefNew3 && <motion.div
+                  initial={{ opacity: 0, filter: 'blur(20px)' }}
+                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  transition={{ duration: 0.8 }}
+                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex opacity-100 overflow-hidden'>
+                  <img src='/mcp_gif.gif' className='h-full w-full object-cover rounded-xl' alt='MCP' />
+                </motion.div>}
 
                 {isRef2 && <motion.div
                   initial={{ opacity: 0, filter: 'blur(20px)' }}
@@ -2187,6 +2285,41 @@ function Page() {
             <div
               className='relative w-[34%] h-[75%] flex  justify-end pr-[3.5rem] py-10 gap-10 z-50 mt-[10rem]'>
 
+              {/* --- NEW: Codemaps --- */}
+              {isRefNew1 && !isRefNew2 && !isRefNew3 && !isRef1 && !isRef2 && !isRef3 &&
+                <div className={`${montserrat.className}relative w-full z-[99999999]  flex justify-center items-start pt-10 h-full`}>
+                  <div className='z-[99999998]'>
+                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Codemaps</h1>
+                    <motion.span className='z-[99999997]'>
+                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Press</span> <span className='text-[#00BFFF] font-semibold'>"C"</span> <span className='opacity-60'>to navigate your entire codebase visually with intelligent code maps that reveal structure, dependencies, and relationships at a glance.</span></p>
+                    </motion.span>
+                  </div>
+                </div>
+              }
+
+              {/* --- NEW: Deepwiki --- */}
+              {isRefNew2 && !isRefNew1 && !isRefNew3 && !isRef1 && !isRef2 && !isRef3 &&
+                <div className='relative w-full z-[99999999] flex justify-center items-start h-full pt-10'>
+                  <div className='z-[9999999]'>
+                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Deepwiki</h1>
+                    <motion.span className='z-[99999997]'>
+                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Press</span> <span className='text-[#00BFFF] font-semibold'>"W"</span> <span className='opacity-60'>to query deep contextual knowledge from your codebase wiki, instantly getting answers about architecture, patterns, and implementation details.</span></p>
+                    </motion.span>
+                  </div>
+                </div>}
+
+              {/* --- NEW: MCP --- */}
+              {isRefNew3 && !isRefNew1 && !isRefNew2 && !isRef1 && !isRef2 && !isRef3 &&
+                <div className='relative w-full z-[99999999] flex justify-center items-start h-full pt-10'>
+                  <div className='z-[9999999]'>
+                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>MCP</h1>
+                    <motion.span className='z-[99999997]'>
+                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Press</span> <span className='text-[#00BFFF] font-semibold'>"M"</span> <span className='opacity-60'>to connect and manage external tools and contexts via Model Context Protocol, supercharging your Build agent with seamless integrations.</span></p>
+                    </motion.span>
+                  </div>
+                </div>}
+
+              {/* --- EXISTING: Debug --- */}
               {isRef1 && !isRef2 && !isRef3 &&
                 <div className={`${montserrat.className}relative w-full z-[99999999]  flex justify-center items-start pt-10 h-full`}>
                   <div className='z-[99999998]'>
@@ -2551,13 +2684,13 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
             <div className="absolute -right-10 top-0 bg-zinc-950 h-full w-[10%] blur-2xl z-50" />
 
             <Marquee pauseOnHover className="[--duration:20s] flex justify-center items-center mt-5">
-              <img src='dell.svg' className='object-fit  size-[30vw] lg:size-[12vw]  opacity-70 lg:mt-0' />
-              <img src='qual.svg' className='object-fit w-[65vw] lg:w-[20vw] mb-[2vw]  opacity-70 lg:mt-9' />
-              <img src='paytm.svg' className='object-fit w-[40vw] lg:w-[18vw]  opacity-70' />
-              <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw]  opacity-70 mt-5 lg:mt-10' />
-              <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw]  opacity-70' />
-              <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-70' />
-              <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw]  opacity-70' />
+              <img src='dell.svg' className='object-fit  size-[30vw] lg:size-[12vw] opacity-100 brightness-150 lg:mt-0' />
+              <img src='qual.svg' className='object-fit w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9' />
+              <img src='paytm.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150' />
+              <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10' />
+              <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw] opacity-100 brightness-150' />
+              <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
+              <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
             </Marquee>
           </div>
 
