@@ -1767,8 +1767,8 @@ function Page() {
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
 
 
-                    <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="edu1.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="absolute bottom-[1.5rem] lg:bottom-[3.5rem]  w-full  flex items-center justify-center shadow-2xl">
+                      <img src="/Codemate_EDU_35MB.gif" className='object-fit size-[90%] shadow-2xl' alt="CodeMate Education Preview" />
                     </div>
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
