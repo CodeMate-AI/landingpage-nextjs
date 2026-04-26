@@ -28,6 +28,7 @@ import ReviewCodeEditor from '@/components/motion-components/rEditor';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
 import Achivements from '@/components/achivements';
+import MediaPresence from '@/components/media-presence';
 import { cn } from './utils/cn';
 import EventOffer from './pricing/components/EventOffer';
 
@@ -2735,6 +2736,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       {/* bento   */}
 
       <Achivements />
+      <MediaPresence />
 
 
       <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-20 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>

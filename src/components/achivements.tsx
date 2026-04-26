@@ -393,7 +393,7 @@ function Achivements() {
 
       className='relative flex flex-col justify-center items-center mb-20'>
       <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-20 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent lg:text-7xl'>Talk</span> of the Town</div>
-      <p className='text-xs w-[80%] mt-3 lg:mt-0 lg:text-lg lg:w-[50%] text-center text-zinc-500 '>We are recognized by some of the most recognised tech, content, and news platforms, organisations and industry experts around the globe.</p>
+      <p className='text-xs w-[80%] mt-3 lg:mt-0 lg:text-lg lg:w-[50%] text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
 
       <div
         ref={carouselRef}
