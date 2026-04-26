@@ -1974,7 +1974,7 @@ function Page() {
                       <h1 className='text-2xl'>Design Mode</h1>
 
                       <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready React code without writing boilerplate.
+                        Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.
                       </p>
                     </motion.div>
 
@@ -1996,7 +1996,7 @@ function Page() {
                       <h1 className='text-2xl'>Custom AI Skills</h1>
 
                       <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Teach CodeMate specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.
+                        Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.
                       </p>
                     </motion.div>
 
@@ -2291,7 +2291,7 @@ function Page() {
                   <div className='z-[99999998]'>
                     <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Codemaps</h1>
                     <motion.span className='z-[99999997]'>
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Press</span> <span className='text-[#00BFFF] font-semibold'>"C"</span> <span className='opacity-60'>to navigate your entire codebase visually with intelligent code maps that reveal structure, dependencies, and relationships at a glance.</span></p>
+                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Navigate your entire codebase visually with intelligent code maps that reveal structure, dependencies, and relationships at a glance.</span></p>
                     </motion.span>
                   </div>
                 </div>
@@ -2303,7 +2303,7 @@ function Page() {
                   <div className='z-[9999999]'>
                     <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Deepwiki</h1>
                     <motion.span className='z-[99999997]'>
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Press</span> <span className='text-[#00BFFF] font-semibold'>"W"</span> <span className='opacity-60'>to query deep contextual knowledge from your codebase wiki, instantly getting answers about architecture, patterns, and implementation details.</span></p>
+                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Query deep contextual knowledge from your codebase wiki, instantly getting answers about architecture, patterns, and implementation details.</span></p>
                     </motion.span>
                   </div>
                 </div>}
@@ -2314,7 +2314,7 @@ function Page() {
                   <div className='z-[9999999]'>
                     <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>MCP</h1>
                     <motion.span className='z-[99999997]'>
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Press</span> <span className='text-[#00BFFF] font-semibold'>"M"</span> <span className='opacity-60'>to connect and manage external tools and contexts via Model Context Protocol, supercharging your Build agent with seamless integrations.</span></p>
+                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Connect and manage external tools and contexts via Model Context Protocol, supercharging your Build agent with seamless integrations.</span></p>
                     </motion.span>
                   </div>
                 </div>}
