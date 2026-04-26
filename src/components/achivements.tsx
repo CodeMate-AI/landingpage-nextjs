@@ -85,25 +85,11 @@ function Achivements() {
     },
 
     {
-      image: "https://drive.codemate.ai/inc42.jpg",
-      alt: "Top 7 AI startups",
-      title: "7 Gen AI Startups That Caught Our Eyes in 2024",
-      description: "CodeMate recognized among top 7 AI startups in 2024 by Inc42",
-      link: "https://inc42.com/web-stories/7-genai-startups-that-caught-our-eyes-in-2024/"
-    },
-    {
       image: "https://drive.codemate.ai/nasscom_genai.jpeg",
       alt: "Nasscom Publication",
       title: "Nasscom Generative AI Startup Landscape Report 2023",
       description: "CodeMate AI was featured in this report as one of the top generative AI startups building from India for the world",
       link: "https://nasscom.in/knowledge-center/publications/generative-ai-startup-landscape-india-2023-perspective"
-    },
-    {
-      image: "https://drive.codemate.ai/moneycontrol_genai.jpeg",
-      alt: "moneycontrol",
-      title: "MoneyControl Article",
-      description: "Featured as one of the top 9 interesting generative AI startups in India by Moneycontrol",
-      link: "https://www.moneycontrol.com/news/trends/features/9-interesting-generative-ai-startups-in-india-11616981.html"
     },
     {
       image: "https://drive.codemate.ai/30startupsinc42.png",
@@ -132,20 +118,6 @@ function Achivements() {
       title: "Meeting Ethiopian Ambassador H.E. Demeke Atnafu Ambulo",
       description: "CodeMate was one of the few startups invited to meet with the Ethiopian Ambassador to India, H.E. Demeke Atnafu Ambulo, at International Ambassador Meet 2024 in New Delhi.",
       link: "https://www.business-standard.com/content/press-releases-ani/international-ambassador-meet-2024-hosted-at-embassy-of-ethiopia-in-new-delhi-124030800477_1.html"
-    },
-    {
-      image: "https://drive.codemate.ai/businessworld_banner.jpeg",
-      alt: "Businessworld",
-      title: "Interview with Businessworld",
-      description: "Our founder, Ayush Singhal interviewed with BusinessWorld and talked about the opportunities coming up in the startup ecosystem and how CodeMate AI is becoming the forefront of AI in software development",
-      link: "https://businessworld.in/article/rs-10k-cr-infusion-for-ai-positive-ongoing-support-now-crucial-ayush-singhal-codemate-513036"
-    },
-    {
-      image: "https://drive.codemate.ai/indian_startupnews.png",
-      alt: "Indian Startup News",
-      title: "Media Feature: Indian Startup News",
-      description: "Indian Startup News featured CodeMate in this article on how we are building AI for developers and making them 10x productive while writing code.",
-      link: "https://indianstartupnews.com/stories/how-codemate-is-revolutionising-the-way-software-developers-code-3690321"
     },
     {
       image: "https://drive.codemate.ai/aiawards23.png",
@@ -223,13 +195,6 @@ function Achivements() {
       title: "Media Feature: YourStory",
       description: "CodeMate's innovative approach got recognised and featured by YourStory, a leading media house globally",
       link: "https://yourstory.com/2024/02/codemate-ai-startup-coding-assistant-debugging-fixing-errors"
-    },
-    {
-      image: "https://drive.codemate.ai/yourstory_banner.png",
-      alt: "YourStory Article",
-      title: "Media Feature: YourStory",
-      description: "CodeMate got mentioned in this article featuring top startups of Nasscom GenAI Foundry.",
-      link: "https://yourstory.com/2023/08/nasscom-genai-foundry-indian-startups-artificial-intelligence"
     },
     {
       image: "https://drive.codemate.ai/gsea%20global.jpeg",
