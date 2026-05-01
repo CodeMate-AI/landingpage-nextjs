@@ -1716,7 +1716,7 @@ function Page() {
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
                     <h1 className='text-lg font-semibold'>CodeMate Build</h1>
-                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Planning & Architecture</span>
+
                   </div>
                   <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Turns prompts and Figma designs into deployable apps instantly with full design mode support.</p>
                 </div>
@@ -1735,7 +1735,7 @@ function Page() {
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
                     <h1 className='text-lg font-semibold'>AI Terminal</h1>
-                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Execution</span>
+
                   </div>
                   <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Run code and scripts instantly through an AI-powered command-line interface.</p>
                 </div>
@@ -1754,7 +1754,7 @@ function Page() {
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
                     <h1 className='text-lg font-semibold'>CodeMate CORA</h1>
-                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Verification</span>
+
                   </div>
                   <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>End-to-end AI AI coding agent for writing, securing, and quality-gating code directly in your IDE.</p>
                 </div>
@@ -1773,7 +1773,7 @@ function Page() {
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
                     <h1 className='text-lg font-semibold'>CodeMate Education</h1>
-                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Learning & Upskilling</span>
+
                   </div>
                   <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>AI-powered classroom management built for educators and students to master modern development.</p>
                 </div>
@@ -1792,7 +1792,7 @@ function Page() {
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
                     <h1 className='text-lg font-semibold'>CodeMate C0 Extension</h1>
-                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Development & Optimization</span>
+
                   </div>
                   <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Your in-IDE AI partner for code management, debugging, and performance optimization.</p>
                 </div>
@@ -1814,7 +1814,7 @@ function Page() {
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
                     <h1 className='text-lg font-semibold'>CodeMate C0</h1>
-                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Discovery & Research</span>
+
                   </div>
                   <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Turns deep research and feasibility into production-ready code through AI-driven intelligence.</p>
                 </div>
@@ -1832,7 +1832,7 @@ function Page() {
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
                     <h1 className='text-lg font-semibold'>CodeMate PR Review Agent</h1>
-                    <span className="text-[10px] uppercase tracking-wider font-medium px-2.5 py-0.5 bg-white/5 text-white/70 rounded-full border border-white/10">Deployment & Release</span>
+
                   </div>
                   <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
                   <div className='flex items-center gap-4 mt-3 opacity-70 text-white'>
