@@ -235,7 +235,7 @@ function Page() {
 
   const { scrollYProgress: p1YProg } = useScroll({
     target: productRef,
-    offset: ['start start', 'end start']
+    offset: ['start start', 'end end']
   });
 
   const { scrollYProgress: PShowYProg } = useScroll({
@@ -247,6 +247,7 @@ function Page() {
     target: productShowRef,
     offset: ['start end', 'end start']
   });
+
 
   const { scrollYProgress: codeMateImageProg } = useScroll({
     target: codeMateImageRef,
@@ -1648,193 +1649,84 @@ function Page() {
 
         <div className={`${montserrat.className} mt-4 leading-[1] text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
 
-        <div className='relative w-full  flex flex-col justify-center items-center'>
-          {/* <div className='h-[30%] w-full flex gap-10 px-10'>
-       <Safari className='dark h-[27vw] w-fit' />
-       <div>
-        <h1 className={`${montserrat.className} text-5xl font-semibold mt-2`}>Codemate Build</h1>
-        <p className={`text-sm opacity-65 ${montserrat.className} w-[50vw] mt-5`}>Codemate Build is your reliable partner in turning ideas into impactful solutions. With a focus on innovation and precision, we craft scalable applications and seamless digital experiences that empower businesses to grow. Our team is dedicated to building not just products, but long-lasting value that helps you stay ahead in a competitive world.</p>
-       </div>
-    </div> */}
-
-          <div className='relative w-full flex justify-center items-start gap-8 '>
-            {/* section for products */}
-            <div className='hidden lg:flex sticky  pt-20  top-0 h-screen
-        '>
-
-
-
-
+        <div className={`relative w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
+          {/* Left: Sticky video panel - desktop only */}
+          <div className='hidden lg:flex sticky top-0 h-screen flex-1 items-center justify-center px-8'>
+            <div className="flex flex-col gap-2 w-full max-w-[58vw]">
               <motion.div
-                animate={{ x: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-
-                <AnimatePresence mode='wait'>
-
-                  <div key={4} className="flex flex-col gap-2 ">
-                    <motion.div
-                      key={1}
-                      initial={{ opacity: 0, filter: "blur(30px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, filter: "blur(30px)" }}
-                      transition={{ duration: 1 }}
-                      className='h-[70vh] w-[57vw] rounded-lg'>
-                      <VideoEmbed />
-                    </motion.div>
-                    <span className={`${montserrat.className} text-4xl flex flex-col gap-2 mt-3`}>
-                      {/* <h1>Codemate Webapp</h1> */}
-                      <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-[57vw] leading-[1.125]'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
-                    </span>
-                  </div>
-                </AnimatePresence>
+                initial={{ opacity: 0, filter: "blur(30px)" }}
+                whileInView={{ opacity: 1, filter: "blur(0px)" }}
+                transition={{ duration: 1 }}
+                className='h-[65vh] w-full rounded-lg overflow-hidden'>
+                <VideoEmbed />
               </motion.div>
-              <motion.div
-                animate={{ x: isP1 ? -700 : isP2 ? 0 : 0 }}
-                transition={{ duration: 0.8 }}
-                className='mb-52'>
-              </motion.div>
+              <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-full leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
             </div>
-            {/* section for products */}
+          </div>
 
+          {/* Right: Product cards - pushed to far right */}
+          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 py-10 lg:py-16">
+            {/* Mobile-only video */}
+            <div className='lg:hidden w-full px-4 mb-8'>
+              <div className='h-[45vh] w-full rounded-lg overflow-hidden'>
+                <VideoEmbed />
+              </div>
+              <p className='opacity-70 text-[0.9rem] w-full leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
+            </div>
 
-
-            {/* features of product */}
-
-            <div className={`flex flex-col pt-10 lg:pt-20  gap-[3rem] items-center  ${montserrat.className} `}>
-
-              <a href="https://build.codemateai.dev/build" target="_blank" className='cursor-pointer'>
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute bottom-[0.4rem] lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="/build_gif.gif" className='object-fit size-[90%] shadow-2xl' alt="" />
+            {[
+              { href: "https://build.codemateai.dev/build", img: "/build_gif.gif", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", title: "CodeMate Build", desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support." },
+              { href: "https://cli.codemate.ai/", img: "term.svg", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[-4.8rem] lg:bottom-[-6rem]", title: "AI Terminal", desc: "Run code and scripts instantly through an AI-powered command-line interface." },
+              { href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent", img: "/CORA+FULL.gif", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", px: true, title: "CodeMate CORA", desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE." },
+              { href: "https://edu.codemate.ai/", img: "/codemate_edu.gif", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[1.5rem] lg:bottom-[3.5rem]", title: "CodeMate Education", desc: "AI-powered classroom management built for educators and students to master modern development." },
+              { href: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate", img: "/Codemaps (1).gif", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", title: "CodeMate C0 Extension", desc: "Your in-IDE AI partner for code management, debugging, and performance optimization." },
+              { href: "https://app.codemate.ai/chat", img: "/C0 Web app1.gif", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", px: true, title: "CodeMate C0", desc: "Turns deep research and feasibility into production-ready code through AI-driven intelligence." },
+            ].map((product, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.3 }}
+                transition={{ duration: 0.6 }}
+                className="w-full flex flex-col items-center lg:items-start py-12 lg:py-16 px-4 lg:px-0"
+              >
+                <a href={product.href} target="_blank" className='cursor-pointer'>
+                  <div className="flex flex-col items-center lg:items-start">
+                    <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden'>
+                      <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
+                      <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
+                        <img src={product.img} className={product.imgClass} alt={product.title} />
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
-                    <h1 className='text-lg font-semibold'>CodeMate Build</h1>
-
-                  </div>
-                  <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Turns prompts and Figma designs into deployable apps instantly with full design mode support.</p>
-                </div>
-              </a>
-
-              <a href="https://cli.codemate.ai/" target="_blank" className='cursor-pointer'>
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="term.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
+                    <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
+                      <h1 className='text-lg font-semibold'>{product.title}</h1>
                     </div>
+                    <p className='text-center lg:text-left opacity-70 text-sm w-[88vw] lg:w-[28vw] mt-1.5 leading-relaxed'>{product.desc}</p>
                   </div>
-                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
-                    <h1 className='text-lg font-semibold'>AI Terminal</h1>
+                </a>
+              </motion.div>
+            ))}
 
-                  </div>
-                  <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Run code and scripts instantly through an AI-powered command-line interface.</p>
-                </div>
-              </a>
-
-              <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank" className='cursor-pointer'>
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute bottom-[0.4rem] lg:bottom-[0.5rem] w-full flex items-center justify-center px-4 shadow-2xl">
-                      <img src="/CORA+FULL.gif" className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]" alt="CORA AI Agent Interface" />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
-                    <h1 className='text-lg font-semibold'>CodeMate CORA</h1>
-
-                  </div>
-                  <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>End-to-end AI AI coding agent for writing, securing, and quality-gating code directly in your IDE.</p>
-                </div>
-              </a>
-
-              <a href="https://edu.codemate.ai/" target="_blank" className='cursor-pointer'>
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute bottom-[1.5rem] lg:bottom-[3.5rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="/codemate_edu.gif" className='object-fit size-[90%] shadow-2xl' alt="CodeMate Education Preview" />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
-                    <h1 className='text-lg font-semibold'>CodeMate Education</h1>
-
-                  </div>
-                  <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>AI-powered classroom management built for educators and students to master modern development.</p>
-                </div>
-              </a>
-
-              <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate" target="_blank" className='cursor-pointer'>
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute bottom-[0.4rem] lg:bottom-[0.5rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="/Codemaps (1).gif" className='object-fit size-[90%] shadow-2xl' alt="" />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
-                    <h1 className='text-lg font-semibold'>CodeMate C0 Extension</h1>
-
-                  </div>
-                  <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Your in-IDE AI partner for code management, debugging, and performance optimization.</p>
-                </div>
-              </a>
-              <a href="https://app.codemate.ai/chat" target="_blank" className='cursor-pointer'>
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute bottom-[0.4rem] lg:bottom-[0.5rem] w-full flex items-center justify-center px-4">
-                      <img
-                        src="/C0 Web app1.gif"
-                        className="w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]"
-                        alt="CodeMate C0 Web App Interface"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
-                    <h1 className='text-lg font-semibold'>CodeMate C0</h1>
-
-                  </div>
-                  <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Turns deep research and feasibility into production-ready code through AI-driven intelligence.</p>
-                </div>
-              </a>
+            {/* PR Review Agent - special (has icons) */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.6 }}
+              className="w-full flex flex-col items-center lg:items-start py-12 lg:py-16 px-4 lg:px-0"
+            >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer'>
                 <div className="flex flex-col items-center lg:items-start">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden'>
+                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                     <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
-                      <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="" />
+                      <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="PR Review" />
                     </div>
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
                     <h1 className='text-lg font-semibold'>CodeMate PR Review Agent</h1>
-
                   </div>
-                  <p className='text-center lg:text-left opacity-70 text-sm lg:text-sm w-[88vw] lg:w-[30vw] mt-1.5 leading-relaxed'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
+                  <p className='text-center lg:text-left opacity-70 text-sm w-[88vw] lg:w-[28vw] mt-1.5 leading-relaxed'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
                   <div className='flex items-center gap-4 mt-3 opacity-70 text-white'>
                     <FaGithub className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='GitHub' />
                     <FaBitbucket className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='Bitbucket' />
@@ -1843,13 +1735,8 @@ function Page() {
                   </div>
                 </div>
               </a>
-              <div className="h-0 lg:h-32 w-full" />
-            </div>
-            {/* features of products */}
+            </motion.div>
           </div>
-
-
-
         </div>
       </div>
       {/* scrolling bento */}

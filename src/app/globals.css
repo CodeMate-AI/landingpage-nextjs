@@ -70,16 +70,6 @@ html {
 
 @layer base {
   * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-@layer base {
-  * {
     @apply border-border outline-ring/50;
   }
 
@@ -144,6 +134,14 @@ body {
   /* IE and Edge */
   scrollbar-width: none;
   /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
 }
 
 .white-space-pre-line {
