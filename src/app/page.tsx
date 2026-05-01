@@ -293,36 +293,10 @@ function Page() {
   // const div2X = useTransform(PShowYProg, [0.3, 0.6], [1800, 0]);
   // const div3X = useTransform(PShowYProg, [0.5, 0.7], [2400, 0]);
 
-  const height = useTransform(PShowYProg, [0, 0.75], ['0vh', '15vh']);
-
-  const titlesX = useTransform(PShowYProg, [0, 0.75], ['0vh', '-180vh']);
+  const unlockBarY = useTransform(PShowYProg, [0, 0.75], ['0%', '100%']);
   const headerY = useTransform(PShowYProg, [0.6, 0.72], [0, -200]);
 
-  // --- Text opacities for 6 items mapped to [0, 0.75] ---
-  // Segment width = 0.125, boundaries: 0, 0.125, 0.25, 0.375, 0.50, 0.625, 0.75
-  const opNew1 = useTransform(PShowYProg, [0, 0.03, 0.06, 0.125], [0, 0, 1, 0]);
-  const opNew2 = useTransform(PShowYProg, [0.06, 0.125, 0.25], [0, 1, 0]);
-  const opNew3 = useTransform(PShowYProg, [0.19, 0.25, 0.375], [0, 1, 0]);
-  const op1 = useTransform(PShowYProg, [0.31, 0.375, 0.50], [0, 1, 0]);
-  const op2 = useTransform(PShowYProg, [0.44, 0.50, 0.625], [0, 1, 0]);
-  const op3 = useTransform(PShowYProg, [0.56, 0.625, 0.74, 0.78], [0, 1, 1, 0]);
-
-  // --- Video/GIF opacities for 6 items ---
-  const opVideoNew1 = useTransform(PShowYProg, [0, 0.03, 0.06, 0.125], [0, 0, 1, 0]);
-
-  const opVideoNew2 = useTransform(PShowYProg, [0.125, 0.145, 0.25], [0, 1, 0]);
-  const scaleVideoNew2 = useTransform(PShowYProg, [0.125, 0.145], [0.8, 1]);
-
-  const opVideoNew3 = useTransform(PShowYProg, [0.25, 0.27, 0.375], [0, 1, 0]);
-  const scaleVideoNew3 = useTransform(PShowYProg, [0.25, 0.27], [0.8, 1]);
-
-  const opVideo1 = useTransform(PShowYProg, [0.375, 0.395, 0.50], [0, 1, 0]);
-
-  const opVideo2 = useTransform(PShowYProg, [0.50, 0.52, 0.625], [0, 1, 0]);
-  const scaleVideo2 = useTransform(PShowYProg, [0.50, 0.52], [0.8, 1]);
-
-  const opVideo3 = useTransform(PShowYProg, [0.625, 0.645, 0.74, 0.78], [0, 1, 1, 0]);
-  const scaleVideo3 = useTransform(PShowYProg, [0.625, 0.645], [0.8, 1]);
+  const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
 
   ///for mobile feature section
   const mx = useTransform(MFYProg, [0, 1], [0, -1200]);
@@ -346,7 +320,7 @@ function Page() {
   const scaleE = useTransform(PShowYProg, [0.5, 0.6, 0.7], [1, 1.5, 1]);
   const xE = useTransform(PShowYProg, [0.5, 0.7], [0, -516]);
 
-  ///for testi
+  ///for testing
   const tdiv1X = useTransform(testiYProg, [0, 0.1], [700, 0]);
   const tdiv2X = useTransform(testiYProg, [0.1, 0.3], [1300, 0]);
   const tdiv3X = useTransform(testiYProg, [0.3, 0.5], [1900, 0]);
@@ -546,6 +520,21 @@ function Page() {
     if (latest >= 0.78) {
       setIsShowProd(false);
     }
+  });
+
+  // Discrete step switching for "What you'll Unlock" (mirrors Seamlessly Integrated section behavior)
+  useMotionValueEvent(PShowYProg, 'change', (latest) => {
+    if (latest <= 0 || latest >= 0.78) {
+      setUnlockStep(-1);
+      return;
+    }
+
+    if (latest < 0.125) setUnlockStep(0);
+    else if (latest < 0.25) setUnlockStep(1);
+    else if (latest < 0.375) setUnlockStep(2);
+    else if (latest < 0.50) setUnlockStep(3);
+    else if (latest < 0.625) setUnlockStep(4);
+    else setUnlockStep(5);
   });
 
   // Block CORA.mp4 while the CodeMate Chat image is on screen
@@ -1757,54 +1746,85 @@ function Page() {
               transition={{ duration: 0.8 }}
               className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-10'>
 
-              {/* --- NEW: Design Mode GIF --- */}
-              {isShowProd && <motion.div
-                key={'new1'}
-                style={{ opacity: opVideoNew1 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                <img src='/design mode build.gif' className='h-full w-full object-cover rounded-xl' alt='Design Mode' />
-              </motion.div>}
+              <AnimatePresence mode="wait">
+                {isShowProd && unlockStep === 0 && (
+                  <motion.div
+                    key="unlock-media-0"
+                    initial={{ opacity: 0, filter: 'blur(16px)' }}
+                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, filter: 'blur(16px)' }}
+                    transition={{ duration: 0.35 }}
+                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
+                  >
+                    <img src='/design mode build.gif' className='h-full w-full object-cover rounded-xl' alt='Design Mode' />
+                  </motion.div>
+                )}
 
-              {/* --- NEW: Figma Mode GIF --- */}
-              {isShowProd && <motion.div
-                key={'new2'}
-                style={{ scale: scaleVideoNew2, opacity: opVideoNew2 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                <img src='/build_figma_GIF.gif' className='h-full w-full object-cover rounded-xl' alt='Figma Mode' />
-              </motion.div>}
+                {isShowProd && unlockStep === 1 && (
+                  <motion.div
+                    key="unlock-media-1"
+                    initial={{ opacity: 0, filter: 'blur(16px)' }}
+                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, filter: 'blur(16px)' }}
+                    transition={{ duration: 0.35 }}
+                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
+                  >
+                    <img src='/build_figma_GIF.gif' className='h-full w-full object-cover rounded-xl' alt='Figma Mode' />
+                  </motion.div>
+                )}
 
-              {/* --- NEW: Skills GIF --- */}
-              {isShowProd && <motion.div
-                key={'new3'}
-                style={{ scale: scaleVideoNew3, opacity: opVideoNew3 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                <img src='/skills_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Skills' />
-              </motion.div>}
+                {isShowProd && unlockStep === 2 && (
+                  <motion.div
+                    key="unlock-media-2"
+                    initial={{ opacity: 0, filter: 'blur(16px)' }}
+                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, filter: 'blur(16px)' }}
+                    transition={{ duration: 0.35 }}
+                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
+                  >
+                    <img src='/skills_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Skills' />
+                  </motion.div>
+                )}
 
-              {/* --- EXISTING: CORA --- */}
-              {isShowProd && <motion.div
-                key={1}
-                style={{ opacity: opVideo1 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/CORA.mp4'></motion.video>
-              </motion.div>}
+                {isShowProd && unlockStep === 3 && (
+                  <motion.div
+                    key="unlock-media-3"
+                    initial={{ opacity: 0, filter: 'blur(16px)' }}
+                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, filter: 'blur(16px)' }}
+                    transition={{ duration: 0.35 }}
+                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
+                  >
+                    <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/CORA.mp4' />
+                  </motion.div>
+                )}
 
-              {isShowProd && <motion.div
-                key={2}
-                style={{ scale: scaleVideo2, opacity: opVideo2 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                {/* <Safari url='codemate.ai' imageSrc='buildss.png' className='dark'/> */}
-                <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/PR_review.mp4'></motion.video>
-              </motion.div>}
+                {isShowProd && unlockStep === 4 && (
+                  <motion.div
+                    key="unlock-media-4"
+                    initial={{ opacity: 0, filter: 'blur(16px)' }}
+                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, filter: 'blur(16px)' }}
+                    transition={{ duration: 0.35 }}
+                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
+                  >
+                    <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/PR_review.mp4' />
+                  </motion.div>
+                )}
 
-              {isShowProd && <motion.div
-                key={3}
-                style={{ scale: scaleVideo3, opacity: opVideo3 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl  overflow-hidden'>
-                {/* <Safari url='codemate.ai' className='dark object-cover 
-      object-left-top' imageSrc='eduation.png'/> */}
-                <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/Documentation.mp4'></motion.video>
-              </motion.div>}
+                {isShowProd && unlockStep === 5 && (
+                  <motion.div
+                    key="unlock-media-5"
+                    initial={{ opacity: 0, filter: 'blur(16px)' }}
+                    animate={{ opacity: 1, filter: 'blur(0px)' }}
+                    exit={{ opacity: 0, filter: 'blur(16px)' }}
+                    transition={{ duration: 0.35 }}
+                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl overflow-hidden'
+                  >
+                    <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/Documentation.mp4' />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </motion.div>
           </AnimatePresence>}
 
@@ -1815,7 +1835,7 @@ function Page() {
 
           className='relative h-[280vw] w-full bg-zinc-950'>
 
-          <div className={`${montserrat.className} sticky top-5 z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-20 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
+          <div className={`${montserrat.className} sticky top-[6rem] z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-12 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
             {/* Added motion.div and headerY style for alignment fix */}
             <motion.div style={{ y: headerY }} className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-5'>
               <span className='z-50'>
@@ -1834,94 +1854,122 @@ function Page() {
               className={`${montserrat.className}  text-2xl pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-right`}>From <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'>Web-Application</span></motion.div>
           </div>
 
-          <div className='sticky top-[9rem]   h-screen w-full overflow-x-hidden'>
+          <div className='sticky top-[7.5rem]   h-screen w-full overflow-x-hidden'>
 
             <div
-              className='relative h-[75%] w-[40%] flex  items-center justify-center  pl-10 py-3'>
+              className='relative h-[75%] w-[40%] flex items-start justify-start pl-10 py-10 gap-10 mt-[10rem]'>
 
-              <div className={`relative ${montserrat.className}  text-7xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent flex flex-col   h-full w-full mt-10`}>
+              <div className={`relative ${montserrat.className}  text-7xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent flex flex-col h-full w-full`}>
 
-                <div className='relative h-full py-6 pl-5 flex justify-center overflow-hidden gap-5 '>
+                <div className='relative h-full pl-5 flex justify-start overflow-hidden gap-10 '>
 
-                  <div>
+                  <div className='relative'>
                     <motion.div
-                      style={{ y: height }}
-                      className='absolute rounded-md w-[0.25rem] h-[20%]  bg-gradient-to-b from-[#00BFFF] to-[#1E90FF]  opacity-80 z-50' />
+                      style={{ height: unlockBarY }}
+                      className='absolute rounded-md w-[0.25rem] bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] opacity-80 z-50' />
 
                     <div className='w-[0.20rem] rounded-md  h-full bg-[#1c1c1c] ' />
                   </div>
 
-                  <motion.div
-                    style={{ y: titlesX }}
-                    className='h-full w-full flex flex-col gap-[15vh] pt-[15vh]'>
+                  <div className='relative h-full w-full'>
+                    <AnimatePresence mode="wait">
+                      {unlockStep === 0 && (
+                        <motion.div
+                          key="unlock-0"
+                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
+                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
+                          transition={{ duration: 0.35 }}
+                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
+                        >
+                          <h1 className='text-2xl'>Design Mode</h1>
+                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                            Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.
+                          </p>
+                        </motion.div>
+                      )}
 
-                    {/* --- NEW: Design Mode --- */}
-                    <motion.div
-                      style={{ opacity: opNew1 }}
-                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
-                      <h1 className='text-2xl'>Design Mode</h1>
+                      {unlockStep === 1 && (
+                        <motion.div
+                          key="unlock-1"
+                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
+                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
+                          transition={{ duration: 0.35 }}
+                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
+                        >
+                          <h1 className='text-2xl'>Figma to Code</h1>
+                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                            Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.
+                          </p>
+                        </motion.div>
+                      )}
 
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.
-                      </p>
-                    </motion.div>
+                      {unlockStep === 2 && (
+                        <motion.div
+                          key="unlock-2"
+                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
+                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
+                          transition={{ duration: 0.35 }}
+                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
+                        >
+                          <h1 className='text-2xl'>Custom AI Skills</h1>
+                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                            Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.
+                          </p>
+                        </motion.div>
+                      )}
 
-                    {/* --- NEW: Figma to Code --- */}
-                    <motion.div
-                      style={{ opacity: opNew2 }}
-                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
-                      <h1 className='text-2xl'>Figma to Code</h1>
+                      {unlockStep === 3 && (
+                        <motion.div
+                          key="unlock-3"
+                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
+                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
+                          transition={{ duration: 0.35 }}
+                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
+                        >
+                          <h1 className='text-2xl'>Ship Autonomously with CORA</h1>
+                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                            Delegate tasks to our smartest coding agent that knows your codebase
+                          </p>
+                        </motion.div>
+                      )}
 
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.
-                      </p>
-                    </motion.div>
+                      {unlockStep === 4 && (
+                        <motion.div
+                          key="unlock-4"
+                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
+                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
+                          transition={{ duration: 0.35 }}
+                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
+                        >
+                          <h1 className='text-2xl'>Automated PR Reviews</h1>
+                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                            Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops) and automate your entire code reviews. summarizing changes, detecting bugs, and catching security flaws. Ship clean code to production up to 80% faster.
+                          </p>
+                        </motion.div>
+                      )}
 
-                    {/* --- NEW: Custom AI Skills --- */}
-                    <motion.div
-                      style={{ opacity: opNew3 }}
-                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
-                      <h1 className='text-2xl'>Custom AI Skills</h1>
-
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.
-                      </p>
-                    </motion.div>
-
-                    {/* --- EXISTING: CORA --- */}
-                    <motion.div
-                      style={{ opacity: op1 }}
-                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
-                      <h1 className='text-2xl'>Ship Autonomously with CORA</h1>
-
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Delegate tasks to our smartest coding agent that knows your codebase
-                      </p>
-                    </motion.div>
-
-                    {/* --- EXISTING: PR Reviews --- */}
-                    <motion.div
-                      style={{ opacity: op2 }}
-                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
-                      <h1 className='text-2xl'>Automated PR Reviews</h1>
-
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops) and automate your entire code reviews. summarizing changes, detecting bugs, and catching security flaws. Ship clean code to production up to 80% faster.
-                      </p>
-                    </motion.div>
-
-                    {/* --- EXISTING: Documentation --- */}
-                    <motion.div
-                      style={{ opacity: op3 }}
-                      className='text-white flex flex-col gap-2 h-[20vh] justify-center'>
-                      <h1 className='text-2xl'>Documentation</h1>
-
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.
-                      </p>
-                    </motion.div>
-
-                  </motion.div>
+                      {unlockStep === 5 && (
+                        <motion.div
+                          key="unlock-5"
+                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
+                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
+                          transition={{ duration: 0.35 }}
+                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
+                        >
+                          <h1 className='text-2xl'>Documentation</h1>
+                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
+                            Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
 
                 </div>
 
