@@ -407,8 +407,16 @@ function Page() {
 
 
   useMotionValueEvent(p1YProg, 'change', (latest) => {
+    // When the next ("Seamlessly Integrated") section starts, force-hide the Unlock overlay
+    // so no Unlock media can overlap on top of it.
+    if (latest > 0.01) {
+      setIsShowProd(false);
+      setIsProds(false);
+      setUnlockStep(-1);
+    }
+
     // --- Main state handling (6 items: 3 new + 3 existing) ---
-    if (latest > 0.83) {
+    if (latest > 0.75) {
       setIsRef3(true);
       setIsRef2(false);
       setIsRef1(false);
@@ -416,7 +424,7 @@ function Page() {
       setIsRefNew2(false);
       setIsRefNew3(false);
       drawer2Ref.current?.classList.add('hidden');
-    } else if (latest > 0.67) {
+    } else if (latest > 0.60) {
       setIsRef2(true);
       setIsRef1(false);
       setIsRef3(false);
@@ -425,7 +433,7 @@ function Page() {
       setIsRefNew3(false);
       drawer2Ref.current?.classList.remove('hidden');
       editor2Ref.current?.classList.remove('hidden');
-    } else if (latest > 0.5) {
+    } else if (latest > 0.45) {
       setIsRef1(true);
       setIsRef2(false);
       setIsRef3(false);
@@ -434,21 +442,21 @@ function Page() {
       setIsRefNew3(false);
       drawer2Ref.current?.classList.remove('hidden');
       editor2Ref.current?.classList.add('hidden');
-    } else if (latest > 0.33) {
+    } else if (latest > 0.30) {
       setIsRefNew3(true);
       setIsRefNew1(false);
       setIsRefNew2(false);
       setIsRef1(false);
       setIsRef2(false);
       setIsRef3(false);
-    } else if (latest > 0.17) {
+    } else if (latest > 0.15) {
       setIsRefNew2(true);
       setIsRefNew1(false);
       setIsRefNew3(false);
       setIsRef1(false);
       setIsRef2(false);
       setIsRef3(false);
-    } else if (latest > 0) {
+    } else if (latest > 0.01) {
       setIsRefNew1(true);
       setIsRefNew2(false);
       setIsRefNew3(false);
@@ -493,38 +501,22 @@ function Page() {
     }
   });
 
-  // Extend persistence via p1YProg
-  useMotionValueEvent(p1YProg, 'change', (latest) => {
-    // Extended to 0.9 to cover the full "Seemlessly integrated" / Debug section
-    if (latest < 0.9 && latest > 0) {
-      setIsProds(true);
-    }
-    // Hide as soon as we scroll above the section
-    if (latest <= 0) {
-      setIsProds(false);
-    }
-    // Turn off when we scroll past the debug section
-    if (latest >= 0.9) {
-      setIsProds(false);
-    }
-  });
-
-
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
     // Activate overlay when section enters viewport (progress > 0)
-    if (latest > 0 && latest < 0.78) {
+    if (latest > 0 && latest < 0.75) {
       setIsProds(true);
       setIsShowProd(true);
     }
     // Hide Section 1 videos after animations complete
-    if (latest >= 0.78) {
+    if (latest >= 0.75) {
       setIsShowProd(false);
+      setIsProds(false);
     }
   });
 
   // Discrete step switching for "What you'll Unlock" (mirrors Seamlessly Integrated section behavior)
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
-    if (latest <= 0 || latest >= 0.78) {
+    if (latest <= 0 || latest >= 0.75) {
       setUnlockStep(-1);
       return;
     }
@@ -1736,7 +1728,7 @@ function Page() {
 
 
       <div ref={productsWrapper} className='hidden lg:block -z-20'>
-        {isProds &&
+        {isProds && isShowProd &&
           <AnimatePresence mode="wait">
             <motion.div
               key={1}
@@ -1833,7 +1825,7 @@ function Page() {
         <div
           ref={productShowRef}
 
-          className='relative h-[280vw] w-full bg-zinc-950'>
+          className='relative h-[220vw] w-full bg-zinc-950'>
 
           <div className={`${montserrat.className} sticky top-[6rem] z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-12 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
             {/* Added motion.div and headerY style for alignment fix */}
