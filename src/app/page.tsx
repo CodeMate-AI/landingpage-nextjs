@@ -315,13 +315,16 @@ function Page() {
   const drawerX3 = useTransform(p1YProg, [0.7, 0.8], [0, 45]);
 
 
-  ///for productShowcase 
-  // const div1X = useTransform(PShowYProg, [0, 0.3], [1200, 0]);
-  // const div2X = useTransform(PShowYProg, [0.3, 0.6], [1800, 0]);
-  // const div3X = useTransform(PShowYProg, [0.5, 0.7], [2400, 0]);
+  // ========== "What you'll Unlock" section scroll math ==========
+  // Container: h-[430vh]. Offset: ['start start','end start'] → scroll distance = 430vh.
+  // Next section enters viewport bottom at PShowYProg ≈ 0.767 (= 1 − 100vh/430vh).
+  // 6 unlock steps span 0→0.76, ending just before the next section peeks in.
+  // Blank tail ≈ (0.767−0.76)×430 ≈ 3vh — virtually invisible.
+  const UNLOCK_END = 0.76;
+  const UNLOCK_STEP = UNLOCK_END / 6; // ≈ 0.1267
 
-  const unlockBarY = useTransform(PShowYProg, [0, 0.75], ['0%', '100%']);
-  const headerY = useTransform(PShowYProg, [0.75, 0.85], [0, -200]);
+  const unlockBarY = useTransform(PShowYProg, [0, UNLOCK_END], ['0%', '100%']);
+  const headerY = useTransform(PShowYProg, [UNLOCK_END, UNLOCK_END + 0.12], [0, -200]);
 
   const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
 
@@ -348,8 +351,9 @@ function Page() {
 
   ///codeEditor part
 
-  const scaleE = useTransform(PShowYProg, [0.5, 0.6, 0.7], [1, 1.5, 1]);
-  const xE = useTransform(PShowYProg, [0.5, 0.7], [0, -516]);
+  // [UNUSED] scaleE / xE — legacy transforms, not referenced in JSX
+  // const scaleE = useTransform(PShowYProg, [0.5, 0.6, 0.7], [1, 1.5, 1]);
+  // const xE = useTransform(PShowYProg, [0.5, 0.7], [0, -516]);
 
   ///for testing
   const tdiv1X = useTransform(testiYProg, [0, 0.1], [700, 0]);
@@ -367,8 +371,9 @@ function Page() {
   const announcementRef = useRef<HTMLDivElement>(null);
 
   //for bento
-  const scaleB = useTransform(PShowYProg, [0.8, 0.9], [1, 1.5]);
-  const xB = useTransform(PShowYProg, [0.8, 0.9], [0, 550]);
+  // [UNUSED] scaleB / xB — legacy transforms, not referenced in JSX
+  // const scaleB = useTransform(PShowYProg, [0.8, 0.9], [1, 1.5]);
+  // const xB = useTransform(PShowYProg, [0.8, 0.9], [0, 550]);
 
 
   ///for mobile navbar menu
@@ -445,17 +450,23 @@ function Page() {
   // 1G. SCROLL EVENT LISTENERS (useMotionValueEvent)
   // Watches scroll progress to trigger state changes (e.g. showing/hiding elements)
   // ==========================================
+
+  // ========== "Seamlessly Integrated" section scroll math ==========
+  // Container: h-[700vh]. Offset: ['start start','end end'] → scroll distance = 600vh.
+  // 6 content items distributed evenly across 0→0.90 (each ≈ 0.15 = 90vh).
+  // Blank tail: 10% of 600vh = 60vh — minimal.
+  const INTEG_STEP = 0.15;  // each item gets 15% of scroll
+
   useMotionValueEvent(p1YProg, 'change', (latest) => {
-    // When the next ("Seamlessly Integrated") section starts, force-hide the Unlock overlay
-    // so no Unlock media can overlap on top of it.
-    if (latest > 0.01) {
+    // When "Seamlessly Integrated" section starts, force-hide the Unlock overlay
+    if (latest > 0.001) {
       setIsShowProd(false);
       setIsProds(false);
       setUnlockStep(-1);
     }
 
-    // --- Main state handling (6 items: 3 new + 3 existing) ---
-    if (latest > 0.75) {
+    // --- 6 items: 3 new (Codemaps, Deepwiki, MCP) + 3 existing (Debug, Review, Auto-complete) ---
+    if (latest > INTEG_STEP * 5) {        // > 0.75: Auto-complete
       setIsRef3(true);
       setIsRef2(false);
       setIsRef1(false);
@@ -463,7 +474,7 @@ function Page() {
       setIsRefNew2(false);
       setIsRefNew3(false);
       drawer2Ref.current?.classList.add('hidden');
-    } else if (latest > 0.60) {
+    } else if (latest > INTEG_STEP * 4) { // > 0.60: Review
       setIsRef2(true);
       setIsRef1(false);
       setIsRef3(false);
@@ -472,7 +483,7 @@ function Page() {
       setIsRefNew3(false);
       drawer2Ref.current?.classList.remove('hidden');
       editor2Ref.current?.classList.remove('hidden');
-    } else if (latest > 0.45) {
+    } else if (latest > INTEG_STEP * 3) { // > 0.45: Debug
       setIsRef1(true);
       setIsRef2(false);
       setIsRef3(false);
@@ -481,21 +492,21 @@ function Page() {
       setIsRefNew3(false);
       drawer2Ref.current?.classList.remove('hidden');
       editor2Ref.current?.classList.add('hidden');
-    } else if (latest > 0.30) {
+    } else if (latest > INTEG_STEP * 2) { // > 0.30: MCP
       setIsRefNew3(true);
       setIsRefNew1(false);
       setIsRefNew2(false);
       setIsRef1(false);
       setIsRef2(false);
       setIsRef3(false);
-    } else if (latest > 0.15) {
+    } else if (latest > INTEG_STEP * 1) { // > 0.15: Deepwiki
       setIsRefNew2(true);
       setIsRefNew1(false);
       setIsRefNew3(false);
       setIsRef1(false);
       setIsRef2(false);
       setIsRef3(false);
-    } else if (latest > 0.01) {
+    } else if (latest > 0.001) {           // > 0.001: Codemaps (virtually instant)
       setIsRefNew1(true);
       setIsRefNew2(false);
       setIsRefNew3(false);
@@ -542,29 +553,30 @@ function Page() {
 
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
     // Activate overlay when section enters viewport (progress > 0)
-    if (latest > 0 && latest < 0.75) {
+    if (latest > 0 && latest < UNLOCK_END) {
       setIsProds(true);
       setIsShowProd(true);
     }
     // Hide Section 1 videos after animations complete
-    if (latest >= 0.75) {
+    if (latest >= UNLOCK_END) {
       setIsShowProd(false);
       setIsProds(false);
     }
   });
 
-  // Discrete step switching for "What you'll Unlock" (mirrors Seamlessly Integrated section behavior)
+  // Discrete step switching for "What you'll Unlock"
+  // Each step = UNLOCK_STEP ≈ 0.1267 of scroll progress (≈ 54vh per step)
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
-    if (latest <= 0 || latest >= 0.75) {
+    if (latest <= 0 || latest >= UNLOCK_END) {
       setUnlockStep(-1);
       return;
     }
 
-    if (latest < 0.125) setUnlockStep(0);
-    else if (latest < 0.25) setUnlockStep(1);
-    else if (latest < 0.375) setUnlockStep(2);
-    else if (latest < 0.50) setUnlockStep(3);
-    else if (latest < 0.625) setUnlockStep(4);
+    if (latest < UNLOCK_STEP * 1) setUnlockStep(0);
+    else if (latest < UNLOCK_STEP * 2) setUnlockStep(1);
+    else if (latest < UNLOCK_STEP * 3) setUnlockStep(2);
+    else if (latest < UNLOCK_STEP * 4) setUnlockStep(3);
+    else if (latest < UNLOCK_STEP * 5) setUnlockStep(4);
     else setUnlockStep(5);
   });
 
@@ -707,9 +719,9 @@ function Page() {
       {/* arrow for going to hero section */}
 
       {/* ========================================== */}
-      {/* UI SECTION: TOP ANNOUNCEMENT BANNER      */}  
-      {/* Marketing banner displayed above the nav */}  
-      {/* ========================================== */}  
+      {/* UI SECTION: TOP ANNOUNCEMENT BANNER      */}
+      {/* Marketing banner displayed above the nav */}
+      {/* ========================================== */}
       {/* Announcement*/}
       {shouldShowAnnouncement && (
         <motion.div
@@ -744,9 +756,9 @@ function Page() {
       )}
 
       {/* ========================================== */}
-      {/* UI SECTION: DESKTOP NAVIGATION           */}  
-      {/* Sticky top navigation with mega-menus    */}  
-      {/* ========================================== */}  
+      {/* UI SECTION: DESKTOP NAVIGATION           */}
+      {/* Sticky top navigation with mega-menus    */}
+      {/* ========================================== */}
       {/*navBar*/}
       <div
         style={{ top: 0 }}
@@ -1077,9 +1089,9 @@ function Page() {
       </div>
 
       {/* ========================================== */}
-      {/* UI SECTION: MOBILE NAVIGATION & MENU     */}  
-      {/* Hamburger menu overlay for mobile devices*/}  
-      {/* ========================================== */}  
+      {/* UI SECTION: MOBILE NAVIGATION & MENU     */}
+      {/* Hamburger menu overlay for mobile devices*/}
+      {/* ========================================== */}
       {/* mobile menu */}
       <AnimatePresence>
         <motion.div
@@ -1477,9 +1489,9 @@ function Page() {
       <div ref={heroRef2} className='h-[75vh] lg:h-[100vh] w-full overflow-x-hidden'>
         <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
           {/* ========================================== */}
-          {/* UI SECTION: HERO                         */}  
-          {/* The main landing area with the primary CTA and background animation */}  
-          {/* ========================================== */}  
+          {/* UI SECTION: HERO                         */}
+          {/* The main landing area with the primary CTA and background animation */}
+          {/* ========================================== */}
           <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-[75vh] lg:h-screen w-full z-50 overflow-hidden cursor-default'>
 
 
@@ -1684,9 +1696,9 @@ function Page() {
 
 
         {/* ========================================== */}
-        {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}  
-        {/* Features a sticky video player on the left and a scrollable list of products on the right */}  
-        {/* ========================================== */}  
+        {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
+        {/* Features a sticky video player on the left and a scrollable list of products on the right */}
+        {/* ========================================== */}
         <div className={`${montserrat.className} mt-4 leading-[1] text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
 
         <div className={`relative w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
@@ -1888,7 +1900,7 @@ function Page() {
         <div
           ref={productShowRef}
 
-          className='relative h-[500vh] w-full bg-zinc-950'>
+          className='relative h-[430vh] w-full bg-zinc-950'>
 
           <div className={`${montserrat.className} sticky top-[6rem] z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-12 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
             {/* Added motion.div and headerY style for alignment fix */}
@@ -2048,7 +2060,7 @@ function Page() {
         </div>
         {/* products showcase */}
 
-        <div ref={productRef} className='relative h-[900vh] w-full bg-zinc-950 text-white flex  flex-col mb-16'>
+        <div ref={productRef} className='relative h-[700vh] w-full bg-zinc-950 text-white flex  flex-col mb-16'>
 
 
           <div className='sticky  top-[85vh]  z-50'>
@@ -2813,21 +2825,21 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       {/* bento   */}
 
       {/* ========================================== */}
-      {/* UI SECTION: ACHIEVEMENTS & STATISTICS    */}  
-      {/* ========================================== */}  
+      {/* UI SECTION: ACHIEVEMENTS & STATISTICS    */}
+      {/* ========================================== */}
       <Achivements />
       {/* ========================================== */}
-      {/* UI SECTION: MEDIA PRESENCE (AS SEEN ON)  */}  
-      {/* ========================================== */}  
+      {/* UI SECTION: MEDIA PRESENCE (AS SEEN ON)  */}
+      {/* ========================================== */}
       <MediaPresence />
 
 
       <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-20 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
 
       {/* ========================================== */}
-      {/* UI SECTION: TESTIMONIALS & REVIEWS       */}  
-      {/* Scrolling carousel of user feedback and trust markers */}  
-      {/* ========================================== */}  
+      {/* UI SECTION: TESTIMONIALS & REVIEWS       */}
+      {/* Scrolling carousel of user feedback and trust markers */}
+      {/* ========================================== */}
       <div ref={testiRef} className='relative h-[400vh] w-full bg-zinc-950 '>
 
 
@@ -2981,8 +2993,8 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
       <div ref={footerRef}>
         {/* ========================================== */}
-        {/* UI SECTION: PAGE FOOTER                  */}  
-        {/* ========================================== */}  
+        {/* UI SECTION: PAGE FOOTER                  */}
+        {/* ========================================== */}
         <Footer />
       </div>
     </div>
