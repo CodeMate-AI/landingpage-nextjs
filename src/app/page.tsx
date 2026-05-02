@@ -2048,7 +2048,7 @@ function Page() {
         </div>
         {/* products showcase */}
 
-        <div ref={productRef} className='relative h-[900vh] w-full bg-zinc-950 text-white flex  flex-col mb-32'>
+        <div ref={productRef} className='relative h-[900vh] w-full bg-zinc-950 text-white flex  flex-col mb-16'>
 
 
           <div className='sticky  top-[85vh]  z-50'>
@@ -2057,7 +2057,7 @@ function Page() {
 
 
 
-          <div className={`${montserrat.className} sticky top-7  text-3xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pr-16 mb-6 pt-20 text-right pl-[50vw]  pb-1 z-40`}>
+          <div className={`${montserrat.className} sticky top-7  text-3xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pr-16 mb-0 pt-4 text-right pl-[50vw]  pb-1 z-40`}>
             <div className='bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent relative h-full w-full pb-2'>
               <span className='z-40'>
                 Seamlessly <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent pb-1'>Integrated &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
