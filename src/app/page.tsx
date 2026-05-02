@@ -45,7 +45,16 @@ const montserrat2 = Montserrat({
 });
 
 
+// ==========================================
+// 1. MAIN COMPONENT DECLARATION
+// The root Page component for the landing page.
+// Handles core state, scroll tracking (Framer Motion), and renders all sub-sections.
+// ==========================================
 function Page() {
+  // ==========================================
+  // 1A. MOCK DATA & CONTENT
+  // Data arrays used to populate interactive code editor simulations
+  // ==========================================
   const brokenComponent = [
     { code: "import React from 'react'", isError: false },
     { code: "", isError: false },
@@ -60,6 +69,11 @@ function Page() {
     { code: "    console.logg('Name is:', name)", isError: true }, // ❌ typo `logg`
     { code: "  }, [nam])", isError: true }, // ❌ `nam` is not defined
     { code: "", isError: false },
+    // ==========================================
+    // 2. MAIN PAGE RENDER (JSX)
+    // Renders the entire landing page sequentially:
+    // Nav -> Hero -> Products -> Testimonials -> Footer
+    // ==========================================
     { code: "  return (", isError: false },
     { code: "    <div>", isError: false },
     { code: "      <h1>Hello, {namee}</h1>", isError: true }, // ❌ `namee` is a typo
@@ -145,6 +159,9 @@ function Page() {
     { code: "  )", },
     { code: "}", },
   ];
+  // ==========================================
+  // 1B. NAVIGATION CONFIGURATION
+  // ==========================================
   const navItems = [
     {
       name: "Home",
@@ -165,6 +182,11 @@ function Page() {
     },
   ];
   const router = useRouter();
+  // ==========================================
+  // 1C. REFS & COMPONENT STATE
+  // React state hooks for toggling UI elements (menus, overlays, modals)
+  // and Refs for tracking scroll positions of specific sections.
+  // ==========================================
   const heroRef = useRef<HTMLDivElement>(null);
   const heroRef2 = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
@@ -227,6 +249,11 @@ function Page() {
   const title = ["Don't", "be", "techy", "to"];
   const title2 = ["Develop", "Softwares"];
   const [isTitle, setIstitle] = useState(false);
+  // ==========================================
+  // 1D. SCROLL ANIMATION HOOKS (FRAMER MOTION)
+  // Extensive use of useScroll() and useTransform() to create
+  // parallax effects, fade-ins, and scroll-linked interactions across the page.
+  // ==========================================
   const { scrollYProgress: shadingProgress } = useScroll({
     target: heroRef,
     offset: ['end end', 'end start']
@@ -305,6 +332,10 @@ function Page() {
   const barY = useTransform(p1YProg, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
+    // ==========================================
+    // 1E. SMOOTH SCROLL INITIALIZATION
+    // Initializes Lenis for global smooth scrolling.
+    // ==========================================
     const lenis = new Lenis({
       duration: 2
     });
@@ -355,6 +386,10 @@ function Page() {
   ];
 
   //for codeEditor
+  // ==========================================
+  // 1F. EVENT HANDLERS
+  // Functions to manage modal overlays, keyboard shortcuts, and button clicks.
+  // ==========================================
   function handleOverlay() {
     codeOverlayRef.current?.classList.remove('hidden');
     setIsLoad(true);
@@ -406,6 +441,10 @@ function Page() {
   }, [isRef1]);
 
 
+  // ==========================================
+  // 1G. SCROLL EVENT LISTENERS (useMotionValueEvent)
+  // Watches scroll progress to trigger state changes (e.g. showing/hiding elements)
+  // ==========================================
   useMotionValueEvent(p1YProg, 'change', (latest) => {
     // When the next ("Seamlessly Integrated") section starts, force-hide the Unlock overlay
     // so no Unlock media can overlap on top of it.
@@ -667,6 +706,10 @@ function Page() {
       </AnimatePresence>
       {/* arrow for going to hero section */}
 
+      {/* ========================================== */}
+      {/* UI SECTION: TOP ANNOUNCEMENT BANNER      */}  
+      {/* Marketing banner displayed above the nav */}  
+      {/* ========================================== */}  
       {/* Announcement*/}
       {shouldShowAnnouncement && (
         <motion.div
@@ -700,6 +743,10 @@ function Page() {
         </motion.div>
       )}
 
+      {/* ========================================== */}
+      {/* UI SECTION: DESKTOP NAVIGATION           */}  
+      {/* Sticky top navigation with mega-menus    */}  
+      {/* ========================================== */}  
       {/*navBar*/}
       <div
         style={{ top: 0 }}
@@ -1029,6 +1076,10 @@ function Page() {
         </motion.div>
       </div>
 
+      {/* ========================================== */}
+      {/* UI SECTION: MOBILE NAVIGATION & MENU     */}  
+      {/* Hamburger menu overlay for mobile devices*/}  
+      {/* ========================================== */}  
       {/* mobile menu */}
       <AnimatePresence>
         <motion.div
@@ -1425,6 +1476,10 @@ function Page() {
       {/* hero section  */}
       <div ref={heroRef2} className='h-[75vh] lg:h-[100vh] w-full overflow-x-hidden'>
         <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
+          {/* ========================================== */}
+          {/* UI SECTION: HERO                         */}  
+          {/* The main landing area with the primary CTA and background animation */}  
+          {/* ========================================== */}  
           <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-[75vh] lg:h-screen w-full z-50 overflow-hidden cursor-default'>
 
 
@@ -1628,6 +1683,10 @@ function Page() {
         <h1 className=' font-mono pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
 
 
+        {/* ========================================== */}
+        {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}  
+        {/* Features a sticky video player on the left and a scrollable list of products on the right */}  
+        {/* ========================================== */}  
         <div className={`${montserrat.className} mt-4 leading-[1] text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
 
         <div className={`relative w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
@@ -2739,12 +2798,22 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
   </div>  */}
       {/* bento   */}
 
+      {/* ========================================== */}
+      {/* UI SECTION: ACHIEVEMENTS & STATISTICS    */}  
+      {/* ========================================== */}  
       <Achivements />
+      {/* ========================================== */}
+      {/* UI SECTION: MEDIA PRESENCE (AS SEEN ON)  */}  
+      {/* ========================================== */}  
       <MediaPresence />
 
 
       <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-20 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
 
+      {/* ========================================== */}
+      {/* UI SECTION: TESTIMONIALS & REVIEWS       */}  
+      {/* Scrolling carousel of user feedback and trust markers */}  
+      {/* ========================================== */}  
       <div ref={testiRef} className='relative h-[400vh] w-full bg-zinc-950 '>
 
 
@@ -2897,6 +2966,9 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       </div>
 
       <div ref={footerRef}>
+        {/* ========================================== */}
+        {/* UI SECTION: PAGE FOOTER                  */}  
+        {/* ========================================== */}  
         <Footer />
       </div>
     </div>
