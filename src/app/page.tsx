@@ -1646,7 +1646,7 @@ function Page() {
           </div>
 
           {/* Right: Product cards - pushed to far right */}
-          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 py-10 lg:py-16">
+          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 py-4 lg:py-8">
             {/* Mobile-only video */}
             <div className='lg:hidden w-full px-4 mb-8'>
               <div className='h-[45vh] w-full rounded-lg overflow-hidden'>
@@ -1669,7 +1669,7 @@ function Page() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.6 }}
-                className="w-full flex flex-col items-center lg:items-start py-12 lg:py-16 px-4 lg:px-0"
+                className="w-full flex flex-col items-center lg:items-start py-2 lg:py-4 px-4 lg:px-0 snap-center"
               >
                 <a href={product.href} target="_blank" className='cursor-pointer'>
                   <div className="flex flex-col items-center lg:items-start">
@@ -1694,7 +1694,7 @@ function Page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
               transition={{ duration: 0.6 }}
-              className="w-full flex flex-col items-center lg:items-start py-12 lg:py-16 px-4 lg:px-0"
+              className="w-full flex flex-col items-center lg:items-start py-2 lg:py-4 px-4 lg:px-0 snap-center"
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer'>
                 <div className="flex flex-col items-center lg:items-start">
