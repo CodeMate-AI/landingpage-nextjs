@@ -11,6 +11,10 @@ const montserrat = Montserrat({
   variable: '--font-montserrat', // Optional, for CSS variable usage
 });
 
+// ==========================================
+// UI SECTION: ACHIEVEMENTS & STATS COMPONENT
+// Renders animated number counters and sliding logo marquees.
+// ==========================================
 function Achivements() {
 
   const [currCards, setCurrCards] = useState(0)

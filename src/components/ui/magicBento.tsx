@@ -112,6 +112,11 @@ const updateCardGlowProperties = (
   card.style.setProperty("--glow-radius", `${radius}px`);
 };
 
+// ==========================================
+// LOGIC & UI: PARTICLE CARD COMPONENT
+// Renders individual bento cards with hover animations, floating particles,
+// mouse-tracking tilt effects, and ripple click effects.
+// ==========================================
 const ParticleCard: React.FC<{
   children: React.ReactNode;
   className?: string;
@@ -375,6 +380,11 @@ const ParticleCard: React.FC<{
   );
 };
 
+// ==========================================
+// LOGIC & UI: GLOBAL SPOTLIGHT EFFECT
+// Creates a radial gradient that follows the mouse across the entire bento grid,
+// highlighting the borders of nearby cards.
+// ==========================================
 const GlobalSpotlight: React.FC<{
   gridRef: React.RefObject<HTMLDivElement | null>;
   disableAnimations?: boolean;
@@ -555,6 +565,10 @@ const useMobileDetection = () => {
   return isMobile;
 };
 
+// ==========================================
+// UI SECTION: MAIN MAGIC BENTO GRID
+// The root container for the interactive bento layout.
+// ==========================================
 const MagicBento: React.FC<BentoProps> = ({
   textAutoHide = true,
   enableStars = true,

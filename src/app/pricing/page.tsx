@@ -159,6 +159,9 @@ function PlanGrid({
   children: React.ReactNode
 }) {
   if (isLoading) {
+    // ==========================================
+    // UI SECTION: MAIN PAGE RENDER
+    // ==========================================
     return (
       <div className="col-span-full text-white text-center py-20">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4" />
@@ -181,6 +184,11 @@ const PRODUCTS: { key: Product; label: string }[] = [
   { key: 'c0',    label: 'C0'    },
 ]
 
+// ==========================================
+// LOGIC: MAIN PRICING PAGE COMPONENT
+// Handles URL parameters for selected products, toggles for billing periods,
+// and fetches dynamic plan data via API.
+// ==========================================
 function Page() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -207,6 +215,10 @@ function Page() {
   const { scrollYProgress } = useScroll({ target: pageRef, offset: ['start start', 'end start'] })
   useMotionValueEvent(scrollYProgress, 'change', (v) => setIsMascot(v >= 0.3))
 
+  // ==========================================
+  // LOGIC: EVENT HANDLERS
+  // Handles switching between Build, Cora, and C0 tabs, and updating URL.
+  // ==========================================
   const handleSelectProduct = useCallback((product: Product) => {
     setSelectedProduct(product)
     setShowAllFeatures(false)
@@ -496,6 +508,10 @@ function buildFeatureConfig(mobile: boolean): Record<string, { label: string; re
   }
 }
 
+// ==========================================
+// UI SECTION: PLAN COMPARISON TABLE
+// Renders the detailed feature comparison grid for Desktop and Accordion for Mobile.
+// ==========================================
 function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProduct: string }) {
   const proPlan   = plans.find((p) => p.display_name.toLowerCase() === 'pro')
   const teamsPlan = plans.find((p) => p.display_name.toLowerCase() === 'teams')
@@ -605,6 +621,9 @@ const FAQ_ITEMS = [
   },
 ]
 
+// ==========================================
+// UI SECTION: FREQUENTLY ASKED QUESTIONS
+// ==========================================
 function FAQ() {
   return (
     <div className="pb-10 w-full flex flex-col items-center mt-32 mb-10">
