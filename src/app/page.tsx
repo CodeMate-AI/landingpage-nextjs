@@ -321,7 +321,7 @@ function Page() {
   // const div3X = useTransform(PShowYProg, [0.5, 0.7], [2400, 0]);
 
   const unlockBarY = useTransform(PShowYProg, [0, 0.75], ['0%', '100%']);
-  const headerY = useTransform(PShowYProg, [0.6, 0.72], [0, -200]);
+  const headerY = useTransform(PShowYProg, [0.75, 0.85], [0, -200]);
 
   const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
 
@@ -1694,9 +1694,11 @@ function Page() {
           <div className='hidden lg:flex sticky top-0 h-screen flex-1 items-center justify-center px-8'>
             <div className="flex flex-col gap-2 w-full max-w-[58vw]">
               <motion.div
-                initial={{ opacity: 0, filter: "blur(30px)" }}
-                whileInView={{ opacity: 1, filter: "blur(0px)" }}
-                transition={{ duration: 1 }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                style={{ willChange: "transform, opacity" }}
                 className='h-[65vh] w-full rounded-lg overflow-hidden'>
                 <VideoEmbed />
               </motion.div>
@@ -1724,10 +1726,11 @@ function Page() {
             ].map((product, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 40 }}
+                initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.6 }}
+                viewport={{ once: true, amount: 0.15 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                style={{ willChange: "transform, opacity" }}
                 className="w-full flex flex-col items-center lg:items-start py-2 lg:py-4 px-4 lg:px-0 snap-center"
               >
                 <a href={product.href} target="_blank" className='cursor-pointer'>
@@ -1749,10 +1752,11 @@ function Page() {
 
             {/* PR Review Agent - special (has icons) */}
             <motion.div
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.6 }}
+              viewport={{ once: true, amount: 0.15 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              style={{ willChange: "transform, opacity" }}
               className="w-full flex flex-col items-center lg:items-start py-2 lg:py-4 px-4 lg:px-0 snap-center"
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer'>
@@ -1884,7 +1888,7 @@ function Page() {
         <div
           ref={productShowRef}
 
-          className='relative h-[220vw] w-full bg-zinc-950'>
+          className='relative h-[500vh] w-full bg-zinc-950'>
 
           <div className={`${montserrat.className} sticky top-[6rem] z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-12 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
             {/* Added motion.div and headerY style for alignment fix */}
@@ -1914,13 +1918,23 @@ function Page() {
 
                 <div className='relative h-full pl-5 flex justify-start overflow-hidden gap-10 '>
 
-                  <div className='relative'>
-                    <motion.div
-                      style={{ height: unlockBarY }}
-                      className='absolute rounded-md w-[0.25rem] bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] opacity-80 z-50' />
+                  <AnimatePresence>
+                    {isShowProd && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35 }}
+                        className='relative'
+                      >
+                        <motion.div
+                          style={{ height: unlockBarY }}
+                          className='absolute rounded-md w-[0.25rem] bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] opacity-80 z-50' />
 
-                    <div className='w-[0.20rem] rounded-md  h-full bg-[#1c1c1c] ' />
-                  </div>
+                        <div className='w-[0.20rem] rounded-md  h-full bg-[#1c1c1c] ' />
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   <div className='relative h-full w-full'>
                     <AnimatePresence mode="wait">
