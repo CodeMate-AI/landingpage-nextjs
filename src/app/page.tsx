@@ -1814,83 +1814,69 @@ function Page() {
               className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-10'>
 
               <AnimatePresence mode="wait">
-                {isShowProd && unlockStep === 0 && (
-                  <motion.div
-                    key="unlock-media-0"
-                    initial={{ opacity: 0, filter: 'blur(16px)' }}
-                    animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, filter: 'blur(16px)' }}
-                    transition={{ duration: 0.35 }}
-                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
-                  >
-                    <img src='/design mode build.gif' className='h-full w-full object-cover rounded-xl' alt='Design Mode' />
-                  </motion.div>
-                )}
+              <div className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
+                {/* Render all items but control visibility via opacity to prevent re-mounting lag */}
+                <motion.div
+                  initial={{ opacity: 0, filter: 'blur(16px)' }}
+                  animate={{ opacity: unlockStep === 0 ? 1 : 0, filter: unlockStep === 0 ? 'blur(0px)' : 'blur(16px)' }}
+                  transition={{ duration: 0.35 }}
+                  className='absolute inset-0'
+                  style={{ pointerEvents: unlockStep === 0 ? 'auto' : 'none' }}
+                >
+                  <img src='/design mode build.gif' className='h-full w-full object-cover rounded-xl' alt='Design Mode' />
+                </motion.div>
 
-                {isShowProd && unlockStep === 1 && (
-                  <motion.div
-                    key="unlock-media-1"
-                    initial={{ opacity: 0, filter: 'blur(16px)' }}
-                    animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, filter: 'blur(16px)' }}
-                    transition={{ duration: 0.35 }}
-                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
-                  >
-                    <img src='/build_figma_GIF.gif' className='h-full w-full object-cover rounded-xl' alt='Figma Mode' />
-                  </motion.div>
-                )}
+                <motion.div
+                  initial={{ opacity: 0, filter: 'blur(16px)' }}
+                  animate={{ opacity: unlockStep === 1 ? 1 : 0, filter: unlockStep === 1 ? 'blur(0px)' : 'blur(16px)' }}
+                  transition={{ duration: 0.35 }}
+                  className='absolute inset-0'
+                  style={{ pointerEvents: unlockStep === 1 ? 'auto' : 'none' }}
+                >
+                  <img src='/build_figma_GIF.gif' className='h-full w-full object-cover rounded-xl' alt='Figma Mode' />
+                </motion.div>
 
-                {isShowProd && unlockStep === 2 && (
-                  <motion.div
-                    key="unlock-media-2"
-                    initial={{ opacity: 0, filter: 'blur(16px)' }}
-                    animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, filter: 'blur(16px)' }}
-                    transition={{ duration: 0.35 }}
-                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
-                  >
-                    <img src='/skills_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Skills' />
-                  </motion.div>
-                )}
+                <motion.div
+                  initial={{ opacity: 0, filter: 'blur(16px)' }}
+                  animate={{ opacity: unlockStep === 2 ? 1 : 0, filter: unlockStep === 2 ? 'blur(0px)' : 'blur(16px)' }}
+                  transition={{ duration: 0.35 }}
+                  className='absolute inset-0'
+                  style={{ pointerEvents: unlockStep === 2 ? 'auto' : 'none' }}
+                >
+                  <img src='/skills_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Skills' />
+                </motion.div>
 
-                {isShowProd && unlockStep === 3 && (
-                  <motion.div
-                    key="unlock-media-3"
-                    initial={{ opacity: 0, filter: 'blur(16px)' }}
-                    animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, filter: 'blur(16px)' }}
-                    transition={{ duration: 0.35 }}
-                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
-                  >
-                    <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/CORA.mp4' />
-                  </motion.div>
-                )}
+                <motion.div
+                  initial={{ opacity: 0, filter: 'blur(16px)' }}
+                  animate={{ opacity: unlockStep === 3 ? 1 : 0, filter: unlockStep === 3 ? 'blur(0px)' : 'blur(16px)' }}
+                  transition={{ duration: 0.35 }}
+                  className='absolute inset-0'
+                  style={{ pointerEvents: unlockStep === 3 ? 'auto' : 'none' }}
+                >
+                  <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/CORA.mp4' />
+                </motion.div>
 
-                {isShowProd && unlockStep === 4 && (
-                  <motion.div
-                    key="unlock-media-4"
-                    initial={{ opacity: 0, filter: 'blur(16px)' }}
-                    animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, filter: 'blur(16px)' }}
-                    transition={{ duration: 0.35 }}
-                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'
-                  >
-                    <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/PR_review.mp4' />
-                  </motion.div>
-                )}
+                <motion.div
+                  initial={{ opacity: 0, filter: 'blur(16px)' }}
+                  animate={{ opacity: unlockStep === 4 ? 1 : 0, filter: unlockStep === 4 ? 'blur(0px)' : 'blur(16px)' }}
+                  transition={{ duration: 0.35 }}
+                  className='absolute inset-0'
+                  style={{ pointerEvents: unlockStep === 4 ? 'auto' : 'none' }}
+                >
+                  <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/PR_review.mp4' />
+                </motion.div>
 
-                {isShowProd && unlockStep === 5 && (
-                  <motion.div
-                    key="unlock-media-5"
-                    initial={{ opacity: 0, filter: 'blur(16px)' }}
-                    animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    exit={{ opacity: 0, filter: 'blur(16px)' }}
-                    transition={{ duration: 0.35 }}
-                    className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl overflow-hidden'
-                  >
-                    <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/Documentation.mp4' />
-                  </motion.div>
-                )}
+                <motion.div
+                  initial={{ opacity: 0, filter: 'blur(16px)' }}
+                  animate={{ opacity: unlockStep === 5 ? 1 : 0, filter: unlockStep === 5 ? 'blur(0px)' : 'blur(16px)' }}
+                  transition={{ duration: 0.35 }}
+                  className='absolute inset-0'
+                  style={{ pointerEvents: unlockStep === 5 ? 'auto' : 'none' }}
+                >
+                  <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/Documentation.mp4' />
+                </motion.div>
+              </div>
+
               </AnimatePresence>
             </motion.div>
           </AnimatePresence>}
@@ -2146,31 +2132,40 @@ function Page() {
                 </motion.div>}
 
                 {/* --- NEW: Codemaps GIF --- */}
-                {isRefNew1 && <motion.div
+                <motion.div
                   initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  animate={{ opacity: isRefNew1 ? 1 : 0, filter: isRefNew1 ? 'blur(0px)' : 'blur(20px)' }}
                   transition={{ duration: 0.8 }}
-                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex opacity-100 overflow-hidden'>
+                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex overflow-hidden'
+                  style={{ pointerEvents: isRefNew1 ? 'auto' : 'none' }}
+                >
                   <img src='/Codemaps (1).gif' className='h-full w-full object-cover rounded-xl' alt='Codemaps' />
-                </motion.div>}
+                </motion.div>
+
 
                 {/* --- NEW: Deepwiki GIF --- */}
-                {isRefNew2 && <motion.div
+                <motion.div
                   initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  animate={{ opacity: isRefNew2 ? 1 : 0, filter: isRefNew2 ? 'blur(0px)' : 'blur(20px)' }}
                   transition={{ duration: 0.8 }}
-                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex opacity-100 overflow-hidden'>
+                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex overflow-hidden'
+                  style={{ pointerEvents: isRefNew2 ? 'auto' : 'none' }}
+                >
                   <img src='/deepwiki_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Deepwiki' />
-                </motion.div>}
+                </motion.div>
+
 
                 {/* --- NEW: MCP GIF --- */}
-                {isRefNew3 && <motion.div
+                <motion.div
                   initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
+                  animate={{ opacity: isRefNew3 ? 1 : 0, filter: isRefNew3 ? 'blur(0px)' : 'blur(20px)' }}
                   transition={{ duration: 0.8 }}
-                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex opacity-100 overflow-hidden'>
+                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex overflow-hidden'
+                  style={{ pointerEvents: isRefNew3 ? 'auto' : 'none' }}
+                >
                   <img src='/mcp_gif.gif' className='h-full w-full object-cover rounded-xl' alt='MCP' />
-                </motion.div>}
+                </motion.div>
+
 
                 {isRef2 && <motion.div
                   initial={{ opacity: 0, filter: 'blur(20px)' }}
@@ -2520,8 +2515,36 @@ function Page() {
           </div>
         </div>
 
+        {/* Transition: From Web-App To IDE */}
+        <div className='w-full py-12 flex flex-col items-center justify-center gap-2'>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className={`${montserrat.className} text-xl font-medium opacity-60`}
+          >
+            From <span className='text-[#00BFFF] font-semibold'>Web-App</span>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className='h-8 w-[1px] bg-gradient-to-b from-[#00BFFF] to-transparent'
+          />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+            className={`${montserrat.className} text-3xl font-bold`}
+          >
+            To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>IDE</span>
+          </motion.div>
+        </div>
+
         <div className=' w-full py-10 px-4 space-y-10'>
-          <div className={`${montserrat.className}   z-20 leading-[1.15]  text-[7.5vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent   mb-6 pt-20 pb-1`}>
+          <div className={`${montserrat.className}   z-20 leading-[1.15]  text-[7.5vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent   mb-6 pt-10 pb-1`}>
             <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2 text-center '>
               <span className='z-50'>
                 Seamlessly<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Integrated</span> </span>
@@ -2558,54 +2581,40 @@ function Page() {
           </div>
         </div>
 
-        {/* Original mobile horizontal scroll section (Debug, Review, Optimize) */}
-        <div ref={MFRef} className='h-[200vh]'>
-          <div className='sticky top-0 w-full py-4 lg:py-10 overflow-hidden'>
-            <motion.div style={{ x: mx }} className='flex pl-16 gap-5'>
-              <div className='flex flex-col gap-2'>
-                <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-                  <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/Debug.mp4'></motion.video>
-                </div>
-                <h1 className='font-bold text-2xl'>Debug</h1>
-                <p className='w-full text-sm opacity-70'>Your AI debugger that identifies and resolves errors quickly, so you can keep building without interruptions.</p>
-              </div>
-
-
-              <div className='flex flex-col gap-2'>
-                <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-                  <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/CodeReview.mp4'></motion.video>
-                </div>
-                <h1 className='font-bold text-2xl'>Review</h1>
-                <p className='w-full text-sm opacity-70'>Your AI reviewer that ensures cleaner, more reliable code so you can ship with confidence.</p>
-              </div>
-
-              <div className='flex flex-col gap-2'>
-                <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-                  <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/optimize.mp4'></motion.video>
-                </div>
-                <h1 className='font-bold text-2xl'>Optimize</h1>
-                <p className='w-full text-sm opacity-70'>Your AI optimizer that refactors and enhances code performance so you can deliver faster, smoother applications.</p>
-              </div>
-            </motion.div>
-
-            <div className='text-right mt-10 mr-10 z-40'>
-              <motion.div
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className={`${montserrat.className}  text-[4vw]  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-right`}>From your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-2xl'>IDE</span></motion.div>
+        {/* Vertical mobile section (Debug, Review, Optimize) */}
+        <div className='w-full py-10 px-4 flex flex-col gap-12 items-center'>
+          {/* Debug */}
+          <div className='flex flex-col gap-3 items-center'>
+            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl shadow-xl'>
+              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/Debug.mp4'></motion.video>
             </div>
-
-            <div className='text-left mt-10 ml-10 z-40'>
-              <motion.div
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className={`${montserrat.className}  text-[5vw]  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-left`}>To<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-2xl'> Web-App</span></motion.div>
+            <div className="flex flex-col items-center gap-1.5">
+              <h1 className='font-bold text-2xl'>Debug</h1>
+              <p className='text-sm opacity-70 text-center w-[85vw] leading-relaxed'>Your AI debugger that identifies and resolves errors quickly, so you can keep building without interruptions.</p>
             </div>
           </div>
 
+          {/* Review */}
+          <div className='flex flex-col gap-3 items-center'>
+            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl shadow-xl'>
+              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/CodeReview.mp4'></motion.video>
+            </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <h1 className='font-bold text-2xl'>Review</h1>
+              <p className='text-sm opacity-70 text-center w-[85vw] leading-relaxed'>Your AI reviewer that ensures cleaner, more reliable code so you can ship with confidence.</p>
+            </div>
+          </div>
 
+          {/* Optimize */}
+          <div className='flex flex-col gap-3 items-center'>
+            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl shadow-xl'>
+              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/optimize.mp4'></motion.video>
+            </div>
+            <div className="flex flex-col items-center gap-1.5">
+              <h1 className='font-bold text-2xl'>Optimize</h1>
+              <p className='text-sm opacity-70 text-center w-[85vw] leading-relaxed'>Your AI optimizer that refactors and enhances code performance so you can deliver faster, smoother applications.</p>
+            </div>
+          </div>
         </div>
 
 
