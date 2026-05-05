@@ -1803,246 +1803,74 @@ function Page() {
 
 
       <div ref={productsWrapper} className='hidden lg:block -z-20'>
-        {isProds && isShowProd &&
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={1}
-              exit={{ opacity: 0, filter: 'blur(20px)' }}
-              initial={{ opacity: 0, filter: 'blur(20px)' }}
-              animate={{ opacity: 1, filter: 'blur(0px)' }}
-              transition={{ duration: 0.8 }}
-              className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-10'>
 
-              <AnimatePresence mode="wait">
-              <div className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                {/* Render all items but control visibility via opacity to prevent re-mounting lag */}
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(16px)' }}
-                  animate={{ opacity: unlockStep === 0 ? 1 : 0, filter: unlockStep === 0 ? 'blur(0px)' : 'blur(16px)' }}
-                  transition={{ duration: 0.35 }}
-                  className='absolute inset-0'
-                  style={{ pointerEvents: unlockStep === 0 ? 'auto' : 'none' }}
-                >
-                  <img src='/design mode build.gif' className='h-full w-full object-cover rounded-xl' alt='Design Mode' />
-                </motion.div>
+        {/* horizontal scroll section */}
+        <div ref={productShowRef} className='relative h-[500vh] w-full bg-zinc-950'>
 
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(16px)' }}
-                  animate={{ opacity: unlockStep === 1 ? 1 : 0, filter: unlockStep === 1 ? 'blur(0px)' : 'blur(16px)' }}
-                  transition={{ duration: 0.35 }}
-                  className='absolute inset-0'
-                  style={{ pointerEvents: unlockStep === 1 ? 'auto' : 'none' }}
-                >
-                  <img src='/build_figma_GIF.gif' className='h-full w-full object-cover rounded-xl' alt='Figma Mode' />
-                </motion.div>
+          <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
+            {/* Horizontal Scrolling Content */}
+            <div className="absolute left-0 top-0 h-full w-full flex items-center overflow-hidden pointer-events-none">
+              <motion.div
+                style={{ x: useTransform(PShowYProg, [0, 0.8], ["calc(0% + 0vw)", "calc(-100% + 100vw)"]) }}
+                className="flex items-center gap-10 lg:gap-[4rem] w-max pl-[5%] lg:pl-[10%] pr-[5%] lg:pr-[10%] pointer-events-auto"
+              >
 
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(16px)' }}
-                  animate={{ opacity: unlockStep === 2 ? 1 : 0, filter: unlockStep === 2 ? 'blur(0px)' : 'blur(16px)' }}
-                  transition={{ duration: 0.35 }}
-                  className='absolute inset-0'
-                  style={{ pointerEvents: unlockStep === 2 ? 'auto' : 'none' }}
-                >
-                  <img src='/skills_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Skills' />
-                </motion.div>
+                {/* Scrolling Title */}
+                <div className="w-[85vw] lg:w-[35vw] flex flex-col justify-center shrink-0">
+                  <div className={`${montserrat.className} text-[2.5rem] lg:text-[4.5rem] leading-[1.1] font-bold text-white`}>
+                    What You'll
+                    <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent block'> Unlock</span>
+                    <h1 className="mt-2 text-[2.5rem] lg:text-[3.5rem] font-semibold">with CodeMate AI</h1>
+                  </div>
+                </div>
 
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(16px)' }}
-                  animate={{ opacity: unlockStep === 3 ? 1 : 0, filter: unlockStep === 3 ? 'blur(0px)' : 'blur(16px)' }}
-                  transition={{ duration: 0.35 }}
-                  className='absolute inset-0'
-                  style={{ pointerEvents: unlockStep === 3 ? 'auto' : 'none' }}
-                >
-                  <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/CORA.mp4' />
-                </motion.div>
+                {/* Cards */}
+                <div className="flex gap-10 lg:gap-16">
+                  {[
+                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/design mode build.gif", isVideo: false },
+                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/build_figma_GIF.gif", isVideo: false },
+                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skills_gif.gif", isVideo: false },
+                    { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "https://drive.codemate.ai/CORA.mp4", isVideo: true },
+                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops) and automate your entire code reviews. summarizing changes, detecting bugs, and catching security flaws. Ship clean code to production up to 80% faster.", media: "https://drive.codemate.ai/PR_review.mp4", isVideo: true },
+                    { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "https://drive.codemate.ai/Documentation.mp4", isVideo: true },
+                  ].map((item, i) => (
+                    <div key={i} className="w-[85vw] sm:w-[450px] lg:w-[550px] shrink-0 flex flex-col relative pt-4">
 
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(16px)' }}
-                  animate={{ opacity: unlockStep === 4 ? 1 : 0, filter: unlockStep === 4 ? 'blur(0px)' : 'blur(16px)' }}
-                  transition={{ duration: 0.35 }}
-                  className='absolute inset-0'
-                  style={{ pointerEvents: unlockStep === 4 ? 'auto' : 'none' }}
-                >
-                  <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/PR_review.mp4' />
-                </motion.div>
+                      {/* Top Text */}
+                      <div className="flex flex-col mb-4 gap-2">
+                        <div className="text-[#00BFFF] font-mono text-[15px] font-bold tracking-wider">[{item.id}]</div>
+                        <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold text-white leading-snug`}>{item.title}</h3>
+                      </div>
 
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(16px)' }}
-                  animate={{ opacity: unlockStep === 5 ? 1 : 0, filter: unlockStep === 5 ? 'blur(0px)' : 'blur(16px)' }}
-                  transition={{ duration: 0.35 }}
-                  className='absolute inset-0'
-                  style={{ pointerEvents: unlockStep === 5 ? 'auto' : 'none' }}
-                >
-                  <motion.video autoPlay loop muted playsInline className='h-full w-full rounded-xl' src='https://drive.codemate.ai/Documentation.mp4' />
-                </motion.div>
-              </div>
+                      {/* Image/Video Box */}
+                      <div className="h-[280px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] border border-white/[0.04] relative flex items-center justify-center p-1">
+                        {item.isVideo ? (
+                          <video autoPlay loop muted playsInline className="w-full h-full object-contain rounded-lg" src={item.media} />
+                        ) : (
+                          <img src={item.media} alt={item.title} className="w-full h-full object-contain rounded-lg" />
+                        )}
+                      </div>
 
-              </AnimatePresence>
-            </motion.div>
-          </AnimatePresence>}
-
-
-        {/* products showcase */}
-        <div
-          ref={productShowRef}
-
-          className='relative h-[430vh] w-full bg-zinc-950'>
-
-          <div className={`${montserrat.className} sticky top-[6rem] z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-12 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
-            {/* Added motion.div and headerY style for alignment fix */}
-            <motion.div style={{ y: headerY }} className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-5'>
-              <span className='z-50'>
-                What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> </span>
-              <h1>with  CodeMate AI.</h1>
-            </motion.div>
+                      {/* Bottom Description */}
+                      <div className="flex flex-col mt-5 pr-2">
+                        <p className="text-[#999] text-[15px] lg:text-[16px] leading-relaxed">{item.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           </div>
 
-
-
-          <div className='sticky top-[85vh] z-40'>
+          <div className='sticky top-[85vh] z-40 pointer-events-none'>
             <motion.div
               initial={{ opacity: 0, filter: 'blur(10px)' }}
               whileInView={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className={`${montserrat.className}  text-2xl pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-right`}>From <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'>Web-Application</span></motion.div>
+              className={`${montserrat.className} text-2xl pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+              From <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'>Web-Application</span>
+            </motion.div>
           </div>
-
-          <div className='sticky top-[7.5rem]   h-screen w-full overflow-x-hidden'>
-
-            <div
-              className='relative h-[75%] w-[40%] flex items-start justify-start pl-10 py-10 gap-10 mt-[10rem]'>
-
-              <div className={`relative ${montserrat.className}  text-7xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent flex flex-col h-full w-full`}>
-
-                <div className='relative h-full pl-5 flex justify-start overflow-hidden gap-10 '>
-
-                  <AnimatePresence>
-                    {isShowProd && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.35 }}
-                        className='relative'
-                      >
-                        <motion.div
-                          style={{ height: unlockBarY }}
-                          className='absolute rounded-md w-[0.25rem] bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] opacity-80 z-50' />
-
-                        <div className='w-[0.20rem] rounded-md  h-full bg-[#1c1c1c] ' />
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-
-                  <div className='relative h-full w-full'>
-                    <AnimatePresence mode="wait">
-                      {unlockStep === 0 && (
-                        <motion.div
-                          key="unlock-0"
-                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
-                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
-                          transition={{ duration: 0.35 }}
-                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
-                        >
-                          <h1 className='text-2xl'>Design Mode</h1>
-                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                            Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.
-                          </p>
-                        </motion.div>
-                      )}
-
-                      {unlockStep === 1 && (
-                        <motion.div
-                          key="unlock-1"
-                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
-                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
-                          transition={{ duration: 0.35 }}
-                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
-                        >
-                          <h1 className='text-2xl'>Figma to Code</h1>
-                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                            Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.
-                          </p>
-                        </motion.div>
-                      )}
-
-                      {unlockStep === 2 && (
-                        <motion.div
-                          key="unlock-2"
-                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
-                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
-                          transition={{ duration: 0.35 }}
-                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
-                        >
-                          <h1 className='text-2xl'>Custom AI Skills</h1>
-                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                            Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.
-                          </p>
-                        </motion.div>
-                      )}
-
-                      {unlockStep === 3 && (
-                        <motion.div
-                          key="unlock-3"
-                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
-                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
-                          transition={{ duration: 0.35 }}
-                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
-                        >
-                          <h1 className='text-2xl'>Ship Autonomously with CORA</h1>
-                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                            Delegate tasks to our smartest coding agent that knows your codebase
-                          </p>
-                        </motion.div>
-                      )}
-
-                      {unlockStep === 4 && (
-                        <motion.div
-                          key="unlock-4"
-                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
-                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
-                          transition={{ duration: 0.35 }}
-                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
-                        >
-                          <h1 className='text-2xl'>Automated PR Reviews</h1>
-                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                            Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops) and automate your entire code reviews. summarizing changes, detecting bugs, and catching security flaws. Ship clean code to production up to 80% faster.
-                          </p>
-                        </motion.div>
-                      )}
-
-                      {unlockStep === 5 && (
-                        <motion.div
-                          key="unlock-5"
-                          initial={{ opacity: 0, filter: 'blur(12px)', y: 10 }}
-                          animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                          exit={{ opacity: 0, filter: 'blur(12px)', y: -10 }}
-                          transition={{ duration: 0.35 }}
-                          className='absolute inset-0 pt-10 text-white flex flex-col gap-2 justify-start'
-                        >
-                          <h1 className='text-2xl'>Documentation</h1>
-                          <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                            Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.
-                          </p>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-
-                </div>
-
-              </div>
-
-
-            </div>
-
-          </div>
-
         </div>
         {/* products showcase */}
 
