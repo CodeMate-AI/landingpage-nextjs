@@ -148,6 +148,14 @@ function Page() {
   const [mat3, setMat3] = useState(0);
   const [IsMascot, setIsMascot] = useState(false);
   const [isNBack, setIsNBack] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   const [isMenu, setMenu] = useState(false);
   const [isArrowV, setIsArrowV] = useState(false);
   const [isProducts, setIsProducts] = useState(false);
@@ -1532,22 +1540,25 @@ function Page() {
 
 
 
-      <div className='hidden lg:block -z-20'>
+      <div className='-z-20'>
 
-        {/* horizontal scroll section */}
-        <div ref={productShowRef} className='relative h-[500vh] w-full bg-zinc-950'>
+        {/* horizontal scroll section: What You'll Unlock */}
+        <div ref={productShowRef} className='relative h-[800vh] lg:h-[500vh] w-full bg-zinc-950'>
 
           <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
             {/* Horizontal Scrolling Content */}
             <div className="absolute left-0 top-0 h-full w-full flex items-center overflow-hidden pointer-events-none">
               <motion.div
-                style={{ x: useTransform(PShowYProg, [0, 0.8], ["calc(0% + 0vw)", "calc(-100% + 100vw)"]) }}
-                className="flex items-center gap-10 lg:gap-[4rem] w-max pl-[5%] lg:pl-[10%] pr-[5%] lg:pr-[10%] pointer-events-auto"
+                style={{ 
+                  x: isMobile ? useTransform(PShowYProg, [0, 0.9], ["0vw", "-600vw"]) : useTransform(PShowYProg, [0, 0.85], ["0%", "-85%"]),
+                  willChange: 'transform'
+                }}
+                className="flex items-center gap-0 lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto"
               >
 
                 {/* Scrolling Title */}
-                <div className="w-[85vw] lg:w-[35vw] flex flex-col justify-center shrink-0">
-                  <div className={`${montserrat.className} text-[2rem] lg:text-[3.5rem] leading-[1.1] font-bold text-white`}>
+                <div className="w-[100vw] lg:w-[35vw] flex flex-col justify-center shrink-0 px-8 lg:px-0">
+                  <div className={`${montserrat.className} text-[2.5rem] lg:text-[3.5rem] leading-[1.1] font-bold text-white`}>
                     What You'll
                     <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent block'> Unlock</span>
                     <h1 className="mt-2 text-[1.8rem] lg:text-[2.5rem] font-semibold">with CodeMate AI</h1>
@@ -1555,7 +1566,7 @@ function Page() {
                 </div>
 
                 {/* Cards */}
-                <div className="flex gap-10 lg:gap-16">
+                <div className="flex gap-0 lg:gap-16">
                   {[
                     { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/design mode build.gif", isVideo: false },
                     { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/build_figma_GIF.gif", isVideo: false },
@@ -1564,7 +1575,7 @@ function Page() {
                     { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops) and automate your entire code reviews. summarizing changes, detecting bugs, and catching security flaws. Ship clean code to production up to 80% faster.", media: "https://drive.codemate.ai/PR_review.mp4", isVideo: true },
                     { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "https://drive.codemate.ai/Documentation.mp4", isVideo: true },
                   ].map((item, i) => (
-                    <div key={i} className="w-[85vw] sm:w-[450px] lg:w-[550px] shrink-0 flex flex-col relative pt-4">
+                    <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
 
                       {/* Top Text */}
                       <div className="flex flex-col mb-4 gap-2">
@@ -1573,7 +1584,7 @@ function Page() {
                       </div>
 
                       {/* Image/Video Box */}
-                      <div className="h-[280px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] border border-white/[0.04] relative flex items-center justify-center p-1">
+                      <div className="h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] border border-white/[0.04] relative flex items-center justify-center p-1 shadow-2xl">
                         {item.isVideo ? (
                           <video autoPlay loop muted playsInline className="w-full h-full object-contain rounded-lg" src={item.media} />
                         ) : (
@@ -1583,7 +1594,7 @@ function Page() {
 
                       {/* Bottom Description */}
                       <div className="flex flex-col mt-5 pr-2">
-                        <p className="text-[#999] text-[15px] lg:text-[16px] leading-relaxed">{item.desc}</p>
+                        <p className="text-[#999] text-[14px] lg:text-[16px] leading-relaxed">{item.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -1597,12 +1608,13 @@ function Page() {
               initial={{ opacity: 0, filter: 'blur(10px)' }}
               whileInView={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className={`${montserrat.className} text-2xl pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
-              From <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'>Web-Application</span>
+              className={`${montserrat.className} text-xl lg:text-2xl pr-6 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+              From <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>Web-Application</span>
             </motion.div>
           </div>
         </div>
-        {/* products showcase */}
+
+        {/* Seamlessly Integrated Section with Carousel */}
         <div className="relative w-full z-10 bg-black pb-16 pt-[5vh]">
           <div className="pb-10 text-center">
             <motion.h2
@@ -1610,206 +1622,23 @@ function Page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className={`${montserrat.className} text-[2rem] lg:text-[3rem] font-bold leading-[1.15]`}
+              className={`${montserrat.className} text-[2.2rem] lg:text-[3rem] font-bold leading-[1.15]`}
             >
               <span className="bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">Seamlessly </span>
               <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Integrated</span>
               <br />
-              <span className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">in your existing environment</span>
+              <span className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-xl lg:text-3xl">in your existing environment</span>
             </motion.h2>
           </div>
           <SeamlessCarousel />
           <div className="pt-8">
-            <div className={`${montserrat.className} text-2xl pl-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
-              To your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'> IDE</span>
+            <div className={`${montserrat.className} text-xl lg:text-2xl pl-6 lg:pl-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
+              To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>IDE</span>
             </div>
           </div>
         </div>
 
       </div>
-
-      {/* for mobile */}
-      <div className='lg:hidden'>
-        {/* Full-Stack AI Engineer Introduction Visual */}
-        <div className='w-full py-10 px-4'>
-          <div className='h-[35vh] w-[90vw] mx-auto bg-zinc-900 overflow-hidden rounded-xl shadow-2xl'>
-            <VideoEmbed />
-          </div>
-          <p className='mt-6 text-sm opacity-70 text-center px-4'>
-            From developers to non-developers, CodeMate acts like your autonomous teammate that assists you in shipping code with AI.
-          </p>
-        </div>
-
-        {/* Mobile "What you'll Unlock" section with individual GIFs/videos for each feature */}
-        <div className='w-full py-10 px-4 space-y-10'>
-          <div className={`${montserrat.className} z-20 leading-[1] text-[6vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent mb-6 pt-10 pb-1`}>
-            <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pb-2 text-center pr-2 pl-[5vw]'>
-              <span className='z-50'>
-                What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> with CodeMate AI.</span>
-              <div className='top-0 absolute w-full h-full bg-zinc-950 -z-10' />
-            </div>
-          </div>
-
-          {/* Design Mode */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl'>
-              <img src='/design mode build.gif' className='h-full w-full object-cover rounded-xl' alt='Design Mode' />
-            </div>
-            <h1 className='font-bold text-xl'>Design Mode</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.</p>
-          </div>
-
-          {/* Figma to Code */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl'>
-              <img src='/build_figma_GIF.gif' className='h-full w-full object-cover rounded-xl' alt='Figma to Code' />
-            </div>
-            <h1 className='font-bold text-xl'>Figma to Code</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.</p>
-          </div>
-
-          {/* Custom AI Skills */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl'>
-              <img src='/skills_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Custom AI Skills' />
-            </div>
-            <h1 className='font-bold text-xl'>Custom AI Skills</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.</p>
-          </div>
-
-          {/* Ship Autonomously with CORA */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl'>
-              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/CORA.mp4'></motion.video>
-            </div>
-            <h1 className='font-bold text-xl'>Ship Autonomously with CORA</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Delegate tasks to our smartest coding agent that knows your codebase</p>
-          </div>
-
-          {/* Automated PR Reviews */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl'>
-              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/PR_review.mp4'></motion.video>
-            </div>
-            <h1 className='font-bold text-xl'>Automated PR Reviews</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Integrated in your desired version control and automate your entire code reviews. summarizing changes, detecting bugs, and catching security flaws.</p>
-          </div>
-
-          {/* Documentation */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl'>
-              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/Documentation.mp4'></motion.video>
-            </div>
-            <h1 className='font-bold text-xl'>Documentation</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.</p>
-          </div>
-        </div>
-
-        {/* Transition: From Web-App To IDE */}
-        <div className='w-full py-12 flex flex-col items-center justify-center gap-2'>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className={`${montserrat.className} text-xl font-medium opacity-60`}
-          >
-            From <span className='text-[#00BFFF] font-semibold'>Web-App</span>
-          </motion.div>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-            className='h-8 w-[1px] bg-gradient-to-b from-[#00BFFF] to-transparent'
-          />
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-            className={`${montserrat.className} text-3xl font-bold`}
-          >
-            To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>IDE</span>
-          </motion.div>
-        </div>
-
-        <div className=' w-full py-10 px-4 space-y-10'>
-          <div className={`${montserrat.className}   z-20 leading-[1.15]  text-[7.5vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent   mb-6 pt-10 pb-1`}>
-            <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2 text-center '>
-              <span className='z-50'>
-                Seamlessly<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Integrated</span> </span>
-              <h1>in your existing environment</h1>
-              <div className='top-0 absolute w-full h-full bg-zinc-950 -z-10' />
-            </div>
-          </div>
-
-          {/* Codemaps */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-900 overflow-hidden rounded-xl'>
-              <img src='/Codemaps (1).gif' className='h-full w-full object-cover rounded-xl' alt='Codemaps' />
-            </div>
-            <h1 className='font-bold text-xl'>Codemaps</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Interactive code maps to visualize your entire codebase, making complex architectures easy to understand and navigate.</p>
-          </div>
-
-          {/* Deepwiki */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-900 overflow-hidden rounded-xl'>
-              <img src='/deepwiki_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Deepwiki' />
-            </div>
-            <h1 className='font-bold text-xl'>Deepwiki</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Instant AI-powered documentation that stays in sync with your code, ensuring your team always has up-to-date project knowledge.</p>
-          </div>
-
-          {/* MCP */}
-          <div className='flex flex-col gap-2 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-900 overflow-hidden rounded-xl'>
-              <img src='/mcp_gif.gif' className='h-full w-full object-cover rounded-xl' alt='MCP Integration' />
-            </div>
-            <h1 className='font-bold text-xl'>MCP Integration</h1>
-            <p className='text-sm opacity-70 text-center w-[85vw]'>Advanced Model Context Protocol integration for deeper code understanding and more accurate AI-assisted development.</p>
-          </div>
-        </div>
-
-        {/* Vertical mobile section (Debug, Review, Optimize) */}
-        <div className='w-full py-10 px-4 flex flex-col gap-12 items-center'>
-          {/* Debug */}
-          <div className='flex flex-col gap-3 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl shadow-xl'>
-              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/Debug.mp4'></motion.video>
-            </div>
-            <div className="flex flex-col items-center gap-1.5">
-              <h1 className='font-bold text-2xl'>Debug</h1>
-              <p className='text-sm opacity-70 text-center w-[85vw] leading-relaxed'>Your AI debugger that identifies and resolves errors quickly, so you can keep building without interruptions.</p>
-            </div>
-          </div>
-
-          {/* Review */}
-          <div className='flex flex-col gap-3 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl shadow-xl'>
-              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/CodeReview.mp4'></motion.video>
-            </div>
-            <div className="flex flex-col items-center gap-1.5">
-              <h1 className='font-bold text-2xl'>Review</h1>
-              <p className='text-sm opacity-70 text-center w-[85vw] leading-relaxed'>Your AI reviewer that ensures cleaner, more reliable code so you can ship with confidence.</p>
-            </div>
-          </div>
-
-          {/* Optimize */}
-          <div className='flex flex-col gap-3 items-center'>
-            <div className='h-[35vh] w-[90vw] bg-zinc-600 overflow-hidden rounded-xl shadow-xl'>
-              <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/optimize.mp4'></motion.video>
-            </div>
-            <div className="flex flex-col items-center gap-1.5">
-              <h1 className='font-bold text-2xl'>Optimize</h1>
-              <p className='text-sm opacity-70 text-center w-[85vw] leading-relaxed'>Your AI optimizer that refactors and enhances code performance so you can deliver faster, smoother applications.</p>
-            </div>
-          </div>
-        </div>
-
-
-      </div>
-      {/* for mobile */}
 
       {/* enterprises section  */}
       <div className=' w-full pt-16 px-8 lg:px-14 overflow-hidden'>
