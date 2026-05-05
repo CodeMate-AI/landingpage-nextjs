@@ -7,15 +7,14 @@ import { IconArrowLeft, IconArrowRight, IconArrowBadgeDown } from '@tabler/icons
 import StaggeredMenu from '@/components/ui/Menu';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
-import AutoCodeEditor from '@/components/motion-components/aEditor';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import { TextAnimate } from '@/components/ui/textAnimate'
 import MagicBento from '@/components/ui/magicBento';
 import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
-import CodeEditor from '@/components/motion-components/editor'
 import { LoaderFive, LoaderOne } from '@/components/ui/loader';
 import { TypingAnimation, AnimatedSpan } from '@/components/ui/terminal';
+import SeamlessCarousel from '@/components/SeamlessCarousel';
 
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -24,7 +23,6 @@ import { useRouter } from 'next/navigation';
 import Footer from '@/components/footer';
 
 import VideoEmbed from '@/components/video';
-import ReviewCodeEditor from '@/components/motion-components/rEditor';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
 import Achivements from '@/components/achivements';
@@ -109,56 +107,6 @@ function Page() {
   ];
 
 
-  const AfterReviewComponent = [
-    { code: "import { useState } from 'react'", },
-    { code: "export default function Counter() {", },
-    { code: "const [count, setCount] = useState(0)", },
-    { code: "  return (", },
-    { code: " <div className='flex items-center gap-4'>", isError: true },
-    { code: " <h2 className='text-xl font-bold'>Count: {count}</h2>", isError: true },
-    { code: "" },
-    { code: " <button aria-label='Increase count'  className='px-3 py-1", isError: true },
-    { code: "bg-green-500 text-white rounded'", isError: true },
-    { code: "onClick={() => setCount((prev) => prev + 1)}>+</button>", isError: true },
-    { code: "" },
-    { code: "<button aria-label='Decrease count' className='px-3", isError: true },
-    { code: "py-1 bg-green-500 text-white rounded'", isError: true },
-    { code: " onClick={() => setCount((prev) => Math.max(prev - 1, 0))}>-</button>", isError: true },
-    { code: "" },
-    { code: "    </div>", },
-    { code: "  )", },
-    { code: "}", },
-  ];
-
-  const ReviewComponent = [
-    { code: "import { useState } from 'react'", },
-    { code: "", },
-    { code: "export default function Counter() {", },
-    { code: "  const [count, setCount] = useState(0)", },
-    { code: "", },
-    { code: "  return (", },
-    { code: "    <div>", },
-    { code: "      <h2>Count: {count}</h2>", },
-    { code: "      <button onClick={() => setCount(count + 1)}>+</button>", },
-    { code: "      <button onClick={() => setCount(count - 1)}>-</button>", },
-    { code: "    </div>", },
-    { code: "  )", },
-    { code: "}", },
-  ];
-
-  const AutoCompleteComponent = [
-    { code: "import { useState } from 'react'", },
-    { code: "", },
-    { code: "export default function ThemeToggle() {", },
-    { code: "  const [dark, setDark] = useState(false)", },
-    { code: "  return (", },
-    { code: "    <div className={dark ? 'bg-black text-white p-4' : 'bg-white text-black p-4'}>", },
-    { code: "      <p>{dark ? 'Dark Mode 🌙' : 'Light Mode ☀️'}</p>", },
-    { code: "      <button onClick={() => setDark(!dark)}>Toggle</button>", },
-    { code: "    </div>", },
-    { code: "  )", },
-    { code: "}", },
-  ];
   // ==========================================
   // 1B. NAVIGATION CONFIGURATION
   // ==========================================
@@ -208,43 +156,16 @@ function Page() {
   const [isArrow, setIsArrow] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [announcementHeight, setAnnouncementHeight] = useState(0);
-  const [isP1, setIsP1] = useState(false);
-  const [isP2, setIsP2] = useState(false);
-  const [isAuto, setIsAuto] = useState(false);
   const [isCoraBlocked, setIsCoraBlocked] = useState(true);
   const [showEventPopup, setShowEventPopup] = useState(false);
-  const [isShowProd, setIsShowProd] = useState(true);
-  const [isProds, setIsProds] = useState(false);
-  const [isFix, setIsFix] = useState(false);
-  const [isFix2, setIsFix2] = useState(false);
-  const [reviewBtn, setReviewBtn] = useState(true);
-  const [isRef1, setIsRef1] = useState(false);
-  const [isRef2, setIsRef2] = useState(false);
-  const [isRef3, setIsRef3] = useState(false);
-  const [isRefNew1, setIsRefNew1] = useState(false);
-  const [isRefNew2, setIsRefNew2] = useState(false);
-  const [isRefNew3, setIsRefNew3] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
   const feature1Ref = useRef<HTMLDivElement>(null);
-  const drawer1Ref = useRef<HTMLDivElement>(null);
-  const drawer2Ref = useRef<HTMLDivElement>(null);
-  const editor2Ref = useRef<HTMLDivElement>(null);
   const testiRef = useRef<HTMLDivElement>(null);
-  const prodRef = useRef<HTMLDivElement>(null);
-  const Ref1 = useRef<HTMLDivElement>(null);
-  const Ref2 = useRef<HTMLDivElement>(null);
-  const Ref3 = useRef<HTMLDivElement>(null);
   const productShowRef = useRef<HTMLDivElement>(null);
   const codeMateImageRef = useRef<HTMLImageElement>(null);
   const unlockCopyRef = useRef<HTMLParagraphElement>(null);
-  const codeOverlayRef = useRef<HTMLDivElement>(null);
-  const codeOverlayRef2 = useRef<HTMLDivElement>(null);
   const [isLoad, setIsLoad] = useState(false);
   const [isLoad2, setIsLoad2] = useState(false);
-  const debugBtnRef = useRef<HTMLButtonElement>(null);
-  const productRef = useRef<HTMLDivElement>(null);
-  const productRef2 = useRef<HTMLDivElement>(null);
-  const productsWrapper = useRef<HTMLDivElement>(null);
   const exploreRef = useRef<HTMLDivElement>(null);
   const title = ["Don't", "be", "techy", "to"];
   const title2 = ["Develop", "Softwares"];
@@ -260,20 +181,13 @@ function Page() {
   })
   const shadingHeight = useTransform(shadingProgress, [0, 1], [0, 1000]);
 
-  const { scrollYProgress: p1YProg } = useScroll({
-    target: productRef,
-    offset: ['start start', 'end end']
-  });
 
   const { scrollYProgress: PShowYProg } = useScroll({
     target: productShowRef,
     offset: ['start start', 'end start']
   });
 
-  const { scrollYProgress: PShowVYProg } = useScroll({
-    target: productShowRef,
-    offset: ['start end', 'end start']
-  });
+
 
 
   const { scrollYProgress: codeMateImageProg } = useScroll({
@@ -291,10 +205,7 @@ function Page() {
     offset: ['start start', 'end start']
   });
 
-  const { scrollYProgress: PYProg } = useScroll({
-    target: prodRef,
-    offset: ['start start', 'end start']
-  });
+
   const { scrollYProgress: MYProg } = useScroll({
     target: mainRef,
     offset: ['start start', 'end start']
@@ -306,13 +217,6 @@ function Page() {
 
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
-  const feature1Scale = useTransform(p1YProg, [0, 0.7], [1.2, 1.1]);
-  const featureTitleY = useTransform(p1YProg, [0, 0.9], [0, -500]);
-  const featureTitleOpacity = useTransform(p1YProg, [0, 0.4], [1, 0]);
-  const codeBlur = useTransform(p1YProg, [0, 0.4], ['blur(15px)', 'blur(0px)']);
-  const drawerX = useTransform(p1YProg, [0, 0.1, 0.3], [0, 45, 0]);
-  const drawerX2 = useTransform(p1YProg, [0.3, 0.4, 0.6], [0, 45, 0]);
-  const drawerX3 = useTransform(p1YProg, [0.7, 0.8], [0, 45]);
 
 
   // ========== "What you'll Unlock" section scroll math ==========
@@ -330,9 +234,6 @@ function Page() {
 
   ///for mobile feature section
   const mx = useTransform(MFYProg, [0, 1], [0, -1200]);
-
-  ///for code editor
-  const barY = useTransform(p1YProg, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
     // ==========================================
@@ -395,143 +296,6 @@ function Page() {
   // 1F. EVENT HANDLERS
   // Functions to manage modal overlays, keyboard shortcuts, and button clicks.
   // ==========================================
-  function handleOverlay() {
-    codeOverlayRef.current?.classList.remove('hidden');
-    setIsLoad(true);
-    setTimeout(() => {
-
-      setIsFix(true);
-    }, 5000)
-
-    setTimeout(() => {
-      codeOverlayRef.current?.classList.add('hidden');
-      setIsLoad(false);
-    }, 16000)
-
-    setTimeout(() => {
-      debugBtnRef.current?.classList.add('hidden');
-    }, 16500);
-
-  }
-  function handleOverlayR() {
-    setIsLoad2(true);
-    setReviewBtn(false);
-  }
-  useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      if (event.key === "Tab") {
-        event.preventDefault();
-        setIsAuto(true);
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    // Clean up the event listener
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
-  useMemo(() => {
-    if (!isRef2) {
-      setIsLoad2(false);
-    }
-  }, [isRef2]);
-
-  useMemo(() => {
-    if (!isRef1) {
-      setIsFix(false);
-    }
-  }, [isRef1]);
-
-
-  // ==========================================
-  // 1G. SCROLL EVENT LISTENERS (useMotionValueEvent)
-  // Watches scroll progress to trigger state changes (e.g. showing/hiding elements)
-  // ==========================================
-
-  // ========== "Seamlessly Integrated" section scroll math ==========
-  // Container: h-[700vh]. Offset: ['start start','end end'] → scroll distance = 600vh.
-  // 6 content items distributed evenly across 0→0.90 (each ≈ 0.15 = 90vh).
-  // Blank tail: 10% of 600vh = 60vh — minimal.
-  const INTEG_STEP = 0.15;  // each item gets 15% of scroll
-
-  useMotionValueEvent(p1YProg, 'change', (latest) => {
-    // When "Seamlessly Integrated" section starts, force-hide the Unlock overlay
-    if (latest > 0.001) {
-      setIsShowProd(false);
-      setIsProds(false);
-      setUnlockStep(-1);
-    }
-
-    // --- 6 items: 3 new (Codemaps, Deepwiki, MCP) + 3 existing (Debug, Review, Auto-complete) ---
-    if (latest > INTEG_STEP * 5) {        // > 0.75: Auto-complete
-      setIsRef3(true);
-      setIsRef2(false);
-      setIsRef1(false);
-      setIsRefNew1(false);
-      setIsRefNew2(false);
-      setIsRefNew3(false);
-      drawer2Ref.current?.classList.add('hidden');
-    } else if (latest > INTEG_STEP * 4) { // > 0.60: Review
-      setIsRef2(true);
-      setIsRef1(false);
-      setIsRef3(false);
-      setIsRefNew1(false);
-      setIsRefNew2(false);
-      setIsRefNew3(false);
-      drawer2Ref.current?.classList.remove('hidden');
-      editor2Ref.current?.classList.remove('hidden');
-    } else if (latest > INTEG_STEP * 3) { // > 0.45: Debug
-      setIsRef1(true);
-      setIsRef2(false);
-      setIsRef3(false);
-      setIsRefNew1(false);
-      setIsRefNew2(false);
-      setIsRefNew3(false);
-      drawer2Ref.current?.classList.remove('hidden');
-      editor2Ref.current?.classList.add('hidden');
-    } else if (latest > INTEG_STEP * 2) { // > 0.30: MCP
-      setIsRefNew3(true);
-      setIsRefNew1(false);
-      setIsRefNew2(false);
-      setIsRef1(false);
-      setIsRef2(false);
-      setIsRef3(false);
-    } else if (latest > INTEG_STEP * 1) { // > 0.15: Deepwiki
-      setIsRefNew2(true);
-      setIsRefNew1(false);
-      setIsRefNew3(false);
-      setIsRef1(false);
-      setIsRef2(false);
-      setIsRef3(false);
-    } else if (latest > 0.001) {           // > 0.001: Codemaps (virtually instant)
-      setIsRefNew1(true);
-      setIsRefNew2(false);
-      setIsRefNew3(false);
-      setIsRef1(false);
-      setIsRef2(false);
-      setIsRef3(false);
-    } else {
-      // Hide everything
-      drawer2Ref.current?.classList.remove('hidden');
-      setIsRefNew1(false);
-      setIsRefNew2(false);
-      setIsRefNew3(false);
-      setIsRef1(false);
-      setIsRef2(false);
-      setIsRef3(false);
-      editor2Ref.current?.classList.add('hidden');
-    }
-
-    // --- Drawer1 logic (separate condition) ---
-    if (latest > 0.5051476587223102) {
-      drawer1Ref.current?.classList.add('hidden');
-    } else {
-      drawer1Ref.current?.classList.remove('hidden');
-    }
-  });
 
   ///for mascot 
   useMotionValueEvent(MYProg, 'change', (latest) => {
@@ -545,24 +309,7 @@ function Page() {
   ///for new products section
 
 
-  useMotionValueEvent(PShowVYProg, 'change', (latest) => {
-    if (latest <= 0) {
-      setIsProds(false);
-    }
-  });
 
-  useMotionValueEvent(PShowYProg, 'change', (latest) => {
-    // Activate overlay when section enters viewport (progress > 0)
-    if (latest > 0 && latest < UNLOCK_END) {
-      setIsProds(true);
-      setIsShowProd(true);
-    }
-    // Hide Section 1 videos after animations complete
-    if (latest >= UNLOCK_END) {
-      setIsShowProd(false);
-      setIsProds(false);
-    }
-  });
 
   // Discrete step switching for "What you'll Unlock"
   // Each step = UNLOCK_STEP ≈ 0.1267 of scroll progress (≈ 54vh per step)
@@ -589,23 +336,6 @@ function Page() {
   // Hide product overlay once the unlock paragraph leaves view (e.g., scrolling up past it)
 
 
-  ////for new prods
-  useMotionValueEvent(PYProg, 'change', (latest) => {
-    if (latest > 0) setIsArrowV(true);
-    if (latest <= 0) setIsArrowV(false);
-    if (latest <= 0.15) {
-      setIsP1(false);
-      setIsP2(false);
-    }
-    if (latest >= 0.25) {
-      setIsP1(true);
-      setIsP2(false);
-    }
-    if (latest >= 0.45) {
-      setIsP2(true);
-      setIsP1(false);
-    }
-  })
 
   // for main div events
   useMotionValueEvent(MYProg, 'change', (latest) => {
@@ -686,17 +416,6 @@ function Page() {
   }, []);
 
 
-  ///arrow 
-  function handleArrow() {
-    setIsArrow((prev) => {
-      if (!prev) {
-        heroRef2?.current?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        footerRef?.current?.scrollIntoView({ behavior: "smooth" });
-      }
-      return !prev; // flip state each time
-    });
-  }
 
   const handleAnnouncementClick = () => {
     window.open(SWE_BENCH_BLOG_URL, '_blank', 'noopener,noreferrer');
@@ -1691,7 +1410,7 @@ function Page() {
         imageSrc='https://backend.v3.codemateai.dev/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
       />
 
-      <div ref={prodRef} className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
+      <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
         <h1 className=' font-mono pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
 
 
@@ -1802,7 +1521,7 @@ function Page() {
 
 
 
-      <div ref={productsWrapper} className='hidden lg:block -z-20'>
+      <div className='hidden lg:block -z-20'>
 
         {/* horizontal scroll section */}
         <div ref={productShowRef} className='relative h-[500vh] w-full bg-zinc-950'>
@@ -1817,10 +1536,10 @@ function Page() {
 
                 {/* Scrolling Title */}
                 <div className="w-[85vw] lg:w-[35vw] flex flex-col justify-center shrink-0">
-                  <div className={`${montserrat.className} text-[2.5rem] lg:text-[4.5rem] leading-[1.1] font-bold text-white`}>
+                  <div className={`${montserrat.className} text-[2rem] lg:text-[3.5rem] leading-[1.1] font-bold text-white`}>
                     What You'll
                     <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent block'> Unlock</span>
-                    <h1 className="mt-2 text-[2.5rem] lg:text-[3.5rem] font-semibold">with CodeMate AI</h1>
+                    <h1 className="mt-2 text-[1.8rem] lg:text-[2.5rem] font-semibold">with CodeMate AI</h1>
                   </div>
                 </div>
 
@@ -1873,395 +1592,27 @@ function Page() {
           </div>
         </div>
         {/* products showcase */}
-
-        <div ref={productRef} className='relative h-[700vh] w-full bg-zinc-950 text-white flex  flex-col mb-16'>
-
-
-          <div className='sticky  top-[85vh]  z-50'>
-            <div className={`${montserrat.className}  text-2xl pl-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full `}>To your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'> IDE</span></div>
+        <div className="relative w-full z-10 bg-black pb-16 pt-[5vh]">
+          <div className="pb-10 text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className={`${montserrat.className} text-[2rem] lg:text-[3rem] font-bold leading-[1.15]`}
+            >
+              <span className="bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">Seamlessly </span>
+              <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Integrated</span>
+              <br />
+              <span className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">in your existing environment</span>
+            </motion.h2>
           </div>
-
-
-
-          <div className={`${montserrat.className} sticky top-7  text-3xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pr-16 mb-0 pt-4 text-right pl-[50vw]  pb-1 z-40`}>
-            <div className='bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent relative h-full w-full pb-2'>
-              <span className='z-40'>
-                Seamlessly <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent pb-1'>Integrated &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <h1>in your existing environment.&nbsp;&nbsp;</h1>
-              </span>
-
-              <div className='h-full w-full absolute  z-50' />
+          <SeamlessCarousel />
+          <div className="pt-8">
+            <div className={`${montserrat.className} text-2xl pl-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
+              To your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'> IDE</span>
             </div>
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(50px)' }}
-            whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8 }}
-            className='sticky h-screen top-0 w-full flex  items-center z-50'>
-            {/* <AnimatePresence mode='wait'>
-      {!d && !r && !a && <motion.div 
-            initial={{opacity:0,filter:'blur(20px)'}}
-            animate={{opacity:1,filter:'blur(0px)'}}
-            transition={{duration:1}}
-            exit={{opacity:0,filter:'blur(20px)'}}
-            key={1}
-            className='absolute top-0 z-30 left-0 h-screen flex  justify-center gap-3 items-center ml-9 text-2xl font-mono w-[15%] flex-col z-0'> <h1 className='opacity-45'>Press</h1> <h1 className='text-5xl text-[#00FFFF] opacity-70'>"D"</h1>  <h1 className='opacity-45'>for Debug mode</h1></motion.div>
-            }
-
-              {d && <motion.div 
-            initial={{opacity:0,filter:'blur(20px)'}}
-            animate={{opacity:1,filter:'blur(0px)'}}
-            transition={{duration:1}}
-            exit={{opacity:0,filter:'blur(20px)'}}
-            key={2}
-            className='absolute top-0 z-30 left-0 h-screen flex  justify-center gap-3 items-center ml-9 text-2xl font-mono w-[15%] flex-col '> <h1 className='opacity-45'>Press</h1> <h1 className='text-5xl text-[#00FFFF] opacity-70'>"R"</h1>  <h1 className='opacity-45'>for Review mode</h1></motion.div>
-            }    
-
-            {r && 
-            <motion.div 
-            initial={{opacity:0,filter:'blur(20px)'}}
-            animate={{opacity:1,filter:'blur(0px)'}}
-            transition={{duration:1}}
-            exit={{opacity:0,filter:'blur(20px)'}}
-            key={3}
-            className='absolute top-0 z-30 right-0 h-screen flex  justify-center gap-3 items-center mr-9 text-2xl font-mono w-[15%] flex-col'> <h1 className='opacity-45'>Press</h1> <h1 className='text-5xl text-[#00FFFF] opacity-70'>"A"</h1>  <h1 className='opacity-45'>for Auto-complete mode</h1></motion.div>
-            }
-
-            {a && 
-            <motion.div 
-            initial={{opacity:0,filter:'blur(20px)'}}
-            animate={{opacity:1,filter:'blur(0px)'}}
-            transition={{duration:1}}
-            exit={{opacity:0,filter:'blur(20px)'}}
-            key={4}
-            className='absolute top-0 z-30 left-0 h-screen flex  justify-center gap-3 items-center ml-9 text-2xl font-mono w-[15%] flex-col'> <h1 className='opacity-45'>Press</h1> <h1 className='text-5xl text-[#00FFFF] opacity-70'>"D"</h1>  <h1 className='opacity-45'>for Debug mode</h1></motion.div>
-            }
-      </AnimatePresence> */}
-
-
-            <div className='relative flex justify-center items-center w-[70%] z-50'>
-
-
-              <motion.div
-                ref={feature1Ref}
-
-                className='relative h-[30vw] w-[58vw] opacity-80 rounded-xl flex justify-center items-center ml-[3.3rem] mb-4 '>
-
-
-
-                {isRef1 && <motion.div
-                  initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 0.8 }}
-                  className='absolute h-full w-full rounded-xl overflow-hidden'>
-                  <CodeOverlay ref={codeOverlayRef} />
-                  <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix} />
-                </motion.div>}
-
-                {/* --- NEW: Codemaps GIF --- */}
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: isRefNew1 ? 1 : 0, filter: isRefNew1 ? 'blur(0px)' : 'blur(20px)' }}
-                  transition={{ duration: 0.8 }}
-                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex overflow-hidden'
-                  style={{ pointerEvents: isRefNew1 ? 'auto' : 'none' }}
-                >
-                  <img src='/Codemaps (1).gif' className='h-full w-full object-cover rounded-xl' alt='Codemaps' />
-                </motion.div>
-
-
-                {/* --- NEW: Deepwiki GIF --- */}
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: isRefNew2 ? 1 : 0, filter: isRefNew2 ? 'blur(0px)' : 'blur(20px)' }}
-                  transition={{ duration: 0.8 }}
-                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex overflow-hidden'
-                  style={{ pointerEvents: isRefNew2 ? 'auto' : 'none' }}
-                >
-                  <img src='/deepwiki_gif.gif' className='h-full w-full object-cover rounded-xl' alt='Deepwiki' />
-                </motion.div>
-
-
-                {/* --- NEW: MCP GIF --- */}
-                <motion.div
-                  initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: isRefNew3 ? 1 : 0, filter: isRefNew3 ? 'blur(0px)' : 'blur(20px)' }}
-                  transition={{ duration: 0.8 }}
-                  className='absolute h-full w-full bg-zinc-900 rounded-xl flex overflow-hidden'
-                  style={{ pointerEvents: isRefNew3 ? 'auto' : 'none' }}
-                >
-                  <img src='/mcp_gif.gif' className='h-full w-full object-cover rounded-xl' alt='MCP' />
-                </motion.div>
-
-
-                {isRef2 && <motion.div
-                  initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 1 }}
-                  onAnimationStart={() => setIsAuto(false)}
-                  className=' absolute h-full w-full bg-zinc-900 rounded-xl flex   opacity-100 overflow-hidden'>
-
-                  <AnimatePresence>
-                    {isLoad2 && <div data-lenis-prevent><CodeReviewOverlay setIsFix={setIsFix2} setIsLoad2={setIsLoad2} /></div>}
-                  </AnimatePresence>
-
-                  <div data-lenis-prevent className='w-full'>
-                    <ReviewCodeEditor isFix={isFix2} comp1={ReviewComponent} comp2={AfterReviewComponent} />
-                  </div>
-                </motion.div>}
-
-                {isRef3 && <motion.div
-
-                  initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 1 }}
-
-                  className=' absolute h-full w-full bg-zinc-900 rounded-xl flex  opacity-100'>
-                  <AutoCodeEditor comp1={AutoCompleteComponent} setIsFix={setIsFix} isFix={isAuto} />
-                  {/* <CodeEditor  />   */}
-                </motion.div>}
-
-                {/* <CodeOverlay ref={codeOverlayRef}/> 
-
-        <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix}/> */}
-
-
-                {/* 
-<AnimatePresence mode="wait">
-     
-      
-        <motion.div  
-        key={1}
-        
-        
-        transition={{duration:0.7}} 
-        exit={{x:0}} 
-        ref={drawer1Ref}
-        whileHover={{background:'#ffffff',
-           color:'black',
-           opacity:0.4
-        }}
-        style={{background: 'rgba(255, 255, 255, 0.02)',
-        y:drawerX,  
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        backdropFilter: 'blur(4.7px)',
-        WebkitBackdropFilter: 'blur(4.7px)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        }}
-        className='absolute bottom-0 right-8 py-2 px-4 bg-white rounded-b-2xl text-2xl  flex flex-col justify-center items-center  text-white cursor-pointer -z-10'>
-       
-
-          Debug
-
-      
-
-
-        </motion.div>
-        
-
-         
-        <motion.div 
-        key={2}
-        transition={{duration:0.7}} 
-        exit={{x:0}} 
-        ref={drawer2Ref}
-        style={{background: 'rgba(255, 255, 255, 0.02)',
-        y:
-        
-        drawerX2,  
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        backdropFilter: 'blur(4.7px)',
-        WebkitBackdropFilter: 'blur(4.7px)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        }}
-        className='absolute bottom-0 right-8 py-2 px-4 bg-white rounded-b-2xl text-2xl  flex flex-col justify-center items-center  text-white cursor-pointer -z-10'>
-       
-
-         Review
-
-
-      
-
-
-      </motion.div>
-      
-
-
-      
-        <motion.div 
-        exit={{x:0}} 
-  
-        key={3}
-
-        style={{background: 'rgba(255, 255, 255, 0.02)',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        y:drawerX3,
-        backdropFilter: 'blur(4.7px)',
-        WebkitBackdropFilter: 'blur(4.7px)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        }}
-        className='absolute bottom-0 right-8 py-2 px-4 bg-white rounded-b-2xl text-2xl  flex flex-col justify-center items-center  text-white cursor-pointer -z-10'>
-       
-        Auto-Complete
-
-        </motion.div>
-        
-</AnimatePresence> */}
-
-
-
-              </motion.div>
-
-              {/* <motion.h1 
-       style={{y:featureTitleY,opacity:featureTitleOpacity}}
-       className='absolute text-7xl text-nowrap'>You can do much more with just Plugin...</motion.h1> */}
-            </div>
-
-            <div
-              className='relative w-[34%] h-[75%] flex  justify-end pr-[3.5rem] py-10 gap-10 z-50 mt-[10rem]'>
-
-              {/* --- NEW: Codemaps --- */}
-              {isRefNew1 && !isRefNew2 && !isRefNew3 && !isRef1 && !isRef2 && !isRef3 &&
-                <div className={`${montserrat.className}relative w-full z-[99999999]  flex justify-center items-start pt-10 h-full`}>
-                  <div className='z-[99999998]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Codemaps</h1>
-                    <motion.span className='z-[99999997]'>
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Navigate your entire codebase visually with intelligent code maps that reveal structure, dependencies, and relationships at a glance.</span></p>
-                    </motion.span>
-                  </div>
-                </div>
-              }
-
-              {/* --- NEW: Deepwiki --- */}
-              {isRefNew2 && !isRefNew1 && !isRefNew3 && !isRef1 && !isRef2 && !isRef3 &&
-                <div className='relative w-full z-[99999999] flex justify-center items-start h-full pt-10'>
-                  <div className='z-[9999999]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Deepwiki</h1>
-                    <motion.span className='z-[99999997]'>
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Query deep contextual knowledge from your codebase wiki, instantly getting answers about architecture, patterns, and implementation details.</span></p>
-                    </motion.span>
-                  </div>
-                </div>}
-
-              {/* --- NEW: MCP --- */}
-              {isRefNew3 && !isRefNew1 && !isRefNew2 && !isRef1 && !isRef2 && !isRef3 &&
-                <div className='relative w-full z-[99999999] flex justify-center items-start h-full pt-10'>
-                  <div className='z-[9999999]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>MCP</h1>
-                    <motion.span className='z-[99999997]'>
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>Connect and manage external tools and contexts via Model Context Protocol, supercharging your Build agent with seamless integrations.</span></p>
-                    </motion.span>
-                  </div>
-                </div>}
-
-              {/* --- EXISTING: Debug --- */}
-              {isRef1 && !isRef2 && !isRef3 &&
-                <div className={`${montserrat.className}relative w-full z-[99999999]  flex justify-center items-start pt-10 h-full`}>
-                  <div className='z-[99999998]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Debug</h1>
-                    <motion.span
-
-                      className='z-[99999997]'
-                    >
-
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>An</span> <span className='text-[#00BFFF] font-semibold'>AI-Powered Debugger</span> <span className='opacity-60'>that quickly identifies errors, explains their causes, and suggests precise fixes—making it easier to resolve issues and keep development moving smoothly.</span></p>
-                    </motion.span>
-
-                    {isLoad ?
-                      <motion.span
-                        initial={{ opacity: 0, filter: 'blur(20px)' }}
-                        whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                        transition={{ duration: 1, delay: 1 }}
-                        className='mb-10 z-[99999996]'>
-                        <div className='mt-10'>
-                          <LoaderOne />
-                        </div>
-                      </motion.span> : <motion.button whileHover={{ opacity: 0.7 }} ref={debugBtnRef} onClick={handleOverlay} className={`${montserrat.className} bg-gradient-to-br border-y-[0.1px]  border-[#F0EAD6]/80 from-[#F0EAD6]/90  to-[#FAF9F6]/45   text-lg rounded-[25px] px-6 text-black py-2 mt-10  z-[99999996]`}>
-                        <span className='font-semibold  text-zinc-950'>Debug</span> this code
-                      </motion.button>}
-                  </div>
-
-                </div>
-              }
-
-
-              {isRef2 && !isRef1 && !isRef3 &&
-                <div className='relative w-full z-[99999999] flex justify-center items-start h-full pt-10'>
-                  <div className='z-[9999999]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Review</h1>
-                    <motion.span
-
-                      className='z-[99999997]'
-                    >
-
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>An</span> <span className='text-[#00BFFF] font-semibold'>AI-Powered Code Reviewer</span> <span className='opacity-60'>that scans your code in real time, detects bugs and vulnerabilities, and suggests improvements for readability, performance, and best practices—helping you write cleaner, more reliable code faster.</span></p>
-                    </motion.span>
-
-                    {/* {isLoad?    
-        <motion.span 
-        initial={{opacity:0,filter:'blur(20px)'}}
-        whileInView={{opacity:1,filter:'blur(0px)'}}
-        transition={{duration:1,delay:1}}
-        className='mb-10 z-[99999996]'>
-        <LoaderOne/>
-        </motion.span>  :         }  */}
-                    <AnimatePresence>
-                      {reviewBtn && <motion.button whileHover={{ opacity: 0.7 }} exit={{ opacity: 0, filter: 'blur(20px)' }} transition={{ duration: 0.5 }} onClick={handleOverlayR} className={`${montserrat.className} bg-gradient-to-br border-y-[0.1px] border-[#F0EAD6]/80 from-[#F0EAD6]/80 to-[#FAF9F6]/45 text-lg rounded-[25px] px-6 text-black py-2 mt-10  z-[99999996]`}>
-                        <span className='font-semibold  text-zinc-950'>Review</span> this code
-                      </motion.button>}
-                    </AnimatePresence>
-                  </div>
-
-                </div>}
-
-              {isRef3 && !isRef1 && !isRef2 &&
-                <div className='relative w-full z-[9999999999] flex justify-center items-start h-full pt-10'>
-                  <div className='z-[99999998]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5 z-[99999996] font-semibold`}>Auto-Complete</h1>
-                    <motion.span
-
-                      className='z-[99999997]'
-                    >
-
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>An</span> <span className='text-[#00BFFF] font-semibold'>Intelligent Auto-Completer</span> <span className='opacity-60'>tool that predicts your next lines of code, reduces repetitive typing, and speeds up development by suggesting accurate, context-aware completions in real time.</span></p>
-                    </motion.span>
-
-                    {isLoad ?
-                      <motion.span
-                        initial={{ opacity: 0, filter: 'blur(20px)' }}
-                        whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                        transition={{ duration: 1, delay: 1 }}
-                        className='mb-10 z-[99999996]'>
-                        <LoaderOne />
-                      </motion.span> : <div className={`${montserrat.className} text-2xl  mt-10 cursor-not-allowed font-extralight z-[99999996] opacity-30`}>
-                        <span>Press</span> <span className='font-mono text-3xl '>"TAB"</span> <span>to auto-complete</span>
-
-
-                      </div>}
-                  </div>
-
-                </div>}
-
-              {isRef3 &&
-                <div className='absolute z-[99999999] bg-zinc-950 w-[95%] h-full'>
-
-                </div>}
-
-              <div className='z-[99999999]'>
-                <motion.div
-                  style={{ height: barY }}
-                  className='absolute rounded-md w-[0.25rem] h-[15%]  bg-gradient-to-b from-[#00BFFF] to-[#1E90FF]  opacity-80 z-[99999999]' />
-
-                <div className='w-[0.20rem] rounded-md  h-full bg-[#1c1c1c] z-[99999999]' />
-              </div>
-
-
-            </div>
-          </motion.div>
-
-
-
         </div>
 
       </div>
@@ -2280,7 +1631,7 @@ function Page() {
 
         {/* Mobile "What you'll Unlock" section with individual GIFs/videos for each feature */}
         <div className='w-full py-10 px-4 space-y-10'>
-          <div className={`${montserrat.className} z-20 leading-[1] text-[7.7vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent mb-6 pt-10 pb-1`}>
+          <div className={`${montserrat.className} z-20 leading-[1] text-[6vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent mb-6 pt-10 pb-1`}>
             <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pb-2 text-center pr-2 pl-[5vw]'>
               <span className='z-50'>
                 What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> with CodeMate AI.</span>
@@ -2857,252 +2208,5 @@ export default Page
 //     <motion.div 
 //      initial={{opacity:0,filter:'blur(50px)'}}
 //      whileInView={{opacity:1,filter:'blur(0px)'}}
-//      transition={{duration:0.8}}
-//      className='sticky h-screen top-0 w-full flex justify-center items-center'>
-//       <div className='relative flex justify-center items-center'>
-//       <motion.div 
-//       ref={feature2Ref}
-//       style={{scale:1,}}
-//       className='relative h-[35vw] w-[55vw] opacity-80 rounded-xl flex justify-center items-center bg-white'>
 
 
-//         {/* <CodeOverlay ref={codeOverlayRef}/> 
-
-//         // <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix}/> */}
-
-//         <motion.div 
-//         style={{x:drawerX,background:'rgba(255, 255, 255, 0.02)',
-//         boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-//         backdropFilter: 'blur(4.7px)',
-//         WebkitBackdropFilter: 'blur(4.7px)',
-//         border: '1px solid rgba(255, 255, 255, 0.3)',
-//         }}
-//         className='absolute right-0 h-[99%] w-[60%] bg-white rounded-3xl pl-[20rem] flex flex-col justify-between  text-white'>
-
-//        <motion.span
-//        initial={{opacity:0,filter:'blur(20px)'}}
-//        whileInView={{opacity:1,filter:'blur(0px)'}}
-//        transition={{duration:0.7,delay:1}}
-//        viewport={{amount:0.5}}
-//        >
-//         <h1 className='text-white text-5xl mb-5 mt-3 '>Debug</h1>
-//         <p className='text-sm opacity-60'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius facilis fugiat tenetur in autem commodi dolor quae magni </p>
-//        </motion.span>
-
-//        {/* {isLoad?    
-//         <motion.span 
-//         initial={{opacity:0,filter:'blur(20px)'}}
-//         whileInView={{opacity:1,filter:'blur(0px)'}}
-//         transition={{duration:1,delay:1}}
-//         className='mb-10 ml-14'>
-//         <LoaderOne/>
-//         </motion.span>  :         <button ref={debugBtnRef} onClick={handleOverlay} className='bg-[#343434] rounded-[54px] px-2 py-2 m-4 hover:opacity-70'>
-//           Debug this code
-//         </button>} */}
-
-
-
-//       </motion.div>
-
-
-
-//       </motion.div>  
-
-//        {/* <motion.h1 
-//        style={{y:featureTitleY,opacity:featureTitleOpacity}}
-//        className='absolute text-7xl text-nowrap'>You can do much more with just Plugin...</motion.h1> */}
-//       </div>
-//      </motion.div>
-
-//     </>
-//   )
-// }
-
-function CodeOverlay({ ref }: { ref: React.RefObject<HTMLDivElement> }) {
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, filter: 'blur(20px)' }}
-      whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-      transition={{ duration: 1.5 }}
-      className='hidden absolute h-full w-full bg-zinc-900 z-50 rounded-xl text-white flex flex-col gap-5 p-10'>
-      <LoaderFive text="Debugging Inprogress..." />
-
-
-      {/* <TypingAnimation className='text-2xl font-mono opacity-90'> </TypingAnimation> */}
-
-      <TextAnimate animation="blurInUp" by="character" duration={2}>
-        &gt; Analyzing your code...
-      </TextAnimate>
-
-      <AnimatedSpan delay={4000} className="text-[#00FFFF] font-mono opacity-75 text-md">
-        <span>✔ Parsing the code line by line.</span>
-      </AnimatedSpan>
-
-
-      <AnimatedSpan delay={6000} className="text-[#00FFFF] font-mono opacity-75 text-md">
-        <span>✔ Identified 8 errors.</span>
-      </AnimatedSpan>
-
-      <AnimatedSpan delay={8000} className="text-[#00FFFF] font-mono opacity-75 text-md">
-        <span>✔ Applying changes.</span>
-      </AnimatedSpan>
-
-      <AnimatedSpan delay={10000} className="text-[#00FFFF] font-mono opacity-75 text-md">
-        <span>✔ Success!</span>
-      </AnimatedSpan>
-
-
-      <AnimatedSpan delay={12000} className="text-white  font-mono opacity-55 text-sm">
-        <span>All 8 errors are fixed!</span>
-      </AnimatedSpan>
-    </motion.div>
-
-
-  )
-}
-
-function CodeReviewOverlay({ setIsFix, setIsLoad2 }: { setIsFix: React.Dispatch<React.SetStateAction<boolean>>, setIsLoad2: React.Dispatch<React.SetStateAction<boolean>> }) {
-  const [isLoad, setIsLoad] = useState(false);
-
-  const code1 = `<button onClick={() => setCount(count + 1)}>+</button>
-<button onClick={() => setCount((prev) => Math.max(prev - 1, 0))}>-</button>`
-
-  const code2 = `<button onClick={() => setCount((prev) => prev + 1)}>+</button>
-<button onClick={() => setCount((prev) => prev - 1)}>-</button>`
-
-  const code3 = `<button aria-label="Increase count" onClick={() => setCount((prev) => prev + 1)}>+</button>
-<button aria-label="Decrease count" onClick={() => setCount((prev) => prev - 1)}>-</button>`
-
-  const code4 = `<div className="flex items-center gap-4">
-  <h2 className="text-xl font-bold">Count: {count}</h2>
-  <button className="px-3 py-1 bg-green-500 text-white rounded" onClick={() => setCount((prev) => prev + 1)}>+</button>
-  <button className="px-3 py-1 bg-red-500 text-white rounded" onClick={() => setCount((prev) => prev - 1)}>-</button>
-</div>`
-
-  function handleChange() {
-    setIsLoad(true);
-    setTimeout(() => {
-      setIsLoad(false);
-      setIsFix(true);
-      setIsLoad2(false);
-    }, 2000);
-  }
-  return (
-    <motion.div
-      // initial={{x:-100}}
-      className='h-full w-full flex justify-center items-center mt-1'>
-      <motion.div
-
-        initial={{ opacity: 0, filter: 'blur(20px)', x: 360 }}
-        animate={{ opacity: 1, filter: 'blur(0px)', x: 0 }}
-        transition={{ duration: 1.5 }}
-        exit={{ opacity: 0, filter: 'blur(20px)', x: 360 }}
-        className='absolute h-[86%] rounded-l-lg w-[40%] right-0  bg-zinc-800 z-50 text-white flex flex-col  p-5 overflow-y-auto shadow-[-15px_0_20px_-3px_rgba(0,0,0,0.3)]'>
-        {/* <LoaderFive text="Reviewing Inprogress..."/> */}
-
-
-        {/* <TypingAnimation className='text-2xl font-mono opacity-90'> </TypingAnimation> */}
-
-        <img src="logoC.svg" alt="" className='size-[10%]' />
-        <div className='flex gap-2 w-full'>
-
-          <TextAnimate
-            animation="blurInUp"
-            once={true}
-            by="character"
-            duration={2}
-            className={`${montserrat.className} font-semibold text-sm opacity-80 mt-3 w-[90%]`}
-          >
-            {`Your code is perfectly valid and works as expected. — it’s a simple counter component. \n here’s some suggestions for improvements:-`}
-          </TextAnimate>
-        </div>
-        <motion.h1
-          initial={{ opacity: 0, filter: 'blur(20px)' }}
-          animate={{ opacity: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 1, delay: 2 }}
-          className='mt-4 mb-4 font-semibold text-sm opacity-80'>🔧 Possible Improvements</motion.h1>
-
-        <div className='relative flex flex-col gap-10'>
-
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 4 }}
-            className=" text-md flex flex-col">
-            <h1 className='opacity-75'>1. Prevent negative values (if that’s not desired):</h1>
-            <div className='h-20 w-full bg-zinc-950 rounded-xl mt-2 mb-4'>
-              <div className='ml-3 text-xs mt-1'>tsx</div>
-              <SyntaxHighlighter language='jsx' style={vscDarkPlus}>
-                {code1}
-              </SyntaxHighlighter>
-
-            </div>
-          </motion.div>
-
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 5 }}
-            className=" text-md flex flex-col mt-3">
-            <h1 className='opacity-75'>2. Use functional updates (best practice when updating based on the previous state):</h1>
-            <div className='h-20 w-full bg-zinc-950 rounded-xl mt-2 mb-4'>
-              <div className='ml-3 text-xs mt-1'>tsx</div>
-              <SyntaxHighlighter language='jsx' style={vscDarkPlus}>
-                {code2}
-              </SyntaxHighlighter>
-
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 6 }}
-            className="text-md flex flex-col mt-3">
-            <h1 className='opacity-75'>3. Accessibility – Add aria-label or descriptive text for screen readers:</h1>
-            <div className='h-20 w-full bg-zinc-950 rounded-xl mt-2 mb-4'>
-              <div className='ml-3 text-xs mt-1'>tsx</div>
-              <SyntaxHighlighter language='jsx' style={vscDarkPlus}>
-                {code3}
-              </SyntaxHighlighter>
-
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 7 }}
-            className="  text-md flex flex-col mt-3 mb-32">
-            <h1 className='opacity-75'>4. Styling – Add some minimal Tailwind or CSS for better UI (optional):</h1>
-            <div className='h-20 w-full bg-zinc-950 rounded-xl mt-2 mb-4'>
-              <div className='ml-3 text-xs mt-1'>tsx</div>
-              <SyntaxHighlighter language='jsx' style={vscDarkPlus}>
-                {code4}
-              </SyntaxHighlighter>
-
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 7 }}
-            className="absolute text-md bottom-0 w-full flex justify-center items-center">
-            {isLoad ?
-              <span className='mb-3'>
-                <LoaderOne />
-              </span>
-              :
-              <motion.button whileHover={{ opacity: 0.7 }} onClick={handleChange} className='bg-white text-black font-semibold px-3 py-1 rounded-full w-full'>Make changes</motion.button>}
-          </motion.div>
-        </div>
-
-      </motion.div>
-    </motion.div>
-
-  )
-}
