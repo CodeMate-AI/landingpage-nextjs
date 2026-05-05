@@ -299,6 +299,9 @@ function Page() {
 
   ///for mascot 
   useMotionValueEvent(MYProg, 'change', (latest) => {
+    // Arrow visibility (show after 5% scroll)
+    if (latest >= 0.05) setIsArrowV(true);
+    else setIsArrowV(false);
 
     if (latest >= 0.027262813522355506) setIsMascot(true);
     if (latest <= 0.027262813522355506) setIsMascot(false);
@@ -416,6 +419,14 @@ function Page() {
   }, []);
 
 
+
+  const handleArrow = () => {
+    if (isArrow) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const handleAnnouncementClick = () => {
     window.open(SWE_BENCH_BLOG_URL, '_blank', 'noopener,noreferrer');
