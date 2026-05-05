@@ -195,7 +195,7 @@ export default function SeamlessCarousel() {
                                     <img
                                         src={currentSlide.media}
                                         alt={currentSlide.title}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-contain lg:object-cover"
                                         loading="eager"
                                     />
                                 </div>
@@ -332,8 +332,8 @@ export default function SeamlessCarousel() {
                             key={idx}
                             onClick={() => { setDirection(idx > current ? 1 : -1); setCurrent(idx) }}
                             className={`h-2 rounded-full transition-all duration-300 ${idx === current
-                                    ? 'w-8 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF]'
-                                    : 'w-2 bg-white/20 hover:bg-white/40'
+                                ? 'w-8 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF]'
+                                : 'w-2 bg-white/20 hover:bg-white/40'
                                 }`}
                             aria-label={`Go to slide ${idx + 1}`}
                         />
@@ -345,8 +345,8 @@ export default function SeamlessCarousel() {
                     onClick={handleNext}
                     disabled={current === slides.length - 1}
                     className={`w-12 h-12 rounded-full bg-black border border-white/[0.08] flex items-center justify-center transition-opacity duration-200 ${current === slides.length - 1
-                            ? 'opacity-30 cursor-not-allowed'
-                            : 'opacity-100 cursor-pointer hover:opacity-70'
+                        ? 'opacity-30 cursor-not-allowed'
+                        : 'opacity-100 cursor-pointer hover:opacity-70'
                         }`}
                     aria-label="Next slide"
                 >
