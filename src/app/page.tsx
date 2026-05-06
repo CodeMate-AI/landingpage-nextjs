@@ -1457,7 +1457,7 @@ function Page() {
           </div>
 
           {/* Right: Product cards - pushed to far right */}
-          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 py-4 lg:py-8 lg:gap-2">
+          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2">
             {/* Mobile-only video */}
             <div className='lg:hidden w-full px-4 mb-8'>
               <div className='h-[45vh] w-full rounded-lg overflow-hidden'>
@@ -1507,7 +1507,7 @@ function Page() {
               viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               style={{ willChange: "transform, opacity, filter" }}
-              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-20"
+              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-4 lg:mb-20"
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
                 <div className="flex flex-col items-center lg:items-start w-full">
@@ -1609,8 +1609,8 @@ function Page() {
               initial={{ opacity: 0, filter: 'blur(10px)' }}
               whileInView={{ opacity: 1, filter: 'blur(0px)' }}
               transition={{ delay: 0.2, duration: 0.6 }}
-              className={`${montserrat.className} text-xl lg:text-2xl pr-6 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
-              From <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>Web-Application</span>
+              className={`${montserrat.className} text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+              From <br className='lg:hidden' /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>Web-Application</span>
             </motion.div>
           </div>
         </div>
