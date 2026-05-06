@@ -1564,7 +1564,7 @@ function Page() {
             <div className="relative flex-1 w-full flex items-center overflow-hidden pointer-events-none">
               <motion.div
                 style={{
-                  x: isMobile ? useTransform(PShowYProg, [0, 0.75], ["0vw", "-600vw"]) : useTransform(PShowYProg, [0, 0.85], ["0%", "-85%"]),
+                  x: isMobile ? useTransform(PShowYProg, [0, 0.75], ["0vw", "-600vw"]) : useTransform(PShowYProg, [0, 0.8], ["0%", "-72%"]),
                   willChange: 'transform'
                 }}
                 className="flex items-center gap-0 lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto lg:mt-0"
