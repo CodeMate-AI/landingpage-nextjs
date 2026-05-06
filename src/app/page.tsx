@@ -1457,7 +1457,7 @@ function Page() {
           </div>
 
           {/* Right: Product cards - pushed to far right */}
-          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 py-4 lg:py-8">
+          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 py-4 lg:py-8 lg:gap-32">
             {/* Mobile-only video */}
             <div className='lg:hidden w-full px-4 mb-8'>
               <div className='h-[45vh] w-full rounded-lg overflow-hidden'>
@@ -1476,25 +1476,25 @@ function Page() {
             ].map((product, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.15 }}
+                initial={{ opacity: 0.3, scale: 0.8, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
-                style={{ willChange: "transform, opacity" }}
-                className="w-full flex flex-col items-center lg:items-start py-2 lg:py-4 px-4 lg:px-0 snap-center"
+                style={{ willChange: "transform, opacity, filter" }}
+                className="w-full flex flex-col items-center lg:items-start py-8 px-4 lg:px-0 group"
               >
-                <a href={product.href} target="_blank" className='cursor-pointer'>
-                  <div className="flex flex-col items-center lg:items-start">
-                    <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden'>
+                <a href={product.href} target="_blank" className='cursor-pointer w-full'>
+                  <div className="flex flex-col items-center lg:items-start w-full">
+                    <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                       <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                       <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
                         <img src={product.img} className={product.imgClass} alt={product.title} />
                       </div>
                     </div>
-                    <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
-                      <h1 className='text-lg font-semibold'>{product.title}</h1>
+                    <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
+                      <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
                     </div>
-                    <p className='text-center lg:text-left opacity-70 text-sm w-[88vw] lg:w-[28vw] mt-1.5 leading-relaxed'>{product.desc}</p>
+                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] lg:w-[28vw] mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
                   </div>
                 </a>
               </motion.div>
@@ -1502,35 +1502,36 @@ function Page() {
 
             {/* PR Review Agent - special (has icons) */}
             <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.15 }}
+              initial={{ opacity: 0.3, scale: 0.8, filter: 'blur(4px)' }}
+              whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              style={{ willChange: "transform, opacity" }}
-              className="w-full flex flex-col items-center lg:items-start py-2 lg:py-4 px-4 lg:px-0 snap-center"
+              style={{ willChange: "transform, opacity, filter" }}
+              className="w-full flex flex-col items-center lg:items-start py-8 px-4 lg:px-0 group mb-20"
             >
-              <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer'>
-                <div className="flex flex-col items-center lg:items-start">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden'>
+              <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
+                <div className="flex flex-col items-center lg:items-start w-full">
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                     <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
                       <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="PR Review" />
                     </div>
                   </div>
-                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-3">
-                    <h1 className='text-lg font-semibold'>CodeMate PR Review Agent</h1>
+                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
+                    <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
                   </div>
-                  <p className='text-center lg:text-left opacity-70 text-sm w-[88vw] lg:w-[28vw] mt-1.5 leading-relaxed'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
-                  <div className='flex items-center gap-4 mt-3 opacity-70 text-white'>
-                    <FaGithub className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='GitHub' />
-                    <FaBitbucket className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='Bitbucket' />
-                    <FaGitlab className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='GitLab' />
-                    <VscAzureDevops className='w-5 h-5 hover:scale-110 transition-transform cursor-pointer' title='Azure DevOps' />
+                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] lg:w-[28vw] mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
+                  <div className='flex items-center gap-6 mt-6 opacity-60 text-white group-hover:opacity-100 transition-opacity'>
+                    <FaGithub className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitHub' />
+                    <FaBitbucket className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Bitbucket' />
+                    <FaGitlab className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitLab' />
+                    <VscAzureDevops className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Azure DevOps' />
                   </div>
                 </div>
               </a>
             </motion.div>
           </div>
+
         </div>
       </div>
       {/* scrolling bento */}
@@ -1549,7 +1550,7 @@ function Page() {
             {/* Horizontal Scrolling Content */}
             <div className="absolute left-0 top-0 h-full w-full flex items-center overflow-hidden pointer-events-none">
               <motion.div
-                style={{ 
+                style={{
                   x: isMobile ? useTransform(PShowYProg, [0, 0.9], ["0vw", "-600vw"]) : useTransform(PShowYProg, [0, 0.85], ["0%", "-85%"]),
                   willChange: 'transform'
                 }}
@@ -2042,10 +2043,10 @@ export default Page
 //       target:productRef2,
 //       offset:['start end','end start']
 //     });
-//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);  
+//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
 //   return(
 //     <>
-//     <motion.div 
+//     <motion.div
 //      initial={{opacity:0,filter:'blur(50px)'}}
 //      whileInView={{opacity:1,filter:'blur(0px)'}}
 
