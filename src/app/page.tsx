@@ -1672,8 +1672,8 @@ function Page() {
             </motion.h2>
           </div>
           <SeamlessCarousel />
-          <div className="mt-[-0.5rem] lg:mt-0">
-            <div className={`${montserrat.className} text-xl lg:text-2xl pl-6 lg:pl-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
+          <div className="mt-6 lg:mt-8 mb-4">
+            <div className={`${montserrat.className} text-xl lg:text-2xl pl-4 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
               To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>IDE</span>
             </div>
           </div>

@@ -316,15 +316,17 @@ export default function SeamlessCarousel() {
             {/* Navigation Arrows */}
             <div className="flex justify-center items-center gap-4 mt-12">
                 {/* Left Arrow */}
-                <button
+                <motion.button
+                    whileHover={current !== 0 ? { scale: 1.05, backgroundColor: "rgba(0, 191, 255, 0.1)" } : {}}
+                    whileTap={current !== 0 ? { scale: 0.95 } : {}}
                     onClick={handlePrev}
                     disabled={current === 0}
-                    className={`w-12 h-12 rounded-full bg-black border border-white/[0.08] flex items-center justify-center transition-opacity duration-200 ${current === 0 ? 'opacity-30 cursor-not-allowed' : 'opacity-100 cursor-pointer hover:opacity-70'
+                    className={`w-12 h-12 rounded-full bg-zinc-900/30 backdrop-blur-xl border border-white/10 flex items-center justify-center transition-all duration-300 ${current === 0 ? 'opacity-20 cursor-not-allowed' : 'opacity-100 cursor-pointer hover:border-[#00BFFF]/40 shadow-[0_0_20px_rgba(0,191,255,0.05)]'
                         }`}
                     aria-label="Previous slide"
                 >
                     <ChevronLeft className="text-[#00BFFF]" size={24} />
-                </button>
+                </motion.button>
 
                 {/* Slide Indicators */}
                 <div className="flex items-center gap-2">
@@ -333,7 +335,7 @@ export default function SeamlessCarousel() {
                             key={idx}
                             onClick={() => { setDirection(idx > current ? 1 : -1); setCurrent(idx) }}
                             className={`h-2 rounded-full transition-all duration-300 ${idx === current
-                                ? 'w-8 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF]'
+                                ? 'w-8 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] shadow-[0_0_10px_rgba(0,191,255,0.3)]'
                                 : 'w-2 bg-white/20 hover:bg-white/40'
                                 }`}
                             aria-label={`Go to slide ${idx + 1}`}
@@ -342,17 +344,19 @@ export default function SeamlessCarousel() {
                 </div>
 
                 {/* Right Arrow */}
-                <button
+                <motion.button
+                    whileHover={current !== slides.length - 1 ? { scale: 1.05, backgroundColor: "rgba(0, 191, 255, 0.1)" } : {}}
+                    whileTap={current !== slides.length - 1 ? { scale: 0.95 } : {}}
                     onClick={handleNext}
                     disabled={current === slides.length - 1}
-                    className={`w-12 h-12 rounded-full bg-black border border-white/[0.08] flex items-center justify-center transition-opacity duration-200 ${current === slides.length - 1
-                        ? 'opacity-30 cursor-not-allowed'
-                        : 'opacity-100 cursor-pointer hover:opacity-70'
+                    className={`w-12 h-12 rounded-full bg-zinc-900/30 backdrop-blur-xl border border-white/10 flex items-center justify-center transition-all duration-300 ${current === slides.length - 1
+                        ? 'opacity-20 cursor-not-allowed'
+                        : 'opacity-100 cursor-pointer hover:border-[#00BFFF]/40 shadow-[0_0_20px_rgba(0,191,255,0.05)]'
                         }`}
                     aria-label="Next slide"
                 >
                     <ChevronRight className="text-[#00BFFF]" size={24} />
-                </button>
+                </motion.button>
             </div>
         </section>
     )
