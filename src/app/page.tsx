@@ -1488,7 +1488,13 @@ function Page() {
                     <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                       <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                       <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
-                        <img src={product.img} className={product.imgClass} alt={product.title} />
+                        <motion.img
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.3 }}
+                          src={product.img}
+                          className={product.imgClass}
+                          alt={product.title}
+                        />
                       </div>
                     </div>
                     <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
@@ -1507,14 +1513,21 @@ function Page() {
               viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               style={{ willChange: "transform, opacity, filter" }}
-              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-4 lg:mb-20"
+              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-0 lg:mb-20"
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
                 <div className="flex flex-col items-center lg:items-start w-full">
                   <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                     <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
-                      <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="PR Review" />
+                      <motion.img
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
+                        ref={codeMateImageRef}
+                        src="/prneww.png"
+                        className="object-fit size-[90%] shadow-2xl"
+                        alt="PR Review"
+                      />
                     </div>
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
@@ -1541,20 +1554,20 @@ function Page() {
 
 
 
-      <div className='-z-20'>
+      <div>
 
         {/* horizontal scroll section: What You'll Unlock */}
-        <div ref={productShowRef} className='relative h-[800vh] lg:h-[500vh] w-full bg-zinc-950'>
+        <div ref={productShowRef} className='relative h-[400vh] lg:h-[500vh] w-full bg-zinc-950'>
 
-          <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center">
+          <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center lg:items-center lg:pt-0">
             {/* Horizontal Scrolling Content */}
-            <div className="absolute left-0 top-0 h-full w-full flex items-center overflow-hidden pointer-events-none">
+            <div className="relative flex-1 w-full flex items-center overflow-hidden pointer-events-none">
               <motion.div
                 style={{
-                  x: isMobile ? useTransform(PShowYProg, [0, 0.9], ["0vw", "-600vw"]) : useTransform(PShowYProg, [0, 0.85], ["0%", "-85%"]),
+                  x: isMobile ? useTransform(PShowYProg, [0, 0.75], ["0vw", "-600vw"]) : useTransform(PShowYProg, [0, 0.85], ["0%", "-85%"]),
                   willChange: 'transform'
                 }}
-                className="flex items-center gap-0 lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto"
+                className="flex items-center gap-0 lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto lg:mt-0"
               >
 
                 {/* Scrolling Title */}
@@ -1573,7 +1586,7 @@ function Page() {
                     { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/build_figma_GIF.gif", isVideo: false },
                     { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skills_gif.gif", isVideo: false },
                     { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "https://drive.codemate.ai/CORA.mp4", isVideo: true },
-                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops) and automate your entire code reviews. summarizing changes, detecting bugs, and catching security flaws. Ship clean code to production up to 80% faster.", media: "https://drive.codemate.ai/PR_review.mp4", isVideo: true },
+                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "https://drive.codemate.ai/PR_review.mp4", isVideo: true },
                     { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "https://drive.codemate.ai/Documentation.mp4", isVideo: true },
                   ].map((item, i) => (
                     <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
@@ -1587,9 +1600,24 @@ function Page() {
                       {/* Image/Video Box */}
                       <div className="h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] border border-white/[0.04] relative flex items-center justify-center p-1 shadow-2xl">
                         {item.isVideo ? (
-                          <video autoPlay loop muted playsInline className="w-full h-full object-contain rounded-lg" src={item.media} />
+                          <motion.video
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            className="w-full h-full object-contain rounded-lg"
+                            src={item.media}
+                          />
                         ) : (
-                          <img src={item.media} alt={item.title} className="w-full h-full object-contain rounded-lg" />
+                          <motion.img
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
+                            src={item.media}
+                            alt={item.title}
+                            className="w-full h-full object-contain rounded-lg"
+                          />
                         )}
                       </div>
 
@@ -1602,9 +1630,21 @@ function Page() {
                 </div>
               </motion.div>
             </div>
+
+            {/* From Web-Application Label (Mobile) */}
+            <div className="lg:hidden w-full px-8 pb-10 text-right pointer-events-none">
+              <motion.div
+                initial={{ opacity: 0, filter: 'blur(10px)' }}
+                whileInView={{ opacity: 1, filter: 'blur(0px)' }}
+                transition={{ delay: 0.2, duration: 0.6 }}
+                className={`${montserrat.className} text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+                From <br /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl'>Web-Application</span>
+              </motion.div>
+            </div>
           </div>
 
-          <div className='sticky top-[85vh] z-40 pointer-events-none'>
+          {/* From Web-Application Label (Desktop) */}
+          <div className='hidden lg:block sticky top-[85vh] z-40 pointer-events-none'>
             <motion.div
               initial={{ opacity: 0, filter: 'blur(10px)' }}
               whileInView={{ opacity: 1, filter: 'blur(0px)' }}
@@ -1616,8 +1656,8 @@ function Page() {
         </div>
 
         {/* Seamlessly Integrated Section with Carousel */}
-        <div className="relative w-full z-10 bg-black pb-16 pt-[5vh]">
-          <div className="pb-10 text-center">
+        <div className="relative w-full z-10 bg-black pb-4 pt-[1vh]">
+          <div className="pb-4 text-center">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -1632,7 +1672,7 @@ function Page() {
             </motion.h2>
           </div>
           <SeamlessCarousel />
-          <div className="pt-8">
+          <div className="mt-[-0.5rem] lg:mt-0">
             <div className={`${montserrat.className} text-xl lg:text-2xl pl-6 lg:pl-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
               To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>IDE</span>
             </div>
@@ -1759,7 +1799,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
 
       {/* trusted by section */}
-      <div className={`${montserrat.className} lg:pb-32 pb-20  w-full bg-zinc-950 text-white z-50`}>
+      <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
         <div className='pt-[5rem] lg:pt-[15rem]'>
           <div className="px-8 lg:px-16 ">
             <h1 className=' text-3xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
@@ -1863,13 +1903,13 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       <MediaPresence />
 
 
-      <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-20 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
+      <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
 
       {/* ========================================== */}
       {/* UI SECTION: TESTIMONIALS & REVIEWS       */}
       {/* Scrolling carousel of user feedback and trust markers */}
       {/* ========================================== */}
-      <div ref={testiRef} className='relative h-[400vh] w-full bg-zinc-950 '>
+      <div ref={testiRef} className='relative h-[300vh] w-full bg-zinc-950 '>
 
 
         <div className=' sticky top-0   h-screen w-full overflow-x-hidden '>
@@ -1904,7 +1944,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
               <motion.div
                 style={{ y: tdiv1X }}
-                className='absolute    lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
+                className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 10 }}
                   className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
@@ -1924,7 +1964,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
               </motion.div>
               <motion.div
                 style={{ y: tdiv2X }}
-                className='absolute     lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
+                className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 5 }}
                   className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
@@ -1942,7 +1982,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   </div>
                 </motion.div>
               </motion.div>
-              <motion.div style={{ y: tdiv3X }} className='absolute lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+              <motion.div style={{ y: tdiv3X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 0 }}
                   className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
@@ -1960,7 +2000,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   </div>
                 </motion.div>
               </motion.div>
-              <motion.div style={{ y: tdiv4X }} className='absolute   lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+              <motion.div style={{ y: tdiv4X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: -5 }}
                   className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
@@ -1978,7 +2018,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   </div>
                 </motion.div>
               </motion.div>
-              <motion.div style={{ y: tdiv5X }} className='absolute    lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+              <motion.div style={{ y: tdiv5X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: -10 }}
                   className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
@@ -2033,6 +2073,22 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 }
 
 export default Page
+
+
+
+// function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
+
+//   const feature2Ref = useRef<HTMLDivElement>(null);
+//   const {scrollYProgress:p2YProg} = useScroll({
+//       target:productRef2,
+//       offset:['start end','end start']
+//     });
+//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
+//   return(
+//     <>
+//     <motion.div
+//      initial={{opacity:0,filter:'blur(50px)'}}
+//      whileInView={{opacity:1,filter:'blur(0px)'}}
 
 
 

@@ -175,10 +175,10 @@ export default function SeamlessCarousel() {
     const currentSlide = slides[current]
 
     return (
-        <section className="w-full bg-black py-16 lg:py-24 px-4 lg:px-8 overflow-hidden">
+        <section className="w-full bg-black py-4 lg:py-12 px-4 lg:px-8 overflow-hidden">
             <div className="max-w-[1400px] mx-auto grid lg:grid-cols-[60%_40%] gap-8 items-center">
                 {/* Left Side: Media Player */}
-                <div className="flex items-center justify-center min-h-[400px] lg:min-h-[500px]">
+                <div className="flex items-center justify-center min-h-[250px] lg:min-h-[500px]">
                     <AnimatePresence mode="wait" custom={direction}>
                         <motion.div
                             key={current}
@@ -189,6 +189,7 @@ export default function SeamlessCarousel() {
                             exit="exit"
                             transition={slideTransition}
                             className="w-full"
+                            whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
                         >
                             {currentSlide.type === 'gif' ? (
                                 <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-video flex items-center justify-center">
