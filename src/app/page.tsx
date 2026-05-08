@@ -25,6 +25,7 @@ import Footer from '@/components/footer';
 import VideoEmbed from '@/components/video';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
+import SmartGif from '@/components/ui/SmartGif';
 import Achivements from '@/components/achivements';
 import MediaPresence from '@/components/media-presence';
 import { cn } from './utils/cn';
@@ -1488,9 +1489,7 @@ function Page() {
                     <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                       <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                       <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
-                        <motion.img
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.3 }}
+                        <SmartGif
                           src={product.img}
                           className={product.imgClass}
                           alt={product.title}
