@@ -345,7 +345,7 @@ function Page() {
     Object.entries(unlockVideoRefs.current).forEach(([key, video]) => {
       if (!video) return;
       if (Number(key) === unlockStep) {
-        video.play().catch(() => {});
+        video.play().catch(() => { });
       } else {
         video.pause();
       }
@@ -1604,62 +1604,63 @@ function Page() {
                     const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 6 : 14;
 
                     return (
-                    <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
-                      <div
-                        className="flex flex-col transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
-                        style={{
-                          opacity: proximityOpacity,
-                          filter: `blur(${proximityBlur}px)`,
-                          transform: `scale(${proximityScale}) translateY(${proximityY}px)`,
-                        }}
-                      >
-                        {/* Top Text */}
-                        <div className="flex flex-col mb-4 gap-2">
-                          <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div>
-                          <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
-                        </div>
-
-                        {/* Image/Video Box */}
+                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
                         <div
-                          className={`h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
+                          className="flex flex-col gap-6 transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
+                          style={{
+                            opacity: proximityOpacity,
+                            filter: `blur(${proximityBlur}px)`,
+                            transform: `scale(${proximityScale}) translateY(${proximityY}px)`,
+                          }}
                         >
-                          {/* Subtle radial glow behind active card media */}
-                          {isActive && (
-                            <div className="absolute inset-0 rounded-xl bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.06)_0%,transparent_70%)] pointer-events-none" />
-                          )}
-                          {item.isVideo ? (
-                            <video
-                              ref={(el) => { unlockVideoRefs.current[i] = el }}
-                              loop
-                              muted
-                              playsInline
-                              className="w-full h-full object-contain rounded-lg relative z-10"
-                              src={item.media}
-                            />
-                          ) : (
-                            <SmartGif
-                              src={item.media}
-                              alt={item.title}
-                              className="w-full h-full object-contain rounded-lg relative z-10"
-                              isActive={isActive}
-                            />
-                          )}
-                        </div>
+                          {/* Top Text */}
+                          <div className="flex flex-col gap-2">
+                            <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div>
+                            <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
+                          </div>
 
-                        {/* Bottom Description */}
-                        <div className="flex flex-col mt-5 pr-2">
-                          <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
+                          {/* Image/Video Box */}
+                          <div
+                            className={`h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
+                          >
+                            {/* Subtle radial glow behind active card media */}
+                            {isActive && (
+                              <div className="absolute inset-0 rounded-xl bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.06)_0%,transparent_70%)] pointer-events-none" />
+                            )}
+                            {item.isVideo ? (
+                              <video
+                                ref={(el) => { unlockVideoRefs.current[i] = el }}
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-contain rounded-lg relative z-10"
+                                src={item.media}
+                              />
+                            ) : (
+                              <SmartGif
+                                src={item.media}
+                                alt={item.title}
+                                className="w-full h-full object-contain rounded-lg relative z-10"
+                                isActive={isActive}
+                              />
+                            )}
+                          </div>
+
+                          {/* Bottom Description */}
+                          <div className="flex flex-col gap-4 pr-2">
+                            <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  )})}
+                    )
+                  })}
                 </div>
               </motion.div>
             </div>
 
             {/* Step Indicator Dots */}
             {unlockStep >= 0 && (
-              <div className="absolute bottom-36 lg:bottom-28 left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
+              <div className="absolute bottom-[14vh] lg:bottom-[12vh] left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
                 {[0, 1, 2, 3, 4, 5].map((dot) => (
                   <div
                     key={dot}
@@ -1676,7 +1677,7 @@ function Page() {
             )}
 
             {/* From Web-Application Label (Mobile) */}
-            <div className="lg:hidden w-full px-8 pb-10 text-right pointer-events-none">
+            <div className="lg:hidden w-full px-8 pt-10 pb-8 text-right pointer-events-none">
               <motion.div
                 initial={{ opacity: 0, filter: 'blur(10px)' }}
                 whileInView={{ opacity: 1, filter: 'blur(0px)' }}
@@ -1688,7 +1689,7 @@ function Page() {
           </div>
 
           {/* From Web-Application Label (Desktop) */}
-          <div className='hidden lg:block sticky top-[85vh] z-40 pointer-events-none'>
+          <div className='hidden lg:block sticky top-[88vh] z-40 pointer-events-none'>
             <motion.div
               initial={{ opacity: 0, filter: 'blur(10px)' }}
               whileInView={{ opacity: 1, filter: 'blur(0px)' }}
@@ -1700,8 +1701,8 @@ function Page() {
         </div>
 
         {/* Seamlessly Integrated Section with Carousel */}
-        <div className="relative w-full z-10 bg-black pb-4 pt-[1vh]">
-          <div className="pb-4 text-center">
+        <div className="relative w-full z-10 bg-black py-10 lg:py-12">
+          <div className="pb-2 text-center">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
