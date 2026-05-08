@@ -1525,7 +1525,7 @@ function Page() {
               viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               style={{ willChange: "transform, opacity, filter" }}
-              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-0 lg:mb-20"
+              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-0 lg:mb-4"
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
                 <div className="flex flex-col items-center lg:items-start w-full">
@@ -1563,7 +1563,7 @@ function Page() {
 
       <div>
         {/* horizontal scroll section: What You'll Unlock */}
-        <div ref={productShowRef} className='relative h-[350vh] lg:h-[430vh] w-full bg-zinc-950'>
+        <div ref={productShowRef} className='relative h-[350vh] lg:h-[430vh] w-full bg-zinc-950 -mt-[10vh] lg:-mt-[15vh]'>
 
           <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center lg:items-center lg:pt-0">
             {/* Horizontal Scrolling Content */}
