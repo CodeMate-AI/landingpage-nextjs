@@ -6,15 +6,12 @@ interface SmartGifProps {
   src: string
   alt: string
   className?: string
+  /** When provided, overrides the built-in IntersectionObserver.
+   *  true = play the GIF, false = freeze it. */
+  isActive?: boolean
 }
 
-/**
- * SmartGif – plays a GIF only when the element is near the vertical
- * centre of the viewport; freezes on the last-visible frame otherwise.
- *
- * For non-GIF sources it renders a plain <motion.img>.
- */
-const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className }) => {
+const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: externalActive }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -22,6 +19,8 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className }) => {
   const [hasFrame, setHasFrame] = useState(false)
 
   const isGif = src.toLowerCase().endsWith('.gif')
+  const isExternallyControlled = externalActive !== undefined
+  const shouldPlay = isExternallyControlled ? !!externalActive : isInView
 
   /* ---- capture whatever frame the <img> is currently showing ---- */
   const captureFrame = useCallback(() => {
@@ -37,22 +36,20 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className }) => {
     }
   }, [])
 
-  /* ---- IntersectionObserver: centre-of-viewport detection ---- */
+  /* ---- IntersectionObserver: only when NOT externally controlled ---- */
   useEffect(() => {
-    if (!isGif || !containerRef.current) return
+    if (isExternallyControlled || !isGif || !containerRef.current) return
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true)
         } else {
-          // freeze the current frame before hiding the GIF
           captureFrame()
           setIsInView(false)
         }
       },
       {
-        // only the middle ~30 % of the viewport counts as "in view"
         rootMargin: '-35% 0px -35% 0px',
         threshold: 0.05,
       },
@@ -60,7 +57,15 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className }) => {
 
     observer.observe(containerRef.current)
     return () => observer.disconnect()
-  }, [isGif, captureFrame])
+  }, [isGif, captureFrame, isExternallyControlled])
+
+  /* ---- External control: capture frame when going inactive ---- */
+  useEffect(() => {
+    if (!isExternallyControlled || !isGif) return
+    if (!externalActive) {
+      captureFrame()
+    }
+  }, [externalActive, isExternallyControlled, isGif, captureFrame])
 
   /* ---- non-GIF: pass-through ---- */
   if (!isGif) {
@@ -88,7 +93,7 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className }) => {
         ref={canvasRef}
         className={className}
         style={{
-          display: !isInView && hasFrame ? 'block' : 'none',
+          display: !shouldPlay && hasFrame ? 'block' : 'none',
           maxWidth: '100%',
           height: 'auto'
         }}
@@ -101,12 +106,10 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className }) => {
         className={className}
         alt={alt}
         onLoad={() => {
-          // grab first frame so we always have a fallback
-          // Delaying slightly to ensure the GIF engine has rendered at least one frame
           setTimeout(captureFrame, 250)
         }}
         style={{
-          display: isInView || !hasFrame ? 'block' : 'none',
+          display: shouldPlay || !hasFrame ? 'block' : 'none',
         }}
       />
     </motion.div>

@@ -176,6 +176,7 @@ function Page() {
   const [isLoad, setIsLoad] = useState(false);
   const [isLoad2, setIsLoad2] = useState(false);
   const exploreRef = useRef<HTMLDivElement>(null);
+  const unlockVideoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
   const title = ["Don't", "be", "techy", "to"];
   const title2 = ["Develop", "Softwares"];
   const [isTitle, setIstitle] = useState(false);
@@ -338,6 +339,18 @@ function Page() {
     else if (latest < UNLOCK_STEP * 5) setUnlockStep(4);
     else setUnlockStep(5);
   });
+
+  // Play/pause videos in "What You'll Unlock" based on active step
+  useEffect(() => {
+    Object.entries(unlockVideoRefs.current).forEach(([key, video]) => {
+      if (!video) return;
+      if (Number(key) === unlockStep) {
+        video.play().catch(() => {});
+      } else {
+        video.pause();
+      }
+    });
+  }, [unlockStep]);
 
   // Block CORA.mp4 while the CodeMate Chat image is on screen
   useMotionValueEvent(codeMateImageProg, 'change', (latest) => {
@@ -1589,38 +1602,45 @@ function Page() {
                     { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "https://drive.codemate.ai/Documentation.mp4", isVideo: true },
                   ].map((item, i) => (
                     <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
+                      <div
+                        className="flex flex-col transition-all duration-700 ease-out"
+                        style={{
+                          opacity: unlockStep === -1 ? 1 : (i === unlockStep ? 1 : 0.2),
+                          filter: unlockStep === -1 ? 'blur(0px)' : (i === unlockStep ? 'blur(0px)' : 'blur(5px)'),
+                          transform: unlockStep === -1 ? 'scale(1)' : (i === unlockStep ? 'scale(1.02)' : 'scale(0.93)'),
+                        }}
+                      >
+                        {/* Top Text */}
+                        <div className="flex flex-col mb-4 gap-2">
+                          <div className="text-[#00BFFF] font-mono text-[15px] font-bold tracking-wider">[{item.id}]</div>
+                          <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold text-white leading-snug`}>{item.title}</h3>
+                        </div>
 
-                      {/* Top Text */}
-                      <div className="flex flex-col mb-4 gap-2">
-                        <div className="text-[#00BFFF] font-mono text-[15px] font-bold tracking-wider">[{item.id}]</div>
-                        <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold text-white leading-snug`}>{item.title}</h3>
-                      </div>
+                        {/* Image/Video Box */}
+                        <div className={`h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 shadow-2xl transition-all duration-700 ${i === unlockStep ? 'border border-[#00BFFF]/20 shadow-[0_0_30px_rgba(0,191,255,0.12)]' : 'border border-white/[0.04]'}`}>
+                          {item.isVideo ? (
+                            <video
+                              ref={(el) => { unlockVideoRefs.current[i] = el }}
+                              loop
+                              muted
+                              playsInline
+                              className="w-full h-full object-contain rounded-lg"
+                              src={item.media}
+                            />
+                          ) : (
+                            <SmartGif
+                              src={item.media}
+                              alt={item.title}
+                              className="w-full h-full object-contain rounded-lg"
+                              isActive={i === unlockStep}
+                            />
+                          )}
+                        </div>
 
-                      {/* Image/Video Box */}
-                      <div className="h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] border border-white/[0.04] relative flex items-center justify-center p-1 shadow-2xl">
-                        {item.isVideo ? (
-                          <motion.video
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.3 }}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            className="w-full h-full object-contain rounded-lg"
-                            src={item.media}
-                          />
-                        ) : (
-                          <SmartGif
-                            src={item.media}
-                            alt={item.title}
-                            className="w-full h-full object-contain rounded-lg"
-                          />
-                        )}
-                      </div>
-
-                      {/* Bottom Description */}
-                      <div className="flex flex-col mt-5 pr-2">
-                        <p className="text-[#999] text-[14px] lg:text-[16px] leading-relaxed">{item.desc}</p>
+                        {/* Bottom Description */}
+                        <div className="flex flex-col mt-5 pr-2">
+                          <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-colors duration-700 ${i === unlockStep ? 'text-[#ccc]' : 'text-[#999]'}`}>{item.desc}</p>
+                        </div>
                       </div>
                     </div>
                   ))}
