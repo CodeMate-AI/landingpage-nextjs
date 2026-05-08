@@ -1561,15 +1561,9 @@ function Page() {
       </div>
       {/* scrolling bento */}
 
-
-
-
-
-
       <div>
-
         {/* horizontal scroll section: What You'll Unlock */}
-        <div ref={productShowRef} className='relative h-[400vh] lg:h-[500vh] w-full bg-zinc-950'>
+        <div ref={productShowRef} className='relative h-[350vh] lg:h-[430vh] w-full bg-zinc-950'>
 
           <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center lg:items-center lg:pt-0">
             {/* Horizontal Scrolling Content */}
@@ -1583,7 +1577,7 @@ function Page() {
               >
 
                 {/* Scrolling Title */}
-                <div className="w-[100vw] lg:w-[35vw] flex flex-col justify-center shrink-0 px-8 lg:px-0">
+                <div className="w-[60vw] lg:w-[35vw] flex flex-col justify-center shrink-0 px-8 lg:px-0">
                   <div className={`${montserrat.className} text-[2.5rem] lg:text-[3.5rem] leading-[1.1] font-bold text-white`}>
                     What You'll
                     <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent block'> Unlock</span>
@@ -1665,7 +1659,7 @@ function Page() {
 
             {/* Step Indicator Dots */}
             {unlockStep >= 0 && (
-              <div className="absolute bottom-6 lg:bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
+              <div className="absolute bottom-36 lg:bottom-28 left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
                 {[0, 1, 2, 3, 4, 5].map((dot) => (
                   <div
                     key={dot}
