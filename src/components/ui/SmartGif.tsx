@@ -77,33 +77,39 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className }) => {
 
   /* ---- GIF: canvas freeze / img play ---- */
   return (
-    <div ref={containerRef} className="relative inline-flex items-center justify-center w-full h-full">
+    <motion.div 
+      ref={containerRef} 
+      whileHover={{ scale: 1.05 }}
+      transition={{ duration: 0.3 }}
+      className="relative inline-flex items-center justify-center w-full h-full cursor-pointer"
+    >
       {/* Frozen frame (canvas) – visible when GIF is NOT playing */}
       <canvas
         ref={canvasRef}
         className={className}
         style={{
           display: !isInView && hasFrame ? 'block' : 'none',
+          maxWidth: '100%',
+          height: 'auto'
         }}
       />
 
       {/* Live GIF – visible when in viewport centre */}
-      <motion.img
+      <img
         ref={imgRef}
-        whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.3 }}
         src={src}
         className={className}
         alt={alt}
         onLoad={() => {
           // grab first frame so we always have a fallback
-          if (!hasFrame) setTimeout(captureFrame, 150)
+          // Delaying slightly to ensure the GIF engine has rendered at least one frame
+          setTimeout(captureFrame, 250)
         }}
         style={{
           display: isInView || !hasFrame ? 'block' : 'none',
         }}
       />
-    </div>
+    </motion.div>
   )
 }
 

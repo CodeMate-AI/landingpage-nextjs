@@ -1610,9 +1610,7 @@ function Page() {
                             src={item.media}
                           />
                         ) : (
-                          <motion.img
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ duration: 0.3 }}
+                          <SmartGif
                             src={item.media}
                             alt={item.title}
                             className="w-full h-full object-contain rounded-lg"
