@@ -1600,53 +1600,86 @@ function Page() {
                     { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "https://drive.codemate.ai/CORA.mp4", isVideo: true },
                     { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "https://drive.codemate.ai/PR_review.mp4", isVideo: true },
                     { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "https://drive.codemate.ai/Documentation.mp4", isVideo: true },
-                  ].map((item, i) => (
+                  ].map((item, i) => {
+                    // Proximity-based effects: adjacent cards get softer treatment
+                    const dist = unlockStep === -1 ? 0 : Math.abs(i - unlockStep);
+                    const isActive = i === unlockStep;
+                    const proximityOpacity = unlockStep === -1 ? 1 : isActive ? 1 : dist === 1 ? 0.35 : 0.12;
+                    const proximityBlur = unlockStep === -1 ? 0 : isActive ? 0 : dist === 1 ? 2.5 : 7;
+                    const proximityScale = unlockStep === -1 ? 1 : isActive ? 1.03 : dist === 1 ? 0.96 : 0.9;
+                    const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 6 : 14;
+
+                    return (
                     <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
                       <div
-                        className="flex flex-col transition-all duration-700 ease-out"
+                        className="flex flex-col transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
                         style={{
-                          opacity: unlockStep === -1 ? 1 : (i === unlockStep ? 1 : 0.2),
-                          filter: unlockStep === -1 ? 'blur(0px)' : (i === unlockStep ? 'blur(0px)' : 'blur(5px)'),
-                          transform: unlockStep === -1 ? 'scale(1)' : (i === unlockStep ? 'scale(1.02)' : 'scale(0.93)'),
+                          opacity: proximityOpacity,
+                          filter: `blur(${proximityBlur}px)`,
+                          transform: `scale(${proximityScale}) translateY(${proximityY}px)`,
                         }}
                       >
                         {/* Top Text */}
                         <div className="flex flex-col mb-4 gap-2">
-                          <div className="text-[#00BFFF] font-mono text-[15px] font-bold tracking-wider">[{item.id}]</div>
-                          <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold text-white leading-snug`}>{item.title}</h3>
+                          <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div>
+                          <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
                         </div>
 
                         {/* Image/Video Box */}
-                        <div className={`h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 shadow-2xl transition-all duration-700 ${i === unlockStep ? 'border border-[#00BFFF]/20 shadow-[0_0_30px_rgba(0,191,255,0.12)]' : 'border border-white/[0.04]'}`}>
+                        <div
+                          className={`h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
+                        >
+                          {/* Subtle radial glow behind active card media */}
+                          {isActive && (
+                            <div className="absolute inset-0 rounded-xl bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.06)_0%,transparent_70%)] pointer-events-none" />
+                          )}
                           {item.isVideo ? (
                             <video
                               ref={(el) => { unlockVideoRefs.current[i] = el }}
                               loop
                               muted
                               playsInline
-                              className="w-full h-full object-contain rounded-lg"
+                              className="w-full h-full object-contain rounded-lg relative z-10"
                               src={item.media}
                             />
                           ) : (
                             <SmartGif
                               src={item.media}
                               alt={item.title}
-                              className="w-full h-full object-contain rounded-lg"
-                              isActive={i === unlockStep}
+                              className="w-full h-full object-contain rounded-lg relative z-10"
+                              isActive={isActive}
                             />
                           )}
                         </div>
 
                         {/* Bottom Description */}
                         <div className="flex flex-col mt-5 pr-2">
-                          <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-colors duration-700 ${i === unlockStep ? 'text-[#ccc]' : 'text-[#999]'}`}>{item.desc}</p>
+                          <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
                         </div>
                       </div>
                     </div>
-                  ))}
+                  )})}
                 </div>
               </motion.div>
             </div>
+
+            {/* Step Indicator Dots */}
+            {unlockStep >= 0 && (
+              <div className="absolute bottom-6 lg:bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
+                {[0, 1, 2, 3, 4, 5].map((dot) => (
+                  <div
+                    key={dot}
+                    className="transition-all duration-500 rounded-full"
+                    style={{
+                      width: dot === unlockStep ? 28 : 8,
+                      height: 8,
+                      backgroundColor: dot === unlockStep ? '#00BFFF' : 'rgba(255,255,255,0.2)',
+                      boxShadow: dot === unlockStep ? '0 0 12px rgba(0,191,255,0.5)' : 'none',
+                    }}
+                  />
+                ))}
+              </div>
+            )}
 
             {/* From Web-Application Label (Mobile) */}
             <div className="lg:hidden w-full px-8 pb-10 text-right pointer-events-none">
