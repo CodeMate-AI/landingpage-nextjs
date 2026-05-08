@@ -1453,7 +1453,7 @@ function Page() {
         {/* ========================================== */}
         <div className={`${montserrat.className} mt-4 leading-[1] text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
 
-        <div className={`relative w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
+        <div className={`relative z-20 w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
           {/* Left: Sticky video panel - desktop only */}
           <div className='hidden lg:flex sticky top-0 h-screen flex-1 items-center justify-center px-8'>
             <div className="flex flex-col gap-2 w-full max-w-[58vw]">
@@ -1471,7 +1471,7 @@ function Page() {
           </div>
 
           {/* Right: Product cards - pushed to far right */}
-          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2">
+          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2 pb-8">
             {/* Mobile-only video */}
             <div className='lg:hidden w-full px-4 mb-8'>
               <div className='h-[45vh] w-full rounded-lg overflow-hidden'>
@@ -1525,7 +1525,7 @@ function Page() {
               viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               style={{ willChange: "transform, opacity, filter" }}
-              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-0 lg:mb-4"
+              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-8 lg:mb-4"
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
                 <div className="flex flex-col items-center lg:items-start w-full">
@@ -1563,7 +1563,7 @@ function Page() {
 
       <div>
         {/* horizontal scroll section: What You'll Unlock */}
-        <div ref={productShowRef} className='relative h-[350vh] lg:h-[430vh] w-full bg-zinc-950 -mt-[10vh] lg:-mt-[15vh]'>
+        <div ref={productShowRef} className='relative z-10 h-[350vh] lg:h-[430vh] w-full bg-zinc-950 -mt-[12vh] lg:-mt-[15vh]'>
 
           <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center lg:items-center lg:pt-0">
             {/* Horizontal Scrolling Content */}
