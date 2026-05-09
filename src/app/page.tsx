@@ -7,15 +7,14 @@ import { IconArrowLeft, IconArrowRight, IconArrowBadgeDown } from '@tabler/icons
 import StaggeredMenu from '@/components/ui/Menu';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
-import AutoCodeEditor from '@/components/motion-components/aEditor';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import { TextAnimate } from '@/components/ui/textAnimate'
 import MagicBento from '@/components/ui/magicBento';
 import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
-import CodeEditor from '@/components/motion-components/editor'
 import { LoaderFive, LoaderOne } from '@/components/ui/loader';
 import { TypingAnimation, AnimatedSpan } from '@/components/ui/terminal';
+import SeamlessCarousel from '@/components/SeamlessCarousel';
 
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -24,10 +23,11 @@ import { useRouter } from 'next/navigation';
 import Footer from '@/components/footer';
 
 import VideoEmbed from '@/components/video';
-import ReviewCodeEditor from '@/components/motion-components/rEditor';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
+import SmartGif from '@/components/ui/SmartGif';
 import Achivements from '@/components/achivements';
+import MediaPresence from '@/components/media-presence';
 import { cn } from './utils/cn';
 import EventOffer from './pricing/components/EventOffer';
 
@@ -44,7 +44,16 @@ const montserrat2 = Montserrat({
 });
 
 
+// ==========================================
+// 1. MAIN COMPONENT DECLARATION
+// The root Page component for the landing page.
+// Handles core state, scroll tracking (Framer Motion), and renders all sub-sections.
+// ==========================================
 function Page() {
+  // ==========================================
+  // 1A. MOCK DATA & CONTENT
+  // Data arrays used to populate interactive code editor simulations
+  // ==========================================
   const brokenComponent = [
     { code: "import React from 'react'", isError: false },
     { code: "", isError: false },
@@ -59,6 +68,11 @@ function Page() {
     { code: "    console.logg('Name is:', name)", isError: true }, // ❌ typo `logg`
     { code: "  }, [nam])", isError: true }, // ❌ `nam` is not defined
     { code: "", isError: false },
+    // ==========================================
+    // 2. MAIN PAGE RENDER (JSX)
+    // Renders the entire landing page sequentially:
+    // Nav -> Hero -> Products -> Testimonials -> Footer
+    // ==========================================
     { code: "  return (", isError: false },
     { code: "    <div>", isError: false },
     { code: "      <h1>Hello, {namee}</h1>", isError: true }, // ❌ `namee` is a typo
@@ -94,56 +108,9 @@ function Page() {
   ];
 
 
-  const AfterReviewComponent = [
-    { code: "import { useState } from 'react'", },
-    { code: "export default function Counter() {", },
-    { code: "const [count, setCount] = useState(0)", },
-    { code: "  return (", },
-    { code: " <div className='flex items-center gap-4'>", isError: true },
-    { code: " <h2 className='text-xl font-bold'>Count: {count}</h2>", isError: true },
-    { code: "" },
-    { code: " <button aria-label='Increase count'  className='px-3 py-1", isError: true },
-    { code: "bg-green-500 text-white rounded'", isError: true },
-    { code: "onClick={() => setCount((prev) => prev + 1)}>+</button>", isError: true },
-    { code: "" },
-    { code: "<button aria-label='Decrease count' className='px-3", isError: true },
-    { code: "py-1 bg-green-500 text-white rounded'", isError: true },
-    { code: " onClick={() => setCount((prev) => Math.max(prev - 1, 0))}>-</button>", isError: true },
-    { code: "" },
-    { code: "    </div>", },
-    { code: "  )", },
-    { code: "}", },
-  ];
-
-  const ReviewComponent = [
-    { code: "import { useState } from 'react'", },
-    { code: "", },
-    { code: "export default function Counter() {", },
-    { code: "  const [count, setCount] = useState(0)", },
-    { code: "", },
-    { code: "  return (", },
-    { code: "    <div>", },
-    { code: "      <h2>Count: {count}</h2>", },
-    { code: "      <button onClick={() => setCount(count + 1)}>+</button>", },
-    { code: "      <button onClick={() => setCount(count - 1)}>-</button>", },
-    { code: "    </div>", },
-    { code: "  )", },
-    { code: "}", },
-  ];
-
-  const AutoCompleteComponent = [
-    { code: "import { useState } from 'react'", },
-    { code: "", },
-    { code: "export default function ThemeToggle() {", },
-    { code: "  const [dark, setDark] = useState(false)", },
-    { code: "  return (", },
-    { code: "    <div className={dark ? 'bg-black text-white p-4' : 'bg-white text-black p-4'}>", },
-    { code: "      <p>{dark ? 'Dark Mode 🌙' : 'Light Mode ☀️'}</p>", },
-    { code: "      <button onClick={() => setDark(!dark)}>Toggle</button>", },
-    { code: "    </div>", },
-    { code: "  )", },
-    { code: "}", },
-  ];
+  // ==========================================
+  // 1B. NAVIGATION CONFIGURATION
+  // ==========================================
   const navItems = [
     {
       name: "Home",
@@ -164,6 +131,11 @@ function Page() {
     },
   ];
   const router = useRouter();
+  // ==========================================
+  // 1C. REFS & COMPONENT STATE
+  // React state hooks for toggling UI elements (menus, overlays, modals)
+  // and Refs for tracking scroll positions of specific sections.
+  // ==========================================
   const heroRef = useRef<HTMLDivElement>(null);
   const heroRef2 = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
@@ -177,6 +149,14 @@ function Page() {
   const [mat3, setMat3] = useState(0);
   const [IsMascot, setIsMascot] = useState(false);
   const [isNBack, setIsNBack] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   const [isMenu, setMenu] = useState(false);
   const [isArrowV, setIsArrowV] = useState(false);
   const [isProducts, setIsProducts] = useState(false);
@@ -185,64 +165,40 @@ function Page() {
   const [isArrow, setIsArrow] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [announcementHeight, setAnnouncementHeight] = useState(0);
-  const [isP1, setIsP1] = useState(false);
-  const [isP2, setIsP2] = useState(false);
-  const [isAuto, setIsAuto] = useState(false);
   const [isCoraBlocked, setIsCoraBlocked] = useState(true);
   const [showEventPopup, setShowEventPopup] = useState(false);
-  const [isShowProd, setIsShowProd] = useState(true);
-  const [isProds, setIsProds] = useState(false);
-  const [isFix, setIsFix] = useState(false);
-  const [isFix2, setIsFix2] = useState(false);
-  const [reviewBtn, setReviewBtn] = useState(true);
-  const [isRef1, setIsRef1] = useState(false);
-  const [isRef2, setIsRef2] = useState(false);
-  const [isRef3, setIsRef3] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
   const feature1Ref = useRef<HTMLDivElement>(null);
-  const drawer1Ref = useRef<HTMLDivElement>(null);
-  const drawer2Ref = useRef<HTMLDivElement>(null);
-  const editor2Ref = useRef<HTMLDivElement>(null);
   const testiRef = useRef<HTMLDivElement>(null);
-  const prodRef = useRef<HTMLDivElement>(null);
-  const Ref1 = useRef<HTMLDivElement>(null);
-  const Ref2 = useRef<HTMLDivElement>(null);
-  const Ref3 = useRef<HTMLDivElement>(null);
   const productShowRef = useRef<HTMLDivElement>(null);
   const codeMateImageRef = useRef<HTMLImageElement>(null);
   const unlockCopyRef = useRef<HTMLParagraphElement>(null);
-  const codeOverlayRef = useRef<HTMLDivElement>(null);
-  const codeOverlayRef2 = useRef<HTMLDivElement>(null);
   const [isLoad, setIsLoad] = useState(false);
   const [isLoad2, setIsLoad2] = useState(false);
-  const debugBtnRef = useRef<HTMLButtonElement>(null);
-  const productRef = useRef<HTMLDivElement>(null);
-  const productRef2 = useRef<HTMLDivElement>(null);
-  const productsWrapper = useRef<HTMLDivElement>(null);
   const exploreRef = useRef<HTMLDivElement>(null);
+  const unlockVideoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
   const title = ["Don't", "be", "techy", "to"];
   const title2 = ["Develop", "Softwares"];
   const [isTitle, setIstitle] = useState(false);
+  // ==========================================
+  // 1D. SCROLL ANIMATION HOOKS (FRAMER MOTION)
+  // Extensive use of useScroll() and useTransform() to create
+  // parallax effects, fade-ins, and scroll-linked interactions across the page.
+  // ==========================================
   const { scrollYProgress: shadingProgress } = useScroll({
     target: heroRef,
     offset: ['end end', 'end start']
   })
   const shadingHeight = useTransform(shadingProgress, [0, 1], [0, 1000]);
 
-  const { scrollYProgress: p1YProg } = useScroll({
-    target: productRef,
-    offset: ['start start', 'end start']
-  });
 
   const { scrollYProgress: PShowYProg } = useScroll({
     target: productShowRef,
     offset: ['start start', 'end start']
   });
 
-  const { scrollYProgress: PShowVYProg } = useScroll({
-    target: productShowRef,
-    offset: ['start end', 'end start']
-  });
+
+
 
   const { scrollYProgress: codeMateImageProg } = useScroll({
     target: codeMateImageRef,
@@ -259,10 +215,7 @@ function Page() {
     offset: ['start start', 'end start']
   });
 
-  const { scrollYProgress: PYProg } = useScroll({
-    target: prodRef,
-    offset: ['start start', 'end start']
-  });
+
   const { scrollYProgress: MYProg } = useScroll({
     target: mainRef,
     offset: ['start start', 'end start']
@@ -274,50 +227,29 @@ function Page() {
 
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
-  const feature1Scale = useTransform(p1YProg, [0, 0.7], [1.2, 1.1]);
-  const featureTitleY = useTransform(p1YProg, [0, 0.9], [0, -500]);
-  const featureTitleOpacity = useTransform(p1YProg, [0, 0.4], [1, 0]);
-  const codeBlur = useTransform(p1YProg, [0, 0.4], ['blur(15px)', 'blur(0px)']);
-  const drawerX = useTransform(p1YProg, [0, 0.1, 0.3], [0, 45, 0]);
-  const drawerX2 = useTransform(p1YProg, [0.3, 0.4, 0.6], [0, 45, 0]);
-  const drawerX3 = useTransform(p1YProg, [0.7, 0.8], [0, 45]);
 
 
-  ///for productShowcase 
-  // const div1X = useTransform(PShowYProg, [0, 0.3], [1200, 0]);
-  // const div2X = useTransform(PShowYProg, [0.3, 0.6], [1800, 0]);
-  // const div3X = useTransform(PShowYProg, [0.5, 0.7], [2400, 0]);
+  // ========== "What you'll Unlock" section scroll math ==========
+  // Container: h-[430vh]. Offset: ['start start','end start'] → scroll distance = 430vh.
+  // Next section enters viewport bottom at PShowYProg ≈ 0.767 (= 1 − 100vh/430vh).
+  // 6 unlock steps span 0→0.76, ending just before the next section peeks in.
+  // Blank tail ≈ (0.767−0.76)×430 ≈ 3vh — virtually invisible.
+  const UNLOCK_END = 0.76;
+  const UNLOCK_STEP = UNLOCK_END / 6; // ≈ 0.1267
 
-  const height = useTransform(PShowYProg, [0, 1], [0, 600]);
+  const unlockBarY = useTransform(PShowYProg, [0, UNLOCK_END], ['0%', '100%']);
+  const headerY = useTransform(PShowYProg, [UNLOCK_END, UNLOCK_END + 0.12], [0, -200]);
 
-  const titlesX = useTransform(PShowYProg, [0, 1], [0, -550]);
-  const headerY = useTransform(PShowYProg, [0.6, 0.8], [0, -200]);
-
-  const op1 = useTransform(PShowYProg, [0, 0.2, 0.4], [1, 1, 0]);
-  const op2 = useTransform(PShowYProg, [0.2, 0.3, 0.6], [0.2, 1, 0]);
-  const op3 = useTransform(PShowYProg, [0.4, 0.5, 0.85, 0.9], [0.2, 1, 1, 0]); // Kept opaque longer
-  const op4 = useTransform(PShowYProg, [0.6, 0.8], [0.2, 1]);
-
-  // Video overlap fixes - fade out previous videos
-  const opVideo1 = useTransform(PShowYProg, [0, 0.2, 0.25], [1, 1, 0]);
-
-  const opVideo2 = useTransform(PShowYProg, [0.2, 0.25, 0.45, 0.5], [0, 1, 1, 0]);
-  const scaleVideo2 = useTransform(PShowYProg, [0.2, 0.25], [0.8, 1]);
-
-  const opVideo3 = useTransform(PShowYProg, [0.45, 0.5, 0.95, 1], [0, 1, 1, 0]);
-  const scaleVideo3 = useTransform(PShowYProg, [0.45, 0.5], [0.8, 1]);
-  const xVideo3 = useTransform(PShowYProg, [0.85, 1], [0, -350]); // Delay slide until text is up
-
-  const opVideo4 = useTransform(PShowYProg, [0.75, 0.97, 1.0], [0, 1, 1]);
-  const scaleVideo4 = useTransform(PShowYProg, [0.8, 0.97], [0.8, 1]);
+  const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
 
   ///for mobile feature section
   const mx = useTransform(MFYProg, [0, 1], [0, -1200]);
 
-  ///for code editor
-  const barY = useTransform(p1YProg, [0, 1], ["0%", "100%"]);
-
   useEffect(() => {
+    // ==========================================
+    // 1E. SMOOTH SCROLL INITIALIZATION
+    // Initializes Lenis for global smooth scrolling.
+    // ==========================================
     const lenis = new Lenis({
       duration: 2
     });
@@ -330,10 +262,11 @@ function Page() {
 
   ///codeEditor part
 
-  const scaleE = useTransform(PShowYProg, [0.5, 0.6, 0.7], [1, 1.5, 1]);
-  const xE = useTransform(PShowYProg, [0.5, 0.7], [0, -516]);
+  // [UNUSED] scaleE / xE — legacy transforms, not referenced in JSX
+  // const scaleE = useTransform(PShowYProg, [0.5, 0.6, 0.7], [1, 1.5, 1]);
+  // const xE = useTransform(PShowYProg, [0.5, 0.7], [0, -516]);
 
-  ///for testi
+  ///for testing
   const tdiv1X = useTransform(testiYProg, [0, 0.1], [700, 0]);
   const tdiv2X = useTransform(testiYProg, [0.1, 0.3], [1300, 0]);
   const tdiv3X = useTransform(testiYProg, [0.3, 0.5], [1900, 0]);
@@ -349,8 +282,9 @@ function Page() {
   const announcementRef = useRef<HTMLDivElement>(null);
 
   //for bento
-  const scaleB = useTransform(PShowYProg, [0.8, 0.9], [1, 1.5]);
-  const xB = useTransform(PShowYProg, [0.8, 0.9], [0, 550]);
+  // [UNUSED] scaleB / xB — legacy transforms, not referenced in JSX
+  // const scaleB = useTransform(PShowYProg, [0.8, 0.9], [1, 1.5]);
+  // const xB = useTransform(PShowYProg, [0.8, 0.9], [0, 550]);
 
 
   ///for mobile navbar menu
@@ -368,101 +302,16 @@ function Page() {
   ];
 
   //for codeEditor
-  function handleOverlay() {
-    codeOverlayRef.current?.classList.remove('hidden');
-    setIsLoad(true);
-    setTimeout(() => {
-
-      setIsFix(true);
-    }, 5000)
-
-    setTimeout(() => {
-      codeOverlayRef.current?.classList.add('hidden');
-      setIsLoad(false);
-    }, 16000)
-
-    setTimeout(() => {
-      debugBtnRef.current?.classList.add('hidden');
-    }, 16500);
-
-  }
-  function handleOverlayR() {
-    setIsLoad2(true);
-    setReviewBtn(false);
-  }
-  useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      if (event.key === "Tab") {
-        event.preventDefault();
-        setIsAuto(true);
-      }
-    }
-
-    document.addEventListener('keydown', handleKeyDown);
-
-    // Clean up the event listener
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
-
-  useMemo(() => {
-    if (!isRef2) {
-      setIsLoad2(false);
-    }
-  }, [isRef2]);
-
-  useMemo(() => {
-    if (!isRef1) {
-      setIsFix(false);
-    }
-  }, [isRef1]);
-
-
-  useMotionValueEvent(p1YProg, 'change', (latest) => {
-    // --- Main state handling ---
-    if (latest > 0.6) {
-      // Show Ref3 as flex, hide Ref1/Ref2, hide drawer2
-      setIsRef3(true);
-      setIsRef2(false);
-      setIsRef1(false);
-      drawer2Ref.current?.classList.add('hidden');
-    } else if (latest > 0.3) {
-      // Show Ref2, hide Ref1 & Ref3, show editor2, keep drawer2 visible
-      drawer2Ref.current?.classList.remove('hidden');
-      setIsRef1(false);
-      setIsRef3(false);
-      setIsRef2(true);
-      editor2Ref.current?.classList.remove('hidden');
-
-    } else if (latest > 0) {
-      // Show Ref1 as flex, hide Ref2, hide editor2, keep drawer2 visible
-      drawer2Ref.current?.classList.remove('hidden');
-      setIsRef1(true);
-      setIsRef2(false);
-      setIsRef3(false);
-      editor2Ref.current?.classList.add('hidden');
-
-    } else {
-      // Hide everything in the lowest range
-      drawer2Ref.current?.classList.remove('hidden');
-      setIsRef1(false);
-
-      setIsRef2(false);
-      setIsRef3(false);
-      editor2Ref.current?.classList.add('hidden');
-    }
-
-    // --- Drawer1 logic (separate condition) ---
-    if (latest > 0.5051476587223102) {
-      drawer1Ref.current?.classList.add('hidden');
-    } else {
-      drawer1Ref.current?.classList.remove('hidden');
-    }
-  });
+  // ==========================================
+  // 1F. EVENT HANDLERS
+  // Functions to manage modal overlays, keyboard shortcuts, and button clicks.
+  // ==========================================
 
   ///for mascot 
   useMotionValueEvent(MYProg, 'change', (latest) => {
+    // Arrow visibility (show after 5% scroll)
+    if (latest >= 0.05) setIsArrowV(true);
+    else setIsArrowV(false);
 
     if (latest >= 0.027262813522355506) setIsMascot(true);
     if (latest <= 0.027262813522355506) setIsMascot(false);
@@ -473,45 +322,38 @@ function Page() {
   ///for new products section
 
 
-  useMotionValueEvent(PShowVYProg, 'change', (latest) => {
-    if (latest > 0 && latest < 1.0) {
-      setIsProds(true);
-    }
-    if (latest <= 0) {
-      setIsProds(false);
-    }
-
-  });
-
-  // Extend persistence via p1YProg
-  useMotionValueEvent(p1YProg, 'change', (latest) => {
-    // Extended to 0.9 to cover the full "Seemlessly integrated" / Debug section
-    if (latest < 0.9 && latest > 0) {
-      setIsProds(true);
-    }
-    // Hide as soon as we scroll above the section
-    if (latest <= 0) {
-      setIsProds(false);
-    }
-    // Turn off when we scroll past the debug section
-    if (latest >= 0.9) {
-      setIsProds(false);
-    }
-  });
 
 
+  // Discrete step switching for "What you'll Unlock"
+  // Uses midpoint thresholds so the step changes at the exact center between two cards.
+  // This makes scroll-up and scroll-down behavior perfectly symmetric.
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
+    if (latest <= 0 || latest >= UNLOCK_END) {
+      setUnlockStep(-1);
+      return;
+    }
 
-    if (latest >= 0.79) {
-      setIsShowProd(false);
-    } else {
-      setIsShowProd(true);
-    }
-    // Prevent video overlay from lingering when scrolling outside the section
-    if (latest <= 0.2 || latest >= 0.95) {
-      setIsProds(false);
-    }
+    // Midpoint thresholds: step changes when progress crosses the midpoint between
+    // two adjacent step centers (UNLOCK_STEP * (i + 0.5) and UNLOCK_STEP * (i + 1.5))
+    if (latest < UNLOCK_STEP * 1) setUnlockStep(0);
+    else if (latest < UNLOCK_STEP * 2) setUnlockStep(1);
+    else if (latest < UNLOCK_STEP * 3) setUnlockStep(2);
+    else if (latest < UNLOCK_STEP * 4) setUnlockStep(3);
+    else if (latest < UNLOCK_STEP * 5) setUnlockStep(4);
+    else setUnlockStep(5);
   });
+
+  // Play/pause videos in "What You'll Unlock" based on active step
+  useEffect(() => {
+    Object.entries(unlockVideoRefs.current).forEach(([key, video]) => {
+      if (!video) return;
+      if (Number(key) === unlockStep) {
+        video.play().catch(() => { });
+      } else {
+        video.pause();
+      }
+    });
+  }, [unlockStep]);
 
   // Block CORA.mp4 while the CodeMate Chat image is on screen
   useMotionValueEvent(codeMateImageProg, 'change', (latest) => {
@@ -522,23 +364,6 @@ function Page() {
   // Hide product overlay once the unlock paragraph leaves view (e.g., scrolling up past it)
 
 
-  ////for new prods
-  useMotionValueEvent(PYProg, 'change', (latest) => {
-    if (latest > 0) setIsArrowV(true);
-    if (latest <= 0) setIsArrowV(false);
-    if (latest <= 0.15) {
-      setIsP1(false);
-      setIsP2(false);
-    }
-    if (latest >= 0.25) {
-      setIsP1(true);
-      setIsP2(false);
-    }
-    if (latest >= 0.45) {
-      setIsP2(true);
-      setIsP1(false);
-    }
-  })
 
   // for main div events
   useMotionValueEvent(MYProg, 'change', (latest) => {
@@ -619,17 +444,14 @@ function Page() {
   }, []);
 
 
-  ///arrow 
-  function handleArrow() {
-    setIsArrow((prev) => {
-      if (!prev) {
-        heroRef2?.current?.scrollIntoView({ behavior: "smooth" });
-      } else {
-        footerRef?.current?.scrollIntoView({ behavior: "smooth" });
-      }
-      return !prev; // flip state each time
-    });
-  }
+
+  const handleArrow = () => {
+    if (isArrow) {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const handleAnnouncementClick = () => {
     window.open(SWE_BENCH_BLOG_URL, '_blank', 'noopener,noreferrer');
@@ -651,6 +473,10 @@ function Page() {
       </AnimatePresence>
       {/* arrow for going to hero section */}
 
+      {/* ========================================== */}
+      {/* UI SECTION: TOP ANNOUNCEMENT BANNER      */}
+      {/* Marketing banner displayed above the nav */}
+      {/* ========================================== */}
       {/* Announcement*/}
       {shouldShowAnnouncement && (
         <motion.div
@@ -684,6 +510,10 @@ function Page() {
         </motion.div>
       )}
 
+      {/* ========================================== */}
+      {/* UI SECTION: DESKTOP NAVIGATION           */}
+      {/* Sticky top navigation with mega-menus    */}
+      {/* ========================================== */}
       {/*navBar*/}
       <div
         style={{ top: 0 }}
@@ -1013,6 +843,10 @@ function Page() {
         </motion.div>
       </div>
 
+      {/* ========================================== */}
+      {/* UI SECTION: MOBILE NAVIGATION & MENU     */}
+      {/* Hamburger menu overlay for mobile devices*/}
+      {/* ========================================== */}
       {/* mobile menu */}
       <AnimatePresence>
         <motion.div
@@ -1407,137 +1241,110 @@ function Page() {
 
 
       {/* hero section  */}
-      <div ref={heroRef2} className='h-[100vh] w-full overflow-x-hidden'>
+      {/* hero section  */}
+      <div ref={heroRef2} className='h-auto lg:h-screen w-full overflow-x-hidden relative'>
         <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
-          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-screen w-full z-50 overflow-hidden cursor-default'>
-
-
+          {/* ========================================== */}
+          {/* UI SECTION: HERO                         */}
+          {/* The main landing area with the primary CTA and background animation */}
+          {/* ========================================== */}
+          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-auto lg:h-screen w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-20 lg:pt-[8vh] pb-8 lg:pb-20'>
 
             <motion.div
               style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
-              className='absolute h-full w-full opacity-5 z-0'>
-              <img src="/bgNoise.png" className='object-fit w-full' alt="" />
+              className='absolute inset-0 opacity-5 z-0'>
+              <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" />
             </motion.div>
 
-            <div className='relative z-50 h-full w-full flex justify-center items-center overflow-hidden'>
+            <div className='relative z-50 w-full pl-[8vw] lg:pl-[calc(3.3vw+3rem)] pr-[8vw] lg:pr-12 flex flex-col items-start'>
+              <motion.div
+                className='text-[clamp(2.5rem,12vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left'>
 
 
-
-
-
-
-              <div className=' flex  flex-col  items-center z-50 text-white gap-5'>
+                <div className={`${montserrat.className} `}>
+                  <div className='xxlHero z-50'>
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>On</motion.span>
+                    {' '}
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Device</motion.span>
+                    {' '}
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.2, delay: 0.6 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>First</motion.span>
+                    {' '}
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.1, delay: 0.8 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>AI</motion.span>
+                  </div>
+                </div>
+                <div className={`${montserrat.className} flex flex-wrap justify-start gap-x-4 bg-gradient-to-b from-white to-gray-300/10 bg-clip-text text-transparent`}>
+                  <div className='pb-3'>
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.1, delay: 0.9 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>SDLC</motion.span>
+                    {' '}
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.1, delay: 1 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Agent</motion.span>
+                  </div>
+                </div>
 
                 <motion.div
-                  // animate={{y:[120,35]}}
-                  // transition={{duration:1,delay:6}}    
-                  className='absolute top-[8vh] lg:left-[3.3vw] 
-      text-[14vw]   lg:text-[8vw] leading-[1] font-semibold flex flex-col pb-1  pl-[8vw]  lg:pl-12  mt-0 z-50 !xxlHerotext'>
+                  initial={{ opacity: 0, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  transition={{ duration: 0.4, delay: 1.5 }}
+                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-2 lg:mt-5 opacity-60 text-left`}>
+                  <p>Build and ship 20x faster with CodeMate AI</p>
+                  <p>Your all-in-one accelerator to turn your ideas into code</p>
+                </motion.div>
 
-
-                  <div className={`${montserrat.className} `}>
-                    {/* {title.map((e,idx)=>(
-      <motion.h1
-      initial={{opacity:0}}
-      animate={{opacity:1}}
-      transition={{duration:1,delay: idx * 0.5}}
-      key={idx}>
-        {e}
-      </motion.h1>
-     ))} */}
-                    {/* <motion.div 
-      initial={{ opacity: 0, filter: "blur(10px)" }}
-      animate={{ opacity: 1, filter: "blur(0px)" }}
-      transition={{ duration: 1,delay:4 }}
-      className="text-sm text-nowrap flex gap-2 ml-3 text-gray-400">Build 3.0 is live. Start building.  <motion.span whileHover={{scale:1.05}} className='text-cyan-500 flex cursor-pointer  justify-center items-center'>   Explore now &gt;</motion.span></motion.div> */}
-
-                    <div className='xxlHero z-50'><motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>On</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                        animate={{ opacity: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>Device</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                          animate={{ opacity: 1, filter: "blur(0px)" }}
-                          transition={{ duration: 0.2, delay: 0.6 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>First</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                            animate={{ opacity: 1, filter: "blur(0px)" }}
-                            transition={{ duration: 0.1, delay: 0.8 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>AI</motion.span></div>
-                  </div>
-                  <div className={`${montserrat.className} flex gap-4 bg-gradient-to-b from-white to-gray-300/10 bg-clip-text  text-transparent`}>
-                    {/* {title2.map((e,idx)=>(
-      <motion.h1
-      initial={{opacity:0}}
-      animate={ isTitle? {opacity:1} : {}}
-      transition={{duration:1,delay: idx * 0.5}}
-      key={idx}>
-        {e}
-      </motion.h1>
-     ))} */}
-
-                    <div className='pb-3'><motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.1, delay: 0.9 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>Coding</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                        animate={{ opacity: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 0.1, delay: 1 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>Agent</motion.span></div>
-
-                  </div>
-                  <motion.div
-                    initial={{ opacity: 0, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.4, delay: 1.5 }}
-                    className={`flex flex-col ${montserrat.className} text-xs lg:text-[1.5vw] gap-1 leading-[1.] mt-5 opacity-60 `}>
-                    <p>Build and ship 20x faster with CodeMate AI</p>
-                    <p>Your all-in-one accelerator to turn your ideas into code</p>
-                  </motion.div>
-
-
-                  {/* State-of-the-Art Badge */}
-                  <motion.div
-                    ref={announcementRef}
-                    initial={{ y: -12, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.3, delay: 0.4 }}
-                    className="w-full flex-1 flex justify-left mt-8 z-[999999]"
-                  >
-                    <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-1.5rem)] shadow-lg hover:shadow-xl transition group">
-                      <div
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => window.open('https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/', '_blank')}
-                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
-                        className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-2.5 sm:px-4 py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                      >
-                        <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2 justify-center sm:justify-start">
-                          <div className="flex min-w-0 items-center gap-0.5 text-[11px] sm:text-[13px] font-medium leading-snug">
-                            <p className="truncate max-w-[200px] xs:max-w-[260px] sm:max-w-none text-center sm:text-left text-neutral-300">
-                              Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
-                            </p>
-                            <ChevronRight className="ml-0.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
-                          </div>
-                        </div>
+                {/* State-of-the-Art Badge */}
+                <motion.div
+                  ref={announcementRef}
+                  initial={{ y: -12, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                  className="w-full flex justify-start mt-3 lg:mt-8 z-[100]"
+                >
+                  <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => window.open('https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/', '_blank')}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
+                      className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-3 py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                    >
+                      <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+                        <p className="text-[11px] sm:text-[13px] font-medium leading-snug text-neutral-300">
+                          Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
+                        </p>
+                        <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
+                </motion.div>
 
-
-
-
-                  <motion.div
-                    initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
-                    animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                    transition={{ duration: 1, delay: 0.5 }} 
-                    className={`${montserrat.className} flex items-center gap-4 text-sm mt-10 -ml-4 sm:ml-0`}
-                  >
-                    <a href="/download">
-                      <motion.button 
-                        whileHover={{ opacity: 0.8 }} 
-                        className="h-12 px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5"
-                      >
+                <motion.div
+                  initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
+                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className={`${montserrat.className} flex justify-start items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-4 lg:mt-10`}
+                >
+                  <a href="/download">
+                    <motion.button
+                      whileHover={{ opacity: 0.8 }}
+                      className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
+                    >
                         Download
                       </motion.button>
                     </a>
                     <a href="https://app.codemate.ai" target="_blank">
                       <motion.button
                         whileHover={{ opacity: 0.9 }}
-                        className="h-12 px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold"
+                        className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
                       >
                         Try Build 2.0
                       </motion.button>
@@ -1570,10 +1377,8 @@ function Page() {
 
 
             </div>
-            {/* <motion.div style={{ height: shadingHeight }} className="absolute -bottom-2 left-0 right-0  bg-gradient-to-b from-zinc-950/0 to-zinc-950 z-50" /> */}
-          </div>
-        </BackgroundGradientAnimation>
-      </div>
+          </BackgroundGradientAnimation>
+        </div>
       {/* hero section */}
 
       {/* enter section */}
@@ -1608,813 +1413,311 @@ function Page() {
         imageSrc='https://backend.v3.codemateai.dev/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
       />
 
-      <div ref={prodRef} className='lg:h-[470vh] w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
+      <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
         <h1 className=' font-mono pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
 
 
+        {/* ========================================== */}
+        {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
+        {/* Features a sticky video player on the left and a scrollable list of products on the right */}
+        {/* ========================================== */}
         <div className={`${montserrat.className} mt-4 leading-[1] text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
 
-        <div className='relative h-full w-full  flex flex-col justify-center items-center'>
-          {/* <div className='h-[30%] w-full flex gap-10 px-10'>
-       <Safari className='dark h-[27vw] w-fit' />
-       <div>
-        <h1 className={`${montserrat.className} text-5xl font-semibold mt-2`}>Codemate Build</h1>
-        <p className={`text-sm opacity-65 ${montserrat.className} w-[50vw] mt-5`}>Codemate Build is your reliable partner in turning ideas into impactful solutions. With a focus on innovation and precision, we craft scalable applications and seamless digital experiences that empower businesses to grow. Our team is dedicated to building not just products, but long-lasting value that helps you stay ahead in a competitive world.</p>
-       </div>
-    </div> */}
-
-          <div className='relative h-full w-full flex justify-center  gap-8 '>
-            {/* section for products */}
-            <div className='hidden lg:flex sticky  pt-24  top-0 h-screen
-        '>
-
-
-
-
+        <div className={`relative z-20 w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
+          {/* Left: Sticky video panel - desktop only */}
+          <div className='hidden lg:flex sticky top-0 h-screen flex-1 items-center justify-center px-8'>
+            <div className="flex flex-col gap-2 w-full max-w-[58vw]">
               <motion.div
-                animate={{ x: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-
-                <AnimatePresence mode='wait'>
-
-                  <div key={4} className="flex flex-col gap-2 ">
-                    <motion.div
-                      key={1}
-                      initial={{ opacity: 0, filter: "blur(30px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      exit={{ opacity: 0, filter: "blur(30px)" }}
-                      transition={{ duration: 1 }}
-                      className='h-[70vh] w-[57vw] rounded-lg'>
-                      <VideoEmbed />
-                    </motion.div>
-                    <span className={`${montserrat.className} text-4xl flex flex-col gap-2 mt-3`}>
-                      {/* <h1>Codemate Webapp</h1> */}
-                      <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-[57vw] leading-[1.125]'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
-                    </span>
-                  </div>
-
-
-                  {/* {!isP1 && !isP2 && 
-          <div  key={3} className="flex flex-col gap-2 ">
-          <motion.div 
-          key={1} 
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw] rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>
-         }          
-          
-          {isP1 && 
-          <div  key={2} className="flex flex-col gap-2 ">
-          <motion.div 
-         
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw]  rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>}  
-
-         {isP2 &&           
-         <div  key={3}  className="flex flex-col gap-2 ">
-          <motion.div 
-         
-          initial={{opacity:0,filter:"blur(30px)"}}
-          animate={{opacity:1,filter:"blur(0px)"}}
-           exit={{opacity:0,filter:"blur(30px)"}}
-          transition={{duration:1}}
-          className='h-[70vh] w-[57vw]  rounded-lg'>
-            <VideoEmbed/>
-         </motion.div>
-         <span className={`${montserrat.className} text-4xl flex flex-col gap-2`}>
-         <h1>Codemate Webapp</h1>
-         <p className='opacity-70 text-sm'>This is the browser-based version of CodeMate — accessible via app.codemate.ai.</p>
-         </span>
-         </div>}         */}
-                </AnimatePresence>
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, amount: 0.2 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                style={{ willChange: "transform, opacity" }}
+                className='h-[65vh] w-full rounded-lg overflow-hidden'>
+                <VideoEmbed />
               </motion.div>
-              <motion.div
-                animate={{ x: isP1 ? -700 : isP2 ? 0 : 0 }}
-                transition={{ duration: 0.8 }}
-                className='mb-52'>
-              </motion.div>
+              <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-full leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
             </div>
-            {/* section for products */}
-
-
-
-            {/* features of product */}
-
-            <div className={`h-full  flex flex-col pt-10 lg:pt-24  gap-[3rem] items-center  ${montserrat.className} `}>
-
-              <a href="https://build.codemateai.dev/build" target="_blank" className='cursor-pointer'>
-                <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="build2.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
-                    </div>
-                  </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate Build</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Build turns your prompts into working, deployable applications.</p>
-                </div>
-              </a>
-
-              <a href="https://cli.codemate.ai/" target="_blank" className='cursor-pointer'>
-                <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="term.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
-                    </div>
-                  </div>
-                  <h1 className='mt-1 text-lg font-semibold'>AI Terminal</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Run code and scripts instantly with AI-powered terminal.</p>
-                </div>
-              </a>
-
-              <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank" className='cursor-pointer'>
-                <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="cora.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
-                    </div>
-                  </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CORA- AI Agent inside your IDE</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Your AI coding agent in VS Code that turns prompts into working code instantly.</p>
-                </div>
-              </a>
-
-              <a href="https://edu.codemate.ai/" target="_blank" className='cursor-pointer'>
-                <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="edu1.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
-                    </div>
-                  </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate Education</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>Smart, AI-powered classroom management made easy.</p>
-                </div>
-              </a>
-
-              <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate" target="_blank" className='cursor-pointer'>
-                <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="pulgin.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
-                    </div>
-                  </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate C0 Extension</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate Assistant is your AI-powered coding partner, built as an IDE plugin to help you manage code, debug errors, and accelerate development.</p>
-                </div>
-              </a>
-              <a href="https://app.codemate.ai/chat" target="_blank" className='cursor-pointer'>
-                <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem]  w-full  flex items-center justify-center shadow-2xl">
-                      <img src="chat.svg" className='object-fit size-[90%] shadow-2xl' alt="" />
-                    </div>
-                  </div>
-                  <h1 className='mt-1 text-lg font-semibold'>CodeMate C0</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate C0 on the web, turns your prompts into working code, helping you build faster.</p>
-                </div>
-              </a>
-              <a href="https://app.codemate.ai/pr-review" target="_blank" className='cursor-pointer'>
-                <div>
-                  <div className='relative h-[33vh] lg:h-[20rem] w-[88vw] lg:w-[30vw]   overflow-hidden' >
-
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20  rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-
-
-                    <div className="absolute -bottom-14 lg:-bottom-[3rem] w-full flex items-center justify-center shadow-2xl">
-                      <img ref={codeMateImageRef} src="/prneww.png" className="object-fit size-[90%] shadow-2xl" alt="" />
-                    </div>
-                  </div>
-                  <h1 className="mt-1 text-lg font-semibold">CodeMate PR Review Agent</h1>
-                  <p className='opacity-65 text-sm lg:text-sm w-[88vw] lg:w-[30vw]'>CodeMate PR Review Agent automates your code review process, analyzing pull requests for bugs, security issues, and performance improvements directly on Github/Bitbucket/Gitlab/Azure-devops.</p>
-                  <div className='flex items-center gap-4 mt-3 opacity-50'>
-                    <FaGithub className='w-5 h-5' title='GitHub' />
-                    <FaBitbucket className='w-5 h-5' title='Bitbucket' />
-                    <FaGitlab className='w-5 h-5' title='GitLab' />
-                    <VscAzureDevops className='w-5 h-5' title='Azure DevOps' />
-                  </div>
-                </div>
-              </a>
-            </div>
-            {/* features of products */}
           </div>
 
+          {/* Right: Product cards - pushed to far right */}
+          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2 pb-8">
+            {/* Mobile-only video */}
+            <div className='lg:hidden w-full px-4 mb-8'>
+              <div className='h-[45vh] w-full rounded-lg overflow-hidden'>
+                <VideoEmbed />
+              </div>
+              <p className='opacity-70 text-[0.9rem] w-full leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
+            </div>
 
+            {[
+              { href: "https://build.codemateai.dev/build", img: "/build_gif.gif", fallback: "/Build Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", title: "CodeMate Build", desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support." },
+              { href: "https://cli.codemate.ai/", img: "term.svg", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[-4.8rem] lg:bottom-[-6rem]", title: "AI Terminal", desc: "Run code and scripts instantly through an AI-powered command-line interface." },
+              { href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent", img: "/CORA+FULL.gif", fallback: "/CORA Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", px: true, title: "CodeMate CORA", desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE." },
+              { href: "https://edu.codemate.ai/", img: "/codemate_edu.gif", fallback: "/Codemate Education Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[1.5rem] lg:bottom-[3.5rem]", title: "CodeMate Education", desc: "AI-powered classroom management built for educators and students to master modern development." },
+              { href: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate", img: "/Codemaps (1).gif", fallback: "/Co extention Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", title: "CodeMate C0 Extension", desc: "Your in-IDE AI partner for code management, debugging, and performance optimization." },
+              { href: "https://app.codemate.ai/chat", img: "/C0 Web app1.gif", fallback: "/Co web Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", px: true, title: "CodeMate C0", desc: "Turns deep research and feasibility into production-ready code through AI-driven intelligence." },
+            ].map((product: any, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0.3, scale: 0.8, filter: 'blur(4px)' }}
+                whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                style={{ willChange: "transform, opacity, filter" }}
+                className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group"
+              >
+                <a href={product.href} target="_blank" className='cursor-pointer w-full'>
+                  <div className="flex flex-col items-center lg:items-start w-full">
+                    <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
+                      <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
+                      <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
+                        <SmartGif
+                          src={product.img}
+                          fallbackSrc={product.fallback}
+                          className={product.imgClass}
+                          alt={product.title}
+                        />
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
+                      <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
+                    </div>
+                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] lg:w-[28vw] mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
+                  </div>
+                </a>
+              </motion.div>
+            ))}
+
+            {/* PR Review Agent - special (has icons) */}
+            <motion.div
+              initial={{ opacity: 0.3, scale: 0.8, filter: 'blur(4px)' }}
+              whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+              viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              style={{ willChange: "transform, opacity, filter" }}
+              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-8 lg:mb-4"
+            >
+              <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
+                <div className="flex flex-col items-center lg:items-start w-full">
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
+                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
+                    <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
+                      <motion.img
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
+                        ref={codeMateImageRef}
+                        src="/prneww.png"
+                        className="object-fit size-[90%] shadow-2xl"
+                        alt="PR Review"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
+                    <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
+                  </div>
+                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] lg:w-[28vw] mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
+                  <div className='flex items-center gap-6 mt-6 opacity-60 text-white group-hover:opacity-100 transition-opacity'>
+                    <FaGithub className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitHub' />
+                    <FaBitbucket className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Bitbucket' />
+                    <FaGitlab className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitLab' />
+                    <VscAzureDevops className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Azure DevOps' />
+                  </div>
+                </div>
+              </a>
+            </motion.div>
+          </div>
 
         </div>
       </div>
       {/* scrolling bento */}
 
+      <div>
+        {/* horizontal scroll section: What You'll Unlock */}
+        <div ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 -mt-[15vh]'>
 
+          <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-[8vh] lg:pt-0">
+            {/* Horizontal Scrolling Content */}
+            <div className="relative flex-1 w-full flex items-center overflow-hidden pointer-events-none">
+              <motion.div
+                style={{
+                  x: isMobile
+                    ? useTransform(
+                        PShowYProg,
+                        // Mobile: 6 cards of 100vw each, title 100vw. Center card i → x = -(100vw + i*100vw)
+                        [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
+                        ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw", "-600vw"]
+                      )
+                    : useTransform(
+                        PShowYProg,
+                        // Desktop: title ~35vw, each card 550px + 4rem gap. Multi-breakpoint to center each card.
+                        [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
+                        ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73%", "-73%"]
+                      ),
+                  willChange: 'transform'
+                }}
+                className="flex items-center gap-0 lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto lg:mt-0"
+              >
 
-
-
-
-      <div ref={productsWrapper} className='hidden lg:block -z-20'>
-        {isProds &&
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={1}
-              exit={{ opacity: 0, filter: 'blur(20px)' }}
-              initial={{ opacity: 0, filter: 'blur(20px)' }}
-              animate={{ opacity: 1, filter: 'blur(0px)' }}
-              transition={{ duration: 0.8 }}
-              className='fixed top-0 left-32 h-full w-[70%] hidden lg:flex items-center justify-center z-10'>
-
-
-              {isShowProd && !isCoraBlocked && <motion.div
-                key={1}
-                style={{ opacity: opVideo1 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                {/* <Safari url='codemate.ai' imageSrc='chatss.png' className='dark'/> */}
-                {/* <img src="https://drive.codemate.ai/playground.gif" className='w-full h-full object-fit rounded-xl' alt="" /> */}
-                <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/CORA.mp4'></motion.video>
-              </motion.div>}
-
-              {isShowProd && <motion.div
-                key={2}
-                style={{ scale: scaleVideo2, opacity: opVideo2 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl bg-zinc-950 overflow-hidden'>
-                {/* <Safari url='codemate.ai' imageSrc='buildss.png' className='dark'/> */}
-                <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/PR_review.mp4'></motion.video>
-              </motion.div>}
-
-              {isShowProd && <motion.div
-                key={3}
-                style={{ scale: scaleVideo3, opacity: opVideo3, x: xVideo3 }}
-                className='absolute left-[30rem] h-[30vw] w-[55vw] rounded-xl  overflow-hidden'>
-                {/* <Safari url='codemate.ai' className='dark object-cover 
-      object-left-top' imageSrc='eduation.png'/> */}
-                <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl ' src='https://drive.codemate.ai/Documentation.mp4'></motion.video>
-              </motion.div>}
-
-              {!isRef2 && !isRef3 &&
-                <motion.div
-                  style={{ scale: scaleVideo4, opacity: opVideo4 }} exit={{ opacity: 0, filter: 'blur(20px)' }} key={4} className='absolute left-[30rem] h-[30vw] w-[58vw] rounded-xl  text-white z-50'>
-                  <motion.div style={{ x: xE }} className='h-full w-full overflow-y-auto'>
-                    <CodeOverlay ref={codeOverlayRef} />
-
-                    <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix} />
-                  </motion.div>
-                </motion.div>}
-            </motion.div>
-          </AnimatePresence>}
-
-
-        {/* products showcase */}
-        <div
-          ref={productShowRef}
-
-          className='relative h-[200vw] w-full bg-zinc-950'>
-
-          <div className={`${montserrat.className} sticky top-5 z-20  text-[2.5rem] leading-[1.1] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-14 mb-6 pt-20 pr-[62vw] 2xl:pr-[55vw] pb-1`}>
-            {/* Added motion.div and headerY style for alignment fix */}
-            <motion.div style={{ y: headerY }} className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-5'>
-              <span className='z-50'>
-                What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> </span>
-              <h1>with  CodeMate AI.</h1>
-            </motion.div>
-          </div>
-
-
-
-          <div className='sticky top-[85vh] z-40'>
-            <motion.div
-              initial={{ opacity: 0, filter: 'blur(10px)' }}
-              whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className={`${montserrat.className}  text-2xl pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-right`}>From <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'>Web-Application</span></motion.div>
-          </div>
-
-          <div className='sticky top-[9rem]   h-screen w-full overflow-x-hidden'>
-
-            <div
-              className='relative h-[75%] w-[40%] flex  items-center justify-center  pl-10 py-3'>
-
-              <div className={`relative ${montserrat.className}  text-7xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent flex flex-col   h-full w-full mt-10`}>
-
-                <div className='relative h-full py-6 pl-5 flex justify-center overflow-hidden gap-5 '>
-
-                  <div>
-                    <motion.div
-                      style={{ y: height }}
-                      className='absolute rounded-md w-[0.25rem] h-[20%]  bg-gradient-to-b from-[#00BFFF] to-[#1E90FF]  opacity-80 z-50' />
-
-                    <div className='w-[0.20rem] rounded-md  h-full bg-[#1c1c1c] ' />
+                {/* Scrolling Title */}
+                <div className="w-[100vw] lg:w-[35vw] flex flex-col justify-center items-center text-center lg:items-start lg:text-left shrink-0 px-8 lg:px-0">
+                  <div className={`${montserrat.className} text-[clamp(2rem,10vw,3.5rem)] leading-[1.05] font-bold text-white`}>
+                    What You'll
+                    <div className="block">
+                      <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Unlock</span>
+                      <span className="lg:hidden"> with</span>
+                    </div>
+                    <div className="mt-1 lg:mt-2 text-[clamp(1.5rem,7vw,2.5rem)] font-semibold leading-tight whitespace-nowrap">
+                      <span className="hidden lg:inline">with </span>
+                      CodeMate AI
+                    </div>
                   </div>
-
-                  <motion.div
-                    style={{ y: titlesX }}
-                    className='h-full w-full flex flex-col gap-[13rem]'>
-
-                    <motion.div
-                      style={{ opacity: op1 }}
-                      className='text-white flex flex-col gap-2'>
-                      <h1 className='text-2xl'>Ship Autonomously with CORA</h1>
-
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Delegate tasks to our smartest coding agent that knows your codebase
-                      </p>
-                    </motion.div>
-
-                    <motion.div
-                      style={{ opacity: op2 }}
-                      className='text-white flex flex-col gap-2'>
-                      <h1 className='text-2xl'>Automated PR Reviews</h1>
-
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Integrated in your desired version control (Github/Bitbucket/Gitlab/Azure Devops) and automate your entire code reviews. summarizing changes, detecting bugs, and catching security flaws. Ship clean code to production up to 80% faster.
-                      </p>
-                    </motion.div>
-
-
-                    <motion.div
-                      style={{ opacity: op3 }}
-                      className='text-white flex flex-col gap-2'>
-                      <h1 className='text-2xl'>Documentation</h1>
-
-                      <p className='text-lg opacity-50 w-[33rem] 2xl:w-[30rem] font-normal'>
-                        Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.
-                      </p>
-                    </motion.div>
-
-
-                    <motion.div
-                      style={{ opacity: op4 }}
-                      className='text-white flex flex-col gap-2'>
-                      <h1 className='text-2xl'>Gonna help you write quality code 20x faster</h1>
-
-                      <p className='text-sm opacity-50 w-[33rem]'>
-                        It Surely does that...
-                      </p>
-                    </motion.div>
-
-                  </motion.div>
-
                 </div>
 
-              </div>
+                {/* Cards */}
+                <div className="flex gap-0 lg:gap-16">
+                  {[
+                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/design mode build.gif", isVideo: false },
+                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/build_figma_GIF.gif", isVideo: false },
+                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skills_gif.gif", isVideo: false },
+                    { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "https://drive.codemate.ai/CORA.mp4", isVideo: true },
+                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "https://drive.codemate.ai/PR_review.mp4", isVideo: true },
+                    { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "https://drive.codemate.ai/Documentation.mp4", isVideo: true },
+                  ].map((item, i) => {
+                    // Proximity-based effects: adjacent cards get softer treatment
+                    const dist = unlockStep === -1 ? 0 : Math.abs(i - unlockStep);
+                    const isActive = i === unlockStep;
+                    const proximityOpacity = unlockStep === -1 ? 1 : isActive ? 1 : dist === 1 ? 0.5 : 0.2;
+                    const proximityBlur = unlockStep === -1 ? 0 : isActive ? 0 : dist === 1 ? 1.5 : 3.5;
+                    const proximityScale = unlockStep === -1 ? 1 : isActive ? 1.03 : dist === 1 ? 0.97 : 0.92;
+                    const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
 
+                    return (
+                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0 items-center">
+                        <div
+                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out items-start text-left"
+                          style={{
+                            opacity: proximityOpacity,
+                            filter: `blur(${proximityBlur}px)`,
+                            transform: `scale(${proximityScale}) translateY(${proximityY}px)`,
+                          }}
+                        >
+                          {/* Top Text */}
+                          <div className="flex flex-col gap-2">
+                            {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
+                            <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
+                          </div>
 
-            </div>
+                          {/* Image/Video Box */}
+                          <div
+                            className={`h-[200px] sm:h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
+                          >
+                            {/* Subtle radial glow behind active card media */}
+                            {isActive && (
+                              <div className="absolute inset-0 rounded-xl bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.06)_0%,transparent_70%)] pointer-events-none" />
+                            )}
+                            {item.isVideo ? (
+                              <video
+                                ref={(el) => { unlockVideoRefs.current[i] = el }}
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-contain rounded-lg relative z-10"
+                                src={item.media}
+                              />
+                            ) : (
+                              <SmartGif
+                                src={item.media}
+                                alt={item.title}
+                                className="w-full h-full object-contain rounded-lg relative z-10"
+                                isActive={isActive}
+                              />
+                            )}
+                          </div>
 
-          </div>
-
-        </div>
-        {/* products showcase */}
-
-        <div ref={productRef} className='relative h-[550vh] w-full bg-zinc-950 text-white flex  flex-col mb-32'>
-
-
-          <div className='sticky  top-[85vh]  z-50'>
-            <div className={`${montserrat.className}  text-2xl pl-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full `}>To your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-4xl'> IDE</span></div>
-          </div>
-
-
-
-          <div className={`${montserrat.className} sticky top-7  text-3xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pr-16 mb-6 pt-20 text-right pl-[50vw]  pb-1 z-40`}>
-            <div className='bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent relative h-full w-full pb-2'>
-              <span className='z-40'>
-                Seamlessly <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent pb-1'>Integrated &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-                <h1>in your existing environment.&nbsp;&nbsp;</h1>
-              </span>
-
-              <div className='h-full w-full absolute  z-50' />
-            </div>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(50px)' }}
-            whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 0.8 }}
-            className='sticky h-screen top-0 w-full flex  items-center z-50'>
-            {/* <AnimatePresence mode='wait'>
-      {!d && !r && !a && <motion.div 
-            initial={{opacity:0,filter:'blur(20px)'}}
-            animate={{opacity:1,filter:'blur(0px)'}}
-            transition={{duration:1}}
-            exit={{opacity:0,filter:'blur(20px)'}}
-            key={1}
-            className='absolute top-0 z-30 left-0 h-screen flex  justify-center gap-3 items-center ml-9 text-2xl font-mono w-[15%] flex-col z-0'> <h1 className='opacity-45'>Press</h1> <h1 className='text-5xl text-[#00FFFF] opacity-70'>"D"</h1>  <h1 className='opacity-45'>for Debug mode</h1></motion.div>
-            }
-
-              {d && <motion.div 
-            initial={{opacity:0,filter:'blur(20px)'}}
-            animate={{opacity:1,filter:'blur(0px)'}}
-            transition={{duration:1}}
-            exit={{opacity:0,filter:'blur(20px)'}}
-            key={2}
-            className='absolute top-0 z-30 left-0 h-screen flex  justify-center gap-3 items-center ml-9 text-2xl font-mono w-[15%] flex-col '> <h1 className='opacity-45'>Press</h1> <h1 className='text-5xl text-[#00FFFF] opacity-70'>"R"</h1>  <h1 className='opacity-45'>for Review mode</h1></motion.div>
-            }    
-
-            {r && 
-            <motion.div 
-            initial={{opacity:0,filter:'blur(20px)'}}
-            animate={{opacity:1,filter:'blur(0px)'}}
-            transition={{duration:1}}
-            exit={{opacity:0,filter:'blur(20px)'}}
-            key={3}
-            className='absolute top-0 z-30 right-0 h-screen flex  justify-center gap-3 items-center mr-9 text-2xl font-mono w-[15%] flex-col'> <h1 className='opacity-45'>Press</h1> <h1 className='text-5xl text-[#00FFFF] opacity-70'>"A"</h1>  <h1 className='opacity-45'>for Auto-complete mode</h1></motion.div>
-            }
-
-            {a && 
-            <motion.div 
-            initial={{opacity:0,filter:'blur(20px)'}}
-            animate={{opacity:1,filter:'blur(0px)'}}
-            transition={{duration:1}}
-            exit={{opacity:0,filter:'blur(20px)'}}
-            key={4}
-            className='absolute top-0 z-30 left-0 h-screen flex  justify-center gap-3 items-center ml-9 text-2xl font-mono w-[15%] flex-col'> <h1 className='opacity-45'>Press</h1> <h1 className='text-5xl text-[#00FFFF] opacity-70'>"D"</h1>  <h1 className='opacity-45'>for Debug mode</h1></motion.div>
-            }
-      </AnimatePresence> */}
-
-
-            <div className='relative flex justify-center items-center w-[70%] z-50'>
-
-
-              <motion.div
-                ref={feature1Ref}
-
-                className='relative h-[30vw] w-[58vw] opacity-80 rounded-xl flex justify-center items-center ml-[3.3rem] mb-4 '>
-
-
-
-                {/* {isRef1 && <motion.div className='absolute h-full w-full rounded-xl '>
-          <CodeOverlay ref={codeOverlayRef}/> 
-
-        <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix}/>
-        </motion.div>} */}
-
-
-                {isRef2 && <motion.div
-                  initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 1 }}
-                  onAnimationStart={() => setIsAuto(false)}
-                  className=' absolute h-full w-full bg-zinc-900 rounded-xl flex   opacity-100 overflow-hidden'>
-
-                  <AnimatePresence>
-                    {isLoad2 && <div data-lenis-prevent><CodeReviewOverlay setIsFix={setIsFix2} setIsLoad2={setIsLoad2} /></div>}
-                  </AnimatePresence>
-
-                  <div data-lenis-prevent className='w-full'>
-                    <ReviewCodeEditor isFix={isFix2} comp1={ReviewComponent} comp2={AfterReviewComponent} />
-                  </div>
-                </motion.div>}
-
-                {isRef3 && <motion.div
-
-                  initial={{ opacity: 0, filter: 'blur(20px)' }}
-                  animate={{ opacity: 1, filter: 'blur(0px)' }}
-                  transition={{ duration: 1 }}
-
-                  className=' absolute h-full w-full bg-zinc-900 rounded-xl flex  opacity-100'>
-                  <AutoCodeEditor comp1={AutoCompleteComponent} setIsFix={setIsFix} isFix={isAuto} />
-                  {/* <CodeEditor  />   */}
-                </motion.div>}
-
-                {/* <CodeOverlay ref={codeOverlayRef}/> 
-
-        <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix}/> */}
-
-
-                {/* 
-<AnimatePresence mode="wait">
-     
-      
-        <motion.div  
-        key={1}
-        
-        
-        transition={{duration:0.7}} 
-        exit={{x:0}} 
-        ref={drawer1Ref}
-        whileHover={{background:'#ffffff',
-           color:'black',
-           opacity:0.4
-        }}
-        style={{background: 'rgba(255, 255, 255, 0.02)',
-        y:drawerX,  
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        backdropFilter: 'blur(4.7px)',
-        WebkitBackdropFilter: 'blur(4.7px)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        }}
-        className='absolute bottom-0 right-8 py-2 px-4 bg-white rounded-b-2xl text-2xl  flex flex-col justify-center items-center  text-white cursor-pointer -z-10'>
-       
-
-          Debug
-
-      
-
-
-        </motion.div>
-        
-
-         
-        <motion.div 
-        key={2}
-        transition={{duration:0.7}} 
-        exit={{x:0}} 
-        ref={drawer2Ref}
-        style={{background: 'rgba(255, 255, 255, 0.02)',
-        y:
-        
-        drawerX2,  
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        backdropFilter: 'blur(4.7px)',
-        WebkitBackdropFilter: 'blur(4.7px)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        }}
-        className='absolute bottom-0 right-8 py-2 px-4 bg-white rounded-b-2xl text-2xl  flex flex-col justify-center items-center  text-white cursor-pointer -z-10'>
-       
-
-         Review
-
-
-      
-
-
-      </motion.div>
-      
-
-
-      
-        <motion.div 
-        exit={{x:0}} 
-  
-        key={3}
-
-        style={{background: 'rgba(255, 255, 255, 0.02)',
-        boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-        y:drawerX3,
-        backdropFilter: 'blur(4.7px)',
-        WebkitBackdropFilter: 'blur(4.7px)',
-        border: '1px solid rgba(255, 255, 255, 0.3)',
-        }}
-        className='absolute bottom-0 right-8 py-2 px-4 bg-white rounded-b-2xl text-2xl  flex flex-col justify-center items-center  text-white cursor-pointer -z-10'>
-       
-        Auto-Complete
-
-        </motion.div>
-        
-</AnimatePresence> */}
-
-
-
-              </motion.div>
-
-              {/* <motion.h1 
-       style={{y:featureTitleY,opacity:featureTitleOpacity}}
-       className='absolute text-7xl text-nowrap'>You can do much more with just Plugin...</motion.h1> */}
-            </div>
-
-            <div
-              className='relative w-[34%] h-[75%] flex  justify-end pr-[3.5rem] py-10 gap-10 z-50 mt-[10rem]'>
-
-              {isRef1 && !isRef2 && !isRef3 &&
-                <div className={`${montserrat.className}relative w-full z-[99999999]  flex justify-center items-start pt-10 h-full`}>
-                  <div className='z-[99999998]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Debug</h1>
-                    <motion.span
-
-                      className='z-[99999997]'
-                    >
-
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>An</span> <span className='text-[#00BFFF] font-semibold'>AI-Powered Debugger</span> <span className='opacity-60'>that quickly identifies errors, explains their causes, and suggests precise fixes—making it easier to resolve issues and keep development moving smoothly.</span></p>
-                    </motion.span>
-
-                    {isLoad ?
-                      <motion.span
-                        initial={{ opacity: 0, filter: 'blur(20px)' }}
-                        whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                        transition={{ duration: 1, delay: 1 }}
-                        className='mb-10 z-[99999996]'>
-                        <div className='mt-10'>
-                          <LoaderOne />
+                          {/* Bottom Description */}
+                          <div className="flex flex-col gap-4 px-2 items-start">
+                            <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
+                          </div>
                         </div>
-                      </motion.span> : <motion.button whileHover={{ opacity: 0.7 }} ref={debugBtnRef} onClick={handleOverlay} className={`${montserrat.className} bg-gradient-to-br border-y-[0.1px]  border-[#F0EAD6]/80 from-[#F0EAD6]/90  to-[#FAF9F6]/45   text-lg rounded-[25px] px-6 text-black py-2 mt-10  z-[99999996]`}>
-                        <span className='font-semibold  text-zinc-950'>Debug</span> this code
-                      </motion.button>}
-                  </div>
-
+                      </div>
+                    )
+                  })}
                 </div>
-              }
-
-
-              {isRef2 && !isRef1 && !isRef3 &&
-                <div className='relative w-full z-[99999999] flex justify-center items-start h-full pt-10'>
-                  <div className='z-[9999999]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5  z-[99999996] font-semibold`}>Review</h1>
-                    <motion.span
-
-                      className='z-[99999997]'
-                    >
-
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>An</span> <span className='text-[#00BFFF] font-semibold'>AI-Powered Code Reviewer</span> <span className='opacity-60'>that scans your code in real time, detects bugs and vulnerabilities, and suggests improvements for readability, performance, and best practices—helping you write cleaner, more reliable code faster.</span></p>
-                    </motion.span>
-
-                    {/* {isLoad?    
-        <motion.span 
-        initial={{opacity:0,filter:'blur(20px)'}}
-        whileInView={{opacity:1,filter:'blur(0px)'}}
-        transition={{duration:1,delay:1}}
-        className='mb-10 z-[99999996]'>
-        <LoaderOne/>
-        </motion.span>  :         }  */}
-                    <AnimatePresence>
-                      {reviewBtn && <motion.button whileHover={{ opacity: 0.7 }} exit={{ opacity: 0, filter: 'blur(20px)' }} transition={{ duration: 0.5 }} onClick={handleOverlayR} className={`${montserrat.className} bg-gradient-to-br border-y-[0.1px] border-[#F0EAD6]/80 from-[#F0EAD6]/80 to-[#FAF9F6]/45 text-lg rounded-[25px] px-6 text-black py-2 mt-10  z-[99999996]`}>
-                        <span className='font-semibold  text-zinc-950'>Review</span> this code
-                      </motion.button>}
-                    </AnimatePresence>
-                  </div>
-
-                </div>}
-
-              {isRef3 && !isRef1 && !isRef2 &&
-                <div className='relative w-full z-[9999999999] flex justify-center items-start h-full pt-10'>
-                  <div className='z-[99999998]'>
-                    <h1 className={`${montserrat.className} text-white text-3xl mb-5 z-[99999996] font-semibold`}>Auto-Complete</h1>
-                    <motion.span
-
-                      className='z-[99999997]'
-                    >
-
-                      <p className={`${montserrat.className} text-lg  z-[99999996]`}><span className='opacity-60'>An</span> <span className='text-[#00BFFF] font-semibold'>Intelligent Auto-Completer</span> <span className='opacity-60'>tool that predicts your next lines of code, reduces repetitive typing, and speeds up development by suggesting accurate, context-aware completions in real time.</span></p>
-                    </motion.span>
-
-                    {isLoad ?
-                      <motion.span
-                        initial={{ opacity: 0, filter: 'blur(20px)' }}
-                        whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                        transition={{ duration: 1, delay: 1 }}
-                        className='mb-10 z-[99999996]'>
-                        <LoaderOne />
-                      </motion.span> : <div className={`${montserrat.className} text-2xl  mt-10 cursor-not-allowed font-extralight z-[99999996] opacity-30`}>
-                        <span>Press</span> <span className='font-mono text-3xl '>"TAB"</span> <span>to auto-complete</span>
-
-
-                      </div>}
-                  </div>
-
-                </div>}
-
-              {isRef3 &&
-                <div className='absolute z-[99999999] bg-zinc-950 w-[95%] h-full'>
-
-                </div>}
-
-              <div className='z-[99999999]'>
-                <motion.div
-                  style={{ height: barY }}
-                  className='absolute rounded-md w-[0.25rem] h-[15%]  bg-gradient-to-b from-[#00BFFF] to-[#1E90FF]  opacity-80 z-[99999999]' />
-
-                <div className='w-[0.20rem] rounded-md  h-full bg-[#1c1c1c] z-[99999999]' />
-              </div>
-
-
-            </div>
-          </motion.div>
-
-
-
-        </div>
-
-      </div>
-
-      {/* for mobile */}
-      <div className='lg:hidden'>
-
-        <div ref={MFRef} className='h-[200vh]'>
-          <div className='sticky top-0 w-full py-10 overflow-hidden'>
-            <div className={`${montserrat.className}   z-20 leading-[1]  text-[7.7vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  mb-6 pt-20 2xl:pr-[55vw] pb-1`}>
-              <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2 text-center pr-2 pl-[5vw]'>
-                <span className='z-50'>
-                  What you'll<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Unlock</span> with CodeMate AI.</span>
-                <div className='top-0 absolute w-full h-full bg-zinc-950 -z-10' />
-              </div>
+              </motion.div>
             </div>
 
-            <motion.div style={{ x: mx }} className='flex pl-16 gap-5'>
-              <div className='flex flex-col gap-2'>
-                <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-                  <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/Debug.mp4'></motion.video>
-                </div>
-                <h1 className='font-bold text-2xl'>Debug</h1>
-                <p className='w-full text-sm opacity-70'>Your AI debugger that identifies and resolves errors quickly, so you can keep building without interruptions.</p>
+            {/* Step Indicator Dots */}
+            {unlockStep >= 0 && (
+              <div className="absolute bottom-[14vh] lg:bottom-[12vh] left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
+                {[0, 1, 2, 3, 4, 5].map((dot) => (
+                  <div
+                    key={dot}
+                    className="transition-all duration-500 rounded-full"
+                    style={{
+                      width: dot === unlockStep ? 28 : 8,
+                      height: 8,
+                      backgroundColor: dot === unlockStep ? '#00BFFF' : 'rgba(255,255,255,0.2)',
+                      boxShadow: dot === unlockStep ? '0 0 12px rgba(0,191,255,0.5)' : 'none',
+                    }}
+                  />
+                ))}
               </div>
+            )}
 
-
-              <div className='flex flex-col gap-2'>
-                <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-                  <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/CodeReview.mp4'></motion.video>
-                </div>
-                <h1 className='font-bold text-2xl'>Review</h1>
-                <p className='w-full text-sm opacity-70'>Your AI reviewer that ensures cleaner, more reliable code so you can ship with confidence.</p>
-              </div>
-
-              <div className='flex flex-col gap-2'>
-                <div className='h-[28vh] w-[95vw] bg-zinc-600 overflow-hidden rounded-xl'>
-                  <motion.video autoPlay loop muted playsInline initial={{ scale: 1.05 }} className='h-full w-full rounded-xl object-cover' src='https://drive.codemate.ai/optimize.mp4'></motion.video>
-                </div>
-                <h1 className='font-bold text-2xl'>Optimize</h1>
-                <p className='w-full text-sm opacity-70'>Your AI optimizer that refactors and enhances code performance so you can deliver faster, smoother applications.</p>
-              </div>
-            </motion.div>
-
-            <div className='text-right mt-10 mr-10 z-40'>
+            {/* From Web-Application Label (Mobile) */}
+            <div className="lg:hidden w-full px-8 pt-10 pb-8 text-right pointer-events-none">
               <motion.div
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className={`${montserrat.className}  text-[4vw]  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-right`}>From your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-2xl'>IDE</span></motion.div>
+                style={{
+                  opacity: useTransform(PShowYProg, [0.72, 0.76], [0, 1]),
+                  filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
+                }}
+                transition={{ duration: 0.6 }}
+                className={`${montserrat.className} text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+                From <br /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl'>Web-Application</span>
+              </motion.div>
             </div>
           </div>
 
-
-        </div>
-
-
-        <div className=' w-full py-10'>
-          <div className={`${montserrat.className}   z-20 leading-[1.15]  text-[7.5vw] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent   mb-6 pt-20 2xl:pr-[55vw] pb-1`}>
-            <div className='relative h-full w-full bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pb-2 text-center '>
-              <span className='z-50'>
-                Seamlessly<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> Integrated</span> </span>
-              <h1>in your existing environment</h1>
-              <div className='top-0 absolute w-full h-full bg-zinc-950 -z-10' />
-            </div>
-          </div>
-
-          <div className='flex justify-center  gap-5'>
-            <div className='flex flex-col gap-2'>
-              <div className='h-[25vh] w-[85vw] bg-zinc-600 rounded-xl overflow-hidden'>
-                <VideoEmbed />
-              </div>
-
-
-            </div>
-
-
-
-
-
-          </div>
-
-          <div className='text-left mt-10 ml-10 z-40'>
+          {/* From Web-Application Label (Desktop) */}
+          <div className='hidden lg:block sticky top-[88vh] z-40 pointer-events-none'>
             <motion.div
-              initial={{ opacity: 0, filter: 'blur(10px)' }}
-              whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-              transition={{ delay: 0.2, duration: 0.6 }}
-              className={`${montserrat.className}  text-[5vw]  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-2 w-full text-left`}>To<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-2xl'> Web-App</span></motion.div>
+              style={{
+                opacity: useTransform(PShowYProg, [0.72, 0.76], [0, 1]),
+                filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
+              }}
+              transition={{ duration: 0.6 }}
+              className={`${montserrat.className} text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+              From <br className='lg:hidden' /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>Web-Application</span>
+            </motion.div>
           </div>
-
-
-
         </div>
+
+        {/* Seamlessly Integrated Section with Carousel */}
+        <div className="relative w-full z-10 bg-black pt-10 pb-4 lg:pt-12 lg:pb-8">
+          <div className="pb-2 text-center">
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className={`${montserrat.className} text-[2.2rem] lg:text-[3rem] font-bold leading-[1.15]`}
+            >
+              <span className="bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">Seamlessly </span>
+              <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Integrated</span>
+              <br />
+              <span className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-xl lg:text-3xl">in your existing environment</span>
+            </motion.h2>
+          </div>
+          <SeamlessCarousel />
+          <div className="mt-2 lg:mt-4 mb-2">
+            <div className={`${montserrat.className} text-xl lg:text-2xl pl-6 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
+              To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>IDE</span>
+            </div>
+          </div>
+        </div>
+
       </div>
-      {/* for mobile */}
 
       {/* enterprises section  */}
       <div className=' w-full pt-16 px-8 lg:px-14 overflow-hidden'>
@@ -2468,7 +1771,7 @@ function Page() {
         </div>
 
         <div className='w-full flex flex-col lg:flex-row  justify-center items-center gap-5  lg:gap-[1.25] mt-10 '>
-          <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6  border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
+          <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6  border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
             style={{
               background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
               boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -2485,7 +1788,7 @@ function Page() {
           </div>
 
           <div className='flex flex-col gap-5 lg:flex-row lg:gap-[1.25]'>
-            <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6   border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
+            <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6   border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
               style={{
                 background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
                 boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -2500,7 +1803,7 @@ function Page() {
 Run it seamlessly in your environment with Codemate, ensuring smooth integration with your existing workflows. Codemate adapts to your setup, minimizing disruption while maximizing efficiency, so your team can maintain focus on delivering quality code without added complexity.
   </p> */}
             </div>
-            <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start border-x-[1px] border-y-[0.5px]   border-white border-opacity-20 gap-6 px-7 lg:px-3 py-5'
+            <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start border-x-[1px] border-y-[0.5px]   border-white border-opacity-20 gap-6 px-7 lg:px-3 py-5'
               style={{
                 background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
                 boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -2534,7 +1837,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
 
       {/* trusted by section */}
-      <div className={`${montserrat.className} lg:pb-32 pb-20  w-full bg-zinc-950 text-white z-50`}>
+      <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
         <div className='pt-[5rem] lg:pt-[15rem]'>
           <div className="px-8 lg:px-16 ">
             <h1 className=' text-3xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
@@ -2547,28 +1850,28 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
 
           <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
-            <div className=' w-[50vw] lg:size-[13rem]'>
-              <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-8xl'
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
+              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl lg:text-8xl'
                 direction="up"
                 targetValue={55} />%</h1>
-              <p className='text-xl opacity-70 mt-3 text-center'>Faster coding</p>
+              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Faster coding</p>
             </div>
-            <div className=' w-[50vw] lg:size-[13rem]'>
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
 
-              <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-8xl'
+              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl lg:text-8xl'
                 direction="up"
                 targetValue={39} />%</h1>
-              <p className='text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
+              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
             </div>
-            <div className=' w-[50vw] lg:size-[13rem]'>
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
 
-              <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-8xl'
+              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl lg:text-8xl'
                 direction="up"
                 targetValue={68} />%</h1>
-              <p className='text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
+              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
             </div>
           </div>
 
@@ -2578,13 +1881,13 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
             <div className="absolute -right-10 top-0 bg-zinc-950 h-full w-[10%] blur-2xl z-50" />
 
             <Marquee pauseOnHover className="[--duration:20s] flex justify-center items-center mt-5">
-              <img src='dell.svg' className='object-fit  size-[30vw] lg:size-[12vw]  opacity-70 lg:mt-0' />
-              <img src='qual.svg' className='object-fit w-[65vw] lg:w-[20vw] mb-[2vw]  opacity-70 lg:mt-9' />
-              <img src='paytm.svg' className='object-fit w-[40vw] lg:w-[18vw]  opacity-70' />
-              <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw]  opacity-70 mt-5 lg:mt-10' />
-              <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw]  opacity-70' />
-              <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-70' />
-              <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw]  opacity-70' />
+              <img src='dell.svg' className='object-fit  size-[30vw] lg:size-[12vw] opacity-100 brightness-150 lg:mt-0' />
+              <img src='qual.svg' className='object-fit w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9' />
+              <img src='paytm.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150' />
+              <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10' />
+              <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw] opacity-100 brightness-150' />
+              <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
+              <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
             </Marquee>
           </div>
 
@@ -2628,12 +1931,23 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
   </div>  */}
       {/* bento   */}
 
+      {/* ========================================== */}
+      {/* UI SECTION: ACHIEVEMENTS & STATISTICS    */}
+      {/* ========================================== */}
       <Achivements />
+      {/* ========================================== */}
+      {/* UI SECTION: MEDIA PRESENCE (AS SEEN ON)  */}
+      {/* ========================================== */}
+      <MediaPresence />
 
 
-      <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-20 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
+      <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
 
-      <div ref={testiRef} className='relative h-[400vh] w-full bg-zinc-950 '>
+      {/* ========================================== */}
+      {/* UI SECTION: TESTIMONIALS & REVIEWS       */}
+      {/* Scrolling carousel of user feedback and trust markers */}
+      {/* ========================================== */}
+      <div ref={testiRef} className='relative h-[300vh] w-full bg-zinc-950 '>
 
 
         <div className=' sticky top-0   h-screen w-full overflow-x-hidden '>
@@ -2668,10 +1982,10 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
               <motion.div
                 style={{ y: tdiv1X }}
-                className='absolute    lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
+                className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 10 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/ayushbansal.jpeg" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
@@ -2688,10 +2002,10 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
               </motion.div>
               <motion.div
                 style={{ y: tdiv2X }}
-                className='absolute     lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
+                className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 5 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/hani.webp" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
@@ -2706,10 +2020,10 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   </div>
                 </motion.div>
               </motion.div>
-              <motion.div style={{ y: tdiv3X }} className='absolute lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+              <motion.div style={{ y: tdiv3X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 0 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/vilkho_appsumo.webp" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col w-[50%]'>
@@ -2724,10 +2038,10 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   </div>
                 </motion.div>
               </motion.div>
-              <motion.div style={{ y: tdiv4X }} className='absolute   lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+              <motion.div style={{ y: tdiv4X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: -5 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=kitty.liu" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
@@ -2742,10 +2056,10 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   </div>
                 </motion.div>
               </motion.div>
-              <motion.div style={{ y: tdiv5X }} className='absolute    lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
+              <motion.div style={{ y: tdiv5X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: -10 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=david.kim" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
@@ -2785,6 +2099,9 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       </div>
 
       <div ref={footerRef}>
+        {/* ========================================== */}
+        {/* UI SECTION: PAGE FOOTER                  */}
+        {/* ========================================== */}
         <Footer />
       </div>
     </div>
@@ -2804,258 +2121,27 @@ export default Page
 //       target:productRef2,
 //       offset:['start end','end start']
 //     });
-//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);  
+//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
 //   return(
 //     <>
-//     <motion.div 
+//     <motion.div
 //      initial={{opacity:0,filter:'blur(50px)'}}
 //      whileInView={{opacity:1,filter:'blur(0px)'}}
-//      transition={{duration:0.8}}
-//      className='sticky h-screen top-0 w-full flex justify-center items-center'>
-//       <div className='relative flex justify-center items-center'>
-//       <motion.div 
-//       ref={feature2Ref}
-//       style={{scale:1,}}
-//       className='relative h-[35vw] w-[55vw] opacity-80 rounded-xl flex justify-center items-center bg-white'>
-
-
-//         {/* <CodeOverlay ref={codeOverlayRef}/> 
-
-//         // <CodeEditor comp1={brokenComponent} comp2={fixedComponent} isFix={isFix}/> */}
-
-//         <motion.div 
-//         style={{x:drawerX,background:'rgba(255, 255, 255, 0.02)',
-//         boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
-//         backdropFilter: 'blur(4.7px)',
-//         WebkitBackdropFilter: 'blur(4.7px)',
-//         border: '1px solid rgba(255, 255, 255, 0.3)',
-//         }}
-//         className='absolute right-0 h-[99%] w-[60%] bg-white rounded-3xl pl-[20rem] flex flex-col justify-between  text-white'>
-
-//        <motion.span
-//        initial={{opacity:0,filter:'blur(20px)'}}
-//        whileInView={{opacity:1,filter:'blur(0px)'}}
-//        transition={{duration:0.7,delay:1}}
-//        viewport={{amount:0.5}}
-//        >
-//         <h1 className='text-white text-5xl mb-5 mt-3 '>Debug</h1>
-//         <p className='text-sm opacity-60'>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius facilis fugiat tenetur in autem commodi dolor quae magni </p>
-//        </motion.span>
-
-//        {/* {isLoad?    
-//         <motion.span 
-//         initial={{opacity:0,filter:'blur(20px)'}}
-//         whileInView={{opacity:1,filter:'blur(0px)'}}
-//         transition={{duration:1,delay:1}}
-//         className='mb-10 ml-14'>
-//         <LoaderOne/>
-//         </motion.span>  :         <button ref={debugBtnRef} onClick={handleOverlay} className='bg-[#343434] rounded-[54px] px-2 py-2 m-4 hover:opacity-70'>
-//           Debug this code
-//         </button>} */}
 
 
 
-//       </motion.div>
+// function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
+
+//   const feature2Ref = useRef<HTMLDivElement>(null);
+//   const {scrollYProgress:p2YProg} = useScroll({
+//       target:productRef2,
+//       offset:['start end','end start']
+//     });
+//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
+//   return(
+//     <>
+//     <motion.div
+//      initial={{opacity:0,filter:'blur(50px)'}}
+//      whileInView={{opacity:1,filter:'blur(0px)'}}
 
 
-
-//       </motion.div>  
-
-//        {/* <motion.h1 
-//        style={{y:featureTitleY,opacity:featureTitleOpacity}}
-//        className='absolute text-7xl text-nowrap'>You can do much more with just Plugin...</motion.h1> */}
-//       </div>
-//      </motion.div>
-
-//     </>
-//   )
-// }
-
-function CodeOverlay({ ref }: { ref: React.RefObject<HTMLDivElement> }) {
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, filter: 'blur(20px)' }}
-      whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-      transition={{ duration: 1.5 }}
-      className='hidden absolute h-full w-full bg-zinc-900 z-50 rounded-xl text-white flex flex-col gap-5 p-10'>
-      <LoaderFive text="Debugging Inprogress..." />
-
-
-      {/* <TypingAnimation className='text-2xl font-mono opacity-90'> </TypingAnimation> */}
-
-      <TextAnimate animation="blurInUp" by="character" duration={2}>
-        &gt; Analyzing your code...
-      </TextAnimate>
-
-      <AnimatedSpan delay={4000} className="text-[#00FFFF] font-mono opacity-75 text-md">
-        <span>✔ Parsing the code line by line.</span>
-      </AnimatedSpan>
-
-
-      <AnimatedSpan delay={6000} className="text-[#00FFFF] font-mono opacity-75 text-md">
-        <span>✔ Identified 8 errors.</span>
-      </AnimatedSpan>
-
-      <AnimatedSpan delay={8000} className="text-[#00FFFF] font-mono opacity-75 text-md">
-        <span>✔ Applying changes.</span>
-      </AnimatedSpan>
-
-      <AnimatedSpan delay={10000} className="text-[#00FFFF] font-mono opacity-75 text-md">
-        <span>✔ Success!</span>
-      </AnimatedSpan>
-
-
-      <AnimatedSpan delay={12000} className="text-white  font-mono opacity-55 text-sm">
-        <span>All 8 errors are fixed!</span>
-      </AnimatedSpan>
-    </motion.div>
-
-
-  )
-}
-
-function CodeReviewOverlay({ setIsFix, setIsLoad2 }: { setIsFix: React.Dispatch<React.SetStateAction<boolean>>, setIsLoad2: React.Dispatch<React.SetStateAction<boolean>> }) {
-  const [isLoad, setIsLoad] = useState(false);
-
-  const code1 = `<button onClick={() => setCount(count + 1)}>+</button>
-<button onClick={() => setCount((prev) => Math.max(prev - 1, 0))}>-</button>`
-
-  const code2 = `<button onClick={() => setCount((prev) => prev + 1)}>+</button>
-<button onClick={() => setCount((prev) => prev - 1)}>-</button>`
-
-  const code3 = `<button aria-label="Increase count" onClick={() => setCount((prev) => prev + 1)}>+</button>
-<button aria-label="Decrease count" onClick={() => setCount((prev) => prev - 1)}>-</button>`
-
-  const code4 = `<div className="flex items-center gap-4">
-  <h2 className="text-xl font-bold">Count: {count}</h2>
-  <button className="px-3 py-1 bg-green-500 text-white rounded" onClick={() => setCount((prev) => prev + 1)}>+</button>
-  <button className="px-3 py-1 bg-red-500 text-white rounded" onClick={() => setCount((prev) => prev - 1)}>-</button>
-</div>`
-
-  function handleChange() {
-    setIsLoad(true);
-    setTimeout(() => {
-      setIsLoad(false);
-      setIsFix(true);
-      setIsLoad2(false);
-    }, 2000);
-  }
-  return (
-    <motion.div
-      // initial={{x:-100}}
-      className='h-full w-full flex justify-center items-center mt-1'>
-      <motion.div
-
-        initial={{ opacity: 0, filter: 'blur(20px)', x: 360 }}
-        animate={{ opacity: 1, filter: 'blur(0px)', x: 0 }}
-        transition={{ duration: 1.5 }}
-        exit={{ opacity: 0, filter: 'blur(20px)', x: 360 }}
-        className='absolute h-[86%] rounded-l-lg w-[40%] right-0  bg-zinc-800 z-50 text-white flex flex-col  p-5 overflow-y-auto shadow-[-15px_0_20px_-3px_rgba(0,0,0,0.3)]'>
-        {/* <LoaderFive text="Reviewing Inprogress..."/> */}
-
-
-        {/* <TypingAnimation className='text-2xl font-mono opacity-90'> </TypingAnimation> */}
-
-        <img src="logoC.svg" alt="" className='size-[10%]' />
-        <div className='flex gap-2 w-full'>
-
-          <TextAnimate
-            animation="blurInUp"
-            once={true}
-            by="character"
-            duration={2}
-            className={`${montserrat.className} font-semibold text-sm opacity-80 mt-3 w-[90%]`}
-          >
-            {`Your code is perfectly valid and works as expected. — it’s a simple counter component. \n here’s some suggestions for improvements:-`}
-          </TextAnimate>
-        </div>
-        <motion.h1
-          initial={{ opacity: 0, filter: 'blur(20px)' }}
-          animate={{ opacity: 1, filter: 'blur(0px)' }}
-          transition={{ duration: 1, delay: 2 }}
-          className='mt-4 mb-4 font-semibold text-sm opacity-80'>🔧 Possible Improvements</motion.h1>
-
-        <div className='relative flex flex-col gap-10'>
-
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 4 }}
-            className=" text-md flex flex-col">
-            <h1 className='opacity-75'>1. Prevent negative values (if that’s not desired):</h1>
-            <div className='h-20 w-full bg-zinc-950 rounded-xl mt-2 mb-4'>
-              <div className='ml-3 text-xs mt-1'>tsx</div>
-              <SyntaxHighlighter language='jsx' style={vscDarkPlus}>
-                {code1}
-              </SyntaxHighlighter>
-
-            </div>
-          </motion.div>
-
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 5 }}
-            className=" text-md flex flex-col mt-3">
-            <h1 className='opacity-75'>2. Use functional updates (best practice when updating based on the previous state):</h1>
-            <div className='h-20 w-full bg-zinc-950 rounded-xl mt-2 mb-4'>
-              <div className='ml-3 text-xs mt-1'>tsx</div>
-              <SyntaxHighlighter language='jsx' style={vscDarkPlus}>
-                {code2}
-              </SyntaxHighlighter>
-
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 6 }}
-            className="text-md flex flex-col mt-3">
-            <h1 className='opacity-75'>3. Accessibility – Add aria-label or descriptive text for screen readers:</h1>
-            <div className='h-20 w-full bg-zinc-950 rounded-xl mt-2 mb-4'>
-              <div className='ml-3 text-xs mt-1'>tsx</div>
-              <SyntaxHighlighter language='jsx' style={vscDarkPlus}>
-                {code3}
-              </SyntaxHighlighter>
-
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 7 }}
-            className="  text-md flex flex-col mt-3 mb-32">
-            <h1 className='opacity-75'>4. Styling – Add some minimal Tailwind or CSS for better UI (optional):</h1>
-            <div className='h-20 w-full bg-zinc-950 rounded-xl mt-2 mb-4'>
-              <div className='ml-3 text-xs mt-1'>tsx</div>
-              <SyntaxHighlighter language='jsx' style={vscDarkPlus}>
-                {code4}
-              </SyntaxHighlighter>
-
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, filter: 'blur(20px)' }}
-            animate={{ opacity: 1, filter: 'blur(0px)' }}
-            transition={{ duration: 1, delay: 7 }}
-            className="absolute text-md bottom-0 w-full flex justify-center items-center">
-            {isLoad ?
-              <span className='mb-3'>
-                <LoaderOne />
-              </span>
-              :
-              <motion.button whileHover={{ opacity: 0.7 }} onClick={handleChange} className='bg-white text-black font-semibold px-3 py-1 rounded-full w-full'>Make changes</motion.button>}
-          </motion.div>
-        </div>
-
-      </motion.div>
-    </motion.div>
-
-  )
-}

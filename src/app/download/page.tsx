@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Download, CheckCircle2 } from 'lucide-react';
 import { FaWindows, FaApple, FaLinux } from 'react-icons/fa';
 import Image from 'next/image';
+import { HeroVideoDialog } from '@/components/ui/hero-video-dialog';
 
 type OS = 'Windows' | 'macOS' | 'Linux' | 'Unknown';
 
@@ -201,6 +202,33 @@ const DownloadPage = () => {
                             </div>
                         </div>
                     </div>
+                </motion.div>
+
+                {/* Installation Guide Video Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.7 }}
+                    className="w-full mt-16 mb-8"
+                >
+                    <div className="text-center mb-8">
+                        <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                            Steps to Install ToolBox
+                        </h2>
+                        <p className="text-base text-muted-foreground mt-2 max-w-md mx-auto">
+                            Follow this step-by-step video guide to install and set up CodeMate Toolbox on your system.
+                        </p>
+                    </div>
+                    <div className="relative w-full max-w-4xl mx-auto">
+                        <HeroVideoDialog
+                            className="block border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
+                            animationStyle="from-center"
+                            videoSrc="https://www.youtube.com/embed/XPDSybiI4h4"
+                            thumbnailSrc="https://img.youtube.com/vi/XPDSybiI4h4/maxresdefault.jpg"
+                            thumbnailAlt="CodeMate Toolbox Installation Guide"
+                        />
+                    </div>
+
                 </motion.div>
             </div>
         </div>

@@ -27,6 +27,10 @@ export interface StaggeredMenuProps {
   onMenuClose?: () => void;
 }
 
+// ==========================================
+// LOGIC & UI: STAGGERED FULLSCREEN MENU
+// Advanced GSAP-animated full-screen navigation overlay.
+// ==========================================
 export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
   position = 'right',
   colors = ['#B19EEF', '#5227FF'],
@@ -98,9 +102,16 @@ export const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
 
       if (toggleBtnRef.current) gsap.set(toggleBtnRef.current, { color: menuButtonColor });
     });
+    // ==========================================
+    // UI SECTION: MENU RENDER
+    // ==========================================
     return () => ctx.revert();
   }, [menuButtonColor, position]);
 
+  // ==========================================
+  // LOGIC: GSAP ANIMATION TIMELINES
+  // Defines the sequence for menu background layers, items, and social links sliding in.
+  // ==========================================
   const buildOpenTimeline = useCallback(() => {
     const panel = panelRef.current;
     const layers = preLayerElsRef.current;

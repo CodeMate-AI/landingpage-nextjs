@@ -70,16 +70,6 @@ html {
 
 @layer base {
   * {
-    @apply border-border;
-  }
-
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-@layer base {
-  * {
     @apply border-border outline-ring/50;
   }
 
@@ -146,6 +136,14 @@ body {
   /* Firefox */
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .white-space-pre-line {
   white-space: pre-line;
 }
@@ -188,11 +186,10 @@ body {
 
 @media (min-width: 1400px) and (min-height: 900px) {
   .xxlHero {
-    margin-top: 4.5vw;
   }
 
   .xxlHerotext {
-    font-size: 15vw;
+    font-size: 8rem;
   }
 }
 
