@@ -221,7 +221,7 @@ const DownloadPage = () => {
                     </div>
                     <div className="relative w-full max-w-4xl mx-auto">
                         <HeroVideoDialog
-                            className="block"
+                            className="block border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
                             animationStyle="from-center"
                             videoSrc="https://www.youtube.com/embed/XPDSybiI4h4"
                             thumbnailSrc="https://img.youtube.com/vi/XPDSybiI4h4/maxresdefault.jpg"
