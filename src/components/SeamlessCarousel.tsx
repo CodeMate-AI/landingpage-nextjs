@@ -4,6 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { Montserrat } from 'next/font/google'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import AutoCodeEditor from '@/components/motion-components/aEditor'
+import SmartGif from '@/components/ui/SmartGif'
 
 const montserrat = Montserrat({
     subsets: ['latin'],
@@ -14,6 +15,7 @@ const montserrat = Montserrat({
 interface CarouselSlide {
     title: string
     media?: string
+    fallbackSrc?: string
     description: string
     type: 'gif' | 'mp4' | 'component'
     overlay?: {
@@ -40,6 +42,7 @@ const slides: CarouselSlide[] = [
     {
         title: 'Codemaps',
         media: '/Codemaps (1).gif',
+        fallbackSrc: '/CodeMaps_Static.png',
         type: 'gif',
         description:
             'Navigate your entire codebase visually with intelligent code maps that reveal structure, dependencies, and relationships at a glance.',
@@ -47,6 +50,7 @@ const slides: CarouselSlide[] = [
     {
         title: 'Deepwiki',
         media: '/deepwiki_gif.gif',
+        fallbackSrc: '/DeepWiki_static.png',
         type: 'gif',
         description:
             'Query deep contextual knowledge from your codebase wiki, instantly getting answers about architecture, patterns, and implementation details.',
@@ -193,12 +197,22 @@ export default function SeamlessCarousel() {
                         >
                             {currentSlide.type === 'gif' ? (
                                 <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-video flex items-center justify-center">
-                                    <img
-                                        src={currentSlide.media}
-                                        alt={currentSlide.title}
-                                        className="w-full h-full object-contain lg:object-cover"
-                                        loading="eager"
-                                    />
+                                    {currentSlide.fallbackSrc ? (
+                                        <SmartGif
+                                            src={currentSlide.media!}
+                                            fallbackSrc={currentSlide.fallbackSrc}
+                                            alt={currentSlide.title}
+                                            className="w-full h-full object-contain lg:object-cover"
+                                            isActive={true}
+                                        />
+                                    ) : (
+                                        <img
+                                            src={currentSlide.media}
+                                            alt={currentSlide.title}
+                                            className="w-full h-full object-contain lg:object-cover"
+                                            loading="eager"
+                                        />
+                                    )}
                                 </div>
                             ) : currentSlide.type === 'mp4' ? (
                                 <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-video relative">

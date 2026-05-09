@@ -409,33 +409,28 @@ function Page() {
 
       {/* ── Cora plans ── */}
       {selectedProduct === 'cora' && (
-        <>
-          <div className="flex flex-col gap-4 w-full">
-            <div className="px-4 lg:px-[6vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 w-full max-w-[1400px] mx-auto">
-              {CORA_PLANS.map((plan) => {
-                const backendPlan = categorizedPlans?.cora?.find(
-                  (p) => p.display_name.toLowerCase() === plan.title.toLowerCase()
-                )
-                const billingPeriods = plan.billingPeriods?.map((period) => {
-                  const stripeId = (backendPlan as any)?.stripe_id?.[period.label.toLowerCase()]
-                  return stripeId ? { ...period, ctaLink: stripeId } : period
-                })
-                return (
-                  <PlanCard
-                    key={plan.id}
-                    planInfo={{ ...plan, ...(billingPeriods && { billingPeriods }) }}
-                    showAllFeatures={showAllFeatures}
-                    onToggleFeatures={toggleFeatures}
-                  />
-                )
-              })}
-            </div>
-            <MaxPlanCard planInfo={maxPlanInfo} />
+        <div className="flex flex-col gap-4 w-full">
+          <div className="px-4 lg:px-[6vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 w-full max-w-[1400px] mx-auto">
+            {CORA_PLANS.map((plan) => {
+              const backendPlan = categorizedPlans?.cora?.find(
+                (p) => p.display_name.toLowerCase() === plan.title.toLowerCase()
+              )
+              const billingPeriods = plan.billingPeriods?.map((period) => {
+                const stripeId = (backendPlan as any)?.stripe_id?.[period.label.toLowerCase()]
+                return stripeId ? { ...period, ctaLink: stripeId } : period
+              })
+              return (
+                <PlanCard
+                  key={plan.id}
+                  planInfo={{ ...plan, ...(billingPeriods && { billingPeriods }) }}
+                  showAllFeatures={showAllFeatures}
+                  onToggleFeatures={toggleFeatures}
+                />
+              )
+            })}
           </div>
-          {categorizedPlans && categorizedPlans.cora && categorizedPlans.cora.length > 0 && (
-            <ComparePlans plans={categorizedPlans.cora} selectedProduct="cora" />
-          )}
-        </>
+          <MaxPlanCard planInfo={maxPlanInfo} />
+        </div>
       )}
 
       {/* ── C0 plans ── */}
