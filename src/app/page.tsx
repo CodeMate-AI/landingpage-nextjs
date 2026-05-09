@@ -1595,7 +1595,7 @@ function Page() {
                     return (
                       <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0 items-center">
                         <div
-                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out items-center text-center"
+                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out items-start text-left"
                           style={{
                             opacity: proximityOpacity,
                             filter: `blur(${proximityBlur}px)`,
@@ -1604,7 +1604,7 @@ function Page() {
                         >
                           {/* Top Text */}
                           <div className="flex flex-col gap-2">
-                            <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div>
+                            {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
                             <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
                           </div>
 
@@ -1636,7 +1636,7 @@ function Page() {
                           </div>
 
                           {/* Bottom Description */}
-                          <div className="flex flex-col gap-4 px-2 items-center">
+                          <div className="flex flex-col gap-4 px-2 items-start">
                             <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
                           </div>
                         </div>
