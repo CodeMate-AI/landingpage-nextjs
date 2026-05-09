@@ -94,7 +94,7 @@ export function HeroVideoDialog({
   }, [isVideoOpen])
 
   return (
-    <div className={cn("relative w-full aspect-video rounded-xl ring-2 ring-neutral-700 shadow-2xl group", className)}>
+    <div className={cn("relative w-full aspect-video rounded-xl shadow-2xl group", className)}>
       <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-50 blur transition duration-500 pointer-events-none"></div>
       <div className="relative w-full h-full rounded-xl overflow-hidden">
         <button
@@ -148,7 +148,7 @@ export function HeroVideoDialog({
                 {...selectedVariant}
                 onClick={(e) => e.stopPropagation()}
                 transition={{ type: "spring", damping: 30, stiffness: 300 }}
-                className="w-full h-full rounded-2xl border-2 border-white/10 shadow-2xl overflow-hidden"
+                className="w-full h-full rounded-2xl shadow-2xl overflow-hidden"
               >
                 <iframe
                   src={`${videoSrc}${videoSrc.includes('?') ? '&' : '?'}autoplay=1`}
