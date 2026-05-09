@@ -428,7 +428,6 @@ function Page() {
                 />
               )
             })}
-            <PlanCard planInfo={ENTERPRISE_PLAN} showAllFeatures={showAllFeatures} onToggleFeatures={toggleFeatures} />
           </div>
           <MaxPlanCard planInfo={maxPlanInfo} />
         </div>
