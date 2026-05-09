@@ -1578,7 +1578,7 @@ function Page() {
                         PShowYProg,
                         // Mobile: 6 cards of 100vw each, title 60vw. Center card i → x = -(60vw + i*100vw)
                         [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-                        ["0vw", "-10vw", "-110vw", "-210vw", "-310vw", "-410vw", "-510vw", "-510vw"]
+                        ["0vw", "-60vw", "-160vw", "-260vw", "-360vw", "-460vw", "-560vw", "-560vw"]
                       )
                     : useTransform(
                         PShowYProg,
