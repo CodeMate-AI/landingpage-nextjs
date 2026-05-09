@@ -1296,7 +1296,7 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)" }}
                   animate={{ opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.4, delay: 1.5 }}
-                  className={`flex flex-col ${montserrat.className} text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-5 opacity-60 text-left`}>
+                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-5 opacity-60 text-left`}>
                   <p>Build and ship 20x faster with CodeMate AI</p>
                   <p>Your all-in-one accelerator to turn your ideas into code</p>
                 </motion.div>
@@ -1331,12 +1331,12 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                   animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className={`${montserrat.className} flex flex-wrap justify-start items-center gap-4 text-sm mt-10`}
+                  className={`${montserrat.className} flex justify-start items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-8 sm:mt-10`}
                 >
                   <a href="/download">
                     <motion.button
                       whileHover={{ opacity: 0.8 }}
-                      className="h-12 px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5"
+                      className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
                     >
                         Download
                       </motion.button>
@@ -1344,7 +1344,7 @@ function Page() {
                     <a href="https://app.codemate.ai" target="_blank">
                       <motion.button
                         whileHover={{ opacity: 0.9 }}
-                        className="h-12 px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold"
+                        className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
                       >
                         Try Build 2.0
                       </motion.button>
