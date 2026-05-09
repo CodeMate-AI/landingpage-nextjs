@@ -1621,7 +1621,7 @@ function Page() {
                     return (
                       <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
                         <div
-                          className="flex flex-col gap-6 transition-all duration-700 ease-[cubic-bezier(0.25,0.46,0.45,0.94)]"
+                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out"
                           style={{
                             opacity: proximityOpacity,
                             filter: `blur(${proximityBlur}px)`,
