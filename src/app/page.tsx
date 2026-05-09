@@ -1533,7 +1533,7 @@ function Page() {
 
       <div>
         {/* horizontal scroll section: What You'll Unlock */}
-        <div ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 mt-0 lg:-mt-[15vh]'>
+        <div ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 -mt-[15vh]'>
 
           <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-[8vh] lg:pt-0">
             {/* Horizontal Scrolling Content */}
@@ -1543,9 +1543,9 @@ function Page() {
                   x: isMobile
                     ? useTransform(
                         PShowYProg,
-                        // Mobile: 6 cards of 100vw each, title 80vw. Center card i → x = -(80vw + i*100vw)
+                        // Mobile: 6 cards of 100vw each, title 100vw. Center card i → x = -(100vw + i*100vw)
                         [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-                        ["0vw", "-80vw", "-180vw", "-280vw", "-380vw", "-480vw", "-580vw", "-580vw"]
+                        ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw", "-600vw"]
                       )
                     : useTransform(
                         PShowYProg,
@@ -1559,7 +1559,7 @@ function Page() {
               >
 
                 {/* Scrolling Title */}
-                <div className="w-[80vw] lg:w-[35vw] flex flex-col justify-center items-center text-center lg:items-start lg:text-left shrink-0 px-8 lg:px-0">
+                <div className="w-[100vw] lg:w-[35vw] flex flex-col justify-center items-center text-center lg:items-start lg:text-left shrink-0 px-8 lg:px-0">
                   <div className={`${montserrat.className} text-[clamp(2rem,10vw,3.5rem)] leading-[1.05] font-bold text-white`}>
                     What You'll
                     <div className="block">
