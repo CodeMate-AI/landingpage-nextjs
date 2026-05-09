@@ -9,7 +9,7 @@ import {
 } from 'motion/react';
 import { cn } from '@/lib/utils';
 import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { ChevronUp } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 
 
 export type AccordionContextType = {
@@ -155,8 +155,8 @@ function AccordionTrigger({
       {...(isExpanded ? { "data-expanded": "" } : { "data-closed": "" })}
     >
       {children}
-      <ChevronUp
-        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+      <ChevronDown
+        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-aria-expanded:rotate-180 dark:text-zinc-50"
       />
     </button>
   );
