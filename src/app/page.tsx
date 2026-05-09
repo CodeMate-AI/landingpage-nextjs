@@ -1242,13 +1242,13 @@ function Page() {
 
       {/* hero section  */}
       {/* hero section  */}
-      <div ref={heroRef2} className='min-h-[75vh] lg:min-h-screen w-full overflow-x-hidden relative'>
+      <div ref={heroRef2} className='h-auto lg:h-screen w-full overflow-x-hidden relative'>
         <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
           {/* ========================================== */}
           {/* UI SECTION: HERO                         */}
           {/* The main landing area with the primary CTA and background animation */}
           {/* ========================================== */}
-          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative min-h-[75vh] lg:min-h-screen w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-[8vh] pb-20'>
+          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-auto lg:h-screen w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-20 lg:pt-[8vh] pb-8 lg:pb-20'>
 
             <motion.div
               style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
@@ -1296,7 +1296,7 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)" }}
                   animate={{ opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.4, delay: 1.5 }}
-                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-5 opacity-60 text-left`}>
+                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-2 lg:mt-5 opacity-60 text-left`}>
                   <p>Build and ship 20x faster with CodeMate AI</p>
                   <p>Your all-in-one accelerator to turn your ideas into code</p>
                 </motion.div>
@@ -1307,7 +1307,7 @@ function Page() {
                   initial={{ y: -12, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ duration: 0.3, delay: 0.4 }}
-                  className="w-full flex justify-start mt-8 z-[100]"
+                  className="w-full flex justify-start mt-3 lg:mt-8 z-[100]"
                 >
                   <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group">
                     <div
@@ -1331,7 +1331,7 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                   animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className={`${montserrat.className} flex justify-start items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-8 sm:mt-10`}
+                  className={`${montserrat.className} flex justify-start items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-4 lg:mt-10`}
                 >
                   <a href="/download">
                     <motion.button
@@ -1533,9 +1533,9 @@ function Page() {
 
       <div>
         {/* horizontal scroll section: What You'll Unlock */}
-        <div ref={productShowRef} className='relative z-10 h-[350vh] lg:h-[430vh] w-full bg-zinc-950 -mt-[12vh] lg:-mt-[15vh]'>
+        <div ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 mt-0 lg:-mt-[15vh]'>
 
-          <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center lg:items-center lg:pt-0">
+          <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-[8vh] lg:pt-0">
             {/* Horizontal Scrolling Content */}
             <div className="relative flex-1 w-full flex items-center overflow-hidden pointer-events-none">
               <motion.div
@@ -1543,9 +1543,9 @@ function Page() {
                   x: isMobile
                     ? useTransform(
                         PShowYProg,
-                        // Mobile: 6 cards of 100vw each, title 60vw. Center card i → x = -(60vw + i*100vw)
+                        // Mobile: 6 cards of 100vw each, title 80vw. Center card i → x = -(80vw + i*100vw)
                         [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-                        ["0vw", "-60vw", "-160vw", "-260vw", "-360vw", "-460vw", "-560vw", "-560vw"]
+                        ["0vw", "-80vw", "-180vw", "-280vw", "-380vw", "-480vw", "-580vw", "-580vw"]
                       )
                     : useTransform(
                         PShowYProg,
@@ -1559,11 +1559,17 @@ function Page() {
               >
 
                 {/* Scrolling Title */}
-                <div className="w-[60vw] lg:w-[35vw] flex flex-col justify-center shrink-0 px-8 lg:px-0">
-                  <div className={`${montserrat.className} text-[2.5rem] lg:text-[3.5rem] leading-[1.1] font-bold text-white`}>
+                <div className="w-[80vw] lg:w-[35vw] flex flex-col justify-center items-center text-center lg:items-start lg:text-left shrink-0 px-8 lg:px-0">
+                  <div className={`${montserrat.className} text-[clamp(2rem,10vw,3.5rem)] leading-[1.05] font-bold text-white`}>
                     What You'll
-                    <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent block'> Unlock</span>
-                    <h1 className="mt-2 text-[1.8rem] lg:text-[2.5rem] font-semibold">with CodeMate AI</h1>
+                    <div className="block">
+                      <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Unlock</span>
+                      <span className="lg:hidden"> with</span>
+                    </div>
+                    <div className="mt-1 lg:mt-2 text-[clamp(1.5rem,7vw,2.5rem)] font-semibold leading-tight whitespace-nowrap">
+                      <span className="hidden lg:inline">with </span>
+                      CodeMate AI
+                    </div>
                   </div>
                 </div>
 
@@ -1586,9 +1592,9 @@ function Page() {
                     const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
 
                     return (
-                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
+                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0 items-center">
                         <div
-                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out"
+                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out items-center text-center"
                           style={{
                             opacity: proximityOpacity,
                             filter: `blur(${proximityBlur}px)`,
@@ -1603,7 +1609,7 @@ function Page() {
 
                           {/* Image/Video Box */}
                           <div
-                            className={`h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
+                            className={`h-[200px] sm:h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
                           >
                             {/* Subtle radial glow behind active card media */}
                             {isActive && (
@@ -1629,7 +1635,7 @@ function Page() {
                           </div>
 
                           {/* Bottom Description */}
-                          <div className="flex flex-col gap-4 pr-2">
+                          <div className="flex flex-col gap-4 px-2 items-center">
                             <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
                           </div>
                         </div>
@@ -1661,9 +1667,11 @@ function Page() {
             {/* From Web-Application Label (Mobile) */}
             <div className="lg:hidden w-full px-8 pt-10 pb-8 text-right pointer-events-none">
               <motion.div
-                initial={{ opacity: 0, filter: 'blur(10px)' }}
-                whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ delay: 0.2, duration: 0.6 }}
+                style={{
+                  opacity: useTransform(PShowYProg, [0.72, 0.76], [0, 1]),
+                  filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
+                }}
+                transition={{ duration: 0.6 }}
                 className={`${montserrat.className} text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
                 From <br /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl'>Web-Application</span>
               </motion.div>
@@ -1673,9 +1681,11 @@ function Page() {
           {/* From Web-Application Label (Desktop) */}
           <div className='hidden lg:block sticky top-[88vh] z-40 pointer-events-none'>
             <motion.div
-              initial={{ opacity: 0, filter: 'blur(10px)' }}
-              whileInView={{ opacity: 1, filter: 'blur(0px)' }}
-              transition={{ delay: 0.2, duration: 0.6 }}
+              style={{
+                opacity: useTransform(PShowYProg, [0.72, 0.76], [0, 1]),
+                filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
+              }}
+              transition={{ duration: 0.6 }}
               className={`${montserrat.className} text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
               From <br className='lg:hidden' /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>Web-Application</span>
             </motion.div>
@@ -1760,7 +1770,7 @@ function Page() {
         </div>
 
         <div className='w-full flex flex-col lg:flex-row  justify-center items-center gap-5  lg:gap-[1.25] mt-10 '>
-          <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6  border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
+          <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6  border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
             style={{
               background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
               boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -1777,7 +1787,7 @@ function Page() {
           </div>
 
           <div className='flex flex-col gap-5 lg:flex-row lg:gap-[1.25]'>
-            <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6   border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
+            <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6   border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
               style={{
                 background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
                 boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -1792,7 +1802,7 @@ function Page() {
 Run it seamlessly in your environment with Codemate, ensuring smooth integration with your existing workflows. Codemate adapts to your setup, minimizing disruption while maximizing efficiency, so your team can maintain focus on delivering quality code without added complexity.
   </p> */}
             </div>
-            <div className='relative h-[35vh] lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start border-x-[1px] border-y-[0.5px]   border-white border-opacity-20 gap-6 px-7 lg:px-3 py-5'
+            <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start border-x-[1px] border-y-[0.5px]   border-white border-opacity-20 gap-6 px-7 lg:px-3 py-5'
               style={{
                 background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
                 boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -1839,28 +1849,28 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
 
           <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
-            <div className=' w-[50vw] lg:size-[13rem]'>
-              <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-8xl'
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
+              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl lg:text-8xl'
                 direction="up"
                 targetValue={55} />%</h1>
-              <p className='text-xl opacity-70 mt-3 text-center'>Faster coding</p>
+              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Faster coding</p>
             </div>
-            <div className=' w-[50vw] lg:size-[13rem]'>
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
 
-              <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-8xl'
+              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl lg:text-8xl'
                 direction="up"
                 targetValue={39} />%</h1>
-              <p className='text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
+              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
             </div>
-            <div className=' w-[50vw] lg:size-[13rem]'>
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
 
-              <h1 className="text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-8xl'
+              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl lg:text-8xl'
                 direction="up"
                 targetValue={68} />%</h1>
-              <p className='text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
+              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
             </div>
           </div>
 
@@ -1974,7 +1984,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                 className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 10 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/ayushbansal.jpeg" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
@@ -1994,7 +2004,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                 className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 5 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/hani.webp" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
@@ -2012,7 +2022,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
               <motion.div style={{ y: tdiv3X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: 0 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/vilkho_appsumo.webp" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col w-[50%]'>
@@ -2030,7 +2040,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
               <motion.div style={{ y: tdiv4X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: -5 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=kitty.liu" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
@@ -2048,7 +2058,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
               <motion.div style={{ y: tdiv5X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
                 <motion.div
                   animate={{ rotate: -10 }}
-                  className='h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-5 lg:px-8 py-5 gap-5'>
+                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=david.kim" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
