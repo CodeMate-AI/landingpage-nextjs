@@ -1241,134 +1241,103 @@ function Page() {
 
 
       {/* hero section  */}
-      <div ref={heroRef2} className='h-[75vh] lg:h-[100vh] w-full overflow-x-hidden'>
+      {/* hero section  */}
+      <div ref={heroRef2} className='min-h-[75vh] lg:min-h-screen w-full overflow-x-hidden relative'>
         <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
           {/* ========================================== */}
           {/* UI SECTION: HERO                         */}
           {/* The main landing area with the primary CTA and background animation */}
           {/* ========================================== */}
-          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-[75vh] lg:h-screen w-full z-50 overflow-hidden cursor-default'>
-
-
+          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative min-h-[75vh] lg:min-h-screen w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-[8vh] pb-20'>
 
             <motion.div
               style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
-              className='absolute h-full w-full opacity-5 z-0'>
-              <img src="/bgNoise.png" className='object-fit w-full' alt="" />
+              className='absolute inset-0 opacity-5 z-0'>
+              <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" />
             </motion.div>
 
-            <div className='relative z-50 h-full w-full flex justify-center items-center overflow-hidden'>
+            <div className='relative z-50 w-full pl-[8vw] lg:pl-[calc(3.3vw+3rem)] pr-[8vw] lg:pr-12 flex flex-col items-start'>
+              <motion.div
+                className='text-[clamp(2.5rem,12vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left'>
 
 
-
-
-
-
-              <div className=' flex  flex-col  items-center z-50 text-white gap-5'>
+                <div className={`${montserrat.className} `}>
+                  <div className='xxlHero z-50'>
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>On</motion.span>
+                    {' '}
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Device</motion.span>
+                    {' '}
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.2, delay: 0.6 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>First</motion.span>
+                    {' '}
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.1, delay: 0.8 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>AI</motion.span>
+                  </div>
+                </div>
+                <div className={`${montserrat.className} flex flex-wrap justify-start gap-x-4 bg-gradient-to-b from-white to-gray-300/10 bg-clip-text text-transparent`}>
+                  <div className='pb-3'>
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.1, delay: 0.9 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>SDLC</motion.span>
+                    {' '}
+                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
+                      animate={{ opacity: 1, filter: "blur(0px)" }}
+                      transition={{ duration: 0.1, delay: 1 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Agent</motion.span>
+                  </div>
+                </div>
 
                 <motion.div
-                  // animate={{y:[120,35]}}
-                  // transition={{duration:1,delay:6}}    
-                  className='absolute top-[8vh] lg:left-[3.3vw] 
-      text-[14vw]   lg:text-[8vw] leading-[1] font-semibold flex flex-col pb-1  pl-[8vw]  lg:pl-12  mt-0 z-50 !xxlHerotext'>
+                  initial={{ opacity: 0, filter: "blur(10px)" }}
+                  animate={{ opacity: 1, filter: "blur(0px)" }}
+                  transition={{ duration: 0.4, delay: 1.5 }}
+                  className={`flex flex-col ${montserrat.className} text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-5 opacity-60 text-left`}>
+                  <p>Build and ship 20x faster with CodeMate AI</p>
+                  <p>Your all-in-one accelerator to turn your ideas into code</p>
+                </motion.div>
 
-
-                  <div className={`${montserrat.className} `}>
-                    {/* {title.map((e,idx)=>(
-      <motion.h1
-      initial={{opacity:0}}
-      animate={{opacity:1}}
-      transition={{duration:1,delay: idx * 0.5}}
-      key={idx}>
-        {e}
-      </motion.h1>
-     ))} */}
-                    {/* <motion.div 
-      initial={{ opacity: 0, filter: "blur(10px)" }}
-      animate={{ opacity: 1, filter: "blur(0px)" }}
-      transition={{ duration: 1,delay:4 }}
-      className="text-sm text-nowrap flex gap-2 ml-3 text-gray-400">Build 3.0 is live. Start building.  <motion.span whileHover={{scale:1.05}} className='text-cyan-500 flex cursor-pointer  justify-center items-center'>   Explore now &gt;</motion.span></motion.div> */}
-
-                    <div className='xxlHero z-50'><motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>On</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                        animate={{ opacity: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>Device</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                          animate={{ opacity: 1, filter: "blur(0px)" }}
-                          transition={{ duration: 0.2, delay: 0.6 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>First</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                            animate={{ opacity: 1, filter: "blur(0px)" }}
-                            transition={{ duration: 0.1, delay: 0.8 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>AI</motion.span></div>
-                  </div>
-                  <div className={`${montserrat.className} flex gap-4 bg-gradient-to-b from-white to-gray-300/10 bg-clip-text  text-transparent`}>
-                    {/* {title2.map((e,idx)=>(
-      <motion.h1
-      initial={{opacity:0}}
-      animate={ isTitle? {opacity:1} : {}}
-      transition={{duration:1,delay: idx * 0.5}}
-      key={idx}>
-        {e}
-      </motion.h1>
-     ))} */}
-
-                    <div className='pb-3'><motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.1, delay: 0.9 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>SDLC</motion.span> <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                        animate={{ opacity: 1, filter: "blur(0px)" }}
-                        transition={{ duration: 0.1, delay: 1 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text  text-transparent'>Agent</motion.span></div>
-
-                  </div>
-                  <motion.div
-                    initial={{ opacity: 0, filter: "blur(10px)" }}
-                    animate={{ opacity: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.4, delay: 1.5 }}
-                    className={`flex flex-col ${montserrat.className} text-xs lg:text-[1.5vw] gap-1 leading-[1.] mt-5 opacity-60 `}>
-                    <p>Build and ship 20x faster with CodeMate AI</p>
-                    <p>Your all-in-one accelerator to turn your ideas into code</p>
-                  </motion.div>
-
-
-                  {/* State-of-the-Art Badge */}
-                  <motion.div
-                    ref={announcementRef}
-                    initial={{ y: -12, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.3, delay: 0.4 }}
-                    className="w-full flex-1 flex justify-left mt-8 z-[999999]"
-                  >
-                    <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-1.5rem)] shadow-lg hover:shadow-xl transition group">
-                      <div
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => window.open('https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/', '_blank')}
-                        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
-                        className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-2.5 sm:px-4 py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                      >
-                        <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2 justify-center sm:justify-start">
-                          <div className="flex min-w-0 items-center gap-0.5 text-[11px] sm:text-[13px] font-medium leading-snug">
-                            <p className="truncate max-w-[200px] xs:max-w-[260px] sm:max-w-none text-center sm:text-left text-neutral-300">
-                              Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
-                            </p>
-                            <ChevronRight className="ml-0.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
-                          </div>
-                        </div>
+                {/* State-of-the-Art Badge */}
+                <motion.div
+                  ref={announcementRef}
+                  initial={{ y: -12, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 0.4 }}
+                  className="w-full flex justify-start mt-8 z-[100]"
+                >
+                  <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group">
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => window.open('https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/', '_blank')}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
+                      className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-3 py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                    >
+                      <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
+                        <p className="text-[11px] sm:text-[13px] font-medium leading-snug text-neutral-300">
+                          Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
+                        </p>
+                        <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
+                </motion.div>
 
-
-
-
-                  <motion.div
-                    initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
-                    animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                    transition={{ duration: 1, delay: 0.5 }}
-                    className={`${montserrat.className} flex items-center gap-4 text-sm mt-10 -ml-4 sm:ml-0`}
-                  >
-                    <a href="/download">
-                      <motion.button
-                        whileHover={{ opacity: 0.8 }}
-                        className="h-12 px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5"
-                      >
+                <motion.div
+                  initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
+                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                  transition={{ duration: 1, delay: 0.5 }}
+                  className={`${montserrat.className} flex flex-wrap justify-start items-center gap-4 text-sm mt-10`}
+                >
+                  <a href="/download">
+                    <motion.button
+                      whileHover={{ opacity: 0.8 }}
+                      className="h-12 px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5"
+                    >
                         Download
                       </motion.button>
                     </a>
@@ -1408,10 +1377,8 @@ function Page() {
 
 
             </div>
-            {/* <motion.div style={{ height: shadingHeight }} className="absolute -bottom-2 left-0 right-0  bg-gradient-to-b from-zinc-950/0 to-zinc-950 z-50" /> */}
-          </div>
-        </BackgroundGradientAnimation>
-      </div>
+          </BackgroundGradientAnimation>
+        </div>
       {/* hero section */}
 
       {/* enter section */}
