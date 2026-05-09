@@ -409,28 +409,33 @@ function Page() {
 
       {/* ── Cora plans ── */}
       {selectedProduct === 'cora' && (
-        <div className="flex flex-col gap-4 w-full">
-          <div className="px-4 lg:px-[6vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 w-full max-w-[1400px] mx-auto">
-            {CORA_PLANS.map((plan) => {
-              const backendPlan = categorizedPlans?.cora?.find(
-                (p) => p.display_name.toLowerCase() === plan.title.toLowerCase()
-              )
-              const billingPeriods = plan.billingPeriods?.map((period) => {
-                const stripeId = (backendPlan as any)?.stripe_id?.[period.label.toLowerCase()]
-                return stripeId ? { ...period, ctaLink: stripeId } : period
-              })
-              return (
-                <PlanCard
-                  key={plan.id}
-                  planInfo={{ ...plan, ...(billingPeriods && { billingPeriods }) }}
-                  showAllFeatures={showAllFeatures}
-                  onToggleFeatures={toggleFeatures}
-                />
-              )
-            })}
+        <>
+          <div className="flex flex-col gap-4 w-full">
+            <div className="px-4 lg:px-[6vw] grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-4 w-full max-w-[1400px] mx-auto">
+              {CORA_PLANS.map((plan) => {
+                const backendPlan = categorizedPlans?.cora?.find(
+                  (p) => p.display_name.toLowerCase() === plan.title.toLowerCase()
+                )
+                const billingPeriods = plan.billingPeriods?.map((period) => {
+                  const stripeId = (backendPlan as any)?.stripe_id?.[period.label.toLowerCase()]
+                  return stripeId ? { ...period, ctaLink: stripeId } : period
+                })
+                return (
+                  <PlanCard
+                    key={plan.id}
+                    planInfo={{ ...plan, ...(billingPeriods && { billingPeriods }) }}
+                    showAllFeatures={showAllFeatures}
+                    onToggleFeatures={toggleFeatures}
+                  />
+                )
+              })}
+            </div>
+            <MaxPlanCard planInfo={maxPlanInfo} />
           </div>
-          <MaxPlanCard planInfo={maxPlanInfo} />
-        </div>
+          {categorizedPlans && categorizedPlans.cora && categorizedPlans.cora.length > 0 && (
+            <ComparePlans plans={categorizedPlans.cora} selectedProduct="cora" />
+          )}
+        </>
       )}
 
       {/* ── C0 plans ── */}
@@ -521,7 +526,8 @@ function buildFeatureConfig(mobile: boolean): Record<string, { label: string; re
 function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProduct: string }) {
   const proPlan   = plans.find((p) => p.display_name.toLowerCase() === 'pro')
   const teamsPlan = plans.find((p) => p.display_name.toLowerCase() === 'teams')
-  const allPlans  = [proPlan, teamsPlan, ENTERPRISE_COMPARE].filter(Boolean)
+  const maxPlan   = plans.find((p) => p.display_name.toLowerCase() === 'max')
+  const allPlans  = [proPlan, teamsPlan, maxPlan, ENTERPRISE_COMPARE].filter(Boolean)
   const features  = selectedProduct === 'build' ? BUILD_COMPARE_FEATURES : C0_COMPARE_FEATURES
   const config    = buildFeatureConfig(false)
   const configMob = buildFeatureConfig(true)
@@ -539,7 +545,7 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProdu
               <div key={i} className="flex flex-col items-center gap-2">
                 <span className="font-semibold">{plan.display_name}</span>
                 <span className="text-xl opacity-35">
-                  {plan.display_name === 'Enterprise' ? 'Custom' : `$${plan.price.monthly}/mo`}
+                  {plan.display_name === 'Enterprise' ? 'Custom' : plan.display_name.toLowerCase() === 'max' ? '$100/mo' : `$${plan.price?.monthly ?? 0}/mo`}
                 </span>
               </div>
             ))}
