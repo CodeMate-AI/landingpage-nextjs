@@ -325,13 +325,16 @@ function Page() {
 
 
   // Discrete step switching for "What you'll Unlock"
-  // Each step = UNLOCK_STEP ≈ 0.1267 of scroll progress (≈ 54vh per step)
+  // Uses midpoint thresholds so the step changes at the exact center between two cards.
+  // This makes scroll-up and scroll-down behavior perfectly symmetric.
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
     if (latest <= 0 || latest >= UNLOCK_END) {
       setUnlockStep(-1);
       return;
     }
 
+    // Midpoint thresholds: step changes when progress crosses the midpoint between
+    // two adjacent step centers (UNLOCK_STEP * (i + 0.5) and UNLOCK_STEP * (i + 1.5))
     if (latest < UNLOCK_STEP * 1) setUnlockStep(0);
     else if (latest < UNLOCK_STEP * 2) setUnlockStep(1);
     else if (latest < UNLOCK_STEP * 3) setUnlockStep(2);
@@ -1570,7 +1573,19 @@ function Page() {
             <div className="relative flex-1 w-full flex items-center overflow-hidden pointer-events-none">
               <motion.div
                 style={{
-                  x: isMobile ? useTransform(PShowYProg, [0, 0.75], ["0vw", "-600vw"]) : useTransform(PShowYProg, [0, 0.8], ["0%", "-72%"]),
+                  x: isMobile
+                    ? useTransform(
+                        PShowYProg,
+                        // Mobile: 6 cards of 100vw each, title 60vw. Center card i → x = -(60vw + i*100vw)
+                        [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
+                        ["0vw", "-10vw", "-110vw", "-210vw", "-310vw", "-410vw", "-510vw", "-510vw"]
+                      )
+                    : useTransform(
+                        PShowYProg,
+                        // Desktop: title ~35vw, each card 550px + 4rem gap. Multi-breakpoint to center each card.
+                        [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
+                        ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73%", "-73%"]
+                      ),
                   willChange: 'transform'
                 }}
                 className="flex items-center gap-0 lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto lg:mt-0"
@@ -1598,10 +1613,10 @@ function Page() {
                     // Proximity-based effects: adjacent cards get softer treatment
                     const dist = unlockStep === -1 ? 0 : Math.abs(i - unlockStep);
                     const isActive = i === unlockStep;
-                    const proximityOpacity = unlockStep === -1 ? 1 : isActive ? 1 : dist === 1 ? 0.35 : 0.12;
-                    const proximityBlur = unlockStep === -1 ? 0 : isActive ? 0 : dist === 1 ? 2.5 : 7;
-                    const proximityScale = unlockStep === -1 ? 1 : isActive ? 1.03 : dist === 1 ? 0.96 : 0.9;
-                    const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 6 : 14;
+                    const proximityOpacity = unlockStep === -1 ? 1 : isActive ? 1 : dist === 1 ? 0.5 : 0.2;
+                    const proximityBlur = unlockStep === -1 ? 0 : isActive ? 0 : dist === 1 ? 1.5 : 3.5;
+                    const proximityScale = unlockStep === -1 ? 1 : isActive ? 1.03 : dist === 1 ? 0.97 : 0.92;
+                    const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
 
                     return (
                       <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0">
