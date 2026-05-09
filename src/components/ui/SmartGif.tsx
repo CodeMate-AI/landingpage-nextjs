@@ -9,14 +9,22 @@ interface SmartGifProps {
   /** When provided, overrides the built-in IntersectionObserver.
    *  true = play the GIF, false = freeze it. */
   isActive?: boolean
+  fallbackSrc?: string
 }
 
-const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: externalActive }) => {
+const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: externalActive, fallbackSrc }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [isInView, setIsInView] = useState(false)
   const [hasFrame, setHasFrame] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [currentSrc, setCurrentSrc] = useState(src)
+
+  // Sync internal state if src changes
+  useEffect(() => {
+    setCurrentSrc(src)
+  }, [src])
 
   const isGif = src.toLowerCase().endsWith('.gif')
   const isExternallyControlled = externalActive !== undefined
@@ -35,6 +43,14 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
       setHasFrame(true)
     }
   }, [])
+
+  // Fix for cached images not firing onLoad
+  useEffect(() => {
+    if (imgRef.current?.complete) {
+      setIsLoaded(true)
+      if (!hasFrame) setTimeout(captureFrame, 250)
+    }
+  }, [currentSrc, captureFrame, hasFrame])
 
   /* ---- IntersectionObserver: only when NOT externally controlled ---- */
   useEffect(() => {
@@ -73,9 +89,14 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
       <motion.img
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
-        src={src}
+        src={currentSrc}
         className={className}
         alt={alt}
+        onError={() => {
+          if (fallbackSrc && currentSrc !== fallbackSrc) {
+            setCurrentSrc(fallbackSrc)
+          }
+        }}
       />
     )
   }
@@ -102,16 +123,32 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
       {/* Live GIF – visible when in viewport centre */}
       <img
         ref={imgRef}
-        src={src}
+        src={currentSrc}
         className={className}
         alt={alt}
         onLoad={() => {
+          setIsLoaded(true)
           setTimeout(captureFrame, 250)
         }}
+        onError={() => {
+          if (fallbackSrc && currentSrc !== fallbackSrc) {
+            setCurrentSrc(fallbackSrc)
+          }
+        }}
         style={{
-          display: shouldPlay || !hasFrame ? 'block' : 'none',
+          display: (shouldPlay || !hasFrame) && isLoaded ? 'block' : 'none',
         }}
       />
+
+      {/* Fallback Static Image - visible ONLY when GIF is loading or failed */}
+      {!isLoaded && fallbackSrc && (
+        <img
+          src={fallbackSrc}
+          className={className}
+          alt={alt}
+          style={{ display: 'block' }}
+        />
+      )}
     </motion.div>
   )
 }
