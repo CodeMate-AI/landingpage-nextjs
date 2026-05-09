@@ -55,6 +55,7 @@ const ENTERPRISE_PLAN = {
   monthlyCtaLink: ENTERPRISE_CTA,
   yearlyCtaText: 'Contact Us',
   yearlyCtaLink: ENTERPRISE_CTA,
+  isBuild: true,
 }
 
 const CORA_FREE_FEATURES = [

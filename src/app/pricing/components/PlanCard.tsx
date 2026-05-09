@@ -31,6 +31,8 @@ interface PlanInfo {
   yearlyCtaText: string
   yearlyCtaLink: string
   billingPeriods?: BillingPeriod[]
+  isBuild?: boolean
+  isC0?: boolean
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -195,9 +197,9 @@ const PlanCard = ({
     : `https://app.codemate.ai/payments?plan_id=${currentCtaLink}`
 
   const ctaClass = `py-2 rounded-lg text-sm font-semibold transition-all ${
-    planInfo.highlight || planInfo.isRecommended
+    isEnterprise
       ? 'bg-white text-black hover:bg-zinc-100'
-      : isBase
+      : (isBase || ((planInfo.isBuild || planInfo.isC0) && (planInfo.title.toLowerCase() === 'pro' || planInfo.title.toLowerCase() === 'teams')))
       ? 'bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700'
       : 'bg-white text-black hover:bg-zinc-100'
   }`

@@ -211,6 +211,8 @@ export function convertToPlanInfo(plan: any, isRecommended = false) {
         monthlyCtaLink: plan.stripe_id?.monthly ?? '#',
         yearlyCtaText: 'Get Started',
         yearlyCtaLink: plan.stripe_id?.yearly ?? '#',
+        isBuild,
+        isC0,
     }
 }
 
