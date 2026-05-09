@@ -562,7 +562,7 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProdu
 
       {/* Mobile */}
       <div className="pb-10 w-full lg:hidden flex flex-col items-center">
-        <h1 className="text-[10vw] font-semibold text-center w-full mb-4">
+        <h1 className="text-3xl lg:text-5xl font-semibold text-center w-full mb-4 lg:mb-8">
           <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Compare</span> Plans
         </h1>
         <Accordion className="flex w-[90%] flex-col gap-3" transition={{ duration: 0.2, ease: 'easeInOut' }}>

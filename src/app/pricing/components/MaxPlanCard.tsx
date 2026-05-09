@@ -85,8 +85,8 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
         </div>
 
         {/* ── Right: price + CTA ── */}
-        <div className="flex flex-col items-baseline lg:items-center justify-center z-10 w-full lg:w-auto mt-10 lg:mt-0 gap-10">
-          <div className="flex flex-row-reverse lg:flex-row items-center justify-between w-full lg:w-auto gap-4 lg:gap-0">
+        <div className="flex flex-col items-center justify-center z-10 w-full lg:w-auto mt-8 lg:mt-0 gap-8 lg:gap-10">
+          <div className="flex flex-col lg:flex-row items-center justify-center lg:justify-between w-full lg:w-auto gap-6 lg:gap-0">
 
             {/* Billing toggle */}
             <div className="flex items-center gap-3 lg:absolute lg:top-8 lg:right-12 z-20">
@@ -118,17 +118,17 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
             </div>
 
             {/* Price */}
-            <div className="flex items-baseline gap-1">
+            <div className="flex items-baseline justify-center gap-1">
               <motion.span
                 key={currentPrice}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                className="text-3xl lg:text-4xl font-bold text-white"
+                className="text-4xl lg:text-5xl font-bold text-white"
               >
                 ${currentPrice}
               </motion.span>
-              <span className="text-zinc-400 text-base lg:text-lg">{periodLabel}</span>
+              <span className="text-zinc-400 text-sm lg:text-lg">{periodLabel}</span>
             </div>
           </div>
 
