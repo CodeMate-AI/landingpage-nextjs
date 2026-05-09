@@ -33,6 +33,7 @@ interface PlanInfo {
   billingPeriods?: BillingPeriod[]
   isBuild?: boolean
   isC0?: boolean
+  isCora?: boolean
 }
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -199,7 +200,7 @@ const PlanCard = ({
   const ctaClass = `py-2 rounded-lg text-sm font-semibold transition-all ${
     isEnterprise
       ? 'bg-white text-black hover:bg-zinc-100'
-      : (isBase || ((planInfo.isBuild || planInfo.isC0) && (planInfo.title.toLowerCase() === 'pro' || planInfo.title.toLowerCase() === 'teams')))
+      : (isBase || ((planInfo.isBuild || planInfo.isC0 || planInfo.isCora) && (planInfo.title.toLowerCase() === 'pro' || planInfo.title.toLowerCase() === 'teams' || planInfo.title.toLowerCase() === 'max')))
       ? 'bg-zinc-800 text-white hover:bg-zinc-700 border border-zinc-700'
       : 'bg-white text-black hover:bg-zinc-100'
   }`

@@ -183,6 +183,7 @@ export function convertToPlanInfo(plan: any, isRecommended = false) {
     const key = plan.display_name.toLowerCase()
     const isBuild = plan.product.includes('build')
     const isC0 = plan.product.some((p: string) => p.toLowerCase() === 'c0')
+    const isCora = plan.product.includes('cora')
 
     const features = isBuild
         ? (BUILD_FEATURES[key] ?? [])
@@ -213,6 +214,7 @@ export function convertToPlanInfo(plan: any, isRecommended = false) {
         yearlyCtaLink: plan.stripe_id?.yearly ?? '#',
         isBuild,
         isC0,
+        isCora,
     }
 }
 

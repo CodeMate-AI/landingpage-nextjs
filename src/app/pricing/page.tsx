@@ -56,6 +56,8 @@ const ENTERPRISE_PLAN = {
   yearlyCtaText: 'Contact Us',
   yearlyCtaLink: ENTERPRISE_CTA,
   isBuild: true,
+  isCora: true,
+  isC0: true,
 }
 
 const CORA_FREE_FEATURES = [
@@ -82,6 +84,7 @@ const CORA_PLANS = [
     monthlyCtaLink: 'https://app.codemate.ai',
     yearlyCtaText: 'Get Started',
     yearlyCtaLink: 'https://app.codemate.ai',
+    isCora: true,
   },
   {
     id: 'cora-pro',
@@ -95,6 +98,7 @@ const CORA_PLANS = [
     monthlyCtaLink: '#',
     yearlyCtaText: 'Get Pro',
     yearlyCtaLink: '#',
+    isCora: true,
     billingPeriods: [
       { label: 'Daily',   price: '1',   ctaText: 'Get Pro – $1/day',   ctaLink: '' },
       { label: 'Weekly',  price: '5',   ctaText: 'Get Pro – $5/week',  ctaLink: '' },
@@ -113,6 +117,7 @@ const CORA_PLANS = [
     monthlyCtaLink: '#',
     yearlyCtaText: 'Get Max',
     yearlyCtaLink: '#',
+    isCora: true,
     billingPeriods: [
       { label: 'Daily',   price: '5',   ctaText: 'Get Max – $5/day',   ctaLink: '' },
       { label: 'Weekly',  price: '25',  ctaText: 'Get Max – $25/week', ctaLink: '' },
@@ -423,6 +428,7 @@ function Page() {
                 />
               )
             })}
+            <PlanCard planInfo={ENTERPRISE_PLAN} showAllFeatures={showAllFeatures} onToggleFeatures={toggleFeatures} />
           </div>
           <MaxPlanCard planInfo={maxPlanInfo} />
         </div>
