@@ -1693,7 +1693,7 @@ function Page() {
         </div>
 
         {/* Seamlessly Integrated Section with Carousel */}
-        <div className="relative w-full z-10 bg-black py-10 lg:py-12">
+        <div className="relative w-full z-10 bg-black pt-10 pb-4 lg:pt-12 lg:pb-8">
           <div className="pb-2 text-center">
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
@@ -1709,8 +1709,8 @@ function Page() {
             </motion.h2>
           </div>
           <SeamlessCarousel />
-          <div className="mt-6 lg:mt-8 mb-4">
-            <div className={`${montserrat.className} text-xl lg:text-2xl pl-4 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
+          <div className="mt-2 lg:mt-4 mb-2">
+            <div className={`${montserrat.className} text-xl lg:text-2xl pl-6 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
               To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>IDE</span>
             </div>
           </div>

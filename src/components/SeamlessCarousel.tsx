@@ -175,7 +175,7 @@ export default function SeamlessCarousel() {
     const currentSlide = slides[current]
 
     return (
-        <section className="w-full bg-black pt-2 pb-10 lg:py-12 px-5 lg:px-8 overflow-hidden">
+        <section className="w-full bg-black pt-2 pb-2 lg:pt-12 lg:pb-6 px-5 lg:px-8 overflow-hidden">
             <div className="max-w-[1400px] mx-auto grid lg:grid-cols-[60%_40%] gap-8 items-center">
                 {/* Left Side: Media Player */}
                 <div className="flex items-center justify-center min-h-0 lg:min-h-[500px]">
@@ -314,7 +314,7 @@ export default function SeamlessCarousel() {
             </div>
 
             {/* Navigation Arrows */}
-            <div className="flex justify-center items-center gap-4 mt-12">
+            <div className="flex justify-center items-center gap-4 mt-6 lg:mt-8">
                 {/* Left Arrow */}
                 <motion.button
                     whileHover={current !== 0 ? { scale: 1.05, backgroundColor: "rgba(0, 191, 255, 0.1)" } : {}}
