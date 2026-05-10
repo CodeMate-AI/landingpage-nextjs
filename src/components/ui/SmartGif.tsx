@@ -66,7 +66,7 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
         }
       },
       {
-        rootMargin: '-35% 0px -35% 0px',
+        rootMargin: '-10% 0px -10% 0px',
         threshold: 0.05,
       },
     )
@@ -88,7 +88,7 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
     return (
       <motion.img
         whileHover={{ scale: 1.05 }}
-        transition={{ duration: 0.3 }}
+        transition={{ duration: 0.2 }}
         src={currentSrc}
         className={className}
         alt={alt}
@@ -103,22 +103,25 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
 
   /* ---- GIF: canvas freeze / img play ---- */
   return (
-    <motion.div 
-      ref={containerRef} 
+    <motion.div
+      ref={containerRef}
       whileHover={{ scale: 1.05 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.2 }}
       className="relative inline-flex items-center justify-center w-full h-full cursor-pointer"
     >
       {/* Frozen frame (canvas) – visible when GIF is NOT playing */}
-      <canvas
-        ref={canvasRef}
-        className={className}
-        style={{
-          display: !shouldPlay && hasFrame ? 'block' : 'none',
-          maxWidth: '100%',
-          height: 'auto'
-        }}
-      />
+      {
+        isInView &&
+        <canvas
+          ref={canvasRef}
+          className={className}
+          style={{
+            display: !shouldPlay && hasFrame ? 'block' : 'none',
+            maxWidth: '100%',
+            height: 'auto'
+          }}
+        />
+      }
 
       {/* Live GIF – visible when in viewport centre */}
       <img
