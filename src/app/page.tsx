@@ -1338,47 +1338,47 @@ function Page() {
                       whileHover={{ opacity: 0.8 }}
                       className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
                     >
-                        Download
-                      </motion.button>
-                    </a>
-                    <a href="https://app.codemate.ai" target="_blank">
-                      <motion.button
-                        whileHover={{ opacity: 0.9 }}
-                        className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
-                      >
-                        Try Build 2.0
-                      </motion.button>
-                    </a>
-                  </motion.div>
+                      Download
+                    </motion.button>
+                  </a>
+                  <a href="https://app.codemate.ai" target="_blank">
+                    <motion.button
+                      whileHover={{ opacity: 0.9 }}
+                      className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
+                    >
+                      Try Build 2.0
+                    </motion.button>
+                  </a>
                 </motion.div>
+              </motion.div>
 
-                {/* <motion.span className='mt-32' initial={{display:'none',y:50,filter:'blur(10px)'}}
+              {/* <motion.span className='mt-32' initial={{display:'none',y:50,filter:'blur(10px)'}}
        animate={{display:'block',y:0,filter:'blur(0px)'}}
        transition={{delay:7,duration:1}}
        >
        <img src="/chat.png" className='object-cover w-[45rem]' alt="" />
        </motion.span> */}
 
-                {/* <motion.p
+              {/* <motion.p
       initial={{opacity:0,display:'hidden',filter:'blur(10px)'}}
       animate={{opacity:1,filter:'blur(0px)',display:'block'}}
       transition={{duration:1,delay:8}}
       className={`${montserrat.className} opacity-60 text-xl`}>You Think ! We Develop</motion.p> */}
 
-                {/* <motion.div 
+              {/* <motion.div 
    initial={{opacity:0}}
    animate={{opacity:0.6,y:[10,0,10]}}
    transition={{duration:4,delay:10,repeat:Infinity,repeatType:'reverse'}}
    className='absolute bottom-10 text-3xl opacity-50'>
      <span className='flex justify-center items-center'>Scroll Up <svg  xmlns="http://www.w3.org/2000/svg"  width="32"  height="32"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></svg></span>
    </motion.div> */}
-              </div>
-
-
-
             </div>
-          </BackgroundGradientAnimation>
-        </div>
+
+
+
+          </div>
+        </BackgroundGradientAnimation>
+      </div>
       {/* hero section */}
 
       {/* enter section */}
@@ -1543,17 +1543,17 @@ function Page() {
                 style={{
                   x: isMobile
                     ? useTransform(
-                        PShowYProg,
-                        // Mobile: 6 cards of 100vw each, title 100vw. Center card i → x = -(100vw + i*100vw)
-                        [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-                        ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw", "-600vw"]
-                      )
+                      PShowYProg,
+                      // Mobile: 6 cards of 100vw each, title 100vw. Center card i → x = -(100vw + i*100vw)
+                      [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
+                      ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw", "-600vw"]
+                    )
                     : useTransform(
-                        PShowYProg,
-                        // Desktop: title ~35vw, each card 550px + 4rem gap. Multi-breakpoint to center each card.
-                        [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-                        ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73%", "-73%"]
-                      ),
+                      PShowYProg,
+                      // Desktop: title ~35vw, each card 550px + 4rem gap. Multi-breakpoint to center each card.
+                      [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
+                      ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73%", "-73%"]
+                    ),
                   willChange: 'transform'
                 }}
                 className="flex items-center gap-0 lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto lg:mt-0"
@@ -1947,7 +1947,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       {/* UI SECTION: TESTIMONIALS & REVIEWS       */}
       {/* Scrolling carousel of user feedback and trust markers */}
       {/* ========================================== */}
-      <div ref={testiRef} className='relative h-[300vh] w-full bg-zinc-950 '>
+      <div ref={testiRef} className='relative h-[350vh] w-full bg-zinc-950 '>
 
 
         <div className=' sticky top-0   h-screen w-full overflow-x-hidden '>
@@ -1978,8 +1978,6 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
             <div className={`${montserrat.className} text-white h-full w-full flex items-center justify-center flex-col`}>
               <motion.div className='absolute  h-[30rem] w-[40rem]  rounded-3xl'></motion.div>
-
-
               <motion.div
                 style={{ y: tdiv1X }}
                 className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
