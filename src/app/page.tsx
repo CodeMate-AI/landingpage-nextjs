@@ -1577,9 +1577,9 @@ function Page() {
                 {/* Cards */}
                 <div className="flex gap-0 lg:gap-16">
                   {[
-                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/design mode build.gif", isVideo: false },
-                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/build_figma_GIF.gif", isVideo: false },
-                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skills_gif.gif", isVideo: false },
+                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/design mode build.gif", fallbackSrc: "/Design mode_static.png", isVideo: false },
+                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/build_figma_GIF.gif", fallbackSrc: "/figma-to-code-static.png", isVideo: false },
+                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skills_gif.gif", fallbackSrc: "/skill-static.png", isVideo: false },
                     { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "https://drive.codemate.ai/CORA.mp4", isVideo: true },
                     { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "https://drive.codemate.ai/PR_review.mp4", isVideo: true },
                     { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "https://drive.codemate.ai/Documentation.mp4", isVideo: true },
@@ -1631,6 +1631,7 @@ function Page() {
                                 alt={item.title}
                                 className="w-full h-full object-contain rounded-lg relative z-10"
                                 isActive={isActive}
+                                fallbackSrc={item.fallbackSrc}
                               />
                             )}
                           </div>
