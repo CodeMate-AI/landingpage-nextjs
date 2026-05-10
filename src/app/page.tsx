@@ -267,11 +267,11 @@ function Page() {
   // const xE = useTransform(PShowYProg, [0.5, 0.7], [0, -516]);
 
   ///for testing
-  const tdiv1X = useTransform(testiYProg, [0, 0.1], [700, 0]);
-  const tdiv2X = useTransform(testiYProg, [0.1, 0.3], [1300, 0]);
-  const tdiv3X = useTransform(testiYProg, [0.3, 0.5], [1900, 0]);
-  const tdiv4X = useTransform(testiYProg, [0.5, 0.7], [2500, 0]);
-  const tdiv5X = useTransform(testiYProg, [0.7, 0.8], [3100, 0]);
+  const tdiv1X = useTransform(testiYProg, [0, 0.12], [700, 0]);
+  const tdiv2X = useTransform(testiYProg, [0.12, 0.26], [1300, 0]);
+  const tdiv3X = useTransform(testiYProg, [0.26, 0.40], [1900, 0]);
+  const tdiv4X = useTransform(testiYProg, [0.40, 0.54], [2500, 0]);
+  const tdiv5X = useTransform(testiYProg, [0.54, 0.68], [3100, 0]);
   const tdiv6X = useTransform(testiYProg, [0.8, 1], [3600, 0]);
   const commentsX = useTransform(testiYProg, [0, 1], [0, 1500]);
 
