@@ -58,6 +58,7 @@ const slides: CarouselSlide[] = [
     {
         title: 'MCP',
         media: '/mcp_gif.gif',
+        fallbackSrc: '/MCP-static.png',
         type: 'gif',
         description:
             'Connect and manage external tools and contexts via Model Context Protocol, supercharging your Build agent with seamless integrations.',
