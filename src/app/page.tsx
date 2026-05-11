@@ -1413,15 +1413,15 @@ function Page() {
         imageSrc='https://backend.v3.codemateai.dev/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
       />
 
-      <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-12 lg:mt-0'>
-        <h1 className=' font-mono pt-16 lg:pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
+      <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-4 lg:mt-0'>
+        <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
 
 
         {/* ========================================== */}
         {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
         {/* Features a sticky video player on the left and a scrollable list of products on the right */}
         {/* ========================================== */}
-        <div className={`${montserrat.className} mt-4 leading-[1] text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center px-4 lg:px-0 `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
+        <div className={`${montserrat.className} mt-3 leading-tight text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-4 lg:pb-2 w-full text-center px-4 lg:px-0 `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer</div>
 
         <div className={`relative z-20 w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
           {/* Left: Sticky video panel - desktop only */}
@@ -1443,8 +1443,8 @@ function Page() {
           {/* Right: Product cards - pushed to far right */}
           <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2 pb-8">
             {/* Mobile-only video */}
-            <div className='lg:hidden w-full px-4 mb-8'>
-              <div className='h-[45vh] w-full rounded-lg overflow-hidden'>
+            <div className='lg:hidden w-full px-4 mb-8 mt-2'>
+              <div className='aspect-video w-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
                 <VideoEmbed />
               </div>
               <p className='opacity-70 text-[0.9rem] w-full leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
