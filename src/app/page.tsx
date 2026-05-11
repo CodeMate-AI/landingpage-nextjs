@@ -492,7 +492,7 @@ function Page() {
               tabIndex={0}
               onClick={() => window.open('https://app.codemate.ai', '_blank')}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
-              className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-2 py-2 sm:py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+              className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-3 py-3 sm:py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
             >
               <div className="flex min-w-0 flex-1 items-center gap-1.5 sm:gap-2 justify-center sm:justify-start">
                 <span className="inline-flex items-center gap-1 rounded-sm bg-white px-1.5 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[10px] font-bold text-black uppercase tracking-wide shrink-0">
@@ -1256,9 +1256,9 @@ function Page() {
               <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" />
             </motion.div>
 
-            <div className='relative z-50 w-full pl-[8vw] lg:pl-[calc(3.3vw+3rem)] pr-[8vw] lg:pr-12 flex flex-col items-start'>
+            <div className='relative z-50 w-full px-6 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
               <motion.div
-                className='text-[clamp(2.5rem,12vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left'>
+                className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left'>
 
 
                 <div className={`${montserrat.className} `}>
@@ -1296,7 +1296,7 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)" }}
                   animate={{ opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.4, delay: 1.5 }}
-                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-2 lg:mt-5 opacity-60 text-left`}>
+                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-5 opacity-60 text-left max-w-[280px] sm:max-w-md lg:max-w-none`}>
                   <p>Build and ship 20x faster with CodeMate AI</p>
                   <p>Your all-in-one accelerator to turn your ideas into code</p>
                 </motion.div>
@@ -1315,7 +1315,7 @@ function Page() {
                       tabIndex={0}
                       onClick={() => window.open('https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/', '_blank')}
                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
-                      className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-3 py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                      className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-4 py-3 sm:px-3 sm:py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                     >
                       <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
                         <p className="text-[11px] sm:text-[13px] font-medium leading-snug text-neutral-300">
@@ -1331,20 +1331,20 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                   animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className={`${montserrat.className} flex justify-start items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-4 lg:mt-10`}
+                  className={`${montserrat.className} flex flex-col-reverse sm:flex-row justify-start items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-6 lg:mt-10 w-full sm:w-auto`}
                 >
-                  <a href="/download">
+                  <a href="/download" className="w-full sm:w-auto">
                     <motion.button
                       whileHover={{ opacity: 0.8 }}
-                      className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
+                      className="h-12 sm:h-12 px-6 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
                     >
                       Download
                     </motion.button>
                   </a>
-                  <a href="https://app.codemate.ai" target="_blank">
+                  <a href="https://app.codemate.ai" target="_blank" className="w-full sm:w-auto">
                     <motion.button
                       whileHover={{ opacity: 0.9 }}
-                      className="h-10 sm:h-12 px-4 sm:px-8 flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
+                      className="h-12 sm:h-12 px-6 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
                     >
                       Try Build 2.0
                     </motion.button>
@@ -1413,15 +1413,15 @@ function Page() {
         imageSrc='https://backend.v3.codemateai.dev/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
       />
 
-      <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center '>
-        <h1 className=' font-mono pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
+      <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-12 lg:mt-0'>
+        <h1 className=' font-mono pt-16 lg:pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
 
 
         {/* ========================================== */}
         {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
         {/* Features a sticky video player on the left and a scrollable list of products on the right */}
         {/* ========================================== */}
-        <div className={`${montserrat.className} mt-4 leading-[1] text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
+        <div className={`${montserrat.className} mt-4 leading-[1] text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 lg:pb-2 w-full text-center px-4 lg:px-0 `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer.</div>
 
         <div className={`relative z-20 w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
           {/* Left: Sticky video panel - desktop only */}
@@ -1433,7 +1433,7 @@ function Page() {
                 viewport={{ once: true, amount: 0.2 }}
                 transition={{ duration: 0.6, ease: "easeOut" }}
                 style={{ willChange: "transform, opacity" }}
-                className='h-[65vh] w-full rounded-lg overflow-hidden'>
+                className='aspect-video w-full rounded-lg overflow-hidden'>
                 <VideoEmbed />
               </motion.div>
               <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-full leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
