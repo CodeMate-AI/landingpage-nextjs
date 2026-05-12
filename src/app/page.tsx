@@ -150,9 +150,13 @@ function Page() {
   const [IsMascot, setIsMascot] = useState(false);
   const [isNBack, setIsNBack] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
 
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+    };
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
@@ -1443,11 +1447,11 @@ function Page() {
           {/* Right: Product cards - pushed to far right */}
           <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2 pb-8">
             {/* Mobile-only video */}
-            <div className='lg:hidden w-full px-4 mb-8 mt-2'>
-              <div className='aspect-video w-full rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
+            <div className='lg:hidden w-full px-4 mb-8 mt-2 flex flex-col items-center'>
+              <div className='aspect-video w-full max-w-none md:w-[95%] md:max-w-[760px] md:mx-auto lg:w-full lg:max-w-none rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
                 <VideoEmbed />
               </div>
-              <p className='opacity-70 text-[0.9rem] w-full leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
+              <p className='opacity-70 text-[0.9rem] w-full md:w-[90%] md:max-w-[640px] md:mx-auto md:text-center leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
             </div>
 
             {[
@@ -1463,27 +1467,29 @@ function Page() {
                 initial={{ opacity: 0.3, scale: 0.8, filter: 'blur(4px)' }}
                 whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
                 viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: isTablet ? i * 0.3 : 0 }}
                 style={{ willChange: "transform, opacity, filter" }}
                 className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group"
               >
                 <a href={product.href} target="_blank" className='cursor-pointer w-full'>
                   <div className="flex flex-col items-center lg:items-start w-full">
-                    <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
+                    <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] md:w-[90%] md:max-w-[600px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                       <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                       <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
-                        <SmartGif
-                          src={product.img}
-                          fallbackSrc={product.fallback}
-                          className={product.imgClass}
-                          alt={product.title}
-                        />
+                        <div className="w-full md:w-[80%] md:max-w-[560px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
+                          <SmartGif
+                            src={product.img}
+                            fallbackSrc={product.fallback}
+                            className={product.imgClass}
+                            alt={product.title}
+                          />
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
                       <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
                     </div>
-                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] lg:w-[28vw] mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
+                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[90%] md:max-w-[600px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
                   </div>
                 </a>
               </motion.div>
@@ -1494,29 +1500,31 @@ function Page() {
               initial={{ opacity: 0.3, scale: 0.8, filter: 'blur(4px)' }}
               whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
               viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: isTablet ? 6 * 0.3 : 0 }}
               style={{ willChange: "transform, opacity, filter" }}
               className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-8 lg:mb-4"
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
                 <div className="flex flex-col items-center lg:items-start w-full">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] lg:w-[28vw] overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
+                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] md:w-[90%] md:max-w-[600px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                     <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
-                      <motion.img
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.3 }}
-                        ref={codeMateImageRef}
-                        src="/prneww.png"
-                        className="object-fit size-[90%] shadow-2xl"
-                        alt="PR Review"
-                      />
+                      <div className="w-full md:w-[80%] md:max-w-[560px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
+                        <motion.img
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.3 }}
+                          ref={codeMateImageRef}
+                          src="/prneww.png"
+                          className="object-fit size-[90%] shadow-2xl"
+                          alt="PR Review"
+                        />
+                      </div>
                     </div>
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
                     <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
                   </div>
-                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] lg:w-[28vw] mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
+                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[90%] md:max-w-[600px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
                   <div className='flex items-center gap-6 mt-6 opacity-60 text-white group-hover:opacity-100 transition-opacity'>
                     <FaGithub className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitHub' />
                     <FaBitbucket className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Bitbucket' />
