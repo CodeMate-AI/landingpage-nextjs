@@ -861,16 +861,16 @@ function Page() {
             WebkitBackdropFilter: 'blur(10px)',
             top: 0
           }}
-          className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 py-[1.1rem] justify-between items-center z-[99999999999]`}>
-          <img src="/codemateLogo.svg" alt="" className='h-full w-[50vw]' />
+          className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 md:px-8 md:pl-8 py-[1.1rem] md:py-4 justify-between items-center z-[99999999999]`}>
+          <img src="/codemateLogo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
           <motion.div
-            onClick={() => { setMenu(state => !state); setIsNBack(false) }} className={`${montserrat.className}   flex gap-2 text-[4vw]  justify-center items-center cursor-pointer text-right  `}>
+            onClick={() => { setMenu(state => !state); setIsNBack(false) }} className={`${montserrat.className} flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right`}>
             {/* Menu */}
             <Menu
               className={cn(
-                " w-[5vw] h-[5vw] transition-all duration-200",
+                "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",
                 isMenu
-                  ? "hidden  scale-75 -rotate-45"
+                  ? "hidden scale-75 -rotate-45"
                   : "opacity-100 scale-100 rotate-0"
               )}
             />
@@ -878,7 +878,7 @@ function Page() {
             {/* Cross Icon */}
             <X
               className={cn(
-                " w-[5vw] h-[5vw] transition-all duration-200",
+                "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",
                 isMenu
                   ? "opacity-100 scale-100 rotate-0"
                   : "hidden scale-75 rotate-45"
