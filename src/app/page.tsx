@@ -337,9 +337,11 @@ function Page() {
       return;
     }
 
-    // Midpoint thresholds: step changes when progress crosses the midpoint between
-    // two adjacent step centers (UNLOCK_STEP * (i + 0.5) and UNLOCK_STEP * (i + 1.5))
-    if (latest < UNLOCK_STEP * 1) setUnlockStep(0);
+    // Adjusted thresholds to sync dots with cards (0.76 range / 6 steps)
+    // Title is active from 0 to 0.03
+    // Card 0 (Design Mode) is centered at 0.063 and active until ~0.126
+    if (latest < UNLOCK_STEP * 0.25) setUnlockStep(-1);
+    else if (latest < UNLOCK_STEP * 1) setUnlockStep(0);
     else if (latest < UNLOCK_STEP * 2) setUnlockStep(1);
     else if (latest < UNLOCK_STEP * 3) setUnlockStep(2);
     else if (latest < UNLOCK_STEP * 4) setUnlockStep(3);
@@ -1601,9 +1603,9 @@ function Page() {
                     const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
 
                     return (
-                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0 items-center">
+                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0 items-center justify-center">
                         <div
-                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out items-start text-left"
+                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out items-center text-center lg:items-start lg:text-left"
                           style={{
                             opacity: proximityOpacity,
                             filter: `blur(${proximityBlur}px)`,
@@ -1645,7 +1647,7 @@ function Page() {
                           </div>
 
                           {/* Bottom Description */}
-                          <div className="flex flex-col gap-4 px-2 items-start">
+                          <div className="flex flex-col gap-4 px-2 items-center lg:items-start">
                             <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
                           </div>
                         </div>

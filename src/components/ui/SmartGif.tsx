@@ -115,8 +115,6 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
         className={className}
         style={{
           display: !shouldPlay && hasFrame ? 'block' : 'none',
-          maxWidth: '100%',
-          height: 'auto'
         }}
       />
 
