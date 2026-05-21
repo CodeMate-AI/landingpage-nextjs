@@ -1603,9 +1603,9 @@ function Page() {
                     const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
 
                     return (
-                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 lg:px-0 items-center justify-center">
+                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
                         <div
-                          className="flex flex-col gap-6 transition-all duration-700 ease-in-out items-center text-center lg:items-start lg:text-left"
+                          className="flex flex-col gap-6 md:gap-8 transition-all duration-700 ease-in-out items-center text-center lg:items-start lg:text-left"
                           style={{
                             opacity: proximityOpacity,
                             filter: `blur(${proximityBlur}px)`,
@@ -1620,7 +1620,7 @@ function Page() {
 
                           {/* Image/Video Box */}
                           <div
-                            className={`h-[200px] sm:h-[250px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
+                            className={`h-[200px] sm:h-[250px] md:h-[340px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
                           >
                             {/* Subtle radial glow behind active card media */}
                             {isActive && (
