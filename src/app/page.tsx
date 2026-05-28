@@ -269,7 +269,7 @@ function Page() {
 
   const xTablet = useTransform(PShowYProg, (latest) => {
     const W = windowWidth;
-    const w = 600; // iPad card width
+    const w = W * 0.82; // Dynamic 82vw card width
     const g = 40;  // iPad gap
     const c0 = -(W / 2 + w / 2);
     
@@ -1528,10 +1528,10 @@ function Page() {
               >
                 <a href={product.href} target="_blank" className='cursor-pointer w-full'>
                   <div className="flex flex-col items-center lg:items-start w-full">
-                    <div className='relative h-[16rem] md:h-[22rem] lg:h-[20rem] w-[88vw] md:w-[95%] md:max-w-[680px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
+                    <div className='relative h-[16rem] md:h-[26rem] lg:h-[20rem] w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                       <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                       <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
-                        <div className="w-full md:w-[85%] md:max-w-[600px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
+                        <div className="w-full md:w-[85%] md:max-w-[720px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
                           <SmartGif
                             src={product.img}
                             fallbackSrc={product.fallback}
@@ -1544,7 +1544,7 @@ function Page() {
                     <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
                       <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
                     </div>
-                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[95%] md:max-w-[680px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
+                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
                   </div>
                 </a>
               </motion.div>
@@ -1561,10 +1561,10 @@ function Page() {
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
                 <div className="flex flex-col items-center lg:items-start w-full">
-                  <div className='relative h-[16rem] md:h-[22rem] lg:h-[20rem] w-[88vw] md:w-[95%] md:max-w-[680px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
+                  <div className='relative h-[16rem] md:h-[26rem] lg:h-[20rem] w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                     <div className="absolute bottom-[-4.8rem] md:bottom-[-6.5rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
-                      <div className="w-full md:w-[85%] md:max-w-[600px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
+                      <div className="w-full md:w-[85%] md:max-w-[720px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
                         <motion.img
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.3 }}
@@ -1579,7 +1579,7 @@ function Page() {
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
                     <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
                   </div>
-                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[95%] md:max-w-[680px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
+                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
                   <div className='flex items-center gap-6 mt-6 opacity-60 text-white group-hover:opacity-100 transition-opacity'>
                     <FaGithub className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitHub' />
                     <FaBitbucket className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Bitbucket' />
@@ -1644,7 +1644,7 @@ function Page() {
                     const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
 
                     return (
-                      <div key={i} className="w-[100vw] md:w-[600px] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
+                      <div key={i} className="w-[100vw] md:w-[82vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
                         <div
                           className="flex flex-col gap-6 md:gap-8 transition-all duration-700 ease-in-out items-center text-center lg:items-start lg:text-left"
                           style={{
@@ -1656,12 +1656,12 @@ function Page() {
                           {/* Top Text */}
                           <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
                             {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
-                            <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
+                            <h3 className={`${montserrat.className} text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
                           </div>
 
                           {/* Image/Video Box */}
                           <div
-                            className={`h-[200px] sm:h-[250px] md:h-[300px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
+                            className={`h-[200px] sm:h-[250px] md:h-[46vw] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
                           >
                             {/* Subtle radial glow behind active card media */}
                             {isActive && (
@@ -1689,7 +1689,7 @@ function Page() {
 
                           {/* Bottom Description */}
                           <div className="flex flex-col gap-4 px-2 items-center lg:items-start h-[80px] md:h-[100px] lg:h-auto justify-center">
-                            <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
+                            <p className={`text-[14px] md:text-[18px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
                           </div>
                         </div>
                       </div>
@@ -1822,8 +1822,8 @@ function Page() {
           <h1>your business</h1>
         </div>
 
-        <div className='w-full flex flex-col lg:flex-row  justify-center items-center gap-5  lg:gap-[1.25] mt-10 '>
-          <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6  border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
+        <div className='w-full flex flex-col md:flex-row justify-center items-stretch gap-5 mt-10 px-4 md:px-8 lg:px-0'>
+          <div className='relative min-h-[35vh] md:min-h-0 md:h-auto md:w-[28vw] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6 border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 md:px-5 lg:px-3 py-5'
             style={{
               background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
               boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -1839,8 +1839,8 @@ function Page() {
   </p> */}
           </div>
 
-          <div className='flex flex-col gap-5 lg:flex-row lg:gap-[1.25]'>
-            <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6   border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 lg:px-3 py-5'
+          <div className='flex flex-col gap-5 md:flex-row md:gap-5 w-full md:w-auto md:items-stretch'>
+            <div className='relative min-h-[35vh] md:min-h-0 md:h-auto md:w-[28vw] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6 border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 md:px-5 lg:px-3 py-5'
               style={{
                 background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
                 boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
@@ -1855,7 +1855,7 @@ function Page() {
 Run it seamlessly in your environment with Codemate, ensuring smooth integration with your existing workflows. Codemate adapts to your setup, minimizing disruption while maximizing efficiency, so your team can maintain focus on delivering quality code without added complexity.
   </p> */}
             </div>
-            <div className='relative min-h-[35vh] lg:min-h-0 lg:h-[19rem] lg:w-[30vw] rounded-2xl flex flex-col items-start border-x-[1px] border-y-[0.5px]   border-white border-opacity-20 gap-6 px-7 lg:px-3 py-5'
+            <div className='relative min-h-[35vh] md:min-h-0 md:h-auto md:w-[28vw] lg:w-[30vw] rounded-2xl flex flex-col items-start border-x-[1px] border-y-[0.5px] border-white border-opacity-20 gap-6 px-7 md:px-5 lg:px-3 py-5'
               style={{
                 background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
                 boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
