@@ -1879,7 +1879,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
           <a href="https://calendar.app.google/Gyyh913R8hyczmBFA" target="_blank" >
             <motion.button
               whileHover={{ opacity: 0.7 }}
-              className='px-4 py-2  bg-[#FFFFFF] text-black  rounded-full    mt-2 font-semibold'>Book a Call</motion.button>
+              className='px-4 py-2 md:px-6 md:py-3 lg:px-5 lg:py-2.5 bg-[#FFFFFF] text-black rounded-full mt-2 font-semibold text-sm md:text-lg lg:text-base'>Book a Call</motion.button>
           </a>
         </div>
 
@@ -1892,38 +1892,38 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
         <div className='pt-[5rem] lg:pt-[15rem]'>
           <div className="px-8 lg:px-16 ">
-            <h1 className=' text-3xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
-              className='text-3xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
+            <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
+              className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
               direction="up"
               targetValue={100000} />+</h1>
-            <p className=' mt-2  lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
+            <p className=' mt-2 text-sm md:text-xl lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
           </div>
 
 
 
           <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
             <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
-              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl lg:text-8xl'
+              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl'
                 direction="up"
                 targetValue={55} />%</h1>
-              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Faster coding</p>
+              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Faster coding</p>
             </div>
             <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
 
-              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl lg:text-8xl'
+              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl'
                 direction="up"
                 targetValue={39} />%</h1>
-              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
+              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
             </div>
             <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
 
-              <h1 className="text-6xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl lg:text-8xl'
+              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl'
                 direction="up"
                 targetValue={68} />%</h1>
-              <p className='text-lg lg:text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
+              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
             </div>
           </div>
 
