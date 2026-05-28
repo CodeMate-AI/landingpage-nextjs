@@ -301,7 +301,7 @@ function Achivements() {
   const DESKTOP_VISIBLE = 3;
   const MOBILE_VISIBLE = 1;
   const maxDesktop = -((cards.length - DESKTOP_VISIBLE) * DESKTOP_CARD_WIDTH);
-  const activeMobileCardWidth = isTablet ? 536 : 344; // 512px (32rem) card + 24px gap on tablet, 320px (20rem) card + 24px gap on mobile
+  const activeMobileCardWidth = isTablet ? 728 : 344; // 704px (44rem) card + 24px gap on tablet, 320px (20rem) card + 24px gap on mobile
   const maxMobile = -((cards.length - MOBILE_VISIBLE) * activeMobileCardWidth);
 
   // ---- Auto slide effect ----
@@ -369,7 +369,7 @@ function Achivements() {
         ref={carouselRef}
         onMouseEnter={() => setIsPaused(true)} // pause on hover
         onMouseLeave={() => setIsPaused(false)} // resume when hover ends
-        className='mt-20 flex w-[20rem] md:w-[32rem] lg:w-[80.5%] overflow-hidden'>
+        className='mt-20 flex w-[20rem] md:w-[44rem] lg:w-[80.5%] overflow-hidden'>
         <motion.div animate={{ x: currCards }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className='flex gap-6'>
           {cards.map((e, idx) => (
             <div key={idx}>
@@ -407,8 +407,8 @@ export default Achivements
 
 function Card({ image, alt, title, description, link, imagePosition }: { image: String, alt: String, title: String, description: String, link: String, imagePosition?: string }) {
   return (
-    <motion.div className='relative h-[33rem] md:h-[35rem] lg:h-[33rem] w-[20rem] md:w-[32rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
-      <img src={image as string} alt={alt as string} className={`h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : ''}`} />
+    <motion.div className='relative h-[33rem] md:h-[48rem] lg:h-[33rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
+      <img src={image as string} alt={alt as string} className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : ''}`} />
 
       <div className='px-5 flex flex-col gap-2 mt-4'>
         <h1 className='text-xl md:text-2xl lg:text-xl font-semibold '>{title}</h1>

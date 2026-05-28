@@ -93,7 +93,7 @@ export default function MediaPresence() {
   const MOBILE_VISIBLE = 1;
 
   const maxDesktop = -((mediaItems.length - DESKTOP_VISIBLE) * DESKTOP_CARD_WIDTH);
-  const activeMobileCardWidth = isTablet ? 536 : 344;
+  const activeMobileCardWidth = isTablet ? 728 : 344;
   const maxMobile = -((mediaItems.length - MOBILE_VISIBLE) * activeMobileCardWidth);
 
   useEffect(() => {
@@ -147,7 +147,7 @@ export default function MediaPresence() {
       <p className='text-xs md:text-base lg:text-lg w-[80%] md:w-[60%] lg:w-[50%] mt-3 lg:mt-4 text-center text-zinc-500'>We are recognized by some of the most recognised news and media platforms around the globe.</p>
 
       {/* Carousel & Desktop Arrows Wrapper */}
-      <div className="relative flex justify-center mt-16 w-[20rem] md:w-[32rem] lg:w-[69rem]">
+      <div className="relative flex justify-center mt-16 w-[20rem] md:w-[44rem] lg:w-[69rem]">
         {/* Desktop Left Arrow */}
         <motion.div onClick={() => handleArrow('left')} whileHover={{ opacity: 1 }} className='absolute hidden lg:flex items-center justify-center size-16 -left-20 xl:-left-24 top-1/2 -translate-y-1/2 rounded-full cursor-pointer text-white opacity-70 z-10'>
           <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M21 12h-12" /><path d="M13 16l-4 -4l4 -4" /><path d="M12 3a9 9 0 1 0 0 18" /></svg>
@@ -191,9 +191,9 @@ export default function MediaPresence() {
 
 function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, link, fill }: { logoText: string, logoBg: string, logoColor: string, fontFamily: string, headline: string, image?: string, link?: string, fill?: boolean }) {
   return (
-    <motion.div className='relative h-[24rem] md:h-[28rem] lg:h-[24rem] w-[20rem] md:w-[32rem] lg:w-[22rem] bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 flex flex-col p-5 hover:border-white/20 transition-all'>
+    <motion.div className='relative h-[24rem] md:h-[32rem] lg:h-[24rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 flex flex-col p-5 hover:border-white/20 transition-all'>
       {/* Logo Area */}
-      <div className={`h-[10rem] md:h-[13rem] lg:h-[10rem] w-full ${fill ? 'bg-zinc-800' : 'bg-white p-6'} rounded-2xl flex items-center justify-center shadow-inner overflow-hidden`}>
+      <div className={`h-[10rem] md:h-[15rem] lg:h-[10rem] w-full ${fill ? 'bg-zinc-800' : 'bg-white p-6'} rounded-2xl flex items-center justify-center shadow-inner overflow-hidden`}>
         {image ? (
           <img src={image} alt={logoText} className={`${fill ? 'object-cover' : 'object-contain'} h-full w-full`} />
         ) : (
