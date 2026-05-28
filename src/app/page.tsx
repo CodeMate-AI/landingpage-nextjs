@@ -151,6 +151,7 @@ function Page() {
   const [isNBack, setIsNBack] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(820);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -160,6 +161,13 @@ function Page() {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    setWindowWidth(window.innerWidth);
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
   const [isMenu, setMenu] = useState(false);
   const [isArrowV, setIsArrowV] = useState(false);
@@ -245,6 +253,51 @@ function Page() {
   const headerY = useTransform(PShowYProg, [UNLOCK_END, UNLOCK_END + 0.12], [0, -200]);
 
   const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
+
+  // ========== iPad/Tablet Centering Transform (Top-Level Hooks) ==========
+  const xMobile = useTransform(
+    PShowYProg,
+    [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
+    ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw", "-600vw"]
+  );
+
+  const xDesktop = useTransform(
+    PShowYProg,
+    [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
+    ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73%", "-73%"]
+  );
+
+  const xTablet = useTransform(PShowYProg, (latest) => {
+    const W = windowWidth;
+    const w = 600; // iPad card width
+    const g = 40;  // iPad gap
+    const c0 = -(W / 2 + w / 2);
+    
+    const input = [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END];
+    const output = [
+      0,
+      c0,
+      c0 - 1 * (w + g),
+      c0 - 2 * (w + g),
+      c0 - 3 * (w + g),
+      c0 - 4 * (w + g),
+      c0 - 5 * (w + g),
+      c0 - 5 * (w + g)
+    ];
+
+    if (latest <= input[0]) return `${output[0]}px`;
+    if (latest >= input[input.length - 1]) return `${output[output.length - 1]}px`;
+    for (let i = 0; i < input.length - 1; i++) {
+      if (latest >= input[i] && latest <= input[i + 1]) {
+        const t = (latest - input[i]) / (input[i + 1] - input[i]);
+        const val = output[i] + t * (output[i + 1] - output[i]);
+        return `${val}px`;
+      }
+    }
+    return `${output[0]}px`;
+  });
+
+  const xTransform = isTablet ? xTablet : isMobile ? xMobile : xDesktop;
 
   ///for mobile feature section
   const mx = useTransform(MFYProg, [0, 1], [0, -1200]);
@@ -1551,22 +1604,10 @@ function Page() {
             <div className="relative flex-1 w-full flex items-center overflow-hidden pointer-events-none">
               <motion.div
                 style={{
-                  x: isMobile
-                    ? useTransform(
-                      PShowYProg,
-                      // Mobile: 6 cards of 100vw each, title 100vw. Center card i → x = -(100vw + i*100vw)
-                      [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-                      ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw", "-600vw"]
-                    )
-                    : useTransform(
-                      PShowYProg,
-                      // Desktop: title ~35vw, each card 550px + 4rem gap. Multi-breakpoint to center each card.
-                      [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-                      ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73%", "-73%"]
-                    ),
+                  x: xTransform,
                   willChange: 'transform'
                 }}
-                className="flex items-center gap-0 lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto lg:mt-0"
+                className="flex items-center gap-0 md:gap-[40px] lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto lg:mt-0"
               >
 
                 {/* Scrolling Title */}
@@ -1585,7 +1626,7 @@ function Page() {
                 </div>
 
                 {/* Cards */}
-                <div className="flex gap-0 lg:gap-16">
+                <div className="flex gap-0 md:gap-[40px] lg:gap-16">
                   {[
                     { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/design mode build.gif", fallbackSrc: "/Design mode_static.png", isVideo: false },
                     { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/build_figma_GIF.gif", fallbackSrc: "/figma-to-code-static.png", isVideo: false },
@@ -1603,7 +1644,7 @@ function Page() {
                     const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
 
                     return (
-                      <div key={i} className="w-[100vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
+                      <div key={i} className="w-[100vw] md:w-[600px] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
                         <div
                           className="flex flex-col gap-6 md:gap-8 transition-all duration-700 ease-in-out items-center text-center lg:items-start lg:text-left"
                           style={{
@@ -1613,14 +1654,14 @@ function Page() {
                           }}
                         >
                           {/* Top Text */}
-                          <div className="flex flex-col gap-2">
+                          <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
                             {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
                             <h3 className={`${montserrat.className} text-[22px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
                           </div>
 
                           {/* Image/Video Box */}
                           <div
-                            className={`h-[200px] sm:h-[250px] md:h-[340px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
+                            className={`h-[200px] sm:h-[250px] md:h-[300px] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
                           >
                             {/* Subtle radial glow behind active card media */}
                             {isActive && (
@@ -1647,7 +1688,7 @@ function Page() {
                           </div>
 
                           {/* Bottom Description */}
-                          <div className="flex flex-col gap-4 px-2 items-center lg:items-start">
+                          <div className="flex flex-col gap-4 px-2 items-center lg:items-start h-[80px] md:h-[100px] lg:h-auto justify-center">
                             <p className={`text-[14px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
                           </div>
                         </div>
