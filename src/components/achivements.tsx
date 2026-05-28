@@ -362,8 +362,8 @@ function Achivements() {
 
 
       className='relative flex flex-col justify-center items-center mb-20'>
-      <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent lg:text-7xl'>Talk</span> of the Town</div>
-      <p className='text-xs md:text-base lg:text-lg w-[80%] md:w-[60%] lg:w-[50%] mt-3 lg:mt-0 text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
+      <div className={`${montserrat.className} leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent md:text-6xl lg:text-7xl'>Talk</span> of the Town</div>
+      <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-0 text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
 
       <div
         ref={carouselRef}
@@ -410,14 +410,14 @@ function Card({ image, alt, title, description, link, imagePosition }: { image: 
     <motion.div className='relative h-[33rem] md:h-[48rem] lg:h-[33rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
       <img src={image as string} alt={alt as string} className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : ''}`} />
 
-      <div className='px-5 flex flex-col gap-2 mt-4'>
-        <h1 className='text-xl md:text-2xl lg:text-xl font-semibold '>{title}</h1>
-        <p className='text-zinc-500 text-xs md:text-sm lg:text-xs'>{description}</p>
+      <div className='px-5 md:px-10 flex flex-col gap-2 md:gap-4 mt-4 md:mt-8'>
+        <h1 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold '>{title}</h1>
+        <p className='text-zinc-500 text-xs md:text-[1.3rem] md:leading-relaxed lg:text-xs'>{description}</p>
       </div>
 
       {link && link !== "" && (
         <a href={link as string} target='_blank'>
-          <motion.button whileHover={{ opacity: 0.7 }} className='absolute text-lg md:text-xl lg:text-lg px-5 bottom-8 text-[#00BFFF]'>Read More</motion.button>
+          <motion.button whileHover={{ opacity: 0.7 }} className='absolute text-lg md:text-[1.5rem] lg:text-lg px-5 md:px-10 bottom-8 md:bottom-12 text-[#00BFFF]'>Read More</motion.button>
         </a>
       )}
     </motion.div>

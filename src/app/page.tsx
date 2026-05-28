@@ -1473,7 +1473,7 @@ function Page() {
       />
 
       <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-4 lg:mt-0'>
-        <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg'>Introducing CodeMate AI</h1>
+        <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg md:text-2xl lg:text-lg'>Introducing CodeMate AI</h1>
 
 
         {/* ========================================== */}
@@ -1506,7 +1506,7 @@ function Page() {
               <div className='aspect-video w-full max-w-none md:w-[95%] md:max-w-[880px] md:mx-auto lg:w-full lg:max-w-none rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
                 <VideoEmbed />
               </div>
-              <p className='opacity-70 text-[0.9rem] md:text-base w-full md:w-[90%] md:max-w-[760px] md:mx-auto md:text-center leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
+              <p className='opacity-70 text-[0.9rem] md:text-[1.2rem] lg:text-base w-full md:w-[90%] md:max-w-[760px] md:mx-auto md:text-center leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
             </div>
 
             {[
@@ -1542,9 +1542,9 @@ function Page() {
                       </div>
                     </div>
                     <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
-                      <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
+                      <h1 className='text-2xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
                     </div>
-                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
+                    <p className='text-center lg:text-left opacity-70 text-base md:text-[1.2rem] lg:text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
                   </div>
                 </a>
               </motion.div>
@@ -1577,9 +1577,9 @@ function Page() {
                     </div>
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
-                    <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
+                    <h1 className='text-2xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
                   </div>
-                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
+                  <p className='text-center lg:text-left opacity-70 text-base md:text-[1.2rem] lg:text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
                   <div className='flex items-center gap-6 mt-6 opacity-60 text-white group-hover:opacity-100 transition-opacity'>
                     <FaGithub className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitHub' />
                     <FaBitbucket className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Bitbucket' />
@@ -1993,7 +1993,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       <MediaPresence />
 
 
-      <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
+      <div className={`${montserrat.className} leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
 
       {/* ========================================== */}
       {/* UI SECTION: TESTIMONIALS & REVIEWS       */}
@@ -2039,12 +2039,12 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/ayushbansal.jpeg" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
-                      <h1 className='font-semibold text-2xl'>Ayush Bansal</h1>
-                      <p className='opacity-60 text-sm lg:text-md'>Software Engineer-II, Amazon</p>
+                      <h1 className='font-semibold text-2xl md:text-3xl lg:text-2xl'>Ayush Bansal</h1>
+                      <p className='opacity-60 text-sm md:text-lg lg:text-md'>Software Engineer-II, Amazon</p>
                     </div>
                   </div>
 
-                  <div className='leading-[1.1] text-[3.7vw] lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate.ai</span> has revolutionized my coding workflow with accurate AI suggestions and a user-friendly interface. Highly recommended!</div>
+                  <div className='leading-[1.1] text-[3.7vw] md:text-2xl lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate.ai</span> has revolutionized my coding workflow with accurate AI suggestions and a user-friendly interface. Highly recommended!</div>
 
                   <div className='w-full flex justify-between'>
                   </div>
@@ -2059,12 +2059,12 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/hani.webp" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
-                      <h1 className='font-semibold text-2xl'>Hani H.</h1>
-                      <p className='opacity-60'>Founder</p>
+                      <h1 className='font-semibold text-2xl md:text-3xl lg:text-2xl'>Hani H.</h1>
+                      <p className='opacity-60 text-sm md:text-lg lg:text-base'>Founder</p>
                     </div>
                   </div>
 
-                  <div className='leading-[1.1] text-[3.3vw] lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate</span> has lots of great features. You can request code samples when stuck, or get a code review to spot issues you might miss. The Debugger is a life saver—it quickly found a bug in my code that was filling the error logs!</div>
+                  <div className='leading-[1.1] text-[3.3vw] md:text-xl lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate</span> has lots of great features. You can request code samples when stuck, or get a code review to spot issues you might miss. The Debugger is a life saver—it quickly found a bug in my code that was filling the error logs!</div>
 
                   <div className='w-full flex justify-between'>
                   </div>
@@ -2077,12 +2077,12 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/vilkho_appsumo.webp" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col w-[50%]'>
-                      <h1 className='font-semibold text-xl lg:text-2xl'>Vilkhovskiy</h1>
-                      <p className='opacity-60 text-sm lg:text-md '>Chief Executive Officer, Softenq</p>
+                      <h1 className='font-semibold text-xl md:text-3xl lg:text-2xl'>Vilkhovskiy</h1>
+                      <p className='opacity-60 text-sm md:text-lg lg:text-md '>Chief Executive Officer, Softenq</p>
                     </div>
                   </div>
 
-                  <div className='leading-[1.1] text-[3.3vw] lg:text-2xl'>An excellent solution for project analysis and efficient development! I love how <span className='text-[#00BFFF]'>CodeMate</span> can analyze an entire project, assign tasks for refactoring or code generation, and even ensure the project is covered with tests.</div>
+                  <div className='leading-[1.1] text-[3.3vw] md:text-xl lg:text-2xl'>An excellent solution for project analysis and efficient development! I love how <span className='text-[#00BFFF]'>CodeMate</span> can analyze an entire project, assign tasks for refactoring or code generation, and even ensure the project is covered with tests.</div>
 
                   <div className='w-full flex justify-between'>
                   </div>
@@ -2095,12 +2095,12 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=kitty.liu" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
-                      <h1 className='font-semibold text-2xl'>Kitty Liu</h1>
-                      <p className='opacity-60'>Engineering</p>
+                      <h1 className='font-semibold text-2xl md:text-3xl lg:text-2xl'>Kitty Liu</h1>
+                      <p className='opacity-60 text-sm md:text-lg lg:text-md'>Engineering</p>
                     </div>
                   </div>
 
-                  <div className='leading-[1.1] text-[4vw] lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate</span> is doing a great job with its simplicity. I can't wait to see more features they are going to release soon.</div>
+                  <div className='leading-[1.1] text-[4vw] md:text-2xl lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate</span> is doing a great job with its simplicity. I can't wait to see more features they are going to release soon.</div>
 
                   <div className='w-full flex justify-between'>
                   </div>
@@ -2113,12 +2113,12 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
                   <div className='flex w-full gap-4 items-center'>
                     <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=david.kim" alt="" className='size-20 rounded-full' /></div>
                     <div className='flex flex-col'>
-                      <h1 className='font-semibold text-2xl'>Keith Price</h1>
-                      <p className='opacity-60'>Backend Engineer</p>
+                      <h1 className='font-semibold text-2xl md:text-3xl lg:text-2xl'>Keith Price</h1>
+                      <p className='opacity-60 text-sm md:text-lg lg:text-md'>Backend Engineer</p>
                     </div>
                   </div>
 
-                  <div className='leading-[1.1] text-[3.1vw] lg:text-2xl'>Love this tool! It can train on the entire solution (and others), saving so much time and frustration. <span className='text-[#00BFFF]'>Unlike ChatGPT</span>, it finds the right methods and code blocks with ease, and the ability to retain training on past solutions is phenomenal.</div>
+                  <div className='leading-[1.1] text-[3.1vw] md:text-xl lg:text-2xl'>Love this tool! It can train on the entire solution (and others), saving so much time and frustration. <span className='text-[#00BFFF]'>Unlike ChatGPT</span>, it finds the right methods and code blocks with ease, and the ability to retain training on past solutions is phenomenal.</div>
 
                   <div className='w-full flex justify-between'>
                   </div>

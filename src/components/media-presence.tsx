@@ -142,9 +142,9 @@ export default function MediaPresence() {
   return (
     <div className='relative flex flex-col justify-center items-center mb-20 pt-10'>
       <div className={`${montserrat.className} relative flex flex-col items-center w-full pt-10 lg:pt-20`}>
-        <h2 className='leading-[1] text-[10vw] lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent text-center'>Our <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Media</span> Presence</h2>
+        <h2 className='leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent text-center'>Our <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Media</span> Presence</h2>
       </div>
-      <p className='text-xs md:text-base lg:text-lg w-[80%] md:w-[60%] lg:w-[50%] mt-3 lg:mt-4 text-center text-zinc-500'>We are recognized by some of the most recognised news and media platforms around the globe.</p>
+      <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-4 text-center text-zinc-500'>We are recognized by some of the most recognised news and media platforms around the globe.</p>
 
       {/* Carousel & Desktop Arrows Wrapper */}
       <div className="relative flex justify-center mt-16 w-[20rem] md:w-[44rem] lg:w-[69rem]">
@@ -191,7 +191,7 @@ export default function MediaPresence() {
 
 function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, link, fill }: { logoText: string, logoBg: string, logoColor: string, fontFamily: string, headline: string, image?: string, link?: string, fill?: boolean }) {
   return (
-    <motion.div className='relative h-[24rem] md:h-[32rem] lg:h-[24rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 flex flex-col p-5 hover:border-white/20 transition-all'>
+    <motion.div className='relative h-[24rem] md:h-[32rem] lg:h-[24rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 flex flex-col p-5 md:p-10 hover:border-white/20 transition-all'>
       {/* Logo Area */}
       <div className={`h-[10rem] md:h-[15rem] lg:h-[10rem] w-full ${fill ? 'bg-zinc-800' : 'bg-white p-6'} rounded-2xl flex items-center justify-center shadow-inner overflow-hidden`}>
         {image ? (
@@ -202,16 +202,16 @@ function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, l
       </div>
 
       {/* Divider */}
-      <div className="w-full h-[1px] bg-white/5 my-6"></div>
+      <div className="w-full h-[1px] bg-white/5 my-6 md:my-8"></div>
 
       {/* Headline */}
-      <div className='px-1'>
+      <div className='px-1 md:px-2'>
         {link ? (
           <a href={link} target="_blank" rel="noopener noreferrer" className="group">
-            <p className='text-zinc-400 group-hover:text-white text-sm md:text-[1.1rem] lg:text-sm font-medium leading-relaxed md:leading-relaxed transition-colors line-clamp-4'>{headline}</p>
+            <p className='text-zinc-400 group-hover:text-white text-sm md:text-[1.4rem] lg:text-sm font-medium leading-relaxed md:leading-relaxed transition-colors line-clamp-4'>{headline}</p>
           </a>
         ) : (
-          <p className='text-zinc-400 text-sm md:text-[1.1rem] lg:text-sm font-medium leading-relaxed md:leading-relaxed line-clamp-4'>{headline}</p>
+          <p className='text-zinc-400 text-sm md:text-[1.4rem] lg:text-sm font-medium leading-relaxed md:leading-relaxed line-clamp-4'>{headline}</p>
         )}
       </div>
     </motion.div>
