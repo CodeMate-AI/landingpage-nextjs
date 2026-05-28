@@ -1355,7 +1355,7 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)" }}
                   animate={{ opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.4, delay: 1.5 }}
-                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-5 opacity-60 text-left max-w-[280px] sm:max-w-md lg:max-w-none`}>
+                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-5 opacity-60 text-left max-w-[280px] sm:max-w-md md:max-w-2xl lg:max-w-none`}>
                   <p>Build and ship 20x faster with CodeMate AI</p>
                   <p>Your all-in-one accelerator to turn your ideas into code</p>
                 </motion.div>
@@ -1374,10 +1374,10 @@ function Page() {
                       tabIndex={0}
                       onClick={() => window.open('https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/', '_blank')}
                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
-                      className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-4 py-3 sm:px-3 sm:py-2 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
+                      className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-4 py-3 sm:px-3 sm:py-2 md:px-4 md:py-2.5 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                     >
                       <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-                        <p className="text-[11px] sm:text-[13px] font-medium leading-snug text-neutral-300">
+                        <p className="text-[11px] sm:text-[13px] md:text-sm font-medium leading-snug text-neutral-300">
                           Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
                         </p>
                         <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
@@ -1390,12 +1390,12 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                   animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className={`${montserrat.className} flex flex-col-reverse sm:flex-row justify-start items-center gap-3 sm:gap-4 text-xs sm:text-sm mt-6 lg:mt-10 w-full sm:w-auto`}
+                  className={`${montserrat.className} flex flex-col-reverse sm:flex-row justify-start items-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm md:text-base lg:text-sm mt-6 lg:mt-10 w-full sm:w-auto`}
                 >
                   <a href="/download" className="w-full sm:w-auto">
                     <motion.button
                       whileHover={{ opacity: 0.8 }}
-                      className="h-12 sm:h-12 px-6 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
+                      className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
                     >
                       Download
                     </motion.button>
@@ -1403,7 +1403,7 @@ function Page() {
                   <a href="https://app.codemate.ai" target="_blank" className="w-full sm:w-auto">
                     <motion.button
                       whileHover={{ opacity: 0.9 }}
-                      className="h-12 sm:h-12 px-6 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
+                      className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
                     >
                       Try Build 2.0
                     </motion.button>
@@ -1503,10 +1503,10 @@ function Page() {
           <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2 pb-8">
             {/* Mobile-only video */}
             <div className='lg:hidden w-full px-4 mb-8 mt-2 flex flex-col items-center'>
-              <div className='aspect-video w-full max-w-none md:w-[95%] md:max-w-[760px] md:mx-auto lg:w-full lg:max-w-none rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
+              <div className='aspect-video w-full max-w-none md:w-[95%] md:max-w-[880px] md:mx-auto lg:w-full lg:max-w-none rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
                 <VideoEmbed />
               </div>
-              <p className='opacity-70 text-[0.9rem] w-full md:w-[90%] md:max-w-[640px] md:mx-auto md:text-center leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
+              <p className='opacity-70 text-[0.9rem] md:text-base w-full md:w-[90%] md:max-w-[760px] md:mx-auto md:text-center leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
             </div>
 
             {[
