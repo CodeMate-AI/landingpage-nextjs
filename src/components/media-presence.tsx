@@ -144,7 +144,7 @@ export default function MediaPresence() {
       <div className={`${montserrat.className} relative flex flex-col items-center w-full pt-10 lg:pt-20`}>
         <h2 className='leading-[1] text-[10vw] lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent text-center'>Our <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Media</span> Presence</h2>
       </div>
-      <p className='text-xs w-[80%] mt-3 lg:mt-4 lg:text-lg lg:w-[50%] text-center text-zinc-500'>We are recognized by some of the most recognised news and media platforms around the globe.</p>
+      <p className='text-xs md:text-base lg:text-lg w-[80%] md:w-[60%] lg:w-[50%] mt-3 lg:mt-4 text-center text-zinc-500'>We are recognized by some of the most recognised news and media platforms around the globe.</p>
 
       {/* Carousel & Desktop Arrows Wrapper */}
       <div className="relative flex justify-center mt-16 w-[20rem] md:w-[32rem] lg:w-[69rem]">
