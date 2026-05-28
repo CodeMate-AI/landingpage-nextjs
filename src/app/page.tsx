@@ -155,8 +155,8 @@ function Page() {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1024);
-      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
+      setIsMobile(window.innerWidth < 1025);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1025);
     };
     checkMobile();
     window.addEventListener('resize', checkMobile);

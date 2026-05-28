@@ -331,8 +331,8 @@ function Achivements() {
 
   useEffect(() => {
     const checkScreen = () => {
-      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1024);
-      setIsMobile(window.innerWidth <= 1024);
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1025);
+      setIsMobile(window.innerWidth <= 1025);
     };
     checkScreen();
     window.addEventListener('resize', checkScreen);
