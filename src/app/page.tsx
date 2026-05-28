@@ -1002,20 +1002,20 @@ function Page() {
                       {isProducts &&
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
 
-                          <h1 style={{ fontWeight: 600 }} className='text-lg text-left mb-1'>Web-Application</h1>
+                          <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-1'>Web-Application</h1>
 
-                          <div className='relative text-base text-left overflow-hidden '>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
                             <a href="https://app.codemate.ai/chat" target='_blank'>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
-                                <div className="w-8 flex justify-center">
-                                  <img src="/Co_Logo.png" alt="Chat" className="size-5 object-contain" />
+                                <div className="w-8 md:w-10 flex justify-center">
+                                  <img src="/Co_Logo.png" alt="Chat" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1>C0</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
-                                  <div className="w-8 flex justify-center">
-                                    <img src="/Co_Logo.png" alt="C0" className="size-5 object-contain" />
+                                  <div className="w-8 md:w-10 flex justify-center">
+                                    <img src="/Co_Logo.png" alt="C0" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1>C0</h1>
                                 </motion.div>
@@ -1024,18 +1024,18 @@ function Page() {
                           </div>
 
 
-                          <div className='relative text-base text-left overflow-hidden mb-2'>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
                             <a href="https://build.codemateai.dev/secure__?session__id__=1e79d863e85850ddad011af939f79137:ifr7GFfV29hp6Frs5FpwvPtObmg8HHmIXq2cJ9uv5/3bUIQvNeQ4/PS4bUUqZk8a" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
-                                <div className="w-8 flex justify-center">
-                                  <img src="/Build_Logo.png" alt="Build" className="size-5 scale-[1.5] object-contain ml-0" />
+                                <div className="w-8 md:w-10 flex justify-center">
+                                  <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 lg:size-5 scale-[1.5] object-contain ml-0" />
                                 </div>
                                 <motion.h1>Build</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
-                                  <div className="w-8 flex justify-center">
-                                    <img src="/Build_Logo.png" alt="Build" className="size-5 scale-[1.5] object-contain ml-0" />
+                                  <div className="w-8 md:w-10 flex justify-center">
+                                    <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 lg:size-5 scale-[1.5] object-contain ml-0" />
                                   </div>
                                   <h1>Build</h1>
                                 </motion.div>
@@ -1044,38 +1044,38 @@ function Page() {
                           </div>
 
 
-                          <h1 style={{ fontWeight: 600 }} className='text-lg  text-left mb-1'>VS Code Extension</h1>
+                          <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>VS Code Extension</h1>
 
-                          <div className='relative text-base text-left overflow-hidden'>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
                             <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
-                                <div className="w-8 flex justify-center">
-                                  <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
+                                <div className="w-8 md:w-10 flex justify-center">
+                                  <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1>CORA</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
-                                  <div className="w-8 flex justify-center">
-                                    <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
+                                  <div className="w-8 md:w-10 flex justify-center">
+                                    <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1>CORA</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
                           </div>
-                          <div className='relative text-base text-left overflow-hidden mb-2'>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
                             <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
-                                <div className="w-8 flex justify-center">
-                                  <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 object-contain" />
+                                <div className="w-8 md:w-10 flex justify-center">
+                                  <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1>C0 Extension</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
-                                  <div className="w-8 flex justify-center">
-                                    <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 object-contain" />
+                                  <div className="w-8 md:w-10 flex justify-center">
+                                    <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1>C0 Extension</h1>
                                 </motion.div>
@@ -1083,19 +1083,19 @@ function Page() {
                             </a>
                           </div>
 
-                          <h1 style={{ fontWeight: 600 }} className='text-lg  text-left mb-1'>JetBrains Plugin</h1>
-                          <div className='relative text-base text-left overflow-hidden'>
+                          <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>JetBrains Plugin</h1>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
                             <a href="https://plugins.jetbrains.com/plugin/29932-cora" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
-                                <div className="w-8 flex justify-center">
-                                  <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
+                                <div className="w-8 md:w-10 flex justify-center">
+                                  <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1>CORA</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
-                                  <div className="w-8 flex justify-center">
-                                    <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
+                                  <div className="w-8 md:w-10 flex justify-center">
+                                    <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1>CORA</h1>
                                 </motion.div>
@@ -1127,7 +1127,7 @@ function Page() {
 
 
 
-                          <div className='relative text-base text-left overflow-hidden '>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
                             <a href="https://huggingface.co/codemateai" target='_blank'>
                               <motion.h1 className='z-20 opacity-90'>Models</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
@@ -1139,7 +1139,7 @@ function Page() {
                           </div>
 
 
-                          <div className='relative text-base text-left overflow-hidden'>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
                             <a href="https://cli.codemate.ai/" target="_blank">
                               <motion.h1 className='z-20 opacity-90'>Terminal</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
@@ -1222,7 +1222,7 @@ function Page() {
 
                       {isResources &&
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
-                          <div className='relative text-base text-left overflow-hidden '>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
                             <a href="https://docs.codemate.ai/" target='_blank'>
                               <motion.h1 className='z-20 opacity-90'>Docs</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
@@ -1234,7 +1234,7 @@ function Page() {
                           </div>
 
 
-                          <div className='relative text-base text-left overflow-hidden'>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
                             <a href="https://blog.codemate.ai/" target="_blank">
                               <motion.h1 className='z-20 opacity-90'>Blogs</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
@@ -1246,7 +1246,7 @@ function Page() {
                           </div>
 
 
-                          <div className='relative text-base text-left overflow-hidden'>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
                             <a href="https://calendar.app.google/Gyyh913R8hyczmBFA" target="_blank">
                               <motion.h1 className='z-20 opacity-90'>Contact</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
