@@ -1458,27 +1458,27 @@ function Page() {
 
             {[
               { href: "https://build.codemateai.dev/build", img: "/build_gif.gif", fallback: "/Build Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", title: "CodeMate Build", desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support." },
-              { href: "https://cli.codemate.ai/", img: "term.svg", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[-4.8rem] lg:bottom-[-6rem]", title: "AI Terminal", desc: "Run code and scripts instantly through an AI-powered command-line interface." },
+              { href: "https://cli.codemate.ai/", img: "term.svg", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[-4.8rem] md:bottom-[-6.5rem] lg:bottom-[-6rem]", title: "AI Terminal", desc: "Run code and scripts instantly through an AI-powered command-line interface." },
               { href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent", img: "/CORA+FULL.gif", fallback: "/CORA Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", px: true, title: "CodeMate CORA", desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE." },
-              { href: "https://edu.codemate.ai/", img: "/codemate_edu.gif", fallback: "/Codemate Education Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[1.5rem] lg:bottom-[3.5rem]", title: "CodeMate Education", desc: "AI-powered classroom management built for educators and students to master modern development." },
+              { href: "https://edu.codemate.ai/", img: "/codemate_edu.gif", fallback: "/Codemate Education Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[1.5rem] md:bottom-[2.5rem] lg:bottom-[3.5rem]", title: "CodeMate Education", desc: "AI-powered classroom management built for educators and students to master modern development." },
               { href: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate", img: "/Codemaps (1).gif", fallback: "/Co extention Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", title: "CodeMate C0 Extension", desc: "Your in-IDE AI partner for code management, debugging, and performance optimization." },
               { href: "https://app.codemate.ai/chat", img: "/C0 Web app1.gif", fallback: "/Co web Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", px: true, title: "CodeMate C0", desc: "Turns deep research and feasibility into production-ready code through AI-driven intelligence." },
             ].map((product: any, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0.3, scale: 0.8, filter: 'blur(4px)' }}
+                initial={{ opacity: 0.3, scale: 0.9, filter: 'blur(4px)' }}
                 whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: isTablet ? i * 0.3 : 0 }}
+                viewport={{ once: false, amount: isTablet ? 0.25 : 0.5, margin: "-10% 0px -10% 0px" }}
+                transition={{ duration: 0.6, ease: "easeOut", delay: 0 }}
                 style={{ willChange: "transform, opacity, filter" }}
-                className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group"
+                className="w-full flex flex-col items-center lg:items-start py-3 md:py-16 lg:py-3 px-4 lg:px-0 group"
               >
                 <a href={product.href} target="_blank" className='cursor-pointer w-full'>
                   <div className="flex flex-col items-center lg:items-start w-full">
-                    <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] md:w-[90%] md:max-w-[600px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
+                    <div className='relative h-[16rem] md:h-[22rem] lg:h-[20rem] w-[88vw] md:w-[95%] md:max-w-[680px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                       <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
                       <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
-                        <div className="w-full md:w-[80%] md:max-w-[560px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
+                        <div className="w-full md:w-[85%] md:max-w-[600px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
                           <SmartGif
                             src={product.img}
                             fallbackSrc={product.fallback}
@@ -1491,7 +1491,7 @@ function Page() {
                     <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
                       <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
                     </div>
-                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[90%] md:max-w-[600px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
+                    <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[95%] md:max-w-[680px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
                   </div>
                 </a>
               </motion.div>
@@ -1499,19 +1499,19 @@ function Page() {
 
             {/* PR Review Agent - special (has icons) */}
             <motion.div
-              initial={{ opacity: 0.3, scale: 0.8, filter: 'blur(4px)' }}
+              initial={{ opacity: 0.3, scale: 0.9, filter: 'blur(4px)' }}
               whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              viewport={{ once: false, amount: 0.5, margin: "-10% 0px -10% 0px" }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: isTablet ? 6 * 0.3 : 0 }}
+              viewport={{ once: false, amount: isTablet ? 0.25 : 0.5, margin: "-10% 0px -10% 0px" }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0 }}
               style={{ willChange: "transform, opacity, filter" }}
-              className="w-full flex flex-col items-center lg:items-start py-3 px-4 lg:px-0 group mb-8 lg:mb-4"
+              className="w-full flex flex-col items-center lg:items-start py-3 md:py-16 lg:py-3 px-4 lg:px-0 group mb-8 lg:mb-4"
             >
               <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
                 <div className="flex flex-col items-center lg:items-start w-full">
-                  <div className='relative h-[16rem] lg:h-[20rem] w-[88vw] md:w-[90%] md:max-w-[600px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
+                  <div className='relative h-[16rem] md:h-[22rem] lg:h-[20rem] w-[88vw] md:w-[95%] md:max-w-[680px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
                     <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-                    <div className="absolute bottom-[-4.8rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
-                      <div className="w-full md:w-[80%] md:max-w-[560px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
+                    <div className="absolute bottom-[-4.8rem] md:bottom-[-6.5rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
+                      <div className="w-full md:w-[85%] md:max-w-[600px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
                         <motion.img
                           whileHover={{ scale: 1.05 }}
                           transition={{ duration: 0.3 }}
@@ -1526,7 +1526,7 @@ function Page() {
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
                     <h1 className='text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
                   </div>
-                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[90%] md:max-w-[600px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
+                  <p className='text-center lg:text-left opacity-70 text-base w-[88vw] md:w-[95%] md:max-w-[680px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
                   <div className='flex items-center gap-6 mt-6 opacity-60 text-white group-hover:opacity-100 transition-opacity'>
                     <FaGithub className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitHub' />
                     <FaBitbucket className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Bitbucket' />
