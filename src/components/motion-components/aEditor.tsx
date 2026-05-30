@@ -32,46 +32,61 @@ useEffect(() => {
 }, []);
 
   return(
-    <div className='relative h-full w-full bg-zinc-900  rounded-xl flex overflow-hidden'>
-       <div className='absolute h-8 lg:h-[7%] w-full top-0 bg-[#262626] rounded-t-xl z-50 flex  gap-5 items-center border-b-[0.1px] border-opacity-10 border-white'>
-        <div className='flex gap-2 ml-5 opacity-50'>
-         <div className='size-3 rounded-full bg-white '/>
-         <div className='size-3 rounded-full bg-white '/>
-         <div className='size-3 rounded-full bg-white '/>
-         </div>
-         
-         <div className='flex gap-3 opacity-70'>
-          <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-git-branch"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 8l0 8" /><path d="M9 18h6a2 2 0 0 0 2 -2v-5" /><path d="M14 14l3 -3l3 3" /></svg>
-          <h1>main</h1>
-         </div>
+    <div className='relative h-full w-full bg-gradient-to-br from-[#0b0b0d]/95 to-[#161619]/90 backdrop-blur-2xl border border-white/10 hover:border-[#00BFFF]/20 shadow-[0_20px_50px_rgba(0,0,0,0.65)] hover:shadow-[0_20px_50px_rgba(0,191,255,0.06)] rounded-xl flex overflow-hidden transition-all duration-700 group/editor'>
+       {/* Ambient glow backdrop */}
+       <div className="absolute inset-0 bg-radial-gradient from-[#00BFFF]/5 via-transparent to-transparent opacity-0 group-hover/editor:opacity-100 transition-opacity duration-700 pointer-events-none blur-[40px]" />
+       
+       <div className='absolute h-8 lg:h-[7%] w-full top-0 bg-[#161618] rounded-t-xl z-50 flex gap-5 items-center border-b-[0.1px] border-white/5'>
+        <div className='flex gap-1.5 ml-5 opacity-20'>
+          <div className='size-1.5 md:size-2 rounded-full bg-white/60 '/>
+          <div className='size-1.5 md:size-2 rounded-full bg-white/60 '/>
+          <div className='size-1.5 md:size-2 rounded-full bg-white/60 '/>
+        </div>
+        
+        <div className='flex gap-2 opacity-30 items-center'>
+          <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-git-branch size-3 lg:size-4 flex-shrink-0 text-zinc-400"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 8l0 8" /><path d="M9 18h6a2 2 0 0 0 2 -2v-5" /><path d="M14 14l3 -3l3 3" /></svg>
+          <h1 className='text-[10px] md:text-sm font-semibold text-zinc-400'>main</h1>
+        </div>
        </div>
 
-       <div className='absolute h-6 lg:h-[5%] w-full bottom-0 bg-zinc-800 rounded-b-xl z-40 flex  gap-5 items-center border-t-[0.1px] border-white border-opacity-10 justify-between px-3'>
-        <div className='flex gap-2  text-sm opacity-40'>
-           <h1>Next.Js</h1>
+       <div className='absolute h-6 lg:h-[5%] w-full bottom-0 bg-[#161618] rounded-b-xl z-40 flex gap-5 items-center border-t-[0.1px] border-white/5 justify-between px-3'>
+         <div className='flex gap-2 text-xs items-center transition-all duration-300'>
+           {isComplete ? (
+             <div className="flex items-center gap-1.5 text-[#00E5FF] font-semibold opacity-90">
+               <span className="size-1.5 rounded-full bg-[#00E5FF] animate-pulse" />
+               <span>✓ Accepted</span>
+             </div>
+           ) : isLoad ? (
+             <div className="flex items-center gap-1.5 text-[#00BFFF] opacity-85">
+               <span className="size-1.5 rounded-full bg-[#00BFFF] animate-ping" />
+               <span>Thinking...</span>
+             </div>
+           ) : (
+             <span className="opacity-20 text-zinc-400">Next.js</span>
+           )}
          </div>
          
-         <div className='flex gap-3 opacity-70 text-sm'>
+         <div className='flex gap-3 opacity-30 text-xs text-zinc-400'>
            <h1>LF</h1>
            <h1>UTF-8</h1>
            <svg  xmlns="http://www.w3.org/2000/svg"  width="17"  height="17"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-lock-open-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 13a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z" /><path d="M9 16a1 1 0 1 0 2 0a1 1 0 0 0 -2 0" /><path d="M13 11v-4a4 4 0 1 1 8 0v4" /></svg>
          </div>
        </div>
 
-     <div className='bg-zinc-800 h-full w-10 lg:w-[5%] rounded-l-xl flex flex-col p-2 pt-12 lg:pt-14 justify-between flex-shrink-0 items-center'>
-      <div className='flex flex-col gap-3 justify-center items-center'>
-       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-folders size-4 lg:size-5"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 3h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" /><path d="M17 16v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2" /></svg>
-       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-cube-unfolded size-4 lg:size-5"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M2 15h10v5h5v-5h5v-5h-10v-5h-5v5h-5z" /><path d="M7 15v-5h5v5h5v-5" /></svg>
-       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-git-commit size-4 lg:size-5"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M12 3l0 6" /><path d="M12 15l0 6" /></svg>
-       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-dots size-4 lg:size-5"><path stroke="none" d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
+     <div className='bg-[#121214] h-full w-8 lg:w-[4%] rounded-l-xl flex flex-col p-2 pt-12 lg:pt-14 justify-between flex-shrink-0 items-center border-r-[0.1px] border-white/5'>
+      <div className='flex flex-col gap-3.5 justify-center items-center text-zinc-500'>
+       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-folders size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 3h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" /><path d="M17 16v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2" /></svg>
+       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-cube-unfolded size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M2 15h10v5h5v-5h5v-5h-10v-5h-5v5h-5z" /><path d="M7 15v-5h5v5h5v-5" /></svg>
+       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-git-commit size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0" /><path d="M12 3l0 6" /><path d="M12 15l0 6" /></svg>
+       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-dots size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /></svg>
        {/* <h1 className='opacity-80 text-lg'>my-nextjs-app/</h1> */}
       </div>
 
 
-       <div className='flex flex-col gap-3 justify-center items-center mb-6 lg:mb-8'>
-       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-player-play size-4 lg:size-5"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 4v16l13 -8z" /></svg>
-      <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-git-branch size-4 lg:size-5"><path stroke="none" d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 8l0 8" /><path d="M9 18h6a2 2 0 0 0 2 -2v-5" /><path d="M14 14l3 -3l3 3" /></svg>
-     <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-timeline-event-exclamation size-4 lg:size-5"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 20m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M10 20h-6" /><path d="M14 20h6" /><path d="M12 15l-2 -2h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-3l-2 2z" /><path d="M12 6v2" /><path d="M12 11v.01" /></svg>
+       <div className='flex flex-col gap-3.5 justify-center items-center mb-6 lg:mb-8 text-zinc-500'>
+       <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-player-play size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 4v16l13 -8z" /></svg>
+      <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-git-branch size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 8l0 8" /><path d="M9 18h6a2 2 0 0 0 2 -2v-5" /><path d="M14 14l3 -3l3 3" /></svg>
+     <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-timeline-event-exclamation size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 20m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M10 20h-6" /><path d="M14 20h6" /><path d="M12 15l-2 -2h-3a1 1 0 0 1 -1 -1v-8a1 1 0 0 1 1 -1h10a1 1 0 0 1 1 1v8a1 1 0 0 1 -1 1h-3l-2 2z" /><path d="M12 6v2" /><path d="M12 11v.01" /></svg>
        {/* <h1 className='opacity-80 text-lg'>my-nextjs-app/</h1> */}
       </div>
 {/* 
@@ -93,9 +108,9 @@ useEffect(() => {
       </div>
      </div>
       
-          <div  className='relative h-full w-[calc(100%-2.5rem)] lg:w-[95%] flex gap-3 py-2 overflow-y-auto scrollbar-thin pt-12 lg:pt-20'>
- 
-       <div className='absolute top-8 h-8 lg:h-[7%] w-full bg-zinc-900 z-40 border-b-[0.7px] border-white border-opacity-60 flex items-center'>
+          <div  className='relative h-full w-[calc(100%-2rem)] lg:w-[96%] flex gap-3 py-2 overflow-y-auto scrollbar-thin pt-12 lg:pt-20'>
+  
+        <div className='absolute top-8 h-8 lg:h-[7%] w-full bg-zinc-900 z-40 border-b-[0.7px] border-white/5 flex items-center'>
         <div className='flex  w-fit   gap-1 ml-4 border-b-2 border-[#00BFFF] items-center pb-1'>
  <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 48 48" className="size-4 lg:size-[30px] flex-shrink-0">
  <rect width="36" height="36" x="6" y="6" fill="#1976d2"></rect><polygon fill="#fff" points="27.49,22 14.227,22 14.227,25.264 18.984,25.264 18.984,40 22.753,40 22.753,25.264 27.49,25.264"></polygon><path fill="#fff" d="M39.194,26.084c0,0-1.787-1.192-3.807-1.192s-2.747,0.96-2.747,1.986 c0,2.648,7.381,2.383,7.381,7.712c0,8.209-11.254,4.568-11.254,4.568V35.22c0,0,2.152,1.622,4.733,1.622s2.483-1.688,2.483-1.92 c0-2.449-7.315-2.449-7.315-7.878c0-7.381,10.658-4.469,10.658-4.469L39.194,26.084z"></path>
@@ -157,23 +172,41 @@ useEffect(() => {
     </div>
   ))} 
 
-   {isComplete && comp1.map((e: any, idx: number) => (
-  
-     idx === comp1.length - 1? 
-    <div key={idx} className="relative flex">
-      <h1 className="w-full ml-2 cursor-text">{e.code}</h1>
-        <motion.img
-        animate={{opacity:[0,1]}}
-        transition={{duration:0.7,repeat:Infinity,
-        repeatDelay:0.7,
-        repeatType:'mirror'}}
-        src="blinkin.png" className='ml-2 h-3 xs:h-3.5 sm:h-4 md:h-5 lg:h-7 absolute object-cover invert' alt="" />
-     </div>
-      :
-    <div key={idx} className="relative flex">
-      <h1 className=" ml-2 cursor-text">{e.code}</h1>
-    </div>
-  ))}
+    {isComplete && comp1.map((e: any, idx: number) => {
+      const isNewCode = idx >= 3 && idx < comp1.length - 1;
+      return idx === comp1.length - 1 ? (
+        <div key={idx} className="relative flex">
+          <h1 className="w-full ml-2 cursor-text">{e.code}</h1>
+          <motion.img 
+            animate={{opacity:[0,1]}}
+            transition={{duration:0.7,repeat:Infinity, repeatDelay:0.7, repeatType:'mirror'}}
+            src="blinkin.png" 
+            className='ml-2 h-3 xs:h-3.5 sm:h-4 md:h-5 lg:h-7 absolute object-cover invert' 
+            alt="" 
+          />
+        </div>
+      ) : (
+        <div key={idx} className="relative flex">
+          {isNewCode ? (
+            <motion.h1 
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ 
+                opacity: 1, 
+                y: 0,
+                textShadow: ["0px 0px 0px rgba(0,191,255,0)", "0px 0px 10px rgba(0,191,255,0.8)", "0px 0px 0px rgba(0,191,255,0)"],
+                color: ["#ffffff", "#00E5FF", "#cccccc"]
+              }}
+              transition={{ duration: 1.2, delay: (idx - 3) * 0.08 }}
+              className="ml-2 cursor-text font-semibold"
+            >
+              {e.code}
+            </motion.h1>
+          ) : (
+            <h1 className="ml-2 cursor-text">{e.code}</h1>
+          )}
+        </div>
+      );
+    })}
   
 
       </div>        
