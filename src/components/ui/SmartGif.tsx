@@ -107,23 +107,36 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
       ref={containerRef}
       whileHover={{ scale: 1.05 }}
       transition={{ duration: 0.2 }}
-      className="relative inline-flex items-center justify-center w-full h-full cursor-pointer"
+      className="relative w-full h-full cursor-pointer"
+      style={{ display: 'grid', placeItems: 'center' }}
     >
-      {/* Frozen frame (canvas) – visible when GIF is NOT playing */}
-      {
-        isInView &&
-        <canvas
-          ref={canvasRef}
+      {/* Fallback Static Image – base layer, shown while GIF loads */}
+      {fallbackSrc && (
+        <img
+          src={fallbackSrc}
           className={className}
+          alt={alt}
           style={{
-            display: !shouldPlay && hasFrame ? 'block' : 'none',
-            maxWidth: '100%',
-            height: 'auto'
+            gridArea: '1 / 1',
+            opacity: isLoaded ? 0 : 1,
+            transition: 'opacity 0.3s ease',
           }}
         />
-      }
+      )}
 
-      {/* Live GIF – visible when in viewport centre */}
+      {/* Frozen frame (canvas) – visible when GIF loaded but NOT playing */}
+      <canvas
+        ref={canvasRef}
+        className={className}
+        style={{
+          gridArea: '1 / 1',
+          opacity: !shouldPlay && hasFrame ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* Live GIF – visible when active and loaded */}
       <img
         ref={imgRef}
         src={currentSrc}
@@ -139,21 +152,14 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
           }
         }}
         style={{
-          display: (shouldPlay || !hasFrame) && isLoaded ? 'block' : 'none',
+          gridArea: '1 / 1',
+          opacity: (shouldPlay || !hasFrame) && isLoaded ? 1 : 0,
+          transition: 'opacity 0.3s ease',
         }}
       />
-
-      {/* Fallback Static Image - visible ONLY when GIF is loading or failed */}
-      {!isLoaded && fallbackSrc && (
-        <img
-          src={fallbackSrc}
-          className={className}
-          alt={alt}
-          style={{ display: 'block' }}
-        />
-      )}
     </motion.div>
   )
 }
 
 export default SmartGif
+

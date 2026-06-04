@@ -12,7 +12,7 @@ function Footer() {
           <div className="flex items-center gap-2 mb-0">
             <img src="/codemateLogo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
           </div>
-          <p className="text-gray-400 mb-4 text-sm md:text-lg w-full md:w-1/2">
+          <p className="text-gray-400 mb-4 text-sm md:text-lg w-full md:w-full lg:w-1/2">
             CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
           </p>
           <div className="flex gap-3 mt-2">

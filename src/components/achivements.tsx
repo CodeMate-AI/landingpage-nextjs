@@ -20,6 +20,7 @@ function Achivements() {
   const [currCards, setCurrCards] = useState(0)
   const [isPaused, setIsPaused] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTablet, setIsTablet] = useState(false);
   const carouselRef = useRef(null);
   const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
   const cards = [
@@ -297,11 +298,11 @@ function Achivements() {
 
   // ---- Dynamic scroll limits based on card count ----
   const DESKTOP_CARD_WIDTH = 376; // 352px (22rem) + 24px (gap-6)
-  const MOBILE_CARD_WIDTH = 344;  // 320px (20rem) + 24px (gap-6)
   const DESKTOP_VISIBLE = 3;
   const MOBILE_VISIBLE = 1;
   const maxDesktop = -((cards.length - DESKTOP_VISIBLE) * DESKTOP_CARD_WIDTH);
-  const maxMobile = -((cards.length - MOBILE_VISIBLE) * MOBILE_CARD_WIDTH);
+  const activeMobileCardWidth = isTablet ? 728 : 344; // 704px (44rem) card + 24px gap on tablet, 320px (20rem) card + 24px gap on mobile
+  const maxMobile = -((cards.length - MOBILE_VISIBLE) * activeMobileCardWidth);
 
   // ---- Auto slide effect ----
   useEffect(() => {
@@ -318,7 +319,7 @@ function Achivements() {
       } else {
         interval = window.setInterval(() => {
           setCurrCards((prev) => {
-            const next = prev - MOBILE_CARD_WIDTH;
+            const next = prev - activeMobileCardWidth;
             return next <= maxMobile ? 0 : next;
           });
         }, 5000);
@@ -326,17 +327,17 @@ function Achivements() {
     }
 
     return () => window.clearInterval(interval);
-  }, [isInView, isPaused, isMobile, cards.length]);
+  }, [isInView, isPaused, isMobile, cards.length, activeMobileCardWidth, maxMobile, maxDesktop]);
 
   useEffect(() => {
-    // This will run only on the client
-    setIsMobile(window.innerWidth <= 1024 ? true : false);
+    const checkScreen = () => {
+      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1025);
+      setIsMobile(window.innerWidth <= 1025);
+    };
+    checkScreen();
+    window.addEventListener('resize', checkScreen);
 
-    // Optional: handle resize
-    const handleResize = () => setIsMobile(window.innerWidth <= 1024 ? true : false);
-    window.addEventListener('resize', handleResize);
-
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', checkScreen);
   }, []);
 
   function handleArrow(e: string) {
@@ -350,10 +351,10 @@ function Achivements() {
 
   function handleArrow2(e: string) {
     if (e === 'left') {
-      currCards !== 0 ? setCurrCards(state => state + MOBILE_CARD_WIDTH) : null;
+      currCards !== 0 ? setCurrCards(state => state + activeMobileCardWidth) : null;
     }
     if (e === 'right') {
-      currCards > maxMobile ? setCurrCards(state => state - MOBILE_CARD_WIDTH) : null;
+      currCards > maxMobile ? setCurrCards(state => state - activeMobileCardWidth) : null;
     }
   }
   return (
@@ -361,14 +362,14 @@ function Achivements() {
 
 
       className='relative flex flex-col justify-center items-center mb-20'>
-      <div className={`${montserrat.className} leading-[1] text-[10vw]  lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent lg:text-7xl'>Talk</span> of the Town</div>
-      <p className='text-xs w-[80%] mt-3 lg:mt-0 lg:text-lg lg:w-[50%] text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
+      <div className={`${montserrat.className} leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent md:text-6xl lg:text-7xl'>Talk</span> of the Town</div>
+      <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-0 text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
 
       <div
         ref={carouselRef}
         onMouseEnter={() => setIsPaused(true)} // pause on hover
         onMouseLeave={() => setIsPaused(false)} // resume when hover ends
-        className='mt-20 flex w-[20rem] lg:w-[80.5%] overflow-hidden'>
+        className='mt-20 flex w-[20rem] md:w-[44rem] lg:w-[80.5%] overflow-hidden'>
         <motion.div animate={{ x: currCards }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className='flex gap-6'>
           {cards.map((e, idx) => (
             <div key={idx}>
@@ -406,17 +407,17 @@ export default Achivements
 
 function Card({ image, alt, title, description, link, imagePosition }: { image: String, alt: String, title: String, description: String, link: String, imagePosition?: string }) {
   return (
-    <motion.div className='relative h-[33rem] w-[20rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
-      <img src={image as string} alt={alt as string} className={`h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : ''}`} />
+    <motion.div className='relative h-[33rem] md:h-[48rem] lg:h-[33rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
+      <img src={image as string} alt={alt as string} className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : ''}`} />
 
-      <div className='px-5 flex flex-col gap-2 mt-4'>
-        <h1 className='text-xl font-semibold '>{title}</h1>
-        <p className='text-zinc-500 text-xs'>{description}</p>
+      <div className='px-5 md:px-10 flex flex-col gap-2 md:gap-4 mt-4 md:mt-8'>
+        <h1 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold '>{title}</h1>
+        <p className='text-zinc-500 text-xs md:text-[1.3rem] md:leading-relaxed lg:text-xs'>{description}</p>
       </div>
 
       {link && link !== "" && (
         <a href={link as string} target='_blank'>
-          <motion.button whileHover={{ opacity: 0.7 }} className='absolute text-lg px-5 bottom-8 text-[#00BFFF]'>Read More</motion.button>
+          <motion.button whileHover={{ opacity: 0.7 }} className='absolute text-lg md:text-[1.5rem] lg:text-lg px-5 md:px-10 bottom-8 md:bottom-12 text-[#00BFFF]'>Read More</motion.button>
         </a>
       )}
     </motion.div>

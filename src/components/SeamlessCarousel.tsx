@@ -30,8 +30,8 @@ const AutoCompleteComponent = [
     { code: "export default function ThemeToggle() {" },
     { code: "  const [dark, setDark] = useState(false)" },
     { code: "  return (" },
-    { code: "    <div className={dark ? 'bg-black text-white p-4' : 'bg-white text-black p-4'}>" },
-    { code: "      <p>{dark ? 'Dark Mode 🌙' : 'Light Mode ☀️'}</p>" },
+    { code: "    <div className={dark ? 'bg-black' : 'bg-white'}>" },
+    { code: "      <p>{dark ? 'Dark 🌙' : 'Light ☀️'}</p>" },
     { code: "      <button onClick={() => setDark(!dark)}>Toggle</button>" },
     { code: "    </div>" },
     { code: "  )" },
@@ -58,6 +58,7 @@ const slides: CarouselSlide[] = [
     {
         title: 'MCP',
         media: '/mcp_gif.gif',
+        fallbackSrc: '/MCP-static.png',
         type: 'gif',
         description:
             'Connect and manage external tools and contexts via Model Context Protocol, supercharging your Build agent with seamless integrations.',
@@ -179,10 +180,10 @@ export default function SeamlessCarousel() {
     const currentSlide = slides[current]
 
     return (
-        <section className="w-full bg-black pt-2 pb-2 lg:pt-12 lg:pb-6 px-5 lg:px-8 overflow-hidden">
+        <section className="w-full bg-black pt-2 pb-2 lg:pt-12 lg:pb-6 px-2 lg:px-8 overflow-hidden">
             <div className="max-w-[1400px] mx-auto grid lg:grid-cols-[60%_40%] gap-8 items-center">
                 {/* Left Side: Media Player */}
-                <div className="flex items-center justify-center min-h-0 lg:min-h-[500px]">
+                <div className="flex items-center justify-center min-h-[280px] lg:min-h-[500px]">
                     <AnimatePresence mode="wait" custom={direction}>
                         <motion.div
                             key={current}
@@ -196,26 +197,26 @@ export default function SeamlessCarousel() {
                             whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
                         >
                             {currentSlide.type === 'gif' ? (
-                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-video flex items-center justify-center">
+                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video flex items-center justify-center">
                                     {currentSlide.fallbackSrc ? (
                                         <SmartGif
                                             src={currentSlide.media!}
                                             fallbackSrc={currentSlide.fallbackSrc}
                                             alt={currentSlide.title}
-                                            className="w-full h-full object-contain lg:object-cover"
+                                            className="w-full h-full object-cover"
                                             isActive={true}
                                         />
                                     ) : (
                                         <img
                                             src={currentSlide.media}
                                             alt={currentSlide.title}
-                                            className="w-full h-full object-contain lg:object-cover"
+                                            className="w-full h-full object-cover"
                                             loading="eager"
                                         />
                                     )}
                                 </div>
                             ) : currentSlide.type === 'mp4' ? (
-                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-video relative">
+                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video relative">
                                     <video
                                         ref={videoRef}
                                         autoPlay={false}
@@ -252,7 +253,7 @@ export default function SeamlessCarousel() {
                                 </div>
                             ) : (
                                 /* Component type — Auto-Complete interactive editor */
-                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-video relative">
+                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video relative">
                                     <AutoCodeEditor
                                         comp1={AutoCompleteComponent}
                                         isFix={isAutoFix}
