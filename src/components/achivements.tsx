@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect } from 'react'
 import { Montserrat } from 'next/font/google';
-import { Car } from 'lucide-react';
 import { useState, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import { motion } from 'framer-motion'

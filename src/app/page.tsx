@@ -47,18 +47,13 @@ function Page() {
   const [windowWidth, setWindowWidth] = useState(820);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1025);
-      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1025);
+    const handleResize = () => {
+      const w = window.innerWidth;
+      setWindowWidth(w);
+      setIsMobile(w < 1025);
+      setIsTablet(w >= 768 && w < 1025);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    const handleResize = () => setWindowWidth(window.innerWidth);
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -184,11 +179,17 @@ function Page() {
   // Functions to manage modal overlays, keyboard shortcuts, and button clicks.
   // ==========================================
 
-  ///for mascot 
+  // Consolidated scroll event handler on main page scroll progress (MYProg)
   useMotionValueEvent(MYProg, 'change', (latest) => {
-    // Arrow visibility (show after 5% scroll)
-    if (latest >= 0.05) setIsArrowV(true);
-    else setIsArrowV(false);
+    // 1. Arrow visibility (show after 5% scroll)
+    setIsArrowV(latest >= 0.05);
+
+    // 2. Navbar background trigger
+    setIsNBack(latest >= 0.001203313524221142);
+
+    // 3. Scroll direction tracking (scroll arrow direction)
+    setIsArrow(latest >= lastScroll);
+    setLastScroll(latest);
   });
 
 
@@ -241,18 +242,7 @@ function Page() {
 
 
 
-  // for main div events
-  useMotionValueEvent(MYProg, 'change', (latest) => {
 
-    if (latest >= 0.001203313524221142) setIsNBack(true);
-    if (latest <= 0.001203313524221142) setIsNBack(false);
-  })
-
-  useMotionValueEvent(MYProg, 'change', (e) => {
-    if (e >= lastScroll) setIsArrow(true);
-    if (e <= lastScroll) setIsArrow(false);
-    setLastScroll(e);
-  });
 
   // Detect when user starts scrolling to move navbar to top
   useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -652,56 +642,7 @@ function Page() {
       </div>
       {/*navBar*/}
 
-      {/*navBar for mobile*/}
-      <div
-        style={{ zIndex: 999999, top: 0 }}
-        className="lg:hidden fixed flex justify-center items-center w-full transition-all duration-300">
-        <motion.div
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          // initial={{opacity:0,filter:'blur(10px)'}}
-          // animate={{opacity:1,filter:'blur(0px)'}}
-          // transition={{duration:1,delay:7}}
-          style={{
-            background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            zIndex: 99999999999,
-          }}
-          className={`w-full bg-opacity-65 z-[99999999999] ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''}`}>
-          <div className='flex  h-full w-full text-white px-[2rem] py-2 '>
-            <div className='flex justify-between items-center w-full h-10'>
 
-              <div className="h-full w-[30vw] flex justify-center overflow-hidden">
-                <img src="/codemateLogo.svg" alt="" className='hidden' />
-
-                {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
-     {IsMascot && <motion.div initial={{opacity:0,filter:'blur(20px)',x:50}} animate={{opacity:1,filter:'blur(0px)',x:0}} transition={{duration:0.5}}>
-<svg width="155" height="150" viewBox="0 0 53 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M131.78 150H39.4727L60.2412 110.845H152.55L131.78 150ZM39.4727 39.0674V150L0.242188 125.04V14.1074L39.4727 39.0674ZM71.7422 64C77.8173 64 82.7422 68.9249 82.7422 75C82.7422 81.0751 77.8173 86 71.7422 86C65.6671 86 60.7422 81.0751 60.7422 75C60.7422 68.9249 65.6671 64 71.7422 64ZM111.742 64C117.817 64 122.742 68.9249 122.742 75C122.742 81.0751 117.817 86 111.742 86C105.667 86 100.742 81.0751 100.742 75C100.742 68.9249 105.667 64 111.742 64ZM131.78 39.1553H39.4727L60.2412 0H152.55L131.78 39.1553Z" fill="url(#paint0_linear_2014_66)"/>
-<defs>
-<linearGradient id="paint0_linear_2014_66" x1="0.580642" y1="1.09465e-05" x2="183.357" y2="82.4837" gradientUnits="userSpaceOnUse">
-<stop stop-color="#396AFC"/>
-<stop offset="1" stop-color="#2948FF"/>
-</linearGradient>
-</defs>
-</svg>
-
-
-      </motion.div>} */}
-
-              </div>
-
-
-
-
-            </div>
-            {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
-          </div>
-        </motion.div>
-      </div>
 
       {/* ========================================== */}
       {/* UI SECTION: MOBILE NAVIGATION & MENU     */}
@@ -826,7 +767,7 @@ function Page() {
 
 
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
-                            <a href="https://build.codemateai.dev/secure__?session__id__=1e79d863e85850ddad011af939f79137:ifr7GFfV29hp6Frs5FpwvPtObmg8HHmIXq2cJ9uv5/3bUIQvNeQ4/PS4bUUqZk8a" target="_blank">
+                            <a href="https://build.codemateai.dev/build" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 lg:size-5 scale-[1.5] object-contain ml-0" />
@@ -1096,8 +1037,6 @@ function Page() {
         )}
       </AnimatePresence>
       {/* mobile menu */}
-
-      {/*navBar for mobile*/}
 
 
       {/* hero section  */}
