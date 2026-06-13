@@ -41,7 +41,7 @@ const AutoCompleteComponent = [
 const slides: CarouselSlide[] = [
     {
         title: 'Codemaps',
-        media: '/Codemaps (1).gif',
+        media: '/CodeMaps_Static.png',
         fallbackSrc: '/CodeMaps_Static.png',
         type: 'gif',
         description:
@@ -49,7 +49,7 @@ const slides: CarouselSlide[] = [
     },
     {
         title: 'Deepwiki',
-        media: '/deepwiki_gif.gif',
+        media: '/DeepWiki_static.png',
         fallbackSrc: '/DeepWiki_static.png',
         type: 'gif',
         description:
@@ -57,7 +57,7 @@ const slides: CarouselSlide[] = [
     },
     {
         title: 'MCP',
-        media: '/mcp_gif.gif',
+        media: '/MCP-static.png',
         fallbackSrc: '/MCP-static.png',
         type: 'gif',
         description:
