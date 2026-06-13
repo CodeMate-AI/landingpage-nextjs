@@ -1,46 +1,28 @@
 'use client'
-import React, { useEffect, useState, useRef, useMemo } from 'react'
-import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
-import { ChevronUp, Menu, Weight, X, ChevronRight } from 'lucide-react';
-import { FloatingNav } from '@/components/ui/floating-navbar';
-import { IconArrowLeft, IconArrowRight, IconArrowBadgeDown } from '@tabler/icons-react';
-import StaggeredMenu from '@/components/ui/Menu';
+import React, { useEffect, useState, useRef } from 'react'
+import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
-import { TextAnimate } from '@/components/ui/textAnimate'
-import MagicBento from '@/components/ui/magicBento';
 import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
-import { LoaderFive, LoaderOne } from '@/components/ui/loader';
-import { TypingAnimation, AnimatedSpan } from '@/components/ui/terminal';
 import SeamlessCarousel from '@/components/SeamlessCarousel';
-
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/footer';
-
 import VideoEmbed from '@/components/video';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
 import SmartGif from '@/components/ui/SmartGif';
 import Achivements from '@/components/achivements';
 import MediaPresence from '@/components/media-presence';
-import { cn } from './utils/cn';
 import EventOffer from './pricing/components/EventOffer';
+import { cn } from './utils/cn';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], // Add what you need
-  variable: '--font-montserrat', // Optional, for CSS variable usage
-});
-
-const montserrat2 = Montserrat({
-  subsets: ['latin'],
-  weight: ['200'],
-  variable: '--font-montserrat', // Optional, for CSS variable usage
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-montserrat',
 });
 
 
@@ -50,104 +32,15 @@ const montserrat2 = Montserrat({
 // Handles core state, scroll tracking (Framer Motion), and renders all sub-sections.
 // ==========================================
 function Page() {
-  // ==========================================
-  // 1A. MOCK DATA & CONTENT
-  // Data arrays used to populate interactive code editor simulations
-  // ==========================================
-  const brokenComponent = [
-    { code: "import React from 'react'", isError: false },
-    { code: "", isError: false },
-    { code: "type Props = {", isError: false },
-    { code: "  name: string", isError: false },
-    { code: "}", isError: false },
-    { code: "", isError: false },
-    { code: "export const ErrorComp: React.FC<Props> = ({ name }) => {", isError: false },
-    { code: "  const [count, setCount]: number = useState(0)", isError: true }, // ❌ incorrect type annotation + useState not imported
-    { code: "", isError: false },
-    { code: "  useEffect(() => {", isError: true }, // ❌ useEffect not imported
-    { code: "    console.logg('Name is:', name)", isError: true }, // ❌ typo `logg`
-    { code: "  }, [nam])", isError: true }, // ❌ `nam` is not defined
-    { code: "", isError: false },
-    // ==========================================
-    // 2. MAIN PAGE RENDER (JSX)
-    // Renders the entire landing page sequentially:
-    // Nav -> Hero -> Products -> Testimonials -> Footer
-    // ==========================================
-    { code: "  return (", isError: false },
-    { code: "    <div>", isError: false },
-    { code: "      <h1>Hello, {namee}</h1>", isError: true }, // ❌ `namee` is a typo
-    { code: "      <button onClick={() => setCount(cn => cn + 1)}>Click</buttn>", isError: true }, // ❌ `buttn` typo
-    { code: "      <p>Count: {countt}</p>", isError: true }, // ❌ `countt` is a typo
-    { code: "    </div>", isError: false },
-    { code: "  )", isError: true }, // ❌ return not wrapped in fragment or single parent (could error in strict JSX)
-    { code: "}", isError: false },
-  ]
-
-  const fixedComponent = [
-    { code: "import React, { useState, useEffect } from 'react'", isError: false },
-    { code: "", isError: false },
-    { code: "type Props = {", isError: false },
-    { code: "  name: string", isError: false },
-    { code: "}", isError: false },
-    { code: "", isError: false },
-    { code: "export const ErrorComp: React.FC<Props> = ({ name }) => {", isError: false },
-    { code: "  const [count, setCount] = useState(0)", isError: true },
-    { code: "", isError: false },
-    { code: "  useEffect(() => {", isError: true },
-    { code: "    console.log('Name is:', name)", isError: true },
-    { code: "  }, [name])", isError: true },
-    { code: "", isError: false },
-    { code: "  return (", isError: false },
-    { code: "    <div>", isError: false },
-    { code: "      <h1>Hello, {name}</h1>", isError: true },
-    { code: "      <button onClick={() => setCount(cn => cn + 1)}>Click</button>", isError: true },
-    { code: "      <p>Count: {count}</p>", isError: true },
-    { code: "    </div>", isError: false },
-    { code: "  )", isError: true },
-    { code: "}", isError: false },
-  ];
-
-
-  // ==========================================
-  // 1B. NAVIGATION CONFIGURATION
-  // ==========================================
-  const navItems = [
-    {
-      name: "Home",
-      link: "/",
-      icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
-      name: "About",
-      link: "/about",
-      icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
-      name: "Contact",
-      link: "/contact",
-      icon: (
-        <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />
-      ),
-    },
-  ];
   const router = useRouter();
+
   // ==========================================
-  // 1C. REFS & COMPONENT STATE
-  // React state hooks for toggling UI elements (menus, overlays, modals)
-  // and Refs for tracking scroll positions of specific sections.
+  // REFS & COMPONENT STATE
   // ==========================================
   const heroRef = useRef<HTMLDivElement>(null);
   const heroRef2 = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
-  const MFRef = useRef<HTMLDivElement>(null);
-  // const [d,setD] = useState(false); 
-  // const [r,setR] = useState(false);
-  // const [a,setA] = useState(false);
   const [lastScroll, setLastScroll] = useState(0);
-  const [mat1, setMat1] = useState(0);
-  const [mat2, setMat2] = useState(0);
-  const [mat3, setMat3] = useState(0);
-  const [IsMascot, setIsMascot] = useState(false);
   const [isNBack, setIsNBack] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -169,6 +62,7 @@ function Page() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
   const [isMenu, setMenu] = useState(false);
   const [isArrowV, setIsArrowV] = useState(false);
   const [isProducts, setIsProducts] = useState(false);
@@ -180,81 +74,51 @@ function Page() {
   const [isCoraBlocked, setIsCoraBlocked] = useState(true);
   const [showEventPopup, setShowEventPopup] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
-  const feature1Ref = useRef<HTMLDivElement>(null);
   const testiRef = useRef<HTMLDivElement>(null);
   const productShowRef = useRef<HTMLDivElement>(null);
   const codeMateImageRef = useRef<HTMLImageElement>(null);
   const unlockCopyRef = useRef<HTMLParagraphElement>(null);
-  const [isLoad, setIsLoad] = useState(false);
-  const [isLoad2, setIsLoad2] = useState(false);
-  const exploreRef = useRef<HTMLDivElement>(null);
   const unlockVideoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
-  const title = ["Don't", "be", "techy", "to"];
-  const title2 = ["Develop", "Softwares"];
-  const [isTitle, setIstitle] = useState(false);
   // ==========================================
-  // 1D. SCROLL ANIMATION HOOKS (FRAMER MOTION)
-  // Extensive use of useScroll() and useTransform() to create
-  // parallax effects, fade-ins, and scroll-linked interactions across the page.
+  // SCROLL ANIMATION HOOKS (FRAMER MOTION)
   // ==========================================
-  const { scrollYProgress: shadingProgress } = useScroll({
-    target: heroRef,
-    offset: ['end end', 'end start']
-  })
-  const shadingHeight = useTransform(shadingProgress, [0, 1], [0, 1000]);
-
-
   const { scrollYProgress: PShowYProg } = useScroll({
     target: productShowRef,
     offset: ['start start', 'end start']
   });
-
-
-
 
   const { scrollYProgress: codeMateImageProg } = useScroll({
     target: codeMateImageRef,
     offset: ['start end', 'end start']
   });
 
-  const { scrollYProgress: unlockYProg } = useScroll({
-    target: unlockCopyRef,
-    offset: ['start end', 'end start']
-  });
-
-  const { scrollYProgress: testiYProg } = useScroll({
-    target: testiRef,
-    offset: ['start start', 'end start']
-  });
-
-
   const { scrollYProgress: MYProg } = useScroll({
     target: mainRef,
-    offset: ['start start', 'end start']
-  });
-  const { scrollYProgress: MFYProg } = useScroll({
-    target: MFRef,
     offset: ['start start', 'end start']
   });
 
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
 
+  const { scrollYProgress: testiYProg } = useScroll({
+    target: testiRef,
+    offset: ['start start', 'end start']
+  });
+
+  // Testimonial card entrance transforms
+  const tdiv1X = useTransform(testiYProg, [0, 0.12], [700, 0]);
+  const tdiv2X = useTransform(testiYProg, [0.12, 0.26], [1300, 0]);
+  const tdiv3X = useTransform(testiYProg, [0.26, 0.40], [1900, 0]);
+  const tdiv4X = useTransform(testiYProg, [0.40, 0.54], [2500, 0]);
+  const tdiv5X = useTransform(testiYProg, [0.54, 0.68], [3100, 0]);
 
   // ========== "What you'll Unlock" section scroll math ==========
-  // Container: h-[430vh]. Offset: ['start start','end start'] → scroll distance = 430vh.
-  // Next section enters viewport bottom at PShowYProg ≈ 0.767 (= 1 − 100vh/430vh).
-  // 6 unlock steps span 0→0.76, ending just before the next section peeks in.
-  // Blank tail ≈ (0.767−0.76)×430 ≈ 3vh — virtually invisible.
   const UNLOCK_END = 0.76;
-  const UNLOCK_STEP = UNLOCK_END / 6; // ≈ 0.1267
-
-  const unlockBarY = useTransform(PShowYProg, [0, UNLOCK_END], ['0%', '100%']);
-  const headerY = useTransform(PShowYProg, [UNLOCK_END, UNLOCK_END + 0.12], [0, -200]);
+  const UNLOCK_STEP = UNLOCK_END / 6;
 
   const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
 
-  // ========== iPad/Tablet Centering Transform (Top-Level Hooks) ==========
+  // ========== iPad/Tablet Centering Transform ==========
   const xMobile = useTransform(
     PShowYProg,
     [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
@@ -269,10 +133,9 @@ function Page() {
 
   const xTablet = useTransform(PShowYProg, (latest) => {
     const W = windowWidth;
-    const w = W * 0.82; // Dynamic 82vw card width
-    const g = 40;  // iPad gap
+    const w = W * 0.82;
+    const g = 40;
     const c0 = -(W / 2 + w / 2);
-    
     const input = [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END];
     const output = [
       0,
@@ -284,7 +147,6 @@ function Page() {
       c0 - 5 * (w + g),
       c0 - 5 * (w + g)
     ];
-
     if (latest <= input[0]) return `${output[0]}px`;
     if (latest >= input[input.length - 1]) return `${output[output.length - 1]}px`;
     for (let i = 0; i < input.length - 1; i++) {
@@ -299,64 +161,22 @@ function Page() {
 
   const xTransform = isTablet ? xTablet : isMobile ? xMobile : xDesktop;
 
-  ///for mobile feature section
-  const mx = useTransform(MFYProg, [0, 1], [0, -1200]);
-
   useEffect(() => {
-    // ==========================================
-    // 1E. SMOOTH SCROLL INITIALIZATION
-    // Initializes Lenis for global smooth scrolling.
-    // ==========================================
-    const lenis = new Lenis({
-      duration: 2
-    });
+    // Lenis smooth scroll initialization
+    const lenis = new Lenis({ duration: 2 });
     function raf(time: any) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+      lenis.raf(time);
+      requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
   }, []);
 
-  ///codeEditor part
-
-  // [UNUSED] scaleE / xE — legacy transforms, not referenced in JSX
-  // const scaleE = useTransform(PShowYProg, [0.5, 0.6, 0.7], [1, 1.5, 1]);
-  // const xE = useTransform(PShowYProg, [0.5, 0.7], [0, -516]);
-
-  ///for testing
-  const tdiv1X = useTransform(testiYProg, [0, 0.12], [700, 0]);
-  const tdiv2X = useTransform(testiYProg, [0.12, 0.26], [1300, 0]);
-  const tdiv3X = useTransform(testiYProg, [0.26, 0.40], [1900, 0]);
-  const tdiv4X = useTransform(testiYProg, [0.40, 0.54], [2500, 0]);
-  const tdiv5X = useTransform(testiYProg, [0.54, 0.68], [3100, 0]);
-  const tdiv6X = useTransform(testiYProg, [0.8, 1], [3600, 0]);
-  const commentsX = useTransform(testiYProg, [0, 1], [0, 1500]);
-
-  // Top announcement banner (SWE Bench ranking)
+  // Top announcement banner
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const SWE_BENCH_BLOG_URL =
-    'https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/'; // TODO: replace with actual blog URL
+    'https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/';
   const announcementRef = useRef<HTMLDivElement>(null);
 
-  //for bento
-  // [UNUSED] scaleB / xB — legacy transforms, not referenced in JSX
-  // const scaleB = useTransform(PShowYProg, [0.8, 0.9], [1, 1.5]);
-  // const xB = useTransform(PShowYProg, [0.8, 0.9], [0, 550]);
-
-
-  ///for mobile navbar menu
-  const menuItems = [
-    { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
-    { label: 'About', ariaLabel: 'Learn about us', link: '/about' },
-    { label: 'Services', ariaLabel: 'View our services', link: '/services' },
-    { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' }
-  ];
-
-  const socialItems = [
-    { label: 'Twitter', link: 'https://twitter.com' },
-    { label: 'GitHub', link: 'https://github.com' },
-    { label: 'LinkedIn', link: 'https://linkedin.com' }
-  ];
 
   //for codeEditor
   // ==========================================
@@ -369,9 +189,6 @@ function Page() {
     // Arrow visibility (show after 5% scroll)
     if (latest >= 0.05) setIsArrowV(true);
     else setIsArrowV(false);
-
-    if (latest >= 0.027262813522355506) setIsMascot(true);
-    if (latest <= 0.027262813522355506) setIsMascot(false);
   });
 
 
@@ -485,22 +302,6 @@ function Page() {
       ? Math.max(announcementHeight - 10, 0)
       : 0;
 
-
-  // mainRef.current?.addEventListener("scroll",(e:any)=>{
-  //     const currentScroll = e.target.scrollTop; 
-  //     // console.log(currentScroll);
-
-  //    if(currentScroll >= lastScroll) setIsArrow(true);
-  //    if(currentScroll <= lastScroll) setIsArrow(false);
-  //    setLastScroll(currentScroll); 
-  // });
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIstitle(true);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
 
 
