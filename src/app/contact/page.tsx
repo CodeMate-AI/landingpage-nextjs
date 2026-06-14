@@ -318,24 +318,28 @@ export default function ContactPage() {
                     />
                   </div>
 
-                  {/* Team Size */}
-                  <div>
+                  <div className="relative">
                     <label className={labelClass}>Team Size</label>
-                    <select
-                      suppressHydrationWarning
-                      value={teamSize}
-                      onChange={(e) => setTeamSize(e.target.value)}
-                      className={`${inputClass} appearance-none cursor-pointer`}
-                    >
-                      <option value="" disabled hidden>
-                        Select team size
-                      </option>
-                      {TEAM_SIZES.map((size) => (
-                        <option key={size} value={size} className="bg-zinc-900">
-                          {size}
+                    <div className="relative">
+                      <select
+                        suppressHydrationWarning
+                        value={teamSize}
+                        onChange={(e) => setTeamSize(e.target.value)}
+                        className={`${inputClass} appearance-none cursor-pointer pr-10`}
+                      >
+                        <option value="" disabled hidden>
+                          Select team size
                         </option>
-                      ))}
-                    </select>
+                        {TEAM_SIZES.map((size) => (
+                          <option key={size} value={size} className="bg-zinc-900">
+                            {size}
+                          </option>
+                        ))}
+                      </select>
+                      <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500">
+                        <ChevronDown className="w-4 h-4" />
+                      </div>
+                    </div>
                   </div>
 
                   {/* Email */}
@@ -363,8 +367,10 @@ export default function ContactPage() {
                       <input
                         suppressHydrationWarning
                         type="tel"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
                         placeholder="Phone number"
                         className="flex-1 bg-transparent px-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none"
                       />
