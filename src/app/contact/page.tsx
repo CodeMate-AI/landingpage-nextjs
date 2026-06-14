@@ -261,19 +261,20 @@ export default function ContactPage() {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="flex-1"
         >
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full flex flex-col">
             <h2 className="text-xl md:text-2xl font-semibold mb-6 bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
               Get in Touch
             </h2>
 
-            <AnimatePresence mode="wait">
+            <div className="flex-1 flex flex-col">
+              <AnimatePresence mode="wait">
               {submitted ? (
                 <motion.div
                   key="success"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="flex flex-col items-center justify-center py-20 gap-4"
+                  className="flex-1 flex flex-col items-center justify-center gap-4 py-20"
                 >
                   <div className="size-16 rounded-full bg-[#00BFFF]/15 border border-[#00BFFF]/30 flex items-center justify-center">
                     <Check className="w-8 h-8 text-[#00BFFF]" />
@@ -289,7 +290,7 @@ export default function ContactPage() {
                   initial={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   onSubmit={handleSubmit}
-                  className="flex flex-col gap-5"
+                  className="flex flex-col gap-5 flex-1"
                 >
                   {/* Name */}
                   <div>
@@ -391,6 +392,9 @@ export default function ContactPage() {
                     />
                   </div>
 
+                  {/* Spacer to push CTA to bottom */}
+                  <div className="flex-1" />
+
                   {/* Submit */}
                   <motion.button
                     suppressHydrationWarning
@@ -405,6 +409,7 @@ export default function ContactPage() {
                 </motion.form>
               )}
             </AnimatePresence>
+          </div>
           </div>
         </motion.div>
 
@@ -475,6 +480,21 @@ export default function ContactPage() {
             {/* Spacer to push CTA to bottom */}
             <div className="flex-1" />
 
+            {selectedSlot && (
+              <motion.p
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 text-center text-xs text-[#00BFFF] font-medium"
+              >
+                💡 Reminder: Please select the slot matching{" "}
+                <span className="underline font-semibold">
+                  {timeSlots.find((s) => s.dateKey === selectedSlot)?.label.split(" · ")[0]} at{" "}
+                  {timeSlots.find((s) => s.dateKey === selectedSlot)?.label.split(" · ")[1]}
+                </span>{" "}
+                on the Google Calendar booking page.
+              </motion.p>
+            )}
+
             {/* CTA */}
             <motion.button
               suppressHydrationWarning
@@ -482,7 +502,7 @@ export default function ContactPage() {
               whileHover={{ opacity: 0.85 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleCalendarConfirm}
-              className="w-full bg-[#00BFFF]/15 text-[#00BFFF] font-semibold rounded-lg py-3 border border-[#00BFFF]/30 flex items-center justify-center gap-2 transition-opacity mt-2"
+              className="w-full bg-[#00BFFF]/15 text-[#00BFFF] font-semibold rounded-lg py-3 border border-[#00BFFF]/30 flex items-center justify-center gap-2 transition-opacity"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
                 <path d="M19.5 3.5H18V2h-2v1.5H8V2H6v1.5H4.5C3.12 3.5 2 4.62 2 6v14c0 1.38 1.12 2.5 2.5 2.5h15c1.38 0 2.5-1.12 2.5-2.5V6c0-1.38-1.12-2.5-2.5-2.5zM20 20c0 .28-.22.5-.5.5h-15c-.28 0-.5-.22-.5-.5V9h16v11zm0-13H4V6c0-.28.22-.5.5-.5H6V7h2V5.5h8V7h2V5.5h1.5c.28 0 .5.22.5.5v1z" fill="currentColor"/>
