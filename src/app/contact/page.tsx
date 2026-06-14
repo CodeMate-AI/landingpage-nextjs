@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Montserrat } from 'next/font/google'
-import { Clock, Video, MapPin, Check, ChevronDown, Send } from 'lucide-react'
+import { Clock, Video, MapPin, Check, ChevronDown, Send, ArrowLeft } from 'lucide-react'
 const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -231,7 +231,21 @@ export default function ContactPage() {
   return (
     <div className={`${montserrat.className} bg-zinc-950 min-h-screen text-white`}>
       {/* ========== PAGE HEADER ========== */}
-      <div className="pt-28 lg:pt-36 pb-10 px-6 text-center">
+      <div className="pt-28 lg:pt-36 pb-10 px-6 max-w-[1100px] mx-auto text-center">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="flex justify-start mb-6"
+        >
+          <a
+            href="/"
+            className="inline-flex items-center gap-2 text-zinc-500 hover:text-white text-sm font-medium transition-colors group"
+          >
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            Back to Home
+          </a>
+        </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -246,7 +260,10 @@ export default function ContactPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-4 text-zinc-400 text-base md:text-lg max-w-2xl mx-auto"
         >
-          Send us a message or book a call — we&apos;ll get back to you within one business day.
+          Send us a message or book a call.
+          <span className="block mt-2 text-zinc-500 text-sm md:text-base font-normal">
+            We&apos;ll get back to you within one business day.
+          </span>
         </motion.p>
       </div>
 
