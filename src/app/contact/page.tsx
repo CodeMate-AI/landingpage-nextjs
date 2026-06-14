@@ -231,7 +231,7 @@ export default function ContactPage() {
   return (
     <div className={`${montserrat.className} bg-zinc-950 min-h-screen text-white`}>
       {/* ========== PAGE HEADER ========== */}
-      <div className="pt-28 lg:pt-36 pb-10 px-6 max-w-[1100px] mx-auto text-center">
+      <div className="pt-16 lg:pt-20 pb-10 px-6 max-w-[1100px] mx-auto text-center">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
