@@ -158,6 +158,67 @@ function CountryCodeSelector({
   )
 }
 
+
+// ==========================================
+// COMPONENT: Custom Team Size Selector
+// ==========================================
+function TeamSizeSelector({
+  selected,
+  onChange,
+}: {
+  selected: string
+  onChange: (s: string) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        suppressHydrationWarning
+        type="button"
+        onClick={() => setOpen((s) => !s)}
+        className="w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-left text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#00BFFF]/50 focus:ring-1 focus:ring-[#00BFFF]/20 transition-all duration-200 flex items-center justify-between"
+      >
+        <span className={selected ? 'text-white' : 'text-zinc-600'}>
+          {selected || 'Select team size'}
+        </span>
+        <ChevronDown className={`w-4 h-4 text-zinc-500 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute top-full left-0 mt-1 w-full bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl z-50 py-1.5">
+          {TEAM_SIZES.map((size) => (
+            <button
+              suppressHydrationWarning
+              key={size}
+              type="button"
+              onClick={() => {
+                onChange(size)
+                setOpen(false)
+              }}
+              className={`w-full flex items-center px-4 py-2.5 text-left hover:bg-zinc-800 transition-colors text-sm ${
+                selected === size ? 'bg-zinc-800/60 text-white font-medium' : 'text-zinc-300'
+              }`}
+            >
+              {size}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ==========================================
 // MAIN PAGE COMPONENT
 // ==========================================
@@ -274,7 +335,7 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="flex-1"
+          className="flex-1 w-full max-w-2xl mx-auto lg:max-w-none"
         >
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full flex flex-col">
             <h2 className="text-xl md:text-2xl font-semibold mb-6 bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
@@ -336,26 +397,7 @@ export default function ContactPage() {
 
                   <div className="relative">
                     <label className={labelClass}>Team Size</label>
-                    <div className="relative">
-                      <select
-                        suppressHydrationWarning
-                        value={teamSize}
-                        onChange={(e) => setTeamSize(e.target.value)}
-                        className={`${inputClass} appearance-none cursor-pointer pr-10`}
-                      >
-                        <option value="" disabled hidden>
-                          Select team size
-                        </option>
-                        {TEAM_SIZES.map((size) => (
-                          <option key={size} value={size} className="bg-zinc-900">
-                            {size}
-                          </option>
-                        ))}
-                      </select>
-                      <div className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-500">
-                        <ChevronDown className="w-4 h-4" />
-                      </div>
-                    </div>
+                    <TeamSizeSelector selected={teamSize} onChange={setTeamSize} />
                   </div>
 
                   {/* Email */}
@@ -433,7 +475,7 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex-1"
+          className="flex-1 w-full max-w-2xl mx-auto lg:max-w-none"
         >
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full flex flex-col">
             {/* Heading + Badge */}
