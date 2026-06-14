@@ -612,7 +612,7 @@ function Page() {
                             </div>
                           </motion.div>
                         </a>
-                        <a href='https://calendar.app.google/Gyyh913R8hyczmBFA' target='_blank' className='w-full'>
+                        <a href='/contact' className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <h1>Contact</h1>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -989,7 +989,7 @@ function Page() {
 
 
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
-                            <a href="https://calendar.app.google/Gyyh913R8hyczmBFA" target="_blank">
+                            <a href="/contact">
                               <motion.h1 className='z-20 opacity-90'>Contact</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
@@ -1615,7 +1615,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
         <div className=' lg:text-2xl  flex flex-col justify-center items-center w-full gap-1 font-semibold mt-10 opacity-70'>
           {/* <h1>Explore more reasons for your business</h1>
   <h1>to invest in Codemate tools</h1> */}
-          <a href="https://calendar.app.google/Gyyh913R8hyczmBFA" target="_blank" >
+          <a href="/contact" >
             <motion.button
               whileHover={{ opacity: 0.7 }}
               className='px-4 py-2 md:px-6 md:py-3 lg:px-5 lg:py-2.5 bg-[#FFFFFF] text-black rounded-full mt-2 font-semibold text-sm md:text-lg lg:text-base'>Book a Call</motion.button>

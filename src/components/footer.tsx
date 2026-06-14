@@ -45,7 +45,7 @@ function Footer() {
           <div className="mb-6 sm:mb-0">
             <h4 className="font-semibold mb-3 text-white text-sm md:text-base">OTHERS</h4>
             <ul className="space-y-2 text-xs md:text-xs">
-              <li><a href="https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4" target="_blank" rel="noopener noreferrer" className="hover:underline">Contact Us</a></li>
+              <li><a href="/contact" className="hover:underline">Contact Us</a></li>
               <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="hover:underline">Hugging Face</a></li>
               <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Refund Policy</a></li>
             </ul>

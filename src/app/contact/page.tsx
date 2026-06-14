@@ -1,0 +1,498 @@
+'use client'
+import React, { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Montserrat } from 'next/font/google'
+import { Clock, Video, MapPin, Check, ChevronDown, Send } from 'lucide-react'
+import Footer from '@/components/footer'
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-montserrat',
+})
+
+// ==========================================
+// COUNTRY CODES DATA
+// ==========================================
+const COUNTRIES = [
+  { code: 'IN', dial: '+91', flag: '🇮🇳', name: 'India' },
+  { code: 'US', dial: '+1', flag: '🇺🇸', name: 'United States' },
+  { code: 'GB', dial: '+44', flag: '🇬🇧', name: 'United Kingdom' },
+  { code: 'CA', dial: '+1', flag: '🇨🇦', name: 'Canada' },
+  { code: 'AU', dial: '+61', flag: '🇦🇺', name: 'Australia' },
+  { code: 'DE', dial: '+49', flag: '🇩🇪', name: 'Germany' },
+  { code: 'FR', dial: '+33', flag: '🇫🇷', name: 'France' },
+  { code: 'JP', dial: '+81', flag: '🇯🇵', name: 'Japan' },
+  { code: 'SG', dial: '+65', flag: '🇸🇬', name: 'Singapore' },
+  { code: 'AE', dial: '+971', flag: '🇦🇪', name: 'UAE' },
+  { code: 'SA', dial: '+966', flag: '🇸🇦', name: 'Saudi Arabia' },
+  { code: 'KR', dial: '+82', flag: '🇰🇷', name: 'South Korea' },
+  { code: 'BR', dial: '+55', flag: '🇧🇷', name: 'Brazil' },
+  { code: 'NL', dial: '+31', flag: '🇳🇱', name: 'Netherlands' },
+  { code: 'SE', dial: '+46', flag: '🇸🇪', name: 'Sweden' },
+  { code: 'IL', dial: '+972', flag: '🇮🇱', name: 'Israel' },
+  { code: 'ID', dial: '+62', flag: '🇮🇩', name: 'Indonesia' },
+  { code: 'MY', dial: '+60', flag: '🇲🇾', name: 'Malaysia' },
+  { code: 'PH', dial: '+63', flag: '🇵🇭', name: 'Philippines' },
+  { code: 'NG', dial: '+234', flag: '🇳🇬', name: 'Nigeria' },
+]
+
+// Timezone → country code mapping for auto-detection
+const TZ_TO_COUNTRY: Record<string, string> = {
+  'Asia/Kolkata': 'IN', 'Asia/Calcutta': 'IN',
+  'America/New_York': 'US', 'America/Chicago': 'US', 'America/Denver': 'US', 'America/Los_Angeles': 'US',
+  'Europe/London': 'GB',
+  'America/Toronto': 'CA', 'America/Vancouver': 'CA',
+  'Australia/Sydney': 'AU', 'Australia/Melbourne': 'AU',
+  'Europe/Berlin': 'DE',
+  'Europe/Paris': 'FR',
+  'Asia/Tokyo': 'JP',
+  'Asia/Singapore': 'SG',
+  'Asia/Dubai': 'AE',
+  'Asia/Riyadh': 'SA',
+  'Asia/Seoul': 'KR',
+  'America/Sao_Paulo': 'BR',
+  'Europe/Amsterdam': 'NL',
+  'Europe/Stockholm': 'SE',
+  'Asia/Jerusalem': 'IL',
+  'Asia/Jakarta': 'ID',
+  'Asia/Kuala_Lumpur': 'MY',
+  'Asia/Manila': 'PH',
+  'Africa/Lagos': 'NG',
+}
+
+const TEAM_SIZES = ['Just me', '2–10', '11–50', '51–200', '201–1000', '1000+']
+
+const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4'
+
+// ==========================================
+// HELPER: Generate next 6 weekday time slots
+// ==========================================
+function generateTimeSlots(): { label: string; dateKey: string }[] {
+  const slots: { label: string; dateKey: string }[] = []
+  const times = [10, 14] // 10:00 AM and 2:00 PM
+  const now = new Date()
+  let day = new Date(now)
+  day.setDate(day.getDate() + 1) // start from tomorrow
+
+  while (slots.length < 6) {
+    const dow = day.getDay()
+    if (dow !== 0 && dow !== 6) {
+      // weekday
+      for (const hour of times) {
+        if (slots.length >= 6) break
+        const d = new Date(day)
+        d.setHours(hour, 0, 0, 0)
+        const dayName = d.toLocaleDateString('en-US', { weekday: 'short' })
+        const dateStr = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
+        const timeStr = hour === 10 ? '10:00 AM' : '2:00 PM'
+        slots.push({
+          label: `${dayName}, ${dateStr} · ${timeStr}`,
+          dateKey: d.toISOString(),
+        })
+      }
+    }
+    day.setDate(day.getDate() + 1)
+  }
+  return slots
+}
+
+// ==========================================
+// COMPONENT: Country Code Selector
+// ==========================================
+function CountryCodeSelector({
+  selected,
+  onChange,
+}: {
+  selected: typeof COUNTRIES[0]
+  onChange: (c: typeof COUNTRIES[0]) => void
+}) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        suppressHydrationWarning
+        type="button"
+        onClick={() => setOpen((s) => !s)}
+        className="flex items-center gap-1.5 px-3 h-full border-r border-zinc-800 hover:bg-zinc-800/50 transition-colors rounded-l-lg min-w-[90px]"
+      >
+        <span className="text-lg leading-none">{selected.flag}</span>
+        <span className="text-sm text-zinc-300">{selected.dial}</span>
+        <ChevronDown className={`w-3 h-3 text-zinc-500 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div
+          className="absolute top-full left-0 mt-1 w-64 max-h-60 overflow-y-auto bg-zinc-900 border border-zinc-700 rounded-xl shadow-2xl z-50"
+        >
+          {COUNTRIES.map((c) => (
+            <button
+              suppressHydrationWarning
+              key={c.code}
+              type="button"
+              onClick={() => {
+                onChange(c)
+                setOpen(false)
+              }}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 text-left hover:bg-zinc-800 transition-colors text-sm ${
+                selected.code === c.code ? 'bg-zinc-800/60 text-white' : 'text-zinc-300'
+              }`}
+            >
+              <span className="text-lg">{c.flag}</span>
+              <span className="flex-1">{c.name}</span>
+              <span className="text-zinc-500 text-xs">{c.dial}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ==========================================
+// MAIN PAGE COMPONENT
+// ==========================================
+export default function ContactPage() {
+  // Form state
+  const [name, setName] = useState('')
+  const [company, setCompany] = useState('')
+  const [teamSize, setTeamSize] = useState('')
+  const [email, setEmail] = useState('')
+  const [phone, setPhone] = useState('')
+  const [message, setMessage] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  // Country code
+  const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]) // default India
+
+  // Time slots
+  const [timeSlots, setTimeSlots] = useState<{ label: string; dateKey: string }[]>([])
+  const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
+  const [timezone, setTimezone] = useState('UTC')
+
+  // Auto-detect country + timezone on mount
+  useEffect(() => {
+    try {
+      const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
+      setTimezone(tz)
+      const countryCode = TZ_TO_COUNTRY[tz]
+      if (countryCode) {
+        const found = COUNTRIES.find((c) => c.code === countryCode)
+        if (found) setSelectedCountry(found)
+      }
+    } catch {
+      // fallback: India
+    }
+    setTimeSlots(generateTimeSlots())
+  }, [])
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const formData = {
+      name,
+      company,
+      teamSize,
+      email,
+      phone: `${selectedCountry.dial} ${phone}`,
+      message,
+    }
+    console.log('Contact form submission:', formData)
+    setSubmitted(true)
+    // Reset after 4 seconds
+    setTimeout(() => {
+      setSubmitted(false)
+      setName('')
+      setCompany('')
+      setTeamSize('')
+      setEmail('')
+      setPhone('')
+      setMessage('')
+    }, 4000)
+  }
+
+  const handleCalendarConfirm = () => {
+    window.open(GOOGLE_CALENDAR_URL, '_blank', 'noopener,noreferrer')
+  }
+
+  // ---- Shared input styles ----
+  const inputClass =
+    'w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#00BFFF]/50 focus:ring-1 focus:ring-[#00BFFF]/20 transition-all duration-200'
+  const labelClass = 'block text-zinc-400 text-sm font-medium mb-1.5'
+
+  return (
+    <div className={`${montserrat.className} bg-zinc-950 min-h-screen text-white`}>
+      {/* ========== PAGE HEADER ========== */}
+      <div className="pt-28 lg:pt-36 pb-10 px-6 text-center">
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-4xl md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent"
+        >
+          Contact Us
+        </motion.h1>
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-4 text-zinc-400 text-base md:text-lg max-w-2xl mx-auto"
+        >
+          Send us a message or book a call — we&apos;ll get back to you within one business day.
+        </motion.p>
+      </div>
+
+      {/* ========== TWO-COLUMN LAYOUT ========== */}
+      <div className="max-w-[1100px] mx-auto px-6 pb-24 flex flex-col lg:flex-row gap-6 lg:gap-8">
+        {/* ---- LEFT: Contact Form ---- */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.15 }}
+          className="flex-1"
+        >
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full">
+            <h2 className="text-xl md:text-2xl font-semibold mb-6 bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
+              Get in Touch
+            </h2>
+
+            <AnimatePresence mode="wait">
+              {submitted ? (
+                <motion.div
+                  key="success"
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="flex flex-col items-center justify-center py-20 gap-4"
+                >
+                  <div className="size-16 rounded-full bg-[#00BFFF]/15 border border-[#00BFFF]/30 flex items-center justify-center">
+                    <Check className="w-8 h-8 text-[#00BFFF]" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-white">Message Sent!</h3>
+                  <p className="text-zinc-400 text-sm text-center max-w-xs">
+                    Thank you for reaching out. We&apos;ll get back to you within one business day.
+                  </p>
+                </motion.div>
+              ) : (
+                <motion.form
+                  key="form"
+                  initial={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onSubmit={handleSubmit}
+                  className="flex flex-col gap-5"
+                >
+                  {/* Name */}
+                  <div>
+                    <label className={labelClass}>Name</label>
+                    <input
+                      suppressHydrationWarning
+                      type="text"
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Your full name"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Company */}
+                  <div>
+                    <label className={labelClass}>Company Name</label>
+                    <input
+                      suppressHydrationWarning
+                      type="text"
+                      value={company}
+                      onChange={(e) => setCompany(e.target.value)}
+                      placeholder="Your company"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Team Size */}
+                  <div>
+                    <label className={labelClass}>Team Size</label>
+                    <select
+                      suppressHydrationWarning
+                      value={teamSize}
+                      onChange={(e) => setTeamSize(e.target.value)}
+                      className={`${inputClass} appearance-none cursor-pointer`}
+                    >
+                      <option value="" disabled hidden>
+                        Select team size
+                      </option>
+                      {TEAM_SIZES.map((size) => (
+                        <option key={size} value={size} className="bg-zinc-900">
+                          {size}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Email */}
+                  <div>
+                    <label className={labelClass}>Email</label>
+                    <input
+                      suppressHydrationWarning
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="you@company.com"
+                      className={inputClass}
+                    />
+                  </div>
+
+                  {/* Phone with Country Code */}
+                  <div>
+                    <label className={labelClass}>Phone</label>
+                    <div className="flex bg-zinc-950 border border-zinc-800 rounded-lg focus-within:border-[#00BFFF]/50 focus-within:ring-1 focus-within:ring-[#00BFFF]/20 transition-all duration-200">
+                      <CountryCodeSelector
+                        selected={selectedCountry}
+                        onChange={setSelectedCountry}
+                      />
+                      <input
+                        suppressHydrationWarning
+                        type="tel"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        placeholder="Phone number"
+                        className="flex-1 bg-transparent px-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Message */}
+                  <div>
+                    <label className={labelClass}>Message</label>
+                    <textarea
+                      suppressHydrationWarning
+                      required
+                      rows={4}
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Tell us about your needs..."
+                      className={`${inputClass} resize-none`}
+                    />
+                  </div>
+
+                  {/* Submit */}
+                  <motion.button
+                    suppressHydrationWarning
+                    type="submit"
+                    whileHover={{ opacity: 0.9 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full bg-white text-black font-semibold rounded-lg py-3 mt-1 flex items-center justify-center gap-2 transition-opacity"
+                  >
+                    <Send className="w-4 h-4" />
+                    Send Message
+                  </motion.button>
+                </motion.form>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* ---- RIGHT: Book a Call ---- */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="flex-1"
+        >
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full flex flex-col">
+            {/* Heading + Badge */}
+            <div className="flex items-center gap-3 mb-6">
+              <h2 className="text-xl md:text-2xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
+                Book a Call
+              </h2>
+              <span className="bg-zinc-800 text-zinc-300 text-xs font-medium rounded-full px-3 py-1 border border-zinc-700">
+                Google Calendar
+              </span>
+            </div>
+
+            {/* Hero Info Block */}
+            <div className="bg-gradient-to-b from-[#00BFFF]/10 to-transparent border border-[#00BFFF]/20 rounded-xl p-5 mb-6">
+              <p className="text-white font-medium text-base">30-min intro call</p>
+              <p className="text-zinc-400 text-sm mt-1">Free · Video or phone</p>
+            </div>
+
+            {/* Time Slots */}
+            <div className="mb-6">
+              <p className="text-zinc-400 text-sm font-medium mb-3">Select a time slot</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {timeSlots.map((slot) => (
+                  <motion.button
+                    suppressHydrationWarning
+                    key={slot.dateKey}
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setSelectedSlot(slot.dateKey)}
+                    className={`flex items-center gap-2 px-3 py-3 rounded-xl border text-left text-[13px] md:text-sm whitespace-nowrap transition-all duration-200 ${
+                      selectedSlot === slot.dateKey
+                        ? 'border-[#00BFFF] bg-[#00BFFF]/10 text-white'
+                        : 'border-zinc-800 hover:border-zinc-600 text-zinc-300'
+                    }`}
+                  >
+                    <Clock className={`w-4 h-4 shrink-0 ${selectedSlot === slot.dateKey ? 'text-[#00BFFF]' : 'text-zinc-500'}`} />
+                    <span className="whitespace-nowrap">{slot.label}</span>
+                  </motion.button>
+                ))}
+              </div>
+            </div>
+
+            {/* Divider */}
+            <div className="border-t border-zinc-800 my-2" />
+
+            {/* Metadata Rows */}
+            <div className="flex flex-col gap-3 mt-4 mb-6">
+              <div className="flex items-center gap-3 text-sm text-zinc-400">
+                <Clock className="w-4 h-4 text-zinc-500 shrink-0" />
+                <span>30 minutes</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-zinc-400">
+                <Video className="w-4 h-4 text-zinc-500 shrink-0" />
+                <span>Google Meet link sent on confirmation</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-zinc-400">
+                <MapPin className="w-4 h-4 text-zinc-500 shrink-0" />
+                <span suppressHydrationWarning>{timezone}</span>
+              </div>
+            </div>
+
+            {/* Spacer to push CTA to bottom */}
+            <div className="flex-1" />
+
+            {/* CTA */}
+            <motion.button
+              suppressHydrationWarning
+              type="button"
+              whileHover={{ opacity: 0.85 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleCalendarConfirm}
+              className="w-full bg-[#00BFFF]/15 text-[#00BFFF] font-semibold rounded-lg py-3 border border-[#00BFFF]/30 flex items-center justify-center gap-2 transition-opacity mt-2"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
+                <path d="M19.5 3.5H18V2h-2v1.5H8V2H6v1.5H4.5C3.12 3.5 2 4.62 2 6v14c0 1.38 1.12 2.5 2.5 2.5h15c1.38 0 2.5-1.12 2.5-2.5V6c0-1.38-1.12-2.5-2.5-2.5zM20 20c0 .28-.22.5-.5.5h-15c-.28 0-.5-.22-.5-.5V9h16v11zm0-13H4V6c0-.28.22-.5.5-.5H6V7h2V5.5h8V7h2V5.5h1.5c.28 0 .5.22.5.5v1z" fill="currentColor"/>
+              </svg>
+              Confirm in Google Calendar
+            </motion.button>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ========== FOOTER ========== */}
+      <Footer />
+    </div>
+  )
+}

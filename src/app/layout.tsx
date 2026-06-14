@@ -2,6 +2,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
+import Analytics from "@/components/Analytics";
 
 import { Montserrat, Mulish } from 'next/font/google';
 
@@ -63,21 +64,8 @@ export default function RootLayout({
         suppressHydrationWarning
       >
         {children}
+        <Analytics />
       </body>
-      <Script
-        strategy="lazyOnload"
-        src={`https://www.googletagmanager.com/gtag/js?id=G-DN8FPWQKRZ`}
-      />
-      <Script strategy="lazyOnload">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-DN8FPWQKRZ', {
-          page_path: window.location.pathname,
-          });
-        `}
-      </Script>
       <Script
         id="structured-data"
         type="application/ld+json"
