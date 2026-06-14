@@ -31,8 +31,7 @@ const montserrat = Montserrat({
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
-const ENTERPRISE_CTA = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4'
-
+const ENTERPRISE_CTA = '/contact'
 const ENTERPRISE_PLAN = {
   id: 'enterprise',
   title: 'Enterprise',
