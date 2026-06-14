@@ -464,10 +464,6 @@ export default function ContactPage() {
                 <Video className="w-4 h-4 text-zinc-500 shrink-0" />
                 <span>Google Meet link sent on confirmation</span>
               </div>
-              <div className="flex items-center gap-3 text-sm text-zinc-400">
-                <MapPin className="w-4 h-4 text-zinc-500 shrink-0" />
-                <span suppressHydrationWarning>{timezone}</span>
-              </div>
             </div>
 
             {/* Spacer to push CTA to bottom */}
