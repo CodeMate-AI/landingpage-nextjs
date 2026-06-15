@@ -234,6 +234,13 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
+  // Ref for smooth scrolling
+  const bookCallRef = useRef<HTMLDivElement>(null)
+
+  const handleScrollToBookCall = () => {
+    bookCallRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }
+
   // Country code
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]) // default India
 
@@ -397,7 +404,16 @@ export default function ContactPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-4 text-zinc-400 text-base md:text-lg max-w-2xl mx-auto"
         >
-          Send us a message or book a call.
+          Send us a message or{' '}
+          <button
+            suppressHydrationWarning
+            type="button"
+            onClick={handleScrollToBookCall}
+            className="text-[#00BFFF] underline underline-offset-4 cursor-pointer hover:text-cyan-400 transition-colors font-medium focus:outline-none"
+          >
+            book a call
+          </button>
+          .
           <span className="block mt-2 text-zinc-500 text-sm md:text-base font-normal">
             We&apos;ll get back to you within one business day.
           </span>
@@ -571,10 +587,11 @@ export default function ContactPage() {
 
         {/* ---- RIGHT: Book a Call ---- */}
         <motion.div
+          ref={bookCallRef}
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex-1 w-full max-w-2xl mx-auto lg:max-w-none"
+          className="flex-1 w-full max-w-2xl mx-auto lg:max-w-none scroll-mt-24"
         >
           <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full flex flex-col">
             {/* Heading + Badge */}
@@ -589,8 +606,8 @@ export default function ContactPage() {
 
             {/* Hero Info Block */}
             <div className="bg-gradient-to-b from-[#00BFFF]/10 to-transparent border border-[#00BFFF]/20 rounded-xl p-5 mb-6">
-              <p className="text-white font-medium text-base">30-min intro call</p>
-              <p className="text-zinc-400 text-sm mt-1">Free · Video or phone</p>
+              <p className="text-white font-medium text-base">Introductory Session</p>
+              <p className="text-zinc-400 text-sm mt-1">Tailored Technical Consultation · Secure Video Session</p>
             </div>
 
             {/* Time Slots */}
