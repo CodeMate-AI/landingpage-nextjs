@@ -231,6 +231,8 @@ export default function ContactPage() {
   const [phone, setPhone] = useState('')
   const [message, setMessage] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   // Country code
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]) // default India
@@ -256,28 +258,102 @@ export default function ContactPage() {
     setTimeSlots(generateTimeSlots())
   }, [])
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    const formData = {
-      name,
-      company,
-      teamSize,
-      email,
-      phone: `${selectedCountry.dial} ${phone}`,
-      message,
+    setIsSubmitting(true)
+    setErrorMsg(null)
+
+    // Form validations for required fields
+    if (!name.trim()) {
+      setErrorMsg('Full name is required.')
+      setIsSubmitting(false)
+      return
     }
-    console.log('Contact form submission:', formData)
-    setSubmitted(true)
-    // Reset after 4 seconds
-    setTimeout(() => {
-      setSubmitted(false)
-      setName('')
-      setCompany('')
-      setTeamSize('')
-      setEmail('')
-      setPhone('')
-      setMessage('')
-    }, 4000)
+    if (!company.trim()) {
+      setErrorMsg('Company name is required.')
+      setIsSubmitting(false)
+      return
+    }
+    if (!teamSize) {
+      setErrorMsg('Please select a team size.')
+      setIsSubmitting(false)
+      return
+    }
+    if (!email.trim()) {
+      setErrorMsg('Email address is required.')
+      setIsSubmitting(false)
+      return
+    }
+    if (!phone.trim()) {
+      setErrorMsg('Phone number is required.')
+      setIsSubmitting(false)
+      return
+    }
+    if (!message.trim()) {
+      setErrorMsg('Message is required.')
+      setIsSubmitting(false)
+      return
+    }
+
+    // Map team size option text to numerical value required by API
+    const getTeamSizeNumber = (size: string): number => {
+      if (size === 'Just me') return 1
+      if (size === '2–10') return 10
+      if (size === '11–50') return 50
+      if (size === '51–200') return 200
+      if (size === '201–1000') return 1000
+      if (size === '1000+') return 1000
+      return 1
+    }
+
+    const payload = {
+      fullname: name.trim(),
+      company_name: company.trim(),
+      team_size: getTeamSizeNumber(teamSize),
+      phone_number: `${selectedCountry.dial} ${phone.trim()}`,
+      email: email.trim(),
+      message: message.trim(),
+    }
+
+    const apiUrl = process.env.NEXT_PUBLIC_CONTACT_API_URL
+    console.log("apiUrl", apiUrl)
+    if (!apiUrl) {
+      console.error('Error: NEXT_PUBLIC_CONTACT_API_URL is not configured.')
+      setErrorMsg('Contact service is temporarily unavailable. Please try again later.')
+      setIsSubmitting(false)
+      return
+    }
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setSubmitted(true)
+        // Reset form fields
+        setName('')
+        setCompany('')
+        setTeamSize('')
+        setEmail('')
+        setPhone('')
+        setMessage('')
+      } else {
+        const errorText = data.message || data.error || 'Something went wrong. Please try again.'
+        setErrorMsg(errorText)
+      }
+    } catch (err) {
+      console.error('Submission error:', err)
+      setErrorMsg('Network error. Please check your connection and try again.')
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const handleCalendarConfirm = () => {
@@ -449,6 +525,17 @@ export default function ContactPage() {
                     />
                   </div>
 
+                  {/* Error Alert */}
+                  {errorMsg && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-red-400 text-sm font-medium bg-red-950/30 border border-red-900/50 rounded-lg p-3 text-center"
+                    >
+                      {errorMsg}
+                    </motion.div>
+                  )}
+
                   {/* Spacer to push CTA to bottom */}
                   <div className="flex-1" />
 
@@ -456,12 +543,24 @@ export default function ContactPage() {
                   <motion.button
                     suppressHydrationWarning
                     type="submit"
-                    whileHover={{ opacity: 0.9 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="w-full bg-white text-black font-semibold rounded-lg py-3 mt-1 flex items-center justify-center gap-2 transition-opacity"
+                    disabled={isSubmitting}
+                    whileHover={{ opacity: isSubmitting ? 0.5 : 0.9 }}
+                    whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
+                    className={`w-full bg-white text-black font-semibold rounded-lg py-3 mt-1 flex items-center justify-center gap-2 transition-opacity ${
+                      isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+                    }`}
                   >
-                    <Send className="w-4 h-4" />
-                    Send Message
+                    {isSubmitting ? (
+                      <>
+                        <span className="animate-spin rounded-full h-4 w-4 border-2 border-black border-t-transparent" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4" />
+                        Send Message
+                      </>
+                    )}
                   </motion.button>
                 </motion.form>
               )}
