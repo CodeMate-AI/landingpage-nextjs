@@ -63,37 +63,6 @@ const TEAM_SIZES = ['Just me', '2–10', '11–50', '51–200', '201–1000', '1
 
 const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4'
 
-// ==========================================
-// HELPER: Generate next 8 weekday time slots
-// ==========================================
-function generateTimeSlots(): { label: string; dateKey: string }[] {
-  const slots: { label: string; dateKey: string }[] = []
-  const times = [10, 14] // 10:00 AM and 2:00 PM
-  const now = new Date()
-  let day = new Date(now)
-  day.setDate(day.getDate() + 1) // start from tomorrow
-
-  while (slots.length < 8) {
-    const dow = day.getDay()
-    if (dow !== 0 && dow !== 6) {
-      // weekday
-      for (const hour of times) {
-        if (slots.length >= 8) break
-        const d = new Date(day)
-        d.setHours(hour, 0, 0, 0)
-        const dayName = d.toLocaleDateString('en-US', { weekday: 'short' })
-        const dateStr = d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })
-        const timeStr = hour === 10 ? '10:00 AM' : '2:00 PM'
-        slots.push({
-          label: `${dayName}, ${dateStr} · ${timeStr}`,
-          dateKey: d.toISOString(),
-        })
-      }
-    }
-    day.setDate(day.getDate() + 1)
-  }
-  return slots
-}
 
 // ==========================================
 // COMPONENT: Country Code Selector
@@ -244,16 +213,10 @@ export default function ContactPage() {
   // Country code
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]) // default India
 
-  // Time slots
-  const [timeSlots, setTimeSlots] = useState<{ label: string; dateKey: string }[]>([])
-  const [selectedSlot, setSelectedSlot] = useState<string | null>(null)
-  const [timezone, setTimezone] = useState('UTC')
-
-  // Auto-detect country + timezone on mount
+  // Auto-detect country on mount
   useEffect(() => {
     try {
       const tz = Intl.DateTimeFormat().resolvedOptions().timeZone
-      setTimezone(tz)
       const countryCode = TZ_TO_COUNTRY[tz]
       if (countryCode) {
         const found = COUNTRIES.find((c) => c.code === countryCode)
@@ -262,7 +225,6 @@ export default function ContactPage() {
     } catch {
       // fallback: India
     }
-    setTimeSlots(generateTimeSlots())
   }, [])
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -593,88 +555,40 @@ export default function ContactPage() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="flex-1 w-full max-w-2xl mx-auto lg:max-w-none scroll-mt-24"
         >
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full flex flex-col">
-            {/* Heading + Badge */}
-            <div className="flex items-center gap-3 mb-6">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-fit flex flex-col">
+            {/* Heading */}
+            <div className="mb-4">
               <h2 className="text-xl md:text-2xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
                 Book a Call
               </h2>
-              <span className="bg-zinc-800 text-zinc-300 text-xs font-medium rounded-full px-3 py-1 border border-zinc-700">
-                Google Calendar
-              </span>
             </div>
 
-            {/* Time Slots */}
-            <div className="mb-6">
-              <p className="text-zinc-400 text-sm font-medium mb-3">Select a time slot</p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {timeSlots.map((slot) => (
-                  <motion.button
-                    suppressHydrationWarning
-                    key={slot.dateKey}
-                    type="button"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setSelectedSlot(slot.dateKey)}
-                    className={`flex items-center gap-2 px-3 py-3 rounded-xl border text-left text-[13px] md:text-sm whitespace-nowrap transition-all duration-200 ${
-                      selectedSlot === slot.dateKey
-                        ? 'border-[#00BFFF] bg-[#00BFFF]/10 text-white'
-                        : 'border-zinc-800 hover:border-zinc-600 text-zinc-300'
-                    }`}
-                  >
-                    <Clock className={`w-4 h-4 shrink-0 ${selectedSlot === slot.dateKey ? 'text-[#00BFFF]' : 'text-zinc-500'}`} />
-                    <span className="whitespace-nowrap">{slot.label}</span>
-                  </motion.button>
-                ))}
-              </div>
-            </div>
-
-            {/* Divider */}
-            <div className="border-t border-zinc-800 my-2" />
+            {/* Description */}
+            <p className="text-zinc-400 text-sm md:text-base leading-relaxed mb-6">
+              Talk with our experts to discuss your specific architecture, overcome technical hurdles, and map out a solution.
+            </p>
 
             {/* Metadata Rows */}
-            <div className="flex flex-col gap-3 mt-4 mb-6">
-              <div className="flex items-center gap-3 text-sm text-zinc-400">
-                <Clock className="w-4 h-4 text-zinc-500 shrink-0" />
-                <span>30 minutes</span>
-              </div>
+            <div className="flex flex-col gap-3 mb-6">
               <div className="flex items-center gap-3 text-sm text-zinc-400">
                 <Video className="w-4 h-4 text-zinc-500 shrink-0" />
-                <span>Google Meet link sent on confirmation</span>
+                <span>Meeting link sent on confirmation</span>
               </div>
             </div>
-
-            {/* Spacer to push CTA to bottom */}
-            <div className="flex-1" />
-
-            {selectedSlot && (
-              <motion.p
-                initial={{ opacity: 0, y: 5 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="mb-4 text-center text-xs text-[#00BFFF] font-medium"
-              >
-                💡 Reminder: Please select the slot matching{" "}
-                <span className="underline font-semibold">
-                  {timeSlots.find((s) => s.dateKey === selectedSlot)?.label.split(" · ")[0]} at{" "}
-                  {timeSlots.find((s) => s.dateKey === selectedSlot)?.label.split(" · ")[1]}
-                </span>{" "}
-                on the Google Calendar booking page.
-              </motion.p>
-            )}
 
             {/* CTA */}
             <motion.button
               suppressHydrationWarning
               type="button"
-              whileHover={{ opacity: 0.85 }}
+              whileHover={{ opacity: 0.9 }}
               whileTap={{ scale: 0.98 }}
               onClick={handleCalendarConfirm}
-              className="w-full bg-[#00BFFF]/15 text-[#00BFFF] font-semibold rounded-lg py-3 border border-[#00BFFF]/30 flex items-center justify-center gap-2 transition-opacity"
+              className="w-full bg-white text-black font-semibold rounded-lg py-3 flex items-center justify-center gap-2 transition-opacity"
             >
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
                 <path d="M19.5 3.5H18V2h-2v1.5H8V2H6v1.5H4.5C3.12 3.5 2 4.62 2 6v14c0 1.38 1.12 2.5 2.5 2.5h15c1.38 0 2.5-1.12 2.5-2.5V6c0-1.38-1.12-2.5-2.5-2.5zM20 20c0 .28-.22.5-.5.5h-15c-.28 0-.5-.22-.5-.5V9h16v11zm0-13H4V6c0-.28.22-.5.5-.5H6V7h2V5.5h8V7h2V5.5h1.5c.28 0 .5.22.5.5v1z" fill="currentColor"/>
               </svg>
-              Confirm in Google Calendar
+              Confirm Meeting
             </motion.button>
           </div>
         </motion.div>
