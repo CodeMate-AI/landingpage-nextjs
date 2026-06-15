@@ -572,7 +572,7 @@ export default function ContactPage() {
             <div className="flex flex-col gap-3 mb-6">
               <div className="flex items-center gap-3 text-sm text-zinc-400">
                 <Video className="w-4 h-4 text-zinc-500 shrink-0" />
-                <span>Meeting link sent on confirmation</span>
+                <span>Choose a time that works for you</span>
               </div>
             </div>
 
@@ -588,7 +588,7 @@ export default function ContactPage() {
               <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
                 <path d="M19.5 3.5H18V2h-2v1.5H8V2H6v1.5H4.5C3.12 3.5 2 4.62 2 6v14c0 1.38 1.12 2.5 2.5 2.5h15c1.38 0 2.5-1.12 2.5-2.5V6c0-1.38-1.12-2.5-2.5-2.5zM20 20c0 .28-.22.5-.5.5h-15c-.28 0-.5-.22-.5-.5V9h16v11zm0-13H4V6c0-.28.22-.5.5-.5H6V7h2V5.5h8V7h2V5.5h1.5c.28 0 .5.22.5.5v1z" fill="currentColor"/>
               </svg>
-              Confirm Meeting
+              Book a call
             </motion.button>
           </div>
         </motion.div>
