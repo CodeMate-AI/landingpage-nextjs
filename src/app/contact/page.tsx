@@ -64,7 +64,7 @@ const TEAM_SIZES = ['Just me', '2–10', '11–50', '51–200', '201–1000', '1
 const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4'
 
 // ==========================================
-// HELPER: Generate next 6 weekday time slots
+// HELPER: Generate next 8 weekday time slots
 // ==========================================
 function generateTimeSlots(): { label: string; dateKey: string }[] {
   const slots: { label: string; dateKey: string }[] = []
@@ -73,12 +73,12 @@ function generateTimeSlots(): { label: string; dateKey: string }[] {
   let day = new Date(now)
   day.setDate(day.getDate() + 1) // start from tomorrow
 
-  while (slots.length < 6) {
+  while (slots.length < 8) {
     const dow = day.getDay()
     if (dow !== 0 && dow !== 6) {
       // weekday
       for (const hour of times) {
-        if (slots.length >= 6) break
+        if (slots.length >= 8) break
         const d = new Date(day)
         d.setHours(hour, 0, 0, 0)
         const dayName = d.toLocaleDateString('en-US', { weekday: 'short' })
@@ -602,12 +602,6 @@ export default function ContactPage() {
               <span className="bg-zinc-800 text-zinc-300 text-xs font-medium rounded-full px-3 py-1 border border-zinc-700">
                 Google Calendar
               </span>
-            </div>
-
-            {/* Hero Info Block */}
-            <div className="bg-gradient-to-b from-[#00BFFF]/10 to-transparent border border-[#00BFFF]/20 rounded-xl p-5 mb-6">
-              <p className="text-white font-medium text-base">Introductory Session</p>
-              <p className="text-zinc-400 text-sm mt-1">Tailored Technical Consultation · Secure Video Session</p>
             </div>
 
             {/* Time Slots */}
