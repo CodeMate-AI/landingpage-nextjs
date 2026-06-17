@@ -482,7 +482,7 @@ export default function ContactPage() {
                         inputMode="numeric"
                         pattern="[0-9]*"
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, ''))}
+                        onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0,10))}
                         placeholder="Phone number"
                         className="flex-1 bg-transparent px-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none"
                       />
