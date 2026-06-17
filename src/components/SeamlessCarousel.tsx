@@ -1,10 +1,9 @@
 'use client'
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Montserrat } from 'next/font/google'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import AutoCodeEditor from '@/components/motion-components/aEditor'
-import SmartGif from '@/components/ui/SmartGif'
 
 const montserrat = Montserrat({
     subsets: ['latin'],
@@ -15,9 +14,8 @@ const montserrat = Montserrat({
 interface CarouselSlide {
     title: string
     media?: string
-    fallbackSrc?: string
     description: string
-    type: 'gif' | 'mp4' | 'component'
+    type: 'gif' | 'component'
     overlay?: {
         text: string
         buttonText?: string
@@ -42,7 +40,6 @@ const slides: CarouselSlide[] = [
     {
         title: 'Codemaps',
         media: '/CodeMaps_Static.png',
-        fallbackSrc: '/CodeMaps_Static.png',
         type: 'gif',
         description:
             'Navigate your entire codebase visually with intelligent code maps that reveal structure, dependencies, and relationships at a glance.',
@@ -50,7 +47,6 @@ const slides: CarouselSlide[] = [
     {
         title: 'Deepwiki',
         media: '/DeepWiki_static.png',
-        fallbackSrc: '/DeepWiki_static.png',
         type: 'gif',
         description:
             'Query deep contextual knowledge from your codebase wiki, instantly getting answers about architecture, patterns, and implementation details.',
@@ -58,24 +54,21 @@ const slides: CarouselSlide[] = [
     {
         title: 'MCP',
         media: '/MCP-static.png',
-        fallbackSrc: '/MCP-static.png',
         type: 'gif',
         description:
             'Connect and manage external tools and contexts via Model Context Protocol, supercharging your Build agent with seamless integrations.',
     },
     {
         title: 'Debug',
-        media: 'https://drive.codemate.ai/Debug.mp4',
-        type: 'mp4',
-        overlay: { text: 'Debug this code', buttonText: 'Debug this code' },
+        media: '/debug-static.png',
+        type: 'gif',
         description:
             'An AI-Powered Debugger that quickly identifies errors, explains their causes, and suggests precise fixes—making it easier to resolve issues and keep development moving smoothly.',
     },
     {
         title: 'Review',
-        media: 'https://drive.codemate.ai/CodeReview.mp4',
-        type: 'mp4',
-        overlay: { text: 'Review this code', buttonText: 'Review this code' },
+        media: '/review-static.png',
+        type: 'gif',
         description:
             'An AI-Powered Code Reviewer that scans your code in real time, detects bugs and vulnerabilities, and suggests improvements for readability, performance, and best practices—helping you write cleaner, more reliable code faster.',
     },
@@ -93,15 +86,11 @@ export default function SeamlessCarousel() {
     const [isPlaying, setIsPlaying] = useState(false)
     const [isAutoFix, setIsAutoFix] = useState(false)
     const [direction, setDirection] = useState(1)
-    const videoRef = useRef<HTMLVideoElement>(null)
 
     // Reset states on slide change
     useEffect(() => {
         setIsPlaying(false)
         setIsAutoFix(false)
-        if (videoRef.current) {
-            videoRef.current.currentTime = 0
-        }
     }, [current])
 
     // Keyboard shortcuts
@@ -113,12 +102,6 @@ export default function SeamlessCarousel() {
                 e.preventDefault()
                 setIsAutoFix(true)
                 setIsPlaying(true)
-            } else if (slide.type === 'mp4') {
-                if (slide.title === 'Debug' && (e.key === 'd' || e.key === 'D')) {
-                    handleMediaClick()
-                } else if (slide.title === 'Review' && (e.key === 'r' || e.key === 'R')) {
-                    handleMediaClick()
-                }
             }
         }
         window.addEventListener('keydown', handleKeyDown)
@@ -141,15 +124,7 @@ export default function SeamlessCarousel() {
 
     const handleMediaClick = () => {
         const slide = slides[current]
-        if (slide.type === 'mp4' && videoRef.current) {
-            const playPromise = videoRef.current.play()
-            if (playPromise !== undefined) {
-                playPromise.catch(() => {
-                    // Playback was interrupted — safe to ignore
-                })
-            }
-            setIsPlaying(true)
-        } else if (slide.type === 'component' && slide.title === 'Auto-Complete') {
+        if (slide.type === 'component' && slide.title === 'Auto-Complete') {
             setIsAutoFix(true)
             setIsPlaying(true)
         }
@@ -198,58 +173,12 @@ export default function SeamlessCarousel() {
                         >
                             {currentSlide.type === 'gif' ? (
                                 <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video flex items-center justify-center">
-                                    {currentSlide.fallbackSrc ? (
-                                        <SmartGif
-                                            src={currentSlide.media!}
-                                            fallbackSrc={currentSlide.fallbackSrc}
-                                            alt={currentSlide.title}
-                                            className="w-full h-full object-cover"
-                                            isActive={true}
-                                        />
-                                    ) : (
-                                        <img
-                                            src={currentSlide.media}
-                                            alt={currentSlide.title}
-                                            className="w-full h-full object-cover"
-                                            loading="eager"
-                                        />
-                                    )}
-                                </div>
-                            ) : currentSlide.type === 'mp4' ? (
-                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video relative">
-                                    <video
-                                        ref={videoRef}
-                                        autoPlay={false}
-                                        loop
-                                        muted
-                                        playsInline
-                                        className="w-full h-full object-cover"
+                                    <img
                                         src={currentSlide.media}
+                                        alt={currentSlide.title}
+                                        className="w-full h-full object-cover"
+                                        loading="eager"
                                     />
-                                    {/* MP4 Overlay */}
-                                    {!isPlaying && currentSlide.overlay && (
-                                        <motion.div
-                                            initial={{ opacity: 1 }}
-                                            animate={{ opacity: isPlaying ? 0 : 1 }}
-                                            transition={{ duration: 0.3 }}
-                                            className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer"
-                                            onClick={handleMediaClick}
-                                        >
-                                            {currentSlide.overlay.buttonText ? (
-                                                <motion.button
-                                                    whileHover={{ scale: 1.05 }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                    className="px-8 py-3 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] text-white font-semibold rounded-lg shadow-lg text-lg"
-                                                >
-                                                    {currentSlide.overlay.buttonText}
-                                                </motion.button>
-                                            ) : (
-                                                <p className="text-white text-xl font-semibold bg-black/60 px-6 py-3 rounded-lg">
-                                                    {currentSlide.overlay.text}
-                                                </p>
-                                            )}
-                                        </motion.div>
-                                    )}
                                 </div>
                             ) : (
                                 /* Component type — Auto-Complete interactive editor */
@@ -307,22 +236,20 @@ export default function SeamlessCarousel() {
                                 {currentSlide.description}
                             </p>
 
-                            {/* Show keyboard hint for interactive slides */}
-                            {currentSlide.type !== 'gif' && !isPlaying && (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5, duration: 0.4 }}
-                                    className="mt-6 flex items-center gap-2 text-sm text-[#00BFFF]/70"
-                                >
-                                    <kbd className="px-2 py-1 bg-white/10 rounded text-xs font-mono border border-white/20">
-                                        {currentSlide.title === 'Auto-Complete' ? 'TAB' :
-                                            currentSlide.title === 'Debug' ? 'D' :
-                                                currentSlide.title === 'Review' ? 'R' : ''}
-                                    </kbd>
-                                    <span>or click to trigger</span>
-                                </motion.div>
-                            )}
+                             {/* Show keyboard hint for interactive slides */}
+                             {currentSlide.type !== 'gif' && !isPlaying && (
+                                 <motion.div
+                                     initial={{ opacity: 0, y: 10 }}
+                                     animate={{ opacity: 1, y: 0 }}
+                                     transition={{ delay: 0.5, duration: 0.4 }}
+                                     className="mt-6 flex items-center gap-2 text-sm text-[#00BFFF]/70"
+                                 >
+                                     <kbd className="px-2 py-1 bg-white/10 rounded text-xs font-mono border border-white/20">
+                                         TAB
+                                     </kbd>
+                                     <span>or click to trigger</span>
+                                 </motion.div>
+                             )}
                         </motion.div>
                     </AnimatePresence>
                 </div>
