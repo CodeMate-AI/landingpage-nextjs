@@ -24,6 +24,29 @@ function Achivements() {
   const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
   const cards = [
     {
+      image: "/Computex.jpg",
+      alt: "CodeMate AI at Computex 2026",
+      title: "Computex 2026 - CodeMate AI Goes Live on Snapdragon X at Qualcomm Booth",
+      description: "We showcased our offline on-device coding agent on Snapdragon X series chipsets at Computex 2026, Taipei : bringing AI-powered coding fully to the edge.",
+      link: "https://www.linkedin.com/posts/codemateai_computex2026-codemate-qualcomm-activity-7471780972443652097-GseN?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD68Ph8Bq1JfQl_QR-MaxiB4RI0Fy-Oiv8g",
+      imagePosition: "bottom"
+    },
+    {
+      image: "/ViennaUP.jpg",
+      alt: "ViennaUP",
+      title: "CodeMate AI at the Embassy of India, Vienna",
+      description: "We had the privilege of meeting H.E. Mr. Shambhu Kumaran and innovation leaders driving India–Austria entrepreneurial ties : proud to represent India's growing AI and DeepTech ecosystem on the global stage.",
+      link: "https://www.linkedin.com/posts/viennaup-codemateai-viennaup-ugcPost-7469691112304099328-dSWN/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD68Ph8Bq1JfQl_QR-MaxiB4RI0Fy-Oiv8g"
+    },
+    {
+      image: "/GLA_MOU.jpg",
+      alt: "GLA MOU",
+      title: "CodeMate AI Signs MoU with GLA University",
+      description: "We're partnering with GLA University to empower the next generation of AI-enabled developers : creating industry-relevant learning pathways for students and professionals shaping the future of technology.",
+      link: "https://www.linkedin.com/posts/codemateai_university-aicoding-skills-activity-7468889423468720128-63E_?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD68Ph8Bq1JfQl_QR-MaxiB4RI0Fy-Oiv8g",
+      imagePosition: "top"
+    },
+    {
       image: "/AI_Summit.png",
       alt: "India AI Summit 2026",
       title: "India AI Summit 2026 - Hosted Global AI Leaders at CodeMate Booth",
@@ -407,7 +430,7 @@ export default Achivements
 function Card({ image, alt, title, description, link, imagePosition }: { image: String, alt: String, title: String, description: String, link: String, imagePosition?: string }) {
   return (
     <motion.div className='relative h-[33rem] md:h-[48rem] lg:h-[33rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
-      <img src={image as string} alt={alt as string} className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : ''}`} />
+      <img src={image as string} alt={alt as string} className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : imagePosition === 'bottom' ? 'object-bottom' : ''}`} />
 
       <div className='px-5 md:px-10 flex flex-col gap-2 md:gap-4 mt-4 md:mt-8'>
         <h1 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold '>{title}</h1>
