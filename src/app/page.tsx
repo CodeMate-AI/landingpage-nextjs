@@ -490,7 +490,7 @@ function Page() {
                             </div>
                           </motion.div>
                         </a>
-                        <a href='https://build.codemateai.dev/build' target='_blank' className="w-full">
+                        <a href='http://build.codemate.ai/' target='_blank' className="w-full">
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
@@ -767,7 +767,7 @@ function Page() {
 
 
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
-                            <a href="https://build.codemateai.dev/build" target="_blank">
+                            <a href="http://build.codemate.ai/" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 lg:size-5 scale-[1.5] object-contain ml-0" />
@@ -1250,7 +1250,7 @@ function Page() {
             </div>
 
             {[
-              { href: "https://build.codemateai.dev/build", img: "/Build Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", title: "CodeMate Build", desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support." },
+              { href: "http://build.codemate.ai/", img: "/Build Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", title: "CodeMate Build", desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support." },
               { href: "https://cli.codemate.ai/", img: "term.svg", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[-4.8rem] md:bottom-[-6.5rem] lg:bottom-[-6rem]", title: "AI Terminal", desc: "Run code and scripts instantly through an AI-powered command-line interface." },
               { href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent", img: "/CORA Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", px: true, title: "CodeMate CORA", desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE." },
               { href: "https://edu.codemate.ai/", img: "/Codemate Education Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[1.5rem] md:bottom-[2.5rem] lg:bottom-[2.5rem]", title: "CodeMate Education", desc: "AI-powered classroom management built for educators and students to master modern development." },
