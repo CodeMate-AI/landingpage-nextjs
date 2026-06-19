@@ -1,46 +1,28 @@
 'use client'
-import React, { useEffect, useState, useRef, useMemo } from 'react'
-import { IconHome, IconMessage, IconUser } from "@tabler/icons-react";
-import { ChevronUp, Menu, Weight, X, ChevronRight } from 'lucide-react';
-import { FloatingNav } from '@/components/ui/floating-navbar';
-import { IconArrowLeft, IconArrowRight, IconArrowBadgeDown } from '@tabler/icons-react';
-import StaggeredMenu from '@/components/ui/Menu';
+import React, { useEffect, useState, useRef } from 'react'
+import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
-import { TextAnimate } from '@/components/ui/textAnimate'
-import MagicBento from '@/components/ui/magicBento';
 import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
-import { LoaderFive, LoaderOne } from '@/components/ui/loader';
-import { TypingAnimation, AnimatedSpan } from '@/components/ui/terminal';
 import SeamlessCarousel from '@/components/SeamlessCarousel';
-
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
-import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/footer';
-
 import VideoEmbed from '@/components/video';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
 import SmartGif from '@/components/ui/SmartGif';
 import Achivements from '@/components/achivements';
 import MediaPresence from '@/components/media-presence';
-import { cn } from './utils/cn';
 import EventOffer from './pricing/components/EventOffer';
+import { cn } from './utils/cn';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], // Add what you need
-  variable: '--font-montserrat', // Optional, for CSS variable usage
-});
-
-const montserrat2 = Montserrat({
-  subsets: ['latin'],
-  weight: ['200'],
-  variable: '--font-montserrat', // Optional, for CSS variable usage
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-montserrat',
 });
 
 
@@ -50,125 +32,32 @@ const montserrat2 = Montserrat({
 // Handles core state, scroll tracking (Framer Motion), and renders all sub-sections.
 // ==========================================
 function Page() {
-  // ==========================================
-  // 1A. MOCK DATA & CONTENT
-  // Data arrays used to populate interactive code editor simulations
-  // ==========================================
-  const brokenComponent = [
-    { code: "import React from 'react'", isError: false },
-    { code: "", isError: false },
-    { code: "type Props = {", isError: false },
-    { code: "  name: string", isError: false },
-    { code: "}", isError: false },
-    { code: "", isError: false },
-    { code: "export const ErrorComp: React.FC<Props> = ({ name }) => {", isError: false },
-    { code: "  const [count, setCount]: number = useState(0)", isError: true }, // ❌ incorrect type annotation + useState not imported
-    { code: "", isError: false },
-    { code: "  useEffect(() => {", isError: true }, // ❌ useEffect not imported
-    { code: "    console.logg('Name is:', name)", isError: true }, // ❌ typo `logg`
-    { code: "  }, [nam])", isError: true }, // ❌ `nam` is not defined
-    { code: "", isError: false },
-    // ==========================================
-    // 2. MAIN PAGE RENDER (JSX)
-    // Renders the entire landing page sequentially:
-    // Nav -> Hero -> Products -> Testimonials -> Footer
-    // ==========================================
-    { code: "  return (", isError: false },
-    { code: "    <div>", isError: false },
-    { code: "      <h1>Hello, {namee}</h1>", isError: true }, // ❌ `namee` is a typo
-    { code: "      <button onClick={() => setCount(cn => cn + 1)}>Click</buttn>", isError: true }, // ❌ `buttn` typo
-    { code: "      <p>Count: {countt}</p>", isError: true }, // ❌ `countt` is a typo
-    { code: "    </div>", isError: false },
-    { code: "  )", isError: true }, // ❌ return not wrapped in fragment or single parent (could error in strict JSX)
-    { code: "}", isError: false },
-  ]
-
-  const fixedComponent = [
-    { code: "import React, { useState, useEffect } from 'react'", isError: false },
-    { code: "", isError: false },
-    { code: "type Props = {", isError: false },
-    { code: "  name: string", isError: false },
-    { code: "}", isError: false },
-    { code: "", isError: false },
-    { code: "export const ErrorComp: React.FC<Props> = ({ name }) => {", isError: false },
-    { code: "  const [count, setCount] = useState(0)", isError: true },
-    { code: "", isError: false },
-    { code: "  useEffect(() => {", isError: true },
-    { code: "    console.log('Name is:', name)", isError: true },
-    { code: "  }, [name])", isError: true },
-    { code: "", isError: false },
-    { code: "  return (", isError: false },
-    { code: "    <div>", isError: false },
-    { code: "      <h1>Hello, {name}</h1>", isError: true },
-    { code: "      <button onClick={() => setCount(cn => cn + 1)}>Click</button>", isError: true },
-    { code: "      <p>Count: {count}</p>", isError: true },
-    { code: "    </div>", isError: false },
-    { code: "  )", isError: true },
-    { code: "}", isError: false },
-  ];
-
-
-  // ==========================================
-  // 1B. NAVIGATION CONFIGURATION
-  // ==========================================
-  const navItems = [
-    {
-      name: "Home",
-      link: "/",
-      icon: <IconHome className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
-      name: "About",
-      link: "/about",
-      icon: <IconUser className="h-4 w-4 text-neutral-500 dark:text-white" />,
-    },
-    {
-      name: "Contact",
-      link: "/contact",
-      icon: (
-        <IconMessage className="h-4 w-4 text-neutral-500 dark:text-white" />
-      ),
-    },
-  ];
   const router = useRouter();
+
   // ==========================================
-  // 1C. REFS & COMPONENT STATE
-  // React state hooks for toggling UI elements (menus, overlays, modals)
-  // and Refs for tracking scroll positions of specific sections.
+  // REFS & COMPONENT STATE
   // ==========================================
   const heroRef = useRef<HTMLDivElement>(null);
   const heroRef2 = useRef<HTMLDivElement>(null);
   const footerRef = useRef<HTMLDivElement>(null);
-  const MFRef = useRef<HTMLDivElement>(null);
-  // const [d,setD] = useState(false); 
-  // const [r,setR] = useState(false);
-  // const [a,setA] = useState(false);
   const [lastScroll, setLastScroll] = useState(0);
-  const [mat1, setMat1] = useState(0);
-  const [mat2, setMat2] = useState(0);
-  const [mat3, setMat3] = useState(0);
-  const [IsMascot, setIsMascot] = useState(false);
   const [isNBack, setIsNBack] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
   const [windowWidth, setWindowWidth] = useState(820);
 
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 1025);
-      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1025);
+    const handleResize = () => {
+      const w = window.innerWidth;
+      setWindowWidth(w);
+      setIsMobile(w < 1025);
+      setIsTablet(w >= 768 && w < 1025);
     };
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    setWindowWidth(window.innerWidth);
-    const handleResize = () => setWindowWidth(window.innerWidth);
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
   const [isMenu, setMenu] = useState(false);
   const [isArrowV, setIsArrowV] = useState(false);
   const [isProducts, setIsProducts] = useState(false);
@@ -180,81 +69,51 @@ function Page() {
   const [isCoraBlocked, setIsCoraBlocked] = useState(true);
   const [showEventPopup, setShowEventPopup] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
-  const feature1Ref = useRef<HTMLDivElement>(null);
   const testiRef = useRef<HTMLDivElement>(null);
   const productShowRef = useRef<HTMLDivElement>(null);
   const codeMateImageRef = useRef<HTMLImageElement>(null);
   const unlockCopyRef = useRef<HTMLParagraphElement>(null);
-  const [isLoad, setIsLoad] = useState(false);
-  const [isLoad2, setIsLoad2] = useState(false);
-  const exploreRef = useRef<HTMLDivElement>(null);
   const unlockVideoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
-  const title = ["Don't", "be", "techy", "to"];
-  const title2 = ["Develop", "Softwares"];
-  const [isTitle, setIstitle] = useState(false);
   // ==========================================
-  // 1D. SCROLL ANIMATION HOOKS (FRAMER MOTION)
-  // Extensive use of useScroll() and useTransform() to create
-  // parallax effects, fade-ins, and scroll-linked interactions across the page.
+  // SCROLL ANIMATION HOOKS (FRAMER MOTION)
   // ==========================================
-  const { scrollYProgress: shadingProgress } = useScroll({
-    target: heroRef,
-    offset: ['end end', 'end start']
-  })
-  const shadingHeight = useTransform(shadingProgress, [0, 1], [0, 1000]);
-
-
   const { scrollYProgress: PShowYProg } = useScroll({
     target: productShowRef,
     offset: ['start start', 'end start']
   });
-
-
-
 
   const { scrollYProgress: codeMateImageProg } = useScroll({
     target: codeMateImageRef,
     offset: ['start end', 'end start']
   });
 
-  const { scrollYProgress: unlockYProg } = useScroll({
-    target: unlockCopyRef,
-    offset: ['start end', 'end start']
-  });
-
-  const { scrollYProgress: testiYProg } = useScroll({
-    target: testiRef,
-    offset: ['start start', 'end start']
-  });
-
-
   const { scrollYProgress: MYProg } = useScroll({
     target: mainRef,
-    offset: ['start start', 'end start']
-  });
-  const { scrollYProgress: MFYProg } = useScroll({
-    target: MFRef,
     offset: ['start start', 'end start']
   });
 
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
 
+  const { scrollYProgress: testiYProg } = useScroll({
+    target: testiRef,
+    offset: ['start start', 'end start']
+  });
+
+  // Testimonial card entrance transforms
+  const tdiv1X = useTransform(testiYProg, [0, 0.12], [700, 0]);
+  const tdiv2X = useTransform(testiYProg, [0.12, 0.26], [1300, 0]);
+  const tdiv3X = useTransform(testiYProg, [0.26, 0.40], [1900, 0]);
+  const tdiv4X = useTransform(testiYProg, [0.40, 0.54], [2500, 0]);
+  const tdiv5X = useTransform(testiYProg, [0.54, 0.68], [3100, 0]);
 
   // ========== "What you'll Unlock" section scroll math ==========
-  // Container: h-[430vh]. Offset: ['start start','end start'] → scroll distance = 430vh.
-  // Next section enters viewport bottom at PShowYProg ≈ 0.767 (= 1 − 100vh/430vh).
-  // 6 unlock steps span 0→0.76, ending just before the next section peeks in.
-  // Blank tail ≈ (0.767−0.76)×430 ≈ 3vh — virtually invisible.
   const UNLOCK_END = 0.76;
-  const UNLOCK_STEP = UNLOCK_END / 6; // ≈ 0.1267
-
-  const unlockBarY = useTransform(PShowYProg, [0, UNLOCK_END], ['0%', '100%']);
-  const headerY = useTransform(PShowYProg, [UNLOCK_END, UNLOCK_END + 0.12], [0, -200]);
+  const UNLOCK_STEP = UNLOCK_END / 6;
 
   const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
 
-  // ========== iPad/Tablet Centering Transform (Top-Level Hooks) ==========
+  // ========== iPad/Tablet Centering Transform ==========
   const xMobile = useTransform(
     PShowYProg,
     [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
@@ -269,10 +128,9 @@ function Page() {
 
   const xTablet = useTransform(PShowYProg, (latest) => {
     const W = windowWidth;
-    const w = W * 0.82; // Dynamic 82vw card width
-    const g = 40;  // iPad gap
+    const w = W * 0.82;
+    const g = 40;
     const c0 = -(W / 2 + w / 2);
-    
     const input = [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END];
     const output = [
       0,
@@ -284,7 +142,6 @@ function Page() {
       c0 - 5 * (w + g),
       c0 - 5 * (w + g)
     ];
-
     if (latest <= input[0]) return `${output[0]}px`;
     if (latest >= input[input.length - 1]) return `${output[output.length - 1]}px`;
     for (let i = 0; i < input.length - 1; i++) {
@@ -299,64 +156,22 @@ function Page() {
 
   const xTransform = isTablet ? xTablet : isMobile ? xMobile : xDesktop;
 
-  ///for mobile feature section
-  const mx = useTransform(MFYProg, [0, 1], [0, -1200]);
-
   useEffect(() => {
-    // ==========================================
-    // 1E. SMOOTH SCROLL INITIALIZATION
-    // Initializes Lenis for global smooth scrolling.
-    // ==========================================
-    const lenis = new Lenis({
-      duration: 2
-    });
+    // Lenis smooth scroll initialization
+    const lenis = new Lenis({ duration: 2 });
     function raf(time: any) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
+      lenis.raf(time);
+      requestAnimationFrame(raf);
     }
     requestAnimationFrame(raf);
   }, []);
 
-  ///codeEditor part
-
-  // [UNUSED] scaleE / xE — legacy transforms, not referenced in JSX
-  // const scaleE = useTransform(PShowYProg, [0.5, 0.6, 0.7], [1, 1.5, 1]);
-  // const xE = useTransform(PShowYProg, [0.5, 0.7], [0, -516]);
-
-  ///for testing
-  const tdiv1X = useTransform(testiYProg, [0, 0.12], [700, 0]);
-  const tdiv2X = useTransform(testiYProg, [0.12, 0.26], [1300, 0]);
-  const tdiv3X = useTransform(testiYProg, [0.26, 0.40], [1900, 0]);
-  const tdiv4X = useTransform(testiYProg, [0.40, 0.54], [2500, 0]);
-  const tdiv5X = useTransform(testiYProg, [0.54, 0.68], [3100, 0]);
-  const tdiv6X = useTransform(testiYProg, [0.8, 1], [3600, 0]);
-  const commentsX = useTransform(testiYProg, [0, 1], [0, 1500]);
-
-  // Top announcement banner (SWE Bench ranking)
+  // Top announcement banner
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const SWE_BENCH_BLOG_URL =
-    'https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/'; // TODO: replace with actual blog URL
+    'https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/';
   const announcementRef = useRef<HTMLDivElement>(null);
 
-  //for bento
-  // [UNUSED] scaleB / xB — legacy transforms, not referenced in JSX
-  // const scaleB = useTransform(PShowYProg, [0.8, 0.9], [1, 1.5]);
-  // const xB = useTransform(PShowYProg, [0.8, 0.9], [0, 550]);
-
-
-  ///for mobile navbar menu
-  const menuItems = [
-    { label: 'Home', ariaLabel: 'Go to home page', link: '/' },
-    { label: 'About', ariaLabel: 'Learn about us', link: '/about' },
-    { label: 'Services', ariaLabel: 'View our services', link: '/services' },
-    { label: 'Contact', ariaLabel: 'Get in touch', link: '/contact' }
-  ];
-
-  const socialItems = [
-    { label: 'Twitter', link: 'https://twitter.com' },
-    { label: 'GitHub', link: 'https://github.com' },
-    { label: 'LinkedIn', link: 'https://linkedin.com' }
-  ];
 
   //for codeEditor
   // ==========================================
@@ -364,14 +179,17 @@ function Page() {
   // Functions to manage modal overlays, keyboard shortcuts, and button clicks.
   // ==========================================
 
-  ///for mascot 
+  // Consolidated scroll event handler on main page scroll progress (MYProg)
   useMotionValueEvent(MYProg, 'change', (latest) => {
-    // Arrow visibility (show after 5% scroll)
-    if (latest >= 0.05) setIsArrowV(true);
-    else setIsArrowV(false);
+    // 1. Arrow visibility (show after 5% scroll)
+    setIsArrowV(latest >= 0.05);
 
-    if (latest >= 0.027262813522355506) setIsMascot(true);
-    if (latest <= 0.027262813522355506) setIsMascot(false);
+    // 2. Navbar background trigger
+    setIsNBack(latest >= 0.001203313524221142);
+
+    // 3. Scroll direction tracking (scroll arrow direction)
+    setIsArrow(latest >= lastScroll);
+    setLastScroll(latest);
   });
 
 
@@ -424,18 +242,7 @@ function Page() {
 
 
 
-  // for main div events
-  useMotionValueEvent(MYProg, 'change', (latest) => {
 
-    if (latest >= 0.001203313524221142) setIsNBack(true);
-    if (latest <= 0.001203313524221142) setIsNBack(false);
-  })
-
-  useMotionValueEvent(MYProg, 'change', (e) => {
-    if (e >= lastScroll) setIsArrow(true);
-    if (e <= lastScroll) setIsArrow(false);
-    setLastScroll(e);
-  });
 
   // Detect when user starts scrolling to move navbar to top
   useMotionValueEvent(scrollY, 'change', (latest) => {
@@ -485,22 +292,6 @@ function Page() {
       ? Math.max(announcementHeight - 10, 0)
       : 0;
 
-
-  // mainRef.current?.addEventListener("scroll",(e:any)=>{
-  //     const currentScroll = e.target.scrollTop; 
-  //     // console.log(currentScroll);
-
-  //    if(currentScroll >= lastScroll) setIsArrow(true);
-  //    if(currentScroll <= lastScroll) setIsArrow(false);
-  //    setLastScroll(currentScroll); 
-  // });
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIstitle(true);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
 
 
@@ -699,7 +490,7 @@ function Page() {
                             </div>
                           </motion.div>
                         </a>
-                        <a href='https://build.codemateai.dev/build' target='_blank' className="w-full">
+                        <a href='http://build.codemate.ai/' target='_blank' className="w-full">
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
@@ -821,7 +612,7 @@ function Page() {
                             </div>
                           </motion.div>
                         </a>
-                        <a href='https://calendar.app.google/Gyyh913R8hyczmBFA' target='_blank' className='w-full'>
+                        <a href='/contact' className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <h1>Contact</h1>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -851,56 +642,7 @@ function Page() {
       </div>
       {/*navBar*/}
 
-      {/*navBar for mobile*/}
-      <div
-        style={{ zIndex: 999999, top: 0 }}
-        className="lg:hidden fixed flex justify-center items-center w-full transition-all duration-300">
-        <motion.div
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          // initial={{opacity:0,filter:'blur(10px)'}}
-          // animate={{opacity:1,filter:'blur(0px)'}}
-          // transition={{duration:1,delay:7}}
-          style={{
-            background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            zIndex: 99999999999,
-          }}
-          className={`w-full bg-opacity-65 z-[99999999999] ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''}`}>
-          <div className='flex  h-full w-full text-white px-[2rem] py-2 '>
-            <div className='flex justify-between items-center w-full h-10'>
 
-              <div className="h-full w-[30vw] flex justify-center overflow-hidden">
-                <img src="/codemateLogo.svg" alt="" className='hidden' />
-
-                {/* {!IsMascot && <img src="/codemateLogo.svg" alt="" />}
-     {IsMascot && <motion.div initial={{opacity:0,filter:'blur(20px)',x:50}} animate={{opacity:1,filter:'blur(0px)',x:0}} transition={{duration:0.5}}>
-<svg width="155" height="150" viewBox="0 0 53 50" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M131.78 150H39.4727L60.2412 110.845H152.55L131.78 150ZM39.4727 39.0674V150L0.242188 125.04V14.1074L39.4727 39.0674ZM71.7422 64C77.8173 64 82.7422 68.9249 82.7422 75C82.7422 81.0751 77.8173 86 71.7422 86C65.6671 86 60.7422 81.0751 60.7422 75C60.7422 68.9249 65.6671 64 71.7422 64ZM111.742 64C117.817 64 122.742 68.9249 122.742 75C122.742 81.0751 117.817 86 111.742 86C105.667 86 100.742 81.0751 100.742 75C100.742 68.9249 105.667 64 111.742 64ZM131.78 39.1553H39.4727L60.2412 0H152.55L131.78 39.1553Z" fill="url(#paint0_linear_2014_66)"/>
-<defs>
-<linearGradient id="paint0_linear_2014_66" x1="0.580642" y1="1.09465e-05" x2="183.357" y2="82.4837" gradientUnits="userSpaceOnUse">
-<stop stop-color="#396AFC"/>
-<stop offset="1" stop-color="#2948FF"/>
-</linearGradient>
-</defs>
-</svg>
-
-
-      </motion.div>} */}
-
-              </div>
-
-
-
-
-            </div>
-            {/* <h1 className=' p-2 bg-[#1a1a1a] border border-opacity-15 bg-opacity-25 rounded-md flex justify-center items-center'>Book a Demo</h1> */}
-          </div>
-        </motion.div>
-      </div>
 
       {/* ========================================== */}
       {/* UI SECTION: MOBILE NAVIGATION & MENU     */}
@@ -1025,7 +767,7 @@ function Page() {
 
 
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
-                            <a href="https://build.codemateai.dev/secure__?session__id__=1e79d863e85850ddad011af939f79137:ifr7GFfV29hp6Frs5FpwvPtObmg8HHmIXq2cJ9uv5/3bUIQvNeQ4/PS4bUUqZk8a" target="_blank">
+                            <a href="http://build.codemate.ai/" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 lg:size-5 scale-[1.5] object-contain ml-0" />
@@ -1247,7 +989,7 @@ function Page() {
 
 
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
-                            <a href="https://calendar.app.google/Gyyh913R8hyczmBFA" target="_blank">
+                            <a href="/contact">
                               <motion.h1 className='z-20 opacity-90'>Contact</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
@@ -1295,8 +1037,6 @@ function Page() {
         )}
       </AnimatePresence>
       {/* mobile menu */}
-
-      {/*navBar for mobile*/}
 
 
       {/* hero section  */}
@@ -1510,12 +1250,12 @@ function Page() {
             </div>
 
             {[
-              { href: "https://build.codemateai.dev/build", img: "/build_gif.gif", fallback: "/Build Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", title: "CodeMate Build", desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support." },
+              { href: "http://build.codemate.ai/", img: "/Build Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", title: "CodeMate Build", desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support." },
               { href: "https://cli.codemate.ai/", img: "term.svg", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[-4.8rem] md:bottom-[-6.5rem] lg:bottom-[-6rem]", title: "AI Terminal", desc: "Run code and scripts instantly through an AI-powered command-line interface." },
-              { href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent", img: "/CORA+FULL.gif", fallback: "/CORA Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", px: true, title: "CodeMate CORA", desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE." },
-              { href: "https://edu.codemate.ai/", img: "/codemate_edu.gif", fallback: "/Codemate Education Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[1.5rem] md:bottom-[2.5rem] lg:bottom-[3.5rem]", title: "CodeMate Education", desc: "AI-powered classroom management built for educators and students to master modern development." },
-              { href: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate", img: "/Codemaps (1).gif", fallback: "/Co extention Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", title: "CodeMate C0 Extension", desc: "Your in-IDE AI partner for code management, debugging, and performance optimization." },
-              { href: "https://app.codemate.ai/chat", img: "/C0 Web app1.gif", fallback: "/Co web Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[0.5rem]", px: true, title: "CodeMate C0", desc: "Turns deep research and feasibility into production-ready code through AI-driven intelligence." },
+              { href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent", img: "/CORA Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", px: true, title: "CodeMate CORA", desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE." },
+              { href: "https://edu.codemate.ai/", img: "/Codemate Education Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[1.5rem] md:bottom-[2.5rem] lg:bottom-[2.5rem]", title: "CodeMate Education", desc: "AI-powered classroom management built for educators and students to master modern development." },
+              { href: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate", img: "/Co extention Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", title: "CodeMate C0 Extension", desc: "Your in-IDE AI partner for code management, debugging, and performance optimization." },
+              { href: "https://app.codemate.ai/chat", img: "/Co web Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", px: true, title: "CodeMate C0", desc: "Turns deep research and feasibility into production-ready code through AI-driven intelligence." },
             ].map((product: any, i) => (
               <motion.div
                 key={i}
@@ -1628,12 +1368,12 @@ function Page() {
                 {/* Cards */}
                 <div className="flex gap-0 md:gap-[40px] lg:gap-16">
                   {[
-                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/design mode build.gif", fallbackSrc: "/Design mode_static.png", isVideo: false },
-                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/build_figma_GIF.gif", fallbackSrc: "/figma-to-code-static.png", isVideo: false },
-                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skills_gif.gif", fallbackSrc: "/skill-static.png", isVideo: false },
-                    { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "https://drive.codemate.ai/CORA.mp4", isVideo: true },
-                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "https://drive.codemate.ai/PR_review.mp4", isVideo: true },
-                    { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "https://drive.codemate.ai/Documentation.mp4", isVideo: true },
+                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/Design mode_static.png", isVideo: false, objectFit: "object-cover"},
+                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/figma-to-code-static.png", isVideo: false, objectFit: "object-cover" },
+                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skill-static.png", isVideo: false, objectFit: "object-cover" },
+                    { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "/cora-autonomous.png", isVideo: false, objectFit: "object-cover" },
+                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "/Pr_review_agent_parth.png", isVideo: false, objectFit: "object-cover" },
+                    { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "/documentation-static.png", isVideo: false, objectFit: "object-cover" },
                   ].map((item, i) => {
                     // Proximity-based effects: adjacent cards get softer treatment
                     const dist = unlockStep === -1 ? 0 : Math.abs(i - unlockStep);
@@ -1673,16 +1413,15 @@ function Page() {
                                 loop
                                 muted
                                 playsInline
-                                className="w-full h-full object-contain rounded-lg relative z-10"
+                                className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
                                 src={item.media}
                               />
                             ) : (
                               <SmartGif
                                 src={item.media}
                                 alt={item.title}
-                                className="w-full h-full object-contain rounded-lg relative z-10"
+                                className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
                                 isActive={isActive}
-                                fallbackSrc={item.fallbackSrc}
                               />
                             )}
                           </div>
@@ -1876,7 +1615,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
         <div className=' lg:text-2xl  flex flex-col justify-center items-center w-full gap-1 font-semibold mt-10 opacity-70'>
           {/* <h1>Explore more reasons for your business</h1>
   <h1>to invest in Codemate tools</h1> */}
-          <a href="https://calendar.app.google/Gyyh913R8hyczmBFA" target="_blank" >
+          <a href="/contact" >
             <motion.button
               whileHover={{ opacity: 0.7 }}
               className='px-4 py-2 md:px-6 md:py-3 lg:px-5 lg:py-2.5 bg-[#FFFFFF] text-black rounded-full mt-2 font-semibold text-sm md:text-lg lg:text-base'>Book a Call</motion.button>

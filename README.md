@@ -1,34 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📦 CMLanding – CodeMate AI Marketing Page
 
-## Getting Started
+**CMLanding** is the official marketing and landing page for [CodeMate AI](https://codemate.ai) — a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website designed to showcase CodeMate's products, achievements, media presence, customer testimonials, and pricing structures.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🧰 Tech Stack
+
+| Category | Technology |
+|---|---|
+| **Framework** | Next.js 15.1.9 (App Router) |
+| **Language** | TypeScript 5 |
+| **Styling** | Tailwind CSS 3.4 + CSS Modules / Vanilla CSS |
+| **Animations** | Framer Motion 11 + GSAP 3 |
+| **Smooth Scroll** | Lenis 1.2.1 |
+| **Video Integration** | `next-video` |
+| **Fonts** | Montserrat & Mulish (via `next/font`) |
+| **Analytics** | Google Analytics 4 |
+| **Build Tool** | npm / Bun |
+
+---
+
+## 📄 Key Features & Sections
+
+- **Announcement Banner**: Promotional banner highlighting SWE-bench SOTA achievement and limited offers.
+- **Dynamic Frosted-Glass Navbars**: Custom mega-menu support for Products, Open-Source, and Resources with active drop-downs on desktop and slider overlays on mobile.
+- **Scroll-Linked Parallax Showcase**: "What You'll Unlock" horizontal scroll deck linked via Framer Motion's `useScroll` + `useTransform`.
+- **Achievements Carousel**: Auto-sliding carousel housing 30+ major milestones and summit achievements with slide controls.
+- **Partners Marquee**: Infinite-marquee animations displaying code integration partners and ecosystems.
+- **Testimonials Deck**: Smooth, staggered entrance animations for customer recommendation cards.
+- **Media Coverage**: Custom carousel highlighting press and publication presence from top media houses.
+
+---
+
+## 🗂️ Project Structure
+
+```
+CMLanding/
+└── landingpage-nextjs/
+    ├── public/                  # Brand assets, static mocks, and logos
+    ├── src/
+    │   ├── app/                 # App Router
+    │   │   ├── page.tsx         # Main Landing Page client component
+    │   │   ├── layout.tsx       # Layout with SEO metadata & Analytics
+    │   │   ├── globals.css      # Core style tokens & keyframe animations
+    │   │   ├── pricing/         # Pricing sub-route page & custom components
+    │   │   └── download/        # Download sub-route page
+    │   ├── components/          # Reusable react components
+    │   │   ├── achivements.tsx  # Achievements slideshow
+    │   │   ├── media-presence.tsx # Media slider
+    │   │   └── ui/              # 46 primitive animated UI components (Bento, Terminals, Gradients, etc.)
+    │   └── utils/               # Tailwind merge helpers
+    ├── package.json             # Dependencies & scripts
+    ├── next.config.ts           # Next.config
+    └── tailwind.config.ts       # Custom Tailwind theme tokens & screens
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🚀 Getting Started
 
-## Learn More
+### Prerequisites
 
-To learn more about Next.js, take a look at the following resources:
+You will need **Node.js (v18+)** and **npm** (or **Bun**) installed.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Setup and Installation
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Navigate to the project root:
+   ```bash
+   cd landingpage-nextjs
+   ```
 
-## Deploy on Vercel
+2. Install the project dependencies:
+   ```bash
+   npm install
+   # or using bun
+   bun install
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+
+---
+
+## 🛠️ Build and Deploy
+
+To create an optimized production build of the website:
+
+```bash
+npm run build
+```
+
+The static output will be compiled inside the `.next` directory.
+
+---
+
+## ⚡ Performance Optimizations
+
+1. **Lazy Resource Activation**: Using the `SmartGif` component, heavy GIFs are frozen into light Canvas frames and only activated on hover or direct viewport interaction.
+2. **Unified Event Listeners**: Window resize, viewport breakpoints, and parallax scroll handlers are consolidated into singular hooks to prevent layout shifting and state churn.
+3. **Lazy-Loaded Analytics**: Google Analytics scripts are injected asynchronously post-mount.

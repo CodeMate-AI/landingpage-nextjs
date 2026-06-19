@@ -41,7 +41,7 @@ interface PlanInfo {
 const DESKTOP_FEATURES = 4
 const MOBILE_FEATURES = 2
 
-const ENTERPRISE_CTA = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4'
+const ENTERPRISE_CTA = '/contact'
 
 // Plan hierarchy for the default "Everything in X, plus" fallback
 const PLAN_PARENT: Record<string, string> = {
