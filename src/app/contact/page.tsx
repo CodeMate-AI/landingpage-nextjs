@@ -285,7 +285,6 @@ export default function ContactPage() {
     }
 
     const apiUrl = process.env.NEXT_PUBLIC_CONTACT_API_URL
-    console.log("apiUrl", apiUrl)
     if (!apiUrl) {
       console.error('Error: NEXT_PUBLIC_CONTACT_API_URL is not configured.')
       setErrorMsg('Contact service is temporarily unavailable. Please try again later.')
