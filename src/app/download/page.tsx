@@ -223,7 +223,7 @@ const DownloadPage = () => {
                         <HeroVideoDialog
                             className="block border border-white/10 shadow-[0_0_15px_rgba(255,255,255,0.05)]"
                             animationStyle="from-center"
-                            videoSrc="https://www.youtube.com/embed/XPDSybiI4h4"
+                            videoSrc="https://www.youtube-nocookie.com/embed/XPDSybiI4h4"
                             thumbnailSrc="https://img.youtube.com/vi/XPDSybiI4h4/maxresdefault.jpg"
                             thumbnailAlt="CodeMate Toolbox Installation Guide"
                         />
