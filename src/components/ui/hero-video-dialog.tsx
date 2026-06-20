@@ -157,6 +157,7 @@ export function HeroVideoDialog({
                   style={{ border: '0' }}
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
                 ></iframe>
               </motion.div>
             </div>
