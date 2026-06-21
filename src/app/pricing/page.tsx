@@ -199,10 +199,10 @@ function Page() {
   const searchParams = useSearchParams()
   const pageRef = useRef<HTMLDivElement>(null)
 
-  // Read ?product= from URL on first render, fall back to 'build'
+  // Read ?product= from URL on first render, fall back to 'cora'
   const initialProduct = (): Product => {
     const param = searchParams.get('product')?.toLowerCase()
-    return (param === 'build' || param === 'cora' || param === 'c0') ? param : 'build'
+    return (param === 'build' || param === 'cora' || param === 'c0') ? param : 'cora'
   }
   const [selectedProduct, setSelectedProduct] = useState<Product>(initialProduct)
   const [showAllFeatures, setShowAllFeatures] = useState(false)
