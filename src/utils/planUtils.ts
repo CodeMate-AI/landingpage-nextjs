@@ -52,8 +52,9 @@ export interface CategorizedPlans {
 // Controls what renders above the feature list in PlanCard:
 //   "INCLUDES"             → "INCLUDES" label only (base / standalone tiers)
 //   "INCLUDES_WITH_PARENT" → "Everything in Teams, plus" (enterprise)
+//   "INCLUDES_WITH_MAX"    → "Everything in Max, plus" (enterprise under max)
 //   null                   → "Everything in <parent>, plus" (inheriting tiers)
-export type FeaturesHeader = 'INCLUDES' | 'INCLUDES_WITH_PARENT' | null
+export type FeaturesHeader = 'INCLUDES' | 'INCLUDES_WITH_PARENT' | 'INCLUDES_WITH_MAX' | null
 
 // ─── Static feature data ──────────────────────────────────────────────────────
 

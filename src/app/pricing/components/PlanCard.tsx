@@ -45,7 +45,6 @@ const ENTERPRISE_CTA = '/contact'
 
 // Plan hierarchy for the default "Everything in X, plus" fallback
 const PLAN_PARENT: Record<string, string> = {
-  pro: 'Free',
   teams: 'Pro',
   max: 'Pro',
 }
@@ -58,6 +57,14 @@ function FeaturesHeader({ header, title }: { header: FeaturesHeader; title: stri
     return (
       <p className="text-xs text-zinc-500 mb-3 leading-snug">
         Everything in <span className="text-zinc-300 font-medium">Teams</span>, plus
+      </p>
+    )
+  }
+
+  if (header === 'INCLUDES_WITH_MAX') {
+    return (
+      <p className="text-xs text-zinc-500 mb-3 leading-snug">
+        Everything in <span className="text-zinc-300 font-medium">Max</span>, plus
       </p>
     )
   }
