@@ -59,8 +59,8 @@ const ENTERPRISE_PLAN = {
   isC0: true,
 }
 
-const CORA_FREE_FEATURES = [
-  'Base Model access',
+const CORA_PRO_FEATURES = [
+  'Pro Model access',
   'Architect mode',
   'Generate architectural and system diagrams with SVG Export',
   'Integration with file system, terminal and browser',
@@ -71,28 +71,14 @@ const CORA_FREE_FEATURES = [
 
 const CORA_PLANS = [
   {
-    id: 'cora-free',
-    title: 'Free',
-    description: 'Get started with Cora at no cost',
-    yearlyPrice: '',
-    currency: 'USD',
-    highlight: false,
-    isAnnual: true,
-    features: CORA_FREE_FEATURES,
-    monthlyCtaText: 'Get Started',
-    monthlyCtaLink: 'https://app.codemate.ai',
-    yearlyCtaText: 'Get Started',
-    yearlyCtaLink: 'https://app.codemate.ai',
-    isCora: true,
-  },
-  {
     id: 'cora-pro',
     title: 'Pro',
     description: 'Pro Model with Generous Limits',
     yearlyPrice: '20',
     currency: 'USD',
     highlight: false,
-    features: ['Pro Model (upgraded from Base)'],
+    featuresHeader: 'INCLUDES' as const,
+    features: CORA_PRO_FEATURES,
     monthlyCtaText: 'Get Pro',
     monthlyCtaLink: '#',
     yearlyCtaText: 'Get Pro',
@@ -122,6 +108,30 @@ const CORA_PLANS = [
       { label: 'Weekly',  price: '25',  ctaText: 'Get Max – $25/week', ctaLink: '' },
       { label: 'Monthly', price: '100', ctaText: 'Get Max – $100/mo',  ctaLink: '' },
     ],
+  },
+  {
+    id: 'cora-enterprise',
+    title: 'Enterprise',
+    description: 'For large teams and organizations',
+    yearlyPrice: '',
+    currency: 'USD',
+    highlight: false,
+    isAnnual: true,
+    featuresHeader: 'INCLUDES_WITH_MAX' as const,
+    features: [
+      'Dedicated Account Manager.',
+      'On-premises Deployment.',
+      'Custom fine-tuned models.',
+      'Search & Chat with Documentation & Codebases.',
+      'Priority Support.',
+      'Custom LLM Models',
+      'Rule based Code Review',
+    ],
+    monthlyCtaText: 'Contact Us',
+    monthlyCtaLink: '/contact',
+    yearlyCtaText: 'Contact Us',
+    yearlyCtaLink: '/contact',
+    isCora: true,
   },
 ]
 
@@ -199,10 +209,10 @@ function Page() {
   const searchParams = useSearchParams()
   const pageRef = useRef<HTMLDivElement>(null)
 
-  // Read ?product= from URL on first render, fall back to 'build'
+  // Read ?product= from URL on first render, fall back to 'cora'
   const initialProduct = (): Product => {
     const param = searchParams.get('product')?.toLowerCase()
-    return (param === 'build' || param === 'cora' || param === 'c0') ? param : 'build'
+    return (param === 'build' || param === 'cora' || param === 'c0') ? param : 'cora'
   }
   const [selectedProduct, setSelectedProduct] = useState<Product>(initialProduct)
   const [showAllFeatures, setShowAllFeatures] = useState(false)

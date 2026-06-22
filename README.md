@@ -1,6 +1,6 @@
-# 📦 CMLanding – CodeMate AI Marketing Page
+# 📦 CodeMate AI Landing Page
 
-**CMLanding** is the official marketing and landing page for [CodeMate AI](https://codemate.ai) — a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website designed to showcase CodeMate's products, achievements, media presence, customer testimonials, and pricing structures.
+This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website showcasing CodeMate's product suites, achievements, media presence, customer testimonials, and pricing structures.
 
 ---
 
@@ -22,7 +22,7 @@
 
 ## 📄 Key Features & Sections
 
-- **Announcement Banner**: Promotional banner highlighting SWE-bench SOTA achievement and limited offers.
+- **Announcement Banner**: Sticky banner highlighting the SWE-bench SOTA achievement and limited offers.
 - **Dynamic Frosted-Glass Navbars**: Custom mega-menu support for Products, Open-Source, and Resources with active drop-downs on desktop and slider overlays on mobile.
 - **Scroll-Linked Parallax Showcase**: "What You'll Unlock" horizontal scroll deck linked via Framer Motion's `useScroll` + `useTransform`.
 - **Achievements Carousel**: Auto-sliding carousel housing 30+ major milestones and summit achievements with slide controls.

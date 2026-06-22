@@ -20,6 +20,7 @@ function Achivements() {
   const [isPaused, setIsPaused] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
+  const [desktopVisible, setDesktopVisible] = useState(3);
   const carouselRef = useRef(null);
   const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
   const cards = [
@@ -320,9 +321,8 @@ function Achivements() {
 
   // ---- Dynamic scroll limits based on card count ----
   const DESKTOP_CARD_WIDTH = 376; // 352px (22rem) + 24px (gap-6)
-  const DESKTOP_VISIBLE = 3;
   const MOBILE_VISIBLE = 1;
-  const maxDesktop = -((cards.length - DESKTOP_VISIBLE) * DESKTOP_CARD_WIDTH);
+  const maxDesktop = -((cards.length - desktopVisible) * DESKTOP_CARD_WIDTH);
   const activeMobileCardWidth = isTablet ? 728 : 344; // 704px (44rem) card + 24px gap on tablet, 320px (20rem) card + 24px gap on mobile
   const maxMobile = -((cards.length - MOBILE_VISIBLE) * activeMobileCardWidth);
 
@@ -353,14 +353,33 @@ function Achivements() {
 
   useEffect(() => {
     const checkScreen = () => {
-      setIsTablet(window.innerWidth >= 768 && window.innerWidth < 1025);
-      setIsMobile(window.innerWidth <= 1025);
+      const w = window.innerWidth;
+      setIsTablet(w >= 768 && w < 1025);
+      setIsMobile(w <= 1025);
+      if (w >= 1280) {
+        setDesktopVisible(3);
+      } else {
+        setDesktopVisible(2);
+      }
     };
     checkScreen();
     window.addEventListener('resize', checkScreen);
 
     return () => window.removeEventListener('resize', checkScreen);
   }, []);
+
+  // Keep scroll position within bounds during screen resizes
+  useEffect(() => {
+    if (!isMobile) {
+      if (currCards < maxDesktop) {
+        setCurrCards(maxDesktop);
+      }
+    } else {
+      if (currCards < maxMobile) {
+        setCurrCards(maxMobile);
+      }
+    }
+  }, [currCards, maxDesktop, maxMobile, isMobile]);
 
   function handleArrow(e: string) {
     if (e === 'left') {
@@ -391,7 +410,7 @@ function Achivements() {
         ref={carouselRef}
         onMouseEnter={() => setIsPaused(true)} // pause on hover
         onMouseLeave={() => setIsPaused(false)} // resume when hover ends
-        className='mt-20 flex w-[20rem] md:w-[44rem] lg:w-[80.5%] overflow-hidden'>
+        className='mt-20 flex w-[20rem] md:w-[44rem] lg:w-[728px] xl:w-[1104px] overflow-hidden'>
         <motion.div animate={{ x: currCards }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className='flex gap-6'>
           {cards.map((e, idx) => (
             <div key={idx}>

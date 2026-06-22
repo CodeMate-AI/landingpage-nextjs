@@ -454,7 +454,7 @@ function Page() {
                     </motion.span></motion.h1>
                   {/* <motion.h1 onMouseEnter={()=>setIsProducts(state=>!state)} whileHover={{opacity:1}} transition={{duration:0.2}} className={`flex text-center  justify-center items-center opacity-65 z-50 `}>OpenSource</motion.h1> */}
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} onClick={() => productShowRef.current?.scrollIntoView({ behavior: "smooth" })} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
-                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} onClick={() => { router.push('pricing') }} className='opacity-65'>Pricing</motion.h1>
+                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} onClick={() => { router.push('pricing?product=cora') }} className='opacity-65'>Pricing</motion.h1>
                   <a href='https://edu.codemate.ai/' target='_blank'>
                     <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Education</motion.h1>
                   </a>
@@ -1001,7 +1001,7 @@ function Page() {
                         </motion.div>
                       }
                     </motion.div>
-                    <motion.div onClick={() => window.location.href = '/pricing'} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
+                    <motion.div onClick={() => window.location.href = '/pricing?product=cora'} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
                     <a href='https://edu.codemate.ai/' target='_blank'>
                       <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
                     </a>
@@ -1140,7 +1140,7 @@ function Page() {
                       Download
                     </motion.button>
                   </a>
-                  <a href="https://app.codemate.ai" target="_blank" className="w-full sm:w-auto">
+                  <a href="https://build.codemate.ai/build" target="_blank" className="w-full sm:w-auto">
                     <motion.button
                       whileHover={{ opacity: 0.9 }}
                       className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
