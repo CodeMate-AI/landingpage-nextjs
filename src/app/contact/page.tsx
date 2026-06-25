@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Montserrat } from 'next/font/google'
-import { Clock, Video, MapPin, Check, ChevronDown, Send, ArrowLeft } from 'lucide-react'
+import { Check, ChevronDown, Send, ArrowLeft } from 'lucide-react'
 const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -60,9 +60,6 @@ const TZ_TO_COUNTRY: Record<string, string> = {
 }
 
 const TEAM_SIZES = ['Just me', '2–10', '11–50', '51–200', '201–1000', '1000+']
-
-const GOOGLE_CALENDAR_URL = 'https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ3dPhmeb8CJ8hq68i5_SFuSkbhhRpHTpQMrki9A0QN5pf2cqwgJgbkWsFrxe1jbH_LZCH-8V2H4'
-
 
 // ==========================================
 // COMPONENT: Country Code Selector
@@ -203,13 +200,6 @@ export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
-  // Ref for smooth scrolling
-  const bookCallRef = useRef<HTMLDivElement>(null)
-
-  const handleScrollToBookCall = () => {
-    bookCallRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   // Country code
   const [selectedCountry, setSelectedCountry] = useState(COUNTRIES[0]) // default India
 
@@ -324,10 +314,6 @@ export default function ContactPage() {
     }
   }
 
-  const handleCalendarConfirm = () => {
-    window.open(GOOGLE_CALENDAR_URL, '_blank', 'noopener,noreferrer')
-  }
-
   // ---- Shared input styles ----
   const inputClass =
     'w-full bg-zinc-950 border border-zinc-800 rounded-lg px-4 py-3 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#00BFFF]/50 focus:ring-1 focus:ring-[#00BFFF]/20 transition-all duration-200'
@@ -365,32 +351,22 @@ export default function ContactPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-4 text-zinc-400 text-base md:text-lg max-w-2xl mx-auto"
         >
-          Send us a message or{' '}
-          <button
-            suppressHydrationWarning
-            type="button"
-            onClick={handleScrollToBookCall}
-            className="text-[#00BFFF] underline underline-offset-4 cursor-pointer hover:text-cyan-400 transition-colors font-medium focus:outline-none"
-          >
-            book a call
-          </button>
-          .
+          Send us a message.
           <span className="block mt-2 text-zinc-500 text-sm md:text-base font-normal">
             We&apos;ll get back to you within one business day.
           </span>
         </motion.p>
       </div>
 
-      {/* ========== TWO-COLUMN LAYOUT ========== */}
-      <div className="max-w-[1100px] mx-auto px-6 pb-24 flex flex-col lg:flex-row gap-6 lg:gap-8">
-        {/* ---- LEFT: Contact Form ---- */}
+      {/* ========== CENTERED LAYOUT ========== */}
+      <div className="max-w-[650px] mx-auto px-6 pb-24">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="flex-1 w-full max-w-2xl mx-auto lg:max-w-none"
+          className="w-full"
         >
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-full flex flex-col">
+          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 flex flex-col">
             <h2 className="text-xl md:text-2xl font-semibold mb-6 bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
               Get in Touch
             </h2>
@@ -546,51 +522,6 @@ export default function ContactPage() {
           </div>
         </motion.div>
 
-        {/* ---- RIGHT: Book a Call ---- */}
-        <motion.div
-          ref={bookCallRef}
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex-1 w-full max-w-2xl mx-auto lg:max-w-none scroll-mt-24"
-        >
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 h-fit flex flex-col">
-            {/* Heading */}
-            <div className="mb-4">
-              <h2 className="text-xl md:text-2xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
-                Book a Call
-              </h2>
-            </div>
-
-            {/* Description */}
-            <p className="text-zinc-400 text-sm md:text-base leading-relaxed mb-6">
-              Talk with our experts to discuss your specific architecture, overcome technical hurdles, and map out a solution.
-            </p>
-
-            {/* Metadata Rows */}
-            <div className="flex flex-col gap-3 mb-6">
-              <div className="flex items-center gap-3 text-sm text-zinc-400">
-                <Video className="w-4 h-4 text-zinc-500 shrink-0" />
-                <span>Choose a time that works for you</span>
-              </div>
-            </div>
-
-            {/* CTA */}
-            <motion.button
-              suppressHydrationWarning
-              type="button"
-              whileHover={{ opacity: 0.9 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={handleCalendarConfirm}
-              className="w-full bg-white text-black font-semibold rounded-lg py-3 flex items-center justify-center gap-2 transition-opacity"
-            >
-              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                <path d="M19.5 3.5H18V2h-2v1.5H8V2H6v1.5H4.5C3.12 3.5 2 4.62 2 6v14c0 1.38 1.12 2.5 2.5 2.5h15c1.38 0 2.5-1.12 2.5-2.5V6c0-1.38-1.12-2.5-2.5-2.5zM20 20c0 .28-.22.5-.5.5h-15c-.28 0-.5-.22-.5-.5V9h16v11zm0-13H4V6c0-.28.22-.5.5-.5H6V7h2V5.5h8V7h2V5.5h1.5c.28 0 .5.22.5.5v1z" fill="currentColor"/>
-              </svg>
-              Book a call
-            </motion.button>
-          </div>
-        </motion.div>
       </div>
     </div>
   )
