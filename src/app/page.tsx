@@ -159,11 +159,18 @@ function Page() {
   useEffect(() => {
     // Lenis smooth scroll initialization
     const lenis = new Lenis({ duration: 2 });
+    let rafId: number;
+
     function raf(time: any) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
 
   // Top announcement banner

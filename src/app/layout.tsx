@@ -52,7 +52,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="snap-y snap-proximity">
+    <html lang="en">
       <head>
         <title>CodeMate AI | Your Professional And Secured AI Pair Programmer</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
