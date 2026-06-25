@@ -402,7 +402,7 @@ function Achivements() {
     <div
 
 
-      className='relative flex flex-col justify-center items-center mb-20'>
+      className='relative flex flex-col justify-center items-center mb-12'>
       <div className={`${montserrat.className} leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent md:text-6xl lg:text-7xl'>Talk</span> of the Town</div>
       <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-0 text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
 
