@@ -1140,12 +1140,12 @@ function Page() {
                       Download
                     </motion.button>
                   </a>
-                  <a href="https://build.codemate.ai/build" target="_blank" className="w-full sm:w-auto">
+                  <a href="https://app.codemate.ai/dashboard" target="_blank" className="w-full sm:w-auto">
                     <motion.button
                       whileHover={{ opacity: 0.9 }}
                       className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
                     >
-                      Try Build 2.0
+                      Try for Free
                     </motion.button>
                   </a>
                 </motion.div>
