@@ -343,7 +343,7 @@ export default function ContactPage() {
           transition={{ duration: 0.5 }}
           className="text-4xl md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent"
         >
-          Contact Us
+          <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Contact</span> Us
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
