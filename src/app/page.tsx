@@ -1623,7 +1623,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
       {/* trusted by section */}
       <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
-        <div className='pt-[5rem] lg:pt-[15rem]'>
+        <div className='pt-[2rem] lg:pt-[4rem]'>
           <div className="px-8 lg:px-16 ">
             <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
               className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
