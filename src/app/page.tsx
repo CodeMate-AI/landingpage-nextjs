@@ -69,7 +69,6 @@ function Page() {
   const [isCoraBlocked, setIsCoraBlocked] = useState(true);
   const [showEventPopup, setShowEventPopup] = useState(false);
   const mainRef = useRef<HTMLDivElement>(null);
-  const testiRef = useRef<HTMLDivElement>(null);
   const productShowRef = useRef<HTMLDivElement>(null);
   const codeMateImageRef = useRef<HTMLImageElement>(null);
   const unlockCopyRef = useRef<HTMLParagraphElement>(null);
@@ -94,18 +93,6 @@ function Page() {
 
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
-
-  const { scrollYProgress: testiYProg } = useScroll({
-    target: testiRef,
-    offset: ['start start', 'end start']
-  });
-
-  // Testimonial card entrance transforms
-  const tdiv1X = useTransform(testiYProg, [0, 0.12], [700, 0]);
-  const tdiv2X = useTransform(testiYProg, [0.12, 0.26], [1300, 0]);
-  const tdiv3X = useTransform(testiYProg, [0.26, 0.40], [1900, 0]);
-  const tdiv4X = useTransform(testiYProg, [0.40, 0.54], [2500, 0]);
-  const tdiv5X = useTransform(testiYProg, [0.54, 0.68], [3100, 0]);
 
   // ========== "What you'll Unlock" section scroll math ==========
   const UNLOCK_END = 0.76;
@@ -159,11 +146,18 @@ function Page() {
   useEffect(() => {
     // Lenis smooth scroll initialization
     const lenis = new Lenis({ duration: 2 });
+    let rafId: number;
+
     function raf(time: any) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      rafId = requestAnimationFrame(raf);
     }
-    requestAnimationFrame(raf);
+    rafId = requestAnimationFrame(raf);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      lenis.destroy();
+    };
   }, []);
 
   // Top announcement banner
@@ -614,7 +608,7 @@ function Page() {
                         </a>
                         <a href='/contact' className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
-                            <h1>Contact</h1>
+                            <h1>Contact Us</h1>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
                             </div>
@@ -990,10 +984,10 @@ function Page() {
 
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
                             <a href="/contact">
-                              <motion.h1 className='z-20 opacity-90'>Contact</motion.h1>
+                              <motion.h1 className='z-20 opacity-90'>Contact Us</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
-                                  <h1>Contact</h1>
+                                  <h1>Contact Us</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -1140,12 +1134,12 @@ function Page() {
                       Download
                     </motion.button>
                   </a>
-                  <a href="https://build.codemate.ai/build" target="_blank" className="w-full sm:w-auto">
+                  <a href="https://app.codemate.ai/dashboard" target="_blank" className="w-full sm:w-auto">
                     <motion.button
                       whileHover={{ opacity: 0.9 }}
                       className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
                     >
-                      Try Build 2.0
+                      Try for Free
                     </motion.button>
                   </a>
                 </motion.div>
@@ -1629,7 +1623,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
       {/* trusted by section */}
       <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
-        <div className='pt-[5rem] lg:pt-[15rem]'>
+        <div className='pt-[2rem] lg:pt-[4rem]'>
           <div className="px-8 lg:px-16 ">
             <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
               className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
@@ -1732,159 +1726,11 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       <MediaPresence />
 
 
-      <div className={`${montserrat.className} leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>Do not listen to us but from <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>People</span></div>
-
       {/* ========================================== */}
-      {/* UI SECTION: TESTIMONIALS & REVIEWS       */}
-      {/* Scrolling carousel of user feedback and trust markers */}
+      {/* UI SECTION: LOGO BANNER                   */}
       {/* ========================================== */}
-      <div ref={testiRef} className='relative h-[350vh] w-full bg-zinc-950 '>
-
-
-        <div className=' sticky top-0   h-screen w-full overflow-x-hidden '>
-
-          <div
-            className='relative h-full w-full flex  items-center justify-center    py-3 overflow-hidden'>
-
-
-            {/* <motion.div 
-     style={{x:commentsX}}
-     className={`${montserrat.className} absolute flex gap-10 text-7xl text-white font-semibold`}>
-<h1 className="whitespace-nowrap text-opacity-80">thrilled 🤩</h1>
-<h1 className="whitespace-nowrap text-opacity-80">grateful 🙏</h1>
-<h1 className="whitespace-nowrap text-opacity-80">inspired ✨</h1>
-<h1 className="whitespace-nowrap text-opacity-80">amazed 🤯</h1>
-<h1 className="whitespace-nowrap text-opacity-80">relieved 😌</h1>
-<h1 className="whitespace-nowrap text-opacity-80">blessed 🥰</h1>
-<h1 className="whitespace-nowrap text-opacity-80">accomplished 🏆</h1>
-<h1 className="whitespace-nowrap text-opacity-80">delighted 😊</h1>
-<h1 className="whitespace-nowrap text-opacity-80">empowered 💪</h1>
-<h1 className="whitespace-nowrap text-opacity-80">fulfilled ❤️</h1>
-     </motion.div> */}
-
-
-            <img src="/codemateLogo.svg" className='absolute object-fit w-[95vw] brightness-[0.6]' alt="" />
-
-
-
-            <div className={`${montserrat.className} text-white h-full w-full flex items-center justify-center flex-col`}>
-              <motion.div className='absolute  h-[30rem] w-[40rem]  rounded-3xl'></motion.div>
-              <motion.div
-                style={{ y: tdiv1X }}
-                className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
-                <motion.div
-                  animate={{ rotate: 10 }}
-                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
-                  <div className='flex w-full gap-4 items-center'>
-                    <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/ayushbansal.jpeg" alt="" className='size-20 rounded-full' /></div>
-                    <div className='flex flex-col'>
-                      <h1 className='font-semibold text-2xl md:text-3xl lg:text-2xl'>Ayush Bansal</h1>
-                      <p className='opacity-60 text-sm md:text-lg lg:text-md'>Software Engineer-II, Amazon</p>
-                    </div>
-                  </div>
-
-                  <div className='leading-[1.1] text-[3.7vw] md:text-2xl lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate.ai</span> has revolutionized my coding workflow with accurate AI suggestions and a user-friendly interface. Highly recommended!</div>
-
-                  <div className='w-full flex justify-between'>
-                  </div>
-                </motion.div>
-              </motion.div>
-              <motion.div
-                style={{ y: tdiv2X }}
-                className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem]  rounded-3xl flex justify-center items-center'>
-                <motion.div
-                  animate={{ rotate: 5 }}
-                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
-                  <div className='flex w-full gap-4 items-center'>
-                    <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/hani.webp" alt="" className='size-20 rounded-full' /></div>
-                    <div className='flex flex-col'>
-                      <h1 className='font-semibold text-2xl md:text-3xl lg:text-2xl'>Hani H.</h1>
-                      <p className='opacity-60 text-sm md:text-lg lg:text-base'>Founder</p>
-                    </div>
-                  </div>
-
-                  <div className='leading-[1.1] text-[3.3vw] md:text-xl lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate</span> has lots of great features. You can request code samples when stuck, or get a code review to spot issues you might miss. The Debugger is a life saver—it quickly found a bug in my code that was filling the error logs!</div>
-
-                  <div className='w-full flex justify-between'>
-                  </div>
-                </motion.div>
-              </motion.div>
-              <motion.div style={{ y: tdiv3X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
-                <motion.div
-                  animate={{ rotate: 0 }}
-                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
-                  <div className='flex w-full gap-4 items-center'>
-                    <div className='rounded-full bg-white size-20'><img src="https://drive.codemate.ai/vilkho_appsumo.webp" alt="" className='size-20 rounded-full' /></div>
-                    <div className='flex flex-col w-[50%]'>
-                      <h1 className='font-semibold text-xl md:text-3xl lg:text-2xl'>Vilkhovskiy</h1>
-                      <p className='opacity-60 text-sm md:text-lg lg:text-md '>Chief Executive Officer, Softenq</p>
-                    </div>
-                  </div>
-
-                  <div className='leading-[1.1] text-[3.3vw] md:text-xl lg:text-2xl'>An excellent solution for project analysis and efficient development! I love how <span className='text-[#00BFFF]'>CodeMate</span> can analyze an entire project, assign tasks for refactoring or code generation, and even ensure the project is covered with tests.</div>
-
-                  <div className='w-full flex justify-between'>
-                  </div>
-                </motion.div>
-              </motion.div>
-              <motion.div style={{ y: tdiv4X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
-                <motion.div
-                  animate={{ rotate: -5 }}
-                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
-                  <div className='flex w-full gap-4 items-center'>
-                    <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=kitty.liu" alt="" className='size-20 rounded-full' /></div>
-                    <div className='flex flex-col'>
-                      <h1 className='font-semibold text-2xl md:text-3xl lg:text-2xl'>Kitty Liu</h1>
-                      <p className='opacity-60 text-sm md:text-lg lg:text-md'>Engineering</p>
-                    </div>
-                  </div>
-
-                  <div className='leading-[1.1] text-[4vw] md:text-2xl lg:text-2xl'><span className='text-[#00BFFF]'>CodeMate</span> is doing a great job with its simplicity. I can't wait to see more features they are going to release soon.</div>
-
-                  <div className='w-full flex justify-between'>
-                  </div>
-                </motion.div>
-              </motion.div>
-              <motion.div style={{ y: tdiv5X }} className='absolute h-[25rem] w-[90vw] lg:h-[30rem] lg:w-[40rem] rounded-3xl flex justify-center items-center'>
-                <motion.div
-                  animate={{ rotate: -10 }}
-                  className='h-auto min-h-[70%] w-[92%] lg:w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-center px-5 lg:px-8 py-5 gap-5'>
-                  <div className='flex w-full gap-4 items-center'>
-                    <div className='rounded-full bg-white size-20'><img src="https://i.pravatar.cc/150?u=david.kim" alt="" className='size-20 rounded-full' /></div>
-                    <div className='flex flex-col'>
-                      <h1 className='font-semibold text-2xl md:text-3xl lg:text-2xl'>Keith Price</h1>
-                      <p className='opacity-60 text-sm md:text-lg lg:text-md'>Backend Engineer</p>
-                    </div>
-                  </div>
-
-                  <div className='leading-[1.1] text-[3.1vw] md:text-xl lg:text-2xl'>Love this tool! It can train on the entire solution (and others), saving so much time and frustration. <span className='text-[#00BFFF]'>Unlike ChatGPT</span>, it finds the right methods and code blocks with ease, and the ability to retain training on past solutions is phenomenal.</div>
-
-                  <div className='w-full flex justify-between'>
-                  </div>
-                </motion.div>
-              </motion.div>
-              {/* <motion.div style={{y:tdiv6X}} className='absolute  h-[30rem] w-[40rem]  rounded-3xl flex justify-center items-center'>
-                        <motion.div 
-      animate={{rotate:-15}}
-      className='h-[70%] w-[90%] bg-[#131316] border border-[#434344] rounded-[2rem] flex flex-col items-cente px-8 py-5 gap-5'>
-       <div className='flex w-full gap-4 items-center'>
-       <div className='rounded-full bg-white size-20'></div>
-      <div className='flex flex-col'>
-       <h1>Ayush Bansal</h1>
-        <p>Software Engineer-II, Amazon</p> 
-      </div>
-       </div>
-
-       <div className='text-2xl'>CodeMate.ai has revolutionized my coding workflow with accurate AI suggestions and a user-friendly interface. Highly recommended!</div>
-
-       <div className='w-full flex justify-between'>
-       </div>
-      </motion.div>
-     </motion.div> */}
-            </div>
-          </div>
-
-        </div>
+      <div className='relative w-full h-[30vh] md:h-[45vh] lg:h-[60vh] bg-zinc-950 flex items-center justify-center overflow-hidden border-t border-white/5'>
+        <img src="/codemateLogo.svg" className='absolute object-fit w-[95vw] brightness-[0.6] pointer-events-none select-none' alt="CodeMate Logo" />
       </div>
 
       <div ref={footerRef}>
