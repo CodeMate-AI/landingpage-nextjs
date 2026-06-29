@@ -10,8 +10,17 @@ const montserrat = Montserrat({
   variable: '--font-montserrat',
 });
 
-// Mock data based on the provided screenshot
 const mediaItems = [
+   {
+    logoText: "Business Standard",
+    logoBg: "bg-white",
+    logoColor: "text-[#BF262A]",
+    fontFamily: "font-serif font-bold",
+    headline: "Featured by leading media for joining Maruti Suzuki's Incubation Program (MSIP)",
+    image: "/Business-Standard-Media.jpg",
+    link: "https://www.business-standard.com/industry/auto/maruti-suzuki-five-startups-ai-battery-recycling-solutions-126062900338_1.html",
+    scale: 1.4
+  },
   {
     logoText: "THE FOUNDER",
     logoBg: "bg-white",
@@ -199,13 +208,13 @@ export default function MediaPresence() {
   );
 }
 
-function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, link, fill }: { logoText: string, logoBg: string, logoColor: string, fontFamily: string, headline: string, image?: string, link?: string, fill?: boolean }) {
+function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, link, fill, scale }: { logoText: string, logoBg: string, logoColor: string, fontFamily: string, headline: string, image?: string, link?: string, fill?: boolean, scale?: number }) {
   return (
     <motion.div className='relative h-[24rem] md:h-[32rem] lg:h-[24rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 flex flex-col p-5 md:p-10 hover:border-white/20 transition-all'>
       {/* Logo Area */}
       <div className={`h-[10rem] md:h-[15rem] lg:h-[10rem] w-full ${fill ? 'bg-zinc-800' : 'bg-white p-6'} rounded-2xl flex items-center justify-center shadow-inner overflow-hidden`}>
         {image ? (
-          <img src={image} alt={logoText} className={`${fill ? 'object-cover' : 'object-contain'} h-full w-full`} />
+          <img src={image} alt={logoText} className={`${fill ? 'object-cover' : 'object-contain'} h-full w-full transition-transform`} style={scale ? { transform: `scale(${scale})` } : undefined} />
         ) : (
           <h3 className={`${fontFamily} ${logoColor} text-3xl font-bold tracking-tight text-center`}>{logoText}</h3>
         )}
