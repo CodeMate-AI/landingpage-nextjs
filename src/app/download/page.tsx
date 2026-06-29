@@ -24,11 +24,11 @@ const DownloadPage = () => {
     const handlePrimaryDownload = () => {
         let downloadLink = '';
         if (detectedOS === 'Windows') {
-            downloadLink = 'https://storage.devdash.codemateai.dev/uploads/e161c3ff-a4b7-4204-bb8e-26ee64f7aae1/download';
+            downloadLink = 'https://storage.devdash.codemate.ai/uploads/e161c3ff-a4b7-4204-bb8e-26ee64f7aae1/download';
         } else if (detectedOS === 'macOS') {
-            downloadLink = 'https://storage.devdash.codemateai.dev/uploads/e4846b4b-0eef-4a1d-b6b1-b326ad69b6d6/download';
+            downloadLink = 'https://storage.devdash.codemate.ai/uploads/e4846b4b-0eef-4a1d-b6b1-b326ad69b6d6/download';
         } else if (detectedOS === 'Linux') {
-            downloadLink = 'https://storage.devdash.codemateai.dev/uploads/adc0ea7f-42fe-47d0-aaf6-d27957eefaa8/download';
+            downloadLink = 'https://storage.devdash.codemate.ai/uploads/adc0ea7f-42fe-47d0-aaf6-d27957eefaa8/download';
         }
         if (downloadLink) {
             window.location.href = downloadLink;
@@ -163,8 +163,8 @@ const DownloadPage = () => {
                                 <h3 className="text-lg font-semibold tracking-tight">Windows</h3>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <DownloadRow label="Windows (ARM)" link='https://storage.devdash.codemateai.dev/uploads/800a8138-bf96-4e08-af58-b80486064f14/download' />
-                                <DownloadRow label="Windows (x64)" link='https://storage.devdash.codemateai.dev/uploads/e161c3ff-a4b7-4204-bb8e-26ee64f7aae1/download' />
+                                <DownloadRow label="Windows (ARM)" link='https://storage.devdash.codemate.ai/uploads/800a8138-bf96-4e08-af58-b80486064f14/download' />
+                                <DownloadRow label="Windows (x64)" link='https://storage.devdash.codemate.ai/uploads/e161c3ff-a4b7-4204-bb8e-26ee64f7aae1/download' />
                                 {/* <DownloadRow label="Windows (x64) User" link='' /> */}
                                 {/* <DownloadRow label="Windows (ARM64)" link='https://github.com/codemate-ai/codemate/releases/download/v3.5.0/codemate-3.5.0-setup.exe' /> */}
                             </div>
@@ -177,9 +177,9 @@ const DownloadPage = () => {
                                 {/* <span className="px-2 py-0.5 text-xs font-lighter lowercase tracking-tight text-muted-foreground bg-foreground/10 rounded-full ml-auto">Coming Soon</span> */}
                             </div>
                             <div className="flex flex-col gap-1">
-                                <DownloadRow link="https://storage.devdash.codemateai.dev/uploads/e4846b4b-0eef-4a1d-b6b1-b326ad69b6d6/download" label="Mac (ARM64)" />
-                                <DownloadRow link="https://storage.devdash.codemateai.dev/uploads/9c40b92b-3d56-441d-9570-d0363b939f38/download" label="Mac (Universal)" />
-                                {/* <DownloadRow link="https://storage.devdash.codemateai.dev/uploads/e4846b4b-0eef-4a1d-b6b1-b326ad69b6d6/download" label="Mac (ARM64)" /> */}
+                                <DownloadRow link="https://storage.devdash.codemate.ai/uploads/e4846b4b-0eef-4a1d-b6b1-b326ad69b6d6/download" label="Mac (ARM64)" />
+                                <DownloadRow link="https://storage.devdash.codemate.ai/uploads/9c40b92b-3d56-441d-9570-d0363b939f38/download" label="Mac (Universal)" />
+                                {/* <DownloadRow link="https://storage.devdash.codemate.ai/uploads/e4846b4b-0eef-4a1d-b6b1-b326ad69b6d6/download" label="Mac (ARM64)" /> */}
                                 {/* <DownloadRow isComingSoon={true} label="Mac (x64)" /> */}
                                 {/* <DownloadRow isComingSoon={true} label="Mac Universal" /> */}
                             </div>
@@ -192,9 +192,9 @@ const DownloadPage = () => {
                                 {/* <span className="px-2 py-0.5 text-xs font-lighter lowercase tracking-tight text-muted-foreground bg-foreground/10 rounded-full ml-auto">Coming Soon</span> */}
                             </div>
                             <div className="flex flex-col gap-1">
-                                <DownloadRow link="https://storage.devdash.codemateai.dev/uploads/adc0ea7f-42fe-47d0-aaf6-d27957eefaa8/download" label="Linux (x86)" />
-                                <DownloadRow link="https://storage.devdash.codemateai.dev/uploads/893fc28e-6b0d-444b-9f2c-f369389d07ff/download" label="Linux (AppImage)" />
-                                <DownloadRow link="https://storage.devdash.codemateai.dev/uploads/6b99ace3-8658-4fb1-9543-8abc8c3aa133/download" label="Linux (Arch)" />
+                                <DownloadRow link="https://storage.devdash.codemate.ai/uploads/adc0ea7f-42fe-47d0-aaf6-d27957eefaa8/download" label="Linux (x86)" />
+                                <DownloadRow link="https://storage.devdash.codemate.ai/uploads/893fc28e-6b0d-444b-9f2c-f369389d07ff/download" label="Linux (AppImage)" />
+                                <DownloadRow link="https://storage.devdash.codemate.ai/uploads/6b99ace3-8658-4fb1-9543-8abc8c3aa133/download" label="Linux (Arch)" />
                                 {/* <DownloadRow isComingSoon={true} label="Linux .deb (ARM64)" /> */}
                                 {/* <DownloadRow isComingSoon={true} label="Linux .deb (x64)" /> */}
                                 {/* <DownloadRow isComingSoon={true} label="Linux RPM (x64)" /> */}

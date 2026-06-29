@@ -1203,7 +1203,7 @@ function Page() {
         badgeText="Republic Day Special"
         offerText="Flat 77% OFF"
         discountLabel="50% OFF"
-        imageSrc='https://backend.v3.codemateai.dev/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
+        imageSrc='https://backend.codemate.ai/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
       />
 
       <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-4 lg:mt-0'>
@@ -1362,7 +1362,7 @@ function Page() {
                 {/* Cards */}
                 <div className="flex gap-0 md:gap-[40px] lg:gap-16">
                   {[
-                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/Design mode_static.png", isVideo: false, objectFit: "object-cover"},
+                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/Design mode_static.png", isVideo: false, objectFit: "object-cover" },
                     { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/figma-to-code-static.png", isVideo: false, objectFit: "object-cover" },
                     { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skill-static.png", isVideo: false, objectFit: "object-cover" },
                     { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "/cora-autonomous.png", isVideo: false, objectFit: "object-cover" },

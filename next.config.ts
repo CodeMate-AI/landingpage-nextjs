@@ -12,7 +12,7 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: 'api.microlink.io' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'assests.aceternity.com' },
-      { protocol: 'https', hostname: 'backend.v3.codemateai.dev' },
+      { protocol: 'https', hostname: 'backend.codemate.ai' },
     ],
   },
   allowedDevOrigins: ['127.0.0.1:3000', 'localhost:3000'],
