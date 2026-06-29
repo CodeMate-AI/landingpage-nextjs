@@ -13,6 +13,16 @@ const montserrat = Montserrat({
 // Mock data based on the provided screenshot
 const mediaItems = [
   {
+    logoText: "THE FOUNDER",
+    logoBg: "bg-white",
+    logoColor: "text-black",
+    fontFamily: "font-serif font-bold",
+    headline: "Maruti Suzuki onboards CodeMate AI to boost AI and sustainability initiatives",
+    image: "/the_founder_media.jpg",
+    link: "https://thefoundermedia.com/maruti-suzuki-onboards-five-startups-to-boost-ai-and-sustainability-initiatives/",
+    fill: true
+  },
+  {
     logoText: "THE HINDU",
     logoBg: "bg-white",
     logoColor: "text-[#0A3055]",
