@@ -11,7 +11,17 @@ const montserrat = Montserrat({
 });
 
 const mediaItems = [
-   {
+  {
+    logoText: "Autocar Professional",
+    logoBg: "bg-white",
+    logoColor: "text-red-600",
+    fontFamily: "font-sans font-bold italic",
+    headline: "CodeMate AI featured as a Maruti Suzuki Incubation Program Cohort 5 startup.",
+    image: "/autocar media.jpg",
+    link: "https://www.autocarpro.in/news/maruti-suzuki-onboards-five-startups-under-incubation-program-133270",
+    scale: 1.4
+  },
+  {
     logoText: "Business Standard",
     logoBg: "bg-white",
     logoColor: "text-[#BF262A]",
