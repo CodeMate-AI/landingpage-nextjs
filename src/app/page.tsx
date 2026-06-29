@@ -1672,6 +1672,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
               <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10' />
               <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw] opacity-100 brightness-150' />
               <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
+              <img src='maruti-suzuki.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' alt="Maruti Suzuki" />
               <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
             </Marquee>
           </div>
