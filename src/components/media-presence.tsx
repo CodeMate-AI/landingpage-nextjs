@@ -42,6 +42,26 @@ const mediaItems = [
     scale: 1.4
   },
   {
+    logoText: "moneycontrol",
+    logoBg: "bg-white",
+    logoColor: "text-[#1C9B54]",
+    fontFamily: "font-serif font-bold italic",
+    headline: "CodeMate AI powers the future of software engineering through Maruti Suzuki's innovation ecosystem.",
+    image: "https://getlogo.net/wp-content/uploads/2020/04/moneycontrol-logo-vector.png",
+    link: "https://www.moneycontrol.com/news/business/companies/maruti-suzuki-onboards-5-startups-to-co-create-solutions-across-multiple-biz-areas-13961276.html?utm_medium=social&utm_source=twitter&utm_campaign=regular-editorial",
+    scale: 1.4
+  },
+  {
+    logoText: "CNBC",
+    logoBg: "bg-white",
+    logoColor: "text-[#002F6C]",
+    fontFamily: "font-sans font-bold",
+    headline: "CodeMate AI joins forces with Maruti Suzuki to bring AI-driven software development into enterprise operations.",
+    image: "/cnbc media.jpg",
+    link: "https://x.com/cnbctv18live/status/2071483119191110081?s=46",
+    scale: 1.4
+  },
+  {
     logoText: "Whalesbook",
     logoBg: "bg-white",
     logoColor: "text-[#002D62]",
