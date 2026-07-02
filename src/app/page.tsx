@@ -1628,7 +1628,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
             <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
               className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
               direction="up"
-              targetValue={100000} />+</h1>
+              targetValue={1000000} />+</h1>
             <p className=' mt-2 text-sm md:text-xl lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
           </div>
 
@@ -1672,6 +1672,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
               <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10' />
               <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw] opacity-100 brightness-150' />
               <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
+              <img src='maruti-suzuki.svg' className='object-fit w-[64vw] lg:w-[26vw] opacity-100 brightness-150' alt="Maruti Suzuki" />
               <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
             </Marquee>
           </div>

@@ -10,8 +10,127 @@ const montserrat = Montserrat({
   variable: '--font-montserrat',
 });
 
-// Mock data based on the provided screenshot
 const mediaItems = [
+  {
+    logoText: "The Economic Times",
+    logoBg: "bg-white",
+    logoColor: "text-[#D8232A]",
+    fontFamily: "font-serif font-bold italic",
+    headline: "Maruti Suzuki selects CodeMate AI for its Incubation Program. Powering the next generation of AI-driven enterprise productivity.",
+    image: "/economicsTimes-media.jpg",
+    link: "https://m.economictimes.com/industry/auto/auto-news/maruti-suzuki-picks-5-startups-including-sarvam-ai-for-multilingual-customer-support/amp_articleshow/132065492.cms",
+    scale: 1.4
+  },
+  {
+    logoText: "Angel One",
+    logoBg: "bg-white",
+    logoColor: "text-[#004A96]",
+    fontFamily: "font-sans font-bold",
+    headline: "CodeMate AI joins an elite cohort of startups backed by Maruti Suzuki. Driving enterprise AI innovation from idea to impact.",
+    image: "/angelOneMedia.jpg",
+    link: "https://www.angelone.in/news/stocks/maruti-suzuki-incubation-program-onboards-5-startups-for-ai-battery-recycling-solutions",
+    scale: 1.4
+  },
+  {
+    logoText: "ANI News",
+    logoBg: "bg-white",
+    logoColor: "text-[#D8232A]",
+    fontFamily: "font-sans font-bold",
+    headline: "CodeMate AI joins Maruti Suzuki's Incubation Program. Accelerating AI-powered innovation for the future of manufacturing.",
+    image: "/aniNews.jpg",
+    link: "https://www.aninews.in/news/business/maruti-suzuki-partners-with-five-startups-to-boost-efficiency-and-customer-experience20260629124343/",
+    scale: 1.4
+  },
+  {
+    logoText: "moneycontrol",
+    logoBg: "bg-white",
+    logoColor: "text-[#1C9B54]",
+    fontFamily: "font-serif font-bold italic",
+    headline: "CodeMate AI powers the future of software engineering through Maruti Suzuki's innovation ecosystem.",
+    image: "https://getlogo.net/wp-content/uploads/2020/04/moneycontrol-logo-vector.png",
+    link: "https://www.moneycontrol.com/news/business/companies/maruti-suzuki-onboards-5-startups-to-co-create-solutions-across-multiple-biz-areas-13961276.html?utm_medium=social&utm_source=twitter&utm_campaign=regular-editorial",
+    scale: 1.4
+  },
+  {
+    logoText: "CNBC",
+    logoBg: "bg-white",
+    logoColor: "text-[#002F6C]",
+    fontFamily: "font-sans font-bold",
+    headline: "CodeMate AI joins forces with Maruti Suzuki to bring AI-driven software development into enterprise operations.",
+    image: "/cnbc media.jpg",
+    link: "https://x.com/cnbctv18live/status/2071483119191110081?s=46",
+    scale: 1.4
+  },
+  {
+    logoText: "Whalesbook",
+    logoBg: "bg-white",
+    logoColor: "text-[#002D62]",
+    fontFamily: "font-sans font-bold",
+    headline: "CodeMate AI chosen by Maruti Suzuki to accelerate software development with AI.",
+    image: "/whalesbook news.png",
+    link: "https://www.whalesbook.com/news/English/technology/Maruti-Suzuki-Partners-With-5-Startups-to-Advance-AI-and-Battery-Tech/6a422024fb97bcde4ce5b059",
+    scale: 1.4
+  },
+  {
+    logoText: "Devdiscourse",
+    logoBg: "bg-white",
+    logoColor: "text-[#005B94]",
+    fontFamily: "font-sans font-bold",
+    headline: "Recognized among five startups selected by Maruti Suzuki for its Incubation Program",
+    image: "/devdiscourseMedia.png",
+    link: "https://www.devdiscourse.com/article/business/3942107-maruti-suzuki-teams-up-with-startups-to-boost-efficiency-and-customer-experience?amp",
+    scale: 1.4
+  },
+  {
+    logoText: "Kalinga TV",
+    logoBg: "bg-white",
+    logoColor: "text-[#E31E24]",
+    fontFamily: "font-sans font-bold",
+    headline: "Maruti Suzuki partners with CodeMate AI to advance AI-driven software engineering.",
+    image: "/kalingaTV.jpg",
+    link: "https://kalingatv.com/business/maruti-suzuki-partners-with-five-startups-to-boost-efficiency-and-customer-experience/",
+    scale: 1.4
+  },
+  {
+    logoText: "Prameya News",
+    logoBg: "bg-white",
+    logoColor: "text-[#005A9C]",
+    fontFamily: "font-sans font-bold",
+    headline: "Recognized in the media for joining Maruti Suzuki's startup incubation cohort.",
+    image: "/prameyaNews.jpg",
+    link: "https://www.prameyanews.com/maruti-suzuki-partners-with-five-startups-to-boost-efficiency-and-customer-experience",
+    scale: 1.4
+  },
+  {
+    logoText: "Autocar Professional",
+    logoBg: "bg-white",
+    logoColor: "text-red-600",
+    fontFamily: "font-sans font-bold italic",
+    headline: "CodeMate AI featured as a Maruti Suzuki Incubation Program Cohort 5 startup.",
+    image: "/autocar media.jpg",
+    link: "https://www.autocarpro.in/news/maruti-suzuki-onboards-five-startups-under-incubation-program-133270",
+    scale: 1.4
+  },
+  {
+    logoText: "Business Standard",
+    logoBg: "bg-white",
+    logoColor: "text-[#BF262A]",
+    fontFamily: "font-serif font-bold",
+    headline: "Featured by leading media for joining Maruti Suzuki's Incubation Program (MSIP)",
+    image: "/Business-Standard-Media.jpg",
+    link: "https://www.business-standard.com/industry/auto/maruti-suzuki-five-startups-ai-battery-recycling-solutions-126062900338_1.html",
+    scale: 1.4
+  },
+  {
+    logoText: "THE FOUNDER",
+    logoBg: "bg-white",
+    logoColor: "text-black",
+    fontFamily: "font-serif font-bold",
+    headline: "Maruti Suzuki onboards CodeMate AI to boost AI and sustainability initiatives",
+    image: "/the_founder_media.jpg",
+    link: "https://thefoundermedia.com/maruti-suzuki-onboards-five-startups-to-boost-ai-and-sustainability-initiatives/",
+    fill: true
+  },
   {
     logoText: "THE HINDU",
     logoBg: "bg-white",
@@ -189,13 +308,13 @@ export default function MediaPresence() {
   );
 }
 
-function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, link, fill }: { logoText: string, logoBg: string, logoColor: string, fontFamily: string, headline: string, image?: string, link?: string, fill?: boolean }) {
+function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, link, fill, scale }: { logoText: string, logoBg: string, logoColor: string, fontFamily: string, headline: string, image?: string, link?: string, fill?: boolean, scale?: number }) {
   return (
     <motion.div className='relative h-[24rem] md:h-[32rem] lg:h-[24rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 flex flex-col p-5 md:p-10 hover:border-white/20 transition-all'>
       {/* Logo Area */}
       <div className={`h-[10rem] md:h-[15rem] lg:h-[10rem] w-full ${fill ? 'bg-zinc-800' : 'bg-white p-6'} rounded-2xl flex items-center justify-center shadow-inner overflow-hidden`}>
         {image ? (
-          <img src={image} alt={logoText} className={`${fill ? 'object-cover' : 'object-contain'} h-full w-full`} />
+          <img src={image} alt={logoText} className={`${fill ? 'object-cover' : 'object-contain'} h-full w-full transition-transform`} style={scale ? { transform: `scale(${scale})` } : undefined} />
         ) : (
           <h3 className={`${fontFamily} ${logoColor} text-3xl font-bold tracking-tight text-center`}>{logoText}</h3>
         )}
