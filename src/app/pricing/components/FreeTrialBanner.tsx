@@ -87,7 +87,7 @@ export default function FreeTrialBanner() {
                         {/* Free Trial Badge - More Prominent */}
                         <div className="px-5 py-2 bg-gradient-to-r from-emerald-500/15 to-green-500/15 border border-emerald-500/30 rounded-full">
                             <span className="text-sm lg:text-base font-bold text-emerald-400">
-                                60-Day Free Trial • Worth $500
+                                14-Day Free Trial • Worth $500
                             </span>
                         </div>
                     </motion.div>

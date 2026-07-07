@@ -344,7 +344,7 @@ function Page() {
                 </span>
                 <div className="flex min-w-0 items-center gap-0.5 text-[11px] sm:text-[13px] font-medium leading-snug">
                   <p className="truncate max-w-[200px] xs:max-w-[260px] sm:max-w-none text-center sm:text-left text-neutral-300">
-                    Get <span className="text-white font-semibold">60 Days of PRO</span> for free
+                    Get <span className="text-white font-semibold">14 Days of PRO</span> for free
                   </p>
                   <ChevronRight className="ml-0.5 text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
                 </div>
