@@ -46,6 +46,7 @@ function Footer() {
             <h4 className="font-semibold mb-3 text-white text-sm md:text-base">OTHERS</h4>
             <ul className="space-y-2 text-xs md:text-xs">
               <li><a href="/contact" className="hover:underline">Contact Us</a></li>
+              <li><a href="https://docs.codemate.ai" target="_blank" rel="noopener noreferrer" className="hover:underline">Docs</a></li>
               <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="hover:underline">Hugging Face</a></li>
               <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="hover:underline">Refund Policy</a></li>
             </ul>
