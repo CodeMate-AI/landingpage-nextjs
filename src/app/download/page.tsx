@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Download, CheckCircle2 } from 'lucide-react';
+import { Download, CheckCircle2, ExternalLink } from 'lucide-react';
 import { FaWindows, FaApple, FaLinux } from 'react-icons/fa';
 import Image from 'next/image';
 import { HeroVideoDialog } from '@/components/ui/hero-video-dialog';
@@ -99,11 +99,12 @@ const DownloadPage = () => {
                                 Available for macOS, Windows, and Linux.
                             </p>
                         </motion.div>
-                        {/* Primary CTA */}
+                        {/* Primary CTA Container */}
                         <motion.div
                             initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.2 }}
+                            className="flex flex-row flex-wrap items-center gap-4 justify-center sm:justify-start w-full"
                         >
                             <button
                                 onClick={handlePrimaryDownload}
@@ -132,6 +133,15 @@ const DownloadPage = () => {
                   )} */}
                                 {/* </AnimatePresence> */}
                             </button>
+                            <a
+                                href="https://docs.codemate.ai/toolbox"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2.5 px-6 py-2.5 border border-white/10 hover:bg-white/5 text-foreground rounded-full font-medium text-sm transition-colors duration-300"
+                            >
+                                <span>Read Setup Guide</span>
+                                <ExternalLink className="w-3.5 h-3.5 text-foreground/80" />
+                            </a>
                         </motion.div>
                     </div>
                 </div>
