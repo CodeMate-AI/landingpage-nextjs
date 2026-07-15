@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Montserrat } from 'next/font/google'
 import { Check, ChevronDown, Send, ArrowLeft } from 'lucide-react'
+import Footer from '@/components/footer'
 const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
@@ -523,6 +524,8 @@ export default function ContactPage() {
         </motion.div>
 
       </div>
+
+      <Footer />
     </div>
   )
 }
