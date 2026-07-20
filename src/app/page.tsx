@@ -1730,7 +1730,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       {/* ========================================== */}
       {/* UI SECTION: LOGO BANNER                   */}
       {/* ========================================== */}
-      <div className='relative w-full h-[30vh] md:h-[45vh] lg:h-[60vh] bg-zinc-950 flex items-center justify-center overflow-hidden border-t border-white/5'>
+      <div className='relative w-full h-[30vh] md:h-[35vh] lg:h-[60vh] bg-zinc-950 flex items-center justify-center overflow-hidden border-t border-white/5'>
         <img src="/codemateLogo.svg" className='absolute object-fit w-[95vw] brightness-[0.6] pointer-events-none select-none' alt="CodeMate Logo" />
       </div>
 
