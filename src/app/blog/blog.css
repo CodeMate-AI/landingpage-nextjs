@@ -323,17 +323,18 @@
 /* Main layout */
 .main-layout {
   display: flex;
-  gap: 48px;
+  gap: 32px;
   padding: 64px 0;
+  align-items: flex-start;
 }
 
 .sidebar {
-  width: 240px;
+  width: 220px;
   flex-shrink: 0;
   position: sticky;
-  top: 80px;
+  top: 98px;
   align-self: flex-start;
-  max-height: calc(100vh - 112px);
+  max-height: calc(100vh - 120px);
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: var(--border-hover) transparent;
