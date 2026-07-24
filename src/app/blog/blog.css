@@ -282,10 +282,12 @@
 
 .ticker-set {
   display: flex;
+  flex-shrink: 0;
 }
 
 .ticker-item {
   min-width: 360px;
+  flex-shrink: 0;
   padding: 24px;
   border-right: 1px solid var(--border);
   display: flex;
@@ -963,8 +965,22 @@
     display: block;
   }
 
+  .search-bar-main {
+    display: none !important;
+  }
+
+  .view-toggle {
+    display: none !important;
+  }
+
+  .quick-filters {
+    display: none !important;
+  }
+
   .filter-toggle-btn {
-    display: inline-flex;
+    display: inline-flex !important;
+    width: 100% !important;
+    justify-content: center !important;
   }
 
   /* Toolbar: solid background to prevent visual bleed-through from sidebar above */
@@ -1047,6 +1063,17 @@
 
   .search-shortcut {
     display: none;
+  }
+
+  .search-toolbar {
+    display: grid !important;
+    grid-template-columns: 1fr auto !important;
+    gap: 12px !important;
+  }
+
+  .search-bar-main {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
   }
 
   .card-grid {
