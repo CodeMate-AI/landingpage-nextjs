@@ -68,8 +68,7 @@ export default function BlogPostClient({ post, posts }: Props) {
   }, [post.sections]);
 
   const handleCopyLink = async () => {
-    const origin = window.location.origin || "https://blog.codemate.ai";
-    const shareUrl = `${origin}/${post.slug}`;
+    const shareUrl = window.location.href;
 
     try {
       await navigator.clipboard.writeText(shareUrl);
@@ -79,6 +78,9 @@ export default function BlogPostClient({ post, posts }: Props) {
       setCopied(false);
     }
   };
+
+  // Canonical share URL — always matches the current page (works in both dev and production)
+  const canonicalUrl = typeof window !== "undefined" ? window.location.href : `https://codemate.ai/blog/${post.slug}`;
 
   const currentIndex = posts.findIndex((candidate) => candidate.id === post.id);
   const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
@@ -143,7 +145,7 @@ export default function BlogPostClient({ post, posts }: Props) {
             <div className="rail-section-title">Share</div>
             <div className="rail-share">
               <a
-                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`Check out this article: "${post.title}"\n\nhttps://blog.codemate.ai/${post.slug}`)}`}
+                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`Check out this article: "${post.title}"`)}&url=${encodeURIComponent(canonicalUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rail-share-btn"
@@ -154,7 +156,7 @@ export default function BlogPostClient({ post, posts }: Props) {
                 </svg>
               </a>
               <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://blog.codemate.ai/${post.slug}`)}`}
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rail-share-btn"
