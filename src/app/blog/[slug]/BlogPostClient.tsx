@@ -24,7 +24,15 @@ export default function BlogPostClient({ post, posts }: Props) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState<string>(post.sections[0]?.id || "intro");
   const [copied, setCopied] = useState(false);
+  // Initialized to the server-safe URL so SSR and first client render agree (no hydration mismatch).
+  // After mount, updated to the exact window.location.href.
+  const [canonicalUrl, setCanonicalUrl] = useState(`https://codemate.ai/blog/${post.slug}`);
   const articleRef = useRef<HTMLDivElement>(null);
+
+  // Update share URL after mount so it reflects the real current URL (localhost in dev, codemate.ai in prod)
+  useEffect(() => {
+    setCanonicalUrl(window.location.href);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -68,19 +76,14 @@ export default function BlogPostClient({ post, posts }: Props) {
   }, [post.sections]);
 
   const handleCopyLink = async () => {
-    const shareUrl = window.location.href;
-
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(canonicalUrl);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
     }
   };
-
-  // Canonical share URL — always matches the current page (works in both dev and production)
-  const canonicalUrl = typeof window !== "undefined" ? window.location.href : `https://codemate.ai/blog/${post.slug}`;
 
   const currentIndex = posts.findIndex((candidate) => candidate.id === post.id);
   const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
