@@ -158,7 +158,7 @@
 
 .hero-label {
   font-family: monospace;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--accent);
   letter-spacing: 0.15em;
@@ -183,11 +183,7 @@
   color: var(--text-secondary);
   max-width: 620px;
   line-height: 1.5;
-  margin-bottom: 40px;
-}
-
-.hero-search-wrap {
-  margin-bottom: 64px;
+  margin-bottom: 0;
 }
 
 .hero-search-bar {
@@ -200,7 +196,18 @@
   padding: 0 20px;
   max-width: 720px;
   width: 100%;
-  min-height: 60px;
+  min-height: 56px;
+  transition: border-color 200ms ease;
+}
+
+.hero-search-bar:focus-within {
+  border-color: var(--border-hover);
+}
+
+/* Full-width search bar inside content area */
+.search-bar-main {
+  max-width: 100% !important;
+  flex: 1;
 }
 
 .hero-search-icon {
@@ -324,12 +331,65 @@
 .main-layout {
   display: flex;
   gap: 32px;
-  padding: 64px 0;
+  padding: 48px 0 80px;
   align-items: flex-start;
 }
 
+/* Content header: search toolbar + quick filters */
+.content-header {
+  margin-bottom: 28px;
+}
+
+.search-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.quick-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.quick-filter-pill {
+  padding: 7px 20px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  border: 1.5px solid var(--border-hover);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 180ms ease;
+  font-family: var(--font-montserrat), sans-serif;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.quick-filter-pill:hover {
+  border-color: var(--accent);
+  color: var(--text-primary);
+  background: rgba(59, 130, 246, 0.06);
+}
+
+.quick-filter-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #ffffff;
+}
+
+.quick-filter-pill.active:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
 .sidebar {
-  width: 220px;
+  width: 210px;
   flex-shrink: 0;
   position: sticky;
   top: 98px;

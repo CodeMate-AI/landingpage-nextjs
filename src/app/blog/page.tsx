@@ -53,8 +53,14 @@ const tickerItems = blogPosts.map((post) => {
 const productFilters = ["CORA", "C0", "C0 Web", "Build", "AI Terminal", "Education", "PR Review Agent"] as const;
 const useCaseFilters = ["Code Review", "Agents", "Security", "Enterprise", "Onboarding", "Testing"] as const;
 
+// Unique tag labels derived from posts for quick-filter pills
+const uniqueTagLabels = Array.from(
+  new Set(blogPosts.flatMap((p) => p.tags.map((t) => t.label)))
+);
+
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [selectedUseCases, setSelectedUseCases] = useState<string[]>([]);
@@ -69,7 +75,6 @@ export default function Home() {
     useCase: false,
   });
 
-  // Filter and sort computation
   const filteredAndSortedPosts = useMemo(() => {
     const result = blogPosts.filter((post) => {
       // Search match
@@ -80,35 +85,35 @@ export default function Home() {
         post.category.toLowerCase().includes(query) ||
         post.tags.some((tag) => tag.label.toLowerCase().includes(query));
 
-      // Category match
+      // Quick tag pill filter
+      const matchesTag =
+        selectedTag === null ||
+        post.tags.some((t) => t.label === selectedTag);
+
+      // Sidebar category filter
       const matchesCategory =
         selectedCategories.length === 0 || selectedCategories.includes(post.category);
 
-      // Product filters match
+      // Sidebar product filter
       const matchesProduct =
         selectedProducts.length === 0 ||
         post.tags.some((tag) => selectedProducts.includes(tag.label));
 
-      // Use case filters match
+      // Sidebar use case filter
       const matchesUseCase =
         selectedUseCases.length === 0 ||
         post.tags.some((tag) => selectedUseCases.includes(tag.label)) ||
         selectedUseCases.includes(post.category);
 
-      return matchesSearch && matchesCategory && matchesProduct && matchesUseCase;
+      return matchesSearch && matchesTag && matchesCategory && matchesProduct && matchesUseCase;
     });
 
-    // Sorting
     return result.sort((a, b) => {
-      if (sortBy === "a-z") {
-        return a.title.localeCompare(b.title);
-      } else if (sortBy === "z-a") {
-        return b.title.localeCompare(a.title);
-      } else {
-        return b.dateValue.localeCompare(a.dateValue); // newest first
-      }
+      if (sortBy === "a-z") return a.title.localeCompare(b.title);
+      if (sortBy === "z-a") return b.title.localeCompare(a.title);
+      return b.dateValue.localeCompare(a.dateValue);
     });
-  }, [searchQuery, selectedCategories, selectedProducts, selectedUseCases, sortBy]);
+  }, [searchQuery, selectedTag, selectedCategories, selectedProducts, selectedUseCases, sortBy]);
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories((current) =>
@@ -146,6 +151,7 @@ export default function Home() {
 
   const hasActiveFilters =
     searchQuery.trim() !== "" ||
+    selectedTag !== null ||
     selectedCategories.length > 0 ||
     selectedProducts.length > 0 ||
     selectedUseCases.length > 0 ||
@@ -153,6 +159,7 @@ export default function Home() {
 
   const handleReset = () => {
     setSearchQuery("");
+    setSelectedTag(null);
     setSelectedCategories([]);
     setSelectedProducts([]);
     setSelectedUseCases([]);
@@ -160,8 +167,6 @@ export default function Home() {
     setShowFilters(false);
     setVisibleCount(6);
   };
-
-
 
   return (
     <>
@@ -174,26 +179,6 @@ export default function Home() {
         <p className="hero-sub">
           Deep dives, product updates, and case studies for teams<br className="hidden sm:inline" /> building with AI-native developer tools.
         </p>
-
-        <div className="hero-search-wrap">
-          <div className="hero-search-bar">
-            <svg className="hero-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-            </svg>
-            <input
-              suppressHydrationWarning
-              className="hero-search-input"
-              type="text"
-              placeholder="Search articles, guides, and case studies..."
-              value={searchQuery}
-              onChange={(event) => {
-                setSearchQuery(event.target.value);
-                setVisibleCount(6);
-              }}
-            />
-          </div>
-        </div>
       </section>
 
       {/* Ticker */}
@@ -225,6 +210,8 @@ export default function Home() {
 
       {/* Main Content */}
       <section className="main-layout container">
+
+        {/* Left Sidebar — Advanced Filters */}
         <aside className={`sidebar ${showFilters ? "open" : ""}`}>
           <div className="sidebar-title">
             <span>Filter and sort</span>
@@ -235,6 +222,7 @@ export default function Home() {
             ) : null}
           </div>
 
+          {/* Sort by */}
           <div className="filter-group">
             <button
               type="button"
@@ -245,14 +233,8 @@ export default function Home() {
               <span>Sort by</span>
               <svg
                 className={`chevron-icon ${openGroups.sortBy ? "expanded" : ""}`}
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                width="12" height="12" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                 aria-hidden="true"
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -273,6 +255,7 @@ export default function Home() {
             ) : null}
           </div>
 
+          {/* Category */}
           <div className="filter-group">
             <button
               type="button"
@@ -283,14 +266,8 @@ export default function Home() {
               <span>Category</span>
               <svg
                 className={`chevron-icon ${openGroups.category ? "expanded" : ""}`}
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                width="12" height="12" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                 aria-hidden="true"
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -311,6 +288,7 @@ export default function Home() {
             ) : null}
           </div>
 
+          {/* Product */}
           <div className="filter-group">
             <button
               type="button"
@@ -321,14 +299,8 @@ export default function Home() {
               <span>Product</span>
               <svg
                 className={`chevron-icon ${openGroups.product ? "expanded" : ""}`}
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                width="12" height="12" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                 aria-hidden="true"
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -349,6 +321,7 @@ export default function Home() {
             ) : null}
           </div>
 
+          {/* Use case */}
           <div className="filter-group">
             <button
               type="button"
@@ -359,14 +332,8 @@ export default function Home() {
               <span>Use case</span>
               <svg
                 className={`chevron-icon ${openGroups.useCase ? "expanded" : ""}`}
-                width="12"
-                height="12"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
+                width="12" height="12" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
                 aria-hidden="true"
               >
                 <polyline points="6 9 12 15 18 9" />
@@ -388,50 +355,102 @@ export default function Home() {
           </div>
         </aside>
 
+        {/* Right: Search + Quick Filters + Cards */}
         <div className="main-content">
-          <div className="toolbar">
-            <button
-              suppressHydrationWarning
-              className="filter-toggle-btn"
-              onClick={() => setShowFilters((current) => !current)}
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-              </svg>
-              <span>{showFilters ? "Hide Filters" : "Filters & Sort"}</span>
-            </button>
-            <div className="view-toggle toolbar-actions">
+
+          {/* Search Bar + View Toggle + Quick Filter Pills */}
+          <div className="content-header">
+            <div className="search-toolbar">
+              {/* Mobile filter toggle */}
               <button
                 suppressHydrationWarning
-                className={`toggle-btn ${viewMode === "grid" ? "active" : ""}`}
-                aria-label="Grid view"
-                onClick={() => setViewMode("grid")}
+                className="filter-toggle-btn"
+                onClick={() => setShowFilters((current) => !current)}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-                  <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-                  <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-                  <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                 </svg>
+                <span>{showFilters ? "Hide Filters" : "Filters"}</span>
               </button>
+
+              <div className="hero-search-bar search-bar-main">
+                <svg
+                  className="hero-search-icon"
+                  width="20" height="20" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input
+                  suppressHydrationWarning
+                  className="hero-search-input"
+                  type="text"
+                  placeholder="Search articles, guides, and case studies..."
+                  value={searchQuery}
+                  onChange={(event) => {
+                    setSearchQuery(event.target.value);
+                    setVisibleCount(6);
+                  }}
+                />
+              </div>
+
+              <div className="view-toggle">
+                <button
+                  suppressHydrationWarning
+                  className={`toggle-btn ${viewMode === "grid" ? "active" : ""}`}
+                  aria-label="Grid view"
+                  onClick={() => setViewMode("grid")}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                  </svg>
+                </button>
+                <button
+                  suppressHydrationWarning
+                  className={`toggle-btn ${viewMode === "list" ? "active" : ""}`}
+                  aria-label="List view"
+                  onClick={() => setViewMode("list")}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Filter Pills */}
+            <div className="quick-filters">
               <button
                 suppressHydrationWarning
-                className={`toggle-btn ${viewMode === "list" ? "active" : ""}`}
-                aria-label="List view"
-                onClick={() => setViewMode("list")}
+                className={`quick-filter-pill ${selectedTag === null ? "active" : ""}`}
+                onClick={() => { setSelectedTag(null); setVisibleCount(6); }}
               >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <line x1="8" y1="6" x2="21" y2="6"></line>
-                  <line x1="8" y1="12" x2="21" y2="12"></line>
-                  <line x1="8" y1="18" x2="21" y2="18"></line>
-                  <line x1="3" y1="6" x2="3.01" y2="6"></line>
-                  <line x1="3" y1="12" x2="3.01" y2="12"></line>
-                  <line x1="3" y1="18" x2="3.01" y2="18"></line>
-                </svg>
+                All
               </button>
+              {uniqueTagLabels.map((tag) => (
+                <button
+                  key={tag}
+                  suppressHydrationWarning
+                  className={`quick-filter-pill ${selectedTag === tag ? "active" : ""}`}
+                  onClick={() => { setSelectedTag(selectedTag === tag ? null : tag); setVisibleCount(6); }}
+                >
+                  {tag}
+                </button>
+              ))}
             </div>
           </div>
 
+          {/* Card Grid */}
           <div className={`card-grid ${viewMode === "list" ? "list" : ""}`}>
             {filteredAndSortedPosts.slice(0, visibleCount).map((post) => (
               <Link href={`/blog/${post.slug}`} className="card" key={post.id}>
@@ -475,8 +494,6 @@ export default function Home() {
           )}
         </div>
       </section>
-
-
     </>
   );
 }
