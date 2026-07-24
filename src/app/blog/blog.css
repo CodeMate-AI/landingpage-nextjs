@@ -1289,6 +1289,16 @@
   color: var(--text-secondary);
 }
 
+.article-content a {
+  color: var(--accent) !important;
+  text-decoration: underline !important;
+  transition: color 200ms ease;
+}
+
+.article-content a:hover {
+  color: var(--accent-hover) !important;
+}
+
 .lead {
   font-size: 18px;
   line-height: 1.65;
