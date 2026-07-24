@@ -157,8 +157,7 @@ function Page() {
 
   // Top announcement banner
   const [showAnnouncement, setShowAnnouncement] = useState(true);
-  const SWE_BENCH_BLOG_URL =
-    'https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/';
+  const SWE_BENCH_BLOG_URL = '/blog/cora-sota-swe-bench';
   const announcementRef = useRef<HTMLDivElement>(null);
 
 
@@ -343,7 +342,7 @@ function Page() {
                     <div
                       role="button"
                       tabIndex={0}
-                      onClick={() => window.open('https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/', '_blank')}
+                      onClick={() => window.open('/blog/cora-sota-swe-bench', '_blank')}
                       onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
                       className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-4 py-3 sm:px-3 sm:py-2 md:px-4 md:py-2.5 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
                     >

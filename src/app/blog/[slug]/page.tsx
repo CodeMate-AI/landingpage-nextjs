@@ -26,12 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title,
     description,
     alternates: {
-      canonical: `https://blog.codemate.ai/${slug}`,
+      canonical: `https://codemate.ai/blog/${slug}`,
     },
     openGraph: {
       type: 'article',
       locale: 'en_US',
-      url: `https://blog.codemate.ai/${slug}`,
+      url: `https://codemate.ai/blog/${slug}`,
       title,
       description,
       images: [

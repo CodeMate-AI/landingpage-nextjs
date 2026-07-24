@@ -57,8 +57,7 @@ export default function Navbar() {
     setIsNBack(latest >= 10);
   });
 
-  const SWE_BENCH_BLOG_URL =
-    'https://blog.codemate.ai/cora-achieves-sota-with-76-resolution-rate-on-swe-bench-verified-subset-outperforming-industry-leaders-2/';
+  const SWE_BENCH_BLOG_URL = '/blog/cora-sota-swe-bench';
 
   // Track announcement banner height for responsive navbar offset
   useEffect(() => {

@@ -24,15 +24,7 @@ export default function BlogPostClient({ post, posts }: Props) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState<string>(post.sections[0]?.id || "intro");
   const [copied, setCopied] = useState(false);
-  // Initialized to the server-safe URL so SSR and first client render agree (no hydration mismatch).
-  // After mount, updated to the exact window.location.href.
-  const [canonicalUrl, setCanonicalUrl] = useState(`https://codemate.ai/blog/${post.slug}`);
   const articleRef = useRef<HTMLDivElement>(null);
-
-  // Update share URL after mount so it reflects the real current URL (localhost in dev, codemate.ai in prod)
-  useEffect(() => {
-    setCanonicalUrl(window.location.href);
-  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -76,14 +68,19 @@ export default function BlogPostClient({ post, posts }: Props) {
   }, [post.sections]);
 
   const handleCopyLink = async () => {
+    // Dynamic URL detection at click time (avoids SSR hydration mismatch)
+    const shareUrl = typeof window !== "undefined" ? window.location.href : `https://codemate.ai/blog/${post.slug}`;
     try {
-      await navigator.clipboard.writeText(canonicalUrl);
+      await navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
       setCopied(false);
     }
   };
+
+  // Always use the production URL for social share crawlers/previews (so localhost doesn't prevent autofill)
+  const productionShareUrl = `https://codemate.ai/blog/${post.slug}`;
 
   const currentIndex = posts.findIndex((candidate) => candidate.id === post.id);
   const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
@@ -148,7 +145,7 @@ export default function BlogPostClient({ post, posts }: Props) {
             <div className="rail-section-title">Share</div>
             <div className="rail-share">
               <a
-                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`Check out this article: "${post.title}"`)}&url=${encodeURIComponent(canonicalUrl)}`}
+                href={`https://x.com/intent/tweet?text=${encodeURIComponent(`Check out this article: "${post.title}"`)}&url=${encodeURIComponent(productionShareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rail-share-btn"
@@ -159,7 +156,7 @@ export default function BlogPostClient({ post, posts }: Props) {
                 </svg>
               </a>
               <a
-                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(canonicalUrl)}`}
+                href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productionShareUrl)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="rail-share-btn"
