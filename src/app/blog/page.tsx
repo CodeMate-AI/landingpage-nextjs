@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion } from "framer-motion";
 import { blogPosts } from "./[slug]/posts";
 
 
@@ -67,6 +68,7 @@ export default function Home() {
   const [sortBy, setSortBy] = useState<"newest" | "a-z" | "z-a">("newest");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
   const [openGroups, setOpenGroups] = useState({
     sortBy: false,
@@ -74,6 +76,27 @@ export default function Home() {
     product: false,
     useCase: false,
   });
+
+  const openMobileFilters = () => {
+    setShowFilters(true);
+    setShowSearch(false);
+  };
+
+  const openMobileSearch = () => {
+    setShowSearch(true);
+    setShowFilters(false);
+  };
+
+  useEffect(() => {
+    if (showFilters || showSearch) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [showFilters, showSearch]);
 
   const filteredAndSortedPosts = useMemo(() => {
     const result = blogPosts.filter((post) => {
@@ -168,6 +191,147 @@ export default function Home() {
     setVisibleCount(6);
   };
 
+  const renderSidebarFilters = () => (
+    <>
+      <div className="sidebar-title">
+        <span>Filter and sort</span>
+        {hasActiveFilters ? (
+          <button suppressHydrationWarning className="clear-all-btn" onClick={handleReset}>
+            Clear all
+          </button>
+        ) : null}
+      </div>
+
+      <div className="filter-group">
+        <button
+          type="button"
+          className="filter-group-header"
+          onClick={() => toggleGroup("sortBy")}
+          aria-expanded={openGroups.sortBy}
+        >
+          <span>Sort by</span>
+          <svg
+            className={`chevron-icon ${openGroups.sortBy ? "expanded" : ""}`}
+            width="12" height="12" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+        {openGroups.sortBy ? (
+          <div className="filter-options-container">
+            {(["newest", "a-z", "z-a"] as const).map((opt) => {
+              const isChecked = sortBy === opt;
+              return (
+                <label key={opt} className="filter-option" onClick={() => setSortBy(opt)}>
+                  <span className={`fake-input fake-radio ${isChecked ? "checked" : ""}`}></span>
+                  {opt === "newest" ? "Newest" : opt === "a-z" ? "A–Z" : "Z–A"}
+                </label>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
+
+      <div className="filter-group">
+        <button
+          type="button"
+          className="filter-group-header"
+          onClick={() => toggleGroup("category")}
+          aria-expanded={openGroups.category}
+        >
+          <span>Category</span>
+          <svg
+            className={`chevron-icon ${openGroups.category ? "expanded" : ""}`}
+            width="12" height="12" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+        {openGroups.category ? (
+          <div className="filter-options-container">
+            {categoryCounts.map((cat) => {
+              const isChecked = selectedCategories.includes(cat.name);
+              return (
+                <label key={cat.name} className="filter-option" onClick={() => handleCategoryToggle(cat.name)}>
+                  <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
+                  {cat.name} ({cat.count})
+                </label>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
+
+      <div className="filter-group">
+        <button
+          type="button"
+          className="filter-group-header"
+          onClick={() => toggleGroup("product")}
+          aria-expanded={openGroups.product}
+        >
+          <span>Product</span>
+          <svg
+            className={`chevron-icon ${openGroups.product ? "expanded" : ""}`}
+            width="12" height="12" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+        {openGroups.product ? (
+          <div className="filter-options-container">
+            {productFilters.map((prod) => {
+              const isChecked = selectedProducts.includes(prod);
+              return (
+                <label key={prod} className="filter-option" onClick={() => handleProductToggle(prod)}>
+                  <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
+                  {prod}
+                </label>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
+
+      <div className="filter-group">
+        <button
+          type="button"
+          className="filter-group-header"
+          onClick={() => toggleGroup("useCase")}
+          aria-expanded={openGroups.useCase}
+        >
+          <span>Use case</span>
+          <svg
+            className={`chevron-icon ${openGroups.useCase ? "expanded" : ""}`}
+            width="12" height="12" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+        {openGroups.useCase ? (
+          <div className="filter-options-container">
+            {useCaseFilters.map((uc) => {
+              const isChecked = selectedUseCases.includes(uc);
+              return (
+                <label key={uc} className="filter-option" onClick={() => handleUseCaseToggle(uc)}>
+                  <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
+                  {uc}
+                </label>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
+    </>
+  );
+
   return (
     <>
       {/* Hero */}
@@ -213,146 +377,7 @@ export default function Home() {
 
         {/* Left Sidebar — Advanced Filters */}
         <aside className={`sidebar ${showFilters ? "open" : ""}`}>
-          <div className="sidebar-title">
-            <span>Filter and sort</span>
-            {hasActiveFilters ? (
-              <button suppressHydrationWarning className="clear-all-btn" onClick={handleReset}>
-                Clear all
-              </button>
-            ) : null}
-          </div>
-
-          {/* Sort by */}
-          <div className="filter-group">
-            <button
-              type="button"
-              className="filter-group-header"
-              onClick={() => toggleGroup("sortBy")}
-              aria-expanded={openGroups.sortBy}
-            >
-              <span>Sort by</span>
-              <svg
-                className={`chevron-icon ${openGroups.sortBy ? "expanded" : ""}`}
-                width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-            {openGroups.sortBy ? (
-              <div className="filter-options-container">
-                {(["newest", "a-z", "z-a"] as const).map((opt) => {
-                  const isChecked = sortBy === opt;
-                  return (
-                    <label key={opt} className="filter-option" onClick={() => setSortBy(opt)}>
-                      <span className={`fake-input fake-radio ${isChecked ? "checked" : ""}`}></span>
-                      {opt === "newest" ? "Newest" : opt === "a-z" ? "A–Z" : "Z–A"}
-                    </label>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
-
-          {/* Category */}
-          <div className="filter-group">
-            <button
-              type="button"
-              className="filter-group-header"
-              onClick={() => toggleGroup("category")}
-              aria-expanded={openGroups.category}
-            >
-              <span>Category</span>
-              <svg
-                className={`chevron-icon ${openGroups.category ? "expanded" : ""}`}
-                width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-            {openGroups.category ? (
-              <div className="filter-options-container">
-                {categoryCounts.map((cat) => {
-                  const isChecked = selectedCategories.includes(cat.name);
-                  return (
-                    <label key={cat.name} className="filter-option" onClick={() => handleCategoryToggle(cat.name)}>
-                      <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
-                      {cat.name} ({cat.count})
-                    </label>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
-
-          {/* Product */}
-          <div className="filter-group">
-            <button
-              type="button"
-              className="filter-group-header"
-              onClick={() => toggleGroup("product")}
-              aria-expanded={openGroups.product}
-            >
-              <span>Product</span>
-              <svg
-                className={`chevron-icon ${openGroups.product ? "expanded" : ""}`}
-                width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-            {openGroups.product ? (
-              <div className="filter-options-container">
-                {productFilters.map((prod) => {
-                  const isChecked = selectedProducts.includes(prod);
-                  return (
-                    <label key={prod} className="filter-option" onClick={() => handleProductToggle(prod)}>
-                      <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
-                      {prod}
-                    </label>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
-
-          {/* Use case */}
-          <div className="filter-group">
-            <button
-              type="button"
-              className="filter-group-header"
-              onClick={() => toggleGroup("useCase")}
-              aria-expanded={openGroups.useCase}
-            >
-              <span>Use case</span>
-              <svg
-                className={`chevron-icon ${openGroups.useCase ? "expanded" : ""}`}
-                width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                aria-hidden="true"
-              >
-                <polyline points="6 9 12 15 18 9" />
-              </svg>
-            </button>
-            {openGroups.useCase ? (
-              <div className="filter-options-container">
-                {useCaseFilters.map((uc) => {
-                  const isChecked = selectedUseCases.includes(uc);
-                  return (
-                    <label key={uc} className="filter-option" onClick={() => handleUseCaseToggle(uc)}>
-                      <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
-                      {uc}
-                    </label>
-                  );
-                })}
-              </div>
-            ) : null}
-          </div>
+          {renderSidebarFilters()}
         </aside>
 
         {/* Right: Search + Quick Filters + Cards */}
@@ -360,7 +385,9 @@ export default function Home() {
 
           {/* Search Bar + View Toggle + Quick Filter Pills */}
           <div className="content-header">
-            <div className="search-toolbar">
+            
+            {/* Desktop & Tablet Toolbar (width >= 768px) */}
+            <div className="search-toolbar hidden md:flex">
               {/* Mobile filter toggle */}
               <button
                 suppressHydrationWarning
@@ -428,8 +455,67 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Quick Filter Pills */}
-            <div className="quick-filters">
+            {/* Mobile Toolbar (width < 768px) */}
+            <div className="mobile-search-toolbar flex md:hidden justify-between items-center w-full mb-6">
+              {/* LHS: Filter & Search Buttons */}
+              <div className="flex gap-3">
+                <button 
+                  onClick={openMobileFilters}
+                  className="mobile-inline-btn"
+                  aria-label="Open filters"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                  </svg>
+                </button>
+
+                <button 
+                  onClick={openMobileSearch}
+                  className="mobile-inline-btn"
+                  aria-label="Open search"
+                >
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  </svg>
+                </button>
+              </div>
+
+              {/* RHS: View mode segmented toggle */}
+              <div className="mobile-view-toggle">
+                <button
+                  suppressHydrationWarning
+                  className={`toggle-btn ${viewMode === "grid" ? "active" : ""}`}
+                  aria-label="Grid view"
+                  onClick={() => setViewMode("grid")}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                  </svg>
+                </button>
+                <button
+                  suppressHydrationWarning
+                  className={`toggle-btn ${viewMode === "list" ? "active" : ""}`}
+                  aria-label="List view"
+                  onClick={() => setViewMode("list")}
+                >
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* Quick Filter Pills (hidden on mobile, visible on desktop/iPad) */}
+            <div className="quick-filters hidden md:flex">
               <button
                 suppressHydrationWarning
                 className={`quick-filter-pill ${selectedTag === null ? "active" : ""}`}
@@ -494,6 +580,100 @@ export default function Home() {
           )}
         </div>
       </section>
+
+      <AnimatePresence>
+        {showFilters && (
+          <>
+            <motion.button 
+              className="overlay-backdrop" 
+              aria-label="Close filters" 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setShowFilters(false)} 
+              style={{ zIndex: 999999999999 }}
+            />
+            <motion.aside 
+              className="mobile-drawer" 
+              initial={{ x: "-100%" }} 
+              animate={{ x: 0 }} 
+              exit={{ x: "-100%" }} 
+              transition={{ type: "tween", duration: 0.25 }}
+              style={{ zIndex: 999999999999 }}
+            >
+              <div className="mobile-drawer-header">
+                <span>Filter & Sort</span>
+                <button 
+                  className="mobile-drawer-close" 
+                  onClick={() => setShowFilters(false)}
+                  aria-label="Close filters"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="mobile-drawer-body">
+                {renderSidebarFilters()}
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
+        {showSearch && (
+          <>
+            <motion.button 
+              className="overlay-backdrop" 
+              aria-label="Close search" 
+              initial={{ opacity: 0 }} 
+              animate={{ opacity: 1 }} 
+              exit={{ opacity: 0 }} 
+              onClick={() => setShowSearch(false)} 
+              style={{ zIndex: 999999999999 }}
+            />
+            <motion.div 
+              className="search-modal" 
+              initial={{ opacity: 0, scale: 0.96, y: 18 }} 
+              animate={{ opacity: 1, scale: 1, y: 0 }} 
+              exit={{ opacity: 0, scale: 0.96, y: 18 }} 
+              transition={{ type: "tween", duration: 0.2 }}
+              style={{ zIndex: 999999999999 }}
+            >
+              <div className="search-modal-header">
+                <span>Search articles</span>
+                <button 
+                  className="search-modal-close" 
+                  onClick={() => setShowSearch(false)} 
+                  aria-label="Close search"
+                >
+                  ×
+                </button>
+              </div>
+              <div className="hero-search-bar search-bar-main search-modal-bar">
+                <svg className="hero-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <input 
+                  autoFocus 
+                  suppressHydrationWarning 
+                  className="hero-search-input" 
+                  type="text" 
+                  placeholder="Search articles, guides, and case studies..." 
+                  value={searchQuery} 
+                  onChange={(event) => { setSearchQuery(event.target.value); setVisibleCount(6); }} 
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      setShowSearch(false);
+                    }
+                  }}
+                />
+              </div>
+              <p className="search-modal-hint">Search applies instantly to the blog listing.</p>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }
