@@ -160,6 +160,12 @@ function formatFaqSection(html: string): string {
   return beforeFaq + faqContainerHtml;
 }
 
+function formatVideos(html: string): string {
+  return html.replace(/<p>\s*\[video:\s*([^\]\s]+)\]\s*<\/p>/g, (match, url) => {
+    return `<video src="${url}" controls muted class="blog-video" style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0; display: block;"></video>`;
+  });
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const client = await clientPromise;
@@ -184,13 +190,13 @@ export default async function BlogPostPage({ params }: Props) {
 
   const rawHtml = generateHTML(post.content, extensions);
   const cleanHtml = DOMPurify.sanitize(rawHtml, {
-    ALLOWED_TAGS: ["h1", "h2", "h3", "p", "a", "img", "ul", "ol", "li", "strong", "em", "code", "pre", "table", "thead", "tbody", "tr", "th", "td", "span", "div"],
-    ALLOWED_ATTR: ["href", "src", "alt", "class", "target", "rel", "id", "title"],
+    ALLOWED_TAGS: ["h1", "h2", "h3", "p", "a", "img", "ul", "ol", "li", "strong", "em", "code", "pre", "table", "thead", "tbody", "tr", "th", "td", "span", "div", "video"],
+    ALLOWED_ATTR: ["href", "src", "alt", "class", "target", "rel", "id", "title", "controls", "muted", "autoplay", "loop", "playsinline", "type"],
   });
 
   const sections = extractSectionsFromTiptapJson(post.content);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
-  const finalHtml = formatFaqSection(formatTableCells(headingHtml));
+  const finalHtml = formatVideos(formatFaqSection(formatTableCells(headingHtml)));
 
   const mappedPost = {
     id: post._id.toString(),

@@ -68,6 +68,17 @@ function faqAnswer(answer: string): TiptapNode {
   return paragraph(answer);
 }
 
+function imageNode(src: string, alt: string): TiptapNode {
+  return {
+    type: "image",
+    attrs: {
+      src,
+      alt,
+      title: null,
+    },
+  };
+}
+
 function blog1Content(): { type: "doc"; content: TiptapNode[] } {
   return {
     type: "doc",
@@ -86,6 +97,7 @@ function blog1Content(): { type: "doc"; content: TiptapNode[] } {
         "Audit trails were thin.",
         "The AI operated fully on its own.",
       ]),
+      imageNode("/online_threat_image2.png", "What actually went wrong diagram"),
       heading(2, "How We Designed for Safety"),
       paragraph("At CodeMate, we saw these risks early and designed around them. Our model is simple: human-in-the-loop, always."),
       bulletList([
@@ -94,6 +106,7 @@ function blog1Content(): { type: "doc"; content: TiptapNode[] } {
         "AI components never hold admin privileges.",
         "Every action is logged and auditable.",
       ]),
+      imageNode("/online_threat_image3.png", "How we designed for safety diagram"),
       heading(2, "What Could Go Wrong vs How It’s Prevented"),
       paragraph("Database schema changes: Replit’s AI dropped a production database. With CodeMate, schema modifications are flagged, analyzed for impact, and require developer approval with rollback plans in place."),
       paragraph("Code deployments: Industry risk: AI pushes untested code into production. In CodeMate, all suggestions happen in dev/test environments and CI/CD approval gates remain human-controlled."),
@@ -130,6 +143,7 @@ function blog2Content(): { type: "doc"; content: TiptapNode[] } {
     content: [
       paragraph("Cora by CodeMate AI has achieved a 76% resolution rate on the SWE-bench verified subset, outperforming industry leaders like GitHub Copilot and Cursor on real-world software engineering tasks."),
       paragraph("This milestone reflects not just benchmark success, but a fundamental shift in how developers can collaborate with AI; from simple autocompletion to autonomous, context-aware code generation."),
+      imageNode("/cora_sota_swebench.jpeg", "Cora SWE-bench Verified SOTA chart"),
       heading(2, "How Cora is Redefining Autonomous Code Generation"),
       paragraph("Cora is designed to handle complex software engineering workflows end-to-end. By utilizing a single-agent system that plans, edits, and governs the entire lifecycle of a coding task, it outperforms traditional autocomplete solutions."),
       heading(2, "What is Cora?"),
@@ -161,6 +175,7 @@ function blog2Content(): { type: "doc"; content: TiptapNode[] } {
         "Debug and iterate until all tests pass.",
         "Request approval only for critical operations.",
       ]),
+      imageNode("/cora_architecture.png", "Cora Architecture Diagram"),
       heading(2, "Built for Real-World Engineering"),
       paragraph("The SWE-bench benchmark evaluates AI agents on real GitHub issues and pull requests from major open-source projects - representing the complexity of real-world software development. Each task requires:"),
       bulletList([
@@ -170,6 +185,7 @@ function blog2Content(): { type: "doc"; content: TiptapNode[] } {
         "Iterative debugging and refinement.",
       ]),
       paragraph("Cora successfully resolved 76 SWE-Bench verified instances, showing its ability to handle engineering challenges that typically require senior developer expertise."),
+      imageNode("/cora_benchmark.png", "Cora SWE-bench Verified results"),
       heading(2, "Optimized for Correctness, Not Just Speed"),
       paragraph("In software engineering, speed without correctness adds rework - not value. Let’s compare how other tools fare:"),
       bulletList([
@@ -177,6 +193,7 @@ function blog2Content(): { type: "doc"; content: TiptapNode[] } {
         "Cora averaged 134 seconds per task yet resolved 76 issues with validated, working solutions.",
       ]),
       paragraph("The takeaway: correctness-first saves developers far more time downstream by avoiding debugging and manual fixes. In software development, the real metric is time to working solution, not time to first output."),
+      paragraph("[video: /blog2_Video.mp4]"),
       heading(2, "Transparent, Reproducible, Open Evaluation"),
       paragraph("We believe transparency builds trust. Our SWE-bench results are fully reproducible and publicly available for verification. Our methodology includes:"),
       bulletList([
@@ -213,6 +230,7 @@ function blog3Content(): { type: "doc"; content: TiptapNode[] } {
         "CORA for development, code generation, testing, and validation",
         "PR Review & Deployment Agents for release readiness and feedback loops",
       ]),
+      imageNode("/codemate_sdlc_architecture.png", "CodeMate AI End-to-End SDLC Agent Architecture Flow Chart"),
       heading(2, "CodeMate vs Claude Code : Feature Comparison"),
       paragraph("A clean capability breakdown comparing CodeMate AI and Claude Code across enterprise deployment, governance, LLM support, and engineering features."),
       table(
