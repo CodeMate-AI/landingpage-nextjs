@@ -79,6 +79,30 @@ function imageNode(src: string, alt: string): TiptapNode {
   };
 }
 
+function linkNode(text: string, href: string): TiptapNode {
+  return textNode(text, [{
+    type: "link",
+    attrs: {
+      href,
+      target: "_blank",
+      rel: "noopener noreferrer",
+    },
+  }]);
+}
+
+function bulletListRich(items: TiptapNode[][]): TiptapNode {
+  return {
+    type: "bulletList",
+    content: items.map((itemContent) => ({
+      type: "listItem",
+      content: [{
+        type: "paragraph",
+        content: itemContent,
+      }],
+    })),
+  };
+}
+
 function blog1Content(): { type: "doc"; content: TiptapNode[] } {
   return {
     type: "doc",
@@ -224,11 +248,23 @@ function blog3Content(): { type: "doc"; content: TiptapNode[] } {
       paragraph("AI-powered code reviews automatically identify quality, security, and maintainability issues before they reach production. Deep repository understanding enables smarter code generation, impact analysis, and large-scale refactoring across complex codebases. Integrated security checks, testing, and documentation ensure quality is embedded throughout the SDLC rather than added at the end. By automating repetitive engineering tasks, CodeMate allows developers to focus on solving business problems instead of managing technical debt."),
       paragraph("Built-in collaboration and governance help engineering leaders maintain consistency across distributed teams and multiple repositories. Whether deployed in the cloud, on-premises, or within a private VPC, CodeMate adapts to enterprise security and compliance requirements. The result is faster software delivery, healthier codebases, and high-performing engineering teams that can confidently build, scale, and innovate together."),
       paragraph([textNode("CodeMate is built around the idea that software development is a "), textNode("continuous lifecycle", [{ type: "bold" }]), textNode(", not a series of disconnected steps. Its tools map directly to "), textNode("SDLC", [{ type: "link", attrs: { href: "https://www.geeksforgeeks.org/software-engineering/software-development-life-cycle-sdlc/", target: "_blank", rel: "noopener noreferrer" } }]), textNode(" stages:")]),
-      bulletList([
-        "C0 for research, feasibility, and requirement intelligence",
-        "CodeMate Build for building production-ready applications",
-        "CORA for development, code generation, testing, and validation",
-        "PR Review & Deployment Agents for release readiness and feedback loops",
+      bulletListRich([
+        [
+          linkNode("C0", "https://docs.codemate.ai/c0"),
+          textNode(" for research, feasibility, and requirement intelligence")
+        ],
+        [
+          linkNode("CodeMate Build", "https://docs.codemate.ai/build-agent"),
+          textNode(" for building production-ready applications")
+        ],
+        [
+          linkNode("CORA", "https://docs.codemate.ai/cora-agentic-architect-mode"),
+          textNode(" for development, code generation, testing, and validation")
+        ],
+        [
+          linkNode("PR Review & Deployment Agents", "https://docs.codemate.ai/pull-request-review-agent"),
+          textNode(" for release readiness and feedback loops")
+        ]
       ]),
       imageNode("/codemate_sdlc_architecture.png", "CodeMate AI End-to-End SDLC Agent Architecture Flow Chart"),
       heading(2, "CodeMate vs Claude Code : Feature Comparison"),

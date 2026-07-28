@@ -8,6 +8,10 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+const IMAGE_MAX_SIZE = 5 * 1024 * 1024;
+const VIDEO_MAX_SIZE = 50 * 1024 * 1024;
+const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm", "video/ogg", "video/quicktime"];
+
 async function uploadHandler(req: NextRequest) {
   try {
     const formData = await req.formData();
@@ -17,15 +21,17 @@ async function uploadHandler(req: NextRequest) {
       return NextResponse.json({ error: "Missing file payload" }, { status: 400 });
     }
 
-    const MAX_SIZE = 5 * 1024 * 1024;
-    if (file.size > MAX_SIZE) {
-      return NextResponse.json({ error: "File exceeds 5MB size limit" }, { status: 400 });
-    }
-
-    const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
     if (!ALLOWED_MIMES.includes(file.type)) {
       return NextResponse.json(
-        { error: "Invalid format. Only JPEG, PNG, WEBP, and GIF are allowed." },
+        { error: "Invalid format. Only JPEG, PNG, WEBP, GIF, MP4, WEBM, OGG, and MOV are allowed." },
+        { status: 400 }
+      );
+    }
+
+    const maxSize = file.type.startsWith("video/") ? VIDEO_MAX_SIZE : IMAGE_MAX_SIZE;
+    if (file.size > maxSize) {
+      return NextResponse.json(
+        { error: file.type.startsWith("video/") ? "Video exceeds 50MB size limit" : "File exceeds 5MB size limit" },
         { status: 400 }
       );
     }
@@ -34,7 +40,7 @@ async function uploadHandler(req: NextRequest) {
 
     const uploadResult = await new Promise<{ secure_url?: string }>((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: "codemate_blog" },
+        { folder: "codemate_blog", resource_type: "auto" },
         (error, result) => {
           if (error) reject(error);
           else resolve(result ?? {});
@@ -49,7 +55,7 @@ async function uploadHandler(req: NextRequest) {
 
     return NextResponse.json({ url: uploadResult.secure_url });
   } catch (error: any) {
-    console.error("Image upload exception:", error);
+    console.error("Upload exception:", error);
     return NextResponse.json({ error: "Server upload error" }, { status: 500 });
   }
 }
