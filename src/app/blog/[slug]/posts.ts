@@ -1,29 +1,8 @@
-export interface Tag {
-  label: string;
-  tone: "slate" | "blue" | "cyan" | "purple" | "indigo" | "violet" | "teal";
-}
+import { Tag as SharedTag, BlogSection as SharedBlogSection, BlogDetailPost as SharedBlogDetailPost } from "@/types/blog";
 
-
-export interface BlogSection {
-  id: string;
-  title: string;
-}
-
-export interface BlogDetailPost {
-  id: number;
-  slug: string;
-  title: string;
-  category: string;
-  date: string;
-  dateValue: string;
-  tags: Tag[];
-  bgColor: string;
-  visualMarkup: string;
-  sections: BlogSection[];
-  dek: string;
-  readTime: string;
-  image?: string;
-}
+export type Tag = SharedTag;
+export type BlogSection = SharedBlogSection;
+export type BlogDetailPost = SharedBlogDetailPost;
 
 export const blogPosts: BlogDetailPost[] = [
   {
@@ -123,7 +102,7 @@ export const blogPosts: BlogDetailPost[] = [
       { id: "replit-incident", title: "The Replit Incident" },
       { id: "what-went-wrong", title: "What Actually Went Wrong" },
       { id: "designed-for-safety", title: "How We Designed for Safety" },
-      { id: "prevention-matrix", title: "What Could Go Wrong vs. How It’s Prevented" },
+      { id: "prevention-matrix", title: "What Could Go Wrong vs How It’s Prevented" },
       { id: "lessons-learned", title: "The Lessons Every Team Should Take Away" },
       { id: "human-in-the-loop", title: "Why Human-in-the-Loop Works Better" },
       { id: "moving-forward", title: "Moving Forward" },

@@ -47,7 +47,7 @@ export default function Blog1Content() {
         <img src="/online_threat_image3.png" alt="How we designed for safety diagram" style={{ width: "100%", borderRadius: "8px", border: "1px solid var(--border)", backgroundColor: "white" }} />
       </div>
 
-      <h2 id="prevention-matrix">What Could Go Wrong vs. How It’s Prevented</h2>
+      <h2 id="prevention-matrix">What Could Go Wrong vs How It’s Prevented</h2>
       <p>
         <strong>Database schema changes:</strong> Replit’s AI dropped a production database. With <strong>CodeMate</strong>, schema modifications are flagged, analyzed for impact, and require developer approval with rollback plans in place.
       </p>
