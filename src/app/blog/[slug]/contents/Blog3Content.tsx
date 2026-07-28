@@ -88,32 +88,23 @@ const faqItems = [
 function FAQAccordionItem({
   question,
   answer,
-  isOpen,
-  onToggle,
 }: {
   question: string;
   answer: string;
-  isOpen: boolean;
-  onToggle: () => void;
 }) {
   return (
-    <div className={`faq-pill-card ${isOpen ? "open" : ""}`} suppressHydrationWarning>
+    <div className="faq-pill-card" suppressHydrationWarning>
       <button
         type="button"
         className="faq-pill-summary"
-        onClick={onToggle}
         suppressHydrationWarning
       >
-        <span className="faq-circle-badge" aria-hidden="true">
-          {isOpen ? "−" : "+"}
-        </span>
+        <span className="faq-circle-badge" aria-hidden="true">+</span>
         <span className="faq-question-title">{question}</span>
       </button>
-      {isOpen && (
-        <div className="faq-answer-body">
-          <p>{answer}</p>
-        </div>
-      )}
+      <div className="faq-answer-body">
+        <p>{answer}</p>
+      </div>
     </div>
   );
 }
@@ -335,8 +326,6 @@ export default function Blog3Content() {
 }
 
 function FAQAccordion() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
   return (
     <div className="faq-pill-container">
       {faqItems.map((item, idx) => (
@@ -344,8 +333,6 @@ function FAQAccordion() {
           key={item.question}
           question={item.question}
           answer={item.answer}
-          isOpen={openIndex === idx}
-          onToggle={() => setOpenIndex(openIndex === idx ? null : idx)}
         />
       ))}
     </div>

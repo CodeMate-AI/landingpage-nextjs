@@ -9,6 +9,11 @@ interface Props {
   posts: BlogDetailPost[];
 }
 
+const StaticArticle = React.memo(({ htmlContent }: { htmlContent: string }) => {
+  return <article className="article-content" dangerouslySetInnerHTML={{ __html: htmlContent }} />;
+});
+StaticArticle.displayName = "StaticArticle";
+
 export default function BlogPostClient({ post, posts }: Props) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState<string>(post.sections[0]?.id || "intro");
@@ -53,6 +58,57 @@ export default function BlogPostClient({ post, posts }: Props) {
 
     return () => window.removeEventListener("scroll", handleScroll);
   }, [post.sections]);
+
+  useEffect(() => {
+    const summaries = articleRef.current?.querySelectorAll(".faq-pill-summary");
+    if (!summaries) return;
+
+    const listeners: (() => void)[] = [];
+
+    summaries.forEach((summary) => {
+      const card = summary.closest(".faq-pill-card");
+      const answer = card?.querySelector(".faq-answer-body") as HTMLElement;
+      const badge = card?.querySelector(".faq-circle-badge");
+      
+      if (!card || !answer || !badge) return;
+
+      // Initial state: ensure closed representation
+      answer.style.display = "none";
+      badge.textContent = "+";
+
+      const toggle = () => {
+        const isOpen = card.classList.contains("open");
+        if (isOpen) {
+          card.classList.remove("open");
+          answer.style.display = "none";
+          badge.textContent = "+";
+        } else {
+          // Close any other open FAQ cards
+          summaries.forEach((otherSummary) => {
+            const otherCard = otherSummary.closest(".faq-pill-card");
+            if (otherCard && otherCard !== card && otherCard.classList.contains("open")) {
+              otherCard.classList.remove("open");
+              const otherAnswer = otherCard.querySelector(".faq-answer-body") as HTMLElement;
+              const otherBadge = otherCard.querySelector(".faq-circle-badge");
+              if (otherAnswer) otherAnswer.style.display = "none";
+              if (otherBadge) otherBadge.textContent = "+";
+            }
+          });
+
+          card.classList.add("open");
+          answer.style.display = "block";
+          badge.textContent = "−";
+        }
+      };
+
+      summary.addEventListener("click", toggle);
+      listeners.push(() => summary.removeEventListener("click", toggle));
+    });
+
+    return () => {
+      listeners.forEach((cleanup) => cleanup());
+    };
+  }, [post.htmlContent]);
 
   const handleCopyLink = async () => {
     const shareUrl = typeof window !== "undefined" ? window.location.href : `https://codemate.ai/blog/${post.slug}`;
@@ -101,7 +157,7 @@ export default function BlogPostClient({ post, posts }: Props) {
         </div>
       </header>
 
-      <div className="article-layout container" ref={articleRef}>
+      <div className="article-layout" ref={articleRef}>
         <aside className="toc-sidebar">
           <div className="toc-title">On this page</div>
           <ul className="toc-list">
@@ -116,7 +172,7 @@ export default function BlogPostClient({ post, posts }: Props) {
         </aside>
 
         <div className="article-content-wrap">
-          <article className="article-content prose prose-invert" dangerouslySetInnerHTML={{ __html: post.htmlContent ?? "" }} />
+          <StaticArticle htmlContent={post.htmlContent ?? ""} />
         </div>
 
         <aside className="utility-rail">

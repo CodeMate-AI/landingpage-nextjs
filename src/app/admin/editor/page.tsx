@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, Suspense } from "react";
+import React, { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import TiptapEditor from "@/components/admin/TiptapEditor";
 
@@ -13,9 +13,12 @@ function EditorContent() {
   const [category, setCategory] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [coverImage, setCoverImage] = useState("");
+  const [bgColor, setBgColor] = useState("#07111f");
   const [published, setPublished] = useState(false);
   const [contentJson, setContentJson] = useState<any>({ type: "doc", content: [] });
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
     if (postId) {
@@ -33,6 +36,7 @@ function EditorContent() {
         setExcerpt(post.excerpt);
         setCategory(post.category);
         setCoverImage(post.coverImage || "");
+        setBgColor(post.bgColor || "#07111f");
         setPublished(post.published);
         setContentJson(post.content);
         setTagsInput(post.tags.map((t: any) => t.label).join(", "));
@@ -61,6 +65,7 @@ function EditorContent() {
       excerpt,
       category,
       coverImage,
+      bgColor,
       published,
       tags,
       content: contentJson,
@@ -88,6 +93,31 @@ function EditorContent() {
       alert("Save execution failed.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleImageUpload = async (file: File) => {
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setCoverImage(data.url || "");
+      } else if (res.status === 401) {
+        router.push("/admin/login");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        alert(data.error || "Image upload failed.");
+      }
+    } catch {
+      alert("Image upload failed.");
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -139,12 +169,57 @@ function EditorContent() {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div>
               <label className="mb-1.5 block text-sm font-medium text-neutral-400">Cover Image URL</label>
-              <input
-                type="text"
-                value={coverImage}
-                onChange={(e) => setCoverImage(e.target.value)}
-                className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={coverImage}
+                  onChange={(e) => setCoverImage(e.target.value)}
+                  className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
+                />
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      void handleImageUpload(file);
+                      e.target.value = "";
+                    }
+                  }}
+                />
+                <button
+                  type="button"
+                  disabled={uploading}
+                  onClick={() => fileInputRef.current?.click()}
+                  className="rounded-lg border border-[#27272a] bg-[#18181b] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#232329] disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  {uploading ? "Uploading..." : "Upload"}
+                </button>
+              </div>
+            </div>
+            <div>
+              <label className="mb-1.5 block text-sm font-medium text-neutral-400">
+                Card Background Color
+                <span className="ml-2 text-xs text-neutral-500">(shown on listing card)</span>
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  value={bgColor}
+                  onChange={(e) => setBgColor(e.target.value)}
+                  placeholder="#07111f"
+                  className="flex-1 rounded-lg border border-[#27272a] bg-[#18181b] p-3 font-mono text-sm text-white focus:outline-none"
+                />
+                <input
+                  type="color"
+                  value={bgColor}
+                  onChange={(e) => setBgColor(e.target.value)}
+                  className="h-12 w-12 cursor-pointer rounded-lg border border-[#27272a] bg-[#18181b] p-1"
+                  title="Pick a background color"
+                />
+              </div>
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-neutral-400">Tags (comma separated)</label>

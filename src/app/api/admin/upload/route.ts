@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/authWrapper";
 import { v2 as cloudinary } from "cloudinary";
-import { fileTypeFromBuffer } from "file-type";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -12,9 +11,9 @@ cloudinary.config({
 async function uploadHandler(req: NextRequest) {
   try {
     const formData = await req.formData();
-    const file = formData.get("file") as File | null;
+    const file = formData.get("file");
 
-    if (!file) {
+    if (!(file instanceof File)) {
       return NextResponse.json({ error: "Missing file payload" }, { status: 400 });
     }
 
@@ -23,27 +22,30 @@ async function uploadHandler(req: NextRequest) {
       return NextResponse.json({ error: "File exceeds 5MB size limit" }, { status: 400 });
     }
 
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const detected = await fileTypeFromBuffer(buffer);
     const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
-
-    if (!detected || !ALLOWED_MIMES.includes(detected.mime)) {
+    if (!ALLOWED_MIMES.includes(file.type)) {
       return NextResponse.json(
         { error: "Invalid format. Only JPEG, PNG, WEBP, and GIF are allowed." },
         { status: 400 }
       );
     }
 
-    const uploadResult = await new Promise<any>((resolve, reject) => {
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const uploadResult = await new Promise<{ secure_url?: string }>((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
         { folder: "codemate_blog" },
         (error, result) => {
           if (error) reject(error);
-          else resolve(result);
+          else resolve(result ?? {});
         }
       );
       uploadStream.end(buffer);
     });
+
+    if (!uploadResult.secure_url) {
+      return NextResponse.json({ error: "Cloudinary upload failed" }, { status: 500 });
+    }
 
     return NextResponse.json({ url: uploadResult.secure_url });
   } catch (error: any) {

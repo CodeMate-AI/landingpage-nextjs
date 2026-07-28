@@ -8,10 +8,15 @@ import { Montserrat, Mulish } from 'next/font/google';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], // Add what you need
-  variable: '--font-montserrat', // Optional, for CSS variable usage
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-montserrat',
 });
 
+const mulish = Mulish({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-mulish',
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://codemate.ai'),
@@ -53,34 +58,27 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <title>CodeMate AI | Your Professional And Secured AI Pair Programmer</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet"></link>
-      </head>
       <body
-        className={`${montserrat.className} antialiased bg-zinc-950 text-white dark`}
+        className={`${montserrat.variable} ${mulish.variable} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning
       >
         {children}
         <Analytics />
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "SoftwareApplication",
+              name: "CodeMate AI",
+              description:
+                "Code 10x faster as CodeMate search, navigate and understand complex codebases for you.",
+              operatingSystem: ["Web", "iOS", "Android", "Windows", "MacOS", "Linux", "VS Code Extension"],
+            }),
+          }}
+        />
       </body>
-      <Script
-        id="structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "SoftwareApplication",
-            name: "CodeMate AI",
-            description:
-              "Code 10x faster as CodeMate search, navigate and understand complex codebases for you.",
-            operatingSystem: ["Web", "iOS", "Android", "Windows", "MacOS", "Linux", "VS Code Extension"],
-          }),
-        }}
-      />
-
     </html>
   );
 }
