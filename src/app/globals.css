@@ -185,9 +185,6 @@ body {
 }
 
 @media (min-width: 1400px) and (min-height: 900px) {
-  .xxlHero {
-  }
-
   .xxlHerotext {
     font-size: 8rem;
   }
@@ -258,6 +255,80 @@ body {
   background-clip: text;
 }
 
+/* Tiptap Rich Text Editor Workspace Styles */
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror h2 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 1.75rem; /* ~28px */
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+  line-height: 1.2;
+}
+
+.ProseMirror h2:first-child {
+  margin-top: 0;
+}
+
+.ProseMirror p {
+  margin-bottom: 1rem;
+  line-height: 1.7;
+  color: #d1d5db;
+}
+
+.ProseMirror ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.ProseMirror ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.ProseMirror li {
+  margin-bottom: 0.5rem;
+  color: #d1d5db;
+}
+
+.ProseMirror a {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.ProseMirror img {
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem 0;
+  display: block;
+}
+
+.ProseMirror table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.ProseMirror th,
+.ProseMirror td {
+  border: 1px solid #3f3f46;
+  padding: 10px 14px;
+  text-align: left;
+}
+
+.ProseMirror th {
+  background-color: #18181b;
+  font-weight: 700;
+  color: #ffffff;
+}
 /* Gray & Darker Gradients */
 .text-gradient-gray {
   background: linear-gradient(90deg, #71717a 0%, #e4e4e7 100%);
@@ -299,4 +370,4 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-}
+}
