@@ -40,6 +40,7 @@ export const blogPosts: BlogDetailPost[] = [
     visualMarkup: `<img src="/codematevsgithubcopilot.png" alt="CodeMate VS GitHub Copilot" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`,
     sections: [
       { id: "intro", title: "Introduction" },
+      { id: "sdlc-unification", title: "SDLC Unification" },
       { id: "at-a-glance", title: "At a Glance" },
       { id: "architecture-comparison", title: "Architecture Comparison" },
       { id: "context-comparison", title: "Context & Knowledge Engine" },
