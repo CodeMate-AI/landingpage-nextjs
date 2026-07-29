@@ -113,6 +113,11 @@ export default function TiptapEditor({ content, onChange }: Props) {
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
   };
 
+  const insertTable = () => {
+    if (!editor) return;
+    editor.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run();
+  };
+
   const handleVideoButtonClick = () => {
     videoInputRef.current?.click();
   };
@@ -126,32 +131,87 @@ export default function TiptapEditor({ content, onChange }: Props) {
   if (!editor) return null;
 
   return (
-    <div className="tiptap-editor-container border border-neutral-700 rounded-lg overflow-hidden bg-neutral-900">
+    <div className="tiptap-editor-container overflow-hidden rounded-lg border border-neutral-700 bg-neutral-900">
       <input ref={videoInputRef} type="file" accept="video/mp4,video/webm" className="hidden" onChange={handleVideoInputChange} />
-      <div className="editor-toolbar flex flex-wrap gap-2 p-2 border-b border-neutral-700 bg-neutral-950">
-        <button type="button" onClick={() => editor.chain().focus().toggleBold().run()} className={`p-1.5 rounded text-sm ${editor.isActive("bold") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
+      <div className="editor-toolbar flex flex-wrap gap-2 border-b border-neutral-700 bg-neutral-950 p-2">
+        <button type="button" onClick={() => editor.chain().focus().toggleBold().run()} className={`rounded p-1.5 text-sm ${editor.isActive("bold") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
           Bold
         </button>
-        <button type="button" onClick={() => editor.chain().focus().toggleItalic().run()} className={`p-1.5 rounded text-sm ${editor.isActive("italic") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
+        <button type="button" onClick={() => editor.chain().focus().toggleItalic().run()} className={`rounded p-1.5 text-sm ${editor.isActive("italic") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
           Italic
         </button>
-        <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className={`p-1.5 rounded text-sm ${editor.isActive("heading", { level: 2 }) ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
+        <button type="button" onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()} className={`rounded p-1.5 text-sm ${editor.isActive("heading", { level: 2 }) ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
           H2
         </button>
-        <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className={`p-1.5 rounded text-sm ${editor.isActive("bulletList") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
+        <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className={`rounded p-1.5 text-sm ${editor.isActive("bulletList") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
           Bullet List
         </button>
-        <button type="button" onClick={setLink} className={`p-1.5 rounded text-sm ${editor.isActive("link") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
+        <button type="button" onClick={setLink} className={`rounded p-1.5 text-sm ${editor.isActive("link") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
           Link
         </button>
-        <button type="button" onClick={addImageByUrl} className="p-1.5 rounded text-sm text-neutral-300 hover:bg-neutral-800">
+        <button type="button" onClick={addImageByUrl} className="rounded p-1.5 text-sm text-neutral-300 hover:bg-neutral-800">
           Add Image
         </button>
-        <button type="button" onClick={handleVideoButtonClick} className="p-1.5 rounded text-sm text-neutral-300 hover:bg-neutral-800">
+        <button type="button" onClick={handleVideoButtonClick} className="rounded p-1.5 text-sm text-neutral-300 hover:bg-neutral-800">
           Add Video
         </button>
+        <div className="flex gap-1 border-l border-neutral-700 pl-2">
+          <button
+            type="button"
+            onClick={insertTable}
+            className="rounded p-1.5 text-sm text-neutral-300 hover:bg-neutral-800"
+            title="Insert 3x3 Table"
+          >
+            Insert Table
+          </button>
+
+          {editor.isActive("table") && (
+            <>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().addRowAfter().run()}
+                className="rounded p-1.5 text-sm text-neutral-300 hover:bg-neutral-800"
+                title="Add Row Below"
+              >
+                + Row
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().deleteRow().run()}
+                className="rounded p-1.5 text-sm text-red-400 hover:bg-neutral-800"
+                title="Delete Row"
+              >
+                - Row
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().addColumnAfter().run()}
+                className="rounded p-1.5 text-sm text-neutral-300 hover:bg-neutral-800"
+                title="Add Column Right"
+              >
+                + Col
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().deleteColumn().run()}
+                className="rounded p-1.5 text-sm text-red-400 hover:bg-neutral-800"
+                title="Delete Column"
+              >
+                - Col
+              </button>
+              <button
+                type="button"
+                onClick={() => editor.chain().focus().deleteTable().run()}
+                className="rounded p-1.5 text-sm font-bold text-red-500 hover:bg-neutral-800"
+                title="Delete Table"
+              >
+                Delete Table
+              </button>
+            </>
+          )}
+        </div>
       </div>
-      <EditorContent editor={editor} className="p-4 min-h-[300px] outline-none text-neutral-100 prose prose-invert max-w-none" />
+      <EditorContent editor={editor} className="min-h-[300px] p-4 text-neutral-100 outline-none prose prose-invert max-w-none" />
     </div>
   );
 }
