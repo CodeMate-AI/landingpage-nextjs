@@ -59,6 +59,13 @@ const deploymentRows: CapabilityRow[] = [
   { capability: "On-Prem / Self Hosted", codemate: "check", githubCopilot: "cross" }
 ];
 
+const pricingRows: AtAGlanceRow[] = [
+  { category: "Billing Model", codemate: "Fixed Licensing", githubCopilot: "Usage-based AI Credits" },
+  { category: "Cost Predictability", codemate: "Predictable", githubCopilot: "Usage dependent" },
+  { category: "Enterprise Budgeting", codemate: "Fixed", githubCopilot: "Variable" },
+  { category: "Large Team Scalability", codemate: "predictable licensing", githubCopilot: "grows with consumption" },
+];
+
 const faqItems = [
   {
     question: "How is CodeMate different from GitHub Copilot?",
@@ -348,6 +355,38 @@ export default function Blog4Content() {
               {deploymentRows.map((row, idx) => (
                 <tr key={idx}>
                   <th scope="row" className="cell-capability">{row.capability}</th>
+                  <td className="cell-product">
+                    <RenderTableCell val={row.codemate} />
+                  </td>
+                  <td className="cell-product">
+                    <RenderTableCell val={row.githubCopilot} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="pricing">Pricing Model</h2>
+        <p>
+          Pricing structure and financial predictability play a significant role in long-term enterprise AI planning. While GitHub Copilot links cost to variable credit consumption, CodeMate provides a flat licensing model to simplify budgeting.
+        </p>
+
+        <div className="clean-table-container my-6">
+          <table className="clean-comparison-table">
+            <thead>
+              <tr>
+                <th scope="col" className="col-capability">Category</th>
+                <th scope="col" className="col-product">CodeMate</th>
+                <th scope="col" className="col-product">GitHub Copilot</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pricingRows.map((row, idx) => (
+                <tr key={idx}>
+                  <th scope="row" className="cell-capability">{row.category}</th>
                   <td className="cell-product">
                     <RenderTableCell val={row.codemate} />
                   </td>

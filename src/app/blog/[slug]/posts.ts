@@ -45,6 +45,7 @@ export const blogPosts: BlogDetailPost[] = [
       { id: "architecture-comparison", title: "Architecture Comparison" },
       { id: "context-comparison", title: "Context & Knowledge Engine" },
       { id: "deployment", title: "Security & Deployment" },
+      { id: "pricing", title: "Pricing Model" },
       { id: "faq", title: "Frequently Asked Questions" },
     ],
     dek: "CodeMate VS GitHub Copilot: Beyond AI Code Completion : Choosing the Right AI Platform for Modern Engineering Teams",
