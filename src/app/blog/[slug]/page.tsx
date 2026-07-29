@@ -124,6 +124,51 @@ function formatTableCells(html: string): string {
   return formatted;
 }
 
+function formatLogos(html: string): string {
+  const logoRegex = /<p>\s*\[logos:\s*([\s\S]*?)\]\s*<\/p>/g;
+  return html.replace(logoRegex, (match, content) => {
+    const items = content
+      .split(",")
+      .map((item: string) => {
+        const parts = item.split("|").map((p) => p.trim());
+        return {
+          src: parts[0] || "",
+          name: parts[1] || "",
+          tag: parts[2] || "",
+        };
+      })
+      .filter((item: any) => item.src);
+
+    let gridHtml = '<div class="logo-grid my-8 grid grid-cols-1 gap-6 sm:grid-cols-3">';
+    for (const item of items) {
+      let scale = "scale(1)";
+      if (item.name.toLowerCase().includes("maruti")) scale = "scale(1.85)";
+      else if (item.name.toLowerCase().includes("tvs")) scale = "scale(2.2)";
+      else if (item.name.toLowerCase().includes("hp")) scale = "scale(1.3)";
+
+      gridHtml += `
+        <div class="group relative flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/15">
+          <div class="flex h-20 w-full items-center justify-center overflow-hidden p-2">
+            <img
+              src="${item.src}"
+              alt="${item.name}"
+              class="max-h-16 w-auto max-w-[85%] object-contain transition-transform duration-300 group-hover:scale-110"
+              style="transform: ${scale};"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <span class="mt-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            ${item.tag}
+          </span>
+        </div>
+      `;
+    }
+    gridHtml += '</div>';
+    return gridHtml;
+  });
+}
+
 function formatFaqSection(html: string): string {
   // Find the FAQ heading and everything after it (allowing any attributes on h2 like dynamic IDs)
   const faqMatch = html.match(/<h2([^>]*)>Frequently Asked Questions<\/h2>([\s\S]*)/);
@@ -196,7 +241,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   const sections = extractSectionsFromTiptapJson(post.content);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
-  const finalHtml = formatVideos(formatFaqSection(formatTableCells(headingHtml)));
+  const finalHtml = formatLogos(formatVideos(formatFaqSection(formatTableCells(headingHtml))));
 
   const mappedPost = {
     id: post._id.toString(),

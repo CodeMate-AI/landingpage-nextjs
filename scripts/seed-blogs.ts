@@ -438,8 +438,9 @@ function blog3Content(): { type: "doc"; content: TiptapNode[] } {
           textNode(" - focused on architecture, governance, and organization-wide engineering intelligence.")
         ],
       ]),
-      heading(2, "Trusted by Enterprises"),
-      paragraph("CodeMate’s enterprise posture is built for teams that need governance, auditability, and organizational intelligence across the SDLC."),
+      heading(2, "Trusted by Leading Enterprises"),
+      paragraph("Empowering engineering teams at scale across top industries."),
+      paragraph("[logos: /Maruti-Suzuki-Logo-png.png | Maruti Suzuki | Automotive, /TVS Credit.png | TVS Credit | Financial Services, /hp.png | HP Inc. | Global Enterprise]"),
       heading(2, "Frequently Asked Questions"),
       faqQuestion("What is the best AI coding tool?"),
       faqAnswer("The best AI coding tool depends on your workflow. Tools like CodeMate are designed for teams and full development workflows, while others focus more on individual productivity and automation."),
