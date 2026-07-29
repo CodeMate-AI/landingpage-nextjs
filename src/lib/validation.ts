@@ -25,7 +25,16 @@ const TiptapNodeSchema: z.ZodType<any> = z.lazy(() =>
 export const BlogPostSchema = z.object({
   title: z.string().min(1, "Title is required"),
   excerpt: z.string().min(1, "Excerpt is required"),
-  coverImage: z.string().url("Cover image must be a valid URL").or(z.literal("")),
+  coverImage: z
+    .string()
+    .refine(
+      (val) =>
+        val === "" ||
+        val.startsWith("/") ||
+        val.startsWith("http://") ||
+        val.startsWith("https://"),
+      { message: "Cover image must be a valid URL or local path" }
+    ),
   category: z.string().min(1, "Category is required"),
   tags: z
     .array(
