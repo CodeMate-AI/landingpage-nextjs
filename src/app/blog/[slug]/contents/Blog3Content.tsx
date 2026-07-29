@@ -133,21 +133,21 @@ export default function Blog3Content() {
     <>
       <section>
         <p className="lead">
-          Claude Code focuses on writing code. CodeMate manages the entire engineering workflow : from planning to production.
+          <strong>Claude Code</strong> focuses on writing code. <strong>CodeMate</strong> manages the entire engineering workflow : from planning to production.
         </p>
 
         <h2 id="intro">From Individual Developers to High-Performing Engineering Teams</h2>
         <p>
-          CodeMate transforms AI from a personal coding assistant into a complete engineering platform built for modern software teams. Instead of optimizing a single developer’s workflow, it empowers entire organizations with shared codebase intelligence and persistent engineering context. Every developer works with the same architectural knowledge, coding standards, and project history, eliminating information silos.
+          <strong>CodeMate</strong> transforms AI from a personal coding assistant into a complete engineering platform built for modern software teams. Instead of optimizing a single developer’s workflow, it empowers entire organizations with shared codebase intelligence and persistent engineering context. Every developer works with the same architectural knowledge, coding standards, and project history, eliminating information silos.
         </p>
         <p>
-          AI-powered code reviews automatically identify quality, security, and maintainability issues before they reach production. Deep repository understanding enables smarter code generation, impact analysis, and large-scale refactoring across complex codebases. Integrated security checks, testing, and documentation ensure quality is embedded throughout the SDLC rather than added at the end. By automating repetitive engineering tasks, CodeMate allows developers to focus on solving business problems instead of managing technical debt.
+          AI-powered code reviews automatically identify quality, security, and maintainability issues before they reach production. Deep repository understanding enables smarter code generation, impact analysis, and large-scale refactoring across complex codebases. Integrated security checks, testing, and documentation ensure quality is embedded throughout the SDLC rather than added at the end. By automating repetitive engineering tasks, <strong>CodeMate</strong> allows developers to focus on solving business problems instead of managing technical debt.
         </p>
         <p>
-          Built-in collaboration and governance help engineering leaders maintain consistency across distributed teams and multiple repositories. Whether deployed in the cloud, on-premises, or within a private VPC, CodeMate adapts to enterprise security and compliance requirements. The result is faster software delivery, healthier codebases, and high-performing engineering teams that can confidently build, scale, and innovate together.
+          Built-in collaboration and governance help engineering leaders maintain consistency across distributed teams and multiple repositories. Whether deployed in the cloud, on-premises, or within a private VPC, <strong>CodeMate</strong> adapts to enterprise security and compliance requirements. The result is faster software delivery, healthier codebases, and high-performing engineering teams that can confidently build, scale, and innovate together.
         </p>
         <p className="my-6">
-          CodeMate is built around the idea that software development is a <strong>continuous lifecycle</strong>, not a series of disconnected steps. Its tools map directly to <a href="https://www.geeksforgeeks.org/software-engineering/software-development-life-cycle-sdlc/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">SDLC</a> stages:
+          <strong>CodeMate</strong> is built around the idea that software development is a <strong>continuous lifecycle</strong>, not a series of disconnected steps. Its tools map directly to <a href="https://www.geeksforgeeks.org/software-engineering/software-development-life-cycle-sdlc/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">SDLC</a> stages:
         </p>
         <ul className="list-disc pl-6 space-y-2.5 mb-8 text-slate-300">
           <li>
@@ -179,7 +179,7 @@ export default function Blog3Content() {
       <section>
         <h2 id="feature-comparison">CodeMate vs Claude Code : Feature Comparison</h2>
         <p>
-          A clean capability breakdown comparing CodeMate AI and Claude Code across enterprise deployment, governance, LLM support, and engineering features.
+          A clean capability breakdown comparing <strong>CodeMate AI</strong> and <strong>Claude Code</strong> across enterprise deployment, governance, LLM support, and engineering features.
         </p>
 
         <div className="clean-table-container">
@@ -212,7 +212,7 @@ export default function Blog3Content() {
       <section>
         <h2 id="sdlc-comparison">CodeMate vs Claude Code: AI Across the SDLC</h2>
         <p>
-          How CodeMate AI and Claude Code compare across key phases of the Software Development Lifecycle.
+          How <strong>CodeMate AI</strong> and <strong>Claude Code</strong> compare across key phases of the Software Development Lifecycle.
         </p>
 
         <div className="clean-table-container">
