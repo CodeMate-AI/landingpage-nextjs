@@ -132,9 +132,24 @@ function blog1Content(): { type: "doc"; content: TiptapNode[] } {
       ]),
       imageNode("/online_threat_image3.png", "How we designed for safety diagram"),
       heading(2, "What Could Go Wrong vs How It’s Prevented"),
-      paragraph("Database schema changes: Replit’s AI dropped a production database. With CodeMate, schema modifications are flagged, analyzed for impact, and require developer approval with rollback plans in place."),
-      paragraph("Code deployments: Industry risk: AI pushes untested code into production. In CodeMate, all suggestions happen in dev/test environments and CI/CD approval gates remain human-controlled."),
-      paragraph("API keys and secrets: Industry risk: AI exposes or mishandles credentials. In CodeMate, exposed keys are detected automatically, never stored, and enterprise secret management integrations are supported."),
+      paragraph([
+        textNode("Database schema changes:", [{ type: "bold" }]),
+        textNode(" Replit’s AI dropped a production database. With "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(", schema modifications are flagged, analyzed for impact, and require developer approval with rollback plans in place.")
+      ]),
+      paragraph([
+        textNode("Code deployments:", [{ type: "bold" }]),
+        textNode(" Industry risk: AI pushes untested code into production. In "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(", all suggestions happen in dev/test environments and CI/CD approval gates remain human-controlled.")
+      ]),
+      paragraph([
+        textNode("API keys and secrets:", [{ type: "bold" }]),
+        textNode(" Industry risk: AI exposes or mishandles credentials. In "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(", exposed keys are detected automatically, never stored, and enterprise secret management integrations are supported.")
+      ]),
       heading(2, "The Lessons Every Team Should Take Away"),
       paragraph("The Replit story is a reminder that AI isn’t a senior engineer - it’s more like a super-powered intern. And just like an intern, it needs supervision."),
       paragraph("Practical steps every team should take:"),
@@ -165,7 +180,17 @@ function blog2Content(): { type: "doc"; content: TiptapNode[] } {
   return {
     type: "doc",
     content: [
-      paragraph("Cora by CodeMate AI has achieved a 76% resolution rate on the SWE-bench verified subset, outperforming industry leaders like GitHub Copilot and Cursor on real-world software engineering tasks."),
+      paragraph([
+        textNode("Cora by CodeMate AI has achieved a "),
+        textNode("76% resolution rate", [{ type: "bold" }]),
+        textNode(" on the "),
+        textNode("SWE-bench verified subset", [{ type: "bold" }]),
+        textNode(", outperforming industry leaders like "),
+        textNode("GitHub Copilot", [{ type: "bold" }]),
+        textNode(" and "),
+        textNode("Cursor", [{ type: "bold" }]),
+        textNode(" on real-world software engineering tasks.")
+      ]),
       paragraph("This milestone reflects not just benchmark success, but a fundamental shift in how developers can collaborate with AI; from simple autocompletion to autonomous, context-aware code generation."),
       imageNode("/cora_sota_swebench.jpeg", "Cora SWE-bench Verified SOTA chart"),
       heading(2, "How Cora is Redefining Autonomous Code Generation"),
@@ -178,20 +203,34 @@ function blog2Content(): { type: "doc"; content: TiptapNode[] } {
         "Seek user approval before executing critical actions.",
         "Deliver validated, production-ready solutions directly in your workspace.",
       ]),
-      paragraph("Unlike typical AI assistants, Cora understands architecture, dependencies, and intent - operating as a self-directed engineering agent rather than a reactive autocomplete tool."),
+      paragraph([
+        textNode("Unlike typical AI assistants, Cora understands "),
+        textNode("architecture, dependencies, and intent", [{ type: "bold" }]),
+        textNode(" - operating as a self-directed engineering agent rather than a reactive autocomplete tool.")
+      ]),
       heading(2, "How Cora Achieves State-of-the-Art Performance"),
       paragraph("Cora’s breakthrough lies in its combination of specialized reasoning tooling and a self-directed execution loop that continuously validates generated solutions. Instead of guessing, Cora models the problem, tests hypotheses, and refines code until it compiles and passes all checks."),
       heading(2, "Patch Generation and Tooling"),
-      paragraph("Cora employs a single-agent architecture capable of autonomously generating and applying patches to large codebases. It is equipped with a specialized toolset for reasoning, code inspection, and system interaction - including file analysis, diff-based editing, command execution, and intelligent completion validation. We provide Cora with the following tools:"),
-      bulletList([
-        "inspect_workspace: Unified inspection layer for browsing, reading, and analyzing project structure or content before editing.",
-        "modify_file: One editing surface that handles full rewrites, incremental diffs, insertions, or regex replacements.",
-        "run_command: Execute shell and browser automation tasks under controlled approval.",
-        "manage_task: Control Cora’s task lifecycle - start, switch, complete, or compress context intelligently.",
-        "govern_workflow: Manages task understanding, clarification, and structured progress tracking.",
+      paragraph([
+        textNode("Cora employs a "),
+        textNode("single-agent architecture", [{ type: "bold" }]),
+        textNode(" capable of autonomously generating and applying patches to large codebases. It is equipped with a specialized toolset for reasoning, code inspection, and system interaction - including file analysis, diff-based editing, command execution, and intelligent completion validation. We provide Cora with the following tools:")
+      ]),
+      bulletListRich([
+        [textNode("inspect_workspace: ", [{ type: "bold" }]), textNode("Unified inspection layer for browsing, reading, and analyzing project structure or content before editing.")],
+        [textNode("modify_file: ", [{ type: "bold" }]), textNode("One editing surface that handles full rewrites, incremental diffs, insertions, or regex replacements.")],
+        [textNode("run_command: ", [{ type: "bold" }]), textNode("Execute shell and browser automation tasks under controlled approval.")],
+        [textNode("manage_task: ", [{ type: "bold" }]), textNode("Control Cora’s task lifecycle - start, switch, complete, or compress context intelligently.")],
+        [textNode("govern_workflow: ", [{ type: "bold" }]), textNode("Manages task understanding, clarification, and structured progress tracking.")]
       ]),
       heading(2, "The Agentic Advantage"),
-      paragraph("Cora’s power lies in its autonomous agent architecture, designed for both independence and accountability. For your team Cora can:"),
+      paragraph([
+        textNode("Cora’s power lies in its "),
+        textNode("autonomous agent architecture", [{ type: "bold" }]),
+        textNode(", designed for both "),
+        textNode("independence and accountability", [{ type: "bold" }]),
+        textNode(". For your team Cora can:")
+      ]),
       bulletList([
         "Reason across codebases to understand structure and dependencies.",
         "Make implementation decisions without constant developer input.",
@@ -201,32 +240,76 @@ function blog2Content(): { type: "doc"; content: TiptapNode[] } {
       ]),
       imageNode("/cora_architecture.png", "Cora Architecture Diagram"),
       heading(2, "Built for Real-World Engineering"),
-      paragraph("The SWE-bench benchmark evaluates AI agents on real GitHub issues and pull requests from major open-source projects - representing the complexity of real-world software development. Each task requires:"),
+      paragraph([
+        textNode("The "),
+        textNode("SWE-bench benchmark", [{ type: "bold" }]),
+        textNode(" evaluates AI agents on real GitHub issues and pull requests from major open-source projects - representing the complexity of real-world software development. Each task requires:")
+      ]),
       bulletList([
         "Understanding project architecture and conventions.",
         "Multi-file reasoning and consistency maintenance.",
         "Generating patches that pass existing test suites.",
         "Iterative debugging and refinement.",
       ]),
-      paragraph("Cora successfully resolved 76 SWE-Bench verified instances, showing its ability to handle engineering challenges that typically require senior developer expertise."),
+      paragraph([
+        textNode("Cora successfully resolved "),
+        textNode("76 SWE-Bench verified instances", [{ type: "bold" }]),
+        textNode(", showing its ability to handle engineering challenges that typically require senior developer expertise.")
+      ]),
       imageNode("/cora_benchmark.png", "Cora SWE-bench Verified results"),
       heading(2, "Optimized for Correctness, Not Just Speed"),
-      paragraph("In software engineering, speed without correctness adds rework - not value. Let’s compare how other tools fare:"),
-      bulletList([
-        "Cursor averaged 48 seconds per task but resolved only 51 out of 100 issues.",
-        "Cora averaged 134 seconds per task yet resolved 76 issues with validated, working solutions.",
+      paragraph([
+        textNode("In software engineering, "),
+        textNode("speed without correctness", [{ type: "bold" }]),
+        textNode(" adds rework - not value. Let’s compare how other tools fare:")
       ]),
-      paragraph("The takeaway: correctness-first saves developers far more time downstream by avoiding debugging and manual fixes. In software development, the real metric is time to working solution, not time to first output."),
+      bulletListRich([
+        [
+          textNode("Cursor", [{ type: "bold" }]),
+          textNode(" averaged "),
+          textNode("48 seconds", [{ type: "italic" }]),
+          textNode(" per task but resolved only "),
+          textNode("51 out of 100", [{ type: "italic" }]),
+          textNode(" issues.")
+        ],
+        [
+          textNode("Cora", [{ type: "bold" }]),
+          textNode(" averaged "),
+          textNode("134 seconds", [{ type: "italic" }]),
+          textNode(" per task yet resolved "),
+          textNode("76", [{ type: "italic" }]),
+          textNode(" issues with "),
+          textNode("validated, working solutions", [{ type: "bold" }]),
+          textNode(".")
+        ]
+      ]),
+      paragraph([
+        textNode("The takeaway: correctness-first saves developers far more time downstream by avoiding debugging and manual fixes. In software development, the real metric is "),
+        textNode("time to working solution", [{ type: "bold" }]),
+        textNode(", not time to first output.")
+      ]),
       paragraph("[video: /blog2_Video.mp4]"),
       heading(2, "Transparent, Reproducible, Open Evaluation"),
-      paragraph("We believe transparency builds trust. Our SWE-bench results are fully reproducible and publicly available for verification. Our methodology includes:"),
-      bulletList([
-        "Standard SWE-bench dataset and test harness used across the research community.",
-        "Consistent environment and timeout configurations.",
-        "Open-source benchmark infrastructure maintained by leading institutions.",
-        "Automated validation against real test suites.",
+      paragraph([
+        textNode("We believe transparency builds trust. Our SWE-bench results are "),
+        textNode("fully reproducible and publicly available", [{ type: "bold" }]),
+        textNode(" for verification. Our methodology includes:")
       ]),
-      paragraph("All evaluation logs, configurations, and patch traces are available on our GitHub repository for independent review. This commitment to openness ensures developers can verify, reproduce, and trust every claim we make."),
+      bulletListRich([
+        [
+          textNode("Standard "),
+          textNode("SWE-bench dataset and test harness", [{ type: "bold" }]),
+          textNode(" used across the research community.")
+        ],
+        [textNode("Consistent environment and timeout configurations.")],
+        [textNode("Open-source benchmark infrastructure maintained by leading institutions.")],
+        [textNode("Automated validation against real test suites.")]
+      ]),
+      paragraph([
+        textNode("All evaluation logs, configurations, and patch traces are available on our "),
+        textNode("GitHub repository", [{ type: "bold" }]),
+        textNode(" for independent review. This commitment to openness ensures developers can verify, reproduce, and trust every claim we make.")
+      ]),
       heading(2, "Experience Cora Yourself"),
       paragraph("Benchmarks prove performance - experience builds conviction. Get started:"),
       bulletListRich([
@@ -343,9 +426,17 @@ function blog3Content(): { type: "doc"; content: TiptapNode[] } {
       ),
       heading(2, "Key Positioning"),
       paragraph("Instead of viewing these tools as identical coding assistants, recognize that they serve fundamentally different scopes:"),
-      bulletList([
-        "Claude Code: AI Coding Agent - excels at implementing, debugging, and automating coding tasks for individual developers.",
-        "CodeMate AI: Enterprise AI SDLC Platform - focused on architecture, governance, and organization-wide engineering intelligence.",
+      bulletListRich([
+        [
+          textNode("Claude Code: "),
+          textNode("AI Coding Agent", [{ type: "bold" }]),
+          textNode(" - excels at implementing, debugging, and automating coding tasks for individual developers.")
+        ],
+        [
+          textNode("CodeMate AI: "),
+          textNode("Enterprise AI SDLC Platform", [{ type: "bold" }]),
+          textNode(" - focused on architecture, governance, and organization-wide engineering intelligence.")
+        ],
       ]),
       heading(2, "Trusted by Enterprises"),
       paragraph("CodeMate’s enterprise posture is built for teams that need governance, auditability, and organizational intelligence across the SDLC."),
@@ -370,8 +461,16 @@ function blog4Content(): { type: "doc"; content: TiptapNode[] } {
       paragraph("For individual productivity, that model works exceptionally well."),
       paragraph("However, engineering organizations eventually encounter a different set of challenges, ones that cannot be solved by faster code generation alone."),
       paragraph("As teams grow, software becomes more distributed. Architectures span dozens of repositories, hundreds of microservices, thousands of APIs, and years of accumulated engineering decisions. Documentation becomes fragmented. Tribal knowledge lives with senior engineers. Code reviews vary by reviewer. New developers spend weeks understanding systems before making meaningful contributions."),
-      paragraph("At this stage, the limiting factor is no longer how quickly code can be written."),
-      paragraph("It’s how effectively engineering knowledge can be shared, governed, and applied across the organization."),
+      paragraph([
+        textNode("At this stage, the limiting factor is no longer "),
+        textNode("how quickly code can be written", [{ type: "bold" }]),
+        textNode(".")
+      ]),
+      paragraph([
+        textNode("It’s "),
+        textNode("how effectively engineering knowledge can be shared, governed, and applied across the organization", [{ type: "bold" }]),
+        textNode(".")
+      ]),
       paragraph("This is where the architectural philosophies of GitHub Copilot and CodeMate begin to diverge."),
       paragraph("GitHub Copilot approaches AI as an intelligent pair programmer deeply integrated into the GitHub ecosystem. It focuses on helping developers generate code faster, automate pull requests, review changes, and work more efficiently within existing GitHub workflows."),
       paragraph("CodeMate takes a broader approach."),
