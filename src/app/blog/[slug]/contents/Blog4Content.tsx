@@ -14,6 +14,12 @@ interface CapabilityRow {
   githubCopilot: string;
 }
 
+interface SDLCStageRow {
+  stage: string;
+  codemate: string;
+  githubCopilot: string;
+}
+
 const atAGlanceRows: AtAGlanceRow[] = [
   { category: "Primary Goal", codemate: "AI Software Engineering Platform", githubCopilot: "AI Pair Programmer" },
   { category: "Best For", codemate: "Enterprise engineering organizations", githubCopilot: "Individual developers and GitHub-first teams" },
@@ -57,6 +63,20 @@ const deploymentRows: CapabilityRow[] = [
   // Unmatching rows at bottom
   { capability: "VPC", codemate: "check", githubCopilot: "cross" },
   { capability: "On-Prem / Self Hosted", codemate: "check", githubCopilot: "cross" }
+];
+
+const sdlcStageRows: SDLCStageRow[] = [
+  { stage: "Research", codemate: "check", githubCopilot: "Limited" },
+  { stage: "Requirement Analysis", codemate: "check", githubCopilot: "Limited" },
+  { stage: "Architecture Planning", codemate: "check", githubCopilot: "Partial" },
+  { stage: "UI / Prototype Generation", codemate: "check", githubCopilot: "Partial" },
+  { stage: "Code Generation", codemate: "check", githubCopilot: "check" },
+  { stage: "Refactoring", codemate: "check", githubCopilot: "check" },
+  { stage: "Test Generation", codemate: "check", githubCopilot: "check" },
+  { stage: "Code Reviews", codemate: "check", githubCopilot: "check" },
+  { stage: "Security Analysis", codemate: "check", githubCopilot: "Partial" },
+  { stage: "Documentation", codemate: "check", githubCopilot: "Partial" },
+  { stage: "Knowledge Retention", codemate: "Persistent organisational memory", githubCopilot: "Repository scoped" },
 ];
 
 const pricingRows: AtAGlanceRow[] = [
@@ -229,6 +249,31 @@ export default function Blog4Content() {
         <p>
           By preserving continuity across the full <strong>SDLC</strong>, CodeMate ensures that design choices and requirements from the prototyping phase are automatically carried forward into development and verification. In practice, that means one platform can help teams investigate a problem, design the right solution, prototype quickly, implement changes, validate behavior, and review code with organizational awareness, all while keeping the workflow aligned to the <strong>SDLC</strong> from start to finish.
         </p>
+
+        <div className="clean-table-container my-6">
+          <table className="clean-comparison-table">
+            <thead>
+              <tr>
+                <th scope="col" className="col-capability">SDLC Stage</th>
+                <th scope="col" className="col-product">CodeMate</th>
+                <th scope="col" className="col-product">GitHub Copilot</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sdlcStageRows.map((row, idx) => (
+                <tr key={idx}>
+                  <th scope="row" className="cell-capability">{row.stage}</th>
+                  <td className="cell-product">
+                    <RenderTableCell val={row.codemate} />
+                  </td>
+                  <td className="cell-product">
+                    <RenderTableCell val={row.githubCopilot} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </section>
 
 
