@@ -83,7 +83,7 @@ const pricingRows: AtAGlanceRow[] = [
   { category: "Billing Model", codemate: "Fixed Licensing", githubCopilot: "Usage-based AI Credits" },
   { category: "Cost Predictability", codemate: "Predictable", githubCopilot: "Usage dependent" },
   { category: "Enterprise Budgeting", codemate: "Fixed", githubCopilot: "Variable" },
-  { category: "Large Team Scalability", codemate: "predictable licensing", githubCopilot: "grows with consumption" },
+  { category: "Large Team Scalability", codemate: "Designed for predictable licensing", githubCopilot: "Usage grows with consumption" },
 ];
 
 const faqItems = [
