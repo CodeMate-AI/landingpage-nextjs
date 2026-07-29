@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import TiptapEditor from "@/components/admin/TiptapEditor";
+import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
 function EditorContent() {
   const router = useRouter();
@@ -235,7 +235,7 @@ function EditorContent() {
 
           <div>
             <label className="mb-1.5 block text-sm font-medium text-neutral-400">Content Editor</label>
-            {(!postId || contentJson.content.length > 0) && <TiptapEditor content={contentJson} onChange={setContentJson} />}
+            {(!postId || contentJson.content.length > 0) && <SimpleEditor content={contentJson} onChange={setContentJson} />}
           </div>
 
           <div className="flex items-center gap-3">
