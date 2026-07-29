@@ -96,6 +96,23 @@ export default function TiptapEditor({ content, onChange }: Props) {
     editor.chain().focus().setImage({ src: url }).run();
   };
 
+  const setLink = () => {
+    if (!editor) return;
+    const previousUrl = editor.getAttributes("link").href;
+    const url = prompt("Enter Link URL:", previousUrl);
+
+    if (url === null) {
+      return;
+    }
+
+    if (url === "") {
+      editor.chain().focus().extendMarkRange("link").unsetLink().run();
+      return;
+    }
+
+    editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
+  };
+
   const handleVideoButtonClick = () => {
     videoInputRef.current?.click();
   };
@@ -123,6 +140,9 @@ export default function TiptapEditor({ content, onChange }: Props) {
         </button>
         <button type="button" onClick={() => editor.chain().focus().toggleBulletList().run()} className={`p-1.5 rounded text-sm ${editor.isActive("bulletList") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
           Bullet List
+        </button>
+        <button type="button" onClick={setLink} className={`p-1.5 rounded text-sm ${editor.isActive("link") ? "bg-blue-600 text-white" : "text-neutral-300 hover:bg-neutral-800"}`}>
+          Link
         </button>
         <button type="button" onClick={addImageByUrl} className="p-1.5 rounded text-sm text-neutral-300 hover:bg-neutral-800">
           Add Image

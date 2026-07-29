@@ -229,10 +229,25 @@ function blog2Content(): { type: "doc"; content: TiptapNode[] } {
       paragraph("All evaluation logs, configurations, and patch traces are available on our GitHub repository for independent review. This commitment to openness ensures developers can verify, reproduce, and trust every claim we make."),
       heading(2, "Experience Cora Yourself"),
       paragraph("Benchmarks prove performance - experience builds conviction. Get started:"),
-      bulletList([
-        "Install Cora from the VS Code Marketplace.",
-        "Explore our evaluation results on GitHub.",
-        "Visit codemate.ai to learn more.",
+      bulletListRich([
+        [
+          textNode("Install Cora", [{ type: "bold" }]),
+          textNode(" from the "),
+          linkNode("VS Code Marketplace", "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent"),
+          textNode(".")
+        ],
+        [
+          textNode("Explore our "),
+          textNode("evaluation results", [{ type: "bold" }]),
+          textNode(" on "),
+          linkNode("GitHub", "https://github.com/CodeMate-AI/swe-benchmarking"),
+          textNode(".")
+        ],
+        [
+          textNode("Visit "),
+          linkNode("codemate.ai", "https://codemate.ai/"),
+          textNode(" to learn more.")
+        ]
       ]),
     ],
   };
