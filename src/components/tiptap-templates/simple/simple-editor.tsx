@@ -77,10 +77,12 @@ import "@/components/tiptap-templates/simple/simple-editor.scss"
 const MainToolbarContent = ({
   onHighlighterClick,
   onLinkClick,
+  onVideoClick,
   isMobile,
 }: {
   onHighlighterClick: () => void
   onLinkClick: () => void
+  onVideoClick: () => void
   isMobile: boolean
 }) => {
   const { editor } = useTiptapEditor()
@@ -142,14 +144,35 @@ const MainToolbarContent = ({
 
       <ToolbarGroup>
         <ImageUploadButton text="Add" />
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={onVideoClick}
+          tooltip="Add video"
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.8}
+            stroke="currentColor"
+            className="tiptap-button-icon"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+          </svg>
+          <span className="tiptap-button-text">Add</span>
+        </Button>
       </ToolbarGroup>
 
       <ToolbarSeparator />
 
       <ToolbarGroup>
         <Button
+          type="button"
           variant="ghost"
           onClick={() => editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+          onMouseDown={(e) => e.preventDefault()}
           title="Insert Table"
         >
           Table
@@ -157,38 +180,48 @@ const MainToolbarContent = ({
         {editor?.isActive("table") && (
           <>
             <Button
+              type="button"
               variant="ghost"
               onClick={() => editor?.chain().focus().addRowAfter().run()}
+              onMouseDown={(e) => e.preventDefault()}
               title="Add Row Below"
             >
               + Row
             </Button>
             <Button
+              type="button"
               variant="ghost"
               onClick={() => editor?.chain().focus().deleteRow().run()}
+              onMouseDown={(e) => e.preventDefault()}
               className="text-red-400 hover:text-red-500"
               title="Delete Row"
             >
               - Row
             </Button>
             <Button
+              type="button"
               variant="ghost"
               onClick={() => editor?.chain().focus().addColumnAfter().run()}
+              onMouseDown={(e) => e.preventDefault()}
               title="Add Column Right"
             >
               + Col
             </Button>
             <Button
+              type="button"
               variant="ghost"
               onClick={() => editor?.chain().focus().deleteColumn().run()}
+              onMouseDown={(e) => e.preventDefault()}
               className="text-red-400 hover:text-red-500"
               title="Delete Column"
             >
               - Col
             </Button>
             <Button
+              type="button"
               variant="ghost"
               onClick={() => editor?.chain().focus().deleteTable().run()}
+              onMouseDown={(e) => e.preventDefault()}
               className="text-red-500 font-bold hover:text-red-600"
               title="Delete Table"
             >
@@ -245,8 +278,9 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
   const isInitializedRef = useRef(false)
-
-  const editor = useEditor({
+  const videoInputRef = useRef<HTMLInputElement>(null)
+  let editor: ReturnType<typeof useEditor> | null = null
+  editor = useEditor({
     immediatelyRender: false,
     editorProps: {
       attributes: {
@@ -260,7 +294,9 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         if (moved) return false
 
         const file = event.dataTransfer?.files?.[0]
-        if (file && file.type.startsWith("image/")) {
+        if (!file) return false
+
+        if (file.type.startsWith("image/")) {
           handleImageUpload(file)
             .then((url) => {
               const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
@@ -272,6 +308,23 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
             .catch((err) => console.error("Drop upload failed:", err))
           return true // Handled! Prevents default browser drop behavior
         }
+
+        if (file.type.startsWith("video/")) {
+          handleImageUpload(file)
+            .then((url) => {
+              const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
+              const pos = coordinates ? coordinates.pos : view.state.selection.from
+              const node = view.state.schema.nodes.paragraph.create(
+                null,
+                view.state.schema.text(`[video: ${url}]`)
+              )
+              const transaction = view.state.tr.insert(pos, node)
+              view.dispatch(transaction)
+            })
+            .catch((err) => console.error("Drop video failed:", err))
+          return true
+        }
+
         return false
       },
       handlePaste: (view, event, slice) => {
@@ -290,6 +343,26 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
             .catch((err) => console.error("Paste upload failed:", err))
           return true // Handled! Prevents default browser paste behavior
         }
+
+        if (file && file.type.startsWith("video/")) {
+          const VIDEO_MAX = 50 * 1024 * 1024
+          if (file.size > VIDEO_MAX) {
+            alert("Video exceeds 50MB size limit")
+            return true
+          }
+          handleImageUpload(file)
+            .then((url) => {
+              const node = view.state.schema.nodes.paragraph.create(
+                null,
+                view.state.schema.text(`[video: ${url}]`)
+              )
+              const transaction = view.state.tr.replaceSelectionWith(node)
+              view.dispatch(transaction)
+            })
+            .catch((err) => console.error("Paste video failed:", err))
+          return true
+        }
+
         return false
       },
     },
@@ -329,6 +402,30 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
     },
   })
 
+  const handleVideoButtonClick = () => {
+    videoInputRef.current?.click()
+  }
+
+  const handleVideoInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const VIDEO_MAX = 50 * 1024 * 1024
+    if (file.size > VIDEO_MAX) {
+      alert("Video exceeds 50MB size limit")
+      return
+    }
+
+    try {
+      const url = await handleImageUpload(file)
+      editor?.chain().focus().insertContent(`<p>[video: ${url}]</p>`).run()
+    } catch (err: any) {
+      alert(err.message || "Video upload failed.")
+    } finally {
+      if (videoInputRef.current) videoInputRef.current.value = ""
+    }
+  }
+
   useEffect(() => {
     if (!editor || isInitializedRef.current) return
 
@@ -347,12 +444,20 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
   return (
     <EditorContext.Provider value={{ editor }}>
       <div className="simple-editor-wrapper">
+        <input
+          ref={videoInputRef}
+          type="file"
+          accept="video/mp4,video/webm,video/ogg,video/quicktime"
+          className="hidden"
+          onChange={handleVideoInputChange}
+        />
         <Toolbar ref={toolbarRef}>
           {mobileView === "main" ? (
             <MainToolbarContent
               isMobile={isMobile}
               onHighlighterClick={() => setMobileView("highlighter")}
               onLinkClick={() => setMobileView("link")}
+              onVideoClick={handleVideoButtonClick}
             />
           ) : (
             <MobileToolbarContent
@@ -366,3 +471,4 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
     </EditorContext.Provider>
   )
 }
+

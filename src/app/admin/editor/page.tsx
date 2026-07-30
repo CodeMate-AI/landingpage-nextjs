@@ -126,7 +126,7 @@ function EditorContent() {
       <div className="mx-auto max-w-4xl">
         <header className="mb-8 flex items-center justify-between border-b border-[#27272a] pb-6">
           <h1 className="text-3xl font-bold text-white">{postId ? "Modify Article" : "Compose Article"}</h1>
-          <button onClick={() => router.push("/admin/dashboard")} className="text-neutral-400 hover:text-neutral-200">
+          <button type="button" onClick={() => router.push("/admin/dashboard")} className="text-neutral-400 hover:text-neutral-200" suppressHydrationWarning>
             Cancel
           </button>
         </header>
@@ -140,6 +140,7 @@ function EditorContent() {
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
+                suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
             </div>
@@ -150,6 +151,7 @@ function EditorContent() {
                 required
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
+                suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
             </div>
@@ -174,6 +176,7 @@ function EditorContent() {
                   type="text"
                   value={coverImage}
                   onChange={(e) => setCoverImage(e.target.value)}
+                  suppressHydrationWarning
                   className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
                 />
                 <input
@@ -193,6 +196,7 @@ function EditorContent() {
                   type="button"
                   disabled={uploading}
                   onClick={() => fileInputRef.current?.click()}
+                  suppressHydrationWarning
                   className="rounded-lg border border-[#27272a] bg-[#18181b] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#232329] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {uploading ? "Uploading..." : "Upload"}
@@ -228,6 +232,7 @@ function EditorContent() {
                 value={tagsInput}
                 onChange={(e) => setTagsInput(e.target.value)}
                 placeholder="e.g. Security, Comparison, CORA"
+                suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
             </div>
@@ -254,6 +259,7 @@ function EditorContent() {
           <button
             type="submit"
             disabled={loading}
+            suppressHydrationWarning
             className="w-full rounded-lg bg-blue-600 p-3 font-semibold text-white transition hover:bg-blue-500 disabled:opacity-50"
           >
             {loading ? "Saving Article..." : "Save Post"}
