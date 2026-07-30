@@ -340,12 +340,31 @@ function blog3Content(): { type: "doc"; content: TiptapNode[] } {
   return {
     type: "doc",
     content: [
-      paragraph("Claude Code focuses on writing code. CodeMate manages the entire engineering workflow : from planning to production."),
+      paragraph([
+        textNode("Claude Code", [{ type: "bold" }]),
+        textNode(" focuses on writing code. "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" manages the entire engineering workflow : from planning to production.")
+      ]),
       heading(2, "From Individual Developers to High-Performing Engineering Teams"),
-      paragraph("CodeMate transforms AI from a personal coding assistant into a complete engineering platform built for modern software teams. Instead of optimizing a single developer’s workflow, it empowers entire organizations with shared codebase intelligence and persistent engineering context. Every developer works with the same architectural knowledge, coding standards, and project history, eliminating information silos."),
-      paragraph("AI-powered code reviews automatically identify quality, security, and maintainability issues before they reach production. Deep repository understanding enables smarter code generation, impact analysis, and large-scale refactoring across complex codebases. Integrated security checks, testing, and documentation ensure quality is embedded throughout the SDLC rather than added at the end. By automating repetitive engineering tasks, CodeMate allows developers to focus on solving business problems instead of managing technical debt."),
-      paragraph("Built-in collaboration and governance help engineering leaders maintain consistency across distributed teams and multiple repositories. Whether deployed in the cloud, on-premises, or within a private VPC, CodeMate adapts to enterprise security and compliance requirements. The result is faster software delivery, healthier codebases, and high-performing engineering teams that can confidently build, scale, and innovate together."),
-      paragraph([textNode("CodeMate is built around the idea that software development is a "), textNode("continuous lifecycle", [{ type: "bold" }]), textNode(", not a series of disconnected steps. Its tools map directly to "), textNode("SDLC", [{ type: "link", attrs: { href: "https://www.geeksforgeeks.org/software-engineering/software-development-life-cycle-sdlc/", target: "_blank", rel: "noopener noreferrer" } }]), textNode(" stages:")]),
+      paragraph([
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" transforms AI from a personal coding assistant into a complete engineering platform built for modern software teams. Instead of optimizing a single developer’s workflow, it empowers entire organizations with shared codebase intelligence and persistent engineering context. Every developer works with the same architectural knowledge, coding standards, and project history, eliminating information silos.")
+      ]),
+      paragraph("AI-powered code reviews automatically identify quality, security, and maintainability issues before they reach production. Deep repository understanding enables smarter code generation, impact analysis, and large-scale refactoring across complex codebases. Integrated security checks, testing, and documentation ensure quality is embedded throughout the SDLC rather than added at the end. By automating repetitive engineering tasks, "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" allows developers to focus on solving business problems instead of managing technical debt."),
+      paragraph("Built-in collaboration and governance help engineering leaders maintain consistency across distributed teams and multiple repositories. Whether deployed in the cloud, on-premises, or within a private VPC, "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" adapts to enterprise security and compliance requirements. The result is faster software delivery, healthier codebases, and high-performing engineering teams that can confidently build, scale, and innovate together."),
+      paragraph([
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" is built around the idea that software development is a "),
+        textNode("continuous lifecycle", [{ type: "bold" }]),
+        textNode(", not a series of disconnected steps. Its tools map directly to "),
+        textNode("SDLC", [{ type: "link", attrs: { href: "https://www.geeksforgeeks.org/software-engineering/software-development-life-cycle-sdlc/", target: "_blank", rel: "noopener noreferrer" } }]),
+        textNode(" stages:")
+      ]),
       bulletListRich([
         [
           linkNode("C0", "https://docs.codemate.ai/c0"),
@@ -366,7 +385,13 @@ function blog3Content(): { type: "doc"; content: TiptapNode[] } {
       ]),
       imageNode("/codemate_sdlc_architecture.png", "CodeMate AI End-to-End SDLC Agent Architecture Flow Chart"),
       heading(2, "CodeMate vs Claude Code : Feature Comparison"),
-      paragraph("A clean capability breakdown comparing CodeMate AI and Claude Code across enterprise deployment, governance, LLM support, and engineering features."),
+      paragraph([
+        textNode("A clean capability breakdown comparing "),
+        textNode("CodeMate AI", [{ type: "bold" }]),
+        textNode(" and "),
+        textNode("Claude Code", [{ type: "bold" }]),
+        textNode(" across enterprise deployment, governance, LLM support, and engineering features.")
+      ]),
       table(
         ["Capability", "CodeMate AI", "Claude Code"],
         [
@@ -396,7 +421,13 @@ function blog3Content(): { type: "doc"; content: TiptapNode[] } {
         ]
       ),
       heading(2, "SDLC Comparison"),
-      paragraph("How CodeMate AI and Claude Code compare across key phases of the Software Development Lifecycle."),
+      paragraph([
+        textNode("How "),
+        textNode("CodeMate AI", [{ type: "bold" }]),
+        textNode(" and "),
+        textNode("Claude Code", [{ type: "bold" }]),
+        textNode(" compare across key phases of the Software Development Lifecycle.")
+      ]),
       table(
         ["SDLC Stage", "CodeMate AI", "Claude Code"],
         [
@@ -458,7 +489,11 @@ function blog4Content(): { type: "doc"; content: TiptapNode[] } {
     content: [
       heading(2, "Beyond AI Code Completion : Choosing the Right AI Platform for Modern Engineering Teams"),
       paragraph("AI coding assistants have become a standard part of software development. But as engineering organizations move from individual experimentation to enterprise-wide adoption, a more important question emerges: Is your AI merely helping developers write code, or is it helping your organization build better software?"),
-      paragraph("For the past few years, the conversation around AI coding has largely revolved around autocomplete, chat, and code generation. GitHub Copilot set the standard by bringing AI directly into the IDE, enabling millions of developers to generate functions, explain code, and automate repetitive tasks with remarkable ease."),
+      paragraph([
+        textNode("For the past few years, the conversation around AI coding has largely revolved around autocomplete, chat, and code generation. "),
+        textNode("GitHub Copilot", [{ type: "bold" }]),
+        textNode(" set the standard by bringing AI directly into the IDE, enabling millions of developers to generate functions, explain code, and automate repetitive tasks with remarkable ease.")
+      ]),
       paragraph("For individual productivity, that model works exceptionally well."),
       paragraph("However, engineering organizations eventually encounter a different set of challenges, ones that cannot be solved by faster code generation alone."),
       paragraph("As teams grow, software becomes more distributed. Architectures span dozens of repositories, hundreds of microservices, thousands of APIs, and years of accumulated engineering decisions. Documentation becomes fragmented. Tribal knowledge lives with senior engineers. Code reviews vary by reviewer. New developers spend weeks understanding systems before making meaningful contributions."),
@@ -472,10 +507,26 @@ function blog4Content(): { type: "doc"; content: TiptapNode[] } {
         textNode("how effectively engineering knowledge can be shared, governed, and applied across the organization", [{ type: "bold" }]),
         textNode(".")
       ]),
-      paragraph("This is where the architectural philosophies of GitHub Copilot and CodeMate begin to diverge."),
-      paragraph("GitHub Copilot approaches AI as an intelligent pair programmer deeply integrated into the GitHub ecosystem. It focuses on helping developers generate code faster, automate pull requests, review changes, and work more efficiently within existing GitHub workflows."),
-      paragraph("CodeMate takes a broader approach."),
-      paragraph("Rather than viewing AI as another developer tool, it treats AI as an engineering platform that continuously learns from repositories, documentation, architectural patterns, engineering standards, and historical decisions. Instead of rebuilding context for every interaction, it creates a persistent knowledge layer that can support every engineer across the software development lifecycle."),
+      paragraph([
+        textNode("This is where the architectural philosophies of "),
+        textNode("GitHub Copilot", [{ type: "bold" }]),
+        textNode(" and "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" begin to diverge.")
+      ]),
+      paragraph([
+        textNode("GitHub Copilot", [{ type: "bold" }]),
+        textNode(" approaches AI as an intelligent pair programmer deeply integrated into the GitHub ecosystem. It focuses on helping developers generate code faster, automate pull requests, review changes, and work more efficiently within existing GitHub workflows.")
+      ]),
+      paragraph([
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" takes a broader approach.")
+      ]),
+      paragraph([
+        textNode("Rather than viewing AI as another developer tool, it treats AI as an engineering platform that continuously learns from repositories, documentation, architectural patterns, engineering standards, and historical decisions. Instead of rebuilding context for every interaction, it creates a persistent knowledge layer that can support every engineer across the "),
+        textNode("Software Development Lifecycle (SDLC)", [{ type: "bold" }]),
+        textNode(".")
+      ]),
       paragraph("The distinction may seem subtle at first, but it fundamentally changes what each platform is optimized to solve."),
       paragraph("This article compares both platforms from an engineering perspective, not to determine which AI writes better code snippets, but to understand which architecture better supports modern software teams as they scale."),
       heading(2, "The Shift from AI Assistants to AI Engineering Platforms"),
@@ -486,8 +537,52 @@ function blog4Content(): { type: "doc"; content: TiptapNode[] } {
       paragraph("These goals may appear similar, but they require fundamentally different architectures."),
       paragraph("Traditional coding assistants typically process the current repository, user prompt, and surrounding code before generating a response. Their effectiveness is largely determined by the quality of the immediate context and developer interaction."),
       paragraph("Enterprise engineering platforms extend that model by maintaining a broader understanding of the organization. They continuously index repositories, documentation, architectural relationships, APIs, and development practices, enabling AI to reason beyond a single repository or session."),
+      heading(2, "Unifying the Entire SDLC vs Isolated Assistance"),
+      paragraph([
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" is built to support the entire "),
+        textNode("Software Development Lifecycle (SDLC)", [{ type: "bold" }]),
+        textNode(", not just the coding moment. Its ecosystem of products is designed to move seamlessly from research and requirements gathering to architecture, prototyping, development, testing, reviews, and deployment readiness.")
+      ]),
+      paragraph([
+        textNode("This is made possible by a unified memory layer and advanced context engineering that keeps knowledge connected across repositories, tickets, documentation, and engineering standards. Unlike "),
+        textNode("GitHub Copilot", [{ type: "bold" }]),
+        textNode(", which operates as an isolated IDE-centric assistant with limited context across multiple codebases, "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode("'s context engineering is specifically optimized to reason across entire repository ecosystems, making it far superior for complex, multi-repo projects.")
+      ]),
+      paragraph([
+        textNode("By preserving continuity across the full "),
+        textNode("SDLC", [{ type: "bold" }]),
+        textNode(", "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" ensures that design choices and requirements from the prototyping phase are automatically carried forward into development and verification. In practice, that means one platform can help teams investigate a problem, design the right solution, prototype quickly, implement changes, validate behavior, and review code with organizational awareness, all while keeping the workflow aligned to the "),
+        textNode("SDLC", [{ type: "bold" }]),
+        textNode(" from start to finish.")
+      ]),
+      table(
+        ["SDLC Stage", "CodeMate", "GitHub Copilot"],
+        [
+          ["Research", "check", "Limited"],
+          ["Requirement Analysis", "check", "Limited"],
+          ["Architecture Planning", "check", "Partial"],
+          ["UI / Prototype Generation", "check", "Partial"],
+          ["Code Generation", "check", "check"],
+          ["Refactoring", "check", "check"],
+          ["Test Generation", "check", "check"],
+          ["Code Reviews", "check", "check"],
+          ["Security Analysis", "check", "Partial"],
+          ["Documentation", "check", "Partial"],
+          ["Knowledge Retention", "Persistent organisational memory", "Repository scoped"],
+        ]
+      ),
       heading(2, "At a Glance"),
-      paragraph("CodeMate VS GitHub Copilot : Beyond AI Code Completion comparison table:"),
+      paragraph([
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" VS "),
+        textNode("GitHub Copilot", [{ type: "bold" }]),
+        textNode(" : Beyond AI Code Completion comparison table:")
+      ]),
       table(
         ["Category", "CodeMate", "GitHub Copilot"],
         [
@@ -532,6 +627,23 @@ function blog4Content(): { type: "doc"; content: TiptapNode[] } {
           ["Bring Your Own Model (BYOM)", "check", "check"],
           ["VPC", "check", "cross"],
           ["On-Prem / Self Hosted", "check", "cross"],
+        ]
+      ),
+      heading(2, "Pricing Model"),
+      paragraph([
+        textNode("Pricing structure and financial predictability play a significant role in long-term enterprise AI planning. While "),
+        textNode("GitHub Copilot", [{ type: "bold" }]),
+        textNode(" links cost to variable credit consumption, "),
+        textNode("CodeMate", [{ type: "bold" }]),
+        textNode(" provides a flat licensing model to simplify budgeting.")
+      ]),
+      table(
+        ["Category", "CodeMate", "GitHub Copilot"],
+        [
+          ["Billing Model", "Fixed Licensing", "Usage-based AI Credits"],
+          ["Cost Predictability", "Predictable", "Usage dependent"],
+          ["Enterprise Budgeting", "Fixed", "Variable"],
+          ["Large Team Scalability", "Designed for predictable licensing", "Usage grows with consumption"],
         ]
       ),
       heading(2, "Frequently Asked Questions"),
