@@ -53,6 +53,7 @@ export default function AdminLogin() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              suppressHydrationWarning
               className="w-full rounded-lg border border-[#27272a] bg-[#09090b] p-3 text-sm text-white focus:border-blue-500 focus:outline-none"
             />
           </div>
@@ -63,12 +64,14 @@ export default function AdminLogin() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              suppressHydrationWarning
               className="w-full rounded-lg border border-[#27272a] bg-[#09090b] p-3 text-sm text-white focus:border-blue-500 focus:outline-none"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
+            suppressHydrationWarning
             className="w-full rounded-lg bg-blue-600 p-3 text-sm font-semibold text-white transition hover:bg-blue-500 disabled:opacity-50"
           >
             {loading ? "Signing in..." : "Sign In"}
