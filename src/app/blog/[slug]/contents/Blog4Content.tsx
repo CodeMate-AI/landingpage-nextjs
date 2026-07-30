@@ -14,6 +14,12 @@ interface CapabilityRow {
   githubCopilot: string;
 }
 
+interface SDLCStageRow {
+  stage: string;
+  codemate: string;
+  githubCopilot: string;
+}
+
 const atAGlanceRows: AtAGlanceRow[] = [
   { category: "Primary Goal", codemate: "AI Software Engineering Platform", githubCopilot: "AI Pair Programmer" },
   { category: "Best For", codemate: "Enterprise engineering organizations", githubCopilot: "Individual developers and GitHub-first teams" },
@@ -57,6 +63,27 @@ const deploymentRows: CapabilityRow[] = [
   // Unmatching rows at bottom
   { capability: "VPC", codemate: "check", githubCopilot: "cross" },
   { capability: "On-Prem / Self Hosted", codemate: "check", githubCopilot: "cross" }
+];
+
+const sdlcStageRows: SDLCStageRow[] = [
+  { stage: "Research", codemate: "check", githubCopilot: "Limited" },
+  { stage: "Requirement Analysis", codemate: "check", githubCopilot: "Limited" },
+  { stage: "Architecture Planning", codemate: "check", githubCopilot: "Partial" },
+  { stage: "UI / Prototype Generation", codemate: "check", githubCopilot: "Partial" },
+  { stage: "Code Generation", codemate: "check", githubCopilot: "check" },
+  { stage: "Refactoring", codemate: "check", githubCopilot: "check" },
+  { stage: "Test Generation", codemate: "check", githubCopilot: "check" },
+  { stage: "Code Reviews", codemate: "check", githubCopilot: "check" },
+  { stage: "Security Analysis", codemate: "check", githubCopilot: "Partial" },
+  { stage: "Documentation", codemate: "check", githubCopilot: "Partial" },
+  { stage: "Knowledge Retention", codemate: "Persistent organisational memory", githubCopilot: "Repository scoped" },
+];
+
+const pricingRows: AtAGlanceRow[] = [
+  { category: "Billing Model", codemate: "Fixed Licensing", githubCopilot: "Usage-based AI Credits" },
+  { category: "Cost Predictability", codemate: "Predictable", githubCopilot: "Usage dependent" },
+  { category: "Enterprise Budgeting", codemate: "Fixed", githubCopilot: "Variable" },
+  { category: "Large Team Scalability", codemate: "Designed for predictable licensing", githubCopilot: "Usage grows with consumption" },
 ];
 
 const faqItems = [
@@ -136,11 +163,11 @@ export default function Blog4Content() {
       <section>
         <h2 id="intro">Beyond AI Code Completion : Choosing the Right AI Platform for Modern Engineering Teams</h2>
         <p className="lead">
-          AI coding assistants have become a standard part of software development. But as engineering organizations move from individual experimentation to enterprise-wide adoption, a more important question emerges: Is your AI merely helping developers write code, or is it helping your organization build better software?
+          AI coding assistants have become a standard part of software development. But as engineering organizations move from individual experimentation to enterprise-wide adoption, a more important question emerges : <strong>Is your AI merely helping developers write code or is it helping your organization build better software?</strong>
         </p>
 
         <p>
-          For the past few years, the conversation around AI coding has largely revolved around autocomplete, chat, and code generation. GitHub Copilot set the standard by bringing AI directly into the IDE, enabling millions of developers to generate functions, explain code, and automate repetitive tasks with remarkable ease.
+          For the past few years, the conversation around AI coding has largely revolved around autocomplete, chat, and code generation. <strong>GitHub Copilot</strong> set the standard by bringing AI directly into the IDE, enabling millions of developers to generate functions, explain code, and automate repetitive tasks with remarkable ease.
         </p>
         <p>
           For individual productivity, that model works exceptionally well.
@@ -158,22 +185,22 @@ export default function Blog4Content() {
           It’s <strong>how effectively engineering knowledge can be shared, governed, and applied across the organization</strong>.
         </p>
         <p>
-          This is where the architectural philosophies of GitHub Copilot and CodeMate begin to diverge.
+          This is where the architectural philosophies of <strong>GitHub Copilot</strong> and <strong>CodeMate</strong> begin to diverge.
         </p>
         <p>
-          GitHub Copilot approaches AI as an intelligent pair programmer deeply integrated into the GitHub ecosystem. It focuses on helping developers generate code faster, automate pull requests, review changes, and work more efficiently within existing GitHub workflows.
+          <strong>GitHub Copilot</strong> approaches AI as an intelligent pair programmer deeply integrated into the GitHub ecosystem. It focuses on helping developers generate code faster, automate pull requests, review changes, and work more efficiently within existing GitHub workflows.
         </p>
         <p>
-          CodeMate takes a broader approach.
+          <strong>CodeMate</strong> takes a broader approach.
         </p>
         <p>
-          Rather than viewing AI as another developer tool, it treats AI as an engineering platform that continuously learns from repositories, documentation, architectural patterns, engineering standards, and historical decisions. Instead of rebuilding context for every interaction, it creates a persistent knowledge layer that can support every engineer across the software development lifecycle.
+          Rather than viewing AI as another developer tool, it treats AI as an engineering platform that continuously learns from repositories, documentation, architectural patterns, engineering standards, and historical decisions. Instead of rebuilding context for every interaction, it creates a persistent knowledge layer that can support every engineer across the <strong>Software Development Lifecycle (SDLC)</strong>.
         </p>
         <p>
           The distinction may seem subtle at first, but it fundamentally changes what each platform is optimized to solve.
         </p>
         <p>
-          This article compares both platforms from an engineering perspective, not to determine which AI writes better code snippets, but to understand which architecture better supports modern software teams as they scale.
+          This article compares both platforms from an engineering perspective, not to determine which AI writes better code snippets, but to understand which architecture better supports modern software teams as they scale across the <strong>SDLC</strong>.
         </p>
       </section>
 
@@ -203,9 +230,48 @@ export default function Blog4Content() {
       </section>
 
       <section>
+        <h2 id="sdlc-unification">Unifying the Entire SDLC vs Isolated Assistance</h2>
+        <p>
+          <strong>CodeMate</strong> is built to support the entire <strong>Software Development Lifecycle (SDLC)</strong>, not just the coding moment. Its ecosystem of products is designed to move seamlessly from research and requirements gathering to architecture, prototyping, development, testing, reviews, and deployment readiness.
+        </p>
+        <p>
+          This is made possible by a unified memory layer and advanced context engineering that keeps knowledge connected across repositories, tickets, documentation, and engineering standards. Unlike <strong>GitHub Copilot</strong>, which operates as an isolated IDE-centric assistant with limited context across multiple codebases, <strong>CodeMate</strong>'s context engineering is specifically optimized to reason across entire repository ecosystems, making it far superior for complex, multi-repo projects.
+        </p>
+        <p>
+          By preserving continuity across the full <strong>SDLC</strong>, <strong>CodeMate</strong> ensures that design choices and requirements from the prototyping phase are automatically carried forward into development and verification. In practice, that means one platform can help teams investigate a problem, design the right solution, prototype quickly, implement changes, validate behavior, and review code with organizational awareness, all while keeping the workflow aligned to the <strong>SDLC</strong> from start to finish.
+        </p>
+
+        <div className="clean-table-container my-6">
+          <table className="clean-comparison-table">
+            <thead>
+              <tr>
+                <th scope="col" className="col-capability">SDLC Stage</th>
+                <th scope="col" className="col-product">CodeMate</th>
+                <th scope="col" className="col-product">GitHub Copilot</th>
+              </tr>
+            </thead>
+            <tbody>
+              {sdlcStageRows.map((row, idx) => (
+                <tr key={idx}>
+                  <th scope="row" className="cell-capability">{row.stage}</th>
+                  <td className="cell-product">
+                    <RenderTableCell val={row.codemate} />
+                  </td>
+                  <td className="cell-product">
+                    <RenderTableCell val={row.githubCopilot} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+
+      <section>
         <h2 id="at-a-glance">At a Glance</h2>
         <p>
-          CodeMate VS GitHub Copilot : Beyond AI Code Completion comparison table:
+          <strong>CodeMate</strong> VS <strong>GitHub Copilot</strong> : Beyond AI Code Completion comparison table:
         </p>
 
         <div className="clean-table-container my-6">
@@ -268,10 +334,10 @@ export default function Blog4Content() {
           The quality of AI-generated code depends heavily on context.
         </p>
         <p>
-          GitHub Copilot primarily gathers context from the active repository and surrounding code.
+          <strong>GitHub Copilot</strong> primarily gathers context from the active repository and surrounding code.
         </p>
         <p>
-          CodeMate continuously builds an organizational knowledge base that spans repositories, internal documentation, APIs, and historical engineering decisions, enabling broader context for planning, reviews, and collaboration.
+          <strong>CodeMate</strong> continuously builds an organizational knowledge base that spans repositories, internal documentation, APIs, and historical engineering decisions, enabling broader context for planning, reviews, and collaboration.
         </p>
 
         <div className="clean-table-container my-6">
@@ -303,13 +369,13 @@ export default function Blog4Content() {
       <section>
         <h2 id="deployment">Security & Deployment</h2>
         <p>
-          Deployment architecture often matters as much as AI capability in enterprise environments.
+          Deployment architecture and data privacy often matter as much as AI capability in enterprise environments.
         </p>
         <p>
-          GitHub Copilot operates as a cloud service integrated with GitHub.
+          <strong>GitHub Copilot</strong> operates strictly as a cloud-hosted SaaS service. All prompts, code snippets, and metadata are processed through external cloud infrastructure, which can be a blocker for industries with strict regulatory compliance or data residency laws.
         </p>
         <p>
-          CodeMate supports SaaS, VPC, self-hosted, and on-premises deployments, with options to connect to private language models for organizations with strict compliance or data residency requirements.
+          In contrast, <strong>CodeMate</strong> follows a strict privacy-first, on-device and local-first approach. By ensuring that the entire data footprint (including source code, prompts, index data, and context) stays within the user's controlled environment, <strong>CodeMate</strong> protects proprietary intellectual property from leaking. This includes <strong>CodeMate</strong>'s proprietary models, which can be deployed and run directly on the user's local hardware or private VPC, providing full data sovereignty and supporting secure environments across full <strong>SDLC</strong>.
         </p>
 
         <div className="clean-table-container my-6">
@@ -325,6 +391,38 @@ export default function Blog4Content() {
               {deploymentRows.map((row, idx) => (
                 <tr key={idx}>
                   <th scope="row" className="cell-capability">{row.capability}</th>
+                  <td className="cell-product">
+                    <RenderTableCell val={row.codemate} />
+                  </td>
+                  <td className="cell-product">
+                    <RenderTableCell val={row.githubCopilot} />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 id="pricing">Pricing Model</h2>
+        <p>
+          Pricing structure and financial predictability play a significant role in long-term enterprise AI planning. While <strong>GitHub Copilot</strong> links cost to variable credit consumption, <strong>CodeMate</strong> provides a flat licensing model to simplify budgeting.
+        </p>
+
+        <div className="clean-table-container my-6">
+          <table className="clean-comparison-table">
+            <thead>
+              <tr>
+                <th scope="col" className="col-capability">Category</th>
+                <th scope="col" className="col-product">CodeMate</th>
+                <th scope="col" className="col-product">GitHub Copilot</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pricingRows.map((row, idx) => (
+                <tr key={idx}>
+                  <th scope="row" className="cell-capability">{row.category}</th>
                   <td className="cell-product">
                     <RenderTableCell val={row.codemate} />
                   </td>

@@ -19,10 +19,12 @@ export const blogPosts: BlogDetailPost[] = [
     visualMarkup: `<img src="/codematevsgithubcopilot.png" alt="CodeMate VS GitHub Copilot" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`,
     sections: [
       { id: "intro", title: "Introduction" },
+      { id: "sdlc-unification", title: "SDLC Unification" },
       { id: "at-a-glance", title: "At a Glance" },
       { id: "architecture-comparison", title: "Architecture Comparison" },
       { id: "context-comparison", title: "Context & Knowledge Engine" },
       { id: "deployment", title: "Security & Deployment" },
+      { id: "pricing", title: "Pricing Model" },
       { id: "faq", title: "Frequently Asked Questions" },
     ],
     dek: "CodeMate VS GitHub Copilot: Beyond AI Code Completion : Choosing the Right AI Platform for Modern Engineering Teams",
