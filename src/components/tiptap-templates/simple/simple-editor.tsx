@@ -31,6 +31,7 @@ import {
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension"
 import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { VideoNode } from "@/components/tiptap-node/video-node/video-node-extension"
+import { VideoUploadNode } from "@/components/tiptap-node/video-node/video-upload-node-extension"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss"
@@ -70,7 +71,7 @@ import { useWindowSize } from "@/hooks/use-window-size"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 
 // --- Lib ---
-import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
+import { handleImageUpload, handleVideoUpload, MAX_FILE_SIZE, MAX_VIDEO_SIZE } from "@/lib/tiptap-utils"
 
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
@@ -311,7 +312,11 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         }
 
         if (file.type.startsWith("video/")) {
-          handleImageUpload(file)
+          if (file.size > MAX_VIDEO_SIZE) {
+            alert("Video exceeds 50MB size limit")
+            return true
+          }
+          handleVideoUpload(file)
             .then((url) => {
               const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
               const pos = coordinates ? coordinates.pos : view.state.selection.from
@@ -343,12 +348,11 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         }
 
         if (file && file.type.startsWith("video/")) {
-          const VIDEO_MAX = 50 * 1024 * 1024
-          if (file.size > VIDEO_MAX) {
+          if (file.size > MAX_VIDEO_SIZE) {
             alert("Video exceeds 50MB size limit")
             return true
           }
-          handleImageUpload(file)
+          handleVideoUpload(file)
             .then((url) => {
               const node = view.state.schema.nodes.video.create({ src: url })
               const transaction = view.state.tr.replaceSelectionWith(node)
@@ -384,6 +388,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         upload: handleImageUpload,
       }),
       VideoNode,
+      VideoUploadNode,
       Selection,
       Table.configure({ resizable: true }),
       TableRow,
@@ -398,29 +403,6 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
     },
   })
 
-  const handleVideoButtonClick = () => {
-    videoInputRef.current?.click()
-  }
-
-  const handleVideoInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (!file) return
-
-    const VIDEO_MAX = 50 * 1024 * 1024
-    if (file.size > VIDEO_MAX) {
-      alert("Video exceeds 50MB size limit")
-      return
-    }
-
-    try {
-      const url = await handleImageUpload(file)
-      editor?.chain().focus().insertContent({ type: "video", attrs: { src: url } }).run()
-    } catch (err: any) {
-      alert(err.message || "Video upload failed.")
-    } finally {
-      if (videoInputRef.current) videoInputRef.current.value = ""
-    }
-  }
 
   useEffect(() => {
     if (!editor || isInitializedRef.current) return
@@ -440,20 +422,13 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
   return (
     <EditorContext.Provider value={{ editor }}>
       <div className="simple-editor-wrapper">
-        <input
-          ref={videoInputRef}
-          type="file"
-          accept="video/mp4,video/webm,video/ogg,video/quicktime"
-          className="hidden"
-          onChange={handleVideoInputChange}
-        />
         <Toolbar ref={toolbarRef}>
           {mobileView === "main" ? (
             <MainToolbarContent
               isMobile={isMobile}
               onHighlighterClick={() => setMobileView("highlighter")}
               onLinkClick={() => setMobileView("link")}
-              onVideoClick={handleVideoButtonClick}
+              onVideoClick={() => editor?.chain().focus().insertContent({ type: "videoUpload" }).run()}
             />
           ) : (
             <MobileToolbarContent

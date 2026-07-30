@@ -429,6 +429,50 @@ export const handleImageUpload = async (
   })
 }
 
+export const MAX_VIDEO_SIZE = 50 * 1024 * 1024 // 50MB
+
+export const handleVideoUpload = async (
+  file: File,
+  onProgress?: (event: { progress: number }) => void,
+  abortSignal?: AbortSignal
+): Promise<string> => {
+  if (!file) throw new Error("No file provided")
+  if (file.size > MAX_VIDEO_SIZE) throw new Error("Video exceeds 50MB size limit")
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    const formData = new FormData()
+    formData.append("file", file)
+
+    if (xhr.upload && onProgress) {
+      xhr.upload.addEventListener("progress", (event) => {
+        if (event.lengthComputable) {
+          onProgress({ progress: Math.round((event.loaded / event.total) * 100) })
+        }
+      })
+    }
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try { resolve(JSON.parse(xhr.responseText).url) }
+        catch { reject(new Error("Failed to parse upload response")) }
+      } else {
+        try { reject(new Error(JSON.parse(xhr.responseText).error || "Video upload failed")) }
+        catch { reject(new Error(`Upload failed with status ${xhr.status}`)) }
+      }
+    }
+
+    xhr.onerror = () => reject(new Error("Network error during upload"))
+    xhr.onabort = () => reject(new Error("Upload aborted"))
+
+    if (abortSignal) abortSignal.addEventListener("abort", () => xhr.abort())
+
+    xhr.open("POST", "/api/admin/upload")
+    xhr.send(formData)
+  })
+}
+
+
 type ProtocolOptions = {
   /**
    * The protocol scheme to be registered.
