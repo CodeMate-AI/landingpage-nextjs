@@ -21,6 +21,7 @@
   display: flex;
   flex-direction: column;
   flex: 1;
+  overflow-x: auto;
 }
 
 .simple-editor-content .tiptap.ProseMirror.simple-editor {
@@ -29,6 +30,8 @@
   min-height: 350px;
   color: #f4f4f5; /* light text */
   outline: none;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 @media screen and (max-width: 480px) {

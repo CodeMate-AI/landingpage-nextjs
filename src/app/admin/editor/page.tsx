@@ -122,7 +122,7 @@ function EditorContent() {
   };
 
   return (
-    <main className="min-h-screen bg-[#09090b] p-8 font-sans text-neutral-100">
+    <main className="min-h-screen bg-[#09090b] p-4 sm:p-6 lg:p-8 font-sans text-neutral-100">
       <div className="mx-auto max-w-4xl">
         <header className="mb-8 flex items-center justify-between border-b border-[#27272a] pb-6">
           <h1 className="text-3xl font-bold text-white">{postId ? "Modify Article" : "Compose Article"}</h1>
