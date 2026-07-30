@@ -44,7 +44,7 @@ export default function AdminLogin() {
     <main className="flex min-h-screen items-center justify-center bg-[#09090b] px-4 font-sans text-neutral-100">
       <div className="w-full max-w-[420px] rounded-xl border border-[#27272a] bg-[#18181b] p-8 shadow-2xl">
         <h2 className="mb-6 text-center text-2xl font-bold tracking-tight text-white">
-          CodeMate CMS Portal
+          CODEMATE CMS PORTAL
         </h2>
         {error && (
           <div className="mb-4 rounded-lg border border-red-700 bg-red-900/30 p-3 text-sm text-red-400">
