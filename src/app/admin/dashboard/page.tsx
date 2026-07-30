@@ -78,7 +78,6 @@ export default function AdminDashboard() {
                   <th className="p-4">Title</th>
                   <th className="p-4">Category</th>
                   <th className="p-4">Status</th>
-                  <th className="p-4">Views</th>
                   <th className="p-4 text-right">Actions</th>
                 </tr>
               </thead>
@@ -98,7 +97,6 @@ export default function AdminDashboard() {
                         </span>
                       )}
                     </td>
-                    <td className="p-4 text-neutral-400">{post.views}</td>
                     <td className="space-x-2 p-4 text-right">
                       <Link href={`/admin/editor?id=${post._id}`} className="font-medium text-blue-400 hover:text-blue-300">
                         Edit
