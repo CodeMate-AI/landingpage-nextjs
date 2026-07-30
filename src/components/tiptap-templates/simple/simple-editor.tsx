@@ -66,11 +66,7 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
 import { useWindowSize } from "@/hooks/use-window-size"
-import { useCursorVisibility } from "@/hooks/use-cursor-visibility"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-
-// --- Components ---
-import { ThemeToggle } from "@/components/tiptap-templates/simple/theme-toggle"
 
 // --- Lib ---
 import { handleImageUpload, MAX_FILE_SIZE } from "@/lib/tiptap-utils"
@@ -205,12 +201,6 @@ const MainToolbarContent = ({
       </ToolbarGroup>
 
       <Spacer />
-
-      {isMobile && <ToolbarSeparator />}
-
-      <ToolbarGroup>
-        <ThemeToggle />
-      </ToolbarGroup>
     </>
   )
 }
@@ -256,6 +246,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
     "main"
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
+  const isInitializedRef = useRef(false)
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -266,6 +257,42 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         autocapitalize: "off",
         "aria-label": "Main content area, start typing to enter text.",
         class: "simple-editor",
+      },
+      handleDrop: (view, event, slice, moved) => {
+        if (moved) return false
+
+        const file = event.dataTransfer?.files?.[0]
+        if (file && file.type.startsWith("image/")) {
+          handleImageUpload(file)
+            .then((url) => {
+              const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
+              const pos = coordinates ? coordinates.pos : view.state.selection.from
+              const node = view.state.schema.nodes.image.create({ src: url })
+              const transaction = view.state.tr.insert(pos, node)
+              view.dispatch(transaction)
+            })
+            .catch((err) => console.error("Drop upload failed:", err))
+          return true // Handled! Prevents default browser drop behavior
+        }
+        return false
+      },
+      handlePaste: (view, event, slice) => {
+        const file = event.clipboardData?.files?.[0]
+        if (file && file.type.startsWith("image/")) {
+          if (file.size > MAX_FILE_SIZE) {
+            alert(`File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`)
+            return true
+          }
+          handleImageUpload(file)
+            .then((url) => {
+              const node = view.state.schema.nodes.image.create({ src: url })
+              const transaction = view.state.tr.replaceSelectionWith(node)
+              view.dispatch(transaction)
+            })
+            .catch((err) => console.error("Paste upload failed:", err))
+          return true // Handled! Prevents default browser paste behavior
+        }
+        return false
       },
     },
     extensions: [
@@ -278,78 +305,66 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       }),
       HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
+      Highlight,
+      Subscript,
+      Superscript,
       TaskList,
       TaskItem.configure({ nested: true }),
-      Highlight.configure({ multicolor: true }),
       Image,
-      Typography,
-      Superscript,
-      Subscript,
-      Selection,
       ImageUploadNode.configure({
         accept: "image/*",
         maxSize: MAX_FILE_SIZE,
         limit: 3,
         upload: handleImageUpload,
-        onError: (error) => console.error("Upload failed:", error),
       }),
-      Table.configure({
-        resizable: true,
-      }),
+      Selection,
+      Table.configure({ resizable: true }),
       TableRow,
       TableHeader,
       TableCell,
+      Typography,
     ],
     content,
-    onUpdate: ({ editor }) => {
+    onUpdate({ editor }) {
+      isInitializedRef.current = true
       onChange(editor.getJSON())
     },
   })
 
-  const rect = useCursorVisibility({
-    editor,
-    overlayHeight: toolbarRef.current?.getBoundingClientRect().height ?? 0,
-  })
+  useEffect(() => {
+    if (!editor || isInitializedRef.current) return
+
+    if (content && content.content && content.content.length > 0) {
+      editor.commands.setContent(content)
+      isInitializedRef.current = true
+    }
+  }, [content, editor])
 
   useEffect(() => {
-    if (!isMobile && mobileView !== "main") {
+    if (!isMobile) {
       setMobileView("main")
     }
-  }, [isMobile, mobileView])
+  }, [isMobile])
 
   return (
-    <div className="simple-editor-wrapper">
-      <EditorContext.Provider value={{ editor }}>
-        <Toolbar
-          ref={toolbarRef}
-          style={{
-            ...(isMobile
-              ? {
-                  bottom: `calc(100% - ${height - rect.y}px)`,
-                }
-              : {}),
-          }}
-        >
+    <EditorContext.Provider value={{ editor }}>
+      <div className="simple-editor-wrapper">
+        <Toolbar ref={toolbarRef}>
           {mobileView === "main" ? (
             <MainToolbarContent
+              isMobile={isMobile}
               onHighlighterClick={() => setMobileView("highlighter")}
               onLinkClick={() => setMobileView("link")}
-              isMobile={isMobile}
             />
           ) : (
             <MobileToolbarContent
-              type={mobileView === "highlighter" ? "highlighter" : "link"}
+              type={mobileView}
               onBack={() => setMobileView("main")}
             />
           )}
         </Toolbar>
-
-        <EditorContent
-          editor={editor}
-          role="presentation"
-          className="simple-editor-content"
-        />
-      </EditorContext.Provider>
-    </div>
+        <EditorContent editor={editor} />
+      </div>
+    </EditorContext.Provider>
   )
 }

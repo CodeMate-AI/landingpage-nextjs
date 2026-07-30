@@ -1411,13 +1411,13 @@
 }
 
 .blog-image {
-  display: block;
-  width: 100%;
+  display: block !important;
+  width: auto;
   max-width: 100%;
   height: auto;
   border-radius: 8px;
   border: 1px solid var(--border);
-  margin: 24px 0;
+  margin: 24px auto !important;
   background-color: white;
 }
 
