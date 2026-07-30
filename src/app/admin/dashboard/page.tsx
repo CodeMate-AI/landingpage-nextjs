@@ -78,7 +78,7 @@ export default function AdminDashboard() {
                   <th className="p-4">Title</th>
                   <th className="p-4">Category</th>
                   <th className="p-4">Status</th>
-                  <th className="p-4 text-right">Actions</th>
+                  <th className="p-4 text-center">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#27272a] text-sm">
@@ -97,13 +97,21 @@ export default function AdminDashboard() {
                         </span>
                       )}
                     </td>
-                    <td className="space-x-2 p-4 text-right">
-                      <Link href={`/admin/editor?id=${post._id}`} className="font-medium text-blue-400 hover:text-blue-300">
-                        Edit
-                      </Link>
-                      <button onClick={() => handleDelete(post._id)} className="ml-3 font-medium text-red-400 hover:text-red-300">
-                        Delete
-                      </button>
+                    <td className="p-4 text-center">
+                      <div className="flex justify-center gap-3">
+                        <Link
+                          href={`/admin/editor?id=${post._id}`}
+                          className="inline-flex items-center rounded-lg border border-blue-500/20 bg-blue-500/10 px-3.5 py-1.5 text-xs font-semibold text-blue-400 transition-all duration-200 hover:border-transparent hover:bg-blue-600 hover:text-white"
+                        >
+                          Edit
+                        </Link>
+                        <button
+                          onClick={() => handleDelete(post._id)}
+                          className="inline-flex items-center rounded-lg border border-red-500/20 bg-red-500/10 px-3.5 py-1.5 text-xs font-semibold text-red-400 transition-all duration-200 hover:border-transparent hover:bg-red-600 hover:text-white"
+                        >
+                          Delete
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
