@@ -30,6 +30,7 @@ import {
 // --- Tiptap Node ---
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/image-upload-node-extension"
 import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
+import { VideoNode } from "@/components/tiptap-node/video-node/video-node-extension"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss"
@@ -314,10 +315,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
             .then((url) => {
               const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
               const pos = coordinates ? coordinates.pos : view.state.selection.from
-              const node = view.state.schema.nodes.paragraph.create(
-                null,
-                view.state.schema.text(`[video: ${url}]`)
-              )
+              const node = view.state.schema.nodes.video.create({ src: url })
               const transaction = view.state.tr.insert(pos, node)
               view.dispatch(transaction)
             })
@@ -352,10 +350,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
           }
           handleImageUpload(file)
             .then((url) => {
-              const node = view.state.schema.nodes.paragraph.create(
-                null,
-                view.state.schema.text(`[video: ${url}]`)
-              )
+              const node = view.state.schema.nodes.video.create({ src: url })
               const transaction = view.state.tr.replaceSelectionWith(node)
               view.dispatch(transaction)
             })
@@ -388,6 +383,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         limit: 3,
         upload: handleImageUpload,
       }),
+      VideoNode,
       Selection,
       Table.configure({ resizable: true }),
       TableRow,
@@ -418,7 +414,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
 
     try {
       const url = await handleImageUpload(file)
-      editor?.chain().focus().insertContent(`<p>[video: ${url}]</p>`).run()
+      editor?.chain().focus().insertContent({ type: "video", attrs: { src: url } }).run()
     } catch (err: any) {
       alert(err.message || "Video upload failed.")
     } finally {
