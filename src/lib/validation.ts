@@ -61,6 +61,8 @@ export const BlogPostSchema = z.object({
   authorRole: z.string().default("Founder & CEO"),
   readTime: z.string().optional(),
   publishedAtCustom: z.string().optional(),
+  bgColor: z.string().optional(),
+  filterLabels: z.array(z.string()).optional(),
   sections: z.array(SectionSchema).optional().refine(
     (items) => {
       if (!items) return true;

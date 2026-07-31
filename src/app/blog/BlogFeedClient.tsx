@@ -92,36 +92,42 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
   }, [showFilters, showSearch]);
 
   const categoryCounts = useMemo(() => {
-    return categories.map((cat) => ({
-      name: cat,
-      count: posts.filter((post) => post.category === cat).length,
-    }));
+    return categories
+      .map((cat) => ({
+        name: cat,
+        count: posts.filter((post) => post.category === cat).length,
+      }))
+      .filter((item) => item.count > 0);
   }, [posts, categories]);
 
   const productCounts = useMemo(() => {
-    return productFilters.map((prod) => {
-      const normalizedProd = normalizeLabel(prod);
-      return {
-        name: prod,
-        count: posts.filter((post) => {
-          const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
-          return postFilterLabels.includes(normalizedProd);
-        }).length,
-      };
-    });
+    return productFilters
+      .map((prod) => {
+        const normalizedProd = normalizeLabel(prod);
+        return {
+          name: prod,
+          count: posts.filter((post) => {
+            const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
+            return postFilterLabels.includes(normalizedProd);
+          }).length,
+        };
+      })
+      .filter((item) => item.count > 0);
   }, [posts, productFilters]);
 
   const useCaseCounts = useMemo(() => {
-    return useCaseFilters.map((uc) => {
-      const normalizedUc = normalizeLabel(uc);
-      return {
-        name: uc,
-        count: posts.filter((post) => {
-          const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
-          return postFilterLabels.includes(normalizedUc);
-        }).length,
-      };
-    });
+    return useCaseFilters
+      .map((uc) => {
+        const normalizedUc = normalizeLabel(uc);
+        return {
+          name: uc,
+          count: posts.filter((post) => {
+            const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
+            return postFilterLabels.includes(normalizedUc);
+          }).length,
+        };
+      })
+      .filter((item) => item.count > 0);
   }, [posts, useCaseFilters]);
 
   const tickerItems = useMemo(() => {
