@@ -91,8 +91,6 @@ const MainToolbarContent = ({
 
   return (
     <>
-      <Spacer />
-
       <ToolbarGroup>
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
@@ -165,11 +163,6 @@ const MainToolbarContent = ({
           </svg>
           <span className="tiptap-button-text">Add</span>
         </Button>
-      </ToolbarGroup>
-
-      <ToolbarSeparator />
-
-      <ToolbarGroup>
         <Button
           type="button"
           variant="ghost"
@@ -179,6 +172,11 @@ const MainToolbarContent = ({
         >
           Table
         </Button>
+      </ToolbarGroup>
+
+      <ToolbarSeparator />
+
+      <ToolbarGroup>
         {editor?.isActive("table") && (
           <>
             <Button
@@ -232,8 +230,6 @@ const MainToolbarContent = ({
           </>
         )}
       </ToolbarGroup>
-
-      <Spacer />
     </>
   )
 }

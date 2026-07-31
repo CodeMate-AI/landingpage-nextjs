@@ -498,10 +498,15 @@
   padding: 0 0 16px;
 }
 
+.filter-option-row {
+  display: block;
+}
+
 .filter-option {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 10px;
+  width: fit-content;
   margin-bottom: 0;
   font-size: 14px;
   color: var(--text-secondary);

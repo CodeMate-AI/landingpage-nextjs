@@ -38,28 +38,37 @@
     min-height: var(--tt-toolbar-height);
     background: var(--tt-toolbar-bg-color);
     border-bottom: 1px solid var(--tt-toolbar-border-color);
-    padding: 0 0.5rem;
+    padding: 0.375rem 0.5rem;
+    flex-wrap: nowrap;
+    row-gap: 0;
     overflow-x: auto;
+    overflow-y: hidden;
     overscroll-behavior-x: contain;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    scrollbar-width: thin;
+    scrollbar-color: #27272a transparent;
+    justify-content: flex-start;
 
     &::-webkit-scrollbar {
-      display: none;
+      height: 4px;
+      display: block;
     }
 
-    @media (max-width: 480px) {
-      position: sticky;
-      top: 0;
-      height: var(--tt-toolbar-height);
-      padding: 0 0.5rem;
-      flex-wrap: nowrap;
-      justify-content: flex-start;
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
 
-      .tiptap-toolbar-group {
-        flex: 0 0 auto;
-      }
+    &::-webkit-scrollbar-thumb {
+      background: #27272a;
+      border-radius: 2px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background: #3f3f46;
+    }
+
+    .tiptap-toolbar-group {
+      flex: 0 0 auto;
     }
   }
 

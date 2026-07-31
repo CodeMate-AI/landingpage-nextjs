@@ -5,11 +5,18 @@ import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import type { BlogDetailPost } from "@/types/blog";
 
-interface BlogFeedClientProps {
-  posts: BlogDetailPost[];
+interface FilterOptions {
+  categories: string[];
+  productFilters: string[];
+  useCaseFilters: string[];
 }
 
-const defaultCategories = [
+interface BlogFeedClientProps {
+  posts: BlogDetailPost[];
+  filterOptions?: FilterOptions;
+}
+
+const DEFAULT_CATEGORIES = [
   "Product",
   "CORA Updates",
   "C0 Updates",
@@ -19,17 +26,38 @@ const defaultCategories = [
   "Security & Code Review",
   "Case Studies",
   "Community",
-] as const;
+];
 
-const productFilters = ["CORA", "C0", "C0 Web", "Build", "AI Terminal", "Education", "PR Review Agent"] as const;
-const useCaseFilters = ["Code Review", "Agents", "Security", "Enterprise", "Onboarding", "Testing"] as const;
+const DEFAULT_PRODUCTS = [
+  "CORA",
+  "C0",
+  "C0 Web",
+  "Build",
+  "AI Terminal",
+  "Education",
+  "PR Review Agent",
+];
 
-export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
+const DEFAULT_USE_CASES = [
+  "Code Review",
+  "Agents",
+  "Security",
+  "Enterprise",
+  "Onboarding",
+  "Testing",
+];
+
+const normalizeLabel = (label: string) => label.trim().toUpperCase();
+
+export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientProps) {
+  const categories = filterOptions?.categories ?? DEFAULT_CATEGORIES;
+  const productFilters = filterOptions?.productFilters ?? DEFAULT_PRODUCTS;
+  const useCaseFilters = filterOptions?.useCaseFilters ?? DEFAULT_USE_CASES;
+
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
-  const [selectedUseCases, setSelectedUseCases] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<"newest" | "a-z" | "z-a">("newest");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [showFilters, setShowFilters] = useState(false);
@@ -64,11 +92,37 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
   }, [showFilters, showSearch]);
 
   const categoryCounts = useMemo(() => {
-    return defaultCategories.map((cat) => ({
+    return categories.map((cat) => ({
       name: cat,
       count: posts.filter((post) => post.category === cat).length,
     }));
-  }, [posts]);
+  }, [posts, categories]);
+
+  const productCounts = useMemo(() => {
+    return productFilters.map((prod) => {
+      const normalizedProd = normalizeLabel(prod);
+      return {
+        name: prod,
+        count: posts.filter((post) => {
+          const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
+          return postFilterLabels.includes(normalizedProd);
+        }).length,
+      };
+    });
+  }, [posts, productFilters]);
+
+  const useCaseCounts = useMemo(() => {
+    return useCaseFilters.map((uc) => {
+      const normalizedUc = normalizeLabel(uc);
+      return {
+        name: uc,
+        count: posts.filter((post) => {
+          const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
+          return postFilterLabels.includes(normalizedUc);
+        }).length,
+      };
+    });
+  }, [posts, useCaseFilters]);
 
   const tickerItems = useMemo(() => {
     return posts.map((post) => {
@@ -85,9 +139,22 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
     });
   }, [posts]);
 
+  // Quick-filter pills: deduplicate by normalized value, preserve original display label
   const uniqueTagLabels = useMemo(() => {
-    return Array.from(new Set(posts.flatMap((p) => p.tags.map((t) => t.label))));
+    const seen = new Set<string>();
+    const result: string[] = [];
+    for (const p of posts) {
+      for (const t of p.tags) {
+        const norm = normalizeLabel(t.label);
+        if (!seen.has(norm)) {
+          seen.add(norm);
+          result.push(t.label.trim()); // keep original casing for display
+        }
+      }
+    }
+    return result;
   }, [posts]);
+
 
   const filteredAndSortedPosts = useMemo(() => {
     const result = posts.filter((post) => {
@@ -98,19 +165,15 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
         post.category.toLowerCase().includes(query) ||
         post.tags.some((tag) => tag.label.toLowerCase().includes(query));
 
-      const matchesTag = selectedTag === null || post.tags.some((t) => t.label === selectedTag);
+      const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
+      const matchesTag = selectedTag === null || postFilterLabels.includes(normalizeLabel(selectedTag));
 
       const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(post.category);
 
       const matchesProduct =
-        selectedProducts.length === 0 || post.tags.some((tag) => selectedProducts.includes(tag.label));
+        selectedProducts.length === 0 || postFilterLabels.some((label) => selectedProducts.map(p => normalizeLabel(p)).includes(label));
 
-      const matchesUseCase =
-        selectedUseCases.length === 0 ||
-        post.tags.some((tag) => selectedUseCases.includes(tag.label)) ||
-        selectedUseCases.includes(post.category);
-
-      return matchesSearch && matchesTag && matchesCategory && matchesProduct && matchesUseCase;
+      return matchesSearch && matchesTag && matchesCategory && matchesProduct;
     });
 
     return result.sort((a, b) => {
@@ -118,7 +181,7 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
       if (sortBy === "z-a") return b.title.localeCompare(a.title);
       return b.dateValue.localeCompare(a.dateValue);
     });
-  }, [posts, searchQuery, selectedTag, selectedCategories, selectedProducts, selectedUseCases, sortBy]);
+  }, [posts, searchQuery, selectedTag, selectedCategories, selectedProducts, sortBy]);
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories((current) =>
@@ -128,16 +191,12 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
   };
 
   const handleProductToggle = (product: string) => {
-    setSelectedProducts((current) =>
-      current.includes(product) ? current.filter((p) => p !== product) : [...current, product]
-    );
-    setVisibleCount(6);
-  };
-
-  const handleUseCaseToggle = (useCase: string) => {
-    setSelectedUseCases((current) =>
-      current.includes(useCase) ? current.filter((u) => u !== useCase) : [...current, useCase]
-    );
+    setSelectedProducts((current) => {
+      const normalizedProd = normalizeLabel(product);
+      return current.includes(normalizedProd)
+        ? current.filter((p) => p !== normalizedProd)
+        : [...current, normalizedProd];
+    });
     setVisibleCount(6);
   };
 
@@ -153,7 +212,6 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
     selectedTag !== null ||
     selectedCategories.length > 0 ||
     selectedProducts.length > 0 ||
-    selectedUseCases.length > 0 ||
     sortBy !== "newest";
 
   const handleReset = () => {
@@ -161,7 +219,6 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
     setSelectedTag(null);
     setSelectedCategories([]);
     setSelectedProducts([]);
-    setSelectedUseCases([]);
     setSortBy("newest");
     setShowFilters(false);
     setVisibleCount(6);
@@ -206,10 +263,12 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
             {(["newest", "a-z", "z-a"] as const).map((opt) => {
               const isChecked = sortBy === opt;
               return (
-                <label key={opt} className="filter-option" onClick={() => setSortBy(opt)}>
-                  <span className={`fake-input fake-radio ${isChecked ? "checked" : ""}`}></span>
-                  {opt === "newest" ? "Newest" : opt === "a-z" ? "A–Z" : "Z–A"}
-                </label>
+                <div key={opt} className="filter-option-row">
+                  <label className="filter-option" onClick={() => setSortBy(opt)}>
+                    <span className={`fake-input fake-radio ${isChecked ? "checked" : ""}`}></span>
+                    {opt === "newest" ? "Newest" : opt === "a-z" ? "A–Z" : "Z–A"}
+                  </label>
+                </div>
               );
             })}
           </div>
@@ -244,10 +303,12 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
             {categoryCounts.map((cat) => {
               const isChecked = selectedCategories.includes(cat.name);
               return (
-                <label key={cat.name} className="filter-option" onClick={() => handleCategoryToggle(cat.name)}>
-                  <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
-                  {cat.name} ({cat.count})
-                </label>
+                <div key={cat.name} className="filter-option-row">
+                  <label className="filter-option" onClick={() => handleCategoryToggle(cat.name)}>
+                    <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
+                    {cat.name} ({cat.count})
+                  </label>
+                </div>
               );
             })}
           </div>
@@ -279,13 +340,15 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
         </button>
         {openGroups.product ? (
           <div className="filter-options-container">
-            {productFilters.map((prod) => {
-              const isChecked = selectedProducts.includes(prod);
+            {productCounts.map((prod) => {
+              const isChecked = selectedProducts.includes(normalizeLabel(prod.name));
               return (
-                <label key={prod} className="filter-option" onClick={() => handleProductToggle(prod)}>
-                  <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
-                  {prod}
-                </label>
+                <div key={prod.name} className="filter-option-row">
+                  <label className="filter-option" onClick={() => handleProductToggle(prod.name)}>
+                    <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
+                    {prod.name} ({prod.count})
+                  </label>
+                </div>
               );
             })}
           </div>
@@ -317,13 +380,15 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
         </button>
         {openGroups.useCase ? (
           <div className="filter-options-container">
-            {useCaseFilters.map((uc) => {
-              const isChecked = selectedUseCases.includes(uc);
+            {useCaseCounts.map((uc) => {
+              const isChecked = selectedProducts.includes(normalizeLabel(uc.name));
               return (
-                <label key={uc} className="filter-option" onClick={() => handleUseCaseToggle(uc)}>
-                  <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
-                  {uc}
-                </label>
+                <div key={uc.name} className="filter-option-row">
+                  <label className="filter-option" onClick={() => handleProductToggle(uc.name)}>
+                    <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
+                    {uc.name} ({uc.count})
+                  </label>
+                </div>
               );
             })}
           </div>
@@ -591,11 +656,12 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
               </button>
               {uniqueTagLabels.map((tag) => (
                 <button
-                  key={tag}
+                  key={normalizeLabel(tag)}
                   suppressHydrationWarning
-                  className={`quick-filter-pill ${selectedTag === tag ? "active" : ""}`}
+                  className={`quick-filter-pill ${selectedTag !== null && normalizeLabel(selectedTag) === normalizeLabel(tag) ? "active" : ""}`}
                   onClick={() => {
-                    setSelectedTag(selectedTag === tag ? null : tag);
+                    const norm = normalizeLabel(tag);
+                    setSelectedTag(selectedTag !== null && normalizeLabel(selectedTag) === norm ? null : norm);
                     setVisibleCount(6);
                   }}
                 >
@@ -626,7 +692,7 @@ export default function BlogFeedClient({ posts }: BlogFeedClientProps) {
                   <div className="card-tags">
                     {post.tags.map((tag, tIdx) => (
                       <span key={tIdx} className={`tag tag-${tag.tone}`}>
-                        {tag.label}
+                        {normalizeLabel(tag.label)}
                       </span>
                     ))}
                   </div>

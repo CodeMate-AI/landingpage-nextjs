@@ -1,5 +1,5 @@
 import React from "react";
-import clientPromise from "@/src/lib/mongodb";
+import clientPromise from "@/lib/mongodb";
 import BlogFeedClient from "./BlogFeedClient";
 import type { BlogDetailPost } from "@/types/blog";
 
@@ -9,11 +9,12 @@ export default async function BlogFeedPage() {
   try {
     const client = await clientPromise;
     const db = client.db("codemate_blog");
-    const rawPosts = await db
-      .collection("blogs")
-      .find({ published: true })
-      .sort({ publishedAt: -1 })
-      .toArray();
+
+    // Fetch posts and filter options in parallel
+    const [rawPosts, filterDoc] = await Promise.all([
+      db.collection("blogs").find({ published: true }).sort({ publishedAt: -1 }).toArray(),
+      db.collection("filter_options").findOne({ _id: "global_filters" as any }),
+    ]);
 
     const posts: BlogDetailPost[] = rawPosts.map((post) => ({
       id: post._id.toString(),
@@ -31,6 +32,10 @@ export default async function BlogFeedPage() {
           : "Draft",
       dateValue: post.publishedAt ? new Date(post.publishedAt).toISOString().split("T")[0] : "",
       tags: post.tags || [],
+      filterLabels:
+        post.filterLabels ||
+        post.tags?.map((t: any) => t.label.trim().toUpperCase()) ||
+        [],
       bgColor: post.bgColor || "#07111f",
       sections: post.sections || [],
       dek: post.excerpt || "",
@@ -41,7 +46,15 @@ export default async function BlogFeedPage() {
       authorRole: post.authorRole || "Founder & CEO",
     }));
 
-    return <BlogFeedClient posts={posts} />;
+    const filterOptions = filterDoc
+      ? {
+          categories: filterDoc.categories ?? [],
+          productFilters: filterDoc.productFilters ?? [],
+          useCaseFilters: filterDoc.useCaseFilters ?? [],
+        }
+      : undefined;
+
+    return <BlogFeedClient posts={posts} filterOptions={filterOptions} />;
   } catch (error) {
     console.error("Failed to load blogs during build or render:", error);
     // Return empty feed to avoid crashing the build if MONGODB_URI is not set yet

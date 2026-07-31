@@ -255,6 +255,19 @@ function formatVideos(html: string): string {
   });
 }
 
+function formatLinks(html: string): string {
+  // Regex to match href="..." attributes in <a> tags
+  return html.replace(/<a\s+([^>]*?)href=["']([^"']*)["']([^>]*?)>/gi, (match, before, href, after) => {
+    const trimmedHref = href.trim();
+    // If it lacks a protocol, anchor, relative path, or protocol-relative prefix
+    if (trimmedHref && !/^(https?:\/\/|mailto:|tel:|sms:|#|\/|\.\/|\.\.\/|\/\/)/i.test(trimmedHref)) {
+      const fixedHref = `https://${trimmedHref}`;
+      return `<a ${before}href="${fixedHref}"${after}>`;
+    }
+    return match;
+  });
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const client = await clientPromise;
@@ -285,7 +298,7 @@ export default async function BlogPostPage({ params }: Props) {
 
   const sections = post.sections && post.sections.length > 0 ? post.sections : extractSectionsFromTiptapJson(post.content);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
-  const finalHtml = formatLogos(formatVideos(formatFaqSection(formatTableCells(headingHtml))));
+  const finalHtml = formatLinks(formatLogos(formatVideos(formatFaqSection(formatTableCells(headingHtml)))));
 
   const mappedPost = {
     id: post._id.toString(),

@@ -3,6 +3,37 @@ import React, { useCallback, useEffect, useRef, useState, Suspense } from "react
 import { useRouter, useSearchParams } from "next/navigation";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
+const DEFAULT_CATEGORIES = [
+  "Product",
+  "CORA Updates",
+  "C0 Updates",
+  "Build Updates",
+  "Engineering",
+  "Engineering & Comparisons",
+  "Security & Code Review",
+  "Case Studies",
+  "Community",
+];
+
+const DEFAULT_PRODUCTS = [
+  "CORA",
+  "C0",
+  "C0 Web",
+  "Build",
+  "AI Terminal",
+  "Education",
+  "PR Review Agent",
+];
+
+const DEFAULT_USE_CASES = [
+  "Code Review",
+  "Agents",
+  "Security",
+  "Enterprise",
+  "Onboarding",
+  "Testing",
+];
+
 function EditorContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -14,7 +45,33 @@ function EditorContent() {
   const [category, setCategory] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [coverImage, setCoverImage] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
   const [bgColor, setBgColor] = useState("#07111f");
+
+  // Dynamic filter lists (loaded from DB)
+  const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
+  const [productFilters, setProductFilters] = useState<string[]>(DEFAULT_PRODUCTS);
+  const [useCaseFilters, setUseCaseFilters] = useState<string[]>(DEFAULT_USE_CASES);
+
+  // Inline add inputs for CRUD
+  const [newCategory, setNewCategory] = useState("");
+  const [newProduct, setNewProduct] = useState("");
+  const [newUseCase, setNewUseCase] = useState("");
+  const [filterSaving, setFilterSaving] = useState(false);
+
+  // Accordion UI state for the filters panel
+  const [openSections, setOpenSections] = useState({
+    category: false,
+    products: false,
+    useCases: false,
+  });
+
+  // Controls whether inline add/delete (CRUD) options are displayed for each filter group
+  const [manageModes, setManageModes] = useState({
+    category: false,
+    products: false,
+    useCases: false,
+  });
   
   // published is set only on loadPost to initialise the current live state.
   // It is read in resolvedPublished logic in handleSave to preserve existing publish state on draft saves.
@@ -47,6 +104,9 @@ function EditorContent() {
         setContentJson(post.content);
         setLoadError(false);
         setTagsInput(post.tags.map((t: any) => t.label).join(", "));
+        setSelectedFilters(
+          post.filterLabels || post.tags?.map((t: any) => t.label.trim().toUpperCase()) || []
+        );
         setAuthor(post.author || "Ayush Singhal");
         setAuthorRole(post.authorRole || "Founder & CEO");
         setReadTime(post.readTime || "");
@@ -69,6 +129,62 @@ function EditorContent() {
       void loadPost();
     }
   }, [postId, loadPost]);
+
+  // Load dynamic categories and filter options from DB on mount
+  const loadFilters = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/filters");
+      if (res.ok) {
+        const data = await res.json();
+        if (data.categories?.length) setCategories(data.categories);
+        if (data.productFilters?.length) setProductFilters(data.productFilters);
+        if (data.useCaseFilters?.length) setUseCaseFilters(data.useCaseFilters);
+      }
+    } catch {
+      // Fail silently — defaults are pre-populated
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadFilters();
+  }, [loadFilters]);
+
+  const handleFilterUpdate = async (
+    action: "add" | "delete",
+    type: "categories" | "productFilters" | "useCaseFilters",
+    value: string
+  ) => {
+    if (!value.trim()) return;
+    setFilterSaving(true);
+    try {
+      const res = await fetch("/api/admin/filters", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action, type, value: value.trim() }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        if (type === "categories") setCategories(data.categories);
+        if (type === "productFilters") setProductFilters(data.productFilters);
+        if (type === "useCaseFilters") setUseCaseFilters(data.useCaseFilters);
+        // If deleting a filter that is currently selected, deselect it
+        if (action === "delete") {
+          setSelectedFilters((prev) => prev.filter((f) => f.toUpperCase() !== value.trim().toUpperCase()));
+          // If deleting selected category, reset it
+          if (type === "categories" && category.toUpperCase() === value.trim().toUpperCase()) {
+            setCategory("");
+          }
+        }
+      } else {
+        const err = await res.json();
+        alert(err.error || "Failed to update filter options");
+      }
+    } catch {
+      alert("Failed to update filter options");
+    } finally {
+      setFilterSaving(false);
+    }
+  };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -96,6 +212,7 @@ function EditorContent() {
       bgColor,
       published: resolvedPublished,
       tags,
+      filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
       content: contentJson,
       author,
       authorRole,
@@ -166,29 +283,16 @@ function EditorContent() {
         </header>
 
         <form onSubmit={handleSave} className="space-y-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Title</label>
-              <input
-                type="text"
-                required
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                suppressHydrationWarning
-                className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Category</label>
-              <input
-                type="text"
-                required
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                suppressHydrationWarning
-                className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
-              />
-            </div>
+          <div>
+            <label className="mb-1.5 block text-sm font-medium text-neutral-400">Title</label>
+            <input
+              type="text"
+              required
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              suppressHydrationWarning
+              className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
+            />
           </div>
 
           <div>
@@ -247,6 +351,324 @@ function EditorContent() {
                 suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
+            </div>
+          </div>
+
+          {/* Unified Blog Folder & Sidebar Filters Panel */}
+          <div className="rounded-xl border border-[#27272a] bg-[#18181b] p-4 sm:p-6 space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold text-white">Blog Classification & Filters</h3>
+              <p className="text-xs text-neutral-400 mt-1">
+                Configure the category and dynamic filters for this article to organize its placement on the blog directory.
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              {/* Accordion 1: Category */}
+              <div className="rounded-lg border border-[#27272a] bg-[#09090b]/50 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setOpenSections((prev) => ({ ...prev, category: !prev.category }))}
+                  className="w-full flex items-center justify-between p-4 text-left font-medium text-neutral-200 hover:bg-[#18181b] transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-neutral-400">Category:</span>
+                    <span className="text-blue-400 font-semibold">{category || "None selected"}</span>
+                  </div>
+                  <svg
+                    className={`h-4 w-4 text-neutral-400 transform transition-transform ${openSections.category ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {openSections.category && (
+                  <div className="p-4 border-t border-[#27272a]/60 bg-[#18181b]/30 space-y-4">
+                    <div className="flex flex-col gap-2">
+                      {categories.map((cat) => {
+                        const isSelected = category === cat;
+                        return (
+                          <div key={cat} className="flex items-center justify-between">
+                            <label
+                              onClick={() => setCategory(category === cat ? "" : cat)}
+                              className="flex w-fit items-center gap-2.5 cursor-pointer text-sm text-neutral-400 hover:text-neutral-200 select-none"
+                            >
+                              <div className={`h-4 w-4 rounded-full border flex items-center justify-center ${isSelected ? "border-blue-500 bg-blue-500/20" : "border-[#27272a] bg-[#09090b]"}`}>
+                                {isSelected && <div className="h-2 w-2 rounded-full bg-blue-400" />}
+                              </div>
+                              <span>{cat}</span>
+                            </label>
+                            {manageModes.category && (
+                              <button
+                                type="button"
+                                disabled={filterSaving}
+                                onClick={() => handleFilterUpdate("delete", "categories", cat)}
+                                className="text-xs text-red-400 hover:text-red-300 disabled:opacity-40"
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-2 border-t border-[#27272a]/40 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setManageModes((prev) => ({ ...prev, category: !prev.category }))}
+                        className="text-xs font-medium text-neutral-400 hover:text-neutral-200 flex items-center gap-1"
+                      >
+                        {manageModes.category ? "⚙️ Done Managing" : "⚙️ Manage Categories List"}
+                      </button>
+                    </div>
+
+                    {manageModes.category && (
+                      <div className="flex gap-1 pt-1">
+                        <input
+                          type="text"
+                          value={newCategory}
+                          onChange={(e) => setNewCategory(e.target.value)}
+                          placeholder="Add new category…"
+                          suppressHydrationWarning
+                          className="flex-1 rounded border border-[#27272a] bg-[#09090b] px-2 py-1.5 text-xs text-white focus:outline-none"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              void handleFilterUpdate("add", "categories", newCategory);
+                              setNewCategory("");
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          disabled={filterSaving || !newCategory.trim()}
+                          onClick={() => {
+                            void handleFilterUpdate("add", "categories", newCategory);
+                            setNewCategory("");
+                          }}
+                          className="rounded bg-blue-700 px-3 py-1.5 text-xs text-white hover:bg-blue-600 disabled:opacity-40"
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Accordion 2: Product Filters */}
+              <div className="rounded-lg border border-[#27272a] bg-[#09090b]/50 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setOpenSections((prev) => ({ ...prev, products: !prev.products }))}
+                  className="w-full flex items-center justify-between p-4 text-left font-medium text-neutral-200 hover:bg-[#18181b] transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-neutral-400">Product Filters:</span>
+                    <span className="text-blue-400 font-semibold">
+                      {productFilters.filter(f => selectedFilters.includes(f.trim().toUpperCase())).length} selected
+                    </span>
+                  </div>
+                  <svg
+                    className={`h-4 w-4 text-neutral-400 transform transition-transform ${openSections.products ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {openSections.products && (
+                  <div className="p-4 border-t border-[#27272a]/60 bg-[#18181b]/30 space-y-4">
+                    <div className="flex flex-col gap-2">
+                      {productFilters.map((filter) => {
+                        const normalized = filter.trim().toUpperCase();
+                        const isChecked = selectedFilters.includes(normalized);
+                        return (
+                          <div key={filter} className="flex items-center justify-between">
+                            <label className="flex w-fit items-center gap-2.5 cursor-pointer text-sm text-neutral-400 hover:text-neutral-200 select-none">
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedFilters([...selectedFilters, normalized]);
+                                  } else {
+                                    setSelectedFilters(selectedFilters.filter((f) => f !== normalized));
+                                  }
+                                }}
+                                className="rounded border-[#27272a] bg-[#09090b] text-blue-600 focus:ring-0 focus:ring-offset-0"
+                              />
+                              <span>{filter}</span>
+                            </label>
+                            {manageModes.products && (
+                              <button
+                                type="button"
+                                disabled={filterSaving}
+                                onClick={() => handleFilterUpdate("delete", "productFilters", filter)}
+                                className="text-xs text-red-400 hover:text-red-300 disabled:opacity-40"
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-2 border-t border-[#27272a]/40 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setManageModes((prev) => ({ ...prev, products: !prev.products }))}
+                        className="text-xs font-medium text-neutral-400 hover:text-neutral-200 flex items-center gap-1"
+                      >
+                        {manageModes.products ? "⚙️ Done Managing" : "⚙️ Manage Products List"}
+                      </button>
+                    </div>
+
+                    {manageModes.products && (
+                      <div className="flex gap-1 pt-1">
+                        <input
+                          type="text"
+                          value={newProduct}
+                          onChange={(e) => setNewProduct(e.target.value)}
+                          placeholder="Add new product filter…"
+                          suppressHydrationWarning
+                          className="flex-1 rounded border border-[#27272a] bg-[#09090b] px-2 py-1.5 text-xs text-white focus:outline-none"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              void handleFilterUpdate("add", "productFilters", newProduct);
+                              setNewProduct("");
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          disabled={filterSaving || !newProduct.trim()}
+                          onClick={() => {
+                            void handleFilterUpdate("add", "productFilters", newProduct);
+                            setNewProduct("");
+                          }}
+                          className="rounded bg-blue-700 px-3 py-1.5 text-xs text-white hover:bg-blue-600 disabled:opacity-40"
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Accordion 3: Use Case Filters */}
+              <div className="rounded-lg border border-[#27272a] bg-[#09090b]/50 overflow-hidden">
+                <button
+                  type="button"
+                  onClick={() => setOpenSections((prev) => ({ ...prev, useCases: !prev.useCases }))}
+                  className="w-full flex items-center justify-between p-4 text-left font-medium text-neutral-200 hover:bg-[#18181b] transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="text-neutral-400">Use Case Filters:</span>
+                    <span className="text-blue-400 font-semibold">
+                      {useCaseFilters.filter(f => selectedFilters.includes(f.trim().toUpperCase())).length} selected
+                    </span>
+                  </div>
+                  <svg
+                    className={`h-4 w-4 text-neutral-400 transform transition-transform ${openSections.useCases ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+
+                {openSections.useCases && (
+                  <div className="p-4 border-t border-[#27272a]/60 bg-[#18181b]/30 space-y-4">
+                    <div className="flex flex-col gap-2">
+                      {useCaseFilters.map((filter) => {
+                        const normalized = filter.trim().toUpperCase();
+                        const isChecked = selectedFilters.includes(normalized);
+                        return (
+                          <div key={filter} className="flex items-center justify-between">
+                            <label className="flex w-fit items-center gap-2.5 cursor-pointer text-sm text-neutral-400 hover:text-neutral-200 select-none">
+                              <input
+                                type="checkbox"
+                                checked={isChecked}
+                                onChange={(e) => {
+                                  if (e.target.checked) {
+                                    setSelectedFilters([...selectedFilters, normalized]);
+                                  } else {
+                                    setSelectedFilters(selectedFilters.filter((f) => f !== normalized));
+                                  }
+                                }}
+                                className="rounded border-[#27272a] bg-[#09090b] text-blue-600 focus:ring-0 focus:ring-offset-0"
+                              />
+                              <span>{filter}</span>
+                            </label>
+                            {manageModes.useCases && (
+                              <button
+                                type="button"
+                                disabled={filterSaving}
+                                onClick={() => handleFilterUpdate("delete", "useCaseFilters", filter)}
+                                className="text-xs text-red-400 hover:text-red-300 disabled:opacity-40"
+                              >
+                                ✕
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="pt-2 border-t border-[#27272a]/40 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => setManageModes((prev) => ({ ...prev, useCases: !prev.useCases }))}
+                        className="text-xs font-medium text-neutral-400 hover:text-neutral-200 flex items-center gap-1"
+                      >
+                        {manageModes.useCases ? "⚙️ Done Managing" : "⚙️ Manage Use Cases List"}
+                      </button>
+                    </div>
+
+                    {manageModes.useCases && (
+                      <div className="flex gap-1 pt-1">
+                        <input
+                          type="text"
+                          value={newUseCase}
+                          onChange={(e) => setNewUseCase(e.target.value)}
+                          placeholder="Add new use case filter…"
+                          suppressHydrationWarning
+                          className="flex-1 rounded border border-[#27272a] bg-[#09090b] px-2 py-1.5 text-xs text-white focus:outline-none"
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              void handleFilterUpdate("add", "useCaseFilters", newUseCase);
+                              setNewUseCase("");
+                            }
+                          }}
+                        />
+                        <button
+                          type="button"
+                          disabled={filterSaving || !newUseCase.trim()}
+                          onClick={() => {
+                            void handleFilterUpdate("add", "useCaseFilters", newUseCase);
+                            setNewUseCase("");
+                          }}
+                          className="rounded bg-blue-700 px-3 py-1.5 text-xs text-white hover:bg-blue-600 disabled:opacity-40"
+                        >
+                          + Add
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 

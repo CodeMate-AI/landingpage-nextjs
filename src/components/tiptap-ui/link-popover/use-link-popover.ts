@@ -144,7 +144,13 @@ export function useLinkHandler(props: LinkHandlerProps) {
 
     let chain = editor.chain().focus()
 
-    chain = chain.extendMarkRange("link").setLink({ href: url })
+    let formattedUrl = url.trim()
+    // Prepend https:// if the URL doesn't have an absolute protocol, anchor, relative path, or protocol-relative prefix
+    if (!/^(https?:\/\/|mailto:|tel:|sms:|#|\/|\.\/|\.\.\/|\/\/)/i.test(formattedUrl)) {
+      formattedUrl = `https://${formattedUrl}`
+    }
+
+    chain = chain.extendMarkRange("link").setLink({ href: formattedUrl })
 
     if (isEmpty) {
       chain = chain.insertContent({ type: "text", text: url })
