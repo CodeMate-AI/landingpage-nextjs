@@ -38,7 +38,7 @@ export default async function BlogFeedPage() {
         [],
       bgColor: post.bgColor || "#07111f",
       sections: post.sections || [],
-      dek: post.excerpt || "",
+      dek: post.subheading || post.excerpt || "",
       readTime: post.readTime || "1 min read",
       image: post.coverImage || "",
       coverImage: post.coverImage || "",

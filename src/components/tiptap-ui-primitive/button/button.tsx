@@ -79,6 +79,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           data-style={variant}
           data-size={size}
           onMouseDown={handleMouseDown}
+          suppressHydrationWarning
           {...props}
         >
           {children}
@@ -95,6 +96,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           data-style={variant}
           data-size={size}
           onMouseDown={handleMouseDown}
+          suppressHydrationWarning
           {...props}
         >
           {children}

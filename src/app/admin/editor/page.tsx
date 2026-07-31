@@ -41,7 +41,7 @@ function EditorContent() {
 
   // bgColor is set only on loadPost (preserves DB value). No UI picker — always defaults to #07111f for new posts.
   const [title, setTitle] = useState("");
-  const [excerpt, setExcerpt] = useState("");
+  const [subheading, setSubheading] = useState("");
   const [category, setCategory] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [coverImage, setCoverImage] = useState("");
@@ -77,8 +77,8 @@ function EditorContent() {
   // It is read in resolvedPublished logic in handleSave to preserve existing publish state on draft saves.
   const [published, setPublished] = useState(false);
   const [contentJson, setContentJson] = useState<any>({ type: "doc", content: [] });
-  const [author, setAuthor] = useState("Ayush Singhal");
-  const [authorRole, setAuthorRole] = useState("Founder & CEO");
+  const [author, setAuthor] = useState("");
+  const [authorRole, setAuthorRole] = useState("");
   const [readTime, setReadTime] = useState("");
   const [publishedAtCustom, setPublishedAtCustom] = useState("");
   const [sections, setSections] = useState<{ id: string; title: string }[]>([]);
@@ -96,7 +96,7 @@ function EditorContent() {
         const data = await res.json();
         const post = data.post;
         setTitle(post.title);
-        setExcerpt(post.excerpt);
+        setSubheading(post.subheading || post.excerpt || "");
         setCategory(post.category);
         setCoverImage(post.coverImage || "");
         setBgColor(post.bgColor || "#07111f");
@@ -107,8 +107,8 @@ function EditorContent() {
         setSelectedFilters(
           post.filterLabels || post.tags?.map((t: any) => t.label.trim().toUpperCase()) || []
         );
-        setAuthor(post.author || "Ayush Singhal");
-        setAuthorRole(post.authorRole || "Founder & CEO");
+        setAuthor(post.author || "");
+        setAuthorRole(post.authorRole || "");
         setReadTime(post.readTime || "");
         setPublishedAtCustom(post.publishedAtCustom || "");
         setSections(post.sections || []);
@@ -206,7 +206,7 @@ function EditorContent() {
 
     const payload = {
       title,
-      excerpt,
+      subheading,
       category,
       coverImage,
       bgColor,
@@ -216,8 +216,8 @@ function EditorContent() {
       content: contentJson,
       author,
       authorRole,
-      readTime: readTime || undefined,
-      publishedAtCustom: publishedAtCustom || undefined,
+      readTime,
+      publishedAtCustom,
       sections: sections.length > 0 ? sections : undefined,
     };
 
@@ -296,12 +296,12 @@ function EditorContent() {
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-neutral-400">Excerpt / Subheading</label>
+            <label className="mb-1.5 block text-sm font-medium text-neutral-400">Subheading</label>
             <textarea
               required
               rows={2}
-              value={excerpt}
-              onChange={(e) => setExcerpt(e.target.value)}
+              value={subheading}
+              onChange={(e) => setSubheading(e.target.value)}
               className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
             />
           </div>
@@ -369,6 +369,7 @@ function EditorContent() {
                 <button
                   type="button"
                   onClick={() => setOpenSections((prev) => ({ ...prev, category: !prev.category }))}
+                  suppressHydrationWarning
                   className="w-full flex items-center justify-between p-4 text-left font-medium text-neutral-200 hover:bg-[#18181b] transition-colors"
                 >
                   <div className="flex items-center gap-2">
@@ -406,6 +407,7 @@ function EditorContent() {
                                 type="button"
                                 disabled={filterSaving}
                                 onClick={() => handleFilterUpdate("delete", "categories", cat)}
+                                suppressHydrationWarning
                                 className="text-xs text-red-400 hover:text-red-300 disabled:opacity-40"
                               >
                                 ✕
@@ -420,6 +422,7 @@ function EditorContent() {
                       <button
                         type="button"
                         onClick={() => setManageModes((prev) => ({ ...prev, category: !prev.category }))}
+                        suppressHydrationWarning
                         className="text-xs font-medium text-neutral-400 hover:text-neutral-200 flex items-center gap-1"
                       >
                         {manageModes.category ? "⚙️ Done Managing" : "⚙️ Manage Categories List"}
@@ -450,6 +453,7 @@ function EditorContent() {
                             void handleFilterUpdate("add", "categories", newCategory);
                             setNewCategory("");
                           }}
+                          suppressHydrationWarning
                           className="rounded bg-blue-700 px-3 py-1.5 text-xs text-white hover:bg-blue-600 disabled:opacity-40"
                         >
                           + Add
@@ -465,6 +469,7 @@ function EditorContent() {
                 <button
                   type="button"
                   onClick={() => setOpenSections((prev) => ({ ...prev, products: !prev.products }))}
+                  suppressHydrationWarning
                   className="w-full flex items-center justify-between p-4 text-left font-medium text-neutral-200 hover:bg-[#18181b] transition-colors"
                 >
                   <div className="flex items-center gap-2">
@@ -507,10 +512,11 @@ function EditorContent() {
                               <span>{filter}</span>
                             </label>
                             {manageModes.products && (
-                              <button
+                               <button
                                 type="button"
                                 disabled={filterSaving}
                                 onClick={() => handleFilterUpdate("delete", "productFilters", filter)}
+                                suppressHydrationWarning
                                 className="text-xs text-red-400 hover:text-red-300 disabled:opacity-40"
                               >
                                 ✕
@@ -525,6 +531,7 @@ function EditorContent() {
                       <button
                         type="button"
                         onClick={() => setManageModes((prev) => ({ ...prev, products: !prev.products }))}
+                        suppressHydrationWarning
                         className="text-xs font-medium text-neutral-400 hover:text-neutral-200 flex items-center gap-1"
                       >
                         {manageModes.products ? "⚙️ Done Managing" : "⚙️ Manage Products List"}
@@ -555,6 +562,7 @@ function EditorContent() {
                             void handleFilterUpdate("add", "productFilters", newProduct);
                             setNewProduct("");
                           }}
+                          suppressHydrationWarning
                           className="rounded bg-blue-700 px-3 py-1.5 text-xs text-white hover:bg-blue-600 disabled:opacity-40"
                         >
                           + Add
@@ -570,6 +578,7 @@ function EditorContent() {
                 <button
                   type="button"
                   onClick={() => setOpenSections((prev) => ({ ...prev, useCases: !prev.useCases }))}
+                  suppressHydrationWarning
                   className="w-full flex items-center justify-between p-4 text-left font-medium text-neutral-200 hover:bg-[#18181b] transition-colors"
                 >
                   <div className="flex items-center gap-2">
@@ -612,10 +621,11 @@ function EditorContent() {
                               <span>{filter}</span>
                             </label>
                             {manageModes.useCases && (
-                              <button
+                               <button
                                 type="button"
                                 disabled={filterSaving}
                                 onClick={() => handleFilterUpdate("delete", "useCaseFilters", filter)}
+                                suppressHydrationWarning
                                 className="text-xs text-red-400 hover:text-red-300 disabled:opacity-40"
                               >
                                 ✕
@@ -630,6 +640,7 @@ function EditorContent() {
                       <button
                         type="button"
                         onClick={() => setManageModes((prev) => ({ ...prev, useCases: !prev.useCases }))}
+                        suppressHydrationWarning
                         className="text-xs font-medium text-neutral-400 hover:text-neutral-200 flex items-center gap-1"
                       >
                         {manageModes.useCases ? "⚙️ Done Managing" : "⚙️ Manage Use Cases List"}
@@ -660,6 +671,7 @@ function EditorContent() {
                             void handleFilterUpdate("add", "useCaseFilters", newUseCase);
                             setNewUseCase("");
                           }}
+                          suppressHydrationWarning
                           className="rounded bg-blue-700 px-3 py-1.5 text-xs text-white hover:bg-blue-600 disabled:opacity-40"
                         >
                           + Add
@@ -680,40 +692,40 @@ function EditorContent() {
                 type="text"
                 value={author}
                 onChange={(e) => setAuthor(e.target.value)}
-                placeholder="Ayush Singhal"
+                placeholder="e.g. Biswajit Dash"
                 suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Author Role / Title</label>
+              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Author Role</label>
               <input
                 type="text"
                 value={authorRole}
                 onChange={(e) => setAuthorRole(e.target.value)}
-                placeholder="Founder & CEO"
+                placeholder="e.g. MTS"
                 suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Custom Date Override</label>
+              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Date of Publish</label>
               <input
                 type="text"
                 value={publishedAtCustom}
                 onChange={(e) => setPublishedAtCustom(e.target.value)}
-                placeholder="e.g. July 22, 2026 (optional)"
+                placeholder="e.g. July 22, 2026"
                 suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Custom Read Time Override</label>
+              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Expected Reading Time</label>
               <input
                 type="text"
                 value={readTime}
                 onChange={(e) => setReadTime(e.target.value)}
-                placeholder="e.g. 7 min read (optional)"
+                placeholder="e.g. 7 min read"
                 suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
@@ -739,9 +751,9 @@ function EditorContent() {
           <div className="rounded-xl border border-[#27272a] bg-[#18181b] p-4 sm:p-6 space-y-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#27272a] pb-4">
               <div>
-                <h3 className="text-lg font-semibold text-white">Table of Contents Outline</h3>
+                <h3 className="text-lg font-semibold text-white">Table of Contents</h3>
                 <p className="text-xs text-neutral-400 mt-1">
-                  Define manual scroll sections to show on the left-side tracker.
+                  Define scroll sections to show on the left-side tracker.
                 </p>
               </div>
               <div className="flex flex-col gap-2 sm:flex-row">
@@ -787,6 +799,7 @@ function EditorContent() {
                     }
                     setSections(generated);
                   }}
+                  suppressHydrationWarning
                   className="inline-flex items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 px-3.5 py-2 text-xs font-semibold text-blue-400 hover:bg-blue-600 hover:text-white transition"
                 >
                   Generate from Headings

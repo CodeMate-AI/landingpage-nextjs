@@ -32,7 +32,7 @@ const SectionSchema = z.object({
 
 export const BlogPostSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  excerpt: z.string().min(1, "Excerpt is required"),
+  subheading: z.string().min(1, "Subheading is required"),
   coverImage: z
     .string()
     .refine(
@@ -57,10 +57,10 @@ export const BlogPostSchema = z.object({
     content: z.array(TiptapNodeSchema),
   }),
   published: z.boolean().default(false),
-  author: z.string().default("Ayush Singhal"),
-  authorRole: z.string().default("Founder & CEO"),
-  readTime: z.string().optional(),
-  publishedAtCustom: z.string().optional(),
+  author: z.string().min(1, "Author Name is required"),
+  authorRole: z.string().min(1, "Author Role Title is required"),
+  readTime: z.string().min(1, "Read Time is required"),
+  publishedAtCustom: z.string().min(1, "Date is required"),
   bgColor: z.string().optional(),
   filterLabels: z.array(z.string()).optional(),
   sections: z.array(SectionSchema).optional().refine(
