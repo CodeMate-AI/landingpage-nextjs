@@ -435,7 +435,11 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         </Toolbar>
         <div
           className="simple-editor-content"
-          onClick={() => editor?.commands.focus()}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              editor?.commands.focus()
+            }
+          }}
           style={{ cursor: "text" }}
         >
           <EditorContent editor={editor} />

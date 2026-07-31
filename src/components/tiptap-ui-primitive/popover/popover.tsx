@@ -28,6 +28,7 @@ function PopoverContent({
         align={align}
         sideOffset={sideOffset}
         className={cn("tiptap-popover", className)}
+        onCloseAutoFocus={(e) => e.preventDefault()}
         {...props}
       />
     </PopoverPrimitive.Portal>
