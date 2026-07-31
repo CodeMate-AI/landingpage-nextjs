@@ -184,7 +184,28 @@ function formatLogos(html: string): string {
       })
       .filter((item: any) => item.src);
 
-    let gridHtml = '<div class="logo-grid my-8 grid grid-cols-1 gap-6 sm:grid-cols-3">';
+    let gridHtml = `
+      <style>
+        .logo-grid-card {
+          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                      box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
+                      border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+        .logo-grid-card:hover {
+          transform: translateY(-6px) scale(1.02) !important;
+          border-color: rgba(59, 130, 246, 0.25) !important;
+          box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04) !important;
+        }
+        .logo-grid-card img {
+          transform: scale(var(--logo-scale, 1));
+          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .logo-grid-card:hover img {
+          transform: scale(calc(var(--logo-scale, 1) * 1.08)) !important;
+        }
+      </style>
+      <div class="logo-grid my-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
+    `;
     for (const item of items) {
       let scale = "1";
       if (item.name.toLowerCase().includes("maruti")) scale = "1.85";
@@ -192,12 +213,12 @@ function formatLogos(html: string): string {
       else if (item.name.toLowerCase().includes("hp")) scale = "1.3";
 
       gridHtml += `
-        <div class="group relative flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/15">
+        <div class="logo-grid-card group relative flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl">
           <div class="flex h-20 w-full items-center justify-center overflow-hidden p-2">
             <img
               src="${item.src}"
               alt="${item.name}"
-              class="max-h-16 w-auto max-w-[85%] object-contain [transform:scale(var(--logo-scale,1))] transition-transform duration-300 group-hover:[transform:scale(calc(var(--logo-scale,1)*1.1))]"
+              class="max-h-16 w-auto max-w-[85%] object-contain"
               style="--logo-scale: ${scale};"
               loading="lazy"
               decoding="async"
