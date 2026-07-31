@@ -12,7 +12,6 @@ import { Typography } from "@tiptap/extension-typography"
 import { Highlight } from "@tiptap/extension-highlight"
 import { Subscript } from "@tiptap/extension-subscript"
 import { Superscript } from "@tiptap/extension-superscript"
-import { Selection } from "@tiptap/extensions"
 import { Table } from "@tiptap/extension-table"
 import { TableRow } from "@tiptap/extension-table-row"
 import { TableHeader } from "@tiptap/extension-table-header"
@@ -385,7 +384,6 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       }),
       VideoNode,
       VideoUploadNode,
-      Selection,
       Table.configure({ resizable: true }),
       TableRow,
       TableHeader,

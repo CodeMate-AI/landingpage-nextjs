@@ -3,8 +3,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { generateHTML } from "@tiptap/html";
 import DOMPurify from "isomorphic-dompurify";
-import clientPromise from "@/src/lib/mongodb";
-import { extensions } from "@/src/lib/tiptap-extensions";
+import clientPromise from "@/lib/mongodb";
+import { extensions } from "@/lib/tiptap-extensions";
 import BlogPostClient from "./BlogPostClient";
 import { after } from "next/server";
 
@@ -186,10 +186,10 @@ function formatLogos(html: string): string {
 
     let gridHtml = '<div class="logo-grid my-8 grid grid-cols-1 gap-6 sm:grid-cols-3">';
     for (const item of items) {
-      let scale = "scale(1)";
-      if (item.name.toLowerCase().includes("maruti")) scale = "scale(1.85)";
-      else if (item.name.toLowerCase().includes("tvs")) scale = "scale(2.2)";
-      else if (item.name.toLowerCase().includes("hp")) scale = "scale(1.3)";
+      let scale = "1";
+      if (item.name.toLowerCase().includes("maruti")) scale = "1.85";
+      else if (item.name.toLowerCase().includes("tvs")) scale = "2.2";
+      else if (item.name.toLowerCase().includes("hp")) scale = "1.3";
 
       gridHtml += `
         <div class="group relative flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-blue-500/15">
@@ -197,10 +197,11 @@ function formatLogos(html: string): string {
             <img
               src="${item.src}"
               alt="${item.name}"
-              class="max-h-16 w-auto max-w-[85%] object-contain transition-transform duration-300 group-hover:scale-110"
-              style="transform: ${scale};"
+              class="max-h-16 w-auto max-w-[85%] object-contain [transform:scale(var(--logo-scale,1))] transition-transform duration-300 group-hover:[transform:scale(calc(var(--logo-scale,1)*1.1))]"
+              style="--logo-scale: ${scale};"
               loading="lazy"
               decoding="async"
+              aria-hidden="true"
             />
           </div>
           <span class="mt-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
@@ -215,39 +216,49 @@ function formatLogos(html: string): string {
 }
 
 function formatFaqSection(html: string): string {
-  // Find the FAQ heading and everything after it (allowing any attributes on h2 like dynamic IDs)
-  const faqMatch = html.match(/<h2([^>]*)>Frequently Asked Questions<\/h2>([\s\S]*)/);
-  if (!faqMatch) return html;
+  // Locate the FAQ heading (case-insensitive)
+  const faqHeadingRegex = /<h2([^>]*)>Frequently Asked Questions<\/h2>/i;
+  const match = html.match(faqHeadingRegex);
+  if (!match || match.index == null) return html;
 
-  const faqContent = faqMatch[2];
-  // Match all paragraphs: <p>...</p>
-  const paragraphs: string[] = [];
-  const pRegex = /<p>([\s\S]*?)<\/p>/g;
-  let pMatch;
-  while ((pMatch = pRegex.exec(faqContent)) !== null) {
-    paragraphs.push(pMatch[1].trim());
-  }
+  const headingIndex = match.index;
+  const headingLength = match[0].length;
 
-  // Pair them up: if a paragraph starts with "+", it's a question, and the next paragraph is the answer!
+  // Get everything after the FAQ heading
+  const afterHeading = html.substring(headingIndex + headingLength);
+
+  // Find consecutive Q&A paragraphs immediately following the heading.
+  // A Q&A pair consists of a paragraph starting with "+" followed by another paragraph.
+  let faqContentLength = 0;
   let faqContainerHtml = '<div class="faq-pill-container">';
   let questionCount = 0;
-  for (let i = 0; i < paragraphs.length; i++) {
-    let text = paragraphs[i];
-    if (text.startsWith("+")) {
-      const question = text.substring(1).trim(); // strip the "+"
-      const answer = paragraphs[i + 1] || "";
-      faqContainerHtml += `<div class="faq-pill-card"><button type="button" class="faq-pill-summary"><span class="faq-circle-badge">+</span><span class="faq-question-title">${question}</span></button><div class="faq-answer-body"><p>${answer}</p></div></div>`;
-      questionCount++;
-      i++; // skip the answer paragraph
-    }
+
+  const qaPairRegex = /^\s*<p>\s*\+([\s\S]*?)<\/p>\s*<p>([\s\S]*?)<\/p>/i;
+
+  let tempString = afterHeading;
+  while (true) {
+    const pairMatch = tempString.match(qaPairRegex);
+    if (!pairMatch) break;
+
+    const matchedText = pairMatch[0];
+    const question = pairMatch[1].trim();
+    const answer = pairMatch[2].trim();
+
+    faqContainerHtml += `<div class="faq-pill-card"><button type="button" class="faq-pill-summary"><span class="faq-circle-badge">+</span><span class="faq-question-title">${question}</span></button><div class="faq-answer-body"><p>${answer}</p></div></div>`;
+    questionCount++;
+
+    faqContentLength += matchedText.length;
+    tempString = tempString.substring(matchedText.length);
   }
+
   faqContainerHtml += '</div>';
 
   if (questionCount === 0) return html;
 
-  // Replace the old flat paragraphs in the HTML with our new styled FAQ container!
-  const beforeFaq = html.substring(0, faqMatch.index) + `<h2${faqMatch[1]}>Frequently Asked Questions</h2>`;
-  return beforeFaq + faqContainerHtml;
+  const beforeHeading = html.substring(0, headingIndex);
+  const remainingContent = afterHeading.substring(faqContentLength);
+
+  return beforeHeading + match[0] + faqContainerHtml + remainingContent;
 }
 
 function formatVideos(html: string): string {
