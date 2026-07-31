@@ -16,35 +16,38 @@ export default async function BlogFeedPage() {
       db.collection("filter_options").findOne({ _id: "global_filters" as any }),
     ]);
 
-    const posts: BlogDetailPost[] = rawPosts.map((post) => ({
-      id: post._id.toString(),
-      slug: post.slug,
-      title: post.title,
-      category: post.category,
-      date: post.publishedAtCustom
-        ? post.publishedAtCustom
-        : post.publishedAt
-          ? new Date(post.publishedAt).toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })
-          : "Draft",
-      dateValue: post.publishedAt ? new Date(post.publishedAt).toISOString().split("T")[0] : "",
-      tags: post.tags || [],
-      filterLabels:
-        post.filterLabels ||
-        post.tags?.map((t: any) => t.label.trim().toUpperCase()) ||
-        [],
-      bgColor: post.bgColor || "#07111f",
-      sections: post.sections || [],
-      dek: post.subheading || post.excerpt || "",
-      readTime: post.readTime || "1 min read",
-      image: post.coverImage || "",
-      coverImage: post.coverImage || "",
-      author: post.author || "Ayush Singhal",
-      authorRole: post.authorRole || "Founder & CEO",
-    }));
+    const posts: BlogDetailPost[] = rawPosts.map((post) => {
+      const source = post.publishedVersion || post;
+      return {
+        id: post._id.toString(),
+        slug: post.slug,
+        title: source.title,
+        category: source.category,
+        date: source.publishedAtCustom
+          ? source.publishedAtCustom
+          : post.publishedAt
+            ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })
+            : "Draft",
+        dateValue: post.publishedAt ? new Date(post.publishedAt).toISOString().split("T")[0] : "",
+        tags: source.tags || [],
+        filterLabels:
+          source.filterLabels ||
+          source.tags?.map((t: any) => t.label.trim().toUpperCase()) ||
+          [],
+        bgColor: source.bgColor || "#07111f",
+        sections: source.sections || [],
+        dek: source.subheading || source.excerpt || "",
+        readTime: source.readTime || "1 min read",
+        image: source.coverImage || "",
+        coverImage: source.coverImage || "",
+        author: source.author || "Ayush Singhal",
+        authorRole: source.authorRole || "Founder & CEO",
+      };
+    });
 
     const filterOptions = filterDoc
       ? {

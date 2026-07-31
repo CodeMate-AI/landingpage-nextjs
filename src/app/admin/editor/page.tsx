@@ -211,6 +211,7 @@ function EditorContent() {
       coverImage,
       bgColor,
       published: resolvedPublished,
+      saveMode: saveModeRef.current,
       tags,
       filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
       content: contentJson,

@@ -57,6 +57,7 @@ export const BlogPostSchema = z.object({
     content: z.array(TiptapNodeSchema),
   }),
   published: z.boolean().default(false),
+  saveMode: z.enum(["draft", "publish"]).optional(),
   author: z.string().min(1, "Author Name is required"),
   authorRole: z.string().min(1, "Author Role Title is required"),
   readTime: z.string().min(1, "Read Time is required"),

@@ -55,11 +55,31 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    let publishedAt = existing.publishedAt;
-    if (parsed.data.published && !existing.published) {
-      publishedAt = new Date();
-    } else if (!parsed.data.published) {
-      publishedAt = null;
+    const saveMode = body.saveMode || (parsed.data.published ? "publish" : "draft");
+    const published = parsed.data.published;
+
+    let publishedVersion = existing.publishedVersion || null;
+    let publishedAt = existing.publishedAt || null;
+
+    if (saveMode === "publish") {
+      publishedVersion = {
+        title: parsed.data.title,
+        subheading: parsed.data.subheading,
+        category: parsed.data.category,
+        coverImage: parsed.data.coverImage,
+        bgColor: parsed.data.bgColor,
+        tags: parsed.data.tags,
+        filterLabels: parsed.data.filterLabels,
+        content: parsed.data.content,
+        author: parsed.data.author,
+        authorRole: parsed.data.authorRole,
+        readTime: parsed.data.readTime,
+        publishedAtCustom: parsed.data.publishedAtCustom,
+        sections: parsed.data.sections,
+      };
+      if (!publishedAt) {
+        publishedAt = new Date();
+      }
     }
 
     const wordCount = calculateWordCount(parsed.data.content);
@@ -69,6 +89,8 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     const updatePayload = {
       ...parsed.data,
       readTime,
+      published,
+      publishedVersion,
       publishedAt,
       updatedAt: new Date(),
     };

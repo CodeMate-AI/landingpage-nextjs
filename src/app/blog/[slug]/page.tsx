@@ -298,27 +298,29 @@ export default async function BlogPostPage({ params }: Props) {
     }
   });
 
-  if (!post.content || typeof post.content !== "object" || post.content.type !== "doc") {
+  const source = post.publishedVersion || post;
+
+  if (!source.content || typeof source.content !== "object" || source.content.type !== "doc") {
     throw new Error("Corrupted Tiptap payload template format detected.");
   }
 
-  const rawHtml = generateHTML(post.content, extensions);
+  const rawHtml = generateHTML(source.content, extensions);
   const cleanHtml = DOMPurify.sanitize(rawHtml, {
     ALLOWED_TAGS: ["h1", "h2", "h3", "p", "a", "img", "ul", "ol", "li", "strong", "em", "code", "pre", "table", "thead", "tbody", "tr", "th", "td", "span", "div", "video"],
     ALLOWED_ATTR: ["href", "src", "alt", "class", "target", "rel", "id", "title", "controls", "muted", "autoplay", "loop", "playsinline", "type"],
   });
 
-  const sections = post.sections && post.sections.length > 0 ? post.sections : extractSectionsFromTiptapJson(post.content);
+  const sections = source.sections && source.sections.length > 0 ? source.sections : extractSectionsFromTiptapJson(source.content);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
   const finalHtml = formatLinks(formatLogos(formatVideos(formatFaqSection(formatTableCells(headingHtml)))));
 
   const mappedPost = {
     id: post._id.toString(),
     slug: post.slug,
-    title: post.title,
-    category: post.category,
-    date: post.publishedAtCustom
-      ? post.publishedAtCustom
+    title: source.title,
+    category: source.category,
+    date: source.publishedAtCustom
+      ? source.publishedAtCustom
       : post.publishedAt
         ? new Date(post.publishedAt).toLocaleDateString("en-US", {
             month: "long",
@@ -327,14 +329,14 @@ export default async function BlogPostPage({ params }: Props) {
           })
         : "Draft",
     dateValue: post.publishedAt ? new Date(post.publishedAt).toISOString().split("T")[0] : "",
-    tags: post.tags,
-    bgColor: post.bgColor || "#07111f",
+    tags: source.tags,
+    bgColor: source.bgColor || "#07111f",
     sections,
-    dek: post.subheading || post.excerpt || "",
-    readTime: post.readTime,
+    dek: source.subheading || source.excerpt || "",
+    readTime: source.readTime,
     htmlContent: finalHtml,
-    author: post.author || "Ayush Singhal",
-    authorRole: post.authorRole || "Founder & CEO",
+    author: source.author || "Ayush Singhal",
+    authorRole: source.authorRole || "Founder & CEO",
   };
 
   const rawSiblings = await db
@@ -343,27 +345,30 @@ export default async function BlogPostPage({ params }: Props) {
     .limit(3)
     .toArray();
 
-  const siblings = rawSiblings.map((s) => ({
-    id: s._id.toString(),
-    slug: s.slug,
-    title: s.title,
-    category: s.category,
-    date: s.publishedAtCustom
-      ? s.publishedAtCustom
-      : s.publishedAt
-        ? new Date(s.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+  const siblings = rawSiblings.map((s) => {
+    const sSource = s.publishedVersion || s;
+    return {
+      id: s._id.toString(),
+      slug: s.slug,
+      title: sSource.title,
+      category: sSource.category,
+      date: sSource.publishedAtCustom
+        ? sSource.publishedAtCustom
+        : s.publishedAt
+          ? new Date(s.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+          : "",
+      tags: sSource.tags,
+      bgColor: sSource.bgColor || "#07111f",
+      sections: [],
+      dek: sSource.subheading || sSource.excerpt || "",
+      readTime: sSource.readTime,
+      author: sSource.author || "Ayush Singhal",
+      authorRole: sSource.authorRole || "Founder & CEO",
+      visualMarkup: sSource.coverImage
+        ? `<img src="${sSource.coverImage}" alt="${sSource.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`
         : "",
-    tags: s.tags,
-    bgColor: s.bgColor || "#07111f",
-    sections: [],
-    dek: s.subheading || s.excerpt || "",
-    readTime: s.readTime,
-    author: s.author || "Ayush Singhal",
-    authorRole: s.authorRole || "Founder & CEO",
-    visualMarkup: s.coverImage
-      ? `<img src="${s.coverImage}" alt="${s.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`
-      : "",
-  }));
+    };
+  });
 
   return <BlogPostClient post={mappedPost as any} posts={siblings as any} />;
 }
