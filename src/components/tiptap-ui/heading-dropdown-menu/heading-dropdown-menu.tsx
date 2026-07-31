@@ -4,6 +4,10 @@ import { forwardRef, useCallback, useState } from "react"
 
 // --- Icons ---
 import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
+import { HeadingOneIcon } from "@/components/tiptap-icons/heading-one-icon"
+import { HeadingTwoIcon } from "@/components/tiptap-icons/heading-two-icon"
+import { HeadingThreeIcon } from "@/components/tiptap-icons/heading-three-icon"
+import { HeadingIcon } from "@/components/tiptap-icons/heading-icon"
 
 // --- Hooks ---
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
@@ -11,7 +15,7 @@ import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 // --- Tiptap UI ---
 import { HeadingButton } from "@/components/tiptap-ui/heading-button"
 import type { UseHeadingDropdownMenuConfig } from "@/components/tiptap-ui/heading-dropdown-menu"
-import { useHeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu"
+import { useHeadingDropdownMenu, getActiveHeadingLevel } from "@/components/tiptap-ui/heading-dropdown-menu"
 
 // --- UI Primitives ---
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
@@ -36,6 +40,18 @@ export interface HeadingDropdownMenuProps
   modal?: boolean
 }
 
+const shiftedIcons = {
+  2: HeadingOneIcon,
+  3: HeadingTwoIcon,
+  4: HeadingThreeIcon,
+}
+
+const shiftedNames = {
+  2: "Heading 1",
+  3: "Heading 2",
+  4: "Heading 3",
+}
+
 /**
  * Dropdown menu component for selecting heading levels in a Tiptap editor.
  *
@@ -48,7 +64,7 @@ export const HeadingDropdownMenu = forwardRef<
   (
     {
       editor: providedEditor,
-      levels = [1, 2, 3, 4, 5, 6],
+      levels = [2, 3, 4],
       hideWhenUnavailable = false,
       onOpenChange,
       children,
@@ -78,6 +94,9 @@ export const HeadingDropdownMenu = forwardRef<
       return null
     }
 
+    const activeLevel = getActiveHeadingLevel(editor, levels)
+    const DisplayIcon = activeLevel ? (shiftedIcons[activeLevel as keyof typeof shiftedIcons] || Icon) : Icon
+
     return (
       <DropdownMenu modal={modal} open={isOpen} onOpenChange={handleOpenChange}>
         <DropdownMenuTrigger asChild>
@@ -99,7 +118,7 @@ export const HeadingDropdownMenu = forwardRef<
               children
             ) : (
               <>
-                <Icon className="tiptap-button-icon" />
+                <DisplayIcon className="tiptap-button-icon" />
                 <ChevronDownIcon className="tiptap-button-dropdown-small" />
               </>
             )}
@@ -108,16 +127,22 @@ export const HeadingDropdownMenu = forwardRef<
 
         <DropdownMenuContent align="start">
           <DropdownMenuGroup>
-            {levels.map((level) => (
-              <DropdownMenuItem key={`heading-${level}`} asChild>
-                <HeadingButton
-                  editor={editor}
-                  level={level}
-                  text={`Heading ${level}`}
-                  showTooltip={false}
-                />
-              </DropdownMenuItem>
-            ))}
+            {levels.map((level) => {
+              const ShiftedIcon = shiftedIcons[level as keyof typeof shiftedIcons] || HeadingIcon
+              const labelText = shiftedNames[level as keyof typeof shiftedNames] || `Heading ${level}`
+              return (
+                <DropdownMenuItem key={`heading-${level}`} asChild>
+                  <HeadingButton
+                    editor={editor}
+                    level={level}
+                    showTooltip={false}
+                  >
+                    <ShiftedIcon className="tiptap-button-icon" />
+                    <span className="tiptap-button-text">{labelText}</span>
+                  </HeadingButton>
+                </DropdownMenuItem>
+              )
+            })}
           </DropdownMenuGroup>
         </DropdownMenuContent>
       </DropdownMenu>

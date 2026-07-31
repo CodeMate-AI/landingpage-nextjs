@@ -312,7 +312,7 @@ function EditorContent() {
               <div>
                 <h3 className="text-lg font-semibold text-white">Table of Contents Outline</h3>
                 <p className="text-xs text-neutral-400 mt-1">
-                  Define manual scroll anchors. IDs must contain only lowercase letters, numbers, and hyphens.
+                  Define manual scroll sections to show on the left-side tracker.
                 </p>
               </div>
               <div className="flex flex-col gap-2 sm:flex-row">
@@ -320,10 +320,23 @@ function EditorContent() {
                   type="button"
                   onClick={() => {
                     if (!contentJson || !contentJson.content) return;
+                    
+                    // Determine highest heading level (h2 -> h3 -> h4)
+                    let minLevel = 99;
+                    for (const node of contentJson.content) {
+                      if (node.type === "heading" && node.attrs?.level) {
+                        const lvl = node.attrs.level;
+                        if (lvl >= 2 && lvl <= 4 && lvl < minLevel) {
+                          minLevel = lvl;
+                        }
+                      }
+                    }
+                    const targetLevel = minLevel === 99 ? 2 : minLevel;
+
                     const generated: { id: string; title: string }[] = [];
                     const idCounts: Record<string, number> = {};
                     for (const node of contentJson.content) {
-                      if (node.type === "heading" && node.attrs?.level === 2) {
+                      if (node.type === "heading" && node.attrs?.level === targetLevel) {
                         let titleText = "";
                         if (node.content) {
                           titleText = node.content.map((c: any) => c.text || "").join("");
@@ -349,7 +362,7 @@ function EditorContent() {
                 </button>
                 <button
                   type="button"
-                  onClick={() => setSections([...sections, { id: "", title: "" }])}
+                  onClick={() => setSections([...sections, { id: "section-" + sections.length, title: "" }])}
                   className="inline-flex items-center justify-center rounded-lg border border-[#27272a] bg-[#1d1d22] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[#27272a] transition"
                 >
                   + Add Item
@@ -358,13 +371,14 @@ function EditorContent() {
             </div>
 
             {sections.length === 0 ? (
+
               <p className="text-sm text-neutral-500 py-2">
                 No custom outline sections. Click Auto-Generate or Add Item to begin.
               </p>
             ) : (
               <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
                 {sections.map((section, idx) => (
-                  <div key={idx} className="flex flex-col gap-3 sm:flex-row sm:items-center">
+                  <div key={idx} className="flex gap-3 items-center">
                     <div className="flex-1">
                       <input
                         type="text"
@@ -374,25 +388,15 @@ function EditorContent() {
                         onChange={(e) => {
                           const updated = [...sections];
                           updated[idx].title = e.target.value;
-                          if (!updated[idx].id) {
-                            updated[idx].id = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+                          
+                          // Compute clean unique IDs behind the scenes
+                          const baseId = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "section";
+                          let count = 0;
+                          for (let i = 0; i < idx; i++) {
+                            const prevBase = updated[i].title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "section";
+                            if (prevBase === baseId) count++;
                           }
-                          setSections(updated);
-                        }}
-                        className="w-full rounded-lg border border-[#27272a] bg-[#1d1d22] p-2 text-sm text-white focus:outline-none"
-                      />
-                    </div>
-                    <div className="flex-1">
-                      <input
-                        type="text"
-                        required
-                        placeholder="Anchor ID (e.g. pricing-model)"
-                        value={section.id}
-                        onChange={(e) => {
-                          const updated = [...sections];
-                          updated[idx].id = e.target.value
-                            .toLowerCase()
-                            .replace(/[^a-z0-9-]/g, "");
+                          updated[idx].id = count > 0 ? `${baseId}-${count}` : baseId;
                           setSections(updated);
                         }}
                         className="w-full rounded-lg border border-[#27272a] bg-[#1d1d22] p-2 text-sm text-white focus:outline-none"
@@ -416,27 +420,26 @@ function EditorContent() {
             )}
           </div>
 
-          <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              id="published"
-              checked={published}
-              onChange={(e) => setPublished(e.target.checked)}
-              className="h-4 w-4 rounded border-neutral-700 bg-neutral-900 text-blue-600 focus:ring-0"
-            />
-            <label htmlFor="published" className="text-sm font-medium text-neutral-300">
-              Publish directly to feed (makes this post public)
-            </label>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center mt-4">
+            <button
+              type="submit"
+              disabled={loading}
+              onClick={() => setPublished(false)}
+              suppressHydrationWarning
+              className="w-full sm:w-auto rounded-lg border border-[#27272a] bg-[#18181b] px-6 py-3 font-semibold text-neutral-300 transition hover:bg-[#232329] disabled:opacity-50 text-center"
+            >
+              Save as Draft
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              onClick={() => setPublished(true)}
+              suppressHydrationWarning
+              className="w-full sm:w-auto rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-500 disabled:opacity-50 text-center"
+            >
+              {loading ? "Saving..." : "Save & Publish"}
+            </button>
           </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            suppressHydrationWarning
-            className="w-full rounded-lg bg-blue-600 p-3 font-semibold text-white transition hover:bg-blue-500 disabled:opacity-50"
-          >
-            {loading ? "Saving Article..." : "Save Post"}
-          </button>
         </form>
       </div>
     </main>

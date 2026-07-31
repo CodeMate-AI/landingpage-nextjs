@@ -286,10 +286,10 @@ export default function BlogPostClient({ post, posts }: Props) {
                   <svg className="card-avatar" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="12" fill="#3b82f6" fillOpacity="0.15" />
                     <text x="12" y="16" textAnchor="middle" fontFamily="Montserrat" fontSize="9" fill="#22d3ee" fontWeight="700">
-                      {getInitials(relatedPost.author || post.author)}
+                      {getInitials(relatedPost.author || "Ayush Singhal")}
                     </text>
                   </svg>
-                  <span>{relatedPost.author || post.author || "Ayush Singhal"}</span>
+                  <span>{relatedPost.author || "Ayush Singhal"}</span>
                   <span>·</span>
                   <span>{relatedPost.date}</span>
                 </div>

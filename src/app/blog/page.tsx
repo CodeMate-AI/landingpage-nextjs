@@ -20,13 +20,15 @@ export default async function BlogFeedPage() {
       slug: post.slug,
       title: post.title,
       category: post.category,
-      date: post.publishedAt
-        ? new Date(post.publishedAt).toLocaleDateString("en-US", {
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          })
-        : "Draft",
+      date: post.publishedAtCustom
+        ? post.publishedAtCustom
+        : post.publishedAt
+          ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })
+          : "Draft",
       dateValue: post.publishedAt ? new Date(post.publishedAt).toISOString().split("T")[0] : "",
       tags: post.tags || [],
       bgColor: post.bgColor || "#07111f",
@@ -35,6 +37,8 @@ export default async function BlogFeedPage() {
       readTime: post.readTime || "1 min read",
       image: post.coverImage || "",
       coverImage: post.coverImage || "",
+      author: post.author || "Ayush Singhal",
+      authorRole: post.authorRole || "Founder & CEO",
     }));
 
     return <BlogFeedClient posts={posts} />;

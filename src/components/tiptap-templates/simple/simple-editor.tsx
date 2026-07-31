@@ -101,7 +101,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <HeadingDropdownMenu modal={false} levels={[1, 2, 3, 4]} />
+        <HeadingDropdownMenu modal={false} levels={[2, 3, 4]} />
         <ListDropdownMenu
           modal={false}
           types={["bulletList", "orderedList", "taskList"]}
@@ -437,7 +437,13 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
             />
           )}
         </Toolbar>
-        <EditorContent editor={editor} />
+        <div
+          className="simple-editor-content"
+          onClick={() => editor?.commands.focus()}
+          style={{ cursor: "text" }}
+        >
+          <EditorContent editor={editor} />
+        </div>
       </div>
     </EditorContext.Provider>
   )

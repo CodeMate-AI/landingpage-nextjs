@@ -14,14 +14,29 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+function determineHighestHeadingLevel(content: any): number {
+  if (!content || !content.content) return 2;
+  let minLevel = 99;
+  for (const node of content.content) {
+    if (node.type === "heading" && node.attrs?.level) {
+      const lvl = node.attrs.level;
+      if (lvl >= 2 && lvl <= 4 && lvl < minLevel) {
+        minLevel = lvl;
+      }
+    }
+  }
+  return minLevel === 99 ? 2 : minLevel;
+}
+
 function extractSectionsFromTiptapJson(content: any): { id: string; title: string }[] {
   const sections: { id: string; title: string }[] = [];
   const idCounts: Record<string, number> = {};
 
   if (!content || !content.content) return sections;
+  const targetLevel = determineHighestHeadingLevel(content);
 
   for (const node of content.content) {
-    if (node.type === "heading" && node.attrs?.level === 2) {
+    if (node.type === "heading" && node.attrs?.level === targetLevel) {
       let title = "";
       if (node.content) {
         title = node.content.map((c: any) => c.text || "").join("");
@@ -46,11 +61,19 @@ function slugifyHeading(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
-const H2_PATTERN_SOURCE = "<h2([^>]*)>([\\s\\S]*?)<\\/h2>";
+function getHighestHeadingTag(html: string): string {
+  if (html.includes("<h2")) return "h2";
+  if (html.includes("<h3")) return "h3";
+  if (html.includes("<h4")) return "h4";
+  return "h2";
+}
+
 const ID_ATTR_PATTERN = /\s*id=(?:"[^"]*"|'[^']*'|[^\s>]+)/g;
 
 function injectHeadingIds(html: string, sections: { id: string; title: string }[]): string {
   const getHeadingText = (headingHtml: string) => headingHtml.replace(/<[^>]*>/g, "").trim();
+  const tag = getHighestHeadingTag(html);
+  const H2_PATTERN_SOURCE = `<${tag}([^>]*)>([\\s\\S]*?)<\\/${tag}>`;
 
   const headingTextContents: string[] = [];
   const scanRegex = new RegExp(H2_PATTERN_SOURCE, "g");
@@ -85,12 +108,12 @@ function injectHeadingIds(html: string, sections: { id: string; title: string }[
 
     const contentMatchedId = matchedIdsByIndex[currentIndex];
     if (contentMatchedId) {
-      return `<h2${attrString} id="${contentMatchedId}">${headingContent}</h2>`;
+      return `<${tag}${attrString} id="${contentMatchedId}">${headingContent}</${tag}>`;
     }
 
     const nextUnclaimed = unclaimedQueue.shift();
     if (nextUnclaimed) {
-      return `<h2${attrString} id="${nextUnclaimed.id}">${headingContent}</h2>`;
+      return `<${tag}${attrString} id="${nextUnclaimed.id}">${headingContent}</${tag}>`;
     }
 
     const baseSlug = slugifyHeading(text);
@@ -102,7 +125,7 @@ function injectHeadingIds(html: string, sections: { id: string; title: string }[
     }
     usedSlugIds.add(finalSlug);
 
-    return `<h2${attrString} id="${finalSlug}">${headingContent}</h2>`;
+    return `<${tag}${attrString} id="${finalSlug}">${headingContent}</${tag}>`;
   });
 }
 
@@ -296,12 +319,18 @@ export default async function BlogPostPage({ params }: Props) {
     slug: s.slug,
     title: s.title,
     category: s.category,
-    date: s.publishedAt ? new Date(s.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" }) : "",
+    date: s.publishedAtCustom
+      ? s.publishedAtCustom
+      : s.publishedAt
+        ? new Date(s.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })
+        : "",
     tags: s.tags,
     bgColor: s.bgColor || "#07111f",
     sections: [],
     dek: s.excerpt,
     readTime: s.readTime,
+    author: s.author || "Ayush Singhal",
+    authorRole: s.authorRole || "Founder & CEO",
     visualMarkup: s.coverImage
       ? `<img src="${s.coverImage}" alt="${s.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`
       : "",
