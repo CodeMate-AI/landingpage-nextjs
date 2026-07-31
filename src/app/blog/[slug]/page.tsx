@@ -20,6 +20,8 @@ function determineHighestHeadingLevel(content: any): number {
   for (const node of content.content) {
     if (node.type === "heading" && node.attrs?.level) {
       const lvl = node.attrs.level;
+      // We start tracking from level 2 (h2) because level 2 (h2) is mapped
+      // visually to "Heading 1" in the CMS editor toolbar dropdown UI.
       if (lvl >= 2 && lvl <= 4 && lvl < minLevel) {
         minLevel = lvl;
       }
@@ -62,6 +64,8 @@ function slugifyHeading(text: string): string {
 }
 
 function getHighestHeadingTag(html: string): string {
+  // We prioritize h2 as the highest heading tag because h2 is mapped
+  // visually to "Heading 1" in the CMS editor toolbar dropdown UI.
   if (html.includes("<h2")) return "h2";
   if (html.includes("<h3")) return "h3";
   if (html.includes("<h4")) return "h4";

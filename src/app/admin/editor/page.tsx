@@ -219,28 +219,6 @@ function EditorContent() {
               </div>
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-neutral-400">
-                Card Background Color
-                <span className="ml-2 text-xs text-neutral-500">(shown on listing card)</span>
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  value={bgColor}
-                  onChange={(e) => setBgColor(e.target.value)}
-                  placeholder="#07111f"
-                  className="flex-1 rounded-lg border border-[#27272a] bg-[#18181b] p-3 font-mono text-sm text-white focus:outline-none"
-                />
-                <input
-                  type="color"
-                  value={bgColor}
-                  onChange={(e) => setBgColor(e.target.value)}
-                  className="h-12 w-12 cursor-pointer rounded-lg border border-[#27272a] bg-[#18181b] p-1"
-                  title="Pick a background color"
-                />
-              </div>
-            </div>
-            <div>
               <label className="mb-1.5 block text-sm font-medium text-neutral-400">Tags (comma separated)</label>
               <input
                 type="text"
@@ -321,7 +299,9 @@ function EditorContent() {
                   onClick={() => {
                     if (!contentJson || !contentJson.content) return;
                     
-                    // Determine highest heading level (h2 -> h3 -> h4)
+                    // Determine highest heading level.
+                    // We start tracking from level 2 (h2) because level 2 (h2) is mapped
+                    // visually to "Heading 1" in the CMS editor toolbar dropdown UI.
                     let minLevel = 99;
                     for (const node of contentJson.content) {
                       if (node.type === "heading" && node.attrs?.level) {
@@ -358,62 +338,26 @@ function EditorContent() {
                   }}
                   className="inline-flex items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 px-3.5 py-2 text-xs font-semibold text-blue-400 hover:bg-blue-600 hover:text-white transition"
                 >
-                  Auto-Generate from Headings
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSections([...sections, { id: "section-" + sections.length, title: "" }])}
-                  className="inline-flex items-center justify-center rounded-lg border border-[#27272a] bg-[#1d1d22] px-3.5 py-2 text-xs font-semibold text-white hover:bg-[#27272a] transition"
-                >
-                  + Add Item
+                  Generate from Headings
                 </button>
               </div>
             </div>
 
             {sections.length === 0 ? (
-
               <p className="text-sm text-neutral-500 py-2">
-                No custom outline sections. Click Auto-Generate or Add Item to begin.
+                No custom outline sections. Click Generate from Headings to begin.
               </p>
             ) : (
-              <div className="space-y-3 max-h-80 overflow-y-auto pr-2">
+              <div className="space-y-2 max-h-80 overflow-y-auto pr-2">
                 {sections.map((section, idx) => (
-                  <div key={idx} className="flex gap-3 items-center">
-                    <div className="flex-1">
-                      <input
-                        type="text"
-                        required
-                        placeholder="Section Title (e.g. Pricing Model)"
-                        value={section.title}
-                        onChange={(e) => {
-                          const updated = [...sections];
-                          updated[idx].title = e.target.value;
-                          
-                          // Compute clean unique IDs behind the scenes
-                          const baseId = e.target.value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "section";
-                          let count = 0;
-                          for (let i = 0; i < idx; i++) {
-                            const prevBase = updated[i].title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "") || "section";
-                            if (prevBase === baseId) count++;
-                          }
-                          updated[idx].id = count > 0 ? `${baseId}-${count}` : baseId;
-                          setSections(updated);
-                        }}
-                        className="w-full rounded-lg border border-[#27272a] bg-[#1d1d22] p-2 text-sm text-white focus:outline-none"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSections(sections.filter((_, sIdx) => sIdx !== idx));
-                      }}
-                      className="inline-flex items-center justify-center p-2 rounded-lg border border-red-500/20 bg-red-500/10 text-red-400 hover:bg-red-600 hover:text-white transition"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                        <line x1="18" y1="6" x2="6" y2="18"></line>
-                        <line x1="6" y1="6" x2="18" y2="18"></line>
-                      </svg>
-                    </button>
+                  <div
+                    key={idx}
+                    className="flex items-center gap-3 rounded-lg border border-[#27272a]/80 bg-[#1d1d22]/40 px-4 py-3 text-neutral-300 transition duration-150 hover:bg-[#1d1d22]/80"
+                  >
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600/10 text-xs font-semibold text-blue-400">
+                      {idx + 1}
+                    </span>
+                    <span className="text-sm font-medium">{section.title}</span>
                   </div>
                 ))}
               </div>
