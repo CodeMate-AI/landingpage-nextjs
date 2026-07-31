@@ -786,12 +786,13 @@ function EditorContent() {
                         }
                         if (titleText) {
                           const baseId = titleText.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-                          let id = baseId;
-                          if (idCounts[baseId] !== undefined) {
-                            idCounts[baseId]++;
-                            id = `${baseId}-${idCounts[baseId]}`;
+                          const finalBaseId = baseId || "section";
+                          let id = finalBaseId;
+                          if (idCounts[finalBaseId] !== undefined) {
+                            idCounts[finalBaseId]++;
+                            id = `${finalBaseId}-${idCounts[finalBaseId]}`;
                           } else {
-                            idCounts[baseId] = 0;
+                            idCounts[finalBaseId] = 0;
                           }
                           generated.push({ id, title: titleText });
                         }

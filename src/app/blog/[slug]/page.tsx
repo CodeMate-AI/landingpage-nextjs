@@ -44,7 +44,7 @@ function extractSectionsFromTiptapJson(content: any): { id: string; title: strin
         title = node.content.map((c: any) => c.text || "").join("");
       }
       if (title) {
-        const baseId = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+        const baseId = slugifyHeading(title);
         let id = baseId;
         if (idCounts[baseId] !== undefined) {
           idCounts[baseId]++;
@@ -60,7 +60,8 @@ function extractSectionsFromTiptapJson(content: any): { id: string; title: strin
 }
 
 function slugifyHeading(text: string): string {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  const slug = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+  return slug || "section";
 }
 
 function getHighestHeadingTag(html: string): string {
