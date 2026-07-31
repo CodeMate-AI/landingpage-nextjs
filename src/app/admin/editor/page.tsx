@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState, Suspense } from "react";
+import React, { useCallback, useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
@@ -8,12 +8,16 @@ function EditorContent() {
   const searchParams = useSearchParams();
   const postId = searchParams.get("id");
 
+  // bgColor is set only on loadPost (preserves DB value). No UI picker — always defaults to #07111f for new posts.
   const [title, setTitle] = useState("");
   const [excerpt, setExcerpt] = useState("");
   const [category, setCategory] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [bgColor, setBgColor] = useState("#07111f");
+  
+  // published is set only on loadPost to initialise the current live state.
+  // It is read in resolvedPublished logic in handleSave to preserve existing publish state on draft saves.
   const [published, setPublished] = useState(false);
   const [contentJson, setContentJson] = useState<any>({ type: "doc", content: [] });
   const [author, setAuthor] = useState("Ayush Singhal");
@@ -22,16 +26,13 @@ function EditorContent() {
   const [publishedAtCustom, setPublishedAtCustom] = useState("");
   const [sections, setSections] = useState<{ id: string; title: string }[]>([]);
   const [loading, setLoading] = useState(false);
+  const [savingMode, setSavingMode] = useState<"draft" | "publish" | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const saveModeRef = useRef<"draft" | "publish">("draft");
 
-  useEffect(() => {
-    if (postId) {
-      loadPost();
-    }
-  }, [postId]);
-
-  const loadPost = async () => {
+  const loadPost = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/posts/${postId}`);
       if (res.ok) {
@@ -44,6 +45,7 @@ function EditorContent() {
         setBgColor(post.bgColor || "#07111f");
         setPublished(post.published);
         setContentJson(post.content);
+        setLoadError(false);
         setTagsInput(post.tags.map((t: any) => t.label).join(", "));
         setAuthor(post.author || "Ayush Singhal");
         setAuthorRole(post.authorRole || "Founder & CEO");
@@ -54,15 +56,24 @@ function EditorContent() {
         router.push("/admin/login");
       } else {
         alert("Failed to load post for editing.");
+        setLoadError(true);
       }
     } catch {
       alert("Failed to load post for editing.");
+      setLoadError(true);
     }
-  };
+  }, [postId, router]);
+
+  useEffect(() => {
+    if (postId) {
+      void loadPost();
+    }
+  }, [postId, loadPost]);
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setSavingMode(saveModeRef.current);
 
     const tags = tagsInput
       .split(",")
@@ -70,13 +81,20 @@ function EditorContent() {
       .filter((t) => t.length > 0)
       .map((t) => ({ label: t, tone: "slate" }));
 
+    const resolvedPublished =
+      saveModeRef.current === "publish"
+        ? true
+        : postId
+        ? published
+        : false;
+
     const payload = {
       title,
       excerpt,
       category,
       coverImage,
       bgColor,
-      published,
+      published: resolvedPublished,
       tags,
       content: contentJson,
       author,
@@ -108,6 +126,7 @@ function EditorContent() {
       alert("Save execution failed.");
     } finally {
       setLoading(false);
+      setSavingMode(null);
     }
   };
 
@@ -212,7 +231,7 @@ function EditorContent() {
                   disabled={uploading}
                   onClick={() => fileInputRef.current?.click()}
                   suppressHydrationWarning
-                  className="rounded-lg border border-[#27272a] bg-[#18181b] px-4 py-3 text-sm font-medium text-white transition hover:bg-[#232329] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="rounded-lg border border-blue-500/20 bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {uploading ? "Uploading..." : "Upload"}
                 </button>
@@ -281,7 +300,17 @@ function EditorContent() {
 
           <div>
             <label className="mb-1.5 block text-sm font-medium text-neutral-400">Content Editor</label>
-            {(!postId || contentJson.content.length > 0) && <SimpleEditor content={contentJson} onChange={setContentJson} />}
+            {loadError ? (
+              <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-400">
+                Failed to load post content. Please refresh the page or go back to the dashboard.
+              </div>
+            ) : !postId || contentJson.content.length > 0 ? (
+              <SimpleEditor content={contentJson} onChange={setContentJson} />
+            ) : (
+              <div className="rounded-lg border border-[#27272a] bg-[#18181b] p-4 text-sm text-neutral-500">
+                Loading content...
+              </div>
+            )}
           </div>
 
           {/* Table of Contents / Outline custom editor */}
@@ -368,20 +397,24 @@ function EditorContent() {
             <button
               type="submit"
               disabled={loading}
-              onClick={() => setPublished(false)}
+              onClick={() => {
+                saveModeRef.current = "draft";
+              }}
               suppressHydrationWarning
               className="w-full sm:w-auto rounded-lg border border-[#27272a] bg-[#18181b] px-6 py-3 font-semibold text-neutral-300 transition hover:bg-[#232329] disabled:opacity-50 text-center"
             >
-              Save as Draft
+              {loading && savingMode === "draft" ? "Saving..." : "Save as Draft"}
             </button>
             <button
               type="submit"
               disabled={loading}
-              onClick={() => setPublished(true)}
+              onClick={() => {
+                saveModeRef.current = "publish";
+              }}
               suppressHydrationWarning
               className="w-full sm:w-auto rounded-lg bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-500 disabled:opacity-50 text-center"
             >
-              {loading ? "Saving..." : "Save & Publish"}
+              {loading && savingMode === "publish" ? "Saving..." : "Save & Publish"}
             </button>
           </div>
         </form>
