@@ -64,7 +64,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
 
     const wordCount = calculateWordCount(parsed.data.content);
     const calculatedMinutes = Math.max(1, Math.ceil(wordCount / 200));
-    const readTime = `${calculatedMinutes} min read`;
+    const readTime = parsed.data.readTime || `${calculatedMinutes} min read`;
 
     const updatePayload = {
       ...parsed.data,

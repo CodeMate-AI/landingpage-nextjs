@@ -22,6 +22,14 @@ const TiptapNodeSchema: z.ZodType<any> = z.lazy(() =>
   })
 );
 
+const SectionSchema = z.object({
+  id: z
+    .string()
+    .min(1, "ID is required")
+    .regex(/^[a-z0-9-]+$/, "Anchor ID must contain only lowercase letters, numbers, and hyphens"),
+  title: z.string().min(1, "Title is required"),
+});
+
 export const BlogPostSchema = z.object({
   title: z.string().min(1, "Title is required"),
   excerpt: z.string().min(1, "Excerpt is required"),
@@ -50,4 +58,15 @@ export const BlogPostSchema = z.object({
   }),
   published: z.boolean().default(false),
   author: z.string().default("Ayush Singhal"),
+  authorRole: z.string().default("Founder & CEO"),
+  readTime: z.string().optional(),
+  publishedAtCustom: z.string().optional(),
+  sections: z.array(SectionSchema).optional().refine(
+    (items) => {
+      if (!items) return true;
+      const ids = items.map((item) => item.id);
+      return ids.length === new Set(ids).size;
+    },
+    { message: "Section Anchor IDs must be unique" }
+  ),
 });

@@ -24,4 +24,6 @@ export interface BlogDetailPost {
   image?: string;
   coverImage?: string;
   htmlContent?: string;
+  author?: string;
+  authorRole?: string;
 }

@@ -18,7 +18,24 @@ export default function BlogPostClient({ post, posts }: Props) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState<string>(post.sections[0]?.id || "intro");
   const [copied, setCopied] = useState(false);
+  const [shareUrl, setShareUrl] = useState(`https://codemate.ai/blog/${post.slug}`);
   const articleRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setShareUrl(window.location.origin + "/blog/" + post.slug);
+    }
+  }, [post.slug]);
+
+  const getInitials = (name?: string) => {
+    if (!name) return "AS";
+    return name
+      .split(" ")
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase()
+      .slice(0, 2);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -121,8 +138,6 @@ export default function BlogPostClient({ post, posts }: Props) {
     }
   };
 
-  const productionShareUrl = `https://codemate.ai/blog/${post.slug}`;
-
   const currentIndex = posts.findIndex((candidate) => candidate.id === post.id);
   const prevPost = currentIndex > 0 ? posts[currentIndex - 1] : null;
   const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
@@ -142,12 +157,12 @@ export default function BlogPostClient({ post, posts }: Props) {
               <svg className="byline-avatar" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="20" cy="20" r="20" fill="#3b82f6" fillOpacity="0.15" />
                 <text x="20" y="25" textAnchor="middle" fontFamily="Montserrat" fontSize="14" fill="#60a5fa" fontWeight="700">
-                  AS
+                  {getInitials(post.author)}
                 </text>
               </svg>
-              <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>Ayush Singhal</span>
+              <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>{post.author || "Ayush Singhal"}</span>
               <span className="byline-divider"></span>
-              <span style={{ color: "var(--text-secondary)" }}>Founder & CEO</span>
+              <span style={{ color: "var(--text-secondary)" }}>{post.authorRole || "Founder & CEO"}</span>
               <span className="byline-divider"></span>
               <span>{post.date}</span>
               <span className="byline-divider"></span>
@@ -179,12 +194,12 @@ export default function BlogPostClient({ post, posts }: Props) {
           <div className="rail-section">
             <div className="rail-section-title">Share</div>
             <div className="rail-share">
-              <a href={`https://x.com/intent/tweet?text=${encodeURIComponent(`Check out this article: "${post.title}"`)}&url=${encodeURIComponent(productionShareUrl)}`} target="_blank" rel="noopener noreferrer" className="rail-share-btn" aria-label="Share on X">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <a href={`https://x.com/intent/tweet?text=${encodeURIComponent(`Check out this article: "${post.title}"`)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="rail-share-btn" aria-label="Share on X">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                 </svg>
               </a>
-              <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(productionShareUrl)}`} target="_blank" rel="noopener noreferrer" className="rail-share-btn" aria-label="Share on LinkedIn">
+              <a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" className="rail-share-btn" aria-label="Share on LinkedIn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                 </svg>
@@ -271,10 +286,10 @@ export default function BlogPostClient({ post, posts }: Props) {
                   <svg className="card-avatar" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="12" fill="#3b82f6" fillOpacity="0.15" />
                     <text x="12" y="16" textAnchor="middle" fontFamily="Montserrat" fontSize="9" fill="#22d3ee" fontWeight="700">
-                      AS
+                      {getInitials(relatedPost.author || post.author)}
                     </text>
                   </svg>
-                  <span>Ayush Singhal</span>
+                  <span>{relatedPost.author || post.author || "Ayush Singhal"}</span>
                   <span>·</span>
                   <span>{relatedPost.date}</span>
                 </div>

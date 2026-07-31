@@ -8,7 +8,6 @@ import { extensions } from "@/src/lib/tiptap-extensions";
 import BlogPostClient from "./BlogPostClient";
 import { after } from "next/server";
 
-
 export const revalidate = 60;
 
 interface Props {
@@ -43,49 +42,67 @@ function extractSectionsFromTiptapJson(content: any): { id: string; title: strin
   return sections;
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const client = await clientPromise;
-  const db = client.db("codemate_blog");
-  const post = await db.collection("blogs").findOne({ slug, published: true });
-
-  if (!post) return { title: "Post Not Found" };
-
-  const url = `https://codemate.ai/blog/${slug}`;
-  const ogImage = post.coverImage?.startsWith("http")
-    ? post.coverImage
-    : post.coverImage
-    ? `https://codemate.ai${post.coverImage}`
-    : "https://codemate.ai/og-image.png";
-
-  return {
-    title: `${post.title} | CodeMate AI Blog`,
-    description: post.excerpt,
-    alternates: { canonical: url },
-    openGraph: {
-      title: `${post.title} | CodeMate AI Blog`,
-      description: post.excerpt,
-      url,
-      siteName: "CodeMate AI",
-      type: "article",
-      publishedTime: post.publishedAt?.toISOString(),
-      authors: [post.author || "CodeMate AI"],
-      images: [{ url: ogImage, width: 1200, height: 630, alt: post.title }],
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${post.title} | CodeMate AI Blog`,
-      description: post.excerpt,
-      images: [ogImage],
-    },
-  };
+function slugifyHeading(text: string): string {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+const H2_PATTERN_SOURCE = "<h2([^>]*)>([\\s\\S]*?)<\\/h2>";
+const ID_ATTR_PATTERN = /\s*id=(?:"[^"]*"|'[^']*'|[^\s>]+)/g;
+
 function injectHeadingIds(html: string, sections: { id: string; title: string }[]): string {
-  let index = 0;
-  return html.replace(/<h2>/g, () => {
-    const section = sections[index++];
-    return section ? `<h2 id="${section.id}">` : "<h2>";
+  const getHeadingText = (headingHtml: string) => headingHtml.replace(/<[^>]*>/g, "").trim();
+
+  const headingTextContents: string[] = [];
+  const scanRegex = new RegExp(H2_PATTERN_SOURCE, "g");
+  let match;
+  while ((match = scanRegex.exec(html)) !== null) {
+    headingTextContents.push(getHeadingText(match[2]));
+  }
+
+  const claimedIds = new Set<string>();
+  const matchedIdsByIndex = new Array<string | null>(headingTextContents.length).fill(null);
+
+  for (let i = 0; i < headingTextContents.length; i++) {
+    const text = headingTextContents[i];
+    const slugifiedText = slugifyHeading(text);
+    const textMatch = sections.find((s) => slugifyHeading(s.title) === slugifiedText && !claimedIds.has(s.id));
+    if (textMatch) {
+      claimedIds.add(textMatch.id);
+      matchedIdsByIndex[i] = textMatch.id;
+    }
+  }
+
+  const unclaimedQueue = sections.filter((s) => !claimedIds.has(s.id));
+  const usedSlugIds = new Set<string>(sections.map((s) => s.id));
+
+  let replaceIndex = 0;
+  const replaceRegex = new RegExp(H2_PATTERN_SOURCE, "g");
+  return html.replace(replaceRegex, (match, attributes, headingContent) => {
+    const currentIndex = replaceIndex++;
+    const text = getHeadingText(headingContent);
+    const cleanedAttributes = attributes.replace(ID_ATTR_PATTERN, "").trim();
+    const attrString = cleanedAttributes ? ` ${cleanedAttributes}` : "";
+
+    const contentMatchedId = matchedIdsByIndex[currentIndex];
+    if (contentMatchedId) {
+      return `<h2${attrString} id="${contentMatchedId}">${headingContent}</h2>`;
+    }
+
+    const nextUnclaimed = unclaimedQueue.shift();
+    if (nextUnclaimed) {
+      return `<h2${attrString} id="${nextUnclaimed.id}">${headingContent}</h2>`;
+    }
+
+    const baseSlug = slugifyHeading(text);
+    let finalSlug = baseSlug;
+    let counter = 1;
+    while (usedSlugIds.has(finalSlug)) {
+      finalSlug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+    usedSlugIds.add(finalSlug);
+
+    return `<h2${attrString} id="${finalSlug}">${headingContent}</h2>`;
   });
 }
 
@@ -239,7 +256,7 @@ export default async function BlogPostPage({ params }: Props) {
     ALLOWED_ATTR: ["href", "src", "alt", "class", "target", "rel", "id", "title", "controls", "muted", "autoplay", "loop", "playsinline", "type"],
   });
 
-  const sections = extractSectionsFromTiptapJson(post.content);
+  const sections = post.sections && post.sections.length > 0 ? post.sections : extractSectionsFromTiptapJson(post.content);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
   const finalHtml = formatLogos(formatVideos(formatFaqSection(formatTableCells(headingHtml))));
 
@@ -248,13 +265,15 @@ export default async function BlogPostPage({ params }: Props) {
     slug: post.slug,
     title: post.title,
     category: post.category,
-    date: post.publishedAt
-      ? new Date(post.publishedAt).toLocaleDateString("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-        })
-      : "Draft",
+    date: post.publishedAtCustom
+      ? post.publishedAtCustom
+      : post.publishedAt
+        ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+            month: "long",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "Draft",
     dateValue: post.publishedAt ? new Date(post.publishedAt).toISOString().split("T")[0] : "",
     tags: post.tags,
     bgColor: post.bgColor || "#07111f",
@@ -262,6 +281,8 @@ export default async function BlogPostPage({ params }: Props) {
     dek: post.excerpt,
     readTime: post.readTime,
     htmlContent: finalHtml,
+    author: post.author || "Ayush Singhal",
+    authorRole: post.authorRole || "Founder & CEO",
   };
 
   const rawSiblings = await db
