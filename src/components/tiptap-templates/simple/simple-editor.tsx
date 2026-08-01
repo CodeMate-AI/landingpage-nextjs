@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
+import { Plugin } from "@tiptap/pm/state"
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
@@ -355,6 +356,16 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
             })
             .catch((err) => console.error("Paste video failed:", err))
           return true
+        }
+
+        return false
+      },
+      handleKeyDown: (view, event) => {
+        if (event.key === "Enter" && !event.shiftKey) {
+          setTimeout(() => {
+            if (view.isDestroyed) return
+            view.dispatch(view.state.tr.setStoredMarks([]))
+          }, 0)
         }
 
         return false
