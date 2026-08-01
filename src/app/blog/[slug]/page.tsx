@@ -301,6 +301,48 @@ function formatLinks(html: string): string {
   });
 }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const client = await clientPromise;
+    const db = client.db("codemate_blog");
+    const post = await db.collection("blogs").findOne({ slug, published: true });
+
+    if (!post) {
+      return {
+        title: "Post Not Found | CodeMate AI Blog",
+      };
+    }
+
+    const source = post.publishedVersion || post;
+    const desc = source.subheading || source.excerpt || "Read this article on the CodeMate AI Blog.";
+    const truncatedDesc = desc.length > 160 ? desc.slice(0, 157) + "..." : desc;
+
+    return {
+      title: `${source.title} | CodeMate AI Blog`,
+      description: truncatedDesc,
+      openGraph: {
+        title: source.title,
+        description: desc,
+        url: `https://codemate.ai/blog/${slug}`,
+        siteName: "CodeMate AI Blog",
+        type: "article",
+        images: source.coverImage ? [{ url: source.coverImage, alt: source.title }] : [],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: source.title,
+        description: desc,
+        images: source.coverImage ? [source.coverImage] : [],
+      },
+    };
+  } catch {
+    return {
+      title: "Blog Post | CodeMate AI Blog",
+    };
+  }
+}
+
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const client = await clientPromise;

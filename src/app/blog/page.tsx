@@ -1,9 +1,23 @@
 import React from "react";
+import type { Metadata } from "next";
 import clientPromise from "@/lib/mongodb";
 import BlogFeedClient from "./BlogFeedClient";
 import type { BlogDetailPost } from "@/types/blog";
 
 export const revalidate = 60;
+
+export const metadata: Metadata = {
+  title: "Blog & Insights | CodeMate AI",
+  description: "Explore the latest engineering deep-dives, developer tool comparisons, security reviews, and product updates from the CodeMate AI team.",
+  openGraph: {
+    title: "Blog & Insights | CodeMate AI",
+    description: "Explore the latest engineering deep-dives, developer tool comparisons, security reviews, and product updates from the CodeMate AI team.",
+    url: "https://codemate.ai/blog",
+    siteName: "CodeMate AI",
+    type: "website",
+  },
+};
+
 
 export default async function BlogFeedPage() {
   try {
