@@ -1949,6 +1949,13 @@ sup {
   line-height: 0 !important;
 }
 
+p[style*="text-align: justify"],
+h2[style*="text-align: justify"],
+h3[style*="text-align: justify"] {
+  text-align-last: justify;
+}
+
+
 pre code {
   font-family: 'Fira Code', monospace;
   font-size: 14px;

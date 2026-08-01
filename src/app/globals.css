@@ -260,6 +260,13 @@ body {
   outline: none;
 }
 
+.ProseMirror p[style*="text-align: justify"],
+.ProseMirror h2[style*="text-align: justify"],
+.ProseMirror h3[style*="text-align: justify"] {
+  text-align-last: justify;
+}
+
+
 .ProseMirror sub {
   vertical-align: sub !important;
   font-size: 75% !important;

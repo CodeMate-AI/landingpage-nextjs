@@ -11,6 +11,9 @@ import { TaskList, TaskItem } from "@tiptap/extension-list";
 import { Highlight } from "@tiptap/extension-highlight";
 import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
+import { TextAlign } from "@tiptap/extension-text-align";
+import { Typography } from "@tiptap/extension-typography";
+
 
 /**
  * Server-safe video node — no ReactNodeViewRenderer.
@@ -105,6 +108,11 @@ export const extensions = [
   }),
   Subscript,
   Superscript,
+  TextAlign.configure({
+    types: ["heading", "paragraph"],
+  }),
+  Typography,
   VideoNodeServer,
   VideoUploadNodeServer,
 ];
+
