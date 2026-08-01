@@ -61,6 +61,24 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     let publishedVersion = existing.publishedVersion || null;
     let publishedAt = existing.publishedAt || null;
 
+    if (existing.published && !publishedVersion) {
+      publishedVersion = {
+        title: existing.title,
+        subheading: existing.subheading || existing.excerpt || "",
+        category: existing.category,
+        coverImage: existing.coverImage || "",
+        bgColor: existing.bgColor || "#07111f",
+        tags: existing.tags || [],
+        filterLabels: existing.filterLabels || existing.tags?.map((t: any) => t.label.trim().toUpperCase()) || [],
+        content: existing.content,
+        author: existing.author || "Ayush Singhal",
+        authorRole: existing.authorRole || "Founder & CEO",
+        readTime: existing.readTime || "",
+        publishedAtCustom: existing.publishedAtCustom || "",
+        sections: existing.sections || [],
+      };
+    }
+
     if (saveMode === "publish") {
       publishedVersion = {
         title: parsed.data.title,
