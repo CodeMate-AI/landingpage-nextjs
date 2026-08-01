@@ -8,6 +8,9 @@ import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import { Node } from "@tiptap/core";
 import { TaskList, TaskItem } from "@tiptap/extension-list";
+import { Highlight } from "@tiptap/extension-highlight";
+import { Subscript } from "@tiptap/extension-subscript";
+import { Superscript } from "@tiptap/extension-superscript";
 
 /**
  * Server-safe video node — no ReactNodeViewRenderer.
@@ -97,6 +100,11 @@ export const extensions = [
   TaskItem.configure({
     nested: true,
   }),
+  Highlight.configure({
+    multicolor: true,
+  }),
+  Subscript,
+  Superscript,
   VideoNodeServer,
   VideoUploadNodeServer,
 ];

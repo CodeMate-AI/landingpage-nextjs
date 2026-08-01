@@ -381,7 +381,9 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       }),
       HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
-      Highlight,
+      Highlight.configure({
+        multicolor: true,
+      }),
       Subscript,
       Superscript,
       TaskList,
