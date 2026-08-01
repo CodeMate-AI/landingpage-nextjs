@@ -260,6 +260,18 @@ body {
   outline: none;
 }
 
+.ProseMirror sub {
+  vertical-align: sub !important;
+  font-size: 75% !important;
+  line-height: 0 !important;
+}
+
+.ProseMirror sup {
+  vertical-align: super !important;
+  font-size: 75% !important;
+  line-height: 0 !important;
+}
+
 .ProseMirror h2 {
   font-family: var(--font-montserrat), sans-serif;
   font-size: 1.75rem; /* ~28px */

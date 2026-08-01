@@ -1937,6 +1937,18 @@ pre {
   overflow-x: auto;
 }
 
+sub {
+  vertical-align: sub !important;
+  font-size: 75% !important;
+  line-height: 0 !important;
+}
+
+sup {
+  vertical-align: super !important;
+  font-size: 75% !important;
+  line-height: 0 !important;
+}
+
 pre code {
   font-family: 'Fira Code', monospace;
   font-size: 14px;
