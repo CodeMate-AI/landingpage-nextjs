@@ -360,13 +360,13 @@ export default async function BlogPostPage({ params }: Props) {
     authorRole: source.authorRole || "Founder & CEO",
   };
 
-  const rawSiblings = await db
+  const rawAllPosts = await db
     .collection("blogs")
-    .find({ published: true, slug: { $ne: slug } })
-    .limit(3)
+    .find({ published: true })
+    .sort({ publishedAt: -1 })
     .toArray();
 
-  const siblings = rawSiblings.map((s) => {
+  const allPosts = rawAllPosts.map((s) => {
     const sSource = s.publishedVersion || s;
     return {
       id: s._id.toString(),
@@ -391,5 +391,5 @@ export default async function BlogPostPage({ params }: Props) {
     };
   });
 
-  return <BlogPostClient post={mappedPost as any} posts={siblings as any} />;
+  return <BlogPostClient post={mappedPost as any} posts={allPosts as any} />;
 }
