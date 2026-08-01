@@ -50,11 +50,18 @@ export default function AdminDashboard() {
     }
   };
 
-  const renderStatus = (published: boolean) =>
-    published ? (
-      <span className="inline-flex items-center rounded-md bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
-        Published
-      </span>
+  const renderStatus = (post: any) =>
+    post.published ? (
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="inline-flex items-center rounded-md bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
+          Published
+        </span>
+        {post.hasDraftChanges && (
+          <span className="inline-flex items-center rounded-md bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20 animate-pulse">
+            Draft Pending
+          </span>
+        )}
+      </div>
     ) : (
       <span className="inline-flex items-center rounded-md bg-yellow-500/10 px-2.5 py-1 text-xs font-medium text-yellow-400 ring-1 ring-inset ring-yellow-500/20">
         Draft
@@ -93,7 +100,7 @@ export default function AdminDashboard() {
 
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="inline-flex items-center rounded-full bg-[#27272a] px-3 py-1 text-xs font-medium text-neutral-300">{post.category}</span>
-                      {renderStatus(post.published)}
+                      {renderStatus(post)}
                     </div>
 
                     <div className="flex flex-wrap gap-3">
@@ -130,7 +137,7 @@ export default function AdminDashboard() {
                     <tr key={post._id} className="transition-colors hover:bg-[#202024]/40">
                       <td className="p-4 font-semibold text-white">{post.title}</td>
                       <td className="p-4 text-neutral-300">{post.category}</td>
-                      <td className="p-4">{renderStatus(post.published)}</td>
+                      <td className="p-4">{renderStatus(post)}</td>
                       <td className="p-4 text-center">
                         <div className="flex justify-center gap-3">
                           <Link

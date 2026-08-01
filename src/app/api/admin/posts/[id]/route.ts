@@ -104,11 +104,14 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     const calculatedMinutes = Math.max(1, Math.ceil(wordCount / 200));
     const readTime = parsed.data.readTime || `${calculatedMinutes} min read`;
 
+    const hasDraftChanges = saveMode === "draft" && published;
+
     const updatePayload = {
       ...parsed.data,
       readTime,
       published,
       publishedVersion,
+      hasDraftChanges,
       publishedAt,
       updatedAt: new Date(),
     };
