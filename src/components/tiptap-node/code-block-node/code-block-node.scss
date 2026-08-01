@@ -51,4 +51,17 @@
       color: inherit;
     }
   }
+
+  pre + pre {
+    margin-top: -1.5em !important;
+    border-top: none !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+
+  pre:has(+ pre) {
+    margin-bottom: 0 !important;
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+  }
 }
