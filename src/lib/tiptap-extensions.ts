@@ -7,6 +7,7 @@ import { TableRow } from "@tiptap/extension-table-row";
 import { TableHeader } from "@tiptap/extension-table-header";
 import { TableCell } from "@tiptap/extension-table-cell";
 import { Node } from "@tiptap/core";
+import { TaskList, TaskItem } from "@tiptap/extension-list";
 
 /**
  * Server-safe video node — no ReactNodeViewRenderer.
@@ -92,6 +93,10 @@ export const extensions = [
   TableRow,
   TableHeader,
   TableCell,
+  TaskList,
+  TaskItem.configure({
+    nested: true,
+  }),
   VideoNodeServer,
   VideoUploadNodeServer,
 ];
