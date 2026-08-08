@@ -18,6 +18,21 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Handles smooth scrolling to the features section without page-jump scroll restoration issues
+  const handleFeaturesClick = () => {
+    if (pathname === '/') {
+      // Scroll immediately if already on the homepage
+      document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
+    // Disable Next.js default scroll-to-top on router push, then scroll to target element
+    router.push('/', { scroll: false });
+    setTimeout(() => {
+      document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
+    }, 300);
+  };
+
   const [isNBack, setIsNBack] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -194,7 +209,7 @@ export default function Navbar() {
                         className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
                       />
                     </motion.span></motion.h1>
-                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} onClick={() => { router.push('/'); setTimeout(() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' }), 100); }} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
+                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} onClick={() => { router.push('/pricing?product=cora') }} className='opacity-65'>Pricing</motion.h1>
                   <a href='https://edu.codemate.ai/' target='_blank'>
                     <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Education</motion.h1>
@@ -452,23 +467,23 @@ export default function Navbar() {
                 className="absolute h-full  w-[100%] bg-zinc-900  z-[999999999999]"
               >
                 <div data-lenis-prevent className='relative h-full w-full overflow-y-auto  z-[9999999999]'>
-                  <div className='flex flex-col leading-[1] text-[8vw] pt-24 pl-5 gap-10 '>
-                    <motion.div onClick={() => { setMenu(false); router.push('/'); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
-                    <motion.div className='flex flex-col gap-2 cursor-pointer'>
-                      <motion.div onClick={() => { setIsProducts(state => !state); }} whileHover={{ opacity: 0.6 }} className='flex justify-between items-center'>
-                        <div className='flex gap-2'>
-                          <h1 className='MenuText'>PRODUCTS</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>02</p>
-                        </div>
-                        <motion.span
-                          initial={{ rotate: 180 }}
-                          animate={{ rotate: !isProducts ? 180 : 0 }}
-                          className='mr-3'
-                        >
-                          <ChevronUp
-                            className="h-5 w-5 shrink-0 grow-0 text-zinc-950  transition-transform duration-200 group-data-expanded:-rotate-180 opacity-60 dark:text-zinc-50"
-                          />
-                        </motion.span>
-                      </motion.div>
+                <div className='flex flex-col leading-[1] text-[8vw] pt-24 pl-5 gap-10 '>
+                  <motion.div onClick={() => { setMenu(false); router.push('/'); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
+                  <motion.div className='flex flex-col gap-2 cursor-pointer'>
+                    <motion.div onClick={() => { setIsProducts(state => !state); }} whileHover={{ opacity: 0.6 }} className='flex justify-between items-center'>
+                      <div className='flex gap-2'>
+                        <h1 className='MenuText'>PRODUCTS</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>02</p>
+                      </div>
+                      <motion.span
+                        initial={{ rotate: 180 }}
+                        animate={{ rotate: !isProducts ? 180 : 0 }}
+                        className='mr-3'
+                      >
+                        <ChevronUp
+                          className="h-5 w-5 shrink-0 grow-0 text-zinc-950  transition-transform duration-200 group-data-expanded:-rotate-180 opacity-60 dark:text-zinc-50"
+                        />
+                      </motion.span>
+                    </motion.div>
 
                       {isProducts &&
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
@@ -664,12 +679,13 @@ export default function Navbar() {
                         </motion.div>
                       }
                     </motion.div>
-                    <motion.div onClick={() => { setMenu(false); router.push('/pricing?product=cora') }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
+                    <motion.div onClick={() => { setMenu(false); handleFeaturesClick(); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>FEATURES</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
+                    <motion.div onClick={() => { setMenu(false); router.push('/pricing?product=cora') }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
                     <a href='https://edu.codemate.ai/' target='_blank'>
-                      <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
+                      <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>07</p></motion.div>
                     </a>
                     <a href="https://app.codemate.ai" target="_blank">
-                      <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>GET STARTED</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>07</p></motion.div>
+                      <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>GET STARTED</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>08</p></motion.div>
                     </a>
                   </div>
 

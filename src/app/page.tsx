@@ -567,7 +567,7 @@ function Page() {
 
       <div>
         {/* horizontal scroll section: What You'll Unlock */}
-        <div ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 -mt-[15vh]'>
+        <div id="features" ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 -mt-[15vh]'>
 
           <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-[8vh] lg:pt-0">
             {/* Horizontal Scrolling Content */}
