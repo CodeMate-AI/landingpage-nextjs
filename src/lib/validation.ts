@@ -62,7 +62,6 @@ export const BlogPostSchema = z.object({
   authorRole: z.string().min(1, "Author Role Title is required"),
   readTime: z.string().min(1, "Read Time is required"),
   publishedAtCustom: z.string().min(1, "Date is required"),
-  bgColor: z.string().optional(),
   filterLabels: z.array(z.string()).optional(),
   sections: z.array(SectionSchema).optional().refine(
     (items) => {

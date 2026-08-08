@@ -15,7 +15,6 @@ export const blogPosts: BlogDetailPost[] = [
     tags: [
       { label: "Comparison", tone: "violet" },
     ],
-    bgColor: "#07111f",
     visualMarkup: `<img src="/codematevsgithubcopilot.png" alt="CodeMate VS GitHub Copilot" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`,
     sections: [
       { id: "intro", title: "Introduction" },
@@ -41,7 +40,6 @@ export const blogPosts: BlogDetailPost[] = [
     tags: [
       { label: "Comparison", tone: "violet" },
     ],
-    bgColor: "#07111f",
     visualMarkup: `<img src="/codemateaiVSclaudecodeImageCover.png" alt="CodeMate VS Claude Code" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`,
     sections: [
       { id: "intro", title: "Introduction" },
@@ -65,7 +63,6 @@ export const blogPosts: BlogDetailPost[] = [
     tags: [
       { label: "CORA", tone: "blue" },
     ],
-    bgColor: "#080f12",
     visualMarkup: `
       <img src="/blog2CoverImage.jpeg" alt="Cora SWE-bench Verified SOTA" style="width: 100%; height: 100%; object-fit: cover; background-color: #080f12;" />
     `,
@@ -95,7 +92,6 @@ export const blogPosts: BlogDetailPost[] = [
     tags: [
       { label: "Security", tone: "blue" },
     ],
-    bgColor: "#09090b",
     visualMarkup: `
       <img src="/online_threat_images.png" alt="online threat images" style="width: 100%; height: 100%; object-fit: cover; background-color: white;" />
     `,

@@ -4,7 +4,7 @@ import path from "path";
 // MUST load env before importing mongodb (which reads MONGODB_URI at module evaluation time)
 loadEnvConfig(path.resolve(__dirname, ".."));
 
-const DEFAULT_BG = "#07111f";
+
 
 type TiptapNode = {
   type: string;
@@ -673,7 +673,7 @@ async function main() {
   const db = client.db("codemate_blog");
   const blogs = db.collection("blogs");
 
-  console.log("Migrating existing blog posts (cleaning up excerpt and views)...");
+  console.log("Migrating existing blog posts (cleaning up stale fields)...");
   const existingPosts = await blogs.find().toArray();
   for (const post of existingPosts) {
     const update: any = {};
@@ -686,6 +686,9 @@ async function main() {
     if (post.views !== undefined) {
       unset.views = "";
     }
+    if (post.bgColor !== undefined) {
+      unset.bgColor = "";
+    }
 
     if (post.publishedVersion) {
       if (post.publishedVersion.excerpt) {
@@ -694,6 +697,9 @@ async function main() {
       }
       if (post.publishedVersion.views !== undefined) {
         unset["publishedVersion.views"] = "";
+      }
+      if (post.publishedVersion.bgColor !== undefined) {
+        unset["publishedVersion.bgColor"] = "";
       }
     }
 
@@ -716,7 +722,6 @@ async function main() {
       category: "Security & Code Review",
       tags: [{ label: "Security", tone: "blue" }],
       readTime: "6 min read",
-      bgColor: "#09090b",
       content: blog1Content(),
       published: true,
       publishedAt: new Date("2025-11-13T00:00:00.000Z"),
@@ -732,7 +737,6 @@ async function main() {
       category: "CORA Updates",
       tags: [{ label: "CORA", tone: "blue" }],
       readTime: "5 min read",
-      bgColor: "#080f12",
       content: blog2Content(),
       published: true,
       publishedAt: new Date("2025-11-13T00:00:00.000Z"),
@@ -748,7 +752,6 @@ async function main() {
       category: "Engineering & Comparisons",
       tags: [{ label: "Comparison", tone: "violet" }],
       readTime: "7 min read",
-      bgColor: DEFAULT_BG,
       content: blog3Content(),
       published: true,
       publishedAt: new Date("2026-07-21T00:00:00.000Z"),
@@ -764,7 +767,6 @@ async function main() {
       category: "Engineering & Comparisons",
       tags: [{ label: "Comparison", tone: "violet" }],
       readTime: "6 min read",
-      bgColor: DEFAULT_BG,
       content: blog4Content(),
       published: true,
       publishedAt: new Date("2026-07-22T00:00:00.000Z"),

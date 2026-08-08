@@ -383,7 +383,7 @@ export default async function BlogPostPage({ params }: Props) {
         : "Draft",
     dateValue: post.publishedAt ? new Date(post.publishedAt).toISOString().split("T")[0] : "",
     tags: source.tags,
-    bgColor: source.bgColor || "#07111f",
+    bgColor: "#07111f",
     sections,
     dek: source.subheading || "",
     readTime: source.readTime,
@@ -411,7 +411,7 @@ export default async function BlogPostPage({ params }: Props) {
           ? new Date(s.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })
           : "",
       tags: sSource.tags,
-      bgColor: sSource.bgColor || "#07111f",
+      bgColor: "#07111f",
       sections: [],
       dek: sSource.subheading || "",
       readTime: sSource.readTime,

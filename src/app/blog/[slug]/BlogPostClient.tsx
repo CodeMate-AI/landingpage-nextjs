@@ -269,7 +269,7 @@ export default function BlogPostClient({ post, posts }: Props) {
         <div className="related-grid">
           {relatedPosts.map((relatedPost) => (
             <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`} className="card">
-              <div className="card-visual" style={{ background: relatedPost.bgColor }}>
+              <div className="card-visual" style={{ background: "#07111f" }}>
                 <div dangerouslySetInnerHTML={{ __html: relatedPost.visualMarkup ?? "" }} />
               </div>
               <div className="card-body">

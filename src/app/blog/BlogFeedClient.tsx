@@ -681,7 +681,7 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
           <div className={`card-grid ${viewMode === "list" ? "list" : ""}`}>
             {filteredAndSortedPosts.slice(0, visibleCount).map((post) => (
               <Link href={`/blog/${post.slug}`} className="card" key={post.id}>
-                <div className="card-visual" style={{ background: post.bgColor }}>
+                <div className="card-visual" style={{ background: "#07111f" }}>
                   {post.image ? (
                     <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
                   ) : post.coverImage ? (

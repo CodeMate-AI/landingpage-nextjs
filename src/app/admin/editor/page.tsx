@@ -39,14 +39,12 @@ function EditorContent() {
   const searchParams = useSearchParams();
   const postId = searchParams.get("id");
 
-  // bgColor is set only on loadPost (preserves DB value). No UI picker — always defaults to #07111f for new posts.
   const [title, setTitle] = useState("");
   const [subheading, setSubheading] = useState("");
   const [category, setCategory] = useState("");
   const [tagsInput, setTagsInput] = useState("");
   const [coverImage, setCoverImage] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
-  const [bgColor, setBgColor] = useState("#07111f");
 
   // Dynamic filter lists (loaded from DB)
   const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
@@ -99,7 +97,6 @@ function EditorContent() {
         setSubheading(post.subheading || "");
         setCategory(post.category);
         setCoverImage(post.coverImage || "");
-        setBgColor(post.bgColor || "#07111f");
         setPublished(post.published);
         setContentJson(post.content);
         setLoadError(false);
@@ -209,7 +206,6 @@ function EditorContent() {
       subheading,
       category,
       coverImage,
-      bgColor,
       published: resolvedPublished,
       saveMode: saveModeRef.current,
       tags,

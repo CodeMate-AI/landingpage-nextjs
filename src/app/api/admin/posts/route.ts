@@ -55,7 +55,6 @@ async function createPostHandler(req: NextRequest) {
           subheading: parsed.data.subheading,
           category: parsed.data.category,
           coverImage: parsed.data.coverImage,
-          bgColor: parsed.data.bgColor,
           tags: parsed.data.tags,
           filterLabels: parsed.data.filterLabels,
           content: parsed.data.content,

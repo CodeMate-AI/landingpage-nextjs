@@ -17,7 +17,6 @@ export interface BlogDetailPost {
   dateValue: string;
   tags: Tag[];
   filterLabels?: string[];
-  bgColor: string;
   visualMarkup?: string;
   sections: BlogSection[];
   dek: string;
