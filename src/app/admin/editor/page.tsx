@@ -96,7 +96,7 @@ function EditorContent() {
         const data = await res.json();
         const post = data.post;
         setTitle(post.title);
-        setSubheading(post.subheading || post.excerpt || "");
+        setSubheading(post.subheading || "");
         setCategory(post.category);
         setCoverImage(post.coverImage || "");
         setBgColor(post.bgColor || "#07111f");

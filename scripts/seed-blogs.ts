@@ -673,11 +673,45 @@ async function main() {
   const db = client.db("codemate_blog");
   const blogs = db.collection("blogs");
 
+  console.log("Migrating existing blog posts (cleaning up excerpt and views)...");
+  const existingPosts = await blogs.find().toArray();
+  for (const post of existingPosts) {
+    const update: any = {};
+    const unset: any = {};
+
+    if (post.excerpt) {
+      update.subheading = post.subheading || post.excerpt;
+      unset.excerpt = "";
+    }
+    if (post.views !== undefined) {
+      unset.views = "";
+    }
+
+    if (post.publishedVersion) {
+      if (post.publishedVersion.excerpt) {
+        update["publishedVersion.subheading"] = post.publishedVersion.subheading || post.publishedVersion.excerpt;
+        unset["publishedVersion.excerpt"] = "";
+      }
+      if (post.publishedVersion.views !== undefined) {
+        unset["publishedVersion.views"] = "";
+      }
+    }
+
+    const updateOp: any = {};
+    if (Object.keys(update).length > 0) updateOp.$set = update;
+    if (Object.keys(unset).length > 0) updateOp.$unset = unset;
+
+    if (Object.keys(updateOp).length > 0) {
+      await blogs.updateOne({ _id: post._id }, updateOp);
+      console.log(`Migrated database entries for: ${post.slug}`);
+    }
+  }
+
   const docs = [
     {
       slug: "hidden-dangers-of-autonomous-ai",
       title: "The Hidden Dangers of Autonomous AI: How CodeMate Keeps Developers in Control",
-      excerpt: "The recent Replit AI agent incident is a wake-up call for AI access control and safe agent design.",
+      subheading: "The recent Replit AI agent incident is a wake-up call for AI access control and safe agent design.",
       coverImage: "/online_threat_images.png",
       category: "Security & Code Review",
       tags: [{ label: "Security", tone: "blue" }],
@@ -686,7 +720,6 @@ async function main() {
       content: blog1Content(),
       published: true,
       publishedAt: new Date("2025-11-13T00:00:00.000Z"),
-      views: 0,
       author: "Ayush Singhal",
       createdAt: new Date("2025-11-13T00:00:00.000Z"),
       updatedAt: new Date(),
@@ -694,7 +727,7 @@ async function main() {
     {
       slug: "cora-sota-swe-bench",
       title: "Cora Achieves SOTA with 76% Resolution Rate on SWE-bench verified subset, Outperforming Industry Leaders",
-      excerpt: "Cora by CodeMate AI has achieved a 76% resolution rate on the SWE-bench verified subset, outperforming industry leaders on real-world software engineering tasks.",
+      subheading: "Cora by CodeMate AI has achieved a 76% resolution rate on the SWE-bench verified subset, outperforming industry leaders on real-world software engineering tasks.",
       coverImage: "/blog2CoverImage.jpeg",
       category: "CORA Updates",
       tags: [{ label: "CORA", tone: "blue" }],
@@ -703,7 +736,6 @@ async function main() {
       content: blog2Content(),
       published: true,
       publishedAt: new Date("2025-11-13T00:00:00.000Z"),
-      views: 0,
       author: "Ayush Singhal",
       createdAt: new Date("2025-11-13T00:00:00.000Z"),
       updatedAt: new Date(),
@@ -711,7 +743,7 @@ async function main() {
     {
       slug: "codemate-vs-claude-code",
       title: "CodeMate VS Claude Code",
-      excerpt: "Claude Code focuses on writing code. CodeMate manages the entire engineering workflow : from planning to production.",
+      subheading: "Claude Code focuses on writing code. CodeMate manages the entire engineering workflow : from planning to production.",
       coverImage: "/codemateaiVSclaudecodeImageCover.png",
       category: "Engineering & Comparisons",
       tags: [{ label: "Comparison", tone: "violet" }],
@@ -720,7 +752,6 @@ async function main() {
       content: blog3Content(),
       published: true,
       publishedAt: new Date("2026-07-21T00:00:00.000Z"),
-      views: 0,
       author: "Ayush Singhal",
       createdAt: new Date("2026-07-21T00:00:00.000Z"),
       updatedAt: new Date(),
@@ -728,7 +759,7 @@ async function main() {
     {
       slug: "codemate-vs-github-copilot",
       title: "CodeMate VS GitHub Copilot",
-      excerpt: "CodeMate vs GitHub Copilot: Beyond AI Code Completion : Choosing the Right AI Platform for Modern Engineering Teams",
+      subheading: "CodeMate vs GitHub Copilot: Beyond AI Code Completion : Choosing the Right AI Platform for Modern Engineering Teams",
       coverImage: "/codematevsgithubcopilot.png",
       category: "Engineering & Comparisons",
       tags: [{ label: "Comparison", tone: "violet" }],
@@ -737,7 +768,6 @@ async function main() {
       content: blog4Content(),
       published: true,
       publishedAt: new Date("2026-07-22T00:00:00.000Z"),
-      views: 0,
       author: "Ayush Singhal",
       createdAt: new Date("2026-07-22T00:00:00.000Z"),
       updatedAt: new Date(),

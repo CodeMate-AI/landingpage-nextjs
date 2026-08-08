@@ -64,7 +64,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     if (existing.published && !publishedVersion) {
       publishedVersion = {
         title: existing.title,
-        subheading: existing.subheading || existing.excerpt || "",
+        subheading: existing.subheading || "",
         category: existing.category,
         coverImage: existing.coverImage || "",
         bgColor: existing.bgColor || "#07111f",

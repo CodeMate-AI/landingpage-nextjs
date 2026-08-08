@@ -315,7 +315,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
     const source = post.publishedVersion || post;
-    const desc = source.subheading || source.excerpt || "Read this article on the CodeMate AI Blog.";
+    const desc = source.subheading || "Read this article on the CodeMate AI Blog.";
     const truncatedDesc = desc.length > 160 ? desc.slice(0, 157) + "..." : desc;
 
     return {
@@ -351,16 +351,6 @@ export default async function BlogPostPage({ params }: Props) {
 
   if (!post) notFound();
 
-  after(async () => {
-    try {
-      const client = await clientPromise;
-      const db = client.db("codemate_blog");
-      await db.collection("blogs").updateOne({ slug }, { $inc: { views: 1 } });
-    } catch (err) {
-      console.error("View increment failed inside after:", err);
-    }
-  });
-
   const source = post.publishedVersion || post;
 
   if (!source.content || typeof source.content !== "object" || source.content.type !== "doc") {
@@ -395,7 +385,7 @@ export default async function BlogPostPage({ params }: Props) {
     tags: source.tags,
     bgColor: source.bgColor || "#07111f",
     sections,
-    dek: source.subheading || source.excerpt || "",
+    dek: source.subheading || "",
     readTime: source.readTime,
     htmlContent: finalHtml,
     author: source.author || "Ayush Singhal",
@@ -423,7 +413,7 @@ export default async function BlogPostPage({ params }: Props) {
       tags: sSource.tags,
       bgColor: sSource.bgColor || "#07111f",
       sections: [],
-      dek: sSource.subheading || sSource.excerpt || "",
+      dek: sSource.subheading || "",
       readTime: sSource.readTime,
       author: sSource.author || "Ayush Singhal",
       authorRole: sSource.authorRole || "Founder & CEO",

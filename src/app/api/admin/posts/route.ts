@@ -75,7 +75,6 @@ async function createPostHandler(req: NextRequest) {
       publishedAt,
       publishedVersion,
       hasDraftChanges: false,
-      views: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
     };
