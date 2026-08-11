@@ -37,6 +37,26 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 
 ---
 
+## 🗄️ Database Architecture & Schema
+
+The application connects to MongoDB using the official Node.js driver (`mongodb`) via a cached singleton connection pool ([`src/lib/mongodb.ts`](src/lib/mongodb.ts)). Runtime validation is enforced through Zod schemas ([`src/lib/validation.ts`](src/lib/validation.ts)).
+
+### Database: `codemate_blog`
+
+| Collection | Schema / Key Fields | Purpose & Indexes |
+|---|---|---|
+| **`blogs`** | `title`, `slug`, `category`, `tags[]`, `content` (Tiptap AST JSON), `published`, `publishedVersion`, `hasDraftChanges`, `author`, `readTime`, `sections[]`, `createdAt`, `updatedAt` | Stores articles with dual draft/live snapshots. **Indexes**: `{ slug: 1 }` (unique), `{ published: 1, publishedAt: -1 }`. |
+| **`users`** | `email`, `password` (bcrypt hash), `name`, `createdAt` | Stores administrator credentials. **Index**: `{ email: 1 }` (unique). |
+| **`login_attempts`** | `ip`, `email`, `count`, `firstAttempt` | Brute-force rate limiting (5 attempts/15m). **Indexes**: `{ ip: 1, email: 1 }`, `{ firstAttempt: 1 }` (TTL: 900s). |
+| **`filter_options`** | `_id: "global_filters"`, `categories[]`, `productFilters[]`, `useCaseFilters[]` | Dynamic taxonomy configuration document for article filters and categories. |
+
+### Schema & Data Validation Flow
+1. **Client / Admin Editor**: Form data and Tiptap AST JSON are submitted to `/api/admin/posts`.
+2. **Runtime Zod Validation**: `BlogPostSchema` validates field presence, tone enums, and unique TOC anchor IDs.
+3. **Draft vs. Live Versioning**: Drafts update `content` without touching `publishedVersion`; publishing creates a live snapshot in `publishedVersion`.
+
+---
+
 ## 📁 Project Structure
 
 ```text
