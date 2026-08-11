@@ -9,9 +9,14 @@ async function main() {
 
   console.log("Setting up collections and indexes...");
 
+  // [MongoDB Collection: "blogs"] Unique index on slug + compound index on publication status and date
   await db.collection("blogs").createIndex({ slug: 1 }, { unique: true });
   await db.collection("blogs").createIndex({ published: 1, publishedAt: -1 });
+
+  // [MongoDB Collection: "users"] Unique index on admin email address
   await db.collection("users").createIndex({ email: 1 }, { unique: true });
+
+  // [MongoDB Collection: "login_attempts"] Composite index on IP/email + TTL auto-expiry index (15 min)
   await db.collection("login_attempts").createIndex({ ip: 1, email: 1 });
   await db.collection("login_attempts").createIndex({ firstAttempt: 1 }, { expireAfterSeconds: 900 });
 

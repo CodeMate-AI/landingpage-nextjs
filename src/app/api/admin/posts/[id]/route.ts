@@ -28,6 +28,7 @@ async function getSinglePost(req: NextRequest, session: any, { params }: { param
 
   const client = await clientPromise;
   const db = client.db("codemate_blog");
+  // [MongoDB Collection: "blogs"] Query single blog post document by its ObjectId
   const post = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
 
   if (!post) {
@@ -55,6 +56,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
 
     const client = await clientPromise;
     const db = client.db("codemate_blog");
+    // [MongoDB Collection: "blogs"] Find existing post document by ObjectId
     const existing = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
     if (!existing) {
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
@@ -125,7 +127,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       updatedAt: new Date(),
     };
 
-    // 7. Update document in MongoDB
+    // 7. [MongoDB Collection: "blogs"] Update article document in MongoDB
     await db.collection("blogs").updateOne({ _id: new ObjectId(id) }, { $set: updatePayload });
 
     return NextResponse.json({ success: true });
@@ -143,6 +145,7 @@ async function deletePost(req: NextRequest, session: any, { params }: { params: 
 
   const client = await clientPromise;
   const db = client.db("codemate_blog");
+  // [MongoDB Collection: "blogs"] Delete blog post document by ObjectId
   const result = await db.collection("blogs").deleteOne({ _id: new ObjectId(id) });
 
   if (result.deletedCount === 0) {

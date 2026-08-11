@@ -22,6 +22,7 @@ function calculateWordCount(node: any): number {
 async function getPostsHandler() {
   const client = await clientPromise;
   const db = client.db("codemate_blog");
+  // [MongoDB Collection: "blogs"] Query all articles sorted newest-first
   const posts = await db.collection("blogs").find().sort({ createdAt: -1 }).toArray();
   return NextResponse.json({ posts });
 }
@@ -44,6 +45,7 @@ async function createPostHandler(req: NextRequest) {
     const baseSlug = slugify(parsed.data.title);
     let finalSlug = baseSlug;
     let counter = 1;
+    // [MongoDB Collection: "blogs"] Verify slug uniqueness to prevent duplicate URL collisions
     while (await db.collection("blogs").findOne({ slug: finalSlug })) {
       finalSlug = `${baseSlug}-${counter}`;
       counter++;
@@ -88,7 +90,7 @@ async function createPostHandler(req: NextRequest) {
       updatedAt: new Date(),
     };
 
-    // 6. Insert new document into blogs collection
+    // 6. [MongoDB Collection: "blogs"] Insert newly composed article document
     const result = await db.collection("blogs").insertOne(newPost);
     return NextResponse.json({ success: true, id: result.insertedId });
   } catch (error) {

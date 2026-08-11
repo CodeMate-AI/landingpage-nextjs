@@ -38,6 +38,7 @@ const INITIAL_USE_CASES = [
 
 // Lazily retrieves or initializes the singleton global_filters document in MongoDB
 async function getFiltersDocument(db: any) {
+  // [MongoDB Collection: "filter_options"] Retrieve singleton global_filters taxonomy document
   let doc = await db.collection("filter_options").findOne({ _id: "global_filters" as any });
   if (!doc) {
     doc = {
@@ -46,6 +47,7 @@ async function getFiltersDocument(db: any) {
       productFilters: INITIAL_PRODUCTS,
       useCaseFilters: INITIAL_USE_CASES,
     };
+    // [MongoDB Collection: "filter_options"] Insert default initial taxonomy configuration
     await db.collection("filter_options").insertOne(doc as any);
   }
   return doc;
@@ -97,7 +99,7 @@ async function updateFiltersHandler(req: NextRequest) {
       return NextResponse.json({ error: "Invalid action" }, { status: 400 });
     }
 
-    // 3. Persist updated taxonomy array back to MongoDB
+    // 3. [MongoDB Collection: "filter_options"] Persist updated taxonomy array back to MongoDB
     await db.collection("filter_options").updateOne(
       { _id: "global_filters" as any },
       { $set: { [type]: updatedList } }

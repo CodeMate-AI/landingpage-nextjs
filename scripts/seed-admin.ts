@@ -17,6 +17,7 @@ async function main() {
   const client = await clientPromise;
   const db = client.db("codemate_blog");
 
+  // [MongoDB Collection: "users"] Check if admin user already exists
   const existing = await db.collection("users").findOne({ email });
   if (existing) {
     console.log("Admin account already seeded.");
@@ -24,6 +25,7 @@ async function main() {
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
+  // [MongoDB Collection: "users"] Insert initial admin account document
   await db.collection("users").insertOne({
     email,
     password: hashedPassword,
