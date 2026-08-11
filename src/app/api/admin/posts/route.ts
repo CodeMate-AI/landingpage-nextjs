@@ -4,6 +4,7 @@ import clientPromise from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
 import slugify from "@/utils/slugify";
 
+// Recursively walks the Tiptap JSON AST to calculate the total word count of article text ( calculates read time if field is left empty by admin )
 function calculateWordCount(node: any): number {
   let count = 0;
   if (node.text) {
@@ -17,6 +18,7 @@ function calculateWordCount(node: any): number {
   return count;
 }
 
+// Retrieves all blog articles from MongoDB sorted in reverse chronological order ( new one at top )
 async function getPostsHandler() {
   const client = await clientPromise;
   const db = client.db("codemate_blog");
@@ -24,8 +26,10 @@ async function getPostsHandler() {
   return NextResponse.json({ posts });
 }
 
+// Validates incoming article data, computes unique slug & read time, and inserts new blog document
 async function createPostHandler(req: NextRequest) {
   try {
+    // 1. Validate request payload against Zod BlogPostSchema
     const body = await req.json();
     const parsed = BlogPostSchema.safeParse(body);
 
@@ -36,6 +40,7 @@ async function createPostHandler(req: NextRequest) {
     const client = await clientPromise;
     const db = client.db("codemate_blog");
 
+    // 2. Generate base URL slug from title and resolve collisions by appending numeric counter
     const baseSlug = slugify(parsed.data.title);
     let finalSlug = baseSlug;
     let counter = 1;
@@ -44,11 +49,14 @@ async function createPostHandler(req: NextRequest) {
       counter++;
     }
 
+    // 3. Compute reading duration based on AST word count (200 words/min average)
     const wordCount = calculateWordCount(parsed.data.content);
     const calculatedMinutes = Math.max(1, Math.ceil(wordCount / 200));
     const readTime = parsed.data.readTime || `${calculatedMinutes} min read`;
     const published = parsed.data.published;
     const publishedAt = published ? new Date() : null;
+
+    // 4. Create an immutable publishedVersion snapshot if post is published immediately
     const publishedVersion = published
       ? {
           title: parsed.data.title,
@@ -66,7 +74,9 @@ async function createPostHandler(req: NextRequest) {
         }
       : null;
 
+    // 5. Construct document with timestamps and draft flags
     const newPost = {
+      // Spread operator (...) unpacks all validated input fields (title, subheading, content, tags, author, etc.) from Zod
       ...parsed.data,
       slug: finalSlug,
       readTime,
@@ -78,6 +88,7 @@ async function createPostHandler(req: NextRequest) {
       updatedAt: new Date(),
     };
 
+    // 6. Insert new document into blogs collection
     const result = await db.collection("blogs").insertOne(newPost);
     return NextResponse.json({ success: true, id: result.insertedId });
   } catch (error) {
@@ -85,5 +96,6 @@ async function createPostHandler(req: NextRequest) {
   }
 }
 
+// Protected route exports wrapped with session verification
 export const GET = withAuth(getPostsHandler);
 export const POST = withAuth(createPostHandler);

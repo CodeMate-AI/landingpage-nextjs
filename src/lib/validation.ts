@@ -1,10 +1,12 @@
 import { z } from "zod";
 
+// Validates credentials provided during admin login attempts
 export const LoginSchema = z.object({
   email: z.string().email("Invalid admin email format"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
+// Recursive schema validating the hierarchical AST node structure of the Tiptap editor
 const TiptapNodeSchema: z.ZodType<any> = z.lazy(() =>
   z.object({
     type: z.string(),
@@ -22,6 +24,7 @@ const TiptapNodeSchema: z.ZodType<any> = z.lazy(() =>
   })
 );
 
+// Validates table-of-contents section anchors ensuring URL-friendly lowercase IDs
 const SectionSchema = z.object({
   id: z
     .string()
@@ -30,6 +33,7 @@ const SectionSchema = z.object({
   title: z.string().min(1, "Title is required"),
 });
 
+// Validates full blog post creation and update request payloads
 export const BlogPostSchema = z.object({
   title: z.string().min(1, "Title is required"),
   subheading: z.string().min(1, "Subheading is required"),
@@ -63,6 +67,7 @@ export const BlogPostSchema = z.object({
   readTime: z.string().min(1, "Read Time is required"),
   publishedAtCustom: z.string().min(1, "Date is required"),
   filterLabels: z.array(z.string()).optional(),
+  // Enforces that all table-of-contents anchor IDs within an article are unique
   sections: z.array(SectionSchema).optional().refine(
     (items) => {
       if (!items) return true;

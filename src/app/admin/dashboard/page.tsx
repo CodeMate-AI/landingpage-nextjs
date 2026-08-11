@@ -3,15 +3,19 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+// Administrative dashboard providing blog post management, status tracking, and deletion
 export default function AdminDashboard() {
+  // State variables for article list and data loading indicator
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
+  // Load posts list on component mount
   useEffect(() => {
     fetchPosts();
   }, []);
 
+  // Fetches articles from /api/admin/posts, redirecting to login on 401 Unauthorized
   const fetchPosts = async () => {
     try {
       const res = await fetch("/api/admin/posts");
@@ -28,16 +32,19 @@ export default function AdminDashboard() {
     }
   };
 
+  // Calls logout API to clear auth cookie and redirects user to login screen
   const handleLogout = async () => {
     await fetch("/api/admin/logout", { method: "POST" });
     router.push("/admin/login");
   };
 
+  // Prompts user confirmation and deletes article document by ObjectId
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
     try {
       const res = await fetch(`/api/admin/posts/${id}`, { method: "DELETE" });
       if (res.ok) {
+        // Optimistically remove deleted post from local state
         setPosts((current) => current.filter((p) => p._id !== id));
       } else if (res.status === 401) {
         router.push("/admin/login");
@@ -50,6 +57,7 @@ export default function AdminDashboard() {
     }
   };
 
+  // Renders visual status badges: Published (emerald), Draft (yellow), or Draft Pending (pulsing blue)
   const renderStatus = (post: any) =>
     post.published ? (
       <div className="flex flex-wrap items-center gap-2">
@@ -71,6 +79,7 @@ export default function AdminDashboard() {
   return (
     <main className="min-h-screen bg-[#09090b] p-4 font-sans text-neutral-100 sm:p-6 lg:p-8">
       <div className="mx-auto max-w-6xl">
+        {/* Dashboard top header bar with action buttons */}
         <header className="mb-8 flex flex-col gap-4 border-b border-[#27272a] pb-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight text-white">Blog Admin Dashboard</h1>
@@ -90,6 +99,7 @@ export default function AdminDashboard() {
           <p>Loading posts...</p>
         ) : (
           <>
+            {/* Mobile / Tablet view: responsive card layout */}
             <div className="space-y-4 md:hidden">
               {posts.map((post) => (
                 <article key={post._id} className="rounded-xl border border-[#27272a] bg-[#18181b] p-4 shadow-sm transition-colors duration-200 hover:border-[#3f3f46] hover:bg-[#1c1c20]">
@@ -122,6 +132,7 @@ export default function AdminDashboard() {
               ))}
             </div>
 
+            {/* Desktop view: structured tabular layout */}
             <div className="hidden overflow-hidden rounded-xl border border-[#27272a] bg-[#18181b] md:block">
               <table className="w-full border-collapse text-left">
                 <thead>

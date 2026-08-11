@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useRef, useState, Suspense } from "react
 import { useRouter, useSearchParams } from "next/navigation";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 
+// Default fallback taxonomy lists for categories, products, and use-case tags
 const DEFAULT_CATEGORIES = [
   "Product",
   "CORA Updates",
@@ -34,11 +35,14 @@ const DEFAULT_USE_CASES = [
   "Testing",
 ];
 
+// Inner editor workspace handling post drafting, media uploads, taxonomy, and TOC ( table of contents ) generation
 function EditorContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  // If postId is present in URL query params, component operates in edit mode
   const postId = searchParams.get("id");
 
+  // Core article state hooks
   const [title, setTitle] = useState("");
   const [subheading, setSubheading] = useState("");
   const [category, setCategory] = useState("");
@@ -46,40 +50,43 @@ function EditorContent() {
   const [coverImage, setCoverImage] = useState("");
   const [selectedFilters, setSelectedFilters] = useState<string[]>([]);
 
-  // Dynamic filter lists (loaded from DB)
+  // Dynamic filter lists loaded from MongoDB filter_options collection
   const [categories, setCategories] = useState<string[]>(DEFAULT_CATEGORIES);
   const [productFilters, setProductFilters] = useState<string[]>(DEFAULT_PRODUCTS);
   const [useCaseFilters, setUseCaseFilters] = useState<string[]>(DEFAULT_USE_CASES);
 
-  // Inline add inputs for CRUD
+  // Controlled input states for inline category and filter addition
   const [newCategory, setNewCategory] = useState("");
   const [newProduct, setNewProduct] = useState("");
   const [newUseCase, setNewUseCase] = useState("");
   const [filterSaving, setFilterSaving] = useState(false);
 
-  // Accordion UI state for the filters panel
+  // Accordion toggle states for category, product, and use-case selection panels
   const [openSections, setOpenSections] = useState({
     category: false,
     products: false,
     useCases: false,
   });
 
-  // Controls whether inline add/delete (CRUD) options are displayed for each filter group
+  // Toggle states for inline CRUD management mode (add/delete tag buttons)
   const [manageModes, setManageModes] = useState({
     category: false,
     products: false,
     useCases: false,
   });
   
-  // published is set only on loadPost to initialise the current live state.
-  // It is read in resolvedPublished logic in handleSave to preserve existing publish state on draft saves.
+  // Tracks existing publication state to preserve live version when updating drafts
   const [published, setPublished] = useState(false);
+  // Tiptap rich-text AST document state
   const [contentJson, setContentJson] = useState<any>({ type: "doc", content: [] });
+  // Article author and display metadata overrides
   const [author, setAuthor] = useState("");
   const [authorRole, setAuthorRole] = useState("");
   const [readTime, setReadTime] = useState("");
   const [publishedAtCustom, setPublishedAtCustom] = useState("");
+  // Table of Contents anchor list
   const [sections, setSections] = useState<{ id: string; title: string }[]>([]);
+  // Form submission and network status flags
   const [loading, setLoading] = useState(false);
   const [savingMode, setSavingMode] = useState<"draft" | "publish" | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -87,6 +94,7 @@ function EditorContent() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const saveModeRef = useRef<"draft" | "publish">("draft");
 
+  // Fetches existing article data from /api/admin/posts/:id when editing
   const loadPost = useCallback(async () => {
     try {
       const res = await fetch(`/api/admin/posts/${postId}`);
@@ -121,13 +129,14 @@ function EditorContent() {
     }
   }, [postId, router]);
 
+  // Trigger post loading when postId query parameter changes
   useEffect(() => {
     if (postId) {
       void loadPost();
     }
   }, [postId, loadPost]);
 
-  // Load dynamic categories and filter options from DB on mount
+  // Fetches dynamic filter options and categories from the database on component mount
   const loadFilters = useCallback(async () => {
     try {
       const res = await fetch("/api/admin/filters");
@@ -138,7 +147,7 @@ function EditorContent() {
         if (data.useCaseFilters?.length) setUseCaseFilters(data.useCaseFilters);
       }
     } catch {
-      // Fail silently — defaults are pre-populated
+      // Fallback silently to pre-populated default taxonomies
     }
   }, []);
 
@@ -146,6 +155,7 @@ function EditorContent() {
     void loadFilters();
   }, [loadFilters]);
 
+  // Handles inline addition and deletion of category and filter taxonomy items
   const handleFilterUpdate = async (
     action: "add" | "delete",
     type: "categories" | "productFilters" | "useCaseFilters",
@@ -164,10 +174,9 @@ function EditorContent() {
         if (type === "categories") setCategories(data.categories);
         if (type === "productFilters") setProductFilters(data.productFilters);
         if (type === "useCaseFilters") setUseCaseFilters(data.useCaseFilters);
-        // If deleting a filter that is currently selected, deselect it
+        // Automatically deselect item if it was deleted while selected
         if (action === "delete") {
           setSelectedFilters((prev) => prev.filter((f) => f.toUpperCase() !== value.trim().toUpperCase()));
-          // If deleting selected category, reset it
           if (type === "categories" && category.toUpperCase() === value.trim().toUpperCase()) {
             setCategory("");
           }
@@ -183,17 +192,20 @@ function EditorContent() {
     }
   };
 
+  // Submits article payload to backend, resolving draft vs publish versioning
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setSavingMode(saveModeRef.current);
 
+    // Parse comma-separated tag input into structured tag objects
     const tags = tagsInput
       .split(",")
       .map((t) => t.trim())
       .filter((t) => t.length > 0)
-      .map((t) => ({ label: t, tone: "slate" }));
+      .map((t) => ({ label: t, tone: "slate" as const }));
 
+    // If saving as draft for an existing published post, maintain published flag
     const resolvedPublished =
       saveModeRef.current === "publish"
         ? true
@@ -201,6 +213,7 @@ function EditorContent() {
         ? published
         : false;
 
+    // Construct full article payload
     const payload = {
       title,
       subheading,
@@ -219,6 +232,7 @@ function EditorContent() {
     };
 
     try {
+      // Use PUT for updating existing post or POST for creating a new post
       const url = postId ? `/api/admin/posts/${postId}` : "/api/admin/posts";
       const method = postId ? "PUT" : "POST";
 
@@ -244,6 +258,7 @@ function EditorContent() {
     }
   };
 
+  // Uploads image to Cloudinary through the /api/admin/upload route and sets coverImage URL
   const handleImageUpload = async (file: File) => {
     setUploading(true);
     try {
@@ -272,6 +287,7 @@ function EditorContent() {
   return (
     <main className="min-h-screen bg-[#09090b] p-4 sm:p-6 lg:p-8 font-sans text-neutral-100">
       <div className="mx-auto max-w-4xl">
+        {/* Editor page header */}
         <header className="mb-8 flex items-center justify-between border-b border-[#27272a] pb-6">
           <h1 className="text-3xl font-bold text-white">{postId ? "Modify Article" : "Compose Article"}</h1>
           <button type="button" onClick={() => router.push("/admin/dashboard")} className="text-neutral-400 hover:text-neutral-200" suppressHydrationWarning>
@@ -729,6 +745,7 @@ function EditorContent() {
             </div>
           </div>
 
+          {/* Rich text Tiptap content editor area */}
           <div>
             <label className="mb-1.5 block text-sm font-medium text-neutral-400">Content Editor</label>
             {loadError ? (
@@ -744,7 +761,7 @@ function EditorContent() {
             )}
           </div>
 
-          {/* Table of Contents / Outline custom editor */}
+          {/* Table of Contents / Outline custom editor panel */}
           <div className="rounded-xl border border-[#27272a] bg-[#18181b] p-4 sm:p-6 space-y-4">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-b border-[#27272a] pb-4">
               <div>
@@ -754,6 +771,7 @@ function EditorContent() {
                 </p>
               </div>
               <div className="flex flex-col gap-2 sm:flex-row">
+                {/* Auto-generates TOC anchors by parsing H2-H4 heading nodes from the Tiptap AST */}
                 <button
                   type="button"
                   onClick={() => {
@@ -826,7 +844,9 @@ function EditorContent() {
             )}
           </div>
 
+          {/* Form action buttons for saving as draft vs publishing live */}
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center mt-4">
+            {/* Draft button: Saves edits without immediately modifying public publishedVersion */}
             <button
               type="submit"
               disabled={loading}
@@ -838,6 +858,7 @@ function EditorContent() {
             >
               {loading && savingMode === "draft" ? "Saving..." : "Save as Draft"}
             </button>
+            {/* Publish button: Commits edits live and updates public publishedVersion snapshot */}
             <button
               type="submit"
               disabled={loading}
@@ -856,6 +877,7 @@ function EditorContent() {
   );
 }
 
+// Root page export wrapped in React Suspense to support useSearchParams during SSR
 export default function AdminEditor() {
   return (
     <Suspense fallback={<div className="p-8 text-neutral-100">Loading editor workspace...</div>}>

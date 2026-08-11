@@ -4,6 +4,7 @@ import clientPromise from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
 import { ObjectId } from "mongodb";
 
+// Recursively walks the Tiptap JSON AST to calculate the total word count of article text
 function calculateWordCount(node: any): number {
   let count = 0;
   if (node.text) {
@@ -17,8 +18,10 @@ function calculateWordCount(node: any): number {
   return count;
 }
 
+// Fetches a single blog post by its MongoDB ObjectId for the admin editor workspace
 async function getSinglePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
+  // Validate that the route parameter is a valid 24-character hexadecimal ObjectId
   if (!ObjectId.isValid(id)) {
     return NextResponse.json({ error: "Invalid post ID format" }, { status: 400 });
   }
@@ -34,6 +37,7 @@ async function getSinglePost(req: NextRequest, session: any, { params }: { param
   return NextResponse.json({ post });
 }
 
+// Updates an existing blog post, handling dual draft vs publish versioning
 async function updatePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params;
@@ -41,6 +45,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       return NextResponse.json({ error: "Invalid post ID format" }, { status: 400 });
     }
 
+    // 1. Validate payload fields with Zod
     const body = await req.json();
     const parsed = BlogPostSchema.safeParse(body);
 
@@ -55,12 +60,14 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
+    // 2. Resolve save mode: publish immediately vs save as draft
     const saveMode = body.saveMode || (parsed.data.published ? "publish" : "draft");
     const published = parsed.data.published;
 
     let publishedVersion = existing.publishedVersion || null;
     let publishedAt = existing.publishedAt || null;
 
+    // 3. Backfill publishedVersion if article was previously published without an explicit snapshot
     if (existing.published && !publishedVersion) {
       publishedVersion = {
         title: existing.title,
@@ -78,6 +85,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       };
     }
 
+    // 4. Overwrite publishedVersion snapshot when saving with 'publish' mode
     if (saveMode === "publish") {
       publishedVersion = {
         title: parsed.data.title,
@@ -98,12 +106,15 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       }
     }
 
+    // 5. Recalculate reading time from updated AST content
     const wordCount = calculateWordCount(parsed.data.content);
     const calculatedMinutes = Math.max(1, Math.ceil(wordCount / 200));
     const readTime = parsed.data.readTime || `${calculatedMinutes} min read`;
 
+    // Flag draft changes if a published article is being saved as a draft with pending changes
     const hasDraftChanges = saveMode === "draft" && published;
 
+    // 6. Build the final update payload
     const updatePayload = {
       ...parsed.data,
       readTime,
@@ -114,6 +125,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       updatedAt: new Date(),
     };
 
+    // 7. Update document in MongoDB
     await db.collection("blogs").updateOne({ _id: new ObjectId(id) }, { $set: updatePayload });
 
     return NextResponse.json({ success: true });
@@ -122,6 +134,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
   }
 }
 
+// Deletes a single blog post permanently by its ObjectId
 async function deletePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   if (!ObjectId.isValid(id)) {
@@ -139,6 +152,7 @@ async function deletePost(req: NextRequest, session: any, { params }: { params: 
   return NextResponse.json({ success: true });
 }
 
+// Export authenticated route handlers
 export const GET = withAuth(getSinglePost);
 export const PUT = withAuth(updatePost);
 export const DELETE = withAuth(deletePost);

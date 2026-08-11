@@ -2,7 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+// Client-side authentication page for CodeMate CMS administrative access
 export default function AdminLogin() {
+  // Local state hooks for credential input, error messaging, loading state, and password visibility
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -10,23 +12,27 @@ export default function AdminLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
+  // Reset form inputs on initial component mount to prevent stale auto-fills
   useEffect(() => {
     setEmail("");
     setPassword("");
   }, []);
 
+  // Submits credentials to /api/admin/login and redirects to dashboard upon success
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
+      // 1. Post email and password credentials to authentication route
       const res = await fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
 
+      // 2. On 200 OK, navigate to admin dashboard; otherwise display error message
       if (res.ok) {
         router.push("/admin/dashboard");
       } else {
@@ -46,6 +52,7 @@ export default function AdminLogin() {
         <h2 className="mb-6 text-center text-2xl font-bold tracking-tight text-white">
           CODEMATE CMS PORTAL
         </h2>
+        {/* Error banner displayed when credentials fail or rate limit triggers */}
         {error && (
           <div className="mb-4 rounded-lg border border-red-700 bg-red-900/30 p-3 text-sm text-red-400">
             {error}
@@ -76,6 +83,7 @@ export default function AdminLogin() {
                 suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#09090b] p-3 pr-10 text-sm text-white focus:border-blue-500 focus:outline-none"
               />
+              {/* Toggle button to show or hide password characters */}
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
@@ -96,6 +104,7 @@ export default function AdminLogin() {
               </button>
             </div>
           </div>
+          {/* Submit button showing loading spinner state during network request */}
           <button
             type="submit"
             disabled={loading}
@@ -106,6 +115,7 @@ export default function AdminLogin() {
           </button>
         </form>
 
+        {/* Security notice clarifying that CMS access is restricted and invite-only */}
         <div className="mt-6 border-t border-[#27272a] pt-5">
           <div className="flex flex-col items-center gap-2 rounded-lg border border-amber-900/40 bg-amber-950/20 px-4 py-4">
             <div className="flex items-center gap-2 text-amber-400">
