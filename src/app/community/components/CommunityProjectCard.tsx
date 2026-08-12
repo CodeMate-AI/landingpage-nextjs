@@ -24,7 +24,7 @@ function TerminalPreview() {
       {lines.map((l, i) => (
         <div key={i} className="flex flex-col gap-0.5">
           <div className="flex items-center gap-1.5">
-            <span className="text-emerald-400">❯</span>
+            <span className="text-cyan-400">❯</span>
             <span className="text-zinc-200">{l.cmd}</span>
           </div>
           <span className="pl-3.5 text-zinc-500">{l.out}</span>
@@ -51,7 +51,7 @@ function SearchPreview() {
         </div>
         <div className="rounded-md border border-zinc-800/50 bg-zinc-900/70 p-2">
           <span className="block text-xs font-bold text-white">Code Embeddings</span>
-          <span className="block text-[10px] text-emerald-400">similarity score: 0.982</span>
+          <span className="block text-[10px] text-cyan-400">similarity score: 0.982</span>
         </div>
       </div>
     </div>
@@ -63,7 +63,7 @@ function HpPreview() {
     <div className="flex h-full flex-col gap-2 rounded-xl border border-zinc-800/70 bg-[#09090b] p-3.5 sm:p-4">
       <div className="flex items-center justify-between">
         <span className="text-xs font-bold text-white">PageForge Builder</span>
-        <span className="rounded-full border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 text-[9px] font-semibold text-emerald-400">LIVE</span>
+        <span className="rounded-full border border-cyan-500/30 bg-cyan-500/15 px-2 py-0.5 text-[9px] font-semibold text-cyan-400">LIVE</span>
       </div>
       <div className="flex flex-col gap-1.5">
         {[{ color: "#8B5CF6" }, { color: "#10B981" }, { color: "#00BFFF" }].map((c, i) => (
@@ -108,7 +108,7 @@ function ApiPreview() {
     <div className="flex h-full flex-col gap-2 rounded-xl border border-zinc-800/70 bg-[#09090b] p-3.5 font-mono text-[10px] sm:text-xs">
       <div className="flex items-center justify-between">
         <span className="rounded border border-cyan-500/30 bg-cyan-500/15 px-2 py-0.5 text-cyan-400">GET /api/v1/search</span>
-        <span className="rounded border border-emerald-500/30 bg-emerald-500/15 px-2 py-0.5 text-emerald-400">200 OK</span>
+        <span className="rounded border border-cyan-500/30 bg-cyan-500/15 px-2 py-0.5 text-cyan-400">200 OK</span>
       </div>
       <div className="rounded-md border border-zinc-800/60 bg-zinc-900/70 p-2.5">
         <span className="block text-zinc-500">{`{`}</span>
@@ -138,7 +138,7 @@ function DashPreview() {
       </div>
       <div className="flex h-14 items-end gap-1 rounded-lg bg-zinc-900/50 p-2">
         {[40, 65, 30, 80, 55, 90, 45].map((h, i) => (
-          <div key={i} className="flex-1 rounded-sm bg-emerald-400" style={{ height: `${h}%`, opacity: 0.6 + i * 0.06 }} />
+          <div key={i} className="flex-1 rounded-sm bg-cyan-400" style={{ height: `${h}%`, opacity: 0.6 + i * 0.06 }} />
         ))}
       </div>
     </div>
@@ -190,7 +190,7 @@ function AdminPreview() {
           <div key={r.name} className="flex items-center gap-2 rounded border border-zinc-800/40 bg-zinc-900/60 px-2 py-1 text-zinc-300">
             <span className="flex-1 truncate">{r.name}</span>
             <span className="text-zinc-500">{r.role}</span>
-            <span className={`text-[9px] font-semibold ${r.status === "Active" ? "text-emerald-400" : "text-amber-400"}`}>{r.status}</span>
+            <span className={`text-[9px] font-semibold ${r.status === "Active" ? "text-cyan-400" : "text-zinc-400"}`}>{r.status}</span>
           </div>
         ))}
       </div>
@@ -235,7 +235,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
           <PreviewCanvas type={project.previewType} />
         </div>
 
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/50 opacity-0 backdrop-blur-[2px] transition-opacity duration-300 group-hover:opacity-100">
+        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/60 opacity-0 backdrop-blur-[3px] transition-opacity duration-300 group-hover:opacity-100">
           <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-black shadow-lg transition-transform duration-300 hover:scale-105">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <polygon points="5,3 21,12 5,21" />
@@ -246,14 +246,14 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
-        <h3 className="text-lg font-bold leading-snug text-white transition-colors group-hover:text-cyan-400">
+        <h3 className="text-lg font-bold leading-snug text-white transition-colors duration-200 group-hover:text-cyan-400">
           {project.name}
         </h3>
 
         <p className="text-xs leading-relaxed text-zinc-400 sm:text-sm">{project.description}</p>
 
         <div className="mt-auto flex items-center gap-4 border-t border-zinc-800/80 pt-3">
-          <a href="https://app.codemate.ai" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 transition-colors hover:text-emerald-300">
+          <a href="https://app.codemate.ai" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 transition-colors hover:text-cyan-300">
             Live Demo
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M7 17 17 7" />
