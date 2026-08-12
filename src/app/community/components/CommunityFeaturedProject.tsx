@@ -156,7 +156,6 @@ function VideoOverlay() {
 }
 
 export default function CommunityFeaturedProject() {
-  const techChips = ["Next.js 15", "TypeScript", "FastAPI", "PostgreSQL", "Tailwind CSS"];
   const sdlcSteps = [
     {
       color: "#8B5CF6",
@@ -241,14 +240,6 @@ export default function CommunityFeaturedProject() {
           <p className="text-sm leading-relaxed text-zinc-300 sm:text-base">
             Orbit CRM demonstrates the full power of the CodeMate AI ecosystem. From initial requirements to production deployment, every line of code was generated, reviewed, and refined by BUILD and CORA working in tandem.
           </p>
-
-          <div className="flex flex-wrap gap-2">
-            {techChips.map((chip) => (
-              <span key={chip} className="rounded-md border border-zinc-800 bg-zinc-900 px-2.5 py-1 font-mono text-[11px] font-medium text-zinc-300">
-                {chip}
-              </span>
-            ))}
-          </div>
 
           <div className="mt-1 flex flex-col gap-4 rounded-2xl border border-white/5 bg-zinc-950/60 p-5">
             <span className="text-xs font-bold uppercase tracking-widest text-zinc-400">SDLC Journey</span>

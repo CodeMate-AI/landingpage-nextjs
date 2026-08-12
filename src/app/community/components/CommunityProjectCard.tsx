@@ -246,27 +246,6 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
-        <div className="flex flex-wrap items-center gap-1.5">
-          {project.metaBadges.map((badge) => {
-            const isBuild = badge === "BUILD";
-            const isCora = badge === "CORA";
-            return (
-              <span
-                key={badge}
-                className={`rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${
-                  isBuild
-                    ? "border border-emerald-500/30 bg-emerald-500/15 text-emerald-400"
-                    : isCora
-                      ? "border border-cyan-500/30 bg-cyan-500/15 text-cyan-400"
-                      : "bg-zinc-800 text-zinc-400"
-                }`}
-              >
-                {badge}
-              </span>
-            );
-          })}
-        </div>
-
         <h3 className="text-lg font-bold leading-snug text-white transition-colors group-hover:text-cyan-400">
           {project.name}
         </h3>
