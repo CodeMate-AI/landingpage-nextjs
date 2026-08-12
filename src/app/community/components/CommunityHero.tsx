@@ -19,13 +19,13 @@ export default function CommunityHero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-        className="max-w-5xl text-3xl font-bold leading-[1.15] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+        className="max-w-5xl text-3xl font-bold leading-[1.2] tracking-tight text-white sm:text-5xl sm:leading-[1.15] md:text-6xl lg:text-7xl"
       >
-        From Idea to Production:
+        From Idea to Production :
         <br />
-        What We Built with <span className="text-[#10B981]">BUILD</span> &
+        <span className="bg-gradient-to-b from-white to-gray-200 bg-clip-text text-transparent">See What We Built with</span>
         <br />
-        <span className="text-[#06B6D4]">CORA</span>
+        <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">CodeMate AI</span>
       </motion.h1>
 
       <motion.p
@@ -34,7 +34,7 @@ export default function CommunityHero() {
         transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
         className="mt-6 max-w-2xl px-2 text-sm leading-relaxed text-zinc-400 sm:mt-8 sm:text-base md:text-lg"
       >
-        Explore how the CodeMate AI ecosystem transforms concepts into production-grade applications through intelligent design, automated code generation, and real-time developer assistance.
+        Explore how the CodeMate AI's SDLC transforms concepts into production-grade applications through intelligent design, automated code generation, and real-time developer assistance.
       </motion.p>
     </section>
   );
