@@ -176,13 +176,13 @@ export default function CommunityFeaturedProject() {
   ];
 
   return (
-    <section className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-8 lg:px-8">
+    <section className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-12">
       <motion.h2
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-        className="mb-8 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl"
+        className="mb-6 text-center text-3xl font-extrabold tracking-tight text-white sm:mb-8 sm:text-4xl md:text-5xl"
       >
         Featured Project
       </motion.h2>

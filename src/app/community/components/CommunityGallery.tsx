@@ -18,7 +18,7 @@ export default function CommunityGallery() {
       : projects.filter((p) => p.category === activeCategory);
 
   return (
-    <section className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 pb-24 pt-8 sm:px-6 lg:px-8">
+    <section className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 pb-20 pt-8 sm:px-6 sm:pb-24 sm:pt-10 lg:px-8 lg:pb-28 lg:pt-12">
       <motion.h2
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}

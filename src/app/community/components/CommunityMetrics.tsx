@@ -14,7 +14,7 @@ const metrics = [
 
 export default function CommunityMetrics() {
   return (
-    <section className="flex justify-center px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+    <section className="flex justify-center px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

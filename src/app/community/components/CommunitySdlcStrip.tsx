@@ -10,7 +10,7 @@ const nodes = ["Idea", "Design", "Code", "Agent", "Production"];
 
 export default function CommunitySdlcStrip() {
   return (
-    <section className="flex justify-center px-4 py-6 sm:px-6 sm:py-8">
+    <section className="flex justify-center px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-7">
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
