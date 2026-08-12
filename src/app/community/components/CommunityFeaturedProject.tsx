@@ -176,7 +176,17 @@ export default function CommunityFeaturedProject() {
   ];
 
   return (
-    <section className="flex justify-center px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-8 lg:px-8">
+    <section className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 pb-16 pt-6 sm:px-6 sm:pb-24 sm:pt-8 lg:px-8">
+      <motion.h2
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        className="mb-8 text-center text-3xl font-extrabold tracking-tight text-white sm:text-4xl md:text-5xl"
+      >
+        Featured Project
+      </motion.h2>
+
       <motion.div
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -214,7 +224,7 @@ export default function CommunityFeaturedProject() {
               whileTap={{ scale: 0.98 }}
               className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-zinc-800/40 px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-zinc-800/80"
             >
-              View SDLC Walkthrough
+              View Docs
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M5 12h14" />
                 <path d="m12 5 7 7-7 7" />
@@ -224,16 +234,6 @@ export default function CommunityFeaturedProject() {
         </div>
 
         <div className="flex w-full flex-col gap-5 lg:w-[42%] lg:pl-2">
-          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3 py-1.5">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-50" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400 shadow-[0_0_6px_rgba(16,185,129,0.8)]" />
-            </span>
-            <span className="text-xs font-semibold uppercase tracking-wide text-emerald-400">
-              Live in Production
-            </span>
-          </div>
-
           <h3 className="text-2xl font-bold leading-snug tracking-tight text-white sm:text-3xl">
             Orbit CRM — Enterprise customer platform built entirely with BUILD + CORA
           </h3>
