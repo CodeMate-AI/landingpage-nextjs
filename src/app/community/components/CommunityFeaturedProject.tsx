@@ -158,17 +158,14 @@ function VideoOverlay() {
 export default function CommunityFeaturedProject() {
   const sdlcSteps = [
     {
-      color: "#8B5CF6",
       title: "BUILD · Design Mode",
       description: "Wireframes, UI component library, and navigation flows generated from natural language prompts.",
     },
     {
-      color: "#10B981",
       title: "BUILD · Code Mode",
       description: "Complete full-stack scaffold, REST endpoints, database migrations, and auth system generated autonomously.",
     },
     {
-      color: "#00BFFF",
       title: "CORA · VS Code",
       description: "In-IDE refactoring, automated PR reviews, unit tests, and performance audits with CORA agent.",
     },
@@ -217,14 +214,14 @@ export default function CommunityFeaturedProject() {
                 {sdlcSteps.map((step, i) => (
                   <div key={i} className="flex gap-3">
                     <div className="flex flex-col items-center">
-                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-black shadow-md" style={{ backgroundColor: step.color }}>
+                      <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-zinc-800 bg-zinc-900 font-mono text-[11px] font-semibold text-zinc-300">
                         {String(i + 1).padStart(2, "0")}
                       </div>
-                      {i < sdlcSteps.length - 1 && <div className="mt-1 w-px flex-1 bg-zinc-800" style={{ minHeight: "2.2rem" }} />}
+                      {i < sdlcSteps.length - 1 && <div className="mt-1 w-px flex-1 bg-zinc-800/80" style={{ minHeight: "2.2rem" }} />}
                     </div>
 
                     <div>
-                      <span className="block text-xs font-bold sm:text-sm" style={{ color: step.color }}>
+                      <span className="block text-xs font-semibold text-white sm:text-sm">
                         {step.title}
                       </span>
                       <span className="mt-0.5 block text-xs leading-relaxed text-zinc-400">
