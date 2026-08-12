@@ -234,11 +234,11 @@ export default function CommunityFeaturedProject() {
 
         <div className="flex w-full flex-col gap-5 lg:w-[42%] lg:pl-2">
           <h3 className="text-2xl font-bold leading-snug tracking-tight text-white sm:text-3xl">
-            Orbit CRM — Enterprise customer platform built entirely with BUILD + CORA
+            Orbit CRM
           </h3>
 
           <p className="text-sm leading-relaxed text-zinc-300 sm:text-base">
-            Orbit CRM demonstrates the full power of the CodeMate AI ecosystem. From initial requirements to production deployment, every line of code was generated, reviewed, and refined by BUILD and CORA working in tandem.
+            Orbit CRM showcases CodeMate AI in action, with BUILD and CORA generating, reviewing, and refining code from idea to production.
           </p>
 
           <div className="mt-1 flex flex-col gap-4 rounded-2xl border border-white/5 bg-zinc-950/60 p-5">
