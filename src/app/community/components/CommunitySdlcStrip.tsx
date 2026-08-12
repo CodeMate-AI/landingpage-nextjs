@@ -6,13 +6,7 @@ import { motion } from "framer-motion";
 /**
  * CommunitySdlcStrip renders the simplified development flow strip.
  */
-const nodes = [
-  { label: "Idea", highlight: false },
-  { label: "Design", highlight: false },
-  { label: "Code", highlight: false },
-  { label: "Agent", highlight: false },
-  { label: "Production", highlight: true },
-];
+const nodes = ["Idea", "Design", "Code", "Agent", "Production"];
 
 export default function CommunitySdlcStrip() {
   return (
@@ -25,19 +19,15 @@ export default function CommunitySdlcStrip() {
         className="flex w-full max-w-4xl flex-wrap items-center justify-center gap-2 sm:gap-3"
       >
         {nodes.map((node, i) => (
-          <div key={node.label} className="flex items-center gap-2 sm:gap-3">
+          <div key={node} className="flex items-center gap-2 sm:gap-3">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-30px" }}
               transition={{ duration: 0.4, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className={`flex h-9 items-center rounded-full border px-4 text-xs font-semibold transition-all duration-200 sm:h-10 sm:px-5 sm:text-sm ${
-                node.highlight
-                  ? "border-emerald-500/40 bg-emerald-500/15 text-emerald-400 shadow-[0_0_16px_rgba(16,185,129,0.25)] hover:shadow-[0_0_24px_rgba(16,185,129,0.4)]"
-                  : "border-zinc-800 bg-zinc-900/60 text-zinc-400 hover:border-zinc-700 hover:text-zinc-200"
-              }`}
+              className="flex h-9 items-center rounded-full border border-zinc-800 bg-zinc-900/60 px-4 text-xs font-semibold text-zinc-400 transition-all duration-200 hover:border-zinc-700 hover:text-zinc-200 sm:h-10 sm:px-5 sm:text-sm"
             >
-              {node.label}
+              {node}
             </motion.div>
 
             {i < nodes.length - 1 && (

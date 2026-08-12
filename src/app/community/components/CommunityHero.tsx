@@ -21,7 +21,7 @@ export default function CommunityHero() {
         transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
         className="max-w-5xl text-3xl font-bold leading-tight tracking-tight text-white sm:text-5xl sm:leading-[1.15] md:text-6xl lg:text-7xl"
       >
-        From Idea to Production:
+        From Idea to Production :
         <br className="hidden sm:block" />{" "}
         <span className="bg-gradient-to-b from-white to-gray-200 bg-clip-text text-transparent">See What We Built with</span>{" "}
         <br className="hidden sm:block" />
