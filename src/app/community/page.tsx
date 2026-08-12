@@ -5,9 +5,6 @@ import { Montserrat } from "next/font/google";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import CommunityHero from "./components/CommunityHero";
-import CommunityPipeline from "./components/CommunityPipeline";
-import CommunityMetrics from "./components/CommunityMetrics";
-import CommunitySdlcStrip from "./components/CommunitySdlcStrip";
 import CommunityFeaturedProject from "./components/CommunityFeaturedProject";
 import CommunityGallery from "./components/CommunityGallery";
 
@@ -36,9 +33,6 @@ export default function CommunityPage() {
 
       <main className="relative z-10 w-full">
         <CommunityHero />
-        <CommunityPipeline />
-        <CommunityMetrics />
-        <CommunitySdlcStrip />
         <CommunityFeaturedProject />
         <CommunityGallery />
       </main>
