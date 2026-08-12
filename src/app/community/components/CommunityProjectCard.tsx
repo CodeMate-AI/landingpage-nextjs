@@ -252,20 +252,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
 
         <p className="text-xs leading-relaxed text-zinc-400 sm:text-sm">{project.description}</p>
 
-        <div className="mt-auto flex items-center gap-2 pt-2">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12,6 12,12 16,14" />
-            </svg>
-            Built in {project.buildTime}
-          </span>
-          <span className="text-xs text-zinc-500">
-            {project.metricValue} {project.metricLabel}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-4 border-t border-zinc-800/80 pt-2">
+        <div className="mt-auto flex items-center gap-4 border-t border-zinc-800/80 pt-3">
           <a href="https://app.codemate.ai" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400 transition-colors hover:text-emerald-300">
             Live Demo
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -274,7 +261,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
             </svg>
           </a>
           <a href="https://docs.codemate.ai" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-zinc-400 transition-colors hover:text-white">
-            SDLC Docs
+            View Docs
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
