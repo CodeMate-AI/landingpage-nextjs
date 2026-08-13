@@ -83,7 +83,7 @@ export default function CommunityFeaturedProject() {
       >
         <div className="flex w-full flex-col gap-8 lg:flex-row lg:gap-10">
           <div className="flex w-full flex-col gap-5 lg:w-[58%]">
-            <div className="relative h-48 w-full overflow-hidden rounded-2xl bg-black sm:h-64 lg:h-[420px]">
+            <div className="relative w-full aspect-video overflow-hidden rounded-2xl bg-black lg:h-[420px] lg:aspect-auto">
               <div className="group relative h-full w-full cursor-pointer" onClick={() => setIsVideoOpen(true)}>
                 <BrowserMockup />
 
