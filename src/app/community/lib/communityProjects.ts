@@ -4,17 +4,8 @@
  * ==============================================================================
  * This file acts as the single source of truth for all projects showcased on
  * the /community page. Each project contains metadata, category associations,
- * and a designated previewType that maps to a live CSS/SVG mock.
+ * and a designated previewImage asset used in the project card thumbnail.
  */
-
-export type PreviewType =
-  | "terminal"
-  | "search"
-  | "hp"
-  | "api"
-  | "dash"
-  | "sprint"
-  | "admin";
 
 export type ProjectCategory =
   | "All Projects"
@@ -29,7 +20,7 @@ export interface Project {
   title: string;
   description: string;
   category: "Enterprise CRMs" | "Developer Tools" | "AI Agents & SaaS" | "Internal Utilities";
-  previewType: PreviewType;
+  previewImage: string;
   demoUrl?: string;
   docsUrl?: string;
 }
@@ -43,7 +34,7 @@ export const projects: Project[] = [
       "A high-performance ticketing dashboard built to centralize client inquiries, track resolution times, and automate response workflows.",
     category: "Enterprise CRMs",
     demoUrl: "https://supporthub.codemate.build/",
-    previewType: "dash",
+    previewImage: "/supporthub.codemate.build_community.png",
   },
   {
     id: "2",
@@ -53,7 +44,7 @@ export const projects: Project[] = [
       "An interactive notebook companion designed to run code snippets, document project structures, and export markdown guides.",
     category: "Developer Tools",
     demoUrl: "https://smartbook.codemate.build/",
-    previewType: "api",
+    previewImage: "/smartbook.codemate.build_.png",
   },
   {
     id: "3",
@@ -63,7 +54,7 @@ export const projects: Project[] = [
       "Internal platform managing employee onboarding, leaves tracking, performance reviews, and centralized payroll directories.",
     category: "Developer Tools",
     demoUrl: "https://hrms.codemate.build/",
-    previewType: "terminal",
+    previewImage: "/hrms.codemate.build_.png",
   },
   {
     id: "4",
@@ -73,7 +64,7 @@ export const projects: Project[] = [
       "A web-based document workflow portal supporting legally binding e-signatures, secure PDF tracking, and email reminders.",
     category: "AI Agents & SaaS",
     demoUrl: "https://signflow.codemate.build/",
-    previewType: "hp",
+    previewImage: "/signflow.codemate.build_login.png",
   },
   {
     id: "5",
@@ -83,7 +74,7 @@ export const projects: Project[] = [
       "Cloud ERP console managing warehouse inventories, global supply chains, financial spreadsheets, and schedules.",
     category: "AI Agents & SaaS",
     demoUrl: "https://erpsphere.codemate.build/",
-    previewType: "search",
+    previewImage: "/erpsphere.codemate.build_.png",
   },
   {
     id: "6",
@@ -93,7 +84,7 @@ export const projects: Project[] = [
       "Billing utility that automatically compiles taxes, issues recurring client invoices, and processes online credit payouts.",
     category: "Internal Utilities",
     demoUrl: "https://codeinvoice.codemate.build/",
-    previewType: "sprint",
+    previewImage: "/codeinvoice.codemate.build_dashboard.png",
   },
   {
     id: "7",
@@ -102,7 +93,7 @@ export const projects: Project[] = [
     description:
       "Central dashboard coordinating scheduled email drip sequences, conversion tracking, and compiler reports.",
     category: "Internal Utilities",
-    demoUrl: "https://marketing.codemate.build/",
-    previewType: "admin",
+    demoUrl: "https://growthcloud.codemate.build/",
+    previewImage: "/growth-cloud-web.onrender.com_.png",
   },
 ];

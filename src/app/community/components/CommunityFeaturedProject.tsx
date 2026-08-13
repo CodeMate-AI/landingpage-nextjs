@@ -9,111 +9,13 @@ import { createPortal } from "react-dom";
  * frame, CTA buttons, and a short SDLC journey summary.
  */
 function BrowserMockup() {
-  const navItems = [
-    { label: "Dashboard", active: true, icon: "M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" },
-    { label: "Contacts", active: false, icon: "M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" },
-    { label: "Deals", active: false, icon: "M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" },
-    { label: "Analytics", active: false, icon: "M18 20V10M12 20V4M6 20v-6" },
-    { label: "Settings", active: false, icon: "M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" },
-  ];
-
-  const activities = [
-    { text: "New lead captured from landing page", time: "2m ago", dot: "#10B981" },
-    { text: "Deal moved to Negotiation stage", time: "15m ago", dot: "#00BFFF" },
-    { text: "Contact assigned to Engineering Lead", time: "1h ago", dot: "#8B5CF6" },
-    { text: "Automated follow-up triggered by AI", time: "3h ago", dot: "#10B981" },
-  ];
-
-  const chartHeights = [35, 58, 42, 78, 55, 68, 90];
-
   return (
-    <div className="flex h-full flex-col overflow-hidden rounded-xl border border-zinc-800 bg-[#09090b] shadow-2xl">
-      <div className="flex items-center gap-3 border-b border-zinc-800 bg-zinc-900/80 px-4 py-2.5">
-        <div className="flex gap-1.5">
-          <span className="h-3 w-3 rounded-full bg-rose-500/80" />
-          <span className="h-3 w-3 rounded-full bg-amber-500/80" />
-          <span className="h-3 w-3 rounded-full bg-emerald-500/80" />
-        </div>
-        <div className="mx-auto flex w-full max-w-xs items-center justify-center gap-2 rounded-md border border-zinc-800/80 bg-zinc-950 px-3 py-1 text-center">
-          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#71717A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-          <span className="font-mono text-[11px] text-zinc-400">orbit-crm.codemate.ai</span>
-        </div>
-      </div>
-
-      <div className="flex flex-1 overflow-hidden">
-        <div className="hidden w-36 shrink-0 flex-col gap-0.5 border-r border-zinc-800/80 bg-zinc-900/40 p-3 sm:flex sm:w-40">
-          <div className="mb-3 flex items-center gap-2 px-2">
-            <div className="flex h-6 w-6 items-center justify-center rounded-lg bg-violet-600">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 6v6l4 2" />
-              </svg>
-            </div>
-            <span className="text-xs font-bold text-white">Orbit CRM</span>
-          </div>
-          {navItems.map((item) => (
-            <div
-              key={item.label}
-              className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-[11px] font-medium transition-colors ${
-                item.active ? "bg-zinc-800 text-white" : "text-zinc-400 hover:bg-zinc-800/50 hover:text-zinc-200"
-              }`}
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={item.active ? "#FFFFFF" : "#71717A"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d={item.icon} />
-              </svg>
-              {item.label}
-            </div>
-          ))}
-        </div>
-
-        <div className="flex flex-1 flex-col gap-3 overflow-hidden p-3 sm:p-4">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-white sm:text-sm">Customer Overview</span>
-            <span className="rounded-md bg-white px-2.5 py-1 text-[10px] font-bold text-black">+ Add Deal</span>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            {[
-              { label: "Total Leads", value: "2,847" },
-              { label: "Conversion", value: "24.8%" },
-              { label: "Revenue", value: "$1.2M" },
-            ].map((s) => (
-              <div key={s.label} className="rounded-lg border border-zinc-800/60 bg-zinc-900/80 p-2">
-                <span className="block text-[9px] text-zinc-400">{s.label}</span>
-                <span className="block text-xs font-bold text-white sm:text-sm">{s.value}</span>
-              </div>
-            ))}
-          </div>
-
-          <div className="flex h-20 items-end gap-1.5 rounded-lg border border-zinc-800/60 bg-zinc-900/60 p-2.5 sm:h-24 sm:p-3">
-            {chartHeights.map((h, i) => (
-              <div
-                key={i}
-                className="flex-1 rounded-sm transition-all duration-500"
-                style={{
-                  height: `${h}%`,
-                  background: `linear-gradient(180deg, #34D399 ${100 - h}%, #10B981 100%)`,
-                  opacity: 0.6 + i * 0.06,
-                }}
-              />
-            ))}
-          </div>
-
-          <div className="flex flex-col gap-1.5 rounded-lg border border-zinc-800/60 bg-zinc-900/60 p-2 sm:p-2.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">Recent AI Activities</span>
-            {activities.slice(0, 3).map((a, i) => (
-              <div key={i} className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: a.dot }} />
-                <span className="flex-1 truncate text-[10px] text-zinc-300">{a.text}</span>
-                <span className="shrink-0 font-mono text-[9px] text-zinc-500">{a.time}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+    <div className="relative h-full w-full overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950">
+      <img
+        src="/orbit_crm_community.png"
+        alt="Orbit CRM Dashboard"
+        className="h-full w-full object-contain"
+      />
     </div>
   );
 }
@@ -186,7 +88,7 @@ export default function CommunityFeaturedProject() {
                 <BrowserMockup />
 
                 {/* Glowing play overlay trigger */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/35 backdrop-blur-[1px] transition-all duration-300 group-hover:bg-black/50">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/35 transition-all duration-300 group-hover:bg-black/50">
                   <motion.div
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
