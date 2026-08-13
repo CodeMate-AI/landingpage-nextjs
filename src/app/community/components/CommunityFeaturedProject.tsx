@@ -207,7 +207,7 @@ export default function CommunityFeaturedProject() {
                 >
                   <iframe
                     src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1&rm=minimal"
-                    className="absolute -top-[54px] left-0 w-full h-[calc(100%+108px)] border-0 pointer-events-none lg:pointer-events-auto"
+                    className="absolute -top-[54px] left-0 w-full h-[calc(100%+108px)] lg:top-0 lg:h-full border-0 pointer-events-none lg:pointer-events-auto"
                     allow="autoplay; encrypted-media"
                     allowFullScreen
                   />
