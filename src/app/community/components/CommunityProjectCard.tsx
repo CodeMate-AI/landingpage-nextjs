@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 import type { Project } from "../lib/communityProjects";
 
 /**
@@ -197,7 +198,31 @@ function PreviewCanvas({ type }: { type: Project["previewType"] }) {
 }
 
 export default function CommunityProjectCard({ project, index = 0 }: ProjectCardProps) {
-  const [playVideo, setPlayVideo] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsVideoOpen(false);
+    };
+
+    if (isVideoOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "auto";
+    };
+  }, [isVideoOpen]);
 
   return (
     <motion.article
@@ -208,32 +233,23 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
       className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/60 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:shadow-2xl"
     >
       <div className="relative h-44 w-full overflow-hidden border-b border-zinc-800/80 bg-zinc-950/80 sm:h-48">
-        {playVideo ? (
-          <iframe
-            src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1"
-            className="h-full w-full rounded-t-2xl border-0"
-            allow="autoplay; encrypted-media"
-            allowFullScreen
-          />
-        ) : (
-          <div className="relative h-full w-full cursor-pointer" onClick={() => setPlayVideo(true)}>
-            <div className="absolute inset-0 p-3 sm:p-4">
-              <PreviewCanvas type={project.previewType} />
-            </div>
-            {/* Hover Play Button Overlay */}
-            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-              <motion.div
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.95 }}
-                className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-lg"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                  <polygon points="8,5 20,12 8,19" />
-                </svg>
-              </motion.div>
-            </div>
+        <div className="relative h-full w-full cursor-pointer" onClick={() => setIsVideoOpen(true)}>
+          <div className="absolute inset-0 p-3 sm:p-4">
+            <PreviewCanvas type={project.previewType} />
           </div>
-        )}
+          {/* Hover Play Button Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <motion.div
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-lg"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="8,5 20,12 8,19" />
+              </svg>
+            </motion.div>
+          </div>
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
@@ -260,6 +276,51 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
           </a>
         </div>
       </div>
+
+      {mounted && createPortal(
+        <AnimatePresence>
+          {isVideoOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-black/80 px-4 backdrop-blur-xl"
+              onClick={() => setIsVideoOpen(false)}
+            >
+              <div className="relative w-full max-w-4xl aspect-video mx-4 md:mx-0">
+                <button
+                  type="button"
+                  onClick={() => setIsVideoOpen(false)}
+                  className="absolute -top-16 right-0 z-[10000] rounded-full border border-white/10 bg-neutral-900/50 p-2 text-white/70 backdrop-blur-md transition-colors hover:bg-neutral-900/80 hover:text-white"
+                  aria-label="Close video modal"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0, y: 24 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.5, opacity: 0, y: 24 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 24 }}
+                  className="h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <iframe
+                    src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1"
+                    className="h-full w-full border-0"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                  />
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </motion.article>
   );
 }

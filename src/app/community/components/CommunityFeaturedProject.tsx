@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 
 /**
  * CommunityFeaturedProject showcases the flagship Orbit CRM demo with a mock browser
@@ -118,7 +119,31 @@ function BrowserMockup() {
 }
 
 export default function CommunityFeaturedProject() {
-  const [playVideo, setPlayVideo] = useState(false);
+  const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    return () => setMounted(false);
+  }, []);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIsVideoOpen(false);
+    };
+
+    if (isVideoOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "auto";
+    };
+  }, [isVideoOpen]);
 
   const sdlcSteps = [
     {
@@ -156,32 +181,23 @@ export default function CommunityFeaturedProject() {
       >
         <div className="flex w-full flex-col gap-8 lg:flex-row lg:gap-10">
           <div className="flex w-full flex-col gap-5 lg:w-[58%]">
-            <div className="relative h-[380px] w-full overflow-hidden rounded-2xl sm:h-[420px] bg-black">
-              {playVideo ? (
-                <iframe
-                  src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1"
-                  className="h-full w-full rounded-2xl border-0"
-                  allow="autoplay; encrypted-media"
-                  allowFullScreen
-                />
-              ) : (
-                <div className="relative h-full w-full cursor-pointer group" onClick={() => setPlayVideo(true)}>
-                  <BrowserMockup />
-                  
-                  {/* Glowing play overlay trigger */}
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/35 backdrop-blur-[1px] transition-all duration-300 group-hover:bg-black/50">
-                    <motion.div
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-black shadow-2xl transition-shadow"
-                    >
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="8,5 20,12 8,19" />
-                      </svg>
-                    </motion.div>
-                  </div>
+            <div className="relative h-[380px] w-full overflow-hidden rounded-2xl bg-black sm:h-[420px]">
+              <div className="group relative h-full w-full cursor-pointer" onClick={() => setIsVideoOpen(true)}>
+                <BrowserMockup />
+
+                {/* Glowing play overlay trigger */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/35 backdrop-blur-[1px] transition-all duration-300 group-hover:bg-black/50">
+                  <motion.div
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-black shadow-2xl transition-shadow"
+                  >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="8,5 20,12 8,19" />
+                    </svg>
+                  </motion.div>
                 </div>
-              )}
+              </div>
             </div>
           </div>
 
@@ -255,6 +271,51 @@ export default function CommunityFeaturedProject() {
           </motion.a>
         </div>
       </motion.div>
+
+      {mounted && createPortal(
+        <AnimatePresence>
+          {isVideoOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-black/80 px-4 backdrop-blur-xl"
+              onClick={() => setIsVideoOpen(false)}
+            >
+              <div className="relative w-full max-w-4xl aspect-video mx-4 md:mx-0">
+                <button
+                  type="button"
+                  onClick={() => setIsVideoOpen(false)}
+                  className="absolute -top-16 right-0 z-[10000] rounded-full border border-white/10 bg-neutral-900/50 p-2 text-white/70 backdrop-blur-md transition-colors hover:bg-neutral-900/80 hover:text-white"
+                  aria-label="Close video modal"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>
+                </button>
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0, y: 24 }}
+                  animate={{ scale: 1, opacity: 1, y: 0 }}
+                  exit={{ scale: 0.5, opacity: 0, y: 24 }}
+                  transition={{ type: "spring", stiffness: 260, damping: 24 }}
+                  className="h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <iframe
+                    src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1"
+                    className="h-full w-full border-0"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                  />
+                </motion.div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </section>
   );
 }
