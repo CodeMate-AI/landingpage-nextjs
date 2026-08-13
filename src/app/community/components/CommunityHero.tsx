@@ -10,10 +10,6 @@ import { motion } from "framer-motion";
 export default function CommunityHero() {
   return (
     <section className="relative mx-auto flex max-w-5xl flex-col items-start justify-center px-5 pb-8 pt-6 text-left sm:items-center sm:px-6 sm:pb-10 sm:pt-10 sm:text-center lg:px-8 lg:pb-12 lg:pt-12">
-      <div
-        className="pointer-events-none absolute left-0 top-1/2 -z-10 h-[250px] w-[300px] -translate-y-1/2 bg-gradient-to-r from-emerald-500/10 via-cyan-500/10 to-violet-500/10 blur-[90px] sm:left-1/2 sm:-translate-x-1/2 sm:w-[500px]"
-        aria-hidden="true"
-      />
 
       <motion.h1
         initial={{ opacity: 0, y: 20 }}
