@@ -117,45 +117,9 @@ function BrowserMockup() {
   );
 }
 
-function VideoOverlay() {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-black/50 backdrop-blur-[2px]">
-      <AnimatePresence mode="wait">
-        {!isPlaying && (
-          <motion.button
-            key="play"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.8 }}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsPlaying(true)}
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-black shadow-2xl transition-shadow"
-            aria-label="Play full-stack walkthrough demo"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="8,5 20,12 8,19" />
-            </svg>
-          </motion.button>
-        )}
-      </AnimatePresence>
-
-      <div className="absolute bottom-0 left-0 right-0 flex flex-col gap-1 bg-gradient-to-t from-black/80 to-transparent px-4 pb-3 pt-6">
-        <div className="h-1 w-full overflow-hidden rounded-full bg-zinc-700">
-          <div className="h-full rounded-full bg-cyan-400" style={{ width: "42%" }} />
-        </div>
-        <div className="flex items-center justify-between text-[10px] font-mono text-zinc-400">
-          <span>0:14 / 0:35</span>
-          <span>Full-Stack Demo</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 export default function CommunityFeaturedProject() {
+  const [playVideo, setPlayVideo] = useState(false);
+
   const sdlcSteps = [
     {
       title: "BUILD · Design Mode",
@@ -192,9 +156,32 @@ export default function CommunityFeaturedProject() {
       >
         <div className="flex w-full flex-col gap-8 lg:flex-row lg:gap-10">
           <div className="flex w-full flex-col gap-5 lg:w-[58%]">
-            <div className="relative h-[380px] w-full overflow-hidden rounded-2xl sm:h-[420px]">
-              <BrowserMockup />
-              <VideoOverlay />
+            <div className="relative h-[380px] w-full overflow-hidden rounded-2xl sm:h-[420px] bg-black">
+              {playVideo ? (
+                <iframe
+                  src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1"
+                  className="h-full w-full rounded-2xl border-0"
+                  allow="autoplay; encrypted-media"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="relative h-full w-full cursor-pointer group" onClick={() => setPlayVideo(true)}>
+                  <BrowserMockup />
+                  
+                  {/* Glowing play overlay trigger */}
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/35 backdrop-blur-[1px] transition-all duration-300 group-hover:bg-black/50">
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex h-16 w-16 items-center justify-center rounded-full bg-white text-black shadow-2xl transition-shadow"
+                    >
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                        <polygon points="8,5 20,12 8,19" />
+                      </svg>
+                    </motion.div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
@@ -238,7 +225,7 @@ export default function CommunityFeaturedProject() {
         {/* Centered Action Buttons (Horizontal across Mobile, iPad, and Desktop) */}
         <div className="flex w-full flex-row items-center justify-center gap-2.5 pt-2 sm:gap-4 sm:pt-0">
           <motion.a
-            href="https://app.codemate.ai"
+            href="https://orbit-crm-og.codemate.build/"
             target="_blank"
             rel="noreferrer"
             whileHover={{ scale: 1.02 }}

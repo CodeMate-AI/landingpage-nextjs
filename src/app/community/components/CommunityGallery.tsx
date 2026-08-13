@@ -11,11 +11,19 @@ import CommunityProjectCard from "./CommunityProjectCard";
  */
 export default function CommunityGallery() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("All Projects");
+  const [visibleCount, setVisibleCount] = useState(6);
+
+  const handleCategoryChange = (category: ProjectCategory) => {
+    setActiveCategory(category);
+    setVisibleCount(6); // Reset pagination on category change
+  };
 
   const filteredProjects =
     activeCategory === "All Projects"
       ? projects
       : projects.filter((p) => p.category === activeCategory);
+
+  const projectsToRender = filteredProjects.slice(0, visibleCount);
 
   return (
     <section className="mx-auto flex w-full max-w-7xl flex-col items-center px-4 pb-20 pt-8 sm:px-6 sm:pb-24 sm:pt-10 lg:px-8 lg:pb-28 lg:pt-12">
@@ -39,13 +47,30 @@ export default function CommunityGallery() {
         Production-grade platforms and dev utilities shipped autonomously by our team using CodeMate's AI-native pipeline.
       </motion.p>
 
-      <CommunityFilterBar activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
+      <CommunityFilterBar activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
 
       <div className="mt-4 grid w-full grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {filteredProjects.map((project, i) => (
+        {projectsToRender.map((project, i) => (
           <CommunityProjectCard key={project.id} project={project} index={i} />
         ))}
       </div>
+
+      {/* Center-aligned 'Show More' Button */}
+      {filteredProjects.length > visibleCount && (
+        <div className="mt-12 flex justify-center">
+          <motion.button
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={() => setVisibleCount((prev) => prev + 6)}
+            className="inline-flex items-center justify-center gap-2 rounded-full border border-white/15 bg-zinc-900/80 px-8 py-3 text-sm font-semibold text-white shadow-xl backdrop-blur-md transition-all hover:bg-zinc-800 hover:border-white/25"
+          >
+            Show More
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </motion.button>
+        </div>
+      )}
 
       {filteredProjects.length === 0 && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mt-12 flex flex-col items-center gap-3 text-center">

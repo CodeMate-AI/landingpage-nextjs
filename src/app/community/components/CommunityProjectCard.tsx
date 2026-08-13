@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import type { Project } from "../lib/communityProjects";
 
@@ -75,29 +75,6 @@ function HpPreview() {
             </div>
           </div>
         ))}
-      </div>
-    </div>
-  );
-}
-
-function ReviewPreview() {
-  return (
-    <div className="flex h-full flex-col justify-center gap-1 rounded-xl border border-zinc-800/70 bg-[#09090b] p-3 font-mono text-[10px] leading-snug sm:text-xs">
-      <div className="flex gap-2">
-        <span className="w-4 text-right text-zinc-600">42</span>
-        <span className="text-zinc-400">function compute() {'{'}</span>
-      </div>
-      <div className="flex gap-2">
-        <span className="w-4 text-right text-zinc-600">43</span>
-        <span className="rounded bg-rose-500/15 px-1 text-rose-400">-  return oldValue;</span>
-      </div>
-      <div className="flex gap-2">
-        <span className="w-4 text-right text-zinc-600">44</span>
-        <span className="rounded bg-emerald-500/15 px-1 text-emerald-400">+  return newValue;</span>
-      </div>
-      <div className="flex gap-2">
-        <span className="w-4 text-right text-zinc-600">45</span>
-        <span className="text-zinc-400">{'}'}</span>
       </div>
     </div>
   );
@@ -206,8 +183,6 @@ function PreviewCanvas({ type }: { type: Project["previewType"] }) {
       return <SearchPreview />;
     case "hp":
       return <HpPreview />;
-    case "review":
-      return <ReviewPreview />;
     case "api":
       return <ApiPreview />;
     case "dash":
@@ -222,6 +197,8 @@ function PreviewCanvas({ type }: { type: Project["previewType"] }) {
 }
 
 export default function CommunityProjectCard({ project, index = 0 }: ProjectCardProps) {
+  const [playVideo, setPlayVideo] = useState(false);
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 24 }}
@@ -231,18 +208,32 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
       className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/60 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:shadow-2xl"
     >
       <div className="relative h-44 w-full overflow-hidden border-b border-zinc-800/80 bg-zinc-950/80 sm:h-48">
-        <div className="absolute inset-0 p-3 sm:p-4">
-          <PreviewCanvas type={project.previewType} />
-        </div>
-
-        <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 bg-black/60 opacity-0 backdrop-blur-[3px] transition-opacity duration-300 group-hover:opacity-100">
-          <div className="flex h-11 w-11 items-center justify-center rounded-full bg-white text-black shadow-lg transition-transform duration-300 hover:scale-105">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <polygon points="5,3 21,12 5,21" />
-            </svg>
+        {playVideo ? (
+          <iframe
+            src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1"
+            className="h-full w-full rounded-t-2xl border-0"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+          />
+        ) : (
+          <div className="relative h-full w-full cursor-pointer" onClick={() => setPlayVideo(true)}>
+            <div className="absolute inset-0 p-3 sm:p-4">
+              <PreviewCanvas type={project.previewType} />
+            </div>
+            {/* Hover Play Button Overlay */}
+            <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+              <motion.div
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-black shadow-lg"
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="8,5 20,12 8,19" />
+                </svg>
+              </motion.div>
+            </div>
           </div>
-          <span className="text-xs font-semibold text-white">▶ 30s Demo</span>
-        </div>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-3 p-5">
@@ -253,7 +244,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
         <p className="text-xs leading-relaxed text-zinc-400 sm:text-sm">{project.description}</p>
 
         <div className="mt-auto flex items-center gap-4 border-t border-zinc-800/80 pt-3">
-          <a href="https://app.codemate.ai" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 transition-colors hover:text-cyan-300">
+          <a href={project.demoUrl || "https://app.codemate.ai"} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 transition-colors hover:text-cyan-300">
             Live Demo
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M7 17 17 7" />
