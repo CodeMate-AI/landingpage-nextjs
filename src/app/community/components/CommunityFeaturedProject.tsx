@@ -206,7 +206,7 @@ export default function CommunityFeaturedProject() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <iframe
-                    src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1"
+                    src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1&rm=minimal"
                     className="h-full w-full border-0"
                     allow="autoplay; encrypted-media"
                     allowFullScreen
