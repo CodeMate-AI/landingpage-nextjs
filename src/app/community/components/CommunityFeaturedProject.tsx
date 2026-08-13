@@ -87,8 +87,8 @@ export default function CommunityFeaturedProject() {
               <div className="group relative h-full w-full cursor-pointer" onClick={() => setIsVideoOpen(true)}>
                 <BrowserMockup />
 
-                {/* Glowing play overlay trigger */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/35 transition-all duration-300 group-hover:bg-black/50">
+                {/* Play overlay - hidden by default, visible on hover */}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   <motion.div
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
