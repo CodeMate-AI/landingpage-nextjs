@@ -10,11 +10,11 @@ import { createPortal } from "react-dom";
  */
 function BrowserMockup() {
   return (
-    <div className="relative h-full w-full overflow-hidden rounded-xl border border-zinc-800/80 bg-zinc-950">
+    <div className="relative h-full w-full overflow-hidden bg-zinc-950">
       <img
         src="/orbit_crm_community.png"
         alt="Orbit CRM Dashboard"
-        className="h-full w-full object-contain"
+        className="h-full w-full object-cover object-top"
       />
     </div>
   );
@@ -83,7 +83,7 @@ export default function CommunityFeaturedProject() {
       >
         <div className="flex w-full flex-col gap-8 lg:flex-row lg:gap-10">
           <div className="flex w-full flex-col gap-5 lg:w-[58%]">
-            <div className="relative h-[380px] w-full overflow-hidden rounded-2xl bg-black sm:h-[420px]">
+            <div className="relative h-48 w-full overflow-hidden rounded-2xl bg-black sm:h-64 lg:h-[420px]">
               <div className="group relative h-full w-full cursor-pointer" onClick={() => setIsVideoOpen(true)}>
                 <BrowserMockup />
 
