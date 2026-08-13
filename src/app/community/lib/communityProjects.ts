@@ -42,10 +42,10 @@ export interface Project {
 export const projects: Project[] = [
   {
     id: "code-crm",
-    name: "CodeMate CRM",
-    title: "Customer Relationship Platform",
+    name: "Support HUB",
+    title: "Customer Support Portal",
     description:
-      "A full-featured CRM built with BUILD in design mode and CORA in VS Code. Tracks leads, pipelines, and team performance in real time.",
+      "A high-performance ticketing dashboard built to centralize client inquiries, track resolution times, and automate response workflows.",
     category: "Enterprise CRMs",
     buildTime: "36h",
     metricLabel: "Active Users",
@@ -55,10 +55,10 @@ export const projects: Project[] = [
   },
   {
     id: "api-playground",
-    name: "API Playground",
-    title: "Interactive API Explorer",
+    name: "Smart Book",
+    title: "Digital Documentation Editor",
     description:
-      "Developer-first tool to test, document, and share REST endpoints. Auto-generates OpenAPI specs and runs mock servers locally.",
+      "An interactive notebook companion designed to run code snippets, document project structures, and export markdown guides.",
     category: "Developer Tools",
     buildTime: "28h",
     metricLabel: "Requests / Min",
@@ -68,10 +68,10 @@ export const projects: Project[] = [
   },
   {
     id: "review-copilot",
-    name: "Review Copilot",
-    title: "AI-Powered Code Review Agent",
+    name: "Orbit CRM",
+    title: "Customer Relationship Management",
     description:
-      "Autonomous agent that reviews pull requests, suggests refactors, and enforces style rules using your team's custom guidelines.",
+      "Enterprise CRM platform designed to organize customer profiles, track sales pipelines, and generate analytical revenue charts.",
     category: "AI Agents & SaaS",
     buildTime: "42h",
     metricLabel: "PRs Reviewed",
@@ -81,10 +81,10 @@ export const projects: Project[] = [
   },
   {
     id: "mate-cli",
-    name: "Mate CLI",
-    title: "Command-Line Companion",
+    name: "HRMS",
+    title: "Human Resource Management System",
     description:
-      "A terminal-based companion for scaffolding projects, running migrations, and executing CI pipelines directly from your shell.",
+      "Internal platform managing employee onboarding, leaves tracking, performance reviews, and centralized payroll directories.",
     category: "Developer Tools",
     buildTime: "18h",
     metricLabel: "Daily Installs",
@@ -94,10 +94,10 @@ export const projects: Project[] = [
   },
   {
     id: "pageforge",
-    name: "PageForge",
-    title: "Landing Page Builder",
+    name: "SignFlow",
+    title: "Secure Document Signing",
     description:
-      "Drag-and-drop builder for marketing pages. Exports clean Next.js code and deploys to edge networks with one click.",
+      "A web-based document workflow portal supporting legally binding e-signatures, secure PDF tracking, and email reminders.",
     category: "AI Agents & SaaS",
     buildTime: "32h",
     metricLabel: "Sites Published",
@@ -107,10 +107,10 @@ export const projects: Project[] = [
   },
   {
     id: "neuralsearch",
-    name: "NeuralSearch",
-    title: "Semantic Search Engine",
+    name: "Erpsphere",
+    title: "Enterprise Resource Planning",
     description:
-      "Vector-powered search over documentation, code, and wikis. Understands intent and surfaces the most relevant results instantly.",
+      "Cloud ERP console managing warehouse inventories, global supply chains, financial spreadsheets, and schedules.",
     category: "AI Agents & SaaS",
     buildTime: "38h",
     metricLabel: "Queries / Day",
@@ -120,10 +120,10 @@ export const projects: Project[] = [
   },
   {
     id: "sprintops",
-    name: "SprintOps",
-    title: "Sprint Management Tracker",
+    name: "CodeInvoice",
+    title: "Automated Invoicing & Billing",
     description:
-      "Internal tool for planning sprints, tracking velocity, and visualizing burndown charts across multiple engineering squads.",
+      "Billing utility that automatically compiles taxes, issues recurring client invoices, and processes online credit payouts.",
     category: "Internal Utilities",
     buildTime: "22h",
     metricLabel: "Tickets Closed",
@@ -133,10 +133,10 @@ export const projects: Project[] = [
   },
   {
     id: "admin-core",
-    name: "Admin Core",
-    title: "Internal Admin Console",
+    name: "Marketing Automation",
+    title: "Omnichannel Campaign Console",
     description:
-      "Centralized admin dashboard for user management, billing, feature flags, and audit logs across all CodeMate products.",
+      "Central dashboard coordinating scheduled email drip sequences, conversion tracking, and compiler reports.",
     category: "Internal Utilities",
     buildTime: "30h",
     metricLabel: "Admins Active",
