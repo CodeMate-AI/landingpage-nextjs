@@ -1,12 +1,3 @@
-/**
- * ==============================================================================
- * COMMUNITY PROJECTS DATA REGISTRY & TYPE DEFINITIONS
- * ==============================================================================
- * This file acts as the single source of truth for all projects showcased on
- * the /community page. Each project contains metadata, category associations,
- * and a designated previewImage asset used in the project card thumbnail.
- */
-
 export type ProjectCategory =
   | "All Projects"
   | "Enterprise CRMs"
@@ -58,16 +49,6 @@ export const projects: Project[] = [
   },
   {
     id: "4",
-    name: "SignFlow",
-    title: "Secure Document Signing",
-    description:
-      "A web-based document workflow portal supporting legally binding e-signatures, secure PDF tracking, and email reminders.",
-    category: "AI Agents & SaaS",
-    demoUrl: "https://signflow.codemate.build/",
-    previewImage: "/signflow.codemate.build_login.png",
-  },
-  {
-    id: "5",
     name: "Erpsphere",
     title: "Enterprise Resource Planning",
     description:
@@ -77,17 +58,7 @@ export const projects: Project[] = [
     previewImage: "/erpsphere.codemate.build_.png",
   },
   {
-    id: "6",
-    name: "CodeInvoice",
-    title: "Automated Invoicing & Billing",
-    description:
-      "Billing utility that automatically compiles taxes, issues recurring client invoices, and processes online credit payouts.",
-    category: "Internal Utilities",
-    demoUrl: "https://codeinvoice.codemate.build/",
-    previewImage: "/codeinvoice.codemate.build_dashboard.png",
-  },
-  {
-    id: "7",
+    id: "5",
     name: "Marketing Automation",
     title: "Omnichannel Campaign Console",
     description:
@@ -95,5 +66,25 @@ export const projects: Project[] = [
     category: "Internal Utilities",
     demoUrl: "https://growthcloud.codemate.build/",
     previewImage: "/growth-cloud-web.onrender.com_.png",
+  },
+  {
+    id: "6",
+    name: "SignFlow",
+    title: "Secure Document Signing",
+    description:
+      "A web-based document workflow portal supporting legally binding e-signatures, secure PDF tracking, and email reminders.",
+    category: "AI Agents & SaaS",
+    demoUrl: "https://signflow.codemate.build/",
+    previewImage: "/signflow.codemate.build_login.png",
+  },
+  {
+    id: "7",
+    name: "CodeInvoice",
+    title: "Automated Invoicing & Billing",
+    description:
+      "Billing utility that automatically compiles taxes, issues recurring client invoices, and processes online credit payouts.",
+    category: "Internal Utilities",
+    demoUrl: "https://codeinvoice.codemate.build/",
+    previewImage: "/codeinvoice.codemate.build_dashboard.png",
   },
 ];
