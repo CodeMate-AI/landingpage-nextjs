@@ -39,7 +39,7 @@ export default function CommunityGallery() {
         Production-grade platforms and dev utilities shipped autonomously by our team using CodeMate's AI-native pipeline.
       </motion.p>
 
-      <CommunityFilterBar activeCategory={activeCategory} onCategoryChange={setActiveCategory} totalCount={projects.length} />
+      <CommunityFilterBar activeCategory={activeCategory} onCategoryChange={setActiveCategory} />
 
       <div className="mt-4 grid w-full grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
         {filteredProjects.map((project, i) => (

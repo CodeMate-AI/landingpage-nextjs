@@ -10,18 +10,17 @@ import { ProjectCategory } from "../lib/communityProjects";
 interface FilterBarProps {
   activeCategory: ProjectCategory;
   onCategoryChange: (category: ProjectCategory) => void;
-  totalCount: number;
 }
 
-const filters: { label: ProjectCategory; hasCount?: boolean }[] = [
-  { label: "All Projects", hasCount: true },
+const filters: { label: ProjectCategory }[] = [
+  { label: "All Projects" },
   { label: "Enterprise CRMs" },
   { label: "Developer Tools" },
   { label: "AI Agents & SaaS" },
   { label: "Internal Utilities" },
 ];
 
-export default function CommunityFilterBar({ activeCategory, onCategoryChange, totalCount }: FilterBarProps) {
+export default function CommunityFilterBar({ activeCategory, onCategoryChange }: FilterBarProps) {
   return (
     <section className="mx-auto hidden w-full max-w-7xl justify-center px-4 py-4 sm:px-6 lg:flex lg:px-8">
       <motion.div
@@ -45,7 +44,6 @@ export default function CommunityFilterBar({ activeCategory, onCategoryChange, t
                 }`}
               >
                 {filter.label}
-                {filter.hasCount && <span className="ml-1.5 text-xs opacity-70">({totalCount})</span>}
               </button>
             );
           })}
