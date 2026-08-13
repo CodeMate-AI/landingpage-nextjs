@@ -42,11 +42,11 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
 
   return (
     <motion.article
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-10px" }}
-      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-      className="group flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/60 shadow-xl backdrop-blur-xl transition-all duration-300 hover:border-white/20 hover:shadow-2xl"
+      viewport={{ once: true, margin: "-20px" }}
+      transition={{ duration: 0.4, delay: (index % 3) * 0.06, ease: [0.22, 1, 0.36, 1] }}
+      className="group transform-gpu flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-zinc-900/60 shadow-xl backdrop-blur-md transition-[border-color,box-shadow] duration-200 hover:border-white/20 hover:shadow-2xl"
     >
       <div className="relative h-44 w-full overflow-hidden border-b border-zinc-800/80 bg-zinc-950/80 sm:h-48">
         <div className="relative h-full w-full cursor-pointer" onClick={() => setIsVideoOpen(true)}>

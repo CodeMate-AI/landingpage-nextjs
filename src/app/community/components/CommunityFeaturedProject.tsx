@@ -75,11 +75,11 @@ export default function CommunityFeaturedProject() {
       </motion.h2>
 
       <motion.div
-        initial={{ opacity: 0, y: 28 }}
+        initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-        className="flex w-full max-w-7xl flex-col gap-8 rounded-3xl border border-white/10 bg-zinc-900/60 p-6 shadow-2xl backdrop-blur-xl lg:p-10"
+        viewport={{ once: true, margin: "-40px" }}
+        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        className="transform-gpu flex w-full max-w-7xl flex-col gap-8 rounded-3xl border border-white/10 bg-zinc-900/60 p-6 shadow-2xl backdrop-blur-md lg:p-10"
       >
         <div className="flex w-full flex-col gap-8 lg:flex-row lg:gap-10">
           <div className="flex w-full flex-col gap-5 lg:w-[58%]">
