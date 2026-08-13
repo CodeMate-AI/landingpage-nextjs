@@ -88,7 +88,7 @@ export default function CommunityFeaturedProject() {
                 <BrowserMockup />
 
                 {/* Play overlay - hidden by default, visible on hover */}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-100 transition-opacity duration-300 lg:opacity-0 lg:group-hover:opacity-100">
                   <motion.div
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
@@ -202,15 +202,16 @@ export default function CommunityFeaturedProject() {
                   animate={{ scale: 1, opacity: 1, y: 0 }}
                   exit={{ scale: 0.5, opacity: 0, y: 24 }}
                   transition={{ type: "spring", stiffness: 260, damping: 24 }}
-                  className="h-full w-full overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl"
+                  className="absolute inset-0 overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl"
                   onClick={(e) => e.stopPropagation()}
                 >
                   <iframe
                     src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1&rm=minimal"
-                    className="h-full w-full border-0"
+                    className="absolute -top-[54px] left-0 w-full h-[calc(100%+108px)] border-0 pointer-events-none lg:pointer-events-auto"
                     allow="autoplay; encrypted-media"
                     allowFullScreen
                   />
+                  <div className="absolute inset-0 z-10 bg-transparent lg:hidden" />
                 </motion.div>
               </div>
             </motion.div>
