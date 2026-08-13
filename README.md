@@ -1,6 +1,6 @@
 # 📦 CodeMate AI Landing Page
 
-This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website showcasing CodeMate's product suites, achievements, media presence, customer testimonials, and pricing structures.
+This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website showcasing CodeMate's product suites, achievements, media presence, customer testimonials, community projects, and pricing structures.
 
 ---
 
@@ -13,6 +13,7 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a
 | **Styling** | Tailwind CSS 3.4 + CSS Modules / Vanilla CSS |
 | **Animations** | Framer Motion 11 + GSAP 3 |
 | **Smooth Scroll** | Lenis 1.2.1 |
+| **State Management** | Redux Toolkit & React Context |
 | **Video Integration** | `next-video` |
 | **Fonts** | Montserrat & Mulish (via `next/font`) |
 | **Analytics** | Google Analytics 4 |
@@ -20,7 +21,7 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a
 
 ---
 
-## 📄 Key Features & Sections
+## 📄 Key Features & Pages
 
 - **Announcement Banner**: Sticky banner highlighting the SWE-bench SOTA achievement and limited offers.
 - **Dynamic Frosted-Glass Navbars**: Custom mega-menu support for Products, Open-Source, and Resources with active drop-downs on desktop and slider overlays on mobile.
@@ -29,6 +30,11 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a
 - **Partners Marquee**: Infinite-marquee animations displaying code integration partners and ecosystems.
 - **Testimonials Deck**: Smooth, staggered entrance animations for customer recommendation cards.
 - **Media Coverage**: Custom carousel highlighting press and publication presence from top media houses.
+- **Community Showcase (`/community`)**: Live gallery of production-grade platforms (Orbit CRM, Support HUB, Smart Book, HRMS, Erpsphere, etc.) shipped autonomously using CodeMate AI. Includes responsive video modal previews with touch shielding and category filtering.
+- **Dynamic Pricing Engine (`/pricing`)**: Interactive plan cards, custom credit builders, trial banners, and product matrix comparisons.
+- **Technical Blog (`/blog` & `/blog/[slug]`)**: Dynamically routed architectural write-ups and benchmark deep-dives.
+- **Downloads Portal (`/download`)**: Direct links and installation video guides for CodeMate extensions and toolboxes.
+- **Contact & Leads Portal (`/contact`)**: Lead capture form connected to backend submission APIs.
 
 ---
 
@@ -39,19 +45,30 @@ CMLanding/
 └── landingpage-nextjs/
     ├── public/                  # Brand assets, static mocks, and logos
     ├── src/
-    │   ├── app/                 # App Router
+    │   ├── app/                 # Next.js App Router
     │   │   ├── page.tsx         # Main Landing Page client component
     │   │   ├── layout.tsx       # Layout with SEO metadata & Analytics
     │   │   ├── globals.css      # Core style tokens & keyframe animations
-    │   │   ├── pricing/         # Pricing sub-route page & custom components
-    │   │   └── download/        # Download sub-route page
+    │   │   ├── community/       # Community showcase page
+    │   │   │   ├── components/  # Featured Project, Gallery, Cards, Filters, Hero
+    │   │   │   └── lib/         # Projects data & category definitions
+    │   │   ├── pricing/         # Pricing sub-route page & custom calculators
+    │   │   │   └── components/  # Custom credit cards & plan builders
+    │   │   ├── blog/            # Blog index and dynamic [slug] article routes
+    │   │   │   └── [slug]/      # Article layout and content components
+    │   │   ├── download/        # Download sub-route page & installation guides
+    │   │   ├── contact/         # Contact sub-route page
+    │   │   └── context/         # Redux store & theme contexts
     │   ├── components/          # Reusable react components
+    │   │   ├── navbar.tsx       # Mega-menu navbar
+    │   │   ├── footer.tsx       # Responsive footer
     │   │   ├── achivements.tsx  # Achievements slideshow
     │   │   ├── media-presence.tsx # Media slider
     │   │   └── ui/              # 46 primitive animated UI components (Bento, Terminals, Gradients, etc.)
+    │   ├── context/             # Global Auth provider
     │   └── utils/               # Tailwind merge helpers
     ├── package.json             # Dependencies & scripts
-    ├── next.config.ts           # Next.config
+    ├── next.config.ts           # Next.js configuration
     └── tailwind.config.ts       # Custom Tailwind theme tokens & screens
 ```
 
@@ -100,6 +117,8 @@ The static output will be compiled inside the `.next` directory.
 
 ## ⚡ Performance Optimizations
 
-1. **Lazy Resource Activation**: Using the `SmartGif` component, heavy GIFs are frozen into light Canvas frames and only activated on hover or direct viewport interaction.
-2. **Unified Event Listeners**: Window resize, viewport breakpoints, and parallax scroll handlers are consolidated into singular hooks to prevent layout shifting and state churn.
-3. **Lazy-Loaded Analytics**: Google Analytics scripts are injected asynchronously post-mount.
+1. **GPU-Accelerated Card Animations**: Showcase and featured cards leverage `transform-gpu` and targeted CSS transitions (`transition-[border-color,box-shadow]`) to prevent layout thrashing and maintain silky 60fps scrolling.
+2. **Responsive Video Modal Containment**: Video modals enforce strict 16:9 aspect ratios across viewports with touch shields on mobile/tablet and full interactive controls on desktop.
+3. **Lazy Resource Activation**: Heavy GIFs are frozen into light Canvas frames using `SmartGif` and only activated on hover or direct viewport interaction.
+4. **Unified Event Listeners**: Window resize, viewport breakpoints, and parallax scroll handlers are consolidated into singular hooks to prevent layout shifting and state churn.
+5. **Lazy-Loaded Analytics**: Google Analytics scripts are injected asynchronously post-mount.
