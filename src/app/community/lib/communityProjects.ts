@@ -84,15 +84,4 @@ export const projects: Project[] = [
     demoUrl: "https://signflow.codemate.build/",
     previewImage: "/signflow.codemate.build_login.png",
   },
-  {
-    id: "7",
-    name: "CodeInvoice",
-    title: "Automated Invoicing & Billing",
-    description:
-      "Billing utility that automatically compiles taxes, issues recurring client invoices, and processes online credit payouts.",
-    category: "Internal Utilities",
-    videoUrl: "/zoom clone.mp4",
-    demoUrl: "https://codeinvoice.codemate.build/",
-    previewImage: "/codeinvoice.codemate.build_dashboard.png",
-  },
 ];
