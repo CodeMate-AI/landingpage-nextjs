@@ -82,6 +82,17 @@ export const projects: Project[] = [
     category: "AI Agents & SaaS",
     videoUrl: "/Signflow.mp4",
     demoUrl: "https://signflow.codemate.build/",
-    previewImage: "/signflow.codemate.build_.png",
+    previewImage: "/signflow.codemate.build_new.png",
+  },
+  {
+    id: "7",
+    name: "CodeMate Meet",
+    title: "Video Conferencing Platform",
+    description:
+      "A real-time video conferencing web application built with WebRTC, supporting HD group calls, screen sharing, and collaborative chat.",
+    category: "AI Agents & SaaS",
+    videoUrl: "/zoom clone.mp4",
+    demoUrl: "https://meet.codemate.build/",
+    previewImage: "/meet.codemate.build_.png",
   },
 ];
