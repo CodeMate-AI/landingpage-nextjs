@@ -46,7 +46,7 @@ export const projects: Project[] = [
     title: "Human Resource Management System",
     description:
       "Internal platform managing employee onboarding, leaves tracking, performance reviews, and centralized payroll directories.",
-    category: "Developer Tools",
+    category: "Internal Utilities",
     videoUrl: "/HRMS.mp4",
     demoUrl: "https://hrms.codemate.build/",
     previewImage: "/hrms.codemate.build_.png",
@@ -57,7 +57,7 @@ export const projects: Project[] = [
     title: "Enterprise Resource Planning",
     description:
       "Cloud ERP console managing warehouse inventories, global supply chains, financial spreadsheets, and schedules.",
-    category: "AI Agents & SaaS",
+    category: "Enterprise CRMs",
     videoUrl: "/Erpsphere.mp4",
     demoUrl: "https://erpsphere.codemate.build/",
     previewImage: "/erpsphere.codemate.build_.png",
@@ -68,7 +68,7 @@ export const projects: Project[] = [
     title: "Omnichannel Campaign Console",
     description:
       "Central dashboard coordinating scheduled email drip sequences, conversion tracking, and compiler reports.",
-    category: "Internal Utilities",
+    category: "AI Agents & SaaS",
     videoUrl: "/marketing automation .mp4",
     demoUrl: "https://growthcloud.codemate.build/",
     previewImage: "/growth-cloud-web.onrender.com_.png",
