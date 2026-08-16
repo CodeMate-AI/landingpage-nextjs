@@ -11,6 +11,7 @@ const tickerProjects = [
     category: "Enterprise CRMs",
     highlight: "Autonomous Full-Stack Sales Pipeline & Client Workspace",
     tag: "Flagship Showcase",
+    demoUrl: "https://orbit-crm-og.codemate.build/",
   },
   ...projects.map((p) => ({
     id: p.id,
@@ -18,6 +19,7 @@ const tickerProjects = [
     category: p.category,
     highlight: p.description,
     tag: "Built with CodeMate",
+    demoUrl: p.demoUrl || "https://codemate.ai",
   })),
 ];
 
@@ -62,16 +64,23 @@ export default function CommunityHero() {
           {[1, 2].map((setIndex) => (
             <div key={setIndex} className="flex shrink-0">
               {tickerProjects.map((item, idx) => (
-                <div
+                <a
                   key={`${setIndex}-${idx}`}
-                  className="flex min-w-[300px] max-w-[400px] shrink-0 flex-col gap-2 border-r border-zinc-800 border-t-2 border-t-transparent px-6 py-5 transition-colors duration-200 hover:border-t-[#3b82f6] hover:bg-zinc-900/60"
+                  href={item.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/item flex min-w-[300px] max-w-[400px] shrink-0 cursor-pointer flex-col gap-2 border-r border-zinc-800 border-t-2 border-t-transparent px-6 py-5 transition-all duration-200 hover:border-t-[#3b82f6] hover:bg-zinc-900/60"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-[#3b82f6]">
                       {item.category}
                     </span>
-                    <span className="font-mono text-[11px] font-medium text-zinc-500">
+                    <span className="flex items-center gap-1 font-mono text-[11px] font-medium text-zinc-500 transition-colors group-hover/item:text-cyan-400">
                       {item.tag}
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-0 transition-opacity group-hover/item:opacity-100">
+                        <path d="M7 17 17 7" />
+                        <path d="M7 7h10v10" />
+                      </svg>
                     </span>
                   </div>
                   <div className="text-base font-bold text-white line-clamp-1 sm:text-lg">
@@ -80,7 +89,7 @@ export default function CommunityHero() {
                   <div className="text-xs leading-relaxed text-zinc-400 line-clamp-2">
                     {item.highlight}
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           ))}
