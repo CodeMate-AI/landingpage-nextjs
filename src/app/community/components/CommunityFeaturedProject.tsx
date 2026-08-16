@@ -205,13 +205,14 @@ export default function CommunityFeaturedProject() {
                   className="absolute inset-0 overflow-hidden rounded-2xl border border-white/10 bg-black shadow-2xl"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <iframe
-                    src="https://drive.google.com/file/d/1afHAYXZqWns_WrW634b9iDm6tUnecBPM/preview?autoplay=1&rm=minimal"
-                    className="absolute -top-[54px] left-0 w-full h-[calc(100%+108px)] lg:top-0 lg:h-full border-0 pointer-events-none lg:pointer-events-auto"
-                    allow="autoplay; encrypted-media"
-                    allowFullScreen
+                  <video
+                    src="/CRM.mp4"
+                    autoPlay
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="h-full w-full object-contain bg-black"
                   />
-                  <div className="absolute inset-0 z-10 bg-transparent lg:hidden" />
                 </motion.div>
               </div>
             </motion.div>
