@@ -82,6 +82,6 @@ export const projects: Project[] = [
     category: "AI Agents & SaaS",
     videoUrl: "/Signflow.mp4",
     demoUrl: "https://signflow.codemate.build/",
-    previewImage: "/signflow.codemate.build_login.png",
+    previewImage: "/signflow.codemate.build_.png",
   },
 ];
