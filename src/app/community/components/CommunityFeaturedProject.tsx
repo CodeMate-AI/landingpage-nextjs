@@ -53,7 +53,7 @@ export default function CommunityFeaturedProject() {
       description: "Wireframes, UI component library, and navigation flows generated from natural language prompts.",
     },
     {
-      title: "BUILD · Code Mode",
+      title: "BUILD · Prototype Mode",
       description: "Complete full-stack scaffold, REST endpoints, database migrations, and auth system generated autonomously.",
     },
     {
