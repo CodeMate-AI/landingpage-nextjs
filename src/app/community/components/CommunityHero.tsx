@@ -2,23 +2,72 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { projects } from "../lib/communityProjects";
 
 const tickerProjects = [
   {
     id: "0",
     name: "Orbit CRM",
     category: "Enterprise CRMs",
-    highlight: "Autonomous Full-Stack Sales Pipeline & Client Workspace",
+    highlight: "Autonomous sales pipeline & client workspace.",
     tag: "Flagship Showcase",
+    demoUrl: "https://orbit-crm-og.codemate.build/",
   },
-  ...projects.map((p) => ({
-    id: p.id,
-    name: p.name,
-    category: p.category,
-    highlight: p.description,
+  {
+    id: "1",
+    name: "Support HUB",
+    category: "Enterprise CRMs",
+    highlight: "High-performance client inquiry & ticketing portal.",
     tag: "Built with CodeMate",
-  })),
+    demoUrl: "https://supporthub.codemate.build/",
+  },
+  {
+    id: "2",
+    name: "Smart Book",
+    category: "Developer Tools",
+    highlight: "Interactive developer notebook & markdown editor.",
+    tag: "Built with CodeMate",
+    demoUrl: "https://smartbook.codemate.build/",
+  },
+  {
+    id: "3",
+    name: "HRMS",
+    category: "Internal Utilities",
+    highlight: "Employee onboarding, leave tracking & payroll platform.",
+    tag: "Built with CodeMate",
+    demoUrl: "https://hrms.codemate.build/",
+  },
+  {
+    id: "4",
+    name: "Erpsphere",
+    category: "Enterprise CRMs",
+    highlight: "Cloud enterprise inventory & logistics management.",
+    tag: "Built with CodeMate",
+    demoUrl: "https://erpsphere.codemate.build/",
+  },
+  {
+    id: "5",
+    name: "Marketing Automation",
+    category: "AI Agents & SaaS",
+    highlight: "Omnichannel campaign automation & conversion console.",
+    tag: "Built with CodeMate",
+    demoUrl: "https://growthcloud.codemate.build/",
+  },
+  {
+    id: "6",
+    name: "SignFlow",
+    category: "AI Agents & SaaS",
+    highlight: "Secure legally-binding e-signature document workflows.",
+    tag: "Built with CodeMate",
+    demoUrl: "https://signflow.codemate.build/",
+  },
+  {
+    id: "7",
+    name: "CodeMate Meet",
+    category: "AI Agents & SaaS",
+    highlight: "Real-time WebRTC video conferencing & group calls.",
+    tag: "Built with CodeMate",
+    demoUrl: "https://meet.codemate.build/",
+  },
 ];
 
 export default function CommunityHero() {
@@ -62,25 +111,32 @@ export default function CommunityHero() {
           {[1, 2].map((setIndex) => (
             <div key={setIndex} className="flex shrink-0">
               {tickerProjects.map((item, idx) => (
-                <div
+                <a
                   key={`${setIndex}-${idx}`}
-                  className="flex min-w-[300px] max-w-[400px] shrink-0 flex-col gap-2 border-r border-zinc-800 border-t-2 border-t-transparent px-6 py-5 transition-colors duration-200 hover:border-t-[#3b82f6] hover:bg-zinc-900/60"
+                  href={item.demoUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group/item flex min-w-[280px] max-w-[340px] shrink-0 cursor-pointer flex-col gap-1.5 border-r border-zinc-800 border-t-2 border-t-transparent px-5 py-4 transition-all duration-200 hover:border-t-[#3b82f6] hover:bg-zinc-900/60"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-bold uppercase tracking-wider text-[#3b82f6]">
                       {item.category}
                     </span>
-                    <span className="font-mono text-[11px] font-medium text-zinc-500">
+                    <span className="flex items-center gap-1 font-mono text-[10px] font-medium text-zinc-500 transition-colors group-hover/item:text-cyan-400">
                       {item.tag}
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-0 transition-opacity group-hover/item:opacity-100">
+                        <path d="M7 17 17 7" />
+                        <path d="M7 7h10v10" />
+                      </svg>
                     </span>
                   </div>
-                  <div className="text-base font-bold text-white line-clamp-1 sm:text-lg">
+                  <div className="text-base font-bold text-white line-clamp-1 group-hover/item:text-white">
                     {item.name}
                   </div>
-                  <div className="text-xs leading-relaxed text-zinc-400 line-clamp-2">
+                  <div className="text-xs leading-relaxed text-zinc-400 line-clamp-1">
                     {item.highlight}
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           ))}
