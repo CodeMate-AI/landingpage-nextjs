@@ -125,11 +125,11 @@ export default function CommunityFeaturedProject() {
                       {i < sdlcSteps.length - 1 && <div className="mt-1 w-px flex-1 bg-zinc-800/80" style={{ minHeight: "2.2rem" }} />}
                     </div>
 
-                    <div>
+                    <div className={i < sdlcSteps.length - 1 ? "pb-3.5 sm:pb-2.5" : "pb-0"}>
                       <span className="block text-xs font-semibold text-white sm:text-sm">
                         {step.title}
                       </span>
-                      <span className="mt-0.5 block text-xs leading-relaxed text-zinc-400">
+                      <span className="mt-1 block text-xs leading-relaxed text-zinc-400 sm:mt-0.5">
                         {step.description}
                       </span>
                     </div>
