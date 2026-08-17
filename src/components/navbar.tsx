@@ -4,15 +4,8 @@ import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { Montserrat } from 'next/font/google';
 import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/app/utils/cn';
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-montserrat',
-});
 
 export default function Navbar() {
   const router = useRouter();
@@ -117,7 +110,7 @@ export default function Navbar() {
   const shouldShowAnnouncement = showAnnouncement && !isBlogPage && !isCommunityPage;
 
   return (
-    <div className={montserrat.className}>
+    <div>
       {/* ========================================== */}
       {/* UI SECTION: TOP ANNOUNCEMENT BANNER      */}
       {/* Marketing banner displayed above the nav */}
@@ -178,7 +171,7 @@ export default function Navbar() {
               <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
                 <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="" className='cursor-pointer' />
               </div>
-              <div className={`${montserrat.className} relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50`}>
+              <div className="relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50">
                 <span className=' flex gap-5 justify-center items-center z-50'>
                   <motion.h1
                     onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center  z-50  ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
@@ -216,7 +209,7 @@ export default function Navbar() {
                     <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Education</motion.h1>
                   </a>
                   <a href="https://app.codemate.ai" target='_blank'>
-                    <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap`}>Get Started</motion.button>
+                    <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap">Get Started</motion.button>
                   </a>
                 </span>
 
@@ -425,7 +418,7 @@ export default function Navbar() {
           className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 md:px-8 md:pl-8 py-[1.1rem] md:py-4 justify-between items-center z-[99999999999]`}>
           <img src="/codemateLogo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
           <motion.div
-            onClick={() => { setMenu(state => !state); }} className={`${montserrat.className} flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right`}>
+            onClick={() => { setMenu(state => !state); }} className="flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right">
             <Menu
               className={cn(
                 "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",

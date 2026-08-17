@@ -20,12 +20,6 @@ import EventOffer from './pricing/components/EventOffer';
 import { cn } from './utils/cn';
 import Navbar from '@/components/navbar';
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-montserrat',
-});
-
 
 // ==========================================
 // 1. MAIN COMPONENT DECLARATION
@@ -251,7 +245,7 @@ function Page() {
 
 
   return (
-    <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className={`${montserrat.className} bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]`} >
+    <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className="bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]" >
 
       {/* arrow for going to hero section */}
       <AnimatePresence>
@@ -290,7 +284,7 @@ function Page() {
                 className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left'>
 
 
-                <div className={`${montserrat.className} `}>
+                <div>
                   <div className='xxlHero z-50'>
                     <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
                       animate={{ opacity: 1, filter: "blur(0px)" }}
@@ -309,7 +303,7 @@ function Page() {
                       transition={{ duration: 0.1, delay: 0.8 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>AI</motion.span>
                   </div>
                 </div>
-                <div className={`${montserrat.className} flex flex-wrap justify-start gap-x-4 bg-gradient-to-b from-white to-gray-300/10 bg-clip-text text-transparent`}>
+                <div className="flex flex-wrap justify-start gap-x-4 bg-gradient-to-b from-white to-gray-300/10 bg-clip-text text-transparent">
                   <div className='pb-3'>
                     <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
                       animate={{ opacity: 1, filter: "blur(0px)" }}
@@ -325,7 +319,7 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)" }}
                   animate={{ opacity: 1, filter: "blur(0px)" }}
                   transition={{ duration: 0.4, delay: 1.5 }}
-                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-5 opacity-60 text-left max-w-[280px] sm:max-w-md md:max-w-2xl lg:max-w-none`}>
+                  className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-5 opacity-60 text-left max-w-[280px] sm:max-w-md md:max-w-2xl lg:max-w-none">
                   <p>Build and ship 20x faster with CodeMate AI</p>
                   <p>Your all-in-one accelerator to turn your ideas into code</p>
                 </motion.div>
@@ -360,7 +354,7 @@ function Page() {
                   initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
                   animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
                   transition={{ duration: 1, delay: 0.5 }}
-                  className={`${montserrat.className} flex flex-col-reverse sm:flex-row justify-start items-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm md:text-base lg:text-sm mt-6 lg:mt-10 w-full sm:w-auto`}
+                  className="flex flex-col-reverse sm:flex-row justify-start items-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm md:text-base lg:text-sm mt-6 lg:mt-10 w-full sm:w-auto"
                 >
                   <a href="/download" className="w-full sm:w-auto">
                     <motion.button
@@ -392,7 +386,7 @@ function Page() {
       initial={{opacity:0,display:'hidden',filter:'blur(10px)'}}
       animate={{opacity:1,filter:'blur(0px)',display:'block'}}
       transition={{duration:1,delay:8}}
-      className={`${montserrat.className} opacity-60 text-xl`}>You Think ! We Develop</motion.p> */}
+      className="opacity-60 text-xl">You Think ! We Develop</motion.p> */}
 
               {/* <motion.div 
    initial={{opacity:0}}
@@ -450,9 +444,9 @@ function Page() {
         {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
         {/* Features a sticky video player on the left and a scrollable list of products on the right */}
         {/* ========================================== */}
-        <div className={`${montserrat.className} mt-3 leading-tight text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-4 lg:pb-2 w-full text-center px-4 lg:px-0 `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer</div>
+        <div className="mt-3 leading-tight text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-4 lg:pb-2 w-full text-center px-4 lg:px-0 ">Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer</div>
 
-        <div className={`relative z-20 w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
+        <div className="relative z-20 w-full flex flex-col lg:flex-row items-start">
           {/* Left: Sticky video panel - desktop only */}
           <div className='hidden lg:flex sticky top-0 h-screen flex-1 items-center justify-center px-8'>
             <div className="flex flex-col gap-2 w-full max-w-[58vw]">
@@ -582,7 +576,7 @@ function Page() {
 
                 {/* Scrolling Title */}
                 <div className="w-[100vw] lg:w-[35vw] flex flex-col justify-center items-center text-center lg:items-start lg:text-left shrink-0 px-8 lg:px-0">
-                  <div className={`${montserrat.className} text-[clamp(2rem,10vw,3.5rem)] leading-[1.05] font-bold text-white`}>
+                  <div className="text-[clamp(2rem,10vw,3.5rem)] leading-[1.05] font-bold text-white">
                     What You'll
                     <div className="block">
                       <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Unlock</span>
@@ -626,7 +620,7 @@ function Page() {
                           {/* Top Text */}
                           <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
                             {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
-                            <h3 className={`${montserrat.className} text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
+                            <h3 className={`text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
                           </div>
 
                           {/* Image/Video Box */}
@@ -694,7 +688,7 @@ function Page() {
                   filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
                 }}
                 transition={{ duration: 0.6 }}
-                className={`${montserrat.className} text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+                className="text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto">
                 From <br /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl'>Web-Application</span>
               </motion.div>
             </div>
@@ -708,7 +702,7 @@ function Page() {
                 filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
               }}
               transition={{ duration: 0.6 }}
-              className={`${montserrat.className} text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+              className="text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto">
               From <br className='lg:hidden' /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>Web-Application</span>
             </motion.div>
           </div>
@@ -722,7 +716,7 @@ function Page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className={`${montserrat.className} text-[2.2rem] lg:text-[3rem] font-bold leading-[1.15]`}
+              className="text-[2.2rem] lg:text-[3rem] font-bold leading-[1.15]"
             >
               <span className="bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">Seamlessly </span>
               <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Integrated</span>
@@ -732,7 +726,7 @@ function Page() {
           </div>
           <SeamlessCarousel />
           <div className="mt-2 lg:mt-4 mb-2">
-            <div className={`${montserrat.className} text-xl lg:text-2xl pl-6 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
+            <div className="text-xl lg:text-2xl pl-6 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full">
               To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>IDE</span>
             </div>
           </div>
@@ -858,7 +852,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
 
       {/* trusted by section */}
-      <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
+      <div className="lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50">
         <div className='pt-[2rem] lg:pt-[4rem]'>
           <div className="px-8 lg:px-16 ">
             <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
@@ -935,7 +929,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
       {/* bento */}
       {/* <div className=' relative h-[170vh] w-full bg-zinc-950 text-white overflow-hidden'>
-   <div className={`${montserrat.className}  text-8xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-10 mb-6 pt-20 text-center pb-1`}>What<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> else</span> we got?</div>
+   <div className="text-8xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-10 mb-6 pt-20 text-center pb-1">What<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> else</span> we got?</div>
    
   <MagicBento 
   textAutoHide={true}
