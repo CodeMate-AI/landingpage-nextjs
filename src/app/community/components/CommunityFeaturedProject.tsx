@@ -21,6 +21,7 @@ function BrowserMockup() {
   );
 }
 
+// Renders the flagship featured project spotlight with SDLC journey milestones and media triggers.
 export default function CommunityFeaturedProject() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isDocsOpen, setIsDocsOpen] = useState(false);

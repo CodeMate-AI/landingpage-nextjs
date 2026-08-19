@@ -23,6 +23,7 @@ const tickerProjects = [
   })),
 ];
 
+// Renders the community hero banner with headline typography and continuous project ticker marquee.
 export default function CommunityHero() {
   return (
     <section className="w-full overflow-hidden pb-4 pt-8 sm:pb-6 sm:pt-12">

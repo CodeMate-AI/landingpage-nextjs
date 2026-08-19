@@ -14,6 +14,7 @@ interface ProjectCardProps {
   index?: number;
 }
 
+// Renders an individual showcase project card with category badges, video modal, and docs viewer.
 export default function CommunityProjectCard({ project, index = 0 }: ProjectCardProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
   const [isDocsOpen, setIsDocsOpen] = useState(false);

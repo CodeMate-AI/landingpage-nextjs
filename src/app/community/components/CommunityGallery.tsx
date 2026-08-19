@@ -6,9 +6,7 @@ import { projects, ProjectCategory } from "../lib/communityProjects";
 import CommunityFilterBar from "./CommunityFilterBar";
 import CommunityProjectCard from "./CommunityProjectCard";
 
-/**
- * CommunityGallery owns the active category state and renders the responsive grid.
- */
+// Renders the filterable showcase grid with category navigation and project counts.
 export default function CommunityGallery() {
   const [activeCategory, setActiveCategory] = useState<ProjectCategory>("All Projects");
   const [visibleCount, setVisibleCount] = useState(6);

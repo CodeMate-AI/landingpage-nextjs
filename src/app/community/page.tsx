@@ -7,6 +7,7 @@ import CommunityHero from "./components/CommunityHero";
 import CommunityFeaturedProject from "./components/CommunityFeaturedProject";
 import CommunityGallery from "./components/CommunityGallery";
 
+// Renders the primary community page route layout with custom cursor and showcase sections.
 export default function CommunityPage() {
   const containerRef = useRef<HTMLDivElement>(null);
 

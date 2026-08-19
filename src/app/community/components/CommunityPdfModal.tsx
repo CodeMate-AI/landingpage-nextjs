@@ -11,6 +11,7 @@ interface CommunityPdfModalProps {
   title: string;
 }
 
+// Renders an interactive modal dialog for viewing, expanding, and downloading project PDF documentation.
 export default function CommunityPdfModal({
   isOpen,
   onClose,
