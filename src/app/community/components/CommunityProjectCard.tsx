@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
+import CommunityPdfModal from "./CommunityPdfModal";
 import type { Project } from "../lib/communityProjects";
 
 /**
@@ -15,6 +16,7 @@ interface ProjectCardProps {
 
 export default function CommunityProjectCard({ project, index = 0 }: ProjectCardProps) {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -85,13 +87,13 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
               <path d="M7 7h10v10" />
             </svg>
           </a>
-          <a href="https://docs.codemate.ai" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-medium text-zinc-400 transition-colors hover:text-white">
+          <button type="button" onClick={() => setIsDocsOpen(true)} className="inline-flex items-center gap-1 text-xs font-medium text-zinc-400 transition-colors hover:text-white">
             View Docs
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
             </svg>
-          </a>
+          </button>
         </div>
       </div>
 
@@ -141,6 +143,13 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
         </AnimatePresence>,
         document.body
       )}
+
+      <CommunityPdfModal
+        isOpen={isDocsOpen}
+        onClose={() => setIsDocsOpen(false)}
+        pdfUrl={project.docsPdfUrl || "/Support Hub.pdf"}
+        title={project.name}
+      />
     </motion.article>
   );
 }

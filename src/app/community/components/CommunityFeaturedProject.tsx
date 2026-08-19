@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
+import CommunityPdfModal from "./CommunityPdfModal";
 
 /**
  * CommunityFeaturedProject showcases the flagship Orbit CRM demo with a mock browser
@@ -22,6 +23,7 @@ function BrowserMockup() {
 
 export default function CommunityFeaturedProject() {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  const [isDocsOpen, setIsDocsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -157,10 +159,9 @@ export default function CommunityFeaturedProject() {
             </svg>
           </motion.a>
 
-          <motion.a
-            href="https://docs.codemate.ai"
-            target="_blank"
-            rel="noreferrer"
+          <motion.button
+            type="button"
+            onClick={() => setIsDocsOpen(true)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="inline-flex shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full border border-white/15 bg-zinc-800/40 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-zinc-800/80 sm:gap-2 sm:px-6 sm:py-2.5 sm:text-sm"
@@ -170,7 +171,7 @@ export default function CommunityFeaturedProject() {
               <path d="M5 12h14" />
               <path d="m12 5 7 7-7 7" />
             </svg>
-          </motion.a>
+          </motion.button>
         </div>
       </motion.div>
 
@@ -220,6 +221,13 @@ export default function CommunityFeaturedProject() {
         </AnimatePresence>,
         document.body
       )}
+
+      <CommunityPdfModal
+        isOpen={isDocsOpen}
+        onClose={() => setIsDocsOpen(false)}
+        pdfUrl="/ORBIT CRM.pdf"
+        title="Orbit CRM"
+      />
     </section>
   );
 }
