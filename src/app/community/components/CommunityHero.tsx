@@ -53,7 +53,7 @@ export default function CommunityHero() {
           transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-[640px] text-base leading-relaxed text-zinc-400 sm:text-lg lg:text-[20px]"
         >
-          Explore production-grade platforms, developer tools, and internal utilities built autonomously with CodeMate's AI-native developer pipeline.
+          Explore production-grade platforms, developer tools, and internal utilities built autonomously with CodeMate's AI-native development pipeline.
         </motion.p>
       </div>
 
