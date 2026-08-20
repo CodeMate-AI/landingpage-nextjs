@@ -303,15 +303,15 @@ function Page() {
                       transition={{ duration: 0.1, delay: 0.8 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>AI</motion.span>
                   </div>
                 </div>
-                <div className="flex flex-wrap justify-start gap-x-4 bg-gradient-to-b from-white to-gray-300/10 bg-clip-text text-transparent">
+                <div className="flex flex-wrap justify-start gap-x-4">
                   <div className='pb-3'>
                     <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
                       animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.1, delay: 0.9 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>SDLC</motion.span>
+                      transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>SDLC</motion.span>
                     {' '}
                     <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
                       animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.1, delay: 1 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Agent</motion.span>
+                      transition={{ duration: 0.3, delay: 0.4 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Agent</motion.span>
                   </div>
                 </div>
 
