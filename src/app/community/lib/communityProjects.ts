@@ -109,6 +109,7 @@ export const projects: Project[] = [
     description:
       "A secure verification portal enabling automated background checks, credential validation, and previous employment record auditing.",
     category: "Internal Utilities",
+    videoUrl: "/Ex Employee .mp4",
     docsPdfUrl: "/ex emp.pdf",
     demoUrl: "https://ex-employee-verification-portal.vercel.app/",
     previewImage: "/ex-employee-verification-portal.vercel.app_.png",
