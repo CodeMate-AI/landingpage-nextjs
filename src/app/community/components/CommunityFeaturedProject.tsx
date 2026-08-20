@@ -61,7 +61,7 @@ export default function CommunityFeaturedProject() {
     },
     {
       title: "CORA · VS Code",
-      description: "In-IDE refactoring, automated PR reviews, unit tests, and performance audits with CORA agent.",
+      description: "In-IDE refactoring, unit tests, and performance audits with CORA agent.",
     },
   ];
 
