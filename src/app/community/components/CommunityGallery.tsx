@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { projects, ProjectCategory } from "../lib/communityProjects";
 import CommunityFilterBar from "./CommunityFilterBar";
 import CommunityProjectCard from "./CommunityProjectCard";
@@ -48,9 +48,11 @@ export default function CommunityGallery() {
       <CommunityFilterBar activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
 
       <div className="mt-4 grid w-full grid-cols-1 gap-6 sm:gap-8 md:grid-cols-2 lg:grid-cols-3">
-        {projectsToRender.map((project, i) => (
-          <CommunityProjectCard key={project.id} project={project} index={i} />
-        ))}
+        <AnimatePresence mode="popLayout">
+          {projectsToRender.map((project, i) => (
+            <CommunityProjectCard key={project.id} project={project} index={i} />
+          ))}
+        </AnimatePresence>
       </div>
 
       {/* Center-aligned 'Show More' Button */}

@@ -15,7 +15,6 @@ export interface Project {
   videoUrl?: string;
   docsPdfUrl?: string;
   demoUrl?: string;
-  docsUrl?: string;
 }
 
 export const projects: Project[] = [
