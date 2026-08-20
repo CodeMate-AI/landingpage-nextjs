@@ -81,7 +81,7 @@ export const projects: Project[] = [
   },
   {
     id: "6",
-    name: "SignFlow",
+    name: "E-Signature Tool",
     title: "Secure Document Signing",
     description:
       "A web-based document workflow portal supporting legally binding e-signatures, secure PDF tracking, and email reminders.",
