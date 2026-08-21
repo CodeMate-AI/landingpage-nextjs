@@ -236,7 +236,7 @@ export default function BlogPostClient({ post, posts }: Props) {
       <div className="end-article container">
         <div className="post-nav">
           {prevPost ? (
-            <Link href={`/blog/${prevPost.slug}`} className="post-nav-card">
+            <Link href={`/blog/${prevPost.slug}`} prefetch={true} className="post-nav-card">
               <span className="post-nav-label">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polyline points="15 18 9 12 15 6" />
@@ -249,7 +249,7 @@ export default function BlogPostClient({ post, posts }: Props) {
             <div></div>
           )}
           {nextPost ? (
-            <Link href={`/blog/${nextPost.slug}`} className="post-nav-card">
+            <Link href={`/blog/${nextPost.slug}`} prefetch={true} className="post-nav-card">
               <span className="post-nav-label">
                 Next
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -268,7 +268,7 @@ export default function BlogPostClient({ post, posts }: Props) {
         <h3 className="related-heading">Related posts</h3>
         <div className="related-grid">
           {relatedPosts.map((relatedPost) => (
-            <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`} className="card">
+            <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`} prefetch={true} className="card">
               <div className="card-visual" style={{ background: "#07111f" }}>
                 <div dangerouslySetInnerHTML={{ __html: relatedPost.visualMarkup ?? "" }} />
               </div>

@@ -24,9 +24,17 @@ export default async function BlogFeedPage() {
     const client = await clientPromise;
     const db = client.db("codemate_blog");
 
-    // Fetch posts and filter options in parallel
+    // Fetch posts and filter options in parallel with projection to avoid fetching heavy content ASTs
     const [rawPosts, filterDoc] = await Promise.all([
-      db.collection("blogs").find({ published: true }).sort({ publishedAt: -1 }).toArray(),
+      db
+        .collection("blogs")
+        .find({ published: true })
+        .project({
+          content: 0,
+          "publishedVersion.content": 0,
+        })
+        .sort({ publishedAt: -1 })
+        .toArray(),
       db.collection("filter_options").findOne({ _id: "global_filters" as any }),
     ]);
 

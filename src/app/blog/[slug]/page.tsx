@@ -301,12 +301,77 @@ function formatLinks(html: string): string {
   });
 }
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+export async function generateStaticParams() {
   try {
     const client = await clientPromise;
     const db = client.db("codemate_blog");
-    const post = await db.collection("blogs").findOne({ slug, published: true });
+    const posts = await db
+      .collection("blogs")
+      .find({ published: true })
+      .project({ slug: 1 })
+      .toArray();
+
+    return posts.map((post) => ({
+      slug: post.slug,
+    }));
+  } catch (error) {
+    console.warn("Could not prefetch static params for blogs during build:", error);
+    return [];
+  }
+}
+
+const getPostBySlug = React.cache(async (slug: string) => {
+  try {
+    const client = await clientPromise;
+    const db = client.db("codemate_blog");
+    return await db.collection("blogs").findOne({ slug, published: true });
+  } catch (error) {
+    console.error(`Failed to fetch blog post for slug "${slug}":`, error);
+    return null;
+  }
+});
+
+const getRelatedAndNavPosts = React.cache(async () => {
+  try {
+    const client = await clientPromise;
+    const db = client.db("codemate_blog");
+    return await db
+      .collection("blogs")
+      .find({ published: true })
+      .project({
+        slug: 1,
+        publishedAt: 1,
+        title: 1,
+        category: 1,
+        tags: 1,
+        coverImage: 1,
+        subheading: 1,
+        readTime: 1,
+        author: 1,
+        authorRole: 1,
+        publishedAtCustom: 1,
+        "publishedVersion.title": 1,
+        "publishedVersion.category": 1,
+        "publishedVersion.tags": 1,
+        "publishedVersion.coverImage": 1,
+        "publishedVersion.subheading": 1,
+        "publishedVersion.readTime": 1,
+        "publishedVersion.author": 1,
+        "publishedVersion.authorRole": 1,
+        "publishedVersion.publishedAtCustom": 1,
+      })
+      .sort({ publishedAt: -1 })
+      .toArray();
+  } catch (error) {
+    console.error("Failed to fetch related posts:", error);
+    return [];
+  }
+});
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const post = await getPostBySlug(slug);
 
     if (!post) {
       return {
@@ -345,9 +410,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const client = await clientPromise;
-  const db = client.db("codemate_blog");
-  const post = await db.collection("blogs").findOne({ slug, published: true });
+  const post = await getPostBySlug(slug);
 
   if (!post) notFound();
 
@@ -392,11 +455,7 @@ export default async function BlogPostPage({ params }: Props) {
     authorRole: source.authorRole || "Founder & CEO",
   };
 
-  const rawAllPosts = await db
-    .collection("blogs")
-    .find({ published: true })
-    .sort({ publishedAt: -1 })
-    .toArray();
+  const rawAllPosts = await getRelatedAndNavPosts();
 
   const allPosts = rawAllPosts.map((s) => {
     const sSource = s.publishedVersion || s;
