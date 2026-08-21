@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import CommunityHero from "./components/CommunityHero";
@@ -10,6 +10,16 @@ import CommunityGallery from "./components/CommunityGallery";
 // Renders the primary community page route layout with custom cursor and showcase sections.
 export default function CommunityPage() {
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    window.scrollTo({ top: 0, left: 0 });
+  }, []);
 
   return (
     <div

@@ -37,12 +37,10 @@ export default function CommunityFeaturedProject() {
       if (e.key === "Escape") setIsVideoOpen(false);
     };
 
-    if (isVideoOpen) {
-      document.addEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    if (!isVideoOpen) return;
+
+    document.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
