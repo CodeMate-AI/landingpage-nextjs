@@ -4,15 +4,8 @@ import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
-import { Montserrat } from 'next/font/google';
 import { useRouter, usePathname } from 'next/navigation';
 import { cn } from '@/app/utils/cn';
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-montserrat',
-});
 
 export default function Navbar() {
   const router = useRouter();
@@ -113,10 +106,11 @@ export default function Navbar() {
       : 0;
 
   const isBlogPage = pathname ? pathname.startsWith('/blog') : false;
-  const shouldShowAnnouncement = showAnnouncement && !isBlogPage;
+  const isCommunityPage = pathname ? pathname.startsWith('/community') : false;
+  const shouldShowAnnouncement = showAnnouncement && !isBlogPage && !isCommunityPage;
 
   return (
-    <div className={montserrat.className}>
+    <div>
       {/* ========================================== */}
       {/* UI SECTION: TOP ANNOUNCEMENT BANNER      */}
       {/* Marketing banner displayed above the nav */}
@@ -177,7 +171,7 @@ export default function Navbar() {
               <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
                 <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="" className='cursor-pointer' />
               </div>
-              <div className={`${montserrat.className} relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50`}>
+              <div className="relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50">
                 <span className=' flex gap-5 justify-center items-center z-50'>
                   <motion.h1
                     onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center  z-50  ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
@@ -215,7 +209,7 @@ export default function Navbar() {
                     <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Education</motion.h1>
                   </a>
                   <a href="https://app.codemate.ai" target='_blank'>
-                    <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap`}>Get Started</motion.button>
+                    <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap">Get Started</motion.button>
                   </a>
                 </span>
 
@@ -352,14 +346,6 @@ export default function Navbar() {
                         WebkitBackdropFilter: 'blur(50px)'
                       }} className=' h-auto w-full left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl overflow-hidden'>
                       <div className="py-4 px-2 flex flex-col gap-0">
-                        <a href="https://docs.codemate.ai/" target="_blank" className='w-full'>
-                          <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
-                            <h1>Docs</h1>
-                            <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-                            </div>
-                          </motion.div>
-                        </a>
                         <a href='/blog' className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <h1>Blogs</h1>
@@ -368,9 +354,25 @@ export default function Navbar() {
                             </div>
                           </motion.div>
                         </a>
+                        <a href="https://docs.codemate.ai/" target="_blank" className='w-full'>
+                          <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
+                            <h1>Docs</h1>
+                            <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                            </div>
+                          </motion.div>
+                        </a>
                         <a href='/contact' className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <h1>Contact Us</h1>
+                            <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                            </div>
+                          </motion.div>
+                        </a>
+                        <a href="/community" className='w-full'>
+                          <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
+                            <h1>Community</h1>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
                             </div>
@@ -416,7 +418,7 @@ export default function Navbar() {
           className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 md:px-8 md:pl-8 py-[1.1rem] md:py-4 justify-between items-center z-[99999999999]`}>
           <img src="/codemateLogo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
           <motion.div
-            onClick={() => { setMenu(state => !state); }} className={`${montserrat.className} flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right`}>
+            onClick={() => { setMenu(state => !state); }} className="flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right">
             <Menu
               className={cn(
                 "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",
@@ -646,6 +648,16 @@ export default function Navbar() {
 
                       {isResources &&
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
+                            <a href="/blog">
+                              <motion.h1 className='z-20 opacity-90'>Blogs</motion.h1>
+                              <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full top-0'>
+                                <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
+                                  <h1>Blogs</h1>
+                                </motion.div>
+                              </motion.div>
+                            </a>
+                          </div>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
                             <a href="https://docs.codemate.ai/" target='_blank'>
                               <motion.h1 className='z-20 opacity-90'>Docs</motion.h1>
@@ -657,21 +669,21 @@ export default function Navbar() {
                             </a>
                           </div>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
-                            <a href="/blog">
-                              <motion.h1 className='z-20 opacity-90'>Blogs</motion.h1>
-                              <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
-                                <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
-                                  <h1>Blogs</h1>
-                                </motion.div>
-                              </motion.div>
-                            </a>
-                          </div>
-                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
                             <a href="/contact">
                               <motion.h1 className='z-20 opacity-90'>Contact Us</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
                                   <h1>Contact Us</h1>
+                                </motion.div>
+                              </motion.div>
+                            </a>
+                          </div>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
+                            <a href="/community">
+                              <motion.h1 className='z-20 opacity-90'>Community</motion.h1>
+                              <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full top-0 '>
+                                <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
+                                  <h1>Community</h1>
                                 </motion.div>
                               </motion.div>
                             </a>

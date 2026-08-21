@@ -1,17 +1,16 @@
-
 import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
 
-import { Montserrat, Mulish } from 'next/font/google';
+import { Montserrat } from "next/font/google";
 
 const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], // Add what you need
-  variable: '--font-montserrat', // Optional, for CSS variable usage
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-montserrat",
+  display: "swap",
 });
-
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://codemate.ai'),
@@ -84,4 +83,3 @@ export default function RootLayout({
     </html>
   );
 }
-

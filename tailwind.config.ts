@@ -20,6 +20,7 @@ export default {
         'preserve-3d': 'preserve-3d',
       },
       animation: {
+        ticker: 'ticker 40s linear infinite',
         marquee: 'marquee var(--duration) infinite linear',
         shine: 'shine var(--duration) infinite linear',
         first: "moveVertical 30s ease infinite",
@@ -79,6 +80,10 @@ export default {
         sm: 'calc(var(--radius) - 4px)'
       },
       keyframes: {
+        ticker: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(-50%)' },
+        },
         marquee: {
           from: { transform: 'translateX(0)' },
           to: { transform: 'translateX(calc(-100% - var(--gap)))' },

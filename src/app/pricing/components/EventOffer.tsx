@@ -1,15 +1,8 @@
 'use client'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Montserrat } from 'next/font/google'
 import { ChevronDown, CheckCircle2, X } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-
-const montserrat = Montserrat({
-    subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
-    variable: '--font-montserrat',
-})
 
 interface EventOfferProps {
     badgeText?: string;
@@ -39,7 +32,7 @@ export default function EventOffer({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className={`fixed inset-0 z-[999999999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 ${montserrat.className}`}
+                    className="fixed inset-0 z-[999999999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
                     onClick={onClose}
                 >
                     <motion.div
@@ -122,7 +115,7 @@ export default function EventOffer({
 
                                         <button
                                             onClick={() => setShowDetails(!showDetails)}
-                                            className="group hidden inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm font-medium"
+                                            className="group inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm font-medium"
                                         >
                                             <span>{showDetails ? 'Hide details' : "What's included?"}</span>
                                             <motion.div
