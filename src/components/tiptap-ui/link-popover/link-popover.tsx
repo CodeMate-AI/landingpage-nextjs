@@ -271,6 +271,22 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
       }
     }, [autoOpenOnLinkActive, isActive])
 
+    useEffect(() => {
+      if (!editor) return
+
+      const handleToggle = () => {
+        if (canSet) {
+          setIsOpen((prev) => !prev)
+        }
+      }
+
+      const editorDom = editor.view.dom
+      editorDom.addEventListener("toggle-link-popover", handleToggle)
+      return () => {
+        editorDom.removeEventListener("toggle-link-popover", handleToggle)
+      }
+    }, [editor, canSet])
+
     if (!isVisible) {
       return null
     }

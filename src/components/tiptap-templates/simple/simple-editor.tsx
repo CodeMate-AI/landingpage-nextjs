@@ -9,6 +9,7 @@ import { textblockTypeInputRule, wrappingInputRule } from "@tiptap/core"
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
+import { Link as BaseLink } from "@tiptap/extension-link"
 import { Image } from "@tiptap/extension-image"
 import { TaskItem, TaskList } from "@tiptap/extension-list"
 import { TextAlign } from "@tiptap/extension-text-align"
@@ -20,6 +21,31 @@ import { Table } from "@tiptap/extension-table"
 import { TableRow } from "@tiptap/extension-table-row"
 import { TableHeader } from "@tiptap/extension-table-header"
 import { TableCell } from "@tiptap/extension-table-cell"
+
+const CustomLink = BaseLink.extend({
+  addKeyboardShortcuts() {
+    return {
+      "Mod-k": () => {
+        const event = new CustomEvent("toggle-link-popover")
+        this.editor.view.dom.dispatchEvent(event)
+        return true
+      },
+      "Mod-K": () => {
+        const event = new CustomEvent("toggle-link-popover")
+        this.editor.view.dom.dispatchEvent(event)
+        return true
+      },
+    }
+  },
+}).configure({
+  openOnClick: false,
+  enableClickSelection: true,
+  HTMLAttributes: {
+    class: "blog-link",
+    target: "_blank",
+    rel: "noopener noreferrer",
+  },
+})
 
 const CustomHeading = Heading.extend({
   addInputRules() {
@@ -418,11 +444,9 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       StarterKit.configure({
         heading: false,
         horizontalRule: false,
-        link: {
-          openOnClick: false,
-          enableClickSelection: true,
-        },
+        link: false,
       }),
+      CustomLink,
       CustomHeading,
       HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
