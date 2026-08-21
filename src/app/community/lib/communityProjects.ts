@@ -111,7 +111,7 @@ export const projects: Project[] = [
     category: "Internal Utilities",
     videoUrl: "/Ex Employee .mp4",
     docsPdfUrl: "/ex emp.pdf",
-    demoUrl: "https://ex-employee-verification-portal.vercel.app/",
+    demoUrl: "https://ex-employee-verification-portal.codemate.build/",
     previewImage: "/ex-employee-verification-portal.vercel.app_.png",
   },
 ];

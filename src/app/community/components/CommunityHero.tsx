@@ -31,7 +31,7 @@ export default function CommunityHero() {
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.45, delay: 0, ease: [0.16, 1, 0.3, 1] }}
           className="mb-5 font-mono text-sm font-semibold uppercase tracking-[0.15em] text-[#3b82f6] sm:mb-6 sm:text-base"
         >
           THE CODEMATE COMMUNITY
@@ -40,8 +40,8 @@ export default function CommunityHero() {
         <motion.h1
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-5 max-w-[840px] text-4xl font-bold tracking-[-0.03em] text-white sm:text-5xl lg:text-[58px] leading-[1.08]"
+          transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-5 max-w-[840px] text-4xl font-bold leading-[1.08] tracking-[-0.03em] text-white sm:text-5xl lg:text-[58px]"
         >
           Where engineering teams <br className="hidden sm:inline" />
           ship idea to production
@@ -50,14 +50,19 @@ export default function CommunityHero() {
         <motion.p
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="max-w-[640px] text-base leading-relaxed text-zinc-400 sm:text-lg lg:text-[20px]"
         >
           Explore production-grade platforms, developer tools, and internal utilities built autonomously with CodeMate's AI-native development pipeline.
         </motion.p>
       </div>
 
-      <div className="group relative w-full overflow-hidden border-y border-zinc-800 bg-zinc-950/60">
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
+        className="group relative w-full overflow-hidden border-y border-zinc-800 bg-zinc-950/60 transform-gpu"
+      >
         <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-20 bg-gradient-to-r from-zinc-950 to-transparent sm:w-36" />
         <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-20 bg-gradient-to-l from-zinc-950 to-transparent sm:w-36" />
 
@@ -95,7 +100,7 @@ export default function CommunityHero() {
             </div>
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
