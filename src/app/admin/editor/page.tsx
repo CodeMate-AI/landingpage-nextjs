@@ -2,6 +2,7 @@
 import React, { useCallback, useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
+import { DatePicker } from "@/components/ui/date-picker";
 
 // Default fallback taxonomy lists for categories, products, and use-case tags
 const DEFAULT_CATEGORIES = [
@@ -698,7 +699,7 @@ function EditorContent() {
           </div>
 
           {/* Dynamic Metadata overrides grid */}
-          <div className="grid grid-cols-1 gap-6 border-t border-[#27272a] pt-6 md:grid-cols-2">
+          <div className="relative z-30 grid grid-cols-1 gap-6 border-t border-[#27272a] pt-6 md:grid-cols-2">
             <div>
               <label className="mb-1.5 block text-sm font-medium text-neutral-400">Author Name</label>
               <input
@@ -723,13 +724,9 @@ function EditorContent() {
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-neutral-400">Date of Publish</label>
-              <input
-                type="text"
+              <DatePicker
                 value={publishedAtCustom}
-                onChange={(e) => setPublishedAtCustom(e.target.value)}
-                placeholder="e.g. July 22, 2026"
-                suppressHydrationWarning
-                className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
+                onChange={setPublishedAtCustom}
               />
             </div>
             <div>
