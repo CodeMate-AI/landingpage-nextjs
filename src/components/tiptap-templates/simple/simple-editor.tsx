@@ -4,6 +4,9 @@ import { useEffect, useRef, useState } from "react"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import { Plugin } from "@tiptap/pm/state"
 
+import { Heading } from "@tiptap/extension-heading"
+import { textblockTypeInputRule, wrappingInputRule } from "@tiptap/core"
+
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
 import { Image } from "@tiptap/extension-image"
@@ -17,6 +20,46 @@ import { Table } from "@tiptap/extension-table"
 import { TableRow } from "@tiptap/extension-table-row"
 import { TableHeader } from "@tiptap/extension-table-header"
 import { TableCell } from "@tiptap/extension-table-cell"
+
+const CustomHeading = Heading.extend({
+  addInputRules() {
+    return [
+      textblockTypeInputRule({
+        find: /^(#)\s$/,
+        type: this.type,
+        getAttributes: () => ({ level: 2 }),
+      }),
+      textblockTypeInputRule({
+        find: /^(##)\s$/,
+        type: this.type,
+        getAttributes: () => ({ level: 3 }),
+      }),
+      textblockTypeInputRule({
+        find: /^(###)\s$/,
+        type: this.type,
+        getAttributes: () => ({ level: 4 }),
+      }),
+      textblockTypeInputRule({
+        find: /^(####)\s$/,
+        type: this.type,
+        getAttributes: () => ({ level: 4 }),
+      }),
+    ]
+  },
+}).configure({
+  levels: [2, 3, 4],
+})
+
+const CustomTaskList = TaskList.extend({
+  addInputRules() {
+    return [
+      wrappingInputRule({
+        find: /^\s*(\[([ |x])\])\s$/,
+        type: this.type,
+      }),
+    ]
+  },
+})
 
 // --- UI Primitives ---
 import { Button } from "@/components/tiptap-ui-primitive/button"
@@ -373,12 +416,14 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
     },
     extensions: [
       StarterKit.configure({
+        heading: false,
         horizontalRule: false,
         link: {
           openOnClick: false,
           enableClickSelection: true,
         },
       }),
+      CustomHeading,
       HorizontalRule,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       Highlight.configure({
@@ -386,7 +431,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       }),
       Subscript,
       Superscript,
-      TaskList,
+      CustomTaskList,
       TaskItem.configure({ nested: true }),
       Image,
       ImageUploadNode.configure({

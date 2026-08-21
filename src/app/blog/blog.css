@@ -2047,17 +2047,31 @@ li code {
 }
 
 /* Blockquote */
+blockquote,
+.article-content blockquote,
 .blockquote {
-  border-left: 3px solid var(--accent);
-  padding-left: 24px;
-  margin: 36px 0;
+  position: relative;
+  border-left: 3px solid #60a5fa;
+  padding-left: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  margin: 28px 0;
   font-style: italic;
-  color: var(--text-primary);
-  font-size: 18px;
-  line-height: 1.55;
-  font-weight: 400;
+  color: var(--text-primary, #f1f5f9);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 0 8px 8px 0;
+  font-size: 17px;
+  line-height: 1.6;
 }
 
+blockquote p,
+.article-content blockquote p,
+.blockquote p {
+  margin: 0;
+  color: inherit;
+}
+
+blockquote cite,
 .blockquote cite {
   display: block;
   margin-top: 14px;
@@ -2065,6 +2079,50 @@ li code {
   font-size: 14px;
   color: var(--text-tertiary);
   font-family: var(--font-montserrat), sans-serif;
+}
+
+/* Horizontal Rule */
+hr,
+.article-content hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  margin: 36px 0;
+}
+
+/* Highlight / Mark */
+mark,
+.article-content mark {
+  background-color: rgba(250, 204, 21, 0.25);
+  color: #fef08a;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* Task List */
+ul[data-type="taskList"],
+.article-content ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+ul[data-type="taskList"] li,
+.article-content ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+ul[data-type="taskList"] li > label,
+.article-content ul[data-type="taskList"] li > label {
+  user-select: none;
+  margin-top: 3px;
+}
+
+ul[data-type="taskList"] li > div,
+.article-content ul[data-type="taskList"] li > div {
+  flex: 1 1 auto;
 }
 
 /* Insight Card */

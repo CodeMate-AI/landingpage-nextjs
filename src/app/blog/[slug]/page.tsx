@@ -422,8 +422,20 @@ export default async function BlogPostPage({ params }: Props) {
 
   const rawHtml = generateHTML(source.content, extensions);
   const cleanHtml = DOMPurify.sanitize(rawHtml, {
-    ALLOWED_TAGS: ["h1", "h2", "h3", "p", "a", "img", "ul", "ol", "li", "strong", "em", "code", "pre", "table", "thead", "tbody", "tr", "th", "td", "span", "div", "video", "s", "del", "strike", "u", "sub", "sup", "mark", "input", "label"],
-    ALLOWED_ATTR: ["href", "src", "alt", "class", "target", "rel", "id", "title", "controls", "muted", "autoplay", "loop", "playsinline", "type", "style", "checked", "disabled"],
+    ALLOWED_TAGS: [
+      "h1", "h2", "h3", "h4", "h5", "h6",
+      "p", "a", "img", "ul", "ol", "li", "strong", "em", "code", "pre",
+      "table", "thead", "tbody", "tr", "th", "td", "colgroup", "col",
+      "span", "div", "video", "s", "del", "strike", "u", "sub", "sup", "mark",
+      "input", "label", "blockquote", "hr", "br", "figure", "figcaption", "cite",
+      "b", "i", "summary", "details"
+    ],
+    ALLOWED_ATTR: [
+      "href", "src", "alt", "class", "target", "rel", "id", "title",
+      "controls", "muted", "autoplay", "loop", "playsinline", "type",
+      "style", "checked", "disabled", "colspan", "rowspan", "colwidth",
+      "width", "height", "name", "data-type", "data-checked"
+    ],
   });
 
   const sections = source.sections && source.sections.length > 0 ? source.sections : extractSectionsFromTiptapJson(source.content);
