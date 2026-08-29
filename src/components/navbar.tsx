@@ -212,7 +212,7 @@ export default function Navbar() {
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} onClick={() => { router.push('/pricing?product=cora') }} className='opacity-65'>Pricing</motion.h1>
                   <a href='https://edu.codemate.ai/' target='_blank'>
-                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Education</motion.h1>
+                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Academy</motion.h1>
                   </a>
                   <a href="https://app.codemate.ai" target='_blank'>
                     <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap`}>Get Started</motion.button>
@@ -682,7 +682,7 @@ export default function Navbar() {
                     <motion.div onClick={() => { setMenu(false); handleFeaturesClick(); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>FEATURES</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
                     <motion.div onClick={() => { setMenu(false); router.push('/pricing?product=cora') }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
                     <a href='https://edu.codemate.ai/' target='_blank'>
-                      <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>07</p></motion.div>
+                      <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>ACADEMY</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>07</p></motion.div>
                     </a>
                     <a href="https://app.codemate.ai" target="_blank">
                       <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>GET STARTED</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>08</p></motion.div>
