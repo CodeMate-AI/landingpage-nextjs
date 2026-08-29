@@ -24,7 +24,7 @@ const blogVisualMap: Record<number, React.ComponentType> = {
 const defaultCategories = [
   "Product",
   "CORA Updates",
-  "C0 Updates",
+  "Work Updates",
   "Build Updates",
   "Engineering",
   "Engineering & Comparisons",
@@ -51,7 +51,7 @@ const tickerItems = blogPosts.map((post) => {
   };
 });
 
-const productFilters = ["CORA", "C0", "C0 Web", "Build", "AI Terminal", "Academy", "PR Review Agent"] as const;
+const productFilters = ["CORA", "Work", "Work Web", "Build", "AI Terminal", "Academy", "PR Review Agent"] as const;
 const useCaseFilters = ["Code Review", "Agents", "Security", "Enterprise", "Onboarding", "Testing"] as const;
 
 // Unique tag labels derived from posts for quick-filter pills

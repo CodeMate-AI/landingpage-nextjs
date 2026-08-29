@@ -62,7 +62,7 @@ export const buildConfig: ProductConfig = {
  */
 export const c0Config: ProductConfig = {
     name: 'c0',
-    displayName: 'C0',
+    displayName: 'Work',
     color: '#8b5cf6', // Purple
     features: [
         {

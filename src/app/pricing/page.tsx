@@ -196,7 +196,7 @@ type Product = 'build' | 'cora' | 'c0'
 const PRODUCTS: { key: Product; label: string }[] = [
   { key: 'build', label: 'Build' },
   { key: 'cora',  label: 'Cora'  },
-  { key: 'c0',    label: 'C0'    },
+  { key: 'c0',    label: 'Work'  },
 ]
 
 // ==========================================
