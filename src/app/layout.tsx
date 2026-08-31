@@ -3,6 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 
 import { Montserrat, Mulish } from 'next/font/google';
 
@@ -52,7 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <title>CodeMate AI | Your Professional And Secured AI Pair Programmer</title>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -63,8 +64,10 @@ export default function RootLayout({
         className={`${montserrat.className} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning
       >
-        {children}
-        <Analytics />
+        <CurrencyProvider>
+          {children}
+          <Analytics />
+        </CurrencyProvider>
       </body>
       <Script
         id="structured-data"
