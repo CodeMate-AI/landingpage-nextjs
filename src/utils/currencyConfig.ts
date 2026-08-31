@@ -32,11 +32,11 @@ export interface ExchangeRateStore {
 export const DEFAULT_EXCHANGE_RATES: ExchangeRateStore = {
   rates: {
     USD: 1,
-    INR: 85,
-    EUR: 0.92,
+    INR: 95.45,
+    EUR: 0.86,
   },
-  lastUpdated: '2026-08-30T00:00:00Z',
-  source: 'baseline_market_rates',
+  lastUpdated: '2026-08-31T00:00:00Z',
+  source: 'live_market_rates',
 };
 
 export const EXCHANGE_RATE_STORE: ExchangeRateStore = DEFAULT_EXCHANGE_RATES;
