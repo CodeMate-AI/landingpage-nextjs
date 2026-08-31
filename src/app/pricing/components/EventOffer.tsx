@@ -122,7 +122,7 @@ export default function EventOffer({
 
                                         <button
                                             onClick={() => setShowDetails(!showDetails)}
-                                            className="group hidden inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm font-medium"
+                                            className="group inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm font-medium"
                                         >
                                             <span>{showDetails ? 'Hide details' : "What's included?"}</span>
                                             <motion.div
@@ -155,7 +155,7 @@ export default function EventOffer({
                                         {[
                                             { name: 'Build', features: ['Full Pro Plan', 'Unlimited Agents'] },
                                             { name: 'CORA', features: ['30 AI Credits', 'Context-aware'] },
-                                            { name: 'C0', features: ['Smart Completion', 'Real-time Analysis'] }
+                                            { name: 'Work', features: ['Smart Completion', 'Real-time Analysis'] }
                                         ].map((item, idx) => (
                                             <div key={idx} className="bg-zinc-800/30 p-4 rounded-xl border border-zinc-700/30">
                                                 <div className="flex justify-between items-center mb-2">

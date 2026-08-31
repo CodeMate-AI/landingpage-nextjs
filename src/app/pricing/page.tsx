@@ -1,9 +1,12 @@
 'use client'
-import React, { useRef, useState, useLayoutEffect, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useLayoutEffect, useEffect, useCallback, useMemo } from 'react'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Montserrat } from 'next/font/google'
 import Footer from '@/components/footer'
+import RoiCalculator from './components/RoiCalculator'
+import CurrencySelector from '@/components/CurrencySelector'
+import { useCurrency } from '@/context/CurrencyContext'
 import {
   Accordion,
   AccordionItem,
@@ -85,9 +88,9 @@ const CORA_PLANS = [
     yearlyCtaLink: '#',
     isCora: true,
     billingPeriods: [
-      { label: 'Daily',   price: '1',   ctaText: 'Get Pro – $1/day',   ctaLink: '' },
-      { label: 'Weekly',  price: '5',   ctaText: 'Get Pro – $5/week',  ctaLink: '' },
-      { label: 'Monthly', price: '20',  ctaText: 'Get Pro – $20/mo',   ctaLink: '' },
+      { label: 'Daily',   price: '1',   ctaText: 'Get Pro', ctaLink: '' },
+      { label: 'Weekly',  price: '5',   ctaText: 'Get Pro', ctaLink: '' },
+      { label: 'Monthly', price: '20',  ctaText: 'Get Pro', ctaLink: '' },
     ],
   },
   {
@@ -104,9 +107,9 @@ const CORA_PLANS = [
     yearlyCtaLink: '#',
     isCora: true,
     billingPeriods: [
-      { label: 'Daily',   price: '5',   ctaText: 'Get Max – $5/day',   ctaLink: '' },
-      { label: 'Weekly',  price: '25',  ctaText: 'Get Max – $25/week', ctaLink: '' },
-      { label: 'Monthly', price: '100', ctaText: 'Get Max – $100/mo',  ctaLink: '' },
+      { label: 'Daily',   price: '5',   ctaText: 'Get Max', ctaLink: '' },
+      { label: 'Weekly',  price: '25',  ctaText: 'Get Max', ctaLink: '' },
+      { label: 'Monthly', price: '100', ctaText: 'Get Max', ctaLink: '' },
     ],
   },
   {
@@ -196,7 +199,7 @@ type Product = 'build' | 'cora' | 'c0'
 const PRODUCTS: { key: Product; label: string }[] = [
   { key: 'build', label: 'Build' },
   { key: 'cora',  label: 'Cora'  },
-  { key: 'c0',    label: 'C0'    },
+  { key: 'c0',    label: 'Work'  },
 ]
 
 // ==========================================
@@ -208,10 +211,11 @@ function Page() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const pageRef = useRef<HTMLDivElement>(null)
+  const { formatPrice } = useCurrency()
 
   // Read ?product= from URL on first render, fall back to 'cora'
   const initialProduct = (): Product => {
-    const param = searchParams.get('product')?.toLowerCase()
+    const param = searchParams?.get('product')?.toLowerCase()
     return (param === 'build' || param === 'cora' || param === 'c0') ? param : 'cora'
   }
   const [selectedProduct, setSelectedProduct] = useState<Product>(initialProduct)
@@ -277,6 +281,13 @@ function Page() {
   }, [isLoadingPlans])
 
   const maxPlanInfo = buildMaxPlanInfo(categorizedPlans?.ultimatePlan)
+  const currentPlans = categorizedPlans?.[selectedProduct] ?? []
+  const dynamicPlanRates = useMemo(() => {
+    const pro = currentPlans.find((p) => p.display_name.toLowerCase() === 'pro')?.price?.monthly ?? 20
+    const teams = currentPlans.find((p) => p.display_name.toLowerCase() === 'teams')?.price?.monthly ?? 30
+    const max = categorizedPlans?.ultimatePlan?.price?.monthly ?? currentPlans.find((p) => p.display_name.toLowerCase() === 'max')?.price?.monthly ?? 100
+    return { pro, teams, max }
+  }, [currentPlans, categorizedPlans])
 
   return (
     <div ref={pageRef} className={`${montserrat.className} w-full bg-zinc-950`}>
@@ -355,6 +366,9 @@ function Page() {
       <div className="flex flex-col pt-32 pb-1 text-center">
         <h1 className="text-xl lg:text-4xl font-semibold text-primary">Pricing</h1>
         <p className="text-lg lg:text-4xl mt-1 opacity-60">Choose a plan which feels right for you.</p>
+        <div className="mt-4 flex justify-center">
+          <CurrencySelector />
+        </div>
       </div>
 
       {/* ── Product tab selector ── */}
@@ -469,6 +483,7 @@ function Page() {
         </>
       )}
 
+      <RoiCalculator planRatesUsd={dynamicPlanRates} />
       <FAQ />
       <Footer />
     </div>
@@ -528,6 +543,7 @@ function buildFeatureConfig(mobile: boolean): Record<string, { label: string; re
 // Renders the detailed feature comparison grid for Desktop and Accordion for Mobile.
 // ==========================================
 function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProduct: string }) {
+  const { formatPrice } = useCurrency()
   const proPlan   = plans.find((p) => p.display_name.toLowerCase() === 'pro')
   const teamsPlan = plans.find((p) => p.display_name.toLowerCase() === 'teams')
   const maxPlan   = plans.find((p) => p.display_name.toLowerCase() === 'max')
@@ -549,7 +565,7 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProdu
               <div key={i} className="flex flex-col items-center gap-2">
                 <span className="font-semibold">{plan.display_name}</span>
                 <span className="text-xl opacity-35">
-                  {plan.display_name === 'Enterprise' ? 'Custom' : plan.display_name.toLowerCase() === 'max' ? '$100/mo' : `$${plan.price?.monthly ?? 0}/mo`}
+                  {plan.display_name === 'Enterprise' ? 'Custom' : plan.display_name.toLowerCase() === 'max' ? `${formatPrice(100)}/mo` : `${formatPrice(plan.price?.monthly ?? 0)}/mo`}
                 </span>
               </div>
             ))}

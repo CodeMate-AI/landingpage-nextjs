@@ -4,6 +4,7 @@ import { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import { Check, ChevronDown } from 'lucide-react'
 import MostRecommendedBadge from './MostRecommendedBadge'
 import type { FeaturesHeader } from '@/utils/planUtils'
+import { useCurrency } from '@/context/CurrencyContext'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -165,6 +166,7 @@ const PlanCard = ({
   showAllFeatures?: boolean
   onToggleFeatures?: () => void
 }) => {
+  const { currency, formatPrice, convertPrice, config } = useCurrency()
   const [isAnnual, setIsAnnual] = useState(planInfo.isAnnual ?? !planInfo.monthlyPrice)
   const [selectedPeriodIdx, setSelectedPeriodIdx] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
@@ -214,7 +216,10 @@ const PlanCard = ({
 
   const savings = (() => {
     if (hasBillingPeriods || !isAnnual || !planInfo.monthlyPrice) return 0
-    return Math.round(parseFloat(planInfo.monthlyPrice) * 12 - parseFloat(planInfo.yearlyPrice))
+    const rawMonthly = parseFloat(planInfo.monthlyPrice)
+    const rawYearly = parseFloat(planInfo.yearlyPrice)
+    if (Number.isNaN(rawMonthly) || Number.isNaN(rawYearly)) return 0
+    return Math.round(convertPrice(rawMonthly * 12 - rawYearly))
   })()
 
   return (
@@ -267,14 +272,14 @@ const PlanCard = ({
                 transition={{ duration: 0.15 }}
                 className="text-2xl font-semibold text-white font-sans"
               >
-                ${currentPrice}
+                {formatPrice(currentPrice)}
               </motion.span>
               <span className="text-sm text-zinc-400">
                 {activePeriod ? `/ ${activePeriod.label.toLowerCase()}` : isAnnual ? '/ year' : '/ month'}
               </span>
               {savings > 0 && (
                 <span className="ml-1 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-green-500/15 text-green-400 border border-green-500/20">
-                  Save ${savings}
+                  Save {config.symbol}{savings.toLocaleString()}
                 </span>
               )}
             </div>

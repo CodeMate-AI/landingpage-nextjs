@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useCurrency } from '@/context/CurrencyContext'
 
 interface MaxPlanCardProps {
   planInfo: {
@@ -15,11 +16,13 @@ interface MaxPlanCardProps {
 }
 
 const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
+  const { formatPrice, convertPrice, config } = useCurrency()
   const [isAnnual, setIsAnnual] = useState(false)
 
   const currentPrice = isAnnual ? planInfo.yearlyPrice || '2500' : planInfo.monthlyPrice
   const currentCtaLink = isAnnual ? planInfo.yearlyCtaLink : planInfo.monthlyCtaLink
   const periodLabel = isAnnual ? '/ year' : '/ month'
+  const maxSavings = convertPrice(500)
 
   return (
     <div className="flex flex-col items-center w-full px-4 lg:px-[6vw] gap-6 pt-8 lg:pt-12">
@@ -63,7 +66,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
           </div>
 
           <p className="text-zinc-400 text-lg leading-relaxed max-w-2xl">
-            Get unrestricted access to every CodeMate product — CORA, BUILD, and C0.
+            Get unrestricted access to every CodeMate product — CORA, BUILD, and Work.
             Powered by top-tier models and unmetered requests.
             This is the complete system, without constraints.
           </p>
@@ -75,7 +78,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
                 <img src="/Build_Logo.png" alt="Build" className="w-full h-full object-contain scale-[1.55]" />
               </div>
               <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-2 hover:border-zinc-500 transition-all hover:scale-110">
-                <img src="/Co_Logo.png" alt="C0" className="w-full h-full object-contain" />
+                <img src="/Co_Logo.png" alt="Work" className="w-full h-full object-contain" />
               </div>
               <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-2 hover:border-zinc-500 transition-all hover:scale-110">
                 <img src="/CORA_Logo.png" alt="CORA" className="w-full h-full object-contain" />
@@ -97,7 +100,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
                     animate={{ opacity: 1, x: 0 }}
                     className="bg-blue-600/20 text-blue-400 text-[10px] px-2 py-0.5 rounded-full font-bold border border-blue-500/30"
                   >
-                    SAVE $500
+                    SAVE {config.symbol}{maxSavings.toLocaleString()}
                   </motion.span>
                 )}
                 <span className={`text-sm font-medium transition-colors ${isAnnual ? 'text-white' : 'text-zinc-400'}`}>
@@ -126,7 +129,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                 className="text-4xl lg:text-5xl font-bold text-white"
               >
-                ${currentPrice}
+                {formatPrice(currentPrice)}
               </motion.span>
               <span className="text-zinc-400 text-sm lg:text-lg">{periodLabel}</span>
             </div>
