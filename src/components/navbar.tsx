@@ -212,7 +212,7 @@ export default function Navbar() {
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} onClick={() => { router.push('/pricing?product=cora') }} className='opacity-65'>Pricing</motion.h1>
                   <a href='https://edu.codemate.ai/' target='_blank'>
-                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Education</motion.h1>
+                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false) }} whileHover={{ opacity: 1 }} className='opacity-65'>Academy</motion.h1>
                   </a>
                   <a href="https://app.codemate.ai" target='_blank'>
                     <motion.button whileHover={{ opacity: 1, scale: 1.05 }} className={`${montserrat.className} px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap`}>Get Started</motion.button>
@@ -239,7 +239,7 @@ export default function Navbar() {
                               <div className="w-8 flex justify-center">
                                 <img src="/Co_Logo.png" alt="Chat" className="size-5 object-contain" />
                               </div>
-                              <h1>C0</h1>
+                              <h1>Work</h1>
                             </div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -278,9 +278,9 @@ export default function Navbar() {
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 object-contain" />
+                                <img src="/Co_Logo.png" alt="Work Extension" className="size-5 object-contain" />
                               </div>
-                              <h1 className="text-nowrap">C0 Extension</h1>
+                              <h1 className="text-nowrap">Work Extension</h1>
                             </div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -494,14 +494,14 @@ export default function Navbar() {
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/Co_Logo.png" alt="Chat" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
-                                <motion.h1>C0</motion.h1>
+                                <motion.h1>Work</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/Co_Logo.png" alt="C0" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                    <img src="/Co_Logo.png" alt="Work" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
-                                  <h1>C0</h1>
+                                  <h1>Work</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -550,14 +550,14 @@ export default function Navbar() {
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
-                                <motion.h1>C0 Extension</motion.h1>
+                                <motion.h1>Work Extension</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/Co_Logo.png" alt="C0 Extension" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                    <img src="/Co_Logo.png" alt="Work Extension" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
-                                  <h1>C0 Extension</h1>
+                                  <h1>Work Extension</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -682,7 +682,7 @@ export default function Navbar() {
                     <motion.div onClick={() => { setMenu(false); handleFeaturesClick(); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>FEATURES</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>05</p></motion.div>
                     <motion.div onClick={() => { setMenu(false); router.push('/pricing?product=cora') }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>PRICING</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
                     <a href='https://edu.codemate.ai/' target='_blank'>
-                      <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>EDUCATION</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>07</p></motion.div>
+                      <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>ACADEMY</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>07</p></motion.div>
                     </a>
                     <a href="https://app.codemate.ai" target="_blank">
                       <motion.div whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><h1 className='MenuText'>GET STARTED</h1><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>08</p></motion.div>

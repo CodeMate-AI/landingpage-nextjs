@@ -151,7 +151,7 @@ export default function Blog3Content() {
         </p>
         <ul className="list-disc pl-6 space-y-2.5 mb-8 text-slate-300">
           <li>
-            <a href="https://docs.codemate.ai/c0" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline font-bold">C0</a> for research, feasibility, and requirement intelligence
+            <a href="https://docs.codemate.ai/c0" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline font-bold">CodeMate Work</a> for research, feasibility, and requirement intelligence
           </li>
           <li>
             <a href="https://docs.codemate.ai/build-agent" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline font-bold">CodeMate Build</a> for building production-ready applications
