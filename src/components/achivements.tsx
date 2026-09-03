@@ -4,6 +4,7 @@ import { Montserrat } from 'next/font/google';
 import { useState, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import { motion } from 'framer-motion'
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], // Add what you need
@@ -409,12 +410,7 @@ function Achivements() {
           className='hidden lg:flex mr-4 xl:mr-6 size-16 rounded-full cursor-pointer text-white opacity-70 hover:opacity-100 items-center justify-center z-20 select-none shrink-0'
           aria-label="Previous milestone"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width={56} height={56} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M21 12h-12" />
-            <path d="M13 16l-4 -4l4 -4" />
-            <path d="M12 3a9 9 0 1 0 0 18" />
-          </svg>
+          <ArrowLeft size={36} strokeWidth={2} />
         </motion.div>
 
         <div
@@ -439,12 +435,7 @@ function Achivements() {
           className='hidden lg:flex ml-4 xl:ml-6 size-16 rounded-full cursor-pointer text-white opacity-70 hover:opacity-100 items-center justify-center z-20 select-none shrink-0'
           aria-label="Next milestone"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width={56} height={56} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 12h12" />
-            <path d="M11 8l4 4l-4 4" />
-            <path d="M12 21a9 9 0 0 0 0 -18" />
-          </svg>
+          <ArrowRight size={36} strokeWidth={2} />
         </motion.div>
       </div>
 
@@ -457,12 +448,7 @@ function Achivements() {
           className='size-16 rounded-full cursor-pointer text-zinc-400 hover:text-white flex items-center justify-center select-none'
           aria-label="Previous milestone"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M21 12h-12" />
-            <path d="M13 16l-4 -4l4 -4" />
-            <path d="M12 3a9 9 0 1 0 0 18" />
-          </svg>
+          <ArrowLeft size={36} strokeWidth={2} />
         </motion.div>
 
         <motion.div
@@ -472,12 +458,7 @@ function Achivements() {
           className='size-16 rounded-full cursor-pointer text-zinc-400 hover:text-white flex items-center justify-center select-none'
           aria-label="Next milestone"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc">
-            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-            <path d="M3 12h12" />
-            <path d="M11 8l4 4l-4 4" />
-            <path d="M12 21a9 9 0 0 0 0 -18" />
-          </svg>
+          <ArrowRight size={36} strokeWidth={2} />
         </motion.div>
       </div>
     </div>
