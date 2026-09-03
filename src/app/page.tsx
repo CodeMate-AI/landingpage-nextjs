@@ -310,8 +310,8 @@ export default function Page() {
       {/* SECTION 2: PRODUCT SUITE SHOWCASE                                         */}
       {/* Grid of live CodeMate products with edge-to-edge mockup previews          */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-12 sm:pt-20 pb-14 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto flex flex-col items-center">
+      <section className="w-full bg-zinc-950 py-20 lg:py-28 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto flex flex-col items-center">
           <span className="font-mono text-xs sm:text-sm uppercase tracking-widest text-neutral-400 text-center">
             Introducing CodeMate AI
           </span>
@@ -326,16 +326,16 @@ export default function Page() {
             From developers to non-developers, an autonomous teammate that assists you in shipping code with AI.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full mt-10 sm:mt-14">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full mt-12 sm:mt-16">
             {products.map((product, i) => (
               <a
                 key={i}
                 href={product.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-5 sm:p-6 transition-colors duration-200"
+                className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-6 transition-colors duration-200"
               >
-                <div className="relative h-[220px] sm:h-[260px] lg:h-[280px] w-full rounded-xl overflow-hidden bg-neutral-900 border border-white/10 mb-5">
+                <div className="relative h-[240px] sm:h-[260px] lg:h-[280px] w-full rounded-xl overflow-hidden bg-neutral-900/60 border border-white/10 mb-5 flex items-center justify-center">
                   <img
                     src={product.img}
                     alt={product.title}
@@ -369,8 +369,8 @@ export default function Page() {
       {/* SECTION 3: SOCIAL PROOF & PARTNER LOGOS                                   */}
       {/* Infinite marquee displaying trusted developer and enterprise brand logos  */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-14 pb-16 overflow-hidden border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="w-full bg-zinc-950 py-16 sm:py-20 overflow-hidden border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold pb-1 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
             <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
               Trusted{' '}
@@ -382,7 +382,7 @@ export default function Page() {
           </p>
         </div>
 
-        <div className="relative flex justify-center items-center overflow-hidden mt-10">
+        <div className="relative flex justify-center items-center overflow-hidden mt-10 sm:mt-12">
           <div className="absolute -left-6 top-0 bg-zinc-950 h-full w-24 sm:w-36 blur-2xl z-10 pointer-events-none" />
           <div className="absolute -right-6 top-0 bg-zinc-950 h-full w-24 sm:w-36 blur-2xl z-10 pointer-events-none" />
 
@@ -403,7 +403,7 @@ export default function Page() {
       {/* SECTION 4: PLATFORM CAPABILITIES (WHAT YOU’LL UNLOCK)                     */}
       {/* Sticky feature index on the left with interactive capability card grid    */}
       {/* ========================================================================= */}
-      <section id="features" className="w-full bg-zinc-950 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      <section id="features" className="w-full bg-zinc-950 py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
           <div className="w-full lg:w-1/3 lg:sticky lg:top-32 lg:self-start">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">
@@ -422,13 +422,13 @@ export default function Page() {
             {unlockFeatures.map((item, i) => (
               <div
                 key={i}
-                className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-5 transition-colors duration-200"
+                className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-5 sm:p-6 transition-colors duration-200"
               >
                 <div>
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-3">
                     {item.title}
                   </h3>
-                  <div className="relative h-[180px] sm:h-[200px] w-full rounded-xl overflow-hidden bg-neutral-900 border border-white/10 flex items-center justify-center p-2 mb-4">
+                  <div className="relative h-[180px] sm:h-[200px] w-full rounded-xl overflow-hidden bg-neutral-900/60 border border-white/10 flex items-center justify-center p-2 mb-4">
                     <img
                       src={item.media}
                       alt={item.title}
@@ -446,60 +446,56 @@ export default function Page() {
       </section>
 
       {/* ========================================================================= */}
-      {/* SECTION 5: PERFORMANCE & IMPACT METRICS                                   */}
-      {/* High-visibility statistics demonstrating speed and code quality gains     */}
+      {/* SECTION 5 & 6: PERFORMANCE METRICS & SHOWCASE VIDEO                       */}
+      {/* Continuous showcase combining 3 impact metrics and embedded video box     */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-20 sm:pt-24 lg:pt-32 pb-16 sm:pb-20 lg:pb-24 px-6 sm:px-12 lg:px-20 border-t border-white/5">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-around items-center md:items-start gap-12 md:gap-14 lg:gap-20 text-center">
-            <div className="flex flex-col items-center gap-4 w-full sm:w-[240px] lg:w-[280px] text-center">
-              <div className="h-auto lg:h-[96px] flex items-center justify-center">
-                <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
+      <section className="w-full bg-zinc-950 py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col items-center">
+          {/* Metrics Row */}
+          <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row justify-around items-center md:items-start gap-8 md:gap-10 lg:gap-14 text-center">
+            <div className="flex flex-col items-center gap-2 sm:gap-3 w-full sm:w-[200px] lg:w-[240px] text-center">
+              <div className="h-auto lg:h-[72px] flex items-center justify-center">
+                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-[#FAFAFA] opacity-80 tracking-tight">
                   55%
                 </span>
               </div>
-              <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
+              <p className="text-sm sm:text-base text-neutral-300 font-normal">
                 Faster coding
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-4 w-full sm:w-[240px] lg:w-[280px] text-center">
-              <div className="h-auto lg:h-[96px] flex items-center justify-center">
-                <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
+            <div className="flex flex-col items-center gap-2 sm:gap-3 w-full sm:w-[200px] lg:w-[240px] text-center">
+              <div className="h-auto lg:h-[72px] flex items-center justify-center">
+                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-[#FAFAFA] opacity-80 tracking-tight">
                   39%
                 </span>
               </div>
-              <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
+              <p className="text-sm sm:text-base text-neutral-300 font-normal">
                 Improvement in code quality
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-4 w-full sm:w-[240px] lg:w-[280px] text-center">
-              <div className="h-auto lg:h-[96px] flex items-center justify-center">
-                <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
+            <div className="flex flex-col items-center gap-2 sm:gap-3 w-full sm:w-[200px] lg:w-[240px] text-center">
+              <div className="h-auto lg:h-[72px] flex items-center justify-center">
+                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-[#FAFAFA] opacity-80 tracking-tight">
                   68%
                 </span>
               </div>
-              <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
+              <p className="text-sm sm:text-base text-neutral-300 font-normal">
                 Had a positive experience
               </p>
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* ========================================================================= */}
-      {/* SECTION 6: PRODUCT DEMO & SHOWCASE VIDEO                                  */}
-      {/* Embedded responsive showcase player highlighting autonomous capabilities   */}
-      {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pb-16 sm:pb-24 lg:pb-32 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto flex flex-col items-center">
-          <div className="aspect-video w-full rounded-2xl overflow-hidden border border-white/15 bg-black shadow-2xl">
-            <VideoEmbed />
+          {/* Product Video Showcase */}
+          <div className="w-full max-w-5xl mx-auto flex flex-col items-center mt-14 sm:mt-16 lg:mt-20">
+            <div className="aspect-video w-full rounded-2xl overflow-hidden border border-white/15 bg-black shadow-2xl">
+              <VideoEmbed />
+            </div>
+            <p className="text-center text-sm sm:text-base md:text-lg text-neutral-400 mt-6 max-w-2xl leading-relaxed">
+              From developers to non-developers, it acts like your autonomous teammate that assists you in shipping code with AI.
+            </p>
           </div>
-          <p className="text-center text-sm sm:text-base md:text-lg text-neutral-400 mt-6 max-w-2xl leading-relaxed">
-            From developers to non-developers, it acts like your autonomous teammate that assists you in shipping code with AI.
-          </p>
         </div>
       </section>
 
@@ -507,8 +503,8 @@ export default function Page() {
       {/* SECTION 7: IDE & WORKFLOW SEAMLESS INTEGRATION                            */}
       {/* Interactive IDE environment carousel showcasing autocompletion & reviews  */}
       {/* ========================================================================= */}
-      <section className="w-full bg-black pt-16 sm:pt-20 pb-8 sm:pb-12 border-t border-white/5">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 sm:mb-12">
+      <section className="w-full bg-black py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
             <span className="bg-gradient-to-b from-white to-gray-300 bg-clip-text text-transparent">
               Seamlessly{' '}
@@ -530,7 +526,7 @@ export default function Page() {
       {/* SECTION 8: MILESTONES & GLOBAL RECOGNITION (TALK OF THE TOWN)             */}
       {/* Global media coverage, summits, and partnership achievement cards         */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 py-16 sm:py-20 border-t border-white/5">
+      <section className="w-full bg-zinc-950 py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <Achivements />
       </section>
 
