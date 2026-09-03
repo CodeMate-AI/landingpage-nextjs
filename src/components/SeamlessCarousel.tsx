@@ -63,14 +63,14 @@ const slides: CarouselSlide[] = [
         media: '/debug-static.png',
         type: 'gif',
         description:
-            'An AI-Powered Debugger that quickly identifies errors, explains their causes, and suggests precise fixes—making it easier to resolve issues and keep development moving smoothly.',
+            'An AI-Powered Debugger that quickly identifies errors, explains their causes, and suggests precise fixes - making it easier to resolve issues and keep development moving smoothly.',
     },
     {
         title: 'Review',
         media: '/review-static.png',
         type: 'gif',
         description:
-            'An AI-Powered Code Reviewer that scans your code in real time, detects bugs and vulnerabilities, and suggests improvements for readability, performance, and best practices—helping you write cleaner, more reliable code faster.',
+            'An AI-Powered Code Reviewer that scans your code in real time, detects bugs and vulnerabilities, and suggests improvements for readability, performance, and best practices - helping you write cleaner, more reliable code faster.',
     },
     {
         title: 'Auto-Complete',
@@ -151,7 +151,7 @@ export default function SeamlessCarousel() {
         duration: 0.375,
     }
 
-    // direction is now tracked as state — set by handleNext/handlePrev/dot clicks
+    // direction is now tracked as state - set by handleNext/handlePrev/dot clicks
     const currentSlide = slides[current]
 
     return (
@@ -181,14 +181,14 @@ export default function SeamlessCarousel() {
                                     />
                                 </div>
                             ) : (
-                                /* Component type — Auto-Complete interactive editor */
+                                /* Component type - Auto-Complete interactive editor */
                                 <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[4/3] sm:aspect-[1.5] lg:aspect-video relative">
                                     <AutoCodeEditor
                                         comp1={AutoCompleteComponent}
                                         isFix={isAutoFix}
                                         setIsFix={setIsAutoFix}
                                     />
-                                    {/* Button overlay — same design as Debug/Review */}
+                                    {/* Button overlay - same design as Debug/Review */}
                                     {!isPlaying && currentSlide.overlay && (
                                         <motion.div
                                             initial={{ opacity: 1 }}
