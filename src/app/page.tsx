@@ -87,12 +87,15 @@ export default function Page() {
       title: "CodeMate Work",
       desc: "Turns deep research and feasibility into production-ready code through AI-driven intelligence."
     },
+    /*
+    // CodeMate Work Extension - Preserved for future use
     {
       href: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate",
       img: "/Co extention Static.png",
       title: "CodeMate Work Extension",
       desc: "Your in-IDE AI partner for code management, debugging, and performance optimization."
     },
+    */
     {
       href: "https://edu.codemate.ai/",
       img: "/Codemate Education Static.png",
@@ -104,6 +107,13 @@ export default function Page() {
       img: "term.svg",
       title: "AI Terminal",
       desc: "Run code and scripts instantly through an AI-powered command-line interface."
+    },
+    {
+      href: "https://github.com/apps/codemate-ai-pr-review-agent",
+      img: "/Pr_review_agent_parth.png",
+      title: "CodeMate PR Review Agent",
+      desc: "Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.",
+      showVcsIcons: true
     }
   ];
 
@@ -340,40 +350,17 @@ export default function Page() {
                   <p className="text-sm sm:text-base text-neutral-400 mt-2 leading-relaxed">
                     {product.desc}
                   </p>
+                  {product.showVcsIcons && (
+                    <div className="flex items-center gap-5 mt-4 text-neutral-400 group-hover:text-white transition-colors">
+                      <FaGithub className="w-5 h-5 hover:scale-125 transition-transform" title="GitHub" />
+                      <FaBitbucket className="w-5 h-5 hover:scale-125 transition-transform" title="Bitbucket" />
+                      <FaGitlab className="w-5 h-5 hover:scale-125 transition-transform" title="GitLab" />
+                      <VscAzureDevops className="w-5 h-5 hover:scale-125 transition-transform" title="Azure DevOps" />
+                    </div>
+                  )}
                 </div>
               </a>
             ))}
-
-            {/* PR Review Agent */}
-            <a
-              href="https://github.com/apps/codemate-ai-pr-review-agent"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group md:col-span-2 flex flex-col md:flex-row items-center gap-6 bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-5 sm:p-6 transition-colors duration-200"
-            >
-              <div className="relative h-[240px] sm:h-[280px] lg:h-[300px] w-full md:w-1/2 rounded-xl overflow-hidden bg-neutral-900 border border-white/10">
-                <img
-                  src="/Pr_review_agent_parth.png"
-                  alt="CodeMate PR Review Agent"
-                  className="w-full h-full object-cover object-top"
-                />
-              </div>
-
-              <div className="w-full md:w-1/2 flex flex-col justify-center">
-                <h3 className="text-xl sm:text-2xl font-bold text-white transition-colors">
-                  CodeMate PR Review Agent
-                </h3>
-                <p className="text-sm sm:text-base text-neutral-400 mt-2 leading-relaxed">
-                  Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.
-                </p>
-                <div className="flex items-center gap-5 mt-5 text-neutral-400 group-hover:text-white transition-colors">
-                  <FaGithub className="w-5 h-5 hover:scale-125 transition-transform" title="GitHub" />
-                  <FaBitbucket className="w-5 h-5 hover:scale-125 transition-transform" title="Bitbucket" />
-                  <FaGitlab className="w-5 h-5 hover:scale-125 transition-transform" title="GitLab" />
-                  <VscAzureDevops className="w-5 h-5 hover:scale-125 transition-transform" title="Azure DevOps" />
-                </div>
-              </div>
-            </a>
           </div>
         </div>
       </section>

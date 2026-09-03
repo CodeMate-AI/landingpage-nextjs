@@ -222,6 +222,8 @@ export default function Navbar() {
                             </div>
                           </motion.div>
                         </a>
+                        {/* Work Extension - Preserved for future use */}
+                        {/*
                         <a href='https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate' target='_blank' className="w-full">
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
@@ -235,6 +237,7 @@ export default function Navbar() {
                             </div>
                           </motion.div>
                         </a>
+                        */}
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 mt-3 text-sm opacity-50">JetBrains Plugin</h1>
                         <a href="https://plugins.jetbrains.com/plugin/29932-cora" target="_blank" className="w-full">
@@ -492,6 +495,8 @@ export default function Navbar() {
                               </motion.div>
                             </a>
                           </div>
+                          {/* Work Extension - Preserved for future use */}
+                          {/*
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
                             <a href="https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
@@ -510,6 +515,7 @@ export default function Navbar() {
                               </motion.div>
                             </a>
                           </div>
+                          */}
 
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>JetBrains Plugin</h1>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
