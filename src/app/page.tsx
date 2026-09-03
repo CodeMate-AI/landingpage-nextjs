@@ -382,7 +382,7 @@ export default function Page() {
             </span>
             by 1,000,000+
           </h2>
-          <p className="mt-3 text-sm sm:text-base text-neutral-400 max-w-xl mx-auto">
+          <p className="mt-3 text-sm sm:text-base text-neutral-400 max-w-2xl lg:max-w-none mx-auto sm:whitespace-nowrap">
             Developers across the globe and from startups to Fortune 500 companies
           </p>
         </div>
