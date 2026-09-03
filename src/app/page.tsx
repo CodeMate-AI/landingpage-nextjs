@@ -392,14 +392,14 @@ export default function Page() {
           <div className="absolute -right-6 top-0 bg-zinc-950 h-full w-24 sm:w-36 blur-2xl z-10 pointer-events-none" />
 
           <Marquee pauseOnHover className="[--duration:24s] flex justify-center items-center py-6">
-            <img src="maruti-suzuki.svg" className="object-contain w-[48vw] sm:w-[26vw] lg:w-[18vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Maruti Suzuki" />
-            <img src="atl.svg" className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Atlassian" />
-            <img src="dell.svg" className="object-contain w-[26vw] sm:w-[16vw] lg:w-[10vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Dell" />
-            <img src="qual.svg" className="object-contain w-[48vw] sm:w-[26vw] lg:w-[17vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Qualcomm" />
-            <img src="paytm.svg" className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Paytm" />
-            <img src="amazon.svg" className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Amazon" />
-            <img src="fampay.svg" className="object-contain w-[38vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="FamPay" />
-            <img src="inno.svg" className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Inno" />
+            <img src="maruti-suzuki.svg" className="object-contain w-[48vw] sm:w-[26vw] lg:w-[18vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Maruti Suzuki" />
+            <img src="atl.svg" className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Atlassian" />
+            <img src="dell.svg" className="object-contain w-[26vw] sm:w-[16vw] lg:w-[10vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Dell" />
+            <img src="qual.svg" className="object-contain w-[48vw] sm:w-[26vw] lg:w-[17vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Qualcomm" />
+            <img src="paytm.svg" className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Paytm" />
+            <img src="amazon.svg" className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Amazon" />
+            <img src="fampay.svg" className="object-contain w-[38vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="FamPay" />
+            <img src="inno.svg" className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Inno" />
           </Marquee>
         </div>
       </section>
