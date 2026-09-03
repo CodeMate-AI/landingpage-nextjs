@@ -197,7 +197,7 @@ function Achivements() {
       image: "https://drive.codemate.ai/ericgarcetti.jpg",
       alt: "Nexus Alumni Meet 2023",
       title: "Alumni Meet of Nexus Startup Program with Eric Garcetti, US Ambassador to India",
-      description: "CodeMate AI was invited to an exclusive alumni meet for selected startups of Nexus Startup Program run by US Embassy in American Center, New Delhi, where we had the opportunity to discuss our startup journey and innovations with Eric Garcetti, the former Mayor of Los Angeles and the current US Ambassador to India. Date: 17th November 2023.",
+      description: "CodeMate AI was invited to an exclusive alumni meet at the American Center, New Delhi to discuss our startup journey and AI innovations with US Ambassador Eric Garcetti.",
       link: "https://www.startupnexus.in/events.html"
     },
     {
