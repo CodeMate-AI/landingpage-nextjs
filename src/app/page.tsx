@@ -79,7 +79,8 @@ export default function Page() {
       href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent",
       img: "/CORA Static.png",
       title: "CodeMate CORA",
-      desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE."
+      desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE.",
+      imgPosition: "object-left-top"
     },
     {
       href: "https://app.codemate.ai/chat",
@@ -100,7 +101,8 @@ export default function Page() {
       href: "https://edu.codemate.ai/",
       img: "/Codemate Education Static.png",
       title: "CodeMate Academy",
-      desc: "AI-powered classroom management built for educators and students to master modern development."
+      desc: "AI-powered classroom management built for educators and students to master modern development.",
+      imgPosition: "object-left-top"
     },
     {
       href: "https://cli.codemate.ai/",
@@ -134,13 +136,15 @@ export default function Page() {
       id: "03",
       title: "Custom AI Skills",
       desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored to your team's unique workflows.",
-      media: "/skill-static.png"
+      media: "/skill-static.png",
+      imgPosition: "object-left-top"
     },
     {
       id: "04",
       title: "Ship Autonomously with CORA",
       desc: "Delegate tasks to our smartest coding agent that understands your codebase from architecture to edge cases.",
-      media: "/cora-autonomous.png"
+      media: "/cora-autonomous.png",
+      imgPosition: "object-left-top"
     },
     {
       id: "05",
@@ -152,7 +156,8 @@ export default function Page() {
       id: "06",
       title: "Documentation",
       desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing impactful code.",
-      media: "/documentation-static.png"
+      media: "/documentation-static.png",
+      imgPosition: "object-left-top"
     }
   ];
 
@@ -336,13 +341,13 @@ export default function Page() {
                 href={product.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-6 transition-colors duration-200"
+                className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-4 sm:p-6 transition-colors duration-200"
               >
-                <div className="relative h-[240px] sm:h-[260px] lg:h-[280px] w-full rounded-xl overflow-hidden bg-neutral-900/60 border border-white/10 mb-5 flex items-center justify-center">
+                <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-neutral-900/60 border border-white/10 mb-5 flex items-center justify-center">
                   <img
                     src={product.img}
                     alt={product.title}
-                    className="w-full h-full object-cover object-top"
+                    className={`w-full h-full object-cover ${product.imgPosition || 'object-top'}`}
                   />
                 </div>
 
@@ -431,11 +436,11 @@ export default function Page() {
                   <h3 className="text-lg sm:text-xl font-bold text-white mb-3">
                     {item.title}
                   </h3>
-                  <div className="relative h-[180px] sm:h-[200px] w-full rounded-xl overflow-hidden bg-neutral-900/60 border border-white/10 flex items-center justify-center p-2 mb-4">
+                  <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-neutral-900/60 border border-white/10 flex items-center justify-center mb-4">
                     <img
                       src={item.media}
                       alt={item.title}
-                      className="max-h-full max-w-full object-contain rounded"
+                      className={`w-full h-full object-cover ${item.imgPosition || 'object-top'}`}
                     />
                   </div>
                 </div>
