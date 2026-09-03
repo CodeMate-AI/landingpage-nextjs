@@ -8,7 +8,6 @@ import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
 import SeamlessCarousel from '@/components/SeamlessCarousel';
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
-import { useRouter } from 'next/navigation';
 import Footer from '@/components/footer';
 import VideoEmbed from '@/components/video';
 import { Marquee } from '@/components/ui/marquee';
@@ -23,8 +22,6 @@ const montserrat = Montserrat({
 });
 
 export default function Page() {
-  const router = useRouter();
-
   const [lastScroll, setLastScroll] = useState(0);
   const [isArrowV, setIsArrowV] = useState(false);
   const [isArrow, setIsArrow] = useState(false);
