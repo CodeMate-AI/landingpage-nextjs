@@ -232,7 +232,7 @@ export default function Page() {
               <div className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left mt-3 sm:mt-6'>
                 <div className='xxlHero z-50'>
                   <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
-                    India's First AI
+                    India’s First AI
                   </span>
                 </div>
                 <div className='flex flex-wrap justify-start gap-x-4 pb-3'>
@@ -405,7 +405,7 @@ export default function Page() {
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
           <div className="w-full lg:w-1/3 lg:sticky lg:top-32 lg:self-start">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">
-              What You'll{' '}
+              What You’ll{' '}
               <span className="block bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
                 Unlock
               </span>
