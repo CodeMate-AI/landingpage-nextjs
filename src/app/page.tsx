@@ -451,7 +451,7 @@ export default function Page() {
       {/* SECTION 5 & 6: PERFORMANCE METRICS & SHOWCASE VIDEO                       */}
       {/* Continuous showcase combining 3 impact metrics and embedded video box     */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-6 sm:pb-8 lg:pb-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           {/* Metrics Row */}
           <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row justify-around items-center md:items-start gap-8 md:gap-10 lg:gap-14 text-center">
@@ -505,8 +505,8 @@ export default function Page() {
       {/* SECTION 7: IDE & WORKFLOW SEAMLESS INTEGRATION                            */}
       {/* Interactive IDE environment carousel showcasing autocompletion & reviews  */}
       {/* ========================================================================= */}
-      <section className="w-full bg-black pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
+      <section className="w-full bg-black pt-6 sm:pt-8 lg:pt-8 pb-6 sm:pb-8 lg:pb-10 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-6 sm:mb-8">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
             <span className="bg-gradient-to-b from-white to-gray-300 bg-clip-text text-transparent">
               Seamlessly{' '}
@@ -528,7 +528,7 @@ export default function Page() {
       {/* SECTION 8: MILESTONES & GLOBAL RECOGNITION (TALK OF THE TOWN)             */}
       {/* Global media coverage, summits, and partnership achievement cards         */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="w-full bg-zinc-950 pt-6 sm:pt-8 lg:pt-10 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
         <Achivements />
       </section>
 
