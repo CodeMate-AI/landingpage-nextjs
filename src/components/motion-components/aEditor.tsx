@@ -73,7 +73,7 @@ useEffect(() => {
          </div>
        </div>
 
-     <div className='bg-[#121214] h-full w-8 lg:w-[4%] rounded-l-xl flex flex-col p-2 pt-12 lg:pt-14 justify-between flex-shrink-0 items-center border-r-[0.1px] border-white/5'>
+     <div className='bg-[#121214] h-full w-8 lg:w-[4%] rounded-l-xl flex flex-col p-2 pt-14 sm:pt-16 lg:pt-18 justify-between flex-shrink-0 items-center border-r-[0.1px] border-white/5'>
       <div className='flex flex-col gap-3.5 justify-center items-center text-zinc-500'>
        <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-folders size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 3h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" /><path d="M17 16v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2" /></svg>
        <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-cube-unfolded size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M2 15h10v5h5v-5h5v-5h-10v-5h-5v5h-5z" /><path d="M7 15v-5h5v5h5v-5" /></svg>
@@ -92,7 +92,7 @@ useEffect(() => {
       </div>
      </div>
       
-          <div  className='relative h-full w-[calc(100%-2rem)] lg:w-[96%] flex gap-3 py-2 overflow-y-auto scrollbar-thin pt-12 lg:pt-20'>
+          <div  className='relative h-full w-[calc(100%-2rem)] lg:w-[96%] flex gap-3 py-2 overflow-y-auto scrollbar-thin pt-16 sm:pt-18 lg:pt-20 pb-10 sm:pb-12'>
   
         <div className='absolute top-8 h-8 lg:h-[7%] w-full bg-zinc-900 z-40 border-b-[0.7px] border-white/5 flex items-center'>
         <div className='flex  w-fit   gap-1 ml-4 border-b-2 border-[#00BFFF] items-center pb-1'>
@@ -111,7 +111,7 @@ useEffect(() => {
       <IconAlertCircle stroke={2} color='red'/>
       </motion.div>
 
-      <div className='text-white flex flex-col ml-4 opacity-65 font-mono gap-1 text-[8px] xs:text-[10px] sm:text-xs md:text-sm lg:text-base'>
+      <div className='text-white flex flex-col ml-4 opacity-65 font-mono gap-1 text-[10px] xs:text-[11px] sm:text-xs md:text-sm lg:text-base'>
 
        {isComplete? [...Array(comp1.length)].map((_,idx)=>(
         <span key={idx}>{idx+1}</span>
@@ -121,7 +121,7 @@ useEffect(() => {
       </div> 
 
 
-      <div className='relative flex flex-col gap-[0.25rem] md:gap-[0.37rem] font-mono w-full text-[8px] xs:text-[10px] sm:text-xs md:text-sm lg:text-base'>
+      <div className='relative flex flex-col gap-[0.25rem] md:gap-[0.37rem] font-mono w-full text-[10px] xs:text-[11px] sm:text-xs md:text-sm lg:text-base'>
       {!isComplete && comp1
   .filter((_: any, idx: number) => idx !== 6 && idx !== 7)
   .map((e: any, idx: number) => (

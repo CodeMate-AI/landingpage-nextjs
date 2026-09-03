@@ -172,17 +172,17 @@ export default function SeamlessCarousel() {
                             whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
                         >
                             {currentSlide.type === 'gif' ? (
-                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video flex items-center justify-center">
+                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[4/3] sm:aspect-[1.5] lg:aspect-video flex items-center justify-center">
                                     <img
                                         src={currentSlide.media}
                                         alt={currentSlide.title}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover object-left-top"
                                         loading="eager"
                                     />
                                 </div>
                             ) : (
                                 /* Component type — Auto-Complete interactive editor */
-                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video relative">
+                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[4/3] sm:aspect-[1.5] lg:aspect-video relative">
                                     <AutoCodeEditor
                                         comp1={AutoCompleteComponent}
                                         isFix={isAutoFix}
@@ -200,7 +200,7 @@ export default function SeamlessCarousel() {
                                             <motion.button
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
-                                                className="px-8 py-3 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] text-white font-semibold rounded-lg shadow-lg text-lg"
+                                                className="px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] text-white font-semibold rounded-lg shadow-lg text-sm sm:text-lg"
                                             >
                                                 {currentSlide.overlay.buttonText}
                                             </motion.button>
