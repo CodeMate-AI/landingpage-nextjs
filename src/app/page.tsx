@@ -225,7 +225,7 @@ export default function Page() {
       {/* SECTION 1: HERO & PRIMARY ACTION AREA                                     */}
       {/* Background animation canvas, headline, badge, and CTA action buttons      */}
       {/* ========================================================================= */}
-      <div className='h-auto lg:h-screen w-full overflow-x-hidden relative'>
+      <div className='h-auto lg:h-screen lg:max-h-[860px] lg:min-h-[640px] w-full overflow-x-hidden relative'>
         <BackgroundGradientAnimation
           className='w-full overflow-hidden'
           interactive={true}
@@ -240,7 +240,7 @@ export default function Page() {
         >
           <div
             style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
-            className='relative h-auto lg:h-screen w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-20 lg:pt-[8vh] pb-8 lg:pb-20'
+            className='relative h-auto lg:h-screen lg:max-h-[860px] lg:min-h-[640px] w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-20 lg:pt-[8vh] pb-8 lg:pb-16'
           >
             <motion.div
               style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
