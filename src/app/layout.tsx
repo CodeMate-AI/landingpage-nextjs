@@ -1,10 +1,9 @@
-
 import "./globals.css";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
 
-import { Montserrat, Mulish } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -12,11 +11,37 @@ const montserrat = Montserrat({
   variable: '--font-montserrat', // Optional, for CSS variable usage
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#09090b",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://codemate.ai'),
   title: "CodeMate AI | Your Professional and Secured AI Pair Programmer",
   description: "Code 10x faster as CodeMate search, navigate and understand complex codebases for you.",
+  keywords: [
+    "AI Pair Programmer",
+    "CodeMate AI",
+    "AI SDLC Agent",
+    "AI Code Generator",
+    "VS Code AI Extension",
+    "Automated Code Review",
+    "AI Terminal",
+  ],
+  authors: [{ name: "CodeMate AI", url: "https://codemate.ai" }],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
   alternates: {
     canonical: "https://codemate.ai",
   },
@@ -53,12 +78,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <title>CodeMate AI | Your Professional And Secured AI Pair Programmer</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet"></link>
-      </head>
       <body
         className={`${montserrat.className} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning

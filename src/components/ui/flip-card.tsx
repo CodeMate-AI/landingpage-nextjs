@@ -98,13 +98,13 @@ export default function FlipCard({
                 src={companyLogo}
                 width={60}
                 className="relative left-0 object-cover"
-                alt=""
+                alt={title}
               />
               <div
                 className={`flex flex-col justify-center items-center 
                 text-xl mt-4 md:mt-0  md:text-2xl text-black`}
               >
-                <h1 className={`${bangers.className}`}>{title}</h1>
+                <span className={`${bangers.className} text-xl md:text-2xl`}>{title}</span>
                 <h4 className="text-sm">{bio}</h4>
 
               </div>
@@ -126,16 +126,16 @@ export default function FlipCard({
           >
             <div className="flex min-h-full flex-col gap-2">
               <span className="flex justify-between items-center gap-3">
-                <h1 className="text-xl font-bold text-white">{subtitle}</h1>
-                <img className="size-16 object-cover" src={companyLogo} alt="" />
+                <span className="text-xl font-bold text-white">{subtitle}</span>
+                <img className="size-16 object-cover" src={companyLogo} alt={subtitle} />
               </span>
               <p className="mt-1 border-t border-t-gray-200 py-4 text-base font-medium leading-normal text-gray-100">
                 {description}
               </p>
               <span className="flex flex-col">
-                <h1 className="bg-[#EDEADE] text-black p-1 rounded-sm mt-5 w-28 h-8 font-mono">
+                <span className="bg-[#EDEADE] text-black p-1 rounded-sm mt-5 w-28 h-8 font-mono flex items-center justify-center">
                   {salary}
-                </h1>
+                </span>
                 <motion.button
                   onClick={() => window.location.href = link}
                   whileHover={{ scale: 1.1 }}

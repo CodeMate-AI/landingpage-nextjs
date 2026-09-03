@@ -241,25 +241,25 @@ export default function Page() {
               style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
               className='absolute inset-0 opacity-5 z-0'
             >
-              <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" />
+              <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" aria-hidden="true" />
             </motion.div>
 
             <div className='relative z-50 w-full px-6 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
-              <div className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left mt-3 sm:mt-6'>
-                <div className='xxlHero z-50'>
+              <h1 className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left mt-3 sm:mt-6'>
+                <span className='xxlHero z-50 block'>
                   <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
                     India’s First AI
                   </span>
-                </div>
-                <div className='flex flex-wrap justify-start gap-x-4 pb-3'>
+                </span>
+                <span className='flex flex-wrap justify-start gap-x-4 pb-3'>
                   <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
                     SDLC
                   </span>{' '}
                   <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
                     Agent
                   </span>
-                </div>
-              </div>
+                </span>
+              </h1>
 
               <div className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 opacity-70 text-left max-w-2xl">
                 <p>Build and ship 20x faster with CodeMate AI</p>
@@ -270,6 +270,7 @@ export default function Page() {
               <div className="w-full flex justify-start mt-4 sm:mt-6 z-[100]">
                 <a
                   href="/blog/cora-sota-swe-bench"
+                  aria-label="Read announcement: Cora is now State-of-the-Art"
                   className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group"
                 >
                   <div className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-black px-3.5 py-2 sm:px-4 sm:py-2.5 text-white">
@@ -282,8 +283,9 @@ export default function Page() {
               </div>
 
               <div className="flex flex-col sm:flex-row justify-start items-center gap-3 sm:gap-4 text-sm md:text-base mt-6 sm:mt-8 w-full sm:w-auto">
-                <a href="/download" className="w-full sm:w-auto">
+                <a href="/download" aria-label="Download CodeMate AI's ToolBox" className="w-full sm:w-auto">
                   <motion.button
+                    type="button"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="h-12 sm:h-12 px-7 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/20 hover:border-white/40 transition-colors whitespace-nowrap"
@@ -291,8 +293,9 @@ export default function Page() {
                     Download
                   </motion.button>
                 </a>
-                <a href="https://app.codemate.ai/dashboard" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                <a href="https://app.codemate.ai/dashboard" aria-label="Try CodeMate AI for Free" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                   <motion.button
+                    type="button"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="h-12 sm:h-12 px-7 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold hover:bg-neutral-200 transition-colors whitespace-nowrap"

@@ -181,7 +181,7 @@ function Footer() {
             <ul className="space-y-3 text-xs md:text-sm">
               <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
               <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Terms of Service</a></li>
-              <li><img src="https://drive.codemate.ai/iso.png" alt="" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
+              <li><img src="https://drive.codemate.ai/iso.png" alt="ISO 27001 Certified Security Compliance" className="object-contain h-20 w-auto mt-5 invert brightness-0 opacity-80" /></li>
             </ul>
           </div>
         </div>
