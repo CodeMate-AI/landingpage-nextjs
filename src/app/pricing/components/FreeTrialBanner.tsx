@@ -40,7 +40,7 @@ export default function FreeTrialBanner() {
                         transition={{ delay: 0.3 }}
                         className="text-xl lg:text-3xl font-semibold text-white mb-1 leading-tight text-gradient-gray"
                     >
-                        Go From Idea to Deployed App — Faster Than Ever.
+                        Go From Idea to Deployed App - Faster Than Ever.
                     </motion.h2>
 
                     {/* Subheading */}

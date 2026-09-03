@@ -375,7 +375,7 @@ export default function Home() {
       {/* Main Content */}
       <section className="main-layout container">
 
-        {/* Left Sidebar — Advanced Filters */}
+        {/* Left Sidebar - Advanced Filters */}
         <aside className={`sidebar ${showFilters ? "open" : ""}`}>
           {renderSidebarFilters()}
         </aside>

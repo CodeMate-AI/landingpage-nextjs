@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Montserrat } from 'next/font/google'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import AutoCodeEditor from '@/components/motion-components/aEditor'
 
 const montserrat = Montserrat({
@@ -63,14 +63,14 @@ const slides: CarouselSlide[] = [
         media: '/debug-static.png',
         type: 'gif',
         description:
-            'An AI-Powered Debugger that quickly identifies errors, explains their causes, and suggests precise fixes—making it easier to resolve issues and keep development moving smoothly.',
+            'An AI-Powered Debugger that quickly identifies errors, explains their causes, and suggests precise fixes - making it easier to resolve issues and keep development moving smoothly.',
     },
     {
         title: 'Review',
         media: '/review-static.png',
         type: 'gif',
         description:
-            'An AI-Powered Code Reviewer that scans your code in real time, detects bugs and vulnerabilities, and suggests improvements for readability, performance, and best practices—helping you write cleaner, more reliable code faster.',
+            'An AI-Powered Code Reviewer that scans your code in real time, detects bugs and vulnerabilities, and suggests improvements for readability, performance, and best practices - helping you write cleaner, more reliable code faster.',
     },
     {
         title: 'Auto-Complete',
@@ -151,7 +151,7 @@ export default function SeamlessCarousel() {
         duration: 0.375,
     }
 
-    // direction is now tracked as state — set by handleNext/handlePrev/dot clicks
+    // direction is now tracked as state - set by handleNext/handlePrev/dot clicks
     const currentSlide = slides[current]
 
     return (
@@ -172,23 +172,23 @@ export default function SeamlessCarousel() {
                             whileHover={{ scale: 1.02, transition: { duration: 0.3 } }}
                         >
                             {currentSlide.type === 'gif' ? (
-                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video flex items-center justify-center">
+                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[4/3] sm:aspect-[1.5] lg:aspect-video flex items-center justify-center">
                                     <img
                                         src={currentSlide.media}
                                         alt={currentSlide.title}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover object-left-top"
                                         loading="eager"
                                     />
                                 </div>
                             ) : (
-                                /* Component type — Auto-Complete interactive editor */
-                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[1.5] lg:aspect-video relative">
+                                /* Component type - Auto-Complete interactive editor */
+                                <div className="bg-zinc-900 rounded-xl overflow-hidden shadow-2xl w-full aspect-[4/3] sm:aspect-[1.5] lg:aspect-video relative">
                                     <AutoCodeEditor
                                         comp1={AutoCompleteComponent}
                                         isFix={isAutoFix}
                                         setIsFix={setIsAutoFix}
                                     />
-                                    {/* Button overlay — same design as Debug/Review */}
+                                    {/* Button overlay - same design as Debug/Review */}
                                     {!isPlaying && currentSlide.overlay && (
                                         <motion.div
                                             initial={{ opacity: 1 }}
@@ -200,7 +200,7 @@ export default function SeamlessCarousel() {
                                             <motion.button
                                                 whileHover={{ scale: 1.05 }}
                                                 whileTap={{ scale: 0.95 }}
-                                                className="px-8 py-3 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] text-white font-semibold rounded-lg shadow-lg text-lg"
+                                                className="px-6 py-2.5 sm:px-8 sm:py-3 bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] text-white font-semibold rounded-lg shadow-lg text-sm sm:text-lg"
                                             >
                                                 {currentSlide.overlay.buttonText}
                                             </motion.button>
@@ -256,18 +256,19 @@ export default function SeamlessCarousel() {
             </div>
 
             {/* Navigation Arrows */}
-            <div className="flex justify-center items-center gap-4 mt-6 lg:mt-8">
+            <div className="flex justify-center items-center gap-6 mt-6 lg:mt-8">
                 {/* Left Arrow */}
                 <motion.button
-                    whileHover={current !== 0 ? { scale: 1.05, backgroundColor: "rgba(0, 191, 255, 0.1)" } : {}}
-                    whileTap={current !== 0 ? { scale: 0.95 } : {}}
+                    whileHover={current !== 0 ? { scale: 1.1 } : {}}
+                    whileTap={current !== 0 ? { scale: 0.9 } : {}}
                     onClick={handlePrev}
                     disabled={current === 0}
-                    className={`w-12 h-12 rounded-full bg-zinc-900/30 backdrop-blur-xl border border-white/10 flex items-center justify-center transition-all duration-300 ${current === 0 ? 'opacity-20 cursor-not-allowed' : 'opacity-100 cursor-pointer hover:border-[#00BFFF]/40 shadow-[0_0_20px_rgba(0,191,255,0.05)]'
-                        }`}
+                    className={`cursor-pointer transition-all duration-300 flex items-center justify-center select-none ${
+                        current === 0 ? 'opacity-20 cursor-not-allowed text-zinc-600' : 'text-zinc-400 hover:text-white'
+                    }`}
                     aria-label="Previous slide"
                 >
-                    <ChevronLeft className="text-[#00BFFF]" size={24} />
+                    <ArrowLeft size={32} strokeWidth={2} />
                 </motion.button>
 
                 {/* Slide Indicators */}
@@ -287,17 +288,16 @@ export default function SeamlessCarousel() {
 
                 {/* Right Arrow */}
                 <motion.button
-                    whileHover={current !== slides.length - 1 ? { scale: 1.05, backgroundColor: "rgba(0, 191, 255, 0.1)" } : {}}
-                    whileTap={current !== slides.length - 1 ? { scale: 0.95 } : {}}
+                    whileHover={current !== slides.length - 1 ? { scale: 1.1 } : {}}
+                    whileTap={current !== slides.length - 1 ? { scale: 0.9 } : {}}
                     onClick={handleNext}
                     disabled={current === slides.length - 1}
-                    className={`w-12 h-12 rounded-full bg-zinc-900/30 backdrop-blur-xl border border-white/10 flex items-center justify-center transition-all duration-300 ${current === slides.length - 1
-                        ? 'opacity-20 cursor-not-allowed'
-                        : 'opacity-100 cursor-pointer hover:border-[#00BFFF]/40 shadow-[0_0_20px_rgba(0,191,255,0.05)]'
-                        }`}
+                    className={`cursor-pointer transition-all duration-300 flex items-center justify-center select-none ${
+                        current === slides.length - 1 ? 'opacity-20 cursor-not-allowed text-zinc-600' : 'text-zinc-400 hover:text-white'
+                    }`}
                     aria-label="Next slide"
                 >
-                    <ChevronRight className="text-[#00BFFF]" size={24} />
+                    <ArrowRight size={32} strokeWidth={2} />
                 </motion.button>
             </div>
         </section>
