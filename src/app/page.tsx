@@ -374,7 +374,7 @@ export default function Page() {
       {/* SECTION 3: SOCIAL PROOF & PARTNER LOGOS                                   */}
       {/* Infinite marquee displaying trusted developer and enterprise brand logos  */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-12 sm:pb-16 overflow-hidden border-t border-white/5">
+      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-12 sm:pb-16 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold pb-1 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
             <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
@@ -408,7 +408,7 @@ export default function Page() {
       {/* SECTION 4: PLATFORM CAPABILITIES (WHAT YOU’LL UNLOCK)                     */}
       {/* Sticky feature index on the left with interactive capability card grid    */}
       {/* ========================================================================= */}
-      <section id="features" className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      <section id="features" className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
           <div className="w-full lg:w-1/3 lg:sticky lg:top-32 lg:self-start">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white flex flex-col">
@@ -451,7 +451,7 @@ export default function Page() {
       {/* SECTION 5 & 6: PERFORMANCE METRICS & SHOWCASE VIDEO                       */}
       {/* Continuous showcase combining 3 impact metrics and embedded video box     */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           {/* Metrics Row */}
           <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row justify-around items-center md:items-start gap-8 md:gap-10 lg:gap-14 text-center">
@@ -505,7 +505,7 @@ export default function Page() {
       {/* SECTION 7: IDE & WORKFLOW SEAMLESS INTEGRATION                            */}
       {/* Interactive IDE environment carousel showcasing autocompletion & reviews  */}
       {/* ========================================================================= */}
-      <section className="w-full bg-black pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      <section className="w-full bg-black pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-10 sm:mb-14">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
             <span className="bg-gradient-to-b from-white to-gray-300 bg-clip-text text-transparent">
@@ -528,7 +528,7 @@ export default function Page() {
       {/* SECTION 8: MILESTONES & GLOBAL RECOGNITION (TALK OF THE TOWN)             */}
       {/* Global media coverage, summits, and partnership achievement cards         */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
         <Achivements />
       </section>
 
