@@ -444,10 +444,10 @@ export default function Page() {
       </section>
 
       {/* Metrics */}
-      <section className="w-full bg-zinc-950 py-16 sm:py-20 lg:py-[100px] px-6 sm:px-12 lg:px-20 border-t border-white/5">
-        <div className="max-w-[1460px] mx-auto">
-          <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-12 md:gap-16 lg:gap-[135px] text-center">
-            <div className="flex flex-col items-center gap-3 w-full sm:w-[197px] text-center">
+      <section className="w-full bg-zinc-950 pt-20 sm:pt-24 lg:pt-32 pb-16 sm:pb-20 lg:pb-24 px-6 sm:px-12 lg:px-20 border-t border-white/5">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-around items-center md:items-start gap-12 md:gap-14 lg:gap-20 text-center">
+            <div className="flex flex-col items-center gap-4 w-full sm:w-[240px] lg:w-[280px] text-center">
               <div className="h-auto lg:h-[96px] flex items-center justify-center">
                 <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
                   55%
@@ -458,7 +458,7 @@ export default function Page() {
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-3.5 w-full sm:w-[201px] text-center">
+            <div className="flex flex-col items-center gap-4 w-full sm:w-[240px] lg:w-[280px] text-center">
               <div className="h-auto lg:h-[96px] flex items-center justify-center">
                 <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
                   39%
@@ -469,7 +469,7 @@ export default function Page() {
               </p>
             </div>
 
-            <div className="flex flex-col items-center gap-3.5 w-full sm:w-[208px] text-center">
+            <div className="flex flex-col items-center gap-4 w-full sm:w-[240px] lg:w-[280px] text-center">
               <div className="h-auto lg:h-[96px] flex items-center justify-center">
                 <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
                   68%
@@ -484,12 +484,12 @@ export default function Page() {
       </section>
 
       {/* Product Video */}
-      <section className="w-full bg-zinc-950 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      <section className="w-full bg-zinc-950 pb-16 sm:pb-24 lg:pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto flex flex-col items-center">
           <div className="aspect-video w-full rounded-2xl overflow-hidden border border-white/15 bg-black shadow-2xl">
             <VideoEmbed />
           </div>
-          <p className="text-center text-sm sm:text-base md:text-lg text-neutral-400 mt-5 max-w-2xl leading-relaxed">
+          <p className="text-center text-sm sm:text-base md:text-lg text-neutral-400 mt-6 max-w-2xl leading-relaxed">
             From developers to non-developers, it acts like your autonomous teammate that assists you in shipping code with AI.
           </p>
         </div>
