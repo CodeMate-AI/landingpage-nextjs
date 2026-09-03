@@ -315,7 +315,7 @@ export default function Page() {
       {/* SECTION 2: PRODUCT SUITE SHOWCASE                                         */}
       {/* Grid of live CodeMate products with edge-to-edge mockup previews          */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8">
+      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-8 sm:pb-12 lg:pb-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           <span className="font-mono text-xs sm:text-sm uppercase tracking-widest text-neutral-400 text-center">
             Introducing CodeMate AI
@@ -374,7 +374,7 @@ export default function Page() {
       {/* SECTION 3: SOCIAL PROOF & PARTNER LOGOS                                   */}
       {/* Infinite marquee displaying trusted developer and enterprise brand logos  */}
       {/* ========================================================================= */}
-      <section className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-12 sm:pb-16 overflow-hidden">
+      <section className="w-full bg-zinc-950 pt-6 sm:pt-10 lg:pt-10 pb-12 sm:pb-16 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold pb-1 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
             <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
