@@ -408,19 +408,16 @@ export default function Page() {
       {/* SECTION 4: PLATFORM CAPABILITIES (WHAT YOU’LL UNLOCK)                     */}
       {/* Sticky feature index on the left with interactive capability card grid    */}
       {/* ========================================================================= */}
-      <section id="features" className="w-full bg-zinc-950 py-20 lg:py-28 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+      <section id="features" className="w-full bg-zinc-950 pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
           <div className="w-full lg:w-1/3 lg:sticky lg:top-32 lg:self-start">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">
-              What You’ll{' '}
-              <span className="block bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white flex flex-col">
+              <span>What You'll</span>
+              <span className="text-[#00BFFF]">
                 Unlock
               </span>
-              with CodeMate AI
+              <span className="whitespace-nowrap">with CodeMate AI</span>
             </h2>
-            <p className="mt-4 text-sm sm:text-base text-neutral-400 leading-relaxed">
-              Explore the capabilities that transform your modern development workflow, from rapid prototyping to automated enterprise reviews.
-            </p>
           </div>
 
           <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
