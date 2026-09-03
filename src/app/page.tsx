@@ -11,7 +11,6 @@ import { BackgroundGradientAnimation } from '@/components/ui/background-gradient
 import { useRouter } from 'next/navigation';
 import Footer from '@/components/footer';
 import VideoEmbed from '@/components/video';
-import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
 import Achivements from '@/components/achivements';
 import EventOffer from './pricing/components/EventOffer';
@@ -450,12 +449,9 @@ export default function Page() {
           <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-12 md:gap-16 lg:gap-[135px] text-center">
             <div className="flex flex-col items-center gap-3 w-full sm:w-[197px] text-center">
               <div className="h-auto lg:h-[96px] flex items-center justify-center">
-                <Counter
-                  direction="up"
-                  targetValue={55}
-                  format={(val) => `${Math.round(val)}%`}
-                  className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight"
-                />
+                <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
+                  55%
+                </span>
               </div>
               <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
                 Faster coding
@@ -464,12 +460,9 @@ export default function Page() {
 
             <div className="flex flex-col items-center gap-3.5 w-full sm:w-[201px] text-center">
               <div className="h-auto lg:h-[96px] flex items-center justify-center">
-                <Counter
-                  direction="up"
-                  targetValue={39}
-                  format={(val) => `${Math.round(val)}%`}
-                  className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight"
-                />
+                <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
+                  39%
+                </span>
               </div>
               <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
                 Improvement in code quality
@@ -478,12 +471,9 @@ export default function Page() {
 
             <div className="flex flex-col items-center gap-3.5 w-full sm:w-[208px] text-center">
               <div className="h-auto lg:h-[96px] flex items-center justify-center">
-                <Counter
-                  direction="up"
-                  targetValue={68}
-                  format={(val) => `${Math.round(val)}%`}
-                  className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight"
-                />
+                <span className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight">
+                  68%
+                </span>
               </div>
               <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
                 Had a positive experience
