@@ -263,7 +263,7 @@ function Achivements() {
       link: "" // No link provided
     },
     {
-      image: "https://drive.codemate.ai/ewc.jpeg",
+      image: "https://drive.codemate.ai/EWC'22.png",
       alt: "EWC'22",
       title: "National Finalist in Entrepreneurship World Cup",
       description: "We were the National finalists in Entrepreneurship World Cup'22 organised by Misk Global Forum, Global Entrepreneurship Network and The Global Education & Leadership Foundation.",
