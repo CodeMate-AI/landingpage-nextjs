@@ -1,8 +1,7 @@
 'use client'
 import React, { useEffect, useState, useRef } from 'react'
 import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
-import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
-import { VscAzureDevops } from "react-icons/vsc";
+import { FaXTwitter, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa6";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { Montserrat } from 'next/font/google';
 import { useRouter, usePathname } from 'next/navigation';
@@ -35,15 +34,10 @@ export default function Navbar() {
 
   const [isNBack, setIsNBack] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(820);
 
   useEffect(() => {
     const handleResize = () => {
-      const w = window.innerWidth;
-      setWindowWidth(w);
-      setIsMobile(w < 1025);
-      setIsTablet(w >= 768 && w < 1025);
+      setIsMobile(window.innerWidth < 1025);
     };
     handleResize();
     window.addEventListener('resize', handleResize);
@@ -55,8 +49,6 @@ export default function Navbar() {
   const [isResources, setIsResources] = useState(false);
   const [isOS, setIsOS] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
-  const [announcementHeight, setAnnouncementHeight] = useState(0);
-  const announcementRef = useRef<HTMLDivElement>(null);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
 
   // Track window scroll for navbar positioning
@@ -72,58 +64,14 @@ export default function Navbar() {
     setIsNBack(latest >= 10);
   });
 
-  const SWE_BENCH_BLOG_URL = '/blog/cora-sota-swe-bench';
-
-  // Track announcement banner height for responsive navbar offset
-  useEffect(() => {
-    const node = announcementRef.current;
-    if (!node) {
-      setAnnouncementHeight(0);
-      return;
-    }
-
-    const updateHeight = () => {
-      setAnnouncementHeight(node.offsetHeight || 0);
-    };
-
-    updateHeight();
-
-    let resizeObserver: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== 'undefined') {
-      resizeObserver = new ResizeObserver(() => updateHeight());
-      resizeObserver.observe(node);
-    }
-    window.addEventListener('resize', updateHeight);
-
-    return () => {
-      resizeObserver?.disconnect();
-      window.removeEventListener('resize', updateHeight);
-    };
-  }, [showAnnouncement]);
-
-  const desktopNavTop = hasScrolled
-    ? 0
-    : showAnnouncement
-      ? Math.max(announcementHeight - 6, 0)
-      : 12;
-  const mobileNavTop = hasScrolled
-    ? 0
-    : showAnnouncement
-      ? Math.max(announcementHeight - 10, 0)
-      : 0;
-
   const isBlogPage = pathname ? pathname.startsWith('/blog') : false;
   const shouldShowAnnouncement = showAnnouncement && !isBlogPage;
 
   return (
     <div className={montserrat.className}>
-      {/* ========================================== */}
-      {/* UI SECTION: TOP ANNOUNCEMENT BANNER      */}
-      {/* Marketing banner displayed above the nav */}
-      {/* ========================================== */}
+      {/* Top Announcement Banner */}
       {shouldShowAnnouncement && (
         <motion.div
-          ref={announcementRef}
           initial={{ y: -12, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3, delay: 0.4 }}

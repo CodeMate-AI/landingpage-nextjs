@@ -10,10 +10,6 @@ const montserrat = Montserrat({
   variable: '--font-montserrat', // Optional, for CSS variable usage
 });
 
-// ==========================================
-// UI SECTION: ACHIEVEMENTS & STATS COMPONENT
-// Renders animated number counters and sliding logo marquees.
-// ==========================================
 function Achivements() {
 
   const [currCards, setCurrCards] = useState(0)
@@ -267,7 +263,7 @@ function Achivements() {
       link: "" // No link provided
     },
     {
-      image: "https://drive.codemate.ai/EWC'22.png",
+      image: "https://drive.codemate.ai/ewc.jpeg",
       alt: "EWC'22",
       title: "National Finalist in Entrepreneurship World Cup",
       description: "We were the National finalists in Entrepreneurship World Cup'22 organised by Misk Global Forum, Global Entrepreneurship Network and The Global Education & Leadership Foundation.",
@@ -315,18 +311,16 @@ function Achivements() {
       description: "Our founder, Ayush Singhal was Invited as a speaker at AI in Software Development Conference'24 organised by Geekle.us and witnessed by over 1000+ developers and tech enthusiasts.",
       link: "" // No link provided
     }
-    // ... and so on for the rest of the cards
   ];
 
 
-  // ---- Dynamic scroll limits based on card count ----
-  const DESKTOP_CARD_WIDTH = 376; // 352px (22rem) + 24px (gap-6)
+  const DESKTOP_CARD_WIDTH = 376;
   const MOBILE_VISIBLE = 1;
   const maxDesktop = -((cards.length - desktopVisible) * DESKTOP_CARD_WIDTH);
-  const activeMobileCardWidth = isTablet ? 728 : 344; // 704px (44rem) card + 24px gap on tablet, 320px (20rem) card + 24px gap on mobile
+  const activeMobileCardWidth = isTablet ? 728 : 344;
   const maxMobile = -((cards.length - MOBILE_VISIBLE) * activeMobileCardWidth);
 
-  // ---- Auto slide effect ----
+  // Auto-slide effect
   useEffect(() => {
     let interval: number;
 
@@ -406,37 +400,84 @@ function Achivements() {
       <div className={`${montserrat.className} leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent md:text-6xl lg:text-7xl'>Talk</span> of the Town</div>
       <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-0 text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
 
-      <div
-        ref={carouselRef}
-        onMouseEnter={() => setIsPaused(true)} // pause on hover
-        onMouseLeave={() => setIsPaused(false)} // resume when hover ends
-        className='mt-20 flex w-[20rem] md:w-[44rem] lg:w-[728px] xl:w-[1104px] overflow-hidden'>
-        <motion.div animate={{ x: currCards }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className='flex gap-6'>
-          {cards.map((e, idx) => (
-            <div key={idx}>
-              <Card title={e.title} image={e.image} alt={e.alt} description={e.description} link={e.link} imagePosition={(e as any).imagePosition} />
-            </div>
-          ))}
+      <div className='relative w-fit max-w-full mx-auto flex items-center justify-center mt-14 sm:mt-16'>
+        {/* Desktop navigation */}
+        <motion.div
+          onClick={() => handleArrow('left')}
+          whileHover={{ opacity: 1, scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className='hidden lg:flex mr-4 xl:mr-6 size-16 rounded-full cursor-pointer text-white opacity-70 hover:opacity-100 items-center justify-center z-20 select-none shrink-0'
+          aria-label="Previous milestone"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width={56} height={56} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M21 12h-12" />
+            <path d="M13 16l-4 -4l4 -4" />
+            <path d="M12 3a9 9 0 1 0 0 18" />
+          </svg>
+        </motion.div>
+
+        <div
+          ref={carouselRef}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          className='flex w-[20rem] md:w-[44rem] lg:w-[728px] xl:w-[1104px] overflow-hidden'
+        >
+          <motion.div animate={{ x: currCards }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className='flex gap-6'>
+            {cards.map((e, idx) => (
+              <div key={idx}>
+                <Card title={e.title} image={e.image} alt={e.alt} description={e.description} link={e.link} imagePosition={(e as any).imagePosition} />
+              </div>
+            ))}
+          </motion.div>
+        </div>
+
+        <motion.div
+          onClick={() => handleArrow('right')}
+          whileHover={{ opacity: 1, scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className='hidden lg:flex ml-4 xl:ml-6 size-16 rounded-full cursor-pointer text-white opacity-70 hover:opacity-100 items-center justify-center z-20 select-none shrink-0'
+          aria-label="Next milestone"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width={56} height={56} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 12h12" />
+            <path d="M11 8l4 4l-4 4" />
+            <path d="M12 21a9 9 0 0 0 0 -18" />
+          </svg>
         </motion.div>
       </div>
 
-      <motion.div onClick={() => handleArrow('left')} whileHover={{ opacity: 1 }} className='absolute hidden lg:flex  size-16 left-16 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
-        <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M21 12h-12" /><path d="M13 16l-4 -4l4 -4" /><path d="M12 3a9 9 0 1 0 0 18" /></svg>
-      </motion.div>
-
-      <motion.div onClick={() => handleArrow('right')} whileHover={{ opacity: 1 }} className='absolute hidden lg:flex size-16 right-16 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
-        <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12h12" /><path d="M11 8l4 4l-4 4" /><path d="M12 21a9 9 0 0 0 0 -18" /></svg>
-      </motion.div>
-
-
-      {/* for mobile */}
-      <div className='flex gap-10 mt-10 '>
-        <motion.div onClick={() => handleArrow2('left')} whileHover={{ opacity: 0.7 }} className='lg:hidden size-16  rounded-full cursor-pointer text-zinc-400'>
-          <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M21 12h-12" /><path d="M13 16l-4 -4l4 -4" /><path d="M12 3a9 9 0 1 0 0 18" /></svg>
+      {/* Mobile/Tablet navigation */}
+      <div className='flex gap-10 mt-8 lg:hidden justify-center items-center z-20'>
+        <motion.div
+          onClick={() => handleArrow2('left')}
+          whileHover={{ opacity: 1 }}
+          whileTap={{ scale: 0.95 }}
+          className='size-16 rounded-full cursor-pointer text-zinc-400 hover:text-white flex items-center justify-center select-none'
+          aria-label="Previous milestone"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M21 12h-12" />
+            <path d="M13 16l-4 -4l4 -4" />
+            <path d="M12 3a9 9 0 1 0 0 18" />
+          </svg>
         </motion.div>
 
-        <motion.div onClick={() => handleArrow2('right')} whileHover={{ opacity: 0.7 }} className=' lg:hidden size-16 right-24 top-[30rem] rounded-full cursor-pointer text-zinc-400'>
-          <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12h12" /><path d="M11 8l4 4l-4 4" /><path d="M12 21a9 9 0 0 0 0 -18" /></svg>
+        <motion.div
+          onClick={() => handleArrow2('right')}
+          whileHover={{ opacity: 1 }}
+          whileTap={{ scale: 0.95 }}
+          className='size-16 rounded-full cursor-pointer text-zinc-400 hover:text-white flex items-center justify-center select-none'
+          aria-label="Next milestone"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc">
+            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+            <path d="M3 12h12" />
+            <path d="M11 8l4 4l-4 4" />
+            <path d="M12 21a9 9 0 0 0 0 -18" />
+          </svg>
         </motion.div>
       </div>
     </div>
@@ -445,22 +486,30 @@ function Achivements() {
 
 export default Achivements
 
-
-function Card({ image, alt, title, description, link, imagePosition }: { image: String, alt: String, title: String, description: String, link: String, imagePosition?: string }) {
+function Card({ image, alt, title, description, imagePosition, link }: { image: String, alt: String, title: String, description: String, link?: String, imagePosition?: string }) {
   return (
     <motion.div className='relative h-[33rem] md:h-[48rem] lg:h-[33rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
-      <img src={image as string} alt={alt as string} className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : imagePosition === 'bottom' ? 'object-bottom' : ''}`} />
+      <img
+        src={image as string}
+        alt={alt as string}
+        className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : imagePosition === 'bottom' ? 'object-bottom' : ''}`}
+      />
 
       <div className='px-5 md:px-10 flex flex-col gap-2 md:gap-4 mt-4 md:mt-8'>
-        <h1 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold '>{title}</h1>
+        <h1 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold text-white'>{title}</h1>
         <p className='text-zinc-500 text-xs md:text-[1.3rem] md:leading-relaxed lg:text-xs'>{description}</p>
       </div>
 
       {link && link !== "" && (
-        <a href={link as string} target='_blank'>
-          <motion.button whileHover={{ opacity: 0.7 }} className='absolute text-lg md:text-[1.5rem] lg:text-lg px-5 md:px-10 bottom-8 md:bottom-12 text-[#00BFFF]'>Read More</motion.button>
+        <a href={link as string} target='_blank' rel='noopener noreferrer'>
+          <motion.button
+            whileHover={{ opacity: 0.7 }}
+            className='absolute text-lg md:text-[1.5rem] lg:text-lg px-5 md:px-10 bottom-8 md:bottom-12 text-[#00BFFF] cursor-pointer'
+          >
+            Read More
+          </motion.button>
         </a>
       )}
     </motion.div>
-  )
+  );
 }

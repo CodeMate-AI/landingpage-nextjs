@@ -1,9 +1,9 @@
 'use client'
 import React, { useEffect, useState, useRef } from 'react'
-import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
-import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
+import { ChevronRight } from 'lucide-react';
+import { FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
 import SeamlessCarousel from '@/components/SeamlessCarousel';
@@ -13,11 +13,8 @@ import Footer from '@/components/footer';
 import VideoEmbed from '@/components/video';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
-import SmartGif from '@/components/ui/SmartGif';
 import Achivements from '@/components/achivements';
-import MediaPresence from '@/components/media-presence';
 import EventOffer from './pricing/components/EventOffer';
-import { cn } from './utils/cn';
 import Navbar from '@/components/navbar';
 
 const montserrat = Montserrat({
@@ -26,121 +23,24 @@ const montserrat = Montserrat({
   variable: '--font-montserrat',
 });
 
-
-// ==========================================
-// 1. MAIN COMPONENT DECLARATION
-// The root Page component for the landing page.
-// Handles core state, scroll tracking (Framer Motion), and renders all sub-sections.
-// ==========================================
-function Page() {
+export default function Page() {
   const router = useRouter();
 
-  // ==========================================
-  // REFS & COMPONENT STATE
-  // ==========================================
-  const heroRef = useRef<HTMLDivElement>(null);
-  const heroRef2 = useRef<HTMLDivElement>(null);
-  const footerRef = useRef<HTMLDivElement>(null);
   const [lastScroll, setLastScroll] = useState(0);
-  const [isNBack, setIsNBack] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(820);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const w = window.innerWidth;
-      setWindowWidth(w);
-      setIsMobile(w < 1025);
-      setIsTablet(w >= 768 && w < 1025);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   const [isArrowV, setIsArrowV] = useState(false);
   const [isArrow, setIsArrow] = useState(false);
-  const [isCoraBlocked, setIsCoraBlocked] = useState(true);
   const [showEventPopup, setShowEventPopup] = useState(false);
-  const mainRef = useRef<HTMLDivElement>(null);
-  const productShowRef = useRef<HTMLDivElement>(null);
-  const codeMateImageRef = useRef<HTMLImageElement>(null);
-  const unlockCopyRef = useRef<HTMLParagraphElement>(null);
-  const unlockVideoRefs = useRef<{ [key: number]: HTMLVideoElement | null }>({});
-  // ==========================================
-  // SCROLL ANIMATION HOOKS (FRAMER MOTION)
-  // ==========================================
-  const { scrollYProgress: PShowYProg } = useScroll({
-    target: productShowRef,
-    offset: ['start start', 'end start']
-  });
 
-  const { scrollYProgress: codeMateImageProg } = useScroll({
-    target: codeMateImageRef,
-    offset: ['start end', 'end start']
-  });
+  const mainRef = useRef<HTMLDivElement>(null);
 
   const { scrollYProgress: MYProg } = useScroll({
     target: mainRef,
     offset: ['start start', 'end start']
   });
 
-  // Track window scroll for navbar positioning
-  const { scrollY } = useScroll();
-
-  // ========== "What you'll Unlock" section scroll math ==========
-  const UNLOCK_END = 0.76;
-  const UNLOCK_STEP = UNLOCK_END / 6;
-
-  const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
-
-  // ========== iPad/Tablet Centering Transform ==========
-  const xMobile = useTransform(
-    PShowYProg,
-    [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-    ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw", "-600vw"]
-  );
-
-  const xDesktop = useTransform(
-    PShowYProg,
-    [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-    ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73%", "-73%"]
-  );
-
-  const xTablet = useTransform(PShowYProg, (latest) => {
-    const W = windowWidth;
-    const w = W * 0.82;
-    const g = 40;
-    const c0 = -(W / 2 + w / 2);
-    const input = [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END];
-    const output = [
-      0,
-      c0,
-      c0 - 1 * (w + g),
-      c0 - 2 * (w + g),
-      c0 - 3 * (w + g),
-      c0 - 4 * (w + g),
-      c0 - 5 * (w + g),
-      c0 - 5 * (w + g)
-    ];
-    if (latest <= input[0]) return `${output[0]}px`;
-    if (latest >= input[input.length - 1]) return `${output[output.length - 1]}px`;
-    for (let i = 0; i < input.length - 1; i++) {
-      if (latest >= input[i] && latest <= input[i + 1]) {
-        const t = (latest - input[i]) / (input[i + 1] - input[i]);
-        const val = output[i] + t * (output[i + 1] - output[i]);
-        return `${val}px`;
-      }
-    }
-    return `${output[0]}px`;
-  });
-
-  const xTransform = isTablet ? xTablet : isMobile ? xMobile : xDesktop;
-
+  // Lenis smooth scroll
   useEffect(() => {
-    // Lenis smooth scroll initialization
-    const lenis = new Lenis({ duration: 2 });
+    const lenis = new Lenis({ duration: 1.5 });
     let rafId: number;
 
     function raf(time: any) {
@@ -155,87 +55,11 @@ function Page() {
     };
   }, []);
 
-  // Top announcement banner
-  const [showAnnouncement, setShowAnnouncement] = useState(true);
-  const SWE_BENCH_BLOG_URL = '/blog/cora-sota-swe-bench';
-  const announcementRef = useRef<HTMLDivElement>(null);
-
-
-  //for codeEditor
-  // ==========================================
-  // 1F. EVENT HANDLERS
-  // Functions to manage modal overlays, keyboard shortcuts, and button clicks.
-  // ==========================================
-
-  // Consolidated scroll event handler on main page scroll progress (MYProg)
   useMotionValueEvent(MYProg, 'change', (latest) => {
-    // 1. Arrow visibility (show after 5% scroll)
     setIsArrowV(latest >= 0.05);
-
-    // 2. Navbar background trigger
-    setIsNBack(latest >= 0.001203313524221142);
-
-    // 3. Scroll direction tracking (scroll arrow direction)
     setIsArrow(latest >= lastScroll);
     setLastScroll(latest);
   });
-
-
-
-  ///for new products section
-
-
-
-
-  // Discrete step switching for "What you'll Unlock"
-  // Uses midpoint thresholds so the step changes at the exact center between two cards.
-  // This makes scroll-up and scroll-down behavior perfectly symmetric.
-  useMotionValueEvent(PShowYProg, 'change', (latest) => {
-    if (latest <= 0 || latest >= UNLOCK_END) {
-      setUnlockStep(-1);
-      return;
-    }
-
-    // Adjusted thresholds to sync dots with cards (0.76 range / 6 steps)
-    // Title is active from 0 to 0.03
-    // Card 0 (Design Mode) is centered at 0.063 and active until ~0.126
-    if (latest < UNLOCK_STEP * 0.25) setUnlockStep(-1);
-    else if (latest < UNLOCK_STEP * 1) setUnlockStep(0);
-    else if (latest < UNLOCK_STEP * 2) setUnlockStep(1);
-    else if (latest < UNLOCK_STEP * 3) setUnlockStep(2);
-    else if (latest < UNLOCK_STEP * 4) setUnlockStep(3);
-    else if (latest < UNLOCK_STEP * 5) setUnlockStep(4);
-    else setUnlockStep(5);
-  });
-
-  // Play/pause videos in "What You'll Unlock" based on active step
-  useEffect(() => {
-    Object.entries(unlockVideoRefs.current).forEach(([key, video]) => {
-      if (!video) return;
-      if (Number(key) === unlockStep) {
-        video.play().catch(() => { });
-      } else {
-        video.pause();
-      }
-    });
-  }, [unlockStep]);
-
-  // Block CORA.mp4 while the CodeMate Chat image is on screen
-  useMotionValueEvent(codeMateImageProg, 'change', (latest) => {
-    const imageVisible = latest > 0 && latest < 1;
-    setIsCoraBlocked(imageVisible);
-  });
-
-  // Hide product overlay once the unlock paragraph leaves view (e.g., scrolling up past it)
-
-
-
-
-
-
-
-
-
 
   const handleArrow = () => {
     if (isArrow) {
@@ -245,775 +69,471 @@ function Page() {
     }
   };
 
-  const handleAnnouncementClick = () => {
-    window.open(SWE_BENCH_BLOG_URL, '_blank', 'noopener,noreferrer');
-  };
+  const products = [
+    {
+      href: "http://build.codemate.ai/",
+      img: "/Build Static.png",
+      title: "CodeMate Build",
+      desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support."
+    },
+    {
+      href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent",
+      img: "/CORA Static.png",
+      title: "CodeMate CORA",
+      desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE."
+    },
+    {
+      href: "https://app.codemate.ai/chat",
+      img: "/Co web Static.png",
+      title: "CodeMate Work",
+      desc: "Turns deep research and feasibility into production-ready code through AI-driven intelligence."
+    },
+    {
+      href: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate",
+      img: "/Co extention Static.png",
+      title: "CodeMate Work Extension",
+      desc: "Your in-IDE AI partner for code management, debugging, and performance optimization."
+    },
+    {
+      href: "https://edu.codemate.ai/",
+      img: "/Codemate Education Static.png",
+      title: "CodeMate Academy",
+      desc: "AI-powered classroom management built for educators and students to master modern development."
+    },
+    {
+      href: "https://cli.codemate.ai/",
+      img: "term.svg",
+      title: "AI Terminal",
+      desc: "Run code and scripts instantly through an AI-powered command-line interface."
+    }
+  ];
 
+  const unlockFeatures = [
+    {
+      id: "01",
+      title: "Design Mode",
+      desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.",
+      media: "/Design mode_static.png"
+    },
+    {
+      id: "02",
+      title: "Figma to Code",
+      desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that matches your mockups.",
+      media: "/figma-to-code-static.png"
+    },
+    {
+      id: "03",
+      title: "Custom AI Skills",
+      desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored to your team's unique workflows.",
+      media: "/skill-static.png"
+    },
+    {
+      id: "04",
+      title: "Ship Autonomously with CORA",
+      desc: "Delegate tasks to our smartest coding agent that understands your codebase from architecture to edge cases.",
+      media: "/cora-autonomous.png"
+    },
+    {
+      id: "05",
+      title: "Automated PR Reviews",
+      desc: "Integrated in your version control (GitHub, Bitbucket, GitLab, Azure DevOps) to automate code reviews and ship clean code up to 80% faster.",
+      media: "/Pr_review_agent_parth.png"
+    },
+    {
+      id: "06",
+      title: "Documentation",
+      desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing impactful code.",
+      media: "/documentation-static.png"
+    }
+  ];
 
   return (
-    <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className={`${montserrat.className} bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]`} >
-
-      {/* arrow for going to hero section */}
+    <div
+      style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
+      ref={mainRef}
+      className={`${montserrat.className} bg-zinc-950 text-white min-h-screen pt-[92px] sm:pt-[96px] lg:pt-[88px]`}
+    >
+      {/* Scroll to top/bottom button */}
       <AnimatePresence>
-        {isArrowV &&
-          <motion.div initial={{ opacity: 0, filter: 'blur(20px)' }} animate={{ opacity: 1, filter: 'blur(0px)' }} exit={{ opacity: 0, filter: 'blur(20px)' }} transition={{ duration: 1 }} className="fixed bottom-7 right-7 z-[9999999999]">
-            <motion.div onClick={handleArrow} whileTap={{ scale: 1 }} whileHover={{ scale: 1.1 }} className='hidden lg:flex cursor-pointer  justify-center items-center  size-10 rounded-full bg-[#EDEADE]/90  text-black'>
-              <motion.svg animate={{ rotate: isArrow ? 180 : 0 }} transition={{ duration: 0.5 }} xmlns="http://www.w3.org/2000/svg" width={30} height={30} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
-            </motion.div>
+        {isArrowV && (
+          <motion.div
+            initial={{ opacity: 0, filter: 'blur(20px)' }}
+            animate={{ opacity: 1, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, filter: 'blur(20px)' }}
+            transition={{ duration: 0.5 }}
+            className="fixed bottom-7 right-7 z-[9999999999]"
+          >
+            <motion.button
+              onClick={handleArrow}
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.1 }}
+              aria-label="Scroll page"
+              className="hidden lg:flex cursor-pointer justify-center items-center size-10 rounded-full bg-[#EDEADE]/90 text-black shadow-lg"
+            >
+              <motion.svg
+                animate={{ rotate: isArrow ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+                xmlns="http://www.w3.org/2000/svg"
+                width={26}
+                height={26}
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M12 5l0 14" />
+                <path d="M16 9l-4 -4" />
+                <path d="M8 9l4 -4" />
+              </motion.svg>
+            </motion.button>
           </motion.div>
-        }
+        )}
       </AnimatePresence>
-      {/* arrow for going to hero section */}
 
       <Navbar />
-      {/* mobile menu */}
-
-
-      {/* hero section  */}
-      {/* hero section  */}
-      <div ref={heroRef2} className='h-auto lg:h-screen w-full overflow-x-hidden relative'>
-        <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
-          {/* ========================================== */}
-          {/* UI SECTION: HERO                         */}
-          {/* The main landing area with the primary CTA and background animation */}
-          {/* ========================================== */}
-          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-auto lg:h-screen w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-20 lg:pt-[8vh] pb-8 lg:pb-20'>
-
-            <motion.div
-              style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
-              className='absolute inset-0 opacity-5 z-0'>
-              <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" />
-            </motion.div>
-
-            <div className='relative z-50 w-full px-6 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
-              <motion.div
-                className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left'>
-
-
-                <div className={`${montserrat.className} `}>
-                  <div className='xxlHero z-50'>
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>On</motion.span>
-                    {' '}
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Device</motion.span>
-                    {' '}
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.2, delay: 0.6 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>First</motion.span>
-                    {' '}
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.1, delay: 0.8 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>AI</motion.span>
-                  </div>
-                </div>
-                <div className={`${montserrat.className} flex flex-wrap justify-start gap-x-4`}>
-                  <div className='pb-3'>
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>SDLC</motion.span>
-                    {' '}
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3, delay: 0.4 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Agent</motion.span>
-                  </div>
-                </div>
-
-                <motion.div
-                  initial={{ opacity: 0, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, filter: "blur(0px)" }}
-                  transition={{ duration: 0.4, delay: 1.5 }}
-                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-5 opacity-60 text-left max-w-[280px] sm:max-w-md md:max-w-2xl lg:max-w-none`}>
-                  <p>Build and ship 20x faster with CodeMate AI</p>
-                  <p>Your all-in-one accelerator to turn your ideas into code</p>
-                </motion.div>
-
-                {/* State-of-the-Art Badge */}
-                <motion.div
-                  ref={announcementRef}
-                  initial={{ y: -12, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.4 }}
-                  className="w-full flex justify-start mt-3 lg:mt-8 z-[100]"
-                >
-                  <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group">
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => window.open('/blog/cora-sota-swe-bench', '_blank')}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
-                      className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-4 py-3 sm:px-3 sm:py-2 md:px-4 md:py-2.5 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                    >
-                      <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-                        <p className="text-[11px] sm:text-[13px] md:text-sm font-medium leading-snug text-neutral-300">
-                          Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
-                        </p>
-                        <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
-                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                  transition={{ duration: 1, delay: 0.5 }}
-                  className={`${montserrat.className} flex flex-col-reverse sm:flex-row justify-start items-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm md:text-base lg:text-sm mt-6 lg:mt-10 w-full sm:w-auto`}
-                >
-                  <a href="/download" className="w-full sm:w-auto">
-                    <motion.button
-                      whileHover={{ opacity: 0.8 }}
-                      className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
-                    >
-                      Download
-                    </motion.button>
-                  </a>
-                  <a href="https://app.codemate.ai/dashboard" target="_blank" className="w-full sm:w-auto">
-                    <motion.button
-                      whileHover={{ opacity: 0.9 }}
-                      className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
-                    >
-                      Try for Free
-                    </motion.button>
-                  </a>
-                </motion.div>
-              </motion.div>
-
-              {/* <motion.span className='mt-32' initial={{display:'none',y:50,filter:'blur(10px)'}}
-       animate={{display:'block',y:0,filter:'blur(0px)'}}
-       transition={{delay:7,duration:1}}
-       >
-       <img src="/chat.png" className='object-cover w-[45rem]' alt="" />
-       </motion.span> */}
-
-              {/* <motion.p
-      initial={{opacity:0,display:'hidden',filter:'blur(10px)'}}
-      animate={{opacity:1,filter:'blur(0px)',display:'block'}}
-      transition={{duration:1,delay:8}}
-      className={`${montserrat.className} opacity-60 text-xl`}>You Think ! We Develop</motion.p> */}
-
-              {/* <motion.div 
-   initial={{opacity:0}}
-   animate={{opacity:0.6,y:[10,0,10]}}
-   transition={{duration:4,delay:10,repeat:Infinity,repeatType:'reverse'}}
-   className='absolute bottom-10 text-3xl opacity-50'>
-     <span className='flex justify-center items-center'>Scroll Up <svg  xmlns="http://www.w3.org/2000/svg"  width="32"  height="32"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></svg></span>
-   </motion.div> */}
-            </div>
-
-
-
-          </div>
-        </BackgroundGradientAnimation>
-      </div>
-      {/* hero section */}
-
-      {/* enter section */}
-      {/* <div
-   ref={exploreRef} 
-   className={`${montserrat2.className} flex justify-center items-center h-[100vh] w-full bg-zinc-950`}>
-    <motion.span 
-    initial={{opacity:0,filter:'blur(20px)'}}
-    whileInView={{opacity:1,filter:'blur(0px)'}}
-    viewport={{amount:1}}
-    transition={{duration:1.3}}
-    className='flex gap-5 text-6xl'>
-      <h1 className='font-semibold text-white'>Press</h1>
-      <motion.h1 animate={{scale:[1,1.1]}} 
-      transition={{duration:2,repeat:Infinity,repeatType:'mirror',}}
-      className='p-2 bg-opacity-80 bg-[#1B2021] text-[#00FFFF]'>Enter</motion.h1>
-      <h1 className='font-semibold text-white'>to</h1>
-      <h1 className='italic text-white'>Explore</h1>
-    </motion.span>
-   </div> */}
-      {/* enter section */}
-
-      {/* scrolling bento */}
-
 
       <EventOffer
         isOpen={showEventPopup}
         onClose={() => setShowEventPopup(false)}
-        badgeText="Republic Day Special"
+        badgeText="Special Offer"
         offerText="Flat 77% OFF"
         discountLabel="50% OFF"
-        imageSrc='https://backend.codemate.ai/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e'
+        imageSrc="https://backend.codemate.ai/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e"
       />
 
-      <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-4 lg:mt-0'>
-        <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg md:text-2xl lg:text-lg'>Introducing CodeMate AI</h1>
+      {/* Hero Section */}
+      <div className='h-auto lg:h-screen w-full overflow-x-hidden relative'>
+        <BackgroundGradientAnimation
+          className='w-full overflow-hidden'
+          interactive={true}
+          gradientBackgroundStart='rgb(9, 9, 11)'
+          gradientBackgroundEnd='rgb(9, 9, 11)'
+          firstColor='0, 255, 255'
+          secondColor='30, 144, 255'
+          thirdColor='0, 255, 255'
+          fourthColor='255, 255, 255'
+          pointerColor='30, 144, 255'
+          size='100%'
+        >
+          <div
+            style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
+            className='relative h-auto lg:h-screen w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-20 lg:pt-[8vh] pb-8 lg:pb-20'
+          >
+            <motion.div
+              style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
+              className='absolute inset-0 opacity-5 z-0'
+            >
+              <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" />
+            </motion.div>
 
-
-        {/* ========================================== */}
-        {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
-        {/* Features a sticky video player on the left and a scrollable list of products on the right */}
-        {/* ========================================== */}
-        <div className={`${montserrat.className} mt-3 leading-tight text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-4 lg:pb-2 w-full text-center px-4 lg:px-0 `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer</div>
-
-        <div className={`relative z-20 w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
-          {/* Left: Sticky video panel - desktop only */}
-          <div className='hidden lg:flex sticky top-0 h-screen flex-1 items-center justify-center px-8'>
-            <div className="flex flex-col gap-2 w-full max-w-[58vw]">
-              <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.2 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                style={{ willChange: "transform, opacity" }}
-                className='aspect-video w-full rounded-lg overflow-hidden'>
-                <VideoEmbed />
-              </motion.div>
-              <p ref={unlockCopyRef} className='opacity-70 text-[1rem] w-full leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
-            </div>
-          </div>
-
-          {/* Right: Product cards - pushed to far right */}
-          <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2 pb-8">
-            {/* Mobile-only video */}
-            <div className='lg:hidden w-full px-4 mb-8 mt-2 flex flex-col items-center'>
-              <div className='aspect-video w-full max-w-none md:w-[95%] md:max-w-[880px] md:mx-auto lg:w-full lg:max-w-none rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
-                <VideoEmbed />
+            <div className='relative z-50 w-full px-6 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
+              <div className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left mt-3 sm:mt-6'>
+                <div className='xxlHero z-50'>
+                  <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
+                    India's First AI
+                  </span>
+                </div>
+                <div className='flex flex-wrap justify-start gap-x-4 pb-3'>
+                  <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
+                    SDLC
+                  </span>{' '}
+                  <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
+                    Agent
+                  </span>
+                </div>
               </div>
-              <p className='opacity-70 text-[0.9rem] md:text-[1.2rem] lg:text-base w-full md:w-[90%] md:max-w-[760px] md:mx-auto md:text-center leading-relaxed mt-3'>From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.</p>
-            </div>
 
-            {[
-              { href: "http://build.codemate.ai/", img: "/Build Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", title: "CodeMate Build", desc: "Turns prompts and Figma designs into deployable apps instantly with full design mode support." },
-              { href: "https://cli.codemate.ai/", img: "term.svg", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[-4.8rem] md:bottom-[-6.5rem] lg:bottom-[-6rem]", title: "AI Terminal", desc: "Run code and scripts instantly through an AI-powered command-line interface." },
-              { href: "https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent", img: "/CORA Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", px: true, title: "CodeMate CORA", desc: "End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE." },
-              { href: "https://edu.codemate.ai/", img: "/Codemate Education Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[1.5rem] md:bottom-[2.5rem] lg:bottom-[2.5rem]", title: "CodeMate Academy", desc: "AI-powered classroom management built for educators and students to master modern development." },
-              { href: "https://marketplace.visualstudio.com/items?itemName=AyushSinghal.Code-Mate", img: "/Co extention Static.png", imgClass: "object-fit size-[90%] shadow-2xl", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", title: "CodeMate Work Extension", desc: "Your in-IDE AI partner for code management, debugging, and performance optimization." },
-              { href: "https://app.codemate.ai/chat", img: "/Co web Static.png", imgClass: "w-full h-auto object-contain rounded-t-lg shadow-[0_-10px_40px_rgba(0,0,0,0.5)]", bottom: "bottom-[0.4rem] lg:bottom-[2.5rem]", px: true, title: "CodeMate Work", desc: "Turns deep research and feasibility into production-ready code through AI-driven intelligence." },
-            ].map((product: any, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0.3, scale: 0.9, filter: 'blur(4px)' }}
-                whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                viewport={{ once: false, amount: isTablet ? 0.25 : 0.5, margin: "-10% 0px -10% 0px" }}
-                transition={{ duration: 0.6, ease: "easeOut", delay: 0 }}
-                style={{ willChange: "transform, opacity, filter" }}
-                className="w-full flex flex-col items-center lg:items-start py-3 md:py-16 lg:py-3 px-4 lg:px-0 group"
-              >
-                <a href={product.href} target="_blank" className='cursor-pointer w-full'>
-                  <div className="flex flex-col items-center lg:items-start w-full">
-                    <div className='relative h-[16rem] md:h-[26rem] lg:h-[20rem] w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
-                      <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-                      <div className={`absolute ${product.bottom} w-full flex items-center justify-center shadow-2xl ${product.px ? 'px-4' : ''}`}>
-                        <div className="w-full md:w-[85%] md:max-w-[720px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
-                          <SmartGif
-                            src={product.img}
-                            fallbackSrc={product.fallback}
-                            className={product.imgClass}
-                            alt={product.title}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
-                      <h1 className='text-2xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
-                    </div>
-                    <p className='text-center lg:text-left opacity-70 text-base md:text-[1.2rem] lg:text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
+              <div className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 opacity-70 text-left max-w-2xl">
+                <p>Build and ship 20x faster with CodeMate AI</p>
+                <p>Your all-in-one accelerator to turn your ideas into code</p>
+              </div>
+
+              {/* SOTA Announcement Badge */}
+              <div className="w-full flex justify-start mt-4 sm:mt-6 z-[100]">
+                <a
+                  href="/blog/cora-sota-swe-bench"
+                  className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group"
+                >
+                  <div className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-black px-3.5 py-2 sm:px-4 sm:py-2.5 text-white">
+                    <p className="text-xs sm:text-sm font-medium leading-snug text-neutral-300">
+                      Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
+                    </p>
+                    <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
                   </div>
                 </a>
-              </motion.div>
-            ))}
+              </div>
 
-            {/* PR Review Agent - special (has icons) */}
-            <motion.div
-              initial={{ opacity: 0.3, scale: 0.9, filter: 'blur(4px)' }}
-              whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-              viewport={{ once: false, amount: isTablet ? 0.25 : 0.5, margin: "-10% 0px -10% 0px" }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0 }}
-              style={{ willChange: "transform, opacity, filter" }}
-              className="w-full flex flex-col items-center lg:items-start py-3 md:py-16 lg:py-3 px-4 lg:px-0 group mb-8 lg:mb-4"
-            >
-              <a href="https://github.com/apps/codemate-ai-pr-review-agent" target="_blank" className='cursor-pointer w-full'>
-                <div className="flex flex-col items-center lg:items-start w-full">
-                  <div className='relative h-[16rem] md:h-[26rem] lg:h-[20rem] w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none overflow-hidden rounded-t-[3rem] transition-all duration-500 group-hover:shadow-[0_0_30px_rgba(0,191,255,0.2)]'>
-                    <div className='absolute bottom-0 h-[70%] w-full bg-gradient-to-b from-[#141E30]/90 to-[#000000]/20 rounded-t-[3rem] border-x-[1px] border-zinc-600' />
-                    <div className="absolute bottom-[-4.8rem] md:bottom-[-6.5rem] lg:bottom-[-6rem] w-full flex items-center justify-center shadow-2xl">
-                      <div className="w-full md:w-[85%] md:max-w-[720px] md:mx-auto lg:w-full lg:max-w-none flex justify-center items-center">
-                        <motion.img
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.3 }}
-                          ref={codeMateImageRef}
-                          src="/prneww.png"
-                          className="object-fit size-[90%] shadow-2xl"
-                          alt="PR Review"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
-                    <h1 className='text-2xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
-                  </div>
-                  <p className='text-center lg:text-left opacity-70 text-base md:text-[1.2rem] lg:text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
-                  <div className='flex items-center gap-6 mt-6 opacity-60 text-white group-hover:opacity-100 transition-opacity'>
-                    <FaGithub className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitHub' />
-                    <FaBitbucket className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Bitbucket' />
-                    <FaGitlab className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='GitLab' />
-                    <VscAzureDevops className='w-6 h-6 hover:scale-125 transition-transform cursor-pointer' title='Azure DevOps' />
-                  </div>
+              <div className="flex flex-col sm:flex-row justify-start items-center gap-3 sm:gap-4 text-sm md:text-base mt-6 sm:mt-8 w-full sm:w-auto">
+                <a href="/download" className="w-full sm:w-auto">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="h-12 sm:h-12 px-7 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/20 hover:border-white/40 transition-colors whitespace-nowrap"
+                  >
+                    Download
+                  </motion.button>
+                </a>
+                <a href="https://app.codemate.ai/dashboard" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="h-12 sm:h-12 px-7 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold hover:bg-neutral-200 transition-colors whitespace-nowrap"
+                  >
+                    Try for Free
+                  </motion.button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </BackgroundGradientAnimation>
+      </div>
+
+      {/* Product Suite */}
+      <section className="w-full bg-zinc-950 pt-12 sm:pt-20 pb-14 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto flex flex-col items-center">
+          <span className="font-mono text-xs sm:text-sm uppercase tracking-widest text-neutral-400 text-center">
+            Introducing CodeMate AI
+          </span>
+          <h2 className="mt-3 text-3xl sm:text-4xl lg:text-5xl font-bold text-center">
+            Your{' '}
+            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+              Full-Stack
+            </span>{' '}
+            AI Engineer
+          </h2>
+          <p className="mt-3 text-sm sm:text-base text-neutral-400 text-center max-w-2xl leading-relaxed">
+            From developers to non-developers, an autonomous teammate that assists you in shipping code with AI.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 w-full mt-10 sm:mt-14">
+            {products.map((product, i) => (
+              <a
+                key={i}
+                href={product.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-5 sm:p-6 transition-colors duration-200"
+              >
+                <div className="relative h-[220px] sm:h-[260px] lg:h-[280px] w-full rounded-xl overflow-hidden bg-neutral-900 border border-white/10 mb-5">
+                  <img
+                    src={product.img}
+                    alt={product.title}
+                    className="w-full h-full object-cover object-top"
+                  />
+                </div>
+
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white transition-colors">
+                    {product.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-neutral-400 mt-2 leading-relaxed">
+                    {product.desc}
+                  </p>
                 </div>
               </a>
-            </motion.div>
+            ))}
+
+            {/* PR Review Agent */}
+            <a
+              href="https://github.com/apps/codemate-ai-pr-review-agent"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group md:col-span-2 flex flex-col md:flex-row items-center gap-6 bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-5 sm:p-6 transition-colors duration-200"
+            >
+              <div className="relative h-[240px] sm:h-[280px] lg:h-[300px] w-full md:w-1/2 rounded-xl overflow-hidden bg-neutral-900 border border-white/10">
+                <img
+                  src="/Pr_review_agent_parth.png"
+                  alt="CodeMate PR Review Agent"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+
+              <div className="w-full md:w-1/2 flex flex-col justify-center">
+                <h3 className="text-xl sm:text-2xl font-bold text-white transition-colors">
+                  CodeMate PR Review Agent
+                </h3>
+                <p className="text-sm sm:text-base text-neutral-400 mt-2 leading-relaxed">
+                  Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.
+                </p>
+                <div className="flex items-center gap-5 mt-5 text-neutral-400 group-hover:text-white transition-colors">
+                  <FaGithub className="w-5 h-5 hover:scale-125 transition-transform" title="GitHub" />
+                  <FaBitbucket className="w-5 h-5 hover:scale-125 transition-transform" title="Bitbucket" />
+                  <FaGitlab className="w-5 h-5 hover:scale-125 transition-transform" title="GitLab" />
+                  <VscAzureDevops className="w-5 h-5 hover:scale-125 transition-transform" title="Azure DevOps" />
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Trusted By */}
+      <section className="w-full bg-zinc-950 pt-14 pb-16 overflow-hidden border-t border-white/5">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold pb-1 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+              Trusted{' '}
+            </span>
+            by 1,000,000+
+          </h2>
+          <p className="mt-3 text-sm sm:text-base text-neutral-400 max-w-xl mx-auto">
+            Developers across the globe and from startups to Fortune 500 companies
+          </p>
+        </div>
+
+        <div className="relative flex justify-center items-center overflow-hidden mt-10">
+          <div className="absolute -left-6 top-0 bg-zinc-950 h-full w-24 sm:w-36 blur-2xl z-10 pointer-events-none" />
+          <div className="absolute -right-6 top-0 bg-zinc-950 h-full w-24 sm:w-36 blur-2xl z-10 pointer-events-none" />
+
+          <Marquee pauseOnHover className="[--duration:24s] flex justify-center items-center py-6">
+            <img src="maruti-suzuki.svg" className="object-contain w-[48vw] sm:w-[26vw] lg:w-[18vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Maruti Suzuki" />
+            <img src="atl.svg" className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Atlassian" />
+            <img src="dell.svg" className="object-contain w-[26vw] sm:w-[16vw] lg:w-[10vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Dell" />
+            <img src="qual.svg" className="object-contain w-[48vw] sm:w-[26vw] lg:w-[17vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Qualcomm" />
+            <img src="paytm.svg" className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Paytm" />
+            <img src="amazon.svg" className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Amazon" />
+            <img src="fampay.svg" className="object-contain w-[38vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="FamPay" />
+            <img src="inno.svg" className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 opacity-100 brightness-150" alt="Inno" />
+          </Marquee>
+        </div>
+      </section>
+
+      {/* What You'll Unlock */}
+      <section id="features" className="w-full bg-zinc-950 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
+          <div className="w-full lg:w-1/3 lg:sticky lg:top-32 lg:self-start">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight text-white">
+              What You'll{' '}
+              <span className="block bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+                Unlock
+              </span>
+              with CodeMate AI
+            </h2>
+            <p className="mt-4 text-sm sm:text-base text-neutral-400 leading-relaxed">
+              Explore the capabilities that transform your modern development workflow, from rapid prototyping to automated enterprise reviews.
+            </p>
           </div>
 
-        </div>
-      </div>
-      {/* scrolling bento */}
-
-      <div>
-        {/* horizontal scroll section: What You'll Unlock */}
-        <div id="features" ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 -mt-[15vh]'>
-
-          <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-[8vh] lg:pt-0">
-            {/* Horizontal Scrolling Content */}
-            <div className="relative flex-1 w-full flex items-center overflow-hidden pointer-events-none">
-              <motion.div
-                style={{
-                  x: xTransform,
-                  willChange: 'transform'
-                }}
-                className="flex items-center gap-0 md:gap-[40px] lg:gap-[4rem] w-max pl-0 lg:pl-[10%] pr-0 lg:pr-[10%] pointer-events-auto lg:mt-0"
+          <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+            {unlockFeatures.map((item, i) => (
+              <div
+                key={i}
+                className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-5 transition-colors duration-200"
               >
-
-                {/* Scrolling Title */}
-                <div className="w-[100vw] lg:w-[35vw] flex flex-col justify-center items-center text-center lg:items-start lg:text-left shrink-0 px-8 lg:px-0">
-                  <div className={`${montserrat.className} text-[clamp(2rem,10vw,3.5rem)] leading-[1.05] font-bold text-white`}>
-                    What You'll
-                    <div className="block">
-                      <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Unlock</span>
-                      <span className="lg:hidden"> with</span>
-                    </div>
-                    <div className="mt-1 lg:mt-2 text-[clamp(1.5rem,7vw,2.5rem)] font-semibold leading-tight whitespace-nowrap">
-                      <span className="hidden lg:inline">with </span>
-                      CodeMate AI
-                    </div>
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold text-white mb-3">
+                    {item.title}
+                  </h3>
+                  <div className="relative h-[180px] sm:h-[200px] w-full rounded-xl overflow-hidden bg-neutral-900 border border-white/10 flex items-center justify-center p-2 mb-4">
+                    <img
+                      src={item.media}
+                      alt={item.title}
+                      className="max-h-full max-w-full object-contain rounded"
+                    />
                   </div>
                 </div>
-
-                {/* Cards */}
-                <div className="flex gap-0 md:gap-[40px] lg:gap-16">
-                  {[
-                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/Design mode_static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/figma-to-code-static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skill-static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "/cora-autonomous.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "/Pr_review_agent_parth.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "/documentation-static.png", isVideo: false, objectFit: "object-cover" },
-                  ].map((item, i) => {
-                    // Proximity-based effects: adjacent cards get softer treatment
-                    const dist = unlockStep === -1 ? 0 : Math.abs(i - unlockStep);
-                    const isActive = i === unlockStep;
-                    const proximityOpacity = unlockStep === -1 ? 1 : isActive ? 1 : dist === 1 ? 0.5 : 0.2;
-                    const proximityBlur = unlockStep === -1 ? 0 : isActive ? 0 : dist === 1 ? 1.5 : 3.5;
-                    const proximityScale = unlockStep === -1 ? 1 : isActive ? 1.03 : dist === 1 ? 0.97 : 0.92;
-                    const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
-
-                    return (
-                      <div key={i} className="w-[100vw] md:w-[82vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
-                        <div
-                          className="flex flex-col gap-6 md:gap-8 transition-all duration-700 ease-in-out items-center text-center lg:items-start lg:text-left"
-                          style={{
-                            opacity: proximityOpacity,
-                            filter: `blur(${proximityBlur}px)`,
-                            transform: `scale(${proximityScale}) translateY(${proximityY}px)`,
-                          }}
-                        >
-                          {/* Top Text */}
-                          <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
-                            {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
-                            <h3 className={`${montserrat.className} text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
-                          </div>
-
-                          {/* Image/Video Box */}
-                          <div
-                            className={`h-[200px] sm:h-[250px] md:h-[46vw] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
-                          >
-                            {/* Subtle radial glow behind active card media */}
-                            {isActive && (
-                              <div className="absolute inset-0 rounded-xl bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.06)_0%,transparent_70%)] pointer-events-none" />
-                            )}
-                            {item.isVideo ? (
-                              <video
-                                ref={(el) => { unlockVideoRefs.current[i] = el }}
-                                loop
-                                muted
-                                playsInline
-                                className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
-                                src={item.media}
-                              />
-                            ) : (
-                              <SmartGif
-                                src={item.media}
-                                alt={item.title}
-                                className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
-                                isActive={isActive}
-                              />
-                            )}
-                          </div>
-
-                          {/* Bottom Description */}
-                          <div className="flex flex-col gap-4 px-2 items-center lg:items-start h-[80px] md:h-[100px] lg:h-auto justify-center">
-                            <p className={`text-[14px] md:text-[18px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Step Indicator Dots */}
-            {unlockStep >= 0 && (
-              <div className="absolute bottom-[14vh] lg:bottom-[12vh] left-1/2 -translate-x-1/2 flex items-center gap-2 z-50">
-                {[0, 1, 2, 3, 4, 5].map((dot) => (
-                  <div
-                    key={dot}
-                    className="transition-all duration-500 rounded-full"
-                    style={{
-                      width: dot === unlockStep ? 28 : 8,
-                      height: 8,
-                      backgroundColor: dot === unlockStep ? '#00BFFF' : 'rgba(255,255,255,0.2)',
-                      boxShadow: dot === unlockStep ? '0 0 12px rgba(0,191,255,0.5)' : 'none',
-                    }}
-                  />
-                ))}
+                <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed">
+                  {item.desc}
+                </p>
               </div>
-            )}
-
-            {/* From Web-Application Label (Mobile) */}
-            <div className="lg:hidden w-full px-8 pt-10 pb-8 text-right pointer-events-none">
-              <motion.div
-                style={{
-                  opacity: useTransform(PShowYProg, [0.72, 0.76], [0, 1]),
-                  filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
-                }}
-                transition={{ duration: 0.6 }}
-                className={`${montserrat.className} text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
-                From <br /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl'>Web-Application</span>
-              </motion.div>
-            </div>
-          </div>
-
-          {/* From Web-Application Label (Desktop) */}
-          <div className='hidden lg:block sticky top-[88vh] z-40 pointer-events-none'>
-            <motion.div
-              style={{
-                opacity: useTransform(PShowYProg, [0.72, 0.76], [0, 1]),
-                filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
-              }}
-              transition={{ duration: 0.6 }}
-              className={`${montserrat.className} text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
-              From <br className='lg:hidden' /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>Web-Application</span>
-            </motion.div>
+            ))}
           </div>
         </div>
+      </section>
 
-        {/* Seamlessly Integrated Section with Carousel */}
-        <div className="relative w-full z-10 bg-black pt-10 pb-4 lg:pt-12 lg:pb-8">
-          <div className="pb-2 text-center">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className={`${montserrat.className} text-[2.2rem] lg:text-[3rem] font-bold leading-[1.15]`}
-            >
-              <span className="bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">Seamlessly </span>
-              <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Integrated</span>
-              <br />
-              <span className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-xl lg:text-3xl">in your existing environment</span>
-            </motion.h2>
-          </div>
-          <SeamlessCarousel />
-          <div className="mt-2 lg:mt-4 mb-2">
-            <div className={`${montserrat.className} text-xl lg:text-2xl pl-6 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
-              To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>IDE</span>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      {/* enterprises section  */}
-      <div className=' w-full pt-16 px-8 lg:px-14 overflow-hidden'>
-        <h1 className="text-3xl lg:text-[2rem] text-center lg:text-start font-bold">
-          <span className="bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">For </span>
-          <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
-            Enterprises
-          </span>
-        </h1>
-        <div className='mt-5 lg:mt-7 text-sm lg:text-[2.1vw] lg:text-6xl flex flex-col lg:gap-1 font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent pb-1 text-center lg:text-start'>
-          <h1>From Legacy Systems to Next-Gen Apps -</h1>
-          <h1>CodeMate AI Accelerates Your Enterprise Journey.</h1>
-        </div>
-
-        <div className='relative flex justify-center items-center mt-20 w-full'>
-          <div
-            style={{
-              background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-              boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              zIndex: 99999,
-            }}
-            className='lg:h-[35rem] lg:w-[70%] rounded-[4rem] px-8 border-y-[1px]  border-white border-opacity-50 flex flex-col gap-10 pb-5'>
-            <div>
-              <h1 className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-left text-9xl font-semibold mt-5">
-                “
-              </h1>
-              <div className='text-[6vw] lg:text-[2.75rem] leading-[1.1] font-semibold'>
-                Through the insights CodeMate provides, teams are inspired to achieve what truly matters <span className='opacity-60'>— building impactful solutions, shaping future growth, and delivering measurable value.</span>
+      {/* Metrics */}
+      <section className="w-full bg-zinc-950 py-16 sm:py-20 lg:py-[100px] px-6 sm:px-12 lg:px-20 border-t border-white/5">
+        <div className="max-w-[1460px] mx-auto">
+          <div className="flex flex-col md:flex-row justify-center items-center md:items-start gap-12 md:gap-16 lg:gap-[135px] text-center">
+            <div className="flex flex-col items-center gap-3 w-full sm:w-[197px] text-center">
+              <div className="h-auto lg:h-[96px] flex items-center justify-center">
+                <Counter
+                  direction="up"
+                  targetValue={55}
+                  format={(val) => `${Math.round(val)}%`}
+                  className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight"
+                />
               </div>
+              <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
+                Faster coding
+              </p>
             </div>
 
-            <div className=''>
-              <h1 className='font-semibold'>Ayush Singhal</h1>
-              <p className='opacity-50'>Founder of CodeMate AI</p>
+            <div className="flex flex-col items-center gap-3.5 w-full sm:w-[201px] text-center">
+              <div className="h-auto lg:h-[96px] flex items-center justify-center">
+                <Counter
+                  direction="up"
+                  targetValue={39}
+                  format={(val) => `${Math.round(val)}%`}
+                  className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight"
+                />
+              </div>
+              <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
+                Improvement in code quality
+              </p>
             </div>
-          </div>
 
-          <motion.img initial={{ scale: 0.75, y: 20 }} src="gl.png" alt="" className="absolute hidden lg:flex  " />
-
-          <motion.img initial={{ scale: 1.1, y: 150 }} src="gl.png" alt="" className="absolute lg:hidden  " />
-
-
-        </div>
-
-
-        <div className='text-2xl lg:text-5xl  flex flex-col gap-1 font-semibold mt-20 opacity-70'>
-          <h1 >Solutions that scales</h1>
-          <h1>your business</h1>
-        </div>
-
-        <div className='w-full flex flex-col md:flex-row justify-center items-stretch gap-5 mt-10 px-4 md:px-8 lg:px-0'>
-          <div className='relative min-h-[35vh] md:min-h-0 md:h-auto md:w-[28vw] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6 border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 md:px-5 lg:px-3 py-5'
-            style={{
-              background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-              boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              zIndex: 99999,
-            }}
-          >
-            <motion.img initial={{ scale: 1.2 }} src="1st icon (3).svg" alt="" className="object-fit brightness-90 size-[20%]" />
-            <h1 className='text-left text-2xl lg:text-3xl font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>Long-term code memory that learns from your legacy systems.</h1>
-            {/* <p className='text-xs lg:text-sm opacity-50'>
-    Codemate helps you streamline and synchronize your codebase across knowledge bases, ensuring consistency, reducing redundancy, and enabling your team to focus on innovation and faster delivery.
-  </p> */}
-          </div>
-
-          <div className='flex flex-col gap-5 md:flex-row md:gap-5 w-full md:w-auto md:items-stretch'>
-            <div className='relative min-h-[35vh] md:min-h-0 md:h-auto md:w-[28vw] lg:w-[30vw] rounded-2xl flex flex-col items-start gap-6 border-x-[1px] border-y-[0.5px] border-white border-opacity-20 px-7 md:px-5 lg:px-3 py-5'
-              style={{
-                background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-                boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                zIndex: 99999,
-              }}
-            >
-              <motion.img initial={{ scale: 1 }} src="icon2.svg" alt="" className="object-fit brightness-90 size-[25%]" />
-              <h1 className=' text-left text-2xl lg:text-3xl font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>Hybrid, on-device architecture — secure, scalable, and cost-efficient.</h1>
-              {/* <p className='text-xs lg:text-sm opacity-50'>
-Run it seamlessly in your environment with Codemate, ensuring smooth integration with your existing workflows. Codemate adapts to your setup, minimizing disruption while maximizing efficiency, so your team can maintain focus on delivering quality code without added complexity.
-  </p> */}
-            </div>
-            <div className='relative min-h-[35vh] md:min-h-0 md:h-auto md:w-[28vw] lg:w-[30vw] rounded-2xl flex flex-col items-start border-x-[1px] border-y-[0.5px] border-white border-opacity-20 gap-6 px-7 md:px-5 lg:px-3 py-5'
-              style={{
-                background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-                boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                zIndex: 99999,
-              }}
-            >
-              <motion.img initial={{ scale: 1 }} src="e3.svg" alt="" className="object-fit brightness-90 size-[25%]" />
-              <h1 className=' text-left text-2xl lg:text-3xl font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'>AI coding made accessible for both developers and non-developers.</h1>
-              {/* <p className='text-xs lg:text-sm opacity-50'>
-Codemate’s full-stack nature bridges the gap between developers and non-developers, enabling seamless collaboration, simplifying workflows, and boosting productivity across projects.
-  </p> */}
+            <div className="flex flex-col items-center gap-3.5 w-full sm:w-[208px] text-center">
+              <div className="h-auto lg:h-[96px] flex items-center justify-center">
+                <Counter
+                  direction="up"
+                  targetValue={68}
+                  format={(val) => `${Math.round(val)}%`}
+                  className="font-bold text-6xl sm:text-7xl lg:text-[96px] lg:leading-[96px] text-[#FAFAFA] opacity-70 tracking-tight"
+                />
+              </div>
+              <p className="text-base sm:text-lg lg:text-[20px] lg:leading-[28px] text-white opacity-70 font-normal">
+                Had a positive experience
+              </p>
             </div>
           </div>
         </div>
+      </section>
 
-        <div className=' lg:text-2xl  flex flex-col justify-center items-center w-full gap-1 font-semibold mt-10 opacity-70'>
-          {/* <h1>Explore more reasons for your business</h1>
-  <h1>to invest in Codemate tools</h1> */}
-          <a href="/contact" >
-            <motion.button
-              whileHover={{ opacity: 0.7 }}
-              className='px-4 py-2 md:px-6 md:py-3 lg:px-5 lg:py-2.5 bg-[#FFFFFF] text-black rounded-full mt-2 font-semibold text-sm md:text-lg lg:text-base'>Book a Call</motion.button>
-          </a>
+      {/* Product Video */}
+      <section className="w-full bg-zinc-950 py-12 sm:py-16 px-4 sm:px-6 lg:px-8 border-t border-white/5">
+        <div className="max-w-5xl mx-auto flex flex-col items-center">
+          <div className="aspect-video w-full rounded-2xl overflow-hidden border border-white/15 bg-black shadow-2xl">
+            <VideoEmbed />
+          </div>
+          <p className="text-center text-sm sm:text-base md:text-lg text-neutral-400 mt-5 max-w-2xl leading-relaxed">
+            From developers to non-developers, it acts like your autonomous teammate that assists you in shipping code with AI.
+          </p>
+        </div>
+      </section>
+
+      {/* Seamlessly Integrated */}
+      <section className="w-full bg-black pt-16 sm:pt-20 pb-8 sm:pb-12 border-t border-white/5">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 sm:mb-12">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+            <span className="bg-gradient-to-b from-white to-gray-300 bg-clip-text text-transparent">
+              Seamlessly{' '}
+            </span>
+            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+              Integrated
+            </span>
+            <br />
+            <span className="text-xl sm:text-2xl lg:text-3xl text-neutral-400 font-semibold mt-1 block">
+              in your existing environment
+            </span>
+          </h2>
         </div>
 
-      </div>
-      {/* enterprises section */}
+        <SeamlessCarousel />
+      </section>
 
+      {/* Milestones & Achievements */}
+      <section className="w-full bg-zinc-950 py-16 sm:py-20 border-t border-white/5">
+        <Achivements />
+      </section>
 
-
-      {/* trusted by section */}
-      <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
-        <div className='pt-[2rem] lg:pt-[4rem]'>
-          <div className="px-8 lg:px-16 ">
-            <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
-              className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
-              direction="up"
-              targetValue={1000000} />+</h1>
-            <p className=' mt-2 text-sm md:text-xl lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
-          </div>
-
-
-
-          <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
-                direction="up"
-                targetValue={55} />%</h1>
-              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Faster coding</p>
-            </div>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
-
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
-                direction="up"
-                targetValue={39} />%</h1>
-              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
-            </div>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
-
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
-                direction="up"
-                targetValue={68} />%</h1>
-              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
-            </div>
-          </div>
-
-          <div className='relative flex justify-center items-center overflow-hidden'>
-
-            <div className="absolute -left-10 top-0 bg-zinc-950 h-full w-[10%] blur-2xl z-50" />
-            <div className="absolute -right-10 top-0 bg-zinc-950 h-full w-[10%] blur-2xl z-50" />
-
-            <Marquee pauseOnHover className="[--duration:20s] flex justify-center items-center mt-5">
-              <img src='dell.svg' className='object-fit  size-[30vw] lg:size-[12vw] opacity-100 brightness-150 lg:mt-0' />
-              <img src='qual.svg' className='object-fit w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9' />
-              <img src='paytm.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150' />
-              <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10' />
-              <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw] opacity-100 brightness-150' />
-              <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
-              <img src='maruti-suzuki.svg' className='object-fit w-[64vw] lg:w-[26vw] opacity-100 brightness-150' alt="Maruti Suzuki" />
-              <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
-            </Marquee>
-          </div>
-
-          {/* <div className='flex flex-col justify-center items-center w-full'>
-      <div className='flex lg:gap-10 justify-center items-center mt-4'>
-       <img src='paytm.svg' className='object-fit w-[30vw] lg:w-[25vw]'/>
-       <img src='amazon.svg' className='object-fit w-[30vw] lg:w-[25vw]'/>
-       <img src='fampay.svg' className='object-fit w-[30vw] lg:w-[25vw]'/>
-      </div>
-      <div className='flex gap-4'>
-        <img src='inno.svg' className='object-fit w-[35vw] lg:w-[25vw]]'/>
-        <img src='atl.svg' className='object-fit w-[35vw] lg:w-[25vw]'/>
-      </div>
-     </div> */}
-
-        </div>
-
-
-
-      </div>
-      {/* trusted by section */}
-
-
-      {/* bento */}
-      {/* <div className=' relative h-[170vh] w-full bg-zinc-950 text-white overflow-hidden'>
-   <div className={`${montserrat.className}  text-8xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-10 mb-6 pt-20 text-center pb-1`}>What<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> else</span> we got?</div>
-   
-  <MagicBento 
-  textAutoHide={true}
-  enableStars={true}
-  enableSpotlight={true}
-  enableBorderGlow={true}
-  enableTilt={false}
-  enableMagnetism={true}
-  clickEffect={true}
-  spotlightRadius={400}
-  particleCount={12}
-  glowColor="0, 191, 255"
-/>
-
-  </div>  */}
-      {/* bento   */}
-
-      {/* ========================================== */}
-      {/* UI SECTION: ACHIEVEMENTS & STATISTICS    */}
-      {/* ========================================== */}
-      <Achivements />
-      {/* ========================================== */}
-      {/* UI SECTION: MEDIA PRESENCE (AS SEEN ON)  */}
-      {/* ========================================== */}
-      <MediaPresence />
-
-
-      {/* ========================================== */}
-      {/* UI SECTION: LOGO BANNER                   */}
-      {/* ========================================== */}
-      <div className='relative w-full h-[30vh] md:h-[35vh] lg:h-[60vh] bg-zinc-950 flex items-center justify-center overflow-hidden border-t border-white/5'>
-        <img src="/codemateLogo.svg" className='absolute object-fit w-[95vw] brightness-[0.6] pointer-events-none select-none' alt="CodeMate Logo" />
-      </div>
-
-      <div ref={footerRef}>
-        {/* ========================================== */}
-        {/* UI SECTION: PAGE FOOTER                  */}
-        {/* ========================================== */}
+      {/* Footer */}
+      <div>
         <Footer />
       </div>
     </div>
-
-
-  )
+  );
 }
-
-export default Page
-
-
-
-// function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
-
-//   const feature2Ref = useRef<HTMLDivElement>(null);
-//   const {scrollYProgress:p2YProg} = useScroll({
-//       target:productRef2,
-//       offset:['start end','end start']
-//     });
-//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
-//   return(
-//     <>
-//     <motion.div
-//      initial={{opacity:0,filter:'blur(50px)'}}
-//      whileInView={{opacity:1,filter:'blur(0px)'}}
-
-
-
-// function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
-
-//   const feature2Ref = useRef<HTMLDivElement>(null);
-//   const {scrollYProgress:p2YProg} = useScroll({
-//       target:productRef2,
-//       offset:['start end','end start']
-//     });
-//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
-//   return(
-//     <>
-//     <motion.div
-//      initial={{opacity:0,filter:'blur(50px)'}}
-//      whileInView={{opacity:1,filter:'blur(0px)'}}
-
-
