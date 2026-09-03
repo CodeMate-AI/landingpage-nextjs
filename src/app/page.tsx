@@ -152,7 +152,10 @@ export default function Page() {
       ref={mainRef}
       className={`${montserrat.className} bg-zinc-950 text-white min-h-screen pt-[92px] sm:pt-[96px] lg:pt-[88px]`}
     >
-      {/* Scroll to top/bottom button */}
+      {/* ========================================================================= */}
+      {/* SECTION 0: SCROLL CONTROL UTILITIES                                        */}
+      {/* Floating control for jumping to the top or bottom of the landing page     */}
+      {/* ========================================================================= */}
       <AnimatePresence>
         {isArrowV && (
           <motion.div
@@ -203,7 +206,10 @@ export default function Page() {
         imageSrc="https://backend.codemate.ai/uploaded/images/68c433e9-aa31-4bfe-9127-62ae403e018e"
       />
 
-      {/* Hero Section */}
+      {/* ========================================================================= */}
+      {/* SECTION 1: HERO & PRIMARY ACTION AREA                                     */}
+      {/* Background animation canvas, headline, badge, and CTA action buttons      */}
+      {/* ========================================================================= */}
       <div className='h-auto lg:h-screen w-full overflow-x-hidden relative'>
         <BackgroundGradientAnimation
           className='w-full overflow-hidden'
@@ -290,7 +296,10 @@ export default function Page() {
         </BackgroundGradientAnimation>
       </div>
 
-      {/* Product Suite */}
+      {/* ========================================================================= */}
+      {/* SECTION 2: PRODUCT SUITE SHOWCASE                                         */}
+      {/* Grid of live CodeMate products with edge-to-edge mockup previews          */}
+      {/* ========================================================================= */}
       <section className="w-full bg-zinc-950 pt-12 sm:pt-20 pb-14 px-4 sm:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto flex flex-col items-center">
           <span className="font-mono text-xs sm:text-sm uppercase tracking-widest text-neutral-400 text-center">
@@ -369,7 +378,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Trusted By */}
+      {/* ========================================================================= */}
+      {/* SECTION 3: SOCIAL PROOF & PARTNER LOGOS                                   */}
+      {/* Infinite marquee displaying trusted developer and enterprise brand logos  */}
+      {/* ========================================================================= */}
       <section className="w-full bg-zinc-950 pt-14 pb-16 overflow-hidden border-t border-white/5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold pb-1 bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent">
@@ -400,7 +412,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* What You'll Unlock */}
+      {/* ========================================================================= */}
+      {/* SECTION 4: PLATFORM CAPABILITIES (WHAT YOU’LL UNLOCK)                     */}
+      {/* Sticky feature index on the left with interactive capability card grid    */}
+      {/* ========================================================================= */}
       <section id="features" className="w-full bg-zinc-950 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-t border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
           <div className="w-full lg:w-1/3 lg:sticky lg:top-32 lg:self-start">
@@ -443,7 +458,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Metrics */}
+      {/* ========================================================================= */}
+      {/* SECTION 5: PERFORMANCE & IMPACT METRICS                                   */}
+      {/* High-visibility statistics demonstrating speed and code quality gains     */}
+      {/* ========================================================================= */}
       <section className="w-full bg-zinc-950 pt-20 sm:pt-24 lg:pt-32 pb-16 sm:pb-20 lg:pb-24 px-6 sm:px-12 lg:px-20 border-t border-white/5">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row justify-around items-center md:items-start gap-12 md:gap-14 lg:gap-20 text-center">
@@ -483,7 +501,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Product Video */}
+      {/* ========================================================================= */}
+      {/* SECTION 6: PRODUCT DEMO & SHOWCASE VIDEO                                  */}
+      {/* Embedded responsive showcase player highlighting autonomous capabilities   */}
+      {/* ========================================================================= */}
       <section className="w-full bg-zinc-950 pb-16 sm:pb-24 lg:pb-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-5xl mx-auto flex flex-col items-center">
           <div className="aspect-video w-full rounded-2xl overflow-hidden border border-white/15 bg-black shadow-2xl">
@@ -495,7 +516,10 @@ export default function Page() {
         </div>
       </section>
 
-      {/* Seamlessly Integrated */}
+      {/* ========================================================================= */}
+      {/* SECTION 7: IDE & WORKFLOW SEAMLESS INTEGRATION                            */}
+      {/* Interactive IDE environment carousel showcasing autocompletion & reviews  */}
+      {/* ========================================================================= */}
       <section className="w-full bg-black pt-16 sm:pt-20 pb-8 sm:pb-12 border-t border-white/5">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center mb-8 sm:mb-12">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
@@ -515,12 +539,18 @@ export default function Page() {
         <SeamlessCarousel />
       </section>
 
-      {/* Milestones & Achievements */}
+      {/* ========================================================================= */}
+      {/* SECTION 8: MILESTONES & GLOBAL RECOGNITION (TALK OF THE TOWN)             */}
+      {/* Global media coverage, summits, and partnership achievement cards         */}
+      {/* ========================================================================= */}
       <section className="w-full bg-zinc-950 py-16 sm:py-20 border-t border-white/5">
         <Achivements />
       </section>
 
-      {/* Footer */}
+      {/* ========================================================================= */}
+      {/* SECTION 9: FOOTER & SOCIAL CONNECTIVITY                                   */}
+      {/* Navigation links, community channels, and AI evaluation prompt links      */}
+      {/* ========================================================================= */}
       <div>
         <Footer />
       </div>
