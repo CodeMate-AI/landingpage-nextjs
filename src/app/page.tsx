@@ -250,7 +250,7 @@ export default function Page() {
               <h1 className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left mt-1 sm:mt-4 lg:mt-2'>
                 <span className='xxlHero z-50 block'>
                   <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
-                    India’s First AI
+                    World’s First AI
                   </span>
                 </span>
                 <span className='flex flex-wrap justify-start gap-x-4 pb-3'>
