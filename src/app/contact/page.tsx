@@ -365,7 +365,7 @@ export default function ContactPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="mt-4 text-zinc-400 text-base md:text-lg max-w-2xl mx-auto"
         >
-          Send us a message or reach out directly.
+          Send us a message.
           <span className="block mt-2 text-zinc-500 text-sm md:text-base font-normal">
             We&apos;ll get back to you within one business day.
           </span>
