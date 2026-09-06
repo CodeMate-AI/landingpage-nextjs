@@ -311,6 +311,7 @@ function Page() {
             </div>
             <div className="flex gap-5 items-center">
               <motion.button
+                suppressHydrationWarning
                 onClick={() => router.push('/')}
                 whileHover={{ opacity: 1 }}
                 className="flex items-center gap-1 opacity-65"
@@ -323,6 +324,7 @@ function Page() {
               </motion.button>
               <a href="https://app.codemate.ai" target="_blank" rel="noreferrer">
                 <motion.button
+                  suppressHydrationWarning
                   whileHover={{ opacity: 1, scale: 1.05 }}
                   className="px-2 py-1 bg-white text-black rounded-sm font-semibold opacity-85"
                 >
@@ -353,7 +355,7 @@ function Page() {
               <img src="/codemateLogo.svg" alt="CodeMate" />
             </div>
             <a href="https://app.codemate.ai" target="_blank" rel="noreferrer">
-              <button className="px-1.5 py-0.5 bg-white text-black text-sm rounded-lg font-semibold opacity-85 mr-1">
+              <button suppressHydrationWarning className="px-1.5 py-0.5 bg-white text-black text-sm rounded-lg font-semibold opacity-85 mr-1">
                 Get Started
               </button>
             </a>

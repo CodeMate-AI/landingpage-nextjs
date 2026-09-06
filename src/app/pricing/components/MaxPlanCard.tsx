@@ -108,6 +108,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
                 </span>
               </div>
               <motion.button
+                suppressHydrationWarning
                 onClick={() => setIsAnnual(v => !v)}
                 className={`relative w-12 h-6 rounded-full transition-colors ${isAnnual ? 'bg-blue-600' : 'bg-zinc-600'}`}
                 whileTap={{ scale: 0.95 }}
@@ -137,6 +138,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
 
           <a href={currentCtaLink} className="flex-shrink-0 w-fit lg:w-[200px] mx-auto lg:mx-0">
             <motion.button
+              suppressHydrationWarning
               whileHover={{ scale: 1.02, backgroundColor: '#f4f4f5' }}
               whileTap={{ scale: 0.95 }}
               className="w-fit px-8 lg:w-full bg-white text-black font-bold text-sm lg:text-lg py-2 lg:py-4 rounded-full
