@@ -1,6 +1,7 @@
 'use client'
 
 import { FaXTwitter, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa6";
+import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from 'framer-motion';
 
 const EVAL_PROMPT = `As a senior software engineer, evaluating AI developer tools, I'd like an objective overview of CodeMate AI, including what it is, the problems it solves, and how it supports the Software Development Lifecycle (SDLC). Explain its core products (such as Build, CORA, AI Debugging, PR Review, Knowledge Base, and other key capabilities), how they work together, who the platform is best suited for, and its deployment options. Also provide a high-level comparison with other AI developer tools, focusing on differences in approach, workflows, and typical use cases rather than ranking them. Base the answer primarily on the official CodeMate website (https://codemate.ai) and documentation (https://docs.codemate.ai), and avoid making assumptions about capabilities that are not explicitly documented.`;
@@ -64,128 +65,188 @@ function GeminiIcon() {
 
 function Footer() {
   return (
-    <motion.footer className="relative text-gray-200 pb-0 pt-16 overflow-hide bg-[#121214] border-t-[1px] border-zinc-800/80 rounded-t-[3rem] z-[999999] lg:z-[9999999999]">
-      <motion.div className="w-full max-w-7xl px-6 md:px-10 mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 pb-16">
-        {/* Left: Brand Column */}
-        <div className="md:col-span-5 flex flex-col gap-6">
-          <div>
-            <img src="/codemateLogo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
-          </div>
-          <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed -mt-4">
-            CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
-          </p>
+    <motion.footer className="relative text-gray-200 pb-0 pt-16 overflow-hidden bg-[#121214] border-t-[1px] border-zinc-800/80 rounded-t-[3rem] z-[999999] lg:z-[9999999999]">
+      <motion.div className="w-full max-w-7xl px-6 md:px-10 mx-auto">
+        {/* Top Section: Brand + Navigation Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 pb-12">
+          {/* Left: Brand Column */}
+          <div className="md:col-span-5 flex flex-col gap-6">
+            <div>
+              <img src="/codemateLogo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
+            </div>
+            <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed -mt-4">
+              CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
+            </p>
 
-          {/* Socials */}
-          <div className="flex gap-4 items-center">
-            <a href="https://twitter.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="X" className="text-zinc-400 hover:text-white transition-colors duration-200">
-              <FaXTwitter size={24} className="md:w-7 md:h-7" />
-            </a>
-            <a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-zinc-400 hover:text-white transition-colors duration-200">
-              <FaLinkedin size={24} className="md:w-7 md:h-7" />
-            </a>
-            <a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-zinc-400 hover:text-white transition-colors duration-200">
-              <FaInstagram size={24} className="md:w-7 md:h-7" />
-            </a>
-            <a href="https://www.youtube.com/@codemateai" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-zinc-400 hover:text-white transition-colors duration-200">
-              <FaYoutube size={24} className="md:w-7 md:h-7" />
-            </a>
+            {/* Socials */}
+            <div className="flex gap-4 items-center">
+              <a href="https://twitter.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="X" className="text-zinc-400 hover:text-white transition-colors duration-200">
+                <FaXTwitter size={24} className="md:w-7 md:h-7" />
+              </a>
+              <a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="text-zinc-400 hover:text-white transition-colors duration-200">
+                <FaLinkedin size={24} className="md:w-7 md:h-7" />
+              </a>
+              <a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="text-zinc-400 hover:text-white transition-colors duration-200">
+                <FaInstagram size={24} className="md:w-7 md:h-7" />
+              </a>
+              <a href="https://www.youtube.com/@codemateai" target="_blank" rel="noopener noreferrer" aria-label="YouTube" className="text-zinc-400 hover:text-white transition-colors duration-200">
+                <FaYoutube size={24} className="md:w-7 md:h-7" />
+              </a>
+            </div>
+
+            {/* Ask AI Section */}
+            <div className="mt-4">
+              <h4 className="font-semibold text-zinc-400 text-xs md:text-sm uppercase tracking-wider mb-3">
+                Ask AI for summary of CodeMate AI
+              </h4>
+              <div className="flex flex-wrap gap-3 items-center">
+                <a
+                  href={`https://chatgpt.com/?q=${encodeURIComponent(EVAL_PROMPT)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
+                  title="Ask ChatGPT"
+                  aria-label="Ask ChatGPT"
+                >
+                  <ChatGPTIcon />
+                </a>
+                <a
+                  href={`https://claude.ai/new?q=${encodeURIComponent(EVAL_PROMPT)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
+                  title="Ask Claude"
+                  aria-label="Ask Claude"
+                >
+                  <ClaudeIcon />
+                </a>
+                <a
+                  href={`https://grok.com/?q=${encodeURIComponent(EVAL_PROMPT)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-black hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
+                  title="Ask Grok"
+                  aria-label="Ask Grok"
+                >
+                  <GrokIcon />
+                </a>
+                <a
+                  href={`https://www.google.com/search?udm=50&aep=11&q=${encodeURIComponent(EVAL_PROMPT)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
+                  title="Ask Gemini"
+                  aria-label="Ask Gemini"
+                >
+                  <GeminiIcon />
+                </a>
+                <a
+                  href={`https://www.perplexity.ai/?q=${encodeURIComponent(EVAL_PROMPT)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-8 h-8 flex items-center justify-center rounded-lg bg-black hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
+                  title="Ask Perplexity"
+                  aria-label="Ask Perplexity"
+                >
+                  <PerplexityIcon />
+                </a>
+              </div>
+            </div>
           </div>
 
-          {/* Ask AI Section */}
-          <div className="mt-4">
-            <h4 className="font-semibold text-zinc-400 text-xs md:text-sm uppercase tracking-wider mb-3">
-              Ask AI for summary of CodeMate AI
-            </h4>
-            <div className="flex flex-wrap gap-3 items-center">
-              <a
-                href={`https://chatgpt.com/?q=${encodeURIComponent(EVAL_PROMPT)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
-                title="Ask ChatGPT"
-                aria-label="Ask ChatGPT"
-              >
-                <ChatGPTIcon />
-              </a>
-              <a
-                href={`https://claude.ai/new?q=${encodeURIComponent(EVAL_PROMPT)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
-                title="Ask Claude"
-                aria-label="Ask Claude"
-              >
-                <ClaudeIcon />
-              </a>
-              <a
-                href={`https://grok.com/?q=${encodeURIComponent(EVAL_PROMPT)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-black hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
-                title="Ask Grok"
-                aria-label="Ask Grok"
-              >
-                <GrokIcon />
-              </a>
-              <a
-                href={`https://www.google.com/search?udm=50&aep=11&q=${encodeURIComponent(EVAL_PROMPT)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
-                title="Ask Gemini"
-                aria-label="Ask Gemini"
-              >
-                <GeminiIcon />
-              </a>
-              <a
-                href={`https://www.perplexity.ai/?q=${encodeURIComponent(EVAL_PROMPT)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-8 h-8 flex items-center justify-center rounded-lg bg-black hover:scale-110 transition-all duration-300 shadow-md group border border-zinc-700"
-                title="Ask Perplexity"
-                aria-label="Ask Perplexity"
-              >
-                <PerplexityIcon />
-              </a>
+          {/* Right Columns (Spans 7 cols - grid split into 3 sub-columns) */}
+          <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10 pt-4 md:pt-12">
+            {/* Community */}
+            <div>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">COMMUNITY</h4>
+              <ul className="space-y-3 text-xs md:text-sm">
+                <li><a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Instagram</a></li>
+                <li><a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Linkedin</a></li>
+                <li><a href="https://twitter.com/codemateai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Twitter</a></li>
+                <li><a href="https://www.youtube.com/@codemateai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">YouTube</a></li>
+              </ul>
+            </div>
+
+            {/* Others */}
+            <div>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">OTHERS</h4>
+              <ul className="space-y-3 text-xs md:text-sm">
+                <li><a href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Contact Us</a></li>
+                <li><a href="https://docs.codemate.ai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Docs</a></li>
+                <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Hugging Face</a></li>
+                <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Refund Policy</a></li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">LEGAL</h4>
+              <ul className="space-y-3 text-xs md:text-sm">
+                <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
+                <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Terms of Service</a></li>
+                <li><img src="https://drive.codemate.ai/iso.png" alt="" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
+              </ul>
             </div>
           </div>
         </div>
 
-        {/* Right Columns (Spans 7 cols - grid split into 3 sub-columns) */}
-        <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10 pt-4 md:pt-12">
-          {/* Community */}
-          <div>
-            <h4 className="font-semibold mb-4 text-white text-sm md:text-base">COMMUNITY</h4>
-            <ul className="space-y-3 text-xs md:text-sm">
-              <li><a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Instagram</a></li>
-              <li><a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Linkedin</a></li>
-              <li><a href="https://twitter.com/codemateai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Twitter</a></li>
-              <li><a href="https://www.youtube.com/@codemateai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">YouTube</a></li>
-            </ul>
+        {/* Contact & Locations Section */}
+        <div className="border-t border-zinc-800/80 pt-10 pb-14 grid grid-cols-1 md:grid-cols-3 gap-8 text-xs md:text-sm">
+          {/* Direct Contact */}
+          <div className="flex flex-col gap-3">
+            <h4 className="font-semibold text-white text-sm md:text-base tracking-wider uppercase">Contact</h4>
+            <div className="flex flex-col gap-2.5 text-zinc-400">
+              <a href="mailto:contact@codemate.ai" className="flex items-center gap-2 hover:text-white transition-colors duration-200 group">
+                <Mail className="w-4 h-4 text-[#00BFFF] shrink-0" />
+                <span className="group-hover:underline">contact@codemate.ai</span>
+              </a>
+              <div className="flex flex-col gap-2 pt-1">
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-[#00BFFF] shrink-0" />
+                  <span className="text-zinc-500 font-medium">India:</span>
+                  <a href="tel:+918766330253" className="hover:text-white transition-colors duration-200 hover:underline">+91 8766330253</a>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-[#00BFFF] shrink-0" />
+                  <span className="text-zinc-500 font-medium">US:</span>
+                  <a href="tel:+16283095625" className="hover:text-white transition-colors duration-200 hover:underline">+1 (628) 309-5625</a>
+                </div>
+              </div>
+            </div>
           </div>
 
-          {/* Others */}
-          <div>
-            <h4 className="font-semibold mb-4 text-white text-sm md:text-base">OTHERS</h4>
-            <ul className="space-y-3 text-xs md:text-sm">
-              <li><a href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Contact Us</a></li>
-              <li><a href="https://docs.codemate.ai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Docs</a></li>
-              <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Hugging Face</a></li>
-              <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Refund Policy</a></li>
-            </ul>
+          {/* India HQ */}
+          <div className="flex flex-col gap-3">
+            <h4 className="font-semibold text-white text-sm md:text-base tracking-wider uppercase">India</h4>
+            <a
+              href="https://maps.google.com/?q=Berger+Tower%2C+C-001%2FA2+Sector+16B%2C+Noida%2C+Uttar+Pradesh+-+201301%2C+India"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-2 text-zinc-400 hover:text-white transition-colors duration-200 leading-relaxed group"
+            >
+              <MapPin className="w-4 h-4 text-[#00BFFF] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+              <span className="group-hover:underline">
+                Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh - 201301, India
+              </span>
+            </a>
           </div>
 
-          {/* Legal */}
-          <div>
-            <h4 className="font-semibold mb-4 text-white text-sm md:text-base">LEGAL</h4>
-            <ul className="space-y-3 text-xs md:text-sm">
-              <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
-              <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Terms of Service</a></li>
-              <li><img src="https://drive.codemate.ai/iso.png" alt="" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
-            </ul>
+          {/* United States Office */}
+          <div className="flex flex-col gap-3">
+            <h4 className="font-semibold text-white text-sm md:text-base tracking-wider uppercase">United States</h4>
+            <a
+              href="https://maps.google.com/?q=2290%2C+3rd+Street%2C+San+Francisco%2C+California%2C+94107+-+USA"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-start gap-2 text-zinc-400 hover:text-white transition-colors duration-200 leading-relaxed group"
+            >
+              <MapPin className="w-4 h-4 text-[#00BFFF] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
+              <span className="group-hover:underline">
+                2290, 3rd Street, San Francisco, California, 94107 - USA
+              </span>
+            </a>
           </div>
         </div>
-
       </motion.div>
     </motion.footer>
   );
