@@ -1,7 +1,6 @@
 'use client'
 
 import { FaXTwitter, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa6";
-import { Mail, Phone, MapPin } from "lucide-react";
 import { motion } from 'framer-motion';
 
 const EVAL_PROMPT = `As a senior software engineer, evaluating AI developer tools, I'd like an objective overview of CodeMate AI, including what it is, the problems it solves, and how it supports the Software Development Lifecycle (SDLC). Explain its core products (such as Build, CORA, AI Debugging, PR Review, Knowledge Base, and other key capabilities), how they work together, who the platform is best suited for, and its deployment options. Also provide a high-level comparison with other AI developer tools, focusing on differences in approach, workflows, and typical use cases rather than ranking them. Base the answer primarily on the official CodeMate website (https://codemate.ai) and documentation (https://docs.codemate.ai), and avoid making assumptions about capabilities that are not explicitly documented.`;
@@ -187,64 +186,6 @@ function Footer() {
                 <li><img src="https://drive.codemate.ai/iso.png" alt="" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
               </ul>
             </div>
-          </div>
-        </div>
-
-        {/* Contact & Locations Section */}
-        <div className="border-t border-zinc-800/80 pt-10 pb-14 grid grid-cols-1 md:grid-cols-3 gap-8 text-xs md:text-sm">
-          {/* Direct Contact */}
-          <div className="flex flex-col gap-3">
-            <h4 className="font-semibold text-white text-sm md:text-base tracking-wider uppercase">Contact</h4>
-            <div className="flex flex-col gap-2.5 text-zinc-400">
-              <a href="mailto:contact@codemate.ai" className="flex items-center gap-2 hover:text-white transition-colors duration-200 group">
-                <Mail className="w-4 h-4 text-[#00BFFF] shrink-0" />
-                <span className="group-hover:underline">contact@codemate.ai</span>
-              </a>
-              <div className="flex flex-col gap-2 pt-1">
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-[#00BFFF] shrink-0" />
-                  <span className="text-zinc-500 font-medium">India:</span>
-                  <a href="tel:+918766330253" className="hover:text-white transition-colors duration-200 hover:underline">+91 8766330253</a>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-[#00BFFF] shrink-0" />
-                  <span className="text-zinc-500 font-medium">US:</span>
-                  <a href="tel:+16283095625" className="hover:text-white transition-colors duration-200 hover:underline">+1 (628) 309-5625</a>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* India HQ */}
-          <div className="flex flex-col gap-3">
-            <h4 className="font-semibold text-white text-sm md:text-base tracking-wider uppercase">India</h4>
-            <a
-              href="https://maps.google.com/?q=Berger+Tower%2C+C-001%2FA2+Sector+16B%2C+Noida%2C+Uttar+Pradesh+-+201301%2C+India"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-start gap-2 text-zinc-400 hover:text-white transition-colors duration-200 leading-relaxed group"
-            >
-              <MapPin className="w-4 h-4 text-[#00BFFF] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-              <span className="group-hover:underline">
-                Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh - 201301, India
-              </span>
-            </a>
-          </div>
-
-          {/* United States Office */}
-          <div className="flex flex-col gap-3">
-            <h4 className="font-semibold text-white text-sm md:text-base tracking-wider uppercase">United States</h4>
-            <a
-              href="https://maps.google.com/?q=2290%2C+3rd+Street%2C+San+Francisco%2C+California%2C+94107+-+USA"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-start gap-2 text-zinc-400 hover:text-white transition-colors duration-200 leading-relaxed group"
-            >
-              <MapPin className="w-4 h-4 text-[#00BFFF] shrink-0 mt-0.5 group-hover:scale-110 transition-transform" />
-              <span className="group-hover:underline">
-                2290, 3rd Street, San Francisco, California, 94107 - USA
-              </span>
-            </a>
           </div>
         </div>
       </motion.div>
