@@ -93,6 +93,7 @@ function AnnualToggle({ isAnnual, onToggle }: { isAnnual: boolean; onToggle: () 
     <div className="flex items-center gap-1.5 shrink-0">
       <span className="text-[11px] font-medium text-zinc-400">Annual</span>
       <motion.button
+        suppressHydrationWarning
         onClick={onToggle}
         className={`relative w-9 h-5 rounded-full transition-colors ${isAnnual ? 'bg-zinc-600' : 'bg-zinc-700'}`}
         whileTap={{ scale: 0.95 }}
@@ -141,6 +142,7 @@ function BillingPeriodToggle({
         {periods.map((period, idx) => (
           <button
             key={period.label}
+            suppressHydrationWarning
             ref={(el) => { btnRefs.current[idx] = el }}
             onClick={() => onSelect(idx)}
             className={`relative z-10 px-2.5 py-0.5 text-[10px] font-semibold rounded-full capitalize transition-colors duration-150 focus:outline-none ${
@@ -289,7 +291,7 @@ const PlanCard = ({
 
         {/* ── CTA (desktop) ── */}
         <a href={ctaHref} className="mb-5 hidden sm:block">
-          <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-full ${ctaClass}`}>
+          <motion.button suppressHydrationWarning whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-full ${ctaClass}`}>
             {currentCtaText}
           </motion.button>
         </a>
@@ -320,6 +322,7 @@ const PlanCard = ({
 
           {hiddenCount > 0 && (
             <button
+              suppressHydrationWarning
               onClick={onToggleFeatures}
               className="mt-3 flex items-center gap-1 text-zinc-500 hover:text-zinc-300 text-xs font-medium transition-colors"
             >
@@ -336,7 +339,7 @@ const PlanCard = ({
 
           {/* ── CTA (mobile) ── */}
           <a href={ctaHref} className="mt-4 block sm:hidden">
-            <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-fit px-6 ${ctaClass}`}>
+            <motion.button suppressHydrationWarning whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-fit px-6 ${ctaClass}`}>
               {currentCtaText}
             </motion.button>
           </a>

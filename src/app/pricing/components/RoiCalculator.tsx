@@ -25,7 +25,7 @@ export default function RoiCalculator({ planRatesUsd = { pro: 20, teams: 30, max
     const prevCurr = prevCurrencyRef.current;
     if (prevCurr !== currency) {
       if (salaryTouchedRef.current) {
-        const prevRate = CURRENCY_CONFIGS[prevCurr].rateVsUsd;
+        const prevRate = CURRENCY_CONFIGS[prevCurr]?.rateVsUsd || 1;
         const newRate = config.rateVsUsd;
         const convertedSalary = Math.round((salary / prevRate) * newRate);
         setSalary(Math.min(config.roi.maxSalary, Math.max(config.roi.minSalary, convertedSalary)));
@@ -87,6 +87,7 @@ export default function RoiCalculator({ planRatesUsd = { pro: 20, teams: 30, max
                 </span>
               </div>
               <input
+                suppressHydrationWarning
                 type="range"
                 min={1}
                 max={100}
@@ -112,6 +113,7 @@ export default function RoiCalculator({ planRatesUsd = { pro: 20, teams: 30, max
                 </span>
               </div>
               <input
+                suppressHydrationWarning
                 type="range"
                 min={config.roi.minSalary}
                 max={config.roi.maxSalary}
@@ -135,6 +137,7 @@ export default function RoiCalculator({ planRatesUsd = { pro: 20, teams: 30, max
                 </span>
               </div>
               <input
+                suppressHydrationWarning
                 type="range"
                 min={1}
                 max={6}
@@ -155,6 +158,7 @@ export default function RoiCalculator({ planRatesUsd = { pro: 20, teams: 30, max
                 </span>
               </div>
               <input
+                suppressHydrationWarning
                 type="range"
                 min={10}
                 max={50}
@@ -174,6 +178,7 @@ export default function RoiCalculator({ planRatesUsd = { pro: 20, teams: 30, max
               {(['pro', 'teams', 'max'] as const).map((tier) => (
                 <button
                   key={tier}
+                  suppressHydrationWarning
                   type="button"
                   onClick={() => setPlanTier(tier)}
                   className={`py-2 px-3 rounded-lg text-xs font-semibold uppercase tracking-wider border transition-colors ${

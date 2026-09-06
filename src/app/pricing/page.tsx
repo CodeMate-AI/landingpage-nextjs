@@ -384,6 +384,7 @@ function Page() {
             {PRODUCTS.map(({ key, label }) => (
               <button
                 key={key}
+                suppressHydrationWarning
                 ref={(el) => { tabRefs.current[key] = el }}
                 onClick={() => handleSelectProduct(key)}
                 role="tab"
