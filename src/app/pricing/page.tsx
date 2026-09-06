@@ -1,9 +1,11 @@
 'use client'
-import React, { useRef, useState, useLayoutEffect, useEffect, useCallback } from 'react'
+import React, { useRef, useState, useLayoutEffect, useEffect, useCallback, useMemo } from 'react'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { Montserrat } from 'next/font/google'
 import Footer from '@/components/footer'
+import RoiCalculator from './components/RoiCalculator'
+import { useCurrency } from '@/context/CurrencyContext'
 import {
   Accordion,
   AccordionItem,
@@ -85,9 +87,9 @@ const CORA_PLANS = [
     yearlyCtaLink: '#',
     isCora: true,
     billingPeriods: [
-      { label: 'Daily',   price: '1',   ctaText: 'Get Pro – $1/day',   ctaLink: '' },
-      { label: 'Weekly',  price: '5',   ctaText: 'Get Pro – $5/week',  ctaLink: '' },
-      { label: 'Monthly', price: '20',  ctaText: 'Get Pro – $20/mo',   ctaLink: '' },
+      { label: 'Daily',   price: '1',   ctaText: 'Get Pro', ctaLink: '' },
+      { label: 'Weekly',  price: '5',   ctaText: 'Get Pro', ctaLink: '' },
+      { label: 'Monthly', price: '20',  ctaText: 'Get Pro', ctaLink: '' },
     ],
   },
   {
@@ -104,9 +106,9 @@ const CORA_PLANS = [
     yearlyCtaLink: '#',
     isCora: true,
     billingPeriods: [
-      { label: 'Daily',   price: '5',   ctaText: 'Get Max – $5/day',   ctaLink: '' },
-      { label: 'Weekly',  price: '25',  ctaText: 'Get Max – $25/week', ctaLink: '' },
-      { label: 'Monthly', price: '100', ctaText: 'Get Max – $100/mo',  ctaLink: '' },
+      { label: 'Daily',   price: '5',   ctaText: 'Get Max', ctaLink: '' },
+      { label: 'Weekly',  price: '25',  ctaText: 'Get Max', ctaLink: '' },
+      { label: 'Monthly', price: '100', ctaText: 'Get Max', ctaLink: '' },
     ],
   },
   {
@@ -208,10 +210,11 @@ function Page() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const pageRef = useRef<HTMLDivElement>(null)
+  const { formatPrice } = useCurrency()
 
   // Read ?product= from URL on first render, fall back to 'cora'
   const initialProduct = (): Product => {
-    const param = searchParams.get('product')?.toLowerCase()
+    const param = searchParams?.get('product')?.toLowerCase()
     return (param === 'build' || param === 'cora' || param === 'c0') ? param : 'cora'
   }
   const [selectedProduct, setSelectedProduct] = useState<Product>(initialProduct)
@@ -277,6 +280,13 @@ function Page() {
   }, [isLoadingPlans])
 
   const maxPlanInfo = buildMaxPlanInfo(categorizedPlans?.ultimatePlan)
+  const currentPlans = categorizedPlans?.[selectedProduct] ?? []
+  const dynamicPlanRates = useMemo(() => {
+    const pro = currentPlans.find((p) => p.display_name.toLowerCase() === 'pro')?.price?.monthly ?? 20
+    const teams = currentPlans.find((p) => p.display_name.toLowerCase() === 'teams')?.price?.monthly ?? 30
+    const max = categorizedPlans?.ultimatePlan?.price?.monthly ?? currentPlans.find((p) => p.display_name.toLowerCase() === 'max')?.price?.monthly ?? 100
+    return { pro, teams, max }
+  }, [currentPlans, categorizedPlans])
 
   return (
     <div ref={pageRef} className={`${montserrat.className} w-full bg-zinc-950`}>
@@ -301,6 +311,7 @@ function Page() {
             </div>
             <div className="flex gap-5 items-center">
               <motion.button
+                suppressHydrationWarning
                 onClick={() => router.push('/')}
                 whileHover={{ opacity: 1 }}
                 className="flex items-center gap-1 opacity-65"
@@ -313,6 +324,7 @@ function Page() {
               </motion.button>
               <a href="https://app.codemate.ai" target="_blank" rel="noreferrer">
                 <motion.button
+                  suppressHydrationWarning
                   whileHover={{ opacity: 1, scale: 1.05 }}
                   className="px-2 py-1 bg-white text-black rounded-sm font-semibold opacity-85"
                 >
@@ -343,7 +355,7 @@ function Page() {
               <img src="/codemateLogo.svg" alt="CodeMate" />
             </div>
             <a href="https://app.codemate.ai" target="_blank" rel="noreferrer">
-              <button className="px-1.5 py-0.5 bg-white text-black text-sm rounded-lg font-semibold opacity-85 mr-1">
+              <button suppressHydrationWarning className="px-1.5 py-0.5 bg-white text-black text-sm rounded-lg font-semibold opacity-85 mr-1">
                 Get Started
               </button>
             </a>
@@ -374,6 +386,7 @@ function Page() {
             {PRODUCTS.map(({ key, label }) => (
               <button
                 key={key}
+                suppressHydrationWarning
                 ref={(el) => { tabRefs.current[key] = el }}
                 onClick={() => handleSelectProduct(key)}
                 role="tab"
@@ -469,6 +482,7 @@ function Page() {
         </>
       )}
 
+      <RoiCalculator planRatesUsd={dynamicPlanRates} />
       <FAQ />
       <Footer />
     </div>
@@ -528,6 +542,7 @@ function buildFeatureConfig(mobile: boolean): Record<string, { label: string; re
 // Renders the detailed feature comparison grid for Desktop and Accordion for Mobile.
 // ==========================================
 function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProduct: string }) {
+  const { formatPrice } = useCurrency()
   const proPlan   = plans.find((p) => p.display_name.toLowerCase() === 'pro')
   const teamsPlan = plans.find((p) => p.display_name.toLowerCase() === 'teams')
   const maxPlan   = plans.find((p) => p.display_name.toLowerCase() === 'max')
@@ -549,7 +564,7 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProdu
               <div key={i} className="flex flex-col items-center gap-2">
                 <span className="font-semibold">{plan.display_name}</span>
                 <span className="text-xl opacity-35">
-                  {plan.display_name === 'Enterprise' ? 'Custom' : plan.display_name.toLowerCase() === 'max' ? '$100/mo' : `$${plan.price?.monthly ?? 0}/mo`}
+                  {plan.display_name === 'Enterprise' ? 'Custom' : plan.display_name.toLowerCase() === 'max' ? `${formatPrice(100)}/mo` : `${formatPrice(plan.price?.monthly ?? 0)}/mo`}
                 </span>
               </div>
             ))}

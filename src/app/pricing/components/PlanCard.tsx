@@ -4,6 +4,7 @@ import { useState, useRef, useLayoutEffect, useEffect } from 'react'
 import { Check, ChevronDown } from 'lucide-react'
 import MostRecommendedBadge from './MostRecommendedBadge'
 import type { FeaturesHeader } from '@/utils/planUtils'
+import { useCurrency } from '@/context/CurrencyContext'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -92,6 +93,7 @@ function AnnualToggle({ isAnnual, onToggle }: { isAnnual: boolean; onToggle: () 
     <div className="flex items-center gap-1.5 shrink-0">
       <span className="text-[11px] font-medium text-zinc-400">Annual</span>
       <motion.button
+        suppressHydrationWarning
         onClick={onToggle}
         className={`relative w-9 h-5 rounded-full transition-colors ${isAnnual ? 'bg-zinc-600' : 'bg-zinc-700'}`}
         whileTap={{ scale: 0.95 }}
@@ -140,6 +142,7 @@ function BillingPeriodToggle({
         {periods.map((period, idx) => (
           <button
             key={period.label}
+            suppressHydrationWarning
             ref={(el) => { btnRefs.current[idx] = el }}
             onClick={() => onSelect(idx)}
             className={`relative z-10 px-2.5 py-0.5 text-[10px] font-semibold rounded-full capitalize transition-colors duration-150 focus:outline-none ${
@@ -165,6 +168,7 @@ const PlanCard = ({
   showAllFeatures?: boolean
   onToggleFeatures?: () => void
 }) => {
+  const { currency, formatPrice, convertPrice, config } = useCurrency()
   const [isAnnual, setIsAnnual] = useState(planInfo.isAnnual ?? !planInfo.monthlyPrice)
   const [selectedPeriodIdx, setSelectedPeriodIdx] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
@@ -214,7 +218,10 @@ const PlanCard = ({
 
   const savings = (() => {
     if (hasBillingPeriods || !isAnnual || !planInfo.monthlyPrice) return 0
-    return Math.round(parseFloat(planInfo.monthlyPrice) * 12 - parseFloat(planInfo.yearlyPrice))
+    const rawMonthly = parseFloat(planInfo.monthlyPrice)
+    const rawYearly = parseFloat(planInfo.yearlyPrice)
+    if (Number.isNaN(rawMonthly) || Number.isNaN(rawYearly)) return 0
+    return Math.round(convertPrice(rawMonthly * 12 - rawYearly))
   })()
 
   return (
@@ -267,14 +274,14 @@ const PlanCard = ({
                 transition={{ duration: 0.15 }}
                 className="text-2xl font-semibold text-white font-sans"
               >
-                ${currentPrice}
+                {formatPrice(currentPrice)}
               </motion.span>
               <span className="text-sm text-zinc-400">
                 {activePeriod ? `/ ${activePeriod.label.toLowerCase()}` : isAnnual ? '/ year' : '/ month'}
               </span>
               {savings > 0 && (
                 <span className="ml-1 text-[10px] font-semibold px-1.5 py-0.5 rounded bg-green-500/15 text-green-400 border border-green-500/20">
-                  Save ${savings}
+                  Save {config.symbol}{savings.toLocaleString()}
                 </span>
               )}
             </div>
@@ -284,7 +291,7 @@ const PlanCard = ({
 
         {/* ── CTA (desktop) ── */}
         <a href={ctaHref} className="mb-5 hidden sm:block">
-          <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-full ${ctaClass}`}>
+          <motion.button suppressHydrationWarning whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-full ${ctaClass}`}>
             {currentCtaText}
           </motion.button>
         </a>
@@ -315,6 +322,7 @@ const PlanCard = ({
 
           {hiddenCount > 0 && (
             <button
+              suppressHydrationWarning
               onClick={onToggleFeatures}
               className="mt-3 flex items-center gap-1 text-zinc-500 hover:text-zinc-300 text-xs font-medium transition-colors"
             >
@@ -331,7 +339,7 @@ const PlanCard = ({
 
           {/* ── CTA (mobile) ── */}
           <a href={ctaHref} className="mt-4 block sm:hidden">
-            <motion.button whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-fit px-6 ${ctaClass}`}>
+            <motion.button suppressHydrationWarning whileHover={{ scale: 1.01 }} whileTap={{ scale: 0.98 }} className={`w-fit px-6 ${ctaClass}`}>
               {currentCtaText}
             </motion.button>
           </a>

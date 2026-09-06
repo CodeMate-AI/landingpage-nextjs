@@ -122,7 +122,7 @@ export default function EventOffer({
 
                                         <button
                                             onClick={() => setShowDetails(!showDetails)}
-                                            className="group hidden inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm font-medium"
+                                            className="group inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-sm font-medium"
                                         >
                                             <span>{showDetails ? 'Hide details' : "What's included?"}</span>
                                             <motion.div
