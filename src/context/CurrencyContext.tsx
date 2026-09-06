@@ -30,13 +30,6 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     if (isInitializedRef.current) return;
     isInitializedRef.current = true;
 
-    const saved = localStorage.getItem('cm_user_currency') as CurrencyCode | null;
-    if (saved === 'INR' || saved === 'USD' || saved === 'EUR') {
-      setCurrencyState(saved);
-      setIsLoading(false);
-      return;
-    }
-
     // Zero-latency client fallback via Timezone
     const tzCurrency = getCurrencyByTimeZone();
     setCurrencyState(tzCurrency);
@@ -45,7 +38,7 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     fetch('/api/geo', { cache: 'no-store' })
       .then((r) => r.json())
       .then((data) => {
-        if (data?.currency && !localStorage.getItem('cm_user_currency')) {
+        if (data?.currency) {
           setCurrencyState(data.currency);
           setCountry(data.country || 'US');
         }
@@ -56,7 +49,6 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
 
   const setCurrency = useCallback((newCurr: CurrencyCode) => {
     setCurrencyState(newCurr);
-    localStorage.setItem('cm_user_currency', newCurr);
   }, []);
 
   const convertPrice = useCallback((usdAmount: number | string): number => {

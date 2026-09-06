@@ -5,7 +5,6 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { Montserrat } from 'next/font/google'
 import Footer from '@/components/footer'
 import RoiCalculator from './components/RoiCalculator'
-import CurrencySelector from '@/components/CurrencySelector'
 import { useCurrency } from '@/context/CurrencyContext'
 import {
   Accordion,
@@ -366,9 +365,6 @@ function Page() {
       <div className="flex flex-col pt-32 pb-1 text-center">
         <h1 className="text-xl lg:text-4xl font-semibold text-primary">Pricing</h1>
         <p className="text-lg lg:text-4xl mt-1 opacity-60">Choose a plan which feels right for you.</p>
-        <div className="mt-4 flex justify-center">
-          <CurrencySelector />
-        </div>
       </div>
 
       {/* ── Product tab selector ── */}

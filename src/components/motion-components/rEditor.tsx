@@ -70,7 +70,7 @@ const nextJsStructure = [
          </div>
        </div>
 
-       <div className='absolute h-[5%] w-full bottom-0 bg-zinc-800 rounded-b-xl z-40 flex  gap-5 items-center border-t-[0.1px] border-white border-opacity-10 justify-between px-3 z-50'>
+       <div className='absolute h-[5%] w-full bottom-0 bg-zinc-800 rounded-b-xl flex  gap-5 items-center border-t-[0.1px] border-white border-opacity-10 justify-between px-3 z-50'>
         <div className='flex gap-2  text-sm opacity-40'>
            <h1>Next.Js</h1>
          </div>
