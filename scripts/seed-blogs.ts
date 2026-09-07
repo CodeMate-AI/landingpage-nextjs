@@ -367,7 +367,7 @@ function blog3Content(): { type: "doc"; content: TiptapNode[] } {
       ]),
       bulletListRich([
         [
-          linkNode("C0", "https://docs.codemate.ai/c0"),
+          linkNode("CodeMate Work", "https://docs.codemate.ai/c0"),
           textNode(" for research, feasibility, and requirement intelligence")
         ],
         [
@@ -781,7 +781,46 @@ async function main() {
     console.log(`Seeded ${doc.slug}`);
   }
 
-  console.log("Blog seeding complete.");
+  // Seed / update global_filters taxonomy document in filter_options collection
+  const filtersCollection = db.collection("filter_options");
+  await filtersCollection.updateOne(
+    { _id: "global_filters" as any },
+    {
+      $set: {
+        categories: [
+          "Product",
+          "CORA Updates",
+          "Work Updates",
+          "Build Updates",
+          "Engineering",
+          "Engineering & Comparisons",
+          "Security & Code Review",
+          "Case Studies",
+          "Community",
+        ],
+        productFilters: [
+          "CORA",
+          "Work",
+          "Build",
+          "AI Terminal",
+          "Academy",
+          "PR Review Agent",
+        ],
+        useCaseFilters: [
+          "Code Review",
+          "Agents",
+          "Security",
+          "Enterprise",
+          "Onboarding",
+          "Testing",
+        ],
+      },
+    },
+    { upsert: true }
+  );
+  console.log("Seeded global_filters taxonomy options");
+
+  console.log("Blog and taxonomy seeding complete.");
 }
 
 main().catch((err) => {

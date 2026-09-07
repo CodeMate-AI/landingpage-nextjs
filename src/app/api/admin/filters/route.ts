@@ -6,7 +6,7 @@ import clientPromise from "@/lib/mongodb";
 const INITIAL_CATEGORIES = [
   "Product",
   "CORA Updates",
-  "C0 Updates",
+  "Work Updates",
   "Build Updates",
   "Engineering",
   "Engineering & Comparisons",
@@ -18,11 +18,10 @@ const INITIAL_CATEGORIES = [
 // Default product tag filter options
 const INITIAL_PRODUCTS = [
   "CORA",
-  "C0",
-  "C0 Web",
+  "Work",
   "Build",
   "AI Terminal",
-  "Education",
+  "Academy",
   "PR Review Agent",
 ];
 

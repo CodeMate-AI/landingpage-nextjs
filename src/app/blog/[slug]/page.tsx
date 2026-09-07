@@ -135,38 +135,58 @@ function injectHeadingIds(html: string, sections: { id: string; title: string }[
 }
 
 function formatTableCells(html: string): string {
-  // 1. Wrap table elements in the container and add the clean-comparison-table class (allowing any attributes on table)
-  let formatted = html.replace(/<table([^>]*)>([\s\S]*?)<\/table>/g, '<div class="clean-table-container"><table class="clean-comparison-table">$2</table></div>');
-
-  // 2. Wrap the first <tr> row inside <thead> and the rest inside <tbody> (re-injecting structural standard HTML)
-  formatted = formatted.replace(/<table class="clean-comparison-table">([\s\S]*?)<\/table>/g, (match, body) => {
-    const trRegex = /<tr[^>]*>([\s\S]*?)<\/tr>/;
-    const trMatch = body.match(trRegex);
-    if (trMatch) {
-      const firstTr = trMatch[0];
-      const rest = body.substring(trMatch.index + firstTr.length);
-      return `<table class="clean-comparison-table"><thead>${firstTr}</thead><tbody>${rest}</tbody></table>`;
+  return html.replace(/<table\b[^>]*>([\s\S]*?)<\/table>/gi, (tableMatch, tableBody) => {
+    // Extract all rows <tr ...>...</tr>
+    const rowRegex = /<tr\b[^>]*>([\s\S]*?)<\/tr>/gi;
+    const rows: string[] = [];
+    let rowMatch;
+    while ((rowMatch = rowRegex.exec(tableBody)) !== null) {
+      rows.push(rowMatch[1]);
     }
-    return match;
+
+    if (rows.length === 0) return tableMatch;
+
+    const [headerRow, ...bodyRows] = rows;
+
+    // Format header row cells (th/td)
+    const headerCellRegex = /<(?:th|td)\b[^>]*>([\s\S]*?)<\/(?:th|td)>/gi;
+    let headerColIdx = 0;
+    const formattedHeaderCells = headerRow.replace(headerCellRegex, (match, content) => {
+      const text = content.replace(/<[^>]*>/g, "").trim();
+      const colClass = headerColIdx === 0 ? "col-capability" : "col-product";
+      headerColIdx++;
+      return `<th scope="col" class="${colClass}">${text}</th>`;
+    });
+
+    // Format body rows
+    const formattedBodyRows = bodyRows.map((row) => {
+      const cellRegex = /<(?:th|td)\b[^>]*>([\s\S]*?)<\/(?:th|td)>/gi;
+      let colIdx = 0;
+      return `<tr>${row.replace(cellRegex, (match, content) => {
+        const text = content.replace(/<[^>]*>/g, "").trim();
+        const isFirstCol = colIdx === 0;
+        colIdx++;
+
+        if (isFirstCol) {
+          return `<th scope="row" class="cell-capability">${text}</th>`;
+        }
+
+        const lower = text.toLowerCase();
+        if (text === "✓" || lower === "check" || lower === "yes" || lower === "true") {
+          return `<td class="cell-product"><span class="icon-square icon-square-check" title="Supported">✓</span></td>`;
+        }
+        if (text === "✕" || lower === "cross" || lower === "x" || lower === "no" || lower === "false") {
+          return `<td class="cell-product"><span class="icon-square icon-square-cross" title="Not supported">✕</span></td>`;
+        }
+        if (text) {
+          return `<td class="cell-product"><span class="badge-text-clean">${text}</span></td>`;
+        }
+        return `<td class="cell-product"></td>`;
+      })}</tr>`;
+    });
+
+    return `<div class="clean-table-container my-6"><table class="clean-comparison-table"><thead><tr>${formattedHeaderCells}</tr></thead><tbody>${formattedBodyRows.join("")}</tbody></table></div>`;
   });
-
-  // 3. Map cells with ✓, ✕, check, or cross to their respective icon squares, and others to text badges
-  formatted = formatted.replace(/<td>([\s\S]*?)<\/td>/g, (match, content) => {
-    // Strip any internal HTML tags (like <p>) from the cell text before checking values
-    const text = content.replace(/<[^>]*>/g, "").trim();
-    if (text === "✓" || text === "check") {
-      return `<td><span class="icon-square icon-square-check" title="Supported">✓</span></td>`;
-    }
-    if (text === "✕" || text === "cross" || text === "x" || text === "X") {
-      return `<td><span class="icon-square icon-square-cross" title="Not supported">✕</span></td>`;
-    }
-    if (text && !text.startsWith("<span")) {
-      return `<td><span class="badge-text-clean">${text}</span></td>`;
-    }
-    return match;
-  });
-
-  return formatted;
 }
 
 function formatLogos(html: string): string {

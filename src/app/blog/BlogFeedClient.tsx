@@ -31,7 +31,6 @@ const DEFAULT_CATEGORIES = [
 const DEFAULT_PRODUCTS = [
   "CORA",
   "Work",
-  "Work Web",
   "Build",
   "AI Terminal",
   "Academy",
