@@ -6,6 +6,7 @@ import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
+import Image from 'next/image';
 import SeamlessCarousel from '@/components/SeamlessCarousel';
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
 import Footer from '@/components/footer';
@@ -241,9 +242,9 @@ export default function Page() {
           >
             <motion.div
               style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
-              className='absolute inset-0 opacity-5 z-0'
+              className='absolute inset-0 opacity-5 z-0 pointer-events-none'
             >
-              <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" aria-hidden="true" />
+              <Image src="/bgNoise.png" alt="" fill priority={false} loading="lazy" className='object-cover' aria-hidden="true" />
             </motion.div>
 
             <div className='relative z-50 w-full px-5 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
@@ -260,7 +261,7 @@ export default function Page() {
                 </span>
               </h1>
 
-              <div className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 opacity-70 text-left max-w-3xl">
+              <div className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl">
                 <p>
                   Build and ship faster with AI that works where your data lives, keeping your data, code, intelligence, and AI under your control
                 </p>
@@ -339,10 +340,13 @@ export default function Page() {
                 className="group flex flex-col justify-between bg-[#0c0c0e] border border-white/10 hover:border-white/25 rounded-2xl p-4 sm:p-6 transition-colors duration-200"
               >
                 <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-neutral-900/60 border border-white/10 mb-5 flex items-center justify-center">
-                  <img
+                  <Image
                     src={product.img}
                     alt={product.title}
-                    className={`w-full h-full object-cover ${product.imgPosition || 'object-top'}`}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                    loading="lazy"
+                    className={`object-cover ${product.imgPosition || 'object-top'}`}
                   />
                 </div>
 
@@ -429,10 +433,13 @@ export default function Page() {
                     {item.title}
                   </h3>
                   <div className="relative aspect-[16/10] w-full rounded-xl overflow-hidden bg-neutral-900/60 border border-white/10 flex items-center justify-center mb-4">
-                    <img
+                    <Image
                       src={item.media}
                       alt={item.title}
-                      className={`w-full h-full object-cover ${item.imgPosition || 'object-top'}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      loading="lazy"
+                      className={`object-cover ${item.imgPosition || 'object-top'}`}
                     />
                   </div>
                 </div>
@@ -455,7 +462,7 @@ export default function Page() {
           <div className="w-full max-w-6xl mx-auto flex flex-col md:flex-row justify-around items-center md:items-start gap-8 md:gap-10 lg:gap-14 text-center">
             <div className="flex flex-col items-center gap-2 sm:gap-3 w-full sm:w-[200px] lg:w-[240px] text-center">
               <div className="h-auto lg:h-[72px] flex items-center justify-center">
-                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-[#FAFAFA] opacity-80 tracking-tight">
+                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-white tracking-tight">
                   55%
                 </span>
               </div>
@@ -466,7 +473,7 @@ export default function Page() {
 
             <div className="flex flex-col items-center gap-2 sm:gap-3 w-full sm:w-[200px] lg:w-[240px] text-center">
               <div className="h-auto lg:h-[72px] flex items-center justify-center">
-                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-[#FAFAFA] opacity-80 tracking-tight">
+                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-white tracking-tight">
                   39%
                 </span>
               </div>
@@ -477,7 +484,7 @@ export default function Page() {
 
             <div className="flex flex-col items-center gap-2 sm:gap-3 w-full sm:w-[200px] lg:w-[240px] text-center">
               <div className="h-auto lg:h-[72px] flex items-center justify-center">
-                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-[#FAFAFA] opacity-80 tracking-tight">
+                <span className="font-bold text-5xl sm:text-6xl lg:text-7xl lg:leading-tight text-white tracking-tight">
                   68%
                 </span>
               </div>

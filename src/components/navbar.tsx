@@ -123,7 +123,9 @@ export default function Navbar() {
             <div className='flex justify-between items-center w-full h-10'>
 
               <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
-                <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="CodeMate AI Logo" className='cursor-pointer' />
+                <a href="/" aria-label="CodeMate AI Home">
+                  <img src="/codemateLogo.svg" alt="CodeMate AI Logo" className='cursor-pointer' />
+                </a>
               </div>
               <div className={`${montserrat.className} relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50`}>
                 <span className=' flex gap-5 justify-center items-center z-50'>
@@ -358,9 +360,15 @@ export default function Navbar() {
             top: 0
           }}
           className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 md:px-8 md:pl-8 py-[1.1rem] md:py-4 justify-between items-center z-[99999999999]`}>
-          <img src="/codemateLogo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
-          <motion.div
-            onClick={() => { setMenu(state => !state); }} className={`${montserrat.className} flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right`}>
+          <a href="/" aria-label="CodeMate AI Home" className="flex items-center">
+            <img src="/codemateLogo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
+          </a>
+          <button
+            type="button"
+            aria-label={isMenu ? "Close navigation menu" : "Open navigation menu"}
+            onClick={() => { setMenu(state => !state); }}
+            className={`${montserrat.className} flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right bg-transparent border-0 text-white p-0`}
+          >
             <Menu
               className={cn(
                 "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",
@@ -378,7 +386,7 @@ export default function Navbar() {
                   : "hidden scale-75 rotate-45"
               )}
             />
-          </motion.div>
+          </button>
         </motion.div>
         {isMenu && (
           <div

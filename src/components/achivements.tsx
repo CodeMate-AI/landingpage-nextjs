@@ -5,6 +5,7 @@ import { useState, useRef } from 'react';
 import { useInView } from 'framer-motion';
 import { motion } from 'framer-motion'
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
 const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'], // Add what you need
@@ -398,20 +399,21 @@ function Achivements() {
 
 
       className='relative flex flex-col justify-center items-center mb-12'>
-      <div className={`${montserrat.className} leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-0 text-center`}>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent md:text-6xl lg:text-7xl'>Talk</span> of the Town</div>
-      <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-0 text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
+      <div className={`${montserrat.className} leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent lg:pl-10 pt-0 text-center`}>We're the <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent md:text-6xl lg:text-7xl'>Talk</span> of the Town</div>
+      <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-0 text-center text-zinc-400'>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
 
       <div className='relative w-fit max-w-full mx-auto flex items-center justify-center mt-14 sm:mt-16'>
         {/* Desktop navigation */}
-        <motion.div
+        <motion.button
+          type="button"
           onClick={() => handleArrow('left')}
           whileHover={{ opacity: 1, scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className='hidden lg:flex mr-4 xl:mr-6 size-16 rounded-full cursor-pointer text-white opacity-70 hover:opacity-100 items-center justify-center z-20 select-none shrink-0'
+          className='hidden lg:flex mr-4 xl:mr-6 size-16 rounded-full cursor-pointer text-white opacity-70 hover:opacity-100 items-center justify-center z-20 select-none shrink-0 bg-transparent border-0'
           aria-label="Previous milestone"
         >
           <ArrowLeft size={36} strokeWidth={2} />
-        </motion.div>
+        </motion.button>
 
         <div
           ref={carouselRef}
@@ -428,38 +430,41 @@ function Achivements() {
           </motion.div>
         </div>
 
-        <motion.div
+        <motion.button
+          type="button"
           onClick={() => handleArrow('right')}
           whileHover={{ opacity: 1, scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className='hidden lg:flex ml-4 xl:ml-6 size-16 rounded-full cursor-pointer text-white opacity-70 hover:opacity-100 items-center justify-center z-20 select-none shrink-0'
+          className='hidden lg:flex ml-4 xl:ml-6 size-16 rounded-full cursor-pointer text-white opacity-70 hover:opacity-100 items-center justify-center z-20 select-none shrink-0 bg-transparent border-0'
           aria-label="Next milestone"
         >
           <ArrowRight size={36} strokeWidth={2} />
-        </motion.div>
+        </motion.button>
       </div>
 
       {/* Mobile/Tablet navigation */}
       <div className='flex gap-10 mt-8 lg:hidden justify-center items-center z-20'>
-        <motion.div
+        <motion.button
+          type="button"
           onClick={() => handleArrow2('left')}
           whileHover={{ opacity: 1 }}
           whileTap={{ scale: 0.95 }}
-          className='size-16 rounded-full cursor-pointer text-zinc-400 hover:text-white flex items-center justify-center select-none'
+          className='size-16 rounded-full cursor-pointer text-zinc-400 hover:text-white flex items-center justify-center select-none bg-transparent border-0'
           aria-label="Previous milestone"
         >
           <ArrowLeft size={36} strokeWidth={2} />
-        </motion.div>
+        </motion.button>
 
-        <motion.div
+        <motion.button
+          type="button"
           onClick={() => handleArrow2('right')}
           whileHover={{ opacity: 1 }}
           whileTap={{ scale: 0.95 }}
-          className='size-16 rounded-full cursor-pointer text-zinc-400 hover:text-white flex items-center justify-center select-none'
+          className='size-16 rounded-full cursor-pointer text-zinc-400 hover:text-white flex items-center justify-center select-none bg-transparent border-0'
           aria-label="Next milestone"
         >
           <ArrowRight size={36} strokeWidth={2} />
-        </motion.div>
+        </motion.button>
       </div>
     </div>
   )
@@ -467,23 +472,28 @@ function Achivements() {
 
 export default Achivements
 
-function Card({ image, alt, title, description, imagePosition, link }: { image: String, alt: String, title: String, description: String, link?: String, imagePosition?: string }) {
+function Card({ image, alt, title, description, imagePosition, link }: { image: string, alt: string, title: string, description: string, link?: string, imagePosition?: string }) {
   return (
     <motion.div className='relative h-[33rem] md:h-[48rem] lg:h-[33rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
-      <img
-        src={image as string}
-        alt={alt as string}
-        className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : imagePosition === 'bottom' ? 'object-bottom' : ''}`}
-      />
+      <div className='relative h-[40%] md:h-[50%] lg:h-[40%] w-full overflow-hidden bg-neutral-950'>
+        <Image
+          src={image}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          loading="lazy"
+          className={`object-cover ${imagePosition === 'top' ? 'object-top' : imagePosition === 'bottom' ? 'object-bottom' : 'object-center'}`}
+        />
+      </div>
 
       <div className='px-5 md:px-10 flex flex-col gap-2 md:gap-4 mt-4 md:mt-8'>
         <h3 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold text-white'>{title}</h3>
-        <p className='text-zinc-500 text-xs md:text-[1.3rem] md:leading-relaxed lg:text-xs'>{description}</p>
+        <p className='text-zinc-400 text-xs md:text-[1.3rem] md:leading-relaxed lg:text-xs'>{description}</p>
       </div>
 
       {link && link !== "" && (
         <a
-          href={link as string}
+          href={link}
           target='_blank'
           rel='noopener noreferrer'
           aria-label={`Read more about ${title}`}
