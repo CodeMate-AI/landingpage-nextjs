@@ -66,7 +66,7 @@ function Achivements() {
       image: "/UIPT_2025.jpg",
       alt: "UPITS 2025 - UP International Trade Show",
       title: "UPITS 2025 - UP International Trade Show, Greater Noida",
-      description: "CodeMate AI showcased its full developer ecosystem such as VS Code Extension, Web App, AI PR Review Agent, and Education Platform to thousands of industry leaders and innovators at India Expo Centre.",
+      description: "CodeMate AI showcased its full developer ecosystem such as VS Code Extension, Web App, AI PR Review Agent, and Academy Platform to thousands of industry leaders and innovators at India Expo Centre.",
       link: "https://www.linkedin.com/posts/theayushsinghal_codemate-upits2025-ai-activity-7389356209650450432-mG2X?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
     },
     {

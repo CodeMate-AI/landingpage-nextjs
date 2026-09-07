@@ -18,7 +18,6 @@ export const metadata: Metadata = {
   },
 };
 
-
 export default async function BlogFeedPage() {
   try {
     const client = await clientPromise;
@@ -86,3 +85,4 @@ export default async function BlogFeedPage() {
     return <BlogFeedClient posts={[]} />;
   }
 }
+

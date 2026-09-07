@@ -19,7 +19,7 @@ interface BlogFeedClientProps {
 const DEFAULT_CATEGORIES = [
   "Product",
   "CORA Updates",
-  "C0 Updates",
+  "Work Updates",
   "Build Updates",
   "Engineering",
   "Engineering & Comparisons",
@@ -30,11 +30,11 @@ const DEFAULT_CATEGORIES = [
 
 const DEFAULT_PRODUCTS = [
   "CORA",
-  "C0",
-  "C0 Web",
+  "Work",
+  "Work Web",
   "Build",
   "AI Terminal",
-  "Education",
+  "Academy",
   "PR Review Agent",
 ];
 
