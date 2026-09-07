@@ -386,24 +386,24 @@ export default function ContactPage() {
             {/* Email Card */}
             <a
               href="mailto:contact@codemate.ai"
-              className="bg-zinc-900/90 border border-zinc-800/80 hover:border-[#00BFFF]/40 hover:bg-zinc-900 rounded-xl p-4 flex items-center gap-3.5 transition-all duration-200 group shadow-lg"
+              className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-center gap-3.5 shadow-lg"
             >
-              <div className="size-9 rounded-lg bg-[#00BFFF]/10 border border-[#00BFFF]/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
-                <Mail className="w-4 h-4 text-[#00BFFF]" />
+              <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0">
+                <Mail className="w-4 h-4 text-zinc-300" />
               </div>
               <div className="flex flex-col min-w-0">
                 <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Email</span>
-                <span className="font-medium text-white text-sm truncate group-hover:underline group-hover:text-[#00BFFF] transition-colors">
+                <span className="font-medium text-white text-sm truncate">
                   contact@codemate.ai
                 </span>
               </div>
             </a>
 
             {/* Combined Phone Card with Real SVG Flags */}
-            <div className="bg-zinc-900/90 border border-zinc-800/80 rounded-xl p-4 flex flex-col gap-2.5 shadow-lg">
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col gap-2.5 shadow-lg">
               <div className="flex items-center gap-3">
-                <div className="size-9 rounded-lg bg-[#00BFFF]/10 border border-[#00BFFF]/20 flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4 text-[#00BFFF]" />
+                <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0">
+                  <Phone className="w-4 h-4 text-zinc-300" />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Phone</span>
@@ -414,13 +414,13 @@ export default function ContactPage() {
                 {/* India Phone */}
                 <a
                   href="tel:+918766330253"
-                  className="flex items-center justify-between gap-3 py-2 px-3 rounded-lg bg-zinc-950/60 border border-zinc-800/60 hover:border-[#00BFFF]/40 hover:bg-zinc-950 transition-all group"
+                  className="flex items-center justify-between gap-3 py-2 px-3 rounded-lg bg-zinc-950/60 border border-zinc-800/60"
                 >
                   <div className="flex items-center gap-2.5">
                     <FlagIndia className="w-5 h-3.5" />
-                    <span className="text-xs text-zinc-400 font-medium group-hover:text-zinc-300">India</span>
+                    <span className="text-xs text-zinc-400 font-medium">India</span>
                   </div>
-                  <span className="font-medium text-white text-xs sm:text-sm tracking-wide group-hover:text-[#00BFFF] transition-colors">
+                  <span className="font-medium text-white text-xs sm:text-sm tracking-wide">
                     +91 8766330253
                   </span>
                 </a>
@@ -428,13 +428,13 @@ export default function ContactPage() {
                 {/* US Phone */}
                 <a
                   href="tel:+16283095625"
-                  className="flex items-center justify-between gap-3 py-2 px-3 rounded-lg bg-zinc-950/60 border border-zinc-800/60 hover:border-[#00BFFF]/40 hover:bg-zinc-950 transition-all group"
+                  className="flex items-center justify-between gap-3 py-2 px-3 rounded-lg bg-zinc-950/60 border border-zinc-800/60"
                 >
                   <div className="flex items-center gap-2.5">
                     <FlagUSA className="w-5 h-3.5" />
-                    <span className="text-xs text-zinc-400 font-medium group-hover:text-zinc-300">United States</span>
+                    <span className="text-xs text-zinc-400 font-medium">United States</span>
                   </div>
-                  <span className="font-medium text-white text-xs sm:text-sm tracking-wide group-hover:text-[#00BFFF] transition-colors">
+                  <span className="font-medium text-white text-xs sm:text-sm tracking-wide">
                     +1 (628) 309-5625
                   </span>
                 </a>
@@ -446,17 +446,17 @@ export default function ContactPage() {
               href="https://maps.google.com/?q=Berger+Tower%2C+C-001%2FA2+Sector+16B%2C+Noida%2C+Uttar+Pradesh+-+201301%2C+India"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-zinc-900/90 border border-zinc-800/80 hover:border-[#00BFFF]/40 hover:bg-zinc-900 rounded-xl p-4 flex items-start gap-3.5 transition-all duration-200 group shadow-lg"
+              className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-start gap-3.5 shadow-lg"
             >
-              <div className="size-9 rounded-lg bg-[#00BFFF]/10 border border-[#00BFFF]/20 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
-                <MapPin className="w-4 h-4 text-[#00BFFF]" />
+              <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0 mt-0.5">
+                <MapPin className="w-4 h-4 text-zinc-300" />
               </div>
               <div className="flex flex-col gap-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <FlagIndia className="w-4.5 h-3" />
-                  <span className="text-[11px] text-[#00BFFF] font-semibold uppercase tracking-wider">India HQ</span>
+                  <span className="text-[11px] text-zinc-200 font-semibold uppercase tracking-wider">India HQ</span>
                 </div>
-                <p className="text-xs text-zinc-400 group-hover:text-white leading-relaxed">
+                <p className="text-xs text-zinc-400 leading-relaxed">
                   Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh - 201301, India
                 </p>
               </div>
@@ -467,17 +467,17 @@ export default function ContactPage() {
               href="https://maps.google.com/?q=2290%2C+3rd+Street%2C+San+Francisco%2C+California%2C+94107+-+USA"
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-zinc-900/90 border border-zinc-800/80 hover:border-[#00BFFF]/40 hover:bg-zinc-900 rounded-xl p-4 flex items-start gap-3.5 transition-all duration-200 group shadow-lg"
+              className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-start gap-3.5 shadow-lg"
             >
-              <div className="size-9 rounded-lg bg-[#00BFFF]/10 border border-[#00BFFF]/20 flex items-center justify-center shrink-0 mt-0.5 group-hover:scale-105 transition-transform">
-                <MapPin className="w-4 h-4 text-[#00BFFF]" />
+              <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0 mt-0.5">
+                <MapPin className="w-4 h-4 text-zinc-300" />
               </div>
               <div className="flex flex-col gap-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <FlagUSA className="w-4.5 h-3" />
-                  <span className="text-[11px] text-[#00BFFF] font-semibold uppercase tracking-wider">United States</span>
+                  <span className="text-[11px] text-zinc-200 font-semibold uppercase tracking-wider">United States</span>
                 </div>
-                <p className="text-xs text-zinc-400 group-hover:text-white leading-relaxed">
+                <p className="text-xs text-zinc-400 leading-relaxed">
                   2290, 3rd Street, San Francisco, California, 94107 - USA
                 </p>
               </div>
