@@ -246,14 +246,14 @@ export default function Page() {
               <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" aria-hidden="true" />
             </motion.div>
 
-            <div className='relative z-50 w-full px-6 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
-              <h1 className='text-[clamp(2.35rem,8vw,4.5rem)] lg:text-[clamp(3.8rem,6.2vw,6.5rem)] leading-[1.06] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5'>
+            <div className='relative z-50 w-full px-5 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
+              <h1 className='text-[clamp(1.65rem,6.8vw,2.25rem)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5'>
                 <span className='xxlHero z-50 block whitespace-nowrap'>
                   <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
                     Sovereign AI for
                   </span>
                 </span>
-                <span className='z-50 block whitespace-nowrap pb-2'>
+                <span className='z-50 block whitespace-nowrap pb-1.5'>
                   <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
                     Software Development
                   </span>
