@@ -414,74 +414,62 @@ export default function ContactPage() {
                 {/* India Phone */}
                 <a
                   href="tel:+918766330253"
-                  className="flex items-center justify-between gap-3 py-2 px-3 rounded-lg bg-zinc-950/60 border border-zinc-800/60"
+                  className="flex items-center gap-2.5 py-1 text-white text-xs sm:text-sm font-medium tracking-wide"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <FlagIndia className="w-5 h-3.5" />
-                    <span className="text-xs text-zinc-400 font-medium">India</span>
-                  </div>
-                  <span className="font-medium text-white text-xs sm:text-sm tracking-wide">
-                    +91 8766330253
-                  </span>
+                  <FlagIndia className="w-5 h-3.5" />
+                  <span>+91 8766330253</span>
                 </a>
 
                 {/* US Phone */}
                 <a
                   href="tel:+16283095625"
-                  className="flex items-center justify-between gap-3 py-2 px-3 rounded-lg bg-zinc-950/60 border border-zinc-800/60"
+                  className="flex items-center gap-2.5 py-1 text-white text-xs sm:text-sm font-medium tracking-wide"
                 >
-                  <div className="flex items-center gap-2.5">
-                    <FlagUSA className="w-5 h-3.5" />
-                    <span className="text-xs text-zinc-400 font-medium">United States</span>
-                  </div>
-                  <span className="font-medium text-white text-xs sm:text-sm tracking-wide">
-                    +1 (628) 309-5625
-                  </span>
+                  <FlagUSA className="w-5 h-3.5" />
+                  <span>+1 (628) 309-5625</span>
                 </a>
               </div>
             </div>
 
-            {/* India HQ Location Card */}
-            <a
-              href="https://maps.google.com/?q=Berger+Tower%2C+C-001%2FA2+Sector+16B%2C+Noida%2C+Uttar+Pradesh+-+201301%2C+India"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-start gap-3.5 shadow-lg"
-            >
-              <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0 mt-0.5">
-                <MapPin className="w-4 h-4 text-zinc-300" />
-              </div>
-              <div className="flex flex-col gap-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <FlagIndia className="w-4.5 h-3" />
-                  <span className="text-[11px] text-zinc-200 font-semibold uppercase tracking-wider">India</span>
+            {/* Merged Office Locations Card */}
+            <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col gap-2.5 shadow-lg">
+              <div className="flex items-center gap-3">
+                <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0">
+                  <MapPin className="w-4 h-4 text-zinc-300" />
                 </div>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh - 201301, India
-                </p>
+                <div className="flex flex-col">
+                  <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Office</span>
+                </div>
               </div>
-            </a>
 
-            {/* US Office Location Card */}
-            <a
-              href="https://maps.google.com/?q=2290%2C+3rd+Street%2C+San+Francisco%2C+California%2C+94107+-+USA"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex items-start gap-3.5 shadow-lg"
-            >
-              <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0 mt-0.5">
-                <MapPin className="w-4 h-4 text-zinc-300" />
+              <div className="flex flex-col gap-2.5 pt-1.5 border-t border-zinc-800/70">
+                {/* India Office */}
+                <a
+                  href="https://maps.google.com/?q=Berger+Tower%2C+C-001%2FA2+Sector+16B%2C+Noida%2C+Uttar+Pradesh+-+201301%2C+India"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-2.5"
+                >
+                  <FlagIndia className="w-5 h-3.5 mt-0.5" />
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh - 201301, India
+                  </p>
+                </a>
+
+                {/* US Office */}
+                <a
+                  href="https://maps.google.com/?q=2290%2C+3rd+Street%2C+San+Francisco%2C+California%2C+94107+-+USA"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-2.5"
+                >
+                  <FlagUSA className="w-5 h-3.5 mt-0.5" />
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    2290, 3rd Street, San Francisco, California, 94107 - USA
+                  </p>
+                </a>
               </div>
-              <div className="flex flex-col gap-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <FlagUSA className="w-4.5 h-3" />
-                  <span className="text-[11px] text-zinc-200 font-semibold uppercase tracking-wider">United States</span>
-                </div>
-                <p className="text-xs text-zinc-400 leading-relaxed">
-                  2290, 3rd Street, San Francisco, California, 94107 - USA
-                </p>
-              </div>
-            </a>
+            </div>
           </motion.div>
 
           {/* Right Column: Interactive Form */}
