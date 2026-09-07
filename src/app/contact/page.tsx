@@ -454,7 +454,7 @@ export default function ContactPage() {
               <div className="flex flex-col gap-1 min-w-0">
                 <div className="flex items-center gap-2">
                   <FlagIndia className="w-4.5 h-3" />
-                  <span className="text-[11px] text-zinc-200 font-semibold uppercase tracking-wider">India HQ</span>
+                  <span className="text-[11px] text-zinc-200 font-semibold uppercase tracking-wider">India</span>
                 </div>
                 <p className="text-xs text-zinc-400 leading-relaxed">
                   Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh - 201301, India
