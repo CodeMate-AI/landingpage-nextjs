@@ -482,13 +482,16 @@ function Card({ image, alt, title, description, imagePosition, link }: { image: 
       </div>
 
       {link && link !== "" && (
-        <a href={link as string} target='_blank' rel='noopener noreferrer' aria-label={`Read more about ${title}`}>
-          <motion.button
-            whileHover={{ opacity: 0.7 }}
-            className='absolute text-lg md:text-[1.5rem] lg:text-lg px-5 md:px-10 bottom-8 md:bottom-12 text-[#00BFFF] cursor-pointer'
-          >
-            Read More
-          </motion.button>
+        <a
+          href={link as string}
+          target='_blank'
+          rel='noopener noreferrer'
+          aria-label={`Read more about ${title}`}
+          className='absolute text-lg md:text-[1.5rem] lg:text-lg px-5 md:px-10 bottom-8 md:bottom-12 text-[#00BFFF] cursor-pointer inline-flex items-center'
+        >
+          <motion.span whileHover={{ opacity: 0.7 }}>
+            Read More <span className='sr-only'>about {title}</span>
+          </motion.span>
         </a>
       )}
     </motion.div>
