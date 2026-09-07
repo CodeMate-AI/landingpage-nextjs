@@ -452,7 +452,7 @@ export default function ContactPage() {
                 >
                   <FlagIndia className="w-5 h-3.5 mt-0.5" />
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh - 201301, India
+                    Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh, 201301, India
                   </p>
                 </a>
 
@@ -465,7 +465,7 @@ export default function ContactPage() {
                 >
                   <FlagUSA className="w-5 h-3.5 mt-0.5" />
                   <p className="text-xs text-zinc-400 leading-relaxed">
-                    2290, 3rd Street, San Francisco, California, 94107 - USA
+                    2290, 3rd Street, San Francisco, California, 94107, USA
                   </p>
                 </a>
               </div>
