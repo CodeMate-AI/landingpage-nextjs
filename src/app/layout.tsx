@@ -81,6 +81,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta
+          name="description"
+          content="Build and ship faster with AI that works where your data lives, keeping your data, code, intelligence, and AI under your control."
+        />
+      </head>
       <body
         className={`${montserrat.className} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning
