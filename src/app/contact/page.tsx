@@ -399,74 +399,54 @@ export default function ContactPage() {
               </div>
             </a>
 
-            {/* Combined Phone Card with Real SVG Flags */}
+            {/* India Card (Location + Phone) */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col gap-2.5 shadow-lg">
-              <div className="flex items-center gap-3">
-                <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0">
-                  <Phone className="w-4 h-4 text-zinc-300" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Phone</span>
-                </div>
+              <div className="flex items-center gap-2">
+                <FlagIndia className="w-5 h-3.5" />
+                <span className="text-xs sm:text-sm text-white font-medium tracking-wide">India</span>
               </div>
-
-              <div className="flex flex-col gap-1.5 pt-1.5 border-t border-zinc-800/70">
-                {/* India Phone */}
+              <div className="flex flex-col gap-2 pt-1.5 border-t border-zinc-800/70">
+                <a
+                  href="https://maps.google.com/?q=Berger+Tower%2C+C-001%2FA2+Sector+16B%2C+Noida%2C+Uttar+Pradesh%2C+201301%2C+India"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-start gap-2.5 text-xs text-zinc-400 leading-relaxed"
+                >
+                  <MapPin className="w-3.5 h-3.5 text-zinc-500 shrink-0 mt-0.5" />
+                  <span>Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh, 201301, India</span>
+                </a>
                 <a
                   href="tel:+918766330253"
-                  className="flex items-center gap-2.5 py-1 text-white text-xs sm:text-sm font-medium tracking-wide"
+                  className="flex items-center gap-2.5 text-xs text-zinc-400 leading-relaxed"
                 >
-                  <FlagIndia className="w-5 h-3.5" />
+                  <Phone className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
                   <span>+91 8766330253</span>
-                </a>
-
-                {/* US Phone */}
-                <a
-                  href="tel:+16283095625"
-                  className="flex items-center gap-2.5 py-1 text-white text-xs sm:text-sm font-medium tracking-wide"
-                >
-                  <FlagUSA className="w-5 h-3.5" />
-                  <span>+1 (628) 309-5625</span>
                 </a>
               </div>
             </div>
 
-            {/* Merged Office Locations Card */}
+            {/* United States Card (Location + Phone) */}
             <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-4 flex flex-col gap-2.5 shadow-lg">
-              <div className="flex items-center gap-3">
-                <div className="size-9 rounded-lg bg-zinc-800/60 border border-zinc-700/50 flex items-center justify-center shrink-0">
-                  <MapPin className="w-4 h-4 text-zinc-300" />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-[10px] text-zinc-500 uppercase font-semibold tracking-wider">Office</span>
-                </div>
+              <div className="flex items-center gap-2">
+                <FlagUSA className="w-5 h-3.5" />
+                <span className="text-xs sm:text-sm text-white font-medium tracking-wide">United States</span>
               </div>
-
-              <div className="flex flex-col gap-2.5 pt-1.5 border-t border-zinc-800/70">
-                {/* India Office */}
+              <div className="flex flex-col gap-2 pt-1.5 border-t border-zinc-800/70">
                 <a
-                  href="https://maps.google.com/?q=Berger+Tower%2C+C-001%2FA2+Sector+16B%2C+Noida%2C+Uttar+Pradesh+-+201301%2C+India"
+                  href="https://maps.google.com/?q=2290%2C+3rd+Street%2C+San+Francisco%2C+California%2C+94107%2C+USA"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-start gap-2.5"
+                  className="flex items-start gap-2.5 text-xs text-zinc-400 leading-relaxed"
                 >
-                  <FlagIndia className="w-5 h-3.5 mt-0.5" />
-                  <p className="text-xs text-zinc-400 leading-relaxed">
-                    Berger Tower, C-001/A2 Sector 16B, Noida, Uttar Pradesh, 201301, India
-                  </p>
+                  <MapPin className="w-3.5 h-3.5 text-zinc-500 shrink-0 mt-0.5" />
+                  <span>2290, 3rd Street, San Francisco, California, 94107, USA</span>
                 </a>
-
-                {/* US Office */}
                 <a
-                  href="https://maps.google.com/?q=2290%2C+3rd+Street%2C+San+Francisco%2C+California%2C+94107+-+USA"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-start gap-2.5"
+                  href="tel:+16283095625"
+                  className="flex items-center gap-2.5 text-xs text-zinc-400 leading-relaxed"
                 >
-                  <FlagUSA className="w-5 h-3.5 mt-0.5" />
-                  <p className="text-xs text-zinc-400 leading-relaxed">
-                    2290, 3rd Street, San Francisco, California, 94107, USA
-                  </p>
+                  <Phone className="w-3.5 h-3.5 text-zinc-500 shrink-0" />
+                  <span>+1 (628) 309-5625</span>
                 </a>
               </div>
             </div>
