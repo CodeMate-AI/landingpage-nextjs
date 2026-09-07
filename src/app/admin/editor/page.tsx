@@ -3,6 +3,10 @@ import React, { useCallback, useEffect, useRef, useState, Suspense } from "react
 import { useRouter, useSearchParams } from "next/navigation";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { DatePicker } from "@/components/ui/date-picker";
+import BlogPreviewModal from "./BlogPreviewModal";
+import { compileTiptapToHtml } from "@/lib/blog-compiler";
+import slugify from "@/utils/slugify";
+import type { BlogDetailPost } from "@/types/blog";
 
 // Default fallback taxonomy lists for categories, products, and use-case tags
 const DEFAULT_CATEGORIES = [
@@ -44,6 +48,7 @@ function EditorContent() {
 
   // Core article state hooks
   const [title, setTitle] = useState("");
+  const [slug, setSlug] = useState("");
   const [subheading, setSubheading] = useState("");
   const [category, setCategory] = useState("");
   const [tagsInput, setTagsInput] = useState("");
@@ -102,6 +107,7 @@ function EditorContent() {
         const data = await res.json();
         const post = data.post;
         setTitle(post.title);
+        setSlug(post.slug || "");
         setSubheading(post.subheading || "");
         setCategory(post.category);
         setCoverImage(post.coverImage || "");
@@ -284,15 +290,96 @@ function EditorContent() {
     }
   };
 
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  const [previewPost, setPreviewPost] = useState<BlogDetailPost | null>(null);
+
+  const buildPreviewPost = useCallback(() => {
+    const rawTags = tagsInput
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean);
+    const mappedTags = rawTags.map((tag) => ({
+      label: tag,
+      tone: "blue" as const,
+    }));
+
+    const { html: compiledHtml, sections: compiledSections } = compileTiptapToHtml(
+      contentJson,
+      sections.length > 0 ? sections : undefined
+    );
+
+    const previewSlug = slug || (title ? slugify(title) : "preview-post");
+
+    const postObj: BlogDetailPost = {
+      id: postId || "preview-id",
+      slug: previewSlug,
+      title: title || "Untitled Article",
+      category: category || "General",
+      date: publishedAtCustom || new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
+      dateValue: new Date().toISOString().split("T")[0],
+      tags: mappedTags.length > 0 ? mappedTags : [{ label: "Article", tone: "blue" }],
+      sections: compiledSections,
+      dek: subheading || "No subheading provided.",
+      readTime: readTime || "5 min read",
+      htmlContent: compiledHtml,
+      author: author || "Ayush Singhal",
+      authorRole: authorRole || "Founder & CEO",
+      image: coverImage || "",
+      coverImage: coverImage || "",
+    };
+
+    return postObj;
+  }, [author, authorRole, category, contentJson, coverImage, postId, publishedAtCustom, readTime, sections, slug, subheading, tagsInput, title]);
+
+  const handleOpenPreview = () => {
+    const postObj = buildPreviewPost();
+    try {
+      const serialized = JSON.stringify(postObj);
+      sessionStorage.setItem("admin_blog_preview", serialized);
+      localStorage.setItem("admin_blog_preview", serialized);
+    } catch (err) {
+      console.error("Failed to store preview payload:", err);
+    }
+    setPreviewPost(postObj);
+    setIsPreviewOpen(true);
+  };
+
+  const handleOpenInNewTab = () => {
+    const postObj = buildPreviewPost();
+    try {
+      const serialized = JSON.stringify(postObj);
+      sessionStorage.setItem("admin_blog_preview", serialized);
+      localStorage.setItem("admin_blog_preview", serialized);
+      window.open("/admin/preview", "_blank");
+    } catch (err) {
+      console.error("Failed to store preview payload:", err);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#09090b] p-4 sm:p-6 lg:p-8 font-sans text-neutral-100">
       <div className="mx-auto max-w-4xl">
         {/* Editor page header */}
         <header className="mb-8 flex items-center justify-between border-b border-[#27272a] pb-6">
           <h1 className="text-3xl font-bold text-white">{postId ? "Modify Article" : "Compose Article"}</h1>
-          <button type="button" onClick={() => router.push("/admin/dashboard")} className="text-neutral-400 hover:text-neutral-200" suppressHydrationWarning>
-            Cancel
-          </button>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={handleOpenPreview}
+              suppressHydrationWarning
+              className="rounded-lg border border-[#27272a] bg-[#18181b] px-4 py-2 text-sm font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white"
+            >
+              Preview
+            </button>
+            <button
+              type="button"
+              onClick={() => router.push("/admin/dashboard")}
+              className="text-sm text-neutral-400 hover:text-neutral-200"
+              suppressHydrationWarning
+            >
+              Cancel
+            </button>
+          </div>
         </header>
 
         <form onSubmit={handleSave} className="space-y-6">
@@ -869,6 +956,15 @@ function EditorContent() {
           </div>
         </form>
       </div>
+
+      {previewPost && (
+        <BlogPreviewModal
+          isOpen={isPreviewOpen}
+          onClose={() => setIsPreviewOpen(false)}
+          post={previewPost}
+          onOpenInNewTab={handleOpenInNewTab}
+        />
+      )}
     </main>
   );
 }

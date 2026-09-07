@@ -7,6 +7,7 @@ import type { BlogDetailPost } from "@/types/blog";
 interface Props {
   post: BlogDetailPost;
   posts: BlogDetailPost[];
+  isPreview?: boolean;
 }
 
 const StaticArticle = React.memo(({ htmlContent }: { htmlContent: string }) => {
@@ -14,18 +15,21 @@ const StaticArticle = React.memo(({ htmlContent }: { htmlContent: string }) => {
 });
 StaticArticle.displayName = "StaticArticle";
 
-export default function BlogPostClient({ post, posts }: Props) {
+export default function BlogPostClient({ post, posts, isPreview = false }: Props) {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [activeSection, setActiveSection] = useState<string>(post.sections[0]?.id || "intro");
+  const [activeSection, setActiveSection] = useState<string>("");
   const [copied, setCopied] = useState(false);
-  const [shareUrl, setShareUrl] = useState(`https://codemate.ai/blog/${post.slug}`);
+  const liveUrl = `https://codemate.ai/blog/${post.slug}`;
+  const [shareUrl, setShareUrl] = useState(liveUrl);
   const articleRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    if (isPreview) {
+      setShareUrl(liveUrl);
+    } else if (typeof window !== "undefined") {
       setShareUrl(window.location.origin + "/blog/" + post.slug);
     }
-  }, [post.slug]);
+  }, [post.slug, isPreview, liveUrl]);
 
   const getInitials = (name?: string) => {
     if (!name) return "AS";
@@ -37,9 +41,19 @@ export default function BlogPostClient({ post, posts }: Props) {
       .slice(0, 2);
   };
 
+  const handleSectionClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+    e.preventDefault();
+    const el = document.getElementById(id);
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 90;
+      window.scrollTo({ top, behavior: "smooth" });
+      setActiveSection(id);
+    }
+  };
+
   useEffect(() => {
     const handleScroll = () => {
-      if (!articleRef.current) {
+      if (!articleRef.current || !post.sections || post.sections.length === 0) {
         return;
       }
 
@@ -54,13 +68,32 @@ export default function BlogPostClient({ post, posts }: Props) {
         setScrollProgress(Math.min(Math.max(scrolled, 0), 100));
       }
 
-      const scrollPosition = window.scrollY + 160;
-      let currentSectionId = post.sections[0]?.id || "intro";
+      // If user reaches near the bottom of the page, activate the last section
+      const docHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const scrollBottom = window.scrollY + window.innerHeight;
+      if (docHeight - scrollBottom <= 120) {
+        setActiveSection(post.sections[post.sections.length - 1].id);
+        return;
+      }
+
+      const scrollPosition = window.scrollY + Math.min(220, window.innerHeight * 0.3);
+
+      const firstSectionEl = document.getElementById(post.sections[0].id);
+      if (firstSectionEl) {
+        const firstSectionTop = firstSectionEl.getBoundingClientRect().top + window.scrollY;
+        if (scrollPosition < firstSectionTop) {
+          setActiveSection("");
+          return;
+        }
+      }
+
+      let currentSectionId = post.sections[0]?.id || "";
 
       for (const section of post.sections) {
         const el = document.getElementById(section.id);
         if (el) {
-          if (el.offsetTop <= scrollPosition) {
+          const top = el.getBoundingClientRect().top + window.scrollY;
+          if (top <= scrollPosition) {
             currentSectionId = section.id;
           } else {
             break;
@@ -128,9 +161,11 @@ export default function BlogPostClient({ post, posts }: Props) {
   }, [post.htmlContent]);
 
   const handleCopyLink = async () => {
-    const shareUrl = typeof window !== "undefined" ? window.location.href : `https://codemate.ai/blog/${post.slug}`;
+    const urlToCopy = isPreview
+      ? liveUrl
+      : (typeof window !== "undefined" ? window.location.origin + "/blog/" + post.slug : liveUrl);
     try {
-      await navigator.clipboard.writeText(shareUrl);
+      await navigator.clipboard.writeText(urlToCopy);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 2000);
     } catch {
@@ -145,9 +180,11 @@ export default function BlogPostClient({ post, posts }: Props) {
 
   return (
     <>
-      <div className="reading-progress">
-        <div className="reading-progress-fill" style={{ width: `${scrollProgress}%` }}></div>
-      </div>
+      {!isPreview && (
+        <div className="reading-progress">
+          <div className="reading-progress-fill" style={{ width: `${scrollProgress}%` }}></div>
+        </div>
+      )}
 
       <header className="article-hero container">
         <div className="hero-grid">
@@ -178,7 +215,11 @@ export default function BlogPostClient({ post, posts }: Props) {
           <ul className="toc-list">
             {post.sections.map((section) => (
               <li key={section.id}>
-                <a href={`#${section.id}`} className={`toc-item ${activeSection === section.id ? "active" : ""}`}>
+                <a
+                  href={`#${section.id}`}
+                  onClick={(e) => handleSectionClick(e, section.id)}
+                  className={`toc-item ${activeSection === section.id ? "active" : ""}`}
+                >
                   {section.title}
                 </a>
               </li>
@@ -233,71 +274,75 @@ export default function BlogPostClient({ post, posts }: Props) {
         </aside>
       </div>
 
-      <div className="end-article container">
-        <div className="post-nav">
-          {prevPost ? (
-            <Link href={`/blog/${prevPost.slug}`} prefetch={true} className="post-nav-card">
-              <span className="post-nav-label">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="15 18 9 12 15 6" />
-                </svg>
-                Previous
-              </span>
-              <span className="post-nav-title">{prevPost.title}</span>
-            </Link>
-          ) : (
-            <div></div>
-          )}
-          {nextPost ? (
-            <Link href={`/blog/${nextPost.slug}`} prefetch={true} className="post-nav-card">
-              <span className="post-nav-label">
-                Next
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="9 18 15 12 9 6" />
-                </svg>
-              </span>
-              <span className="post-nav-title">{nextPost.title}</span>
-            </Link>
-          ) : (
-            <div></div>
-          )}
-        </div>
-      </div>
+      {!isPreview && (
+        <>
+          <div className="end-article container">
+            <div className="post-nav">
+              {prevPost ? (
+                <Link href={`/blog/${prevPost.slug}`} prefetch={true} className="post-nav-card">
+                  <span className="post-nav-label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="15 18 9 12 15 6" />
+                    </svg>
+                    Previous
+                  </span>
+                  <span className="post-nav-title">{prevPost.title}</span>
+                </Link>
+              ) : (
+                <div></div>
+              )}
+              {nextPost ? (
+                <Link href={`/blog/${nextPost.slug}`} prefetch={true} className="post-nav-card">
+                  <span className="post-nav-label">
+                    Next
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polyline points="9 18 15 12 9 6" />
+                    </svg>
+                  </span>
+                  <span className="post-nav-title">{nextPost.title}</span>
+                </Link>
+              ) : (
+                <div></div>
+              )}
+            </div>
+          </div>
 
-      <section className="related-section container">
-        <h3 className="related-heading">Related posts</h3>
-        <div className="related-grid">
-          {relatedPosts.map((relatedPost) => (
-            <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`} prefetch={true} className="card">
-              <div className="card-visual" style={{ background: "#07111f" }}>
-                <div dangerouslySetInnerHTML={{ __html: relatedPost.visualMarkup ?? "" }} />
-              </div>
-              <div className="card-body">
-                <div className="card-pills">
-                  {relatedPost.tags.map((tag, tagIdx) => (
-                    <span key={tagIdx} className={`pill pill-${tag.tone}`}>
-                      {tag.label}
-                    </span>
-                  ))}
-                </div>
-                <div className="card-title">{relatedPost.title}</div>
-                <p className="card-excerpt">{relatedPost.dek}</p>
-                <div className="card-footer">
-                  <svg className="card-avatar" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <circle cx="12" cy="12" r="12" fill="#3b82f6" fillOpacity="0.15" />
-                    <text x="12" y="16" textAnchor="middle" fontFamily="Montserrat" fontSize="9" fill="#22d3ee" fontWeight="700">
-                      {getInitials(relatedPost.author || "Ayush Singhal")}
-                    </text>
-                  </svg>
-                  <span>{relatedPost.author || "Ayush Singhal"}</span>
-                  <span>·</span>
-                  <span>{relatedPost.date}</span>
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
+          <section className="related-section container">
+            <h3 className="related-heading">Related posts</h3>
+            <div className="related-grid">
+              {relatedPosts.map((relatedPost) => (
+                <Link key={relatedPost.id} href={`/blog/${relatedPost.slug}`} prefetch={true} className="card">
+                  <div className="card-visual" style={{ background: "#07111f" }}>
+                    <div dangerouslySetInnerHTML={{ __html: relatedPost.visualMarkup ?? "" }} />
+                  </div>
+                  <div className="card-body">
+                    <div className="card-pills">
+                      {relatedPost.tags.map((tag, tagIdx) => (
+                        <span key={tagIdx} className={`pill pill-${tag.tone}`}>
+                          {tag.label}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="card-title">{relatedPost.title}</div>
+                    <p className="card-excerpt">{relatedPost.dek}</p>
+                    <div className="card-footer">
+                      <svg className="card-avatar" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="12" fill="#3b82f6" fillOpacity="0.15" />
+                        <text x="12" y="16" textAnchor="middle" fontFamily="Montserrat" fontSize="9" fill="#22d3ee" fontWeight="700">
+                          {getInitials(relatedPost.author || "Ayush Singhal")}
+                        </text>
+                      </svg>
+                      <span>{relatedPost.author || "Ayush Singhal"}</span>
+                      <span>·</span>
+                      <span>{relatedPost.date}</span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </>
+      )}
     </>
   );
 }

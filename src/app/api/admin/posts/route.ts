@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { withAuth } from "@/lib/authWrapper";
 import clientPromise from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
@@ -92,6 +93,16 @@ async function createPostHandler(req: NextRequest) {
 
     // 6. [MongoDB Collection: "blogs"] Insert newly composed article document
     const result = await db.collection("blogs").insertOne(newPost);
+
+    if (published) {
+      try {
+        revalidatePath("/blog");
+        revalidatePath(`/blog/${finalSlug}`);
+      } catch (revErr) {
+        console.warn("Failed to revalidate blog paths:", revErr);
+      }
+    }
+
     return NextResponse.json({ success: true, id: result.insertedId });
   } catch (error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

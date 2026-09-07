@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { withAuth } from "@/lib/authWrapper";
 import clientPromise from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
@@ -130,6 +131,15 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     // 7. [MongoDB Collection: "blogs"] Update article document in MongoDB
     await db.collection("blogs").updateOne({ _id: new ObjectId(id) }, { $set: updatePayload });
 
+    try {
+      revalidatePath("/blog");
+      if (existing.slug) {
+        revalidatePath(`/blog/${existing.slug}`);
+      }
+    } catch (revErr) {
+      console.warn("Failed to revalidate blog paths on update:", revErr);
+    }
+
     return NextResponse.json({ success: true });
   } catch (error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -145,11 +155,21 @@ async function deletePost(req: NextRequest, session: any, { params }: { params: 
 
   const client = await clientPromise;
   const db = client.db("codemate_blog");
+  const postToDelete = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
   // [MongoDB Collection: "blogs"] Delete blog post document by ObjectId
   const result = await db.collection("blogs").deleteOne({ _id: new ObjectId(id) });
 
   if (result.deletedCount === 0) {
     return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  }
+
+  try {
+    revalidatePath("/blog");
+    if (postToDelete?.slug) {
+      revalidatePath(`/blog/${postToDelete.slug}`);
+    }
+  } catch (revErr) {
+    console.warn("Failed to revalidate blog paths on delete:", revErr);
   }
 
   return NextResponse.json({ success: true });

@@ -256,6 +256,7 @@ export function DatePicker({
           }}
           title="Open calendar"
           aria-label="Open calendar"
+          suppressHydrationWarning
           className="absolute right-2.5 flex h-8 w-8 items-center justify-center rounded-md text-neutral-400 hover:bg-neutral-800 hover:text-white transition-colors cursor-pointer"
         >
           <CalendarIcon className="h-4.5 w-4.5 text-blue-400" />
