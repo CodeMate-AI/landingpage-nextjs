@@ -89,38 +89,53 @@ export default function VideoEmbed() {
       });
     };
 
-    if (window.YT?.Player) {
-      setupPlayer();
+    const initYouTube = () => {
+      if (window.YT?.Player) {
+        setupPlayer();
+        return;
+      }
+
+      const existingScript = document.querySelector<HTMLScriptElement>(
+        'script[src="https://www.youtube.com/iframe_api"]',
+      );
+
+      if (!existingScript) {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
+      }
+
+      const previousReady = window.onYouTubeIframeAPIReady;
+      window.onYouTubeIframeAPIReady = () => {
+        previousReady?.();
+        setupPlayer();
+      };
+    };
+
+    if ('IntersectionObserver' in window && containerRef.current) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]?.isIntersecting) {
+            initYouTube();
+            observer.disconnect();
+          }
+        },
+        { rootMargin: '300px' }
+      );
+      observer.observe(containerRef.current);
+      return () => {
+        isMounted = false;
+        observer.disconnect();
+        player?.destroy();
+      };
+    } else {
+      initYouTube();
       return () => {
         isMounted = false;
         player?.destroy();
       };
     }
-
-    const existingScript = document.querySelector<HTMLScriptElement>(
-      'script[src="https://www.youtube.com/iframe_api"]',
-    );
-
-    if (!existingScript) {
-      const tag = document.createElement('script');
-      tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = document.getElementsByTagName('script')[0];
-      firstScriptTag?.parentNode?.insertBefore(tag, firstScriptTag);
-    }
-
-    const previousReady = window.onYouTubeIframeAPIReady;
-    window.onYouTubeIframeAPIReady = () => {
-      previousReady?.();
-      setupPlayer();
-    };
-
-    return () => {
-      isMounted = false;
-      player?.destroy();
-      if (window.onYouTubeIframeAPIReady === setupPlayer) {
-        window.onYouTubeIframeAPIReady = previousReady;
-      }
-    };
   }, []);
 
   return (

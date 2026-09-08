@@ -11,6 +11,7 @@ const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-montserrat',
+  display: 'swap',
 });
 
 export default function Navbar() {
@@ -124,7 +125,7 @@ export default function Navbar() {
 
               <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
                 <a href="/" aria-label="CodeMate AI Home">
-                  <img src="/codemateLogo.svg" alt="CodeMate AI Logo" className='cursor-pointer' />
+                  <img src="/codemateLogo.svg" width={2490} height={683} alt="CodeMate AI Logo" className='cursor-pointer' />
                 </a>
               </div>
               <div className={`${montserrat.className} relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50`}>
@@ -344,7 +345,7 @@ export default function Navbar() {
           }}
           className={`${isMenu && (isProducts || isOS) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 md:px-8 md:pl-8 py-[1.1rem] md:py-4 justify-between items-center z-[99999999999]`}>
           <a href="/" aria-label="CodeMate AI Home" className="flex items-center">
-            <img src="/codemateLogo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
+            <img src="/codemateLogo.svg" width={2490} height={683} alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
           </a>
           <button
             type="button"

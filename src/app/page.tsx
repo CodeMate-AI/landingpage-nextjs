@@ -20,6 +20,7 @@ const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-montserrat',
+  display: 'swap',
 });
 
 export default function Page() {
@@ -160,7 +161,8 @@ export default function Page() {
   ];
 
   return (
-    <div
+    <main
+      id="main-content"
       style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
       ref={mainRef}
       className={`${montserrat.className} bg-zinc-950 text-white min-h-screen pt-[92px] sm:pt-[96px] lg:pt-[88px]`}
@@ -394,14 +396,14 @@ export default function Page() {
           <div className="absolute -right-6 top-0 bg-zinc-950 h-full w-24 sm:w-36 blur-2xl z-10 pointer-events-none" />
 
           <Marquee pauseOnHover className="[--duration:24s] flex justify-center items-center py-6">
-            <img src="maruti-suzuki.svg" className="object-contain w-[48vw] sm:w-[26vw] lg:w-[18vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Maruti Suzuki" />
-            <img src="atl.svg" className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Atlassian" />
-            <img src="dell.svg" className="object-contain w-[26vw] sm:w-[16vw] lg:w-[10vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Dell" />
-            <img src="qual.svg" className="object-contain w-[48vw] sm:w-[26vw] lg:w-[17vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Qualcomm" />
-            <img src="paytm.svg" className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Paytm" />
-            <img src="amazon.svg" className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Amazon" />
-            <img src="fampay.svg" className="object-contain w-[38vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="FamPay" />
-            <img src="inno.svg" className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Inno" />
+            <img src="maruti-suzuki.svg" width={425} height={80} className="object-contain w-[48vw] sm:w-[26vw] lg:w-[18vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Maruti Suzuki" />
+            <img src="atl.svg" width={463} height={118} className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Atlassian" />
+            <img src="dell.svg" width={258} height={118} className="object-contain w-[26vw] sm:w-[16vw] lg:w-[10vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Dell" />
+            <img src="qual.svg" width={430} height={118} className="object-contain w-[48vw] sm:w-[26vw] lg:w-[17vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Qualcomm" />
+            <img src="paytm.svg" width={258} height={118} className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Paytm" />
+            <img src="amazon.svg" width={258} height={118} className="object-contain w-[34vw] sm:w-[20vw] lg:w-[14vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Amazon" />
+            <img src="fampay.svg" width={291} height={118} className="object-contain w-[38vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="FamPay" />
+            <img src="inno.svg" width={464} height={118} className="object-contain w-[40vw] sm:w-[22vw] lg:w-[15vw] mx-6 sm:mx-10 brightness-0 invert opacity-70 hover:opacity-100 transition-opacity" alt="Inno" />
           </Marquee>
         </div>
       </section>
@@ -544,6 +546,6 @@ export default function Page() {
       <div>
         <Footer />
       </div>
-    </div>
+    </main>
   );
 }
