@@ -63,7 +63,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
           </div>
 
           <p className="text-zinc-400 text-lg leading-relaxed max-w-2xl">
-            Get unrestricted access to every CodeMate product — CORA, BUILD, and Work.
+            Get unrestricted access to every CodeMate product - CORA, BUILD, and Work.
             Powered by top-tier models and unmetered requests.
             This is the complete system, without constraints.
           </p>

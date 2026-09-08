@@ -42,7 +42,7 @@ const CoraCreditsCard = () => {
                 <div className="mb-6">
                     <h2 className="text-3xl font-bold text-white mb-2">Cora Add-on</h2>
                     <p className="text-zinc-400 text-base">
-                        Supercharge your workflow with Cora credits — pay only for what you need.
+                        Supercharge your workflow with Cora credits - pay only for what you need.
                     </p>
                 </div>
 

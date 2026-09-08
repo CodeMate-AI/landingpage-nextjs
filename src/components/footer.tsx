@@ -64,16 +64,16 @@ function GeminiIcon() {
 
 function Footer() {
   return (
-    <motion.footer className="relative text-gray-200 pb-0 pt-16 overflow-hidden bg-[#121214] border-t-[1px] border-zinc-800/80 rounded-t-[3rem] z-[999999] lg:z-[9999999999]">
+    <motion.footer className="relative text-gray-200 pb-0 pt-6 sm:pt-8 overflow-hidden bg-[#121214] border-t-[1px] border-zinc-800/80 rounded-t-[3rem] z-[999999] lg:z-[9999999999]">
       <motion.div className="w-full max-w-7xl px-6 md:px-10 mx-auto">
         {/* Top Section: Brand + Navigation Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 pb-12">
           {/* Left: Brand Column */}
-          <div className="md:col-span-5 flex flex-col gap-6">
-            <div>
-              <img src="/codemateLogo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
+          <div className="md:col-span-5 flex flex-col gap-5">
+            <div className="flex items-center h-6 md:h-7">
+              <img src="/codemateLogo.svg" width={2490} height={683} alt="codemate Logo" className="w-auto h-12 md:h-14 -ml-[28px] md:-ml-[32px]" />
             </div>
-            <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed -mt-4">
+            <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed">
               CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
             </p>
 
@@ -154,10 +154,10 @@ function Footer() {
           </div>
 
           {/* Right Columns (Spans 7 cols - grid split into 3 sub-columns) */}
-          <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10 pt-4 md:pt-12">
+          <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10 pt-0.5 md:pt-1">
             {/* Community */}
             <div>
-              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">COMMUNITY</h4>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base leading-none">COMMUNITY</h4>
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Instagram</a></li>
                 <li><a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Linkedin</a></li>
@@ -168,7 +168,7 @@ function Footer() {
 
             {/* Others */}
             <div>
-              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">OTHERS</h4>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base leading-none">OTHERS</h4>
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><a href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Contact Us</a></li>
                 <li><a href="https://docs.codemate.ai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Docs</a></li>
@@ -179,11 +179,11 @@ function Footer() {
 
             {/* Legal */}
             <div>
-              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">LEGAL</h4>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base leading-none">LEGAL</h4>
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
                 <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Terms of Service</a></li>
-                <li><img src="https://drive.codemate.ai/iso.png" alt="" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
+                <li><img src="https://drive.codemate.ai/iso.png" alt="ISO 27001 Certified Security Compliance" className="object-contain h-20 w-auto mt-5 invert brightness-0 opacity-80" /></li>
               </ul>
             </div>
           </div>
