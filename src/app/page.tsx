@@ -382,7 +382,7 @@ export default function Page() {
             <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
               Trusted{' '}
             </span>
-            by 1,000,000+
+            by 100,000+
           </h2>
           <p className="mt-3 text-sm sm:text-base text-neutral-400 max-w-2xl lg:max-w-none mx-auto sm:whitespace-nowrap">
             Developers across the globe and from startups to Fortune 500 companies
