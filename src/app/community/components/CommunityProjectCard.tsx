@@ -149,7 +149,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
       <CommunityPdfModal
         isOpen={isDocsOpen}
         onClose={() => setIsDocsOpen(false)}
-        pdfUrl={project.docsPdfUrl || "/Support Hub.pdf"}
+        pdfUrl={project.docsPdfUrl || "/SUPPORT HUB .pdf"}
         title={project.name}
       />
     </motion.article>

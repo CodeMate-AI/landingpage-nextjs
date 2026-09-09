@@ -224,7 +224,7 @@ export default function CommunityFeaturedProject() {
       <CommunityPdfModal
         isOpen={isDocsOpen}
         onClose={() => setIsDocsOpen(false)}
-        pdfUrl="/ORBIT CRM.pdf"
+        pdfUrl="/Orbit CRM .pdf"
         title="Orbit CRM"
       />
     </section>
