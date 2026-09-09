@@ -63,7 +63,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
           </div>
 
           <p className="text-zinc-400 text-lg leading-relaxed max-w-2xl">
-            Get unrestricted access to every CodeMate product — CORA, BUILD, and C0.
+            Get unrestricted access to every CodeMate product — CORA, BUILD, and Work.
             Powered by top-tier models and unmetered requests.
             This is the complete system, without constraints.
           </p>
@@ -75,7 +75,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
                 <img src="/Build_Logo.png" alt="Build" className="w-full h-full object-contain scale-[1.55]" />
               </div>
               <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-2 hover:border-zinc-500 transition-all hover:scale-110">
-                <img src="/Co_Logo.png" alt="C0" className="w-full h-full object-contain" />
+                <img src="/Co_Logo.png" alt="Work" className="w-full h-full object-contain" />
               </div>
               <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-2 hover:border-zinc-500 transition-all hover:scale-110">
                 <img src="/CORA_Logo.png" alt="CORA" className="w-full h-full object-contain" />
