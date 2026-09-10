@@ -1,4 +1,13 @@
 import { MongoClient } from "mongodb";
+import dns from "dns";
+
+if (typeof window === "undefined") {
+  try {
+    dns.setServers(["8.8.8.8", "1.1.1.1"]);
+  } catch {
+    // ignore if restricted
+  }
+}
 
 // MongoDB connection URI loaded from environment configuration
 const uri = process.env.MONGODB_URI;

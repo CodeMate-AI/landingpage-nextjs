@@ -2,6 +2,8 @@ import { loadEnvConfig } from "@next/env";
 import path from "path";
 
 // MUST load env before importing mongodb (which reads MONGODB_URI at module evaluation time)
+import dns from "dns";
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 loadEnvConfig(path.resolve(__dirname, ".."));
 
 

@@ -1,5 +1,7 @@
 import { loadEnvConfig } from "@next/env";
 import path from "path";
+import dns from "dns";
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
 loadEnvConfig(path.resolve(__dirname, ".."));
 
 async function main() {
