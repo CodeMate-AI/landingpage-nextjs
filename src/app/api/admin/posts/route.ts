@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { withAuth } from "@/lib/authWrapper";
 import clientPromise from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
-import { calculateReadTime } from "@/lib/blog-compiler";
+import { calculateReadTime, hasActualDraftChanges } from "@/lib/blog-compiler";
 import slugify from "@/utils/slugify";
 
 // Retrieves all blog articles from MongoDB sorted in reverse chronological order ( new one at top )
@@ -11,7 +11,14 @@ async function getPostsHandler() {
   const client = await clientPromise;
   const db = client.db("codemate_blog");
   // [MongoDB Collection: "blogs"] Query all articles sorted newest-first
-  const posts = await db.collection("blogs").find().sort({ createdAt: -1 }).toArray();
+  const rawPosts = await db.collection("blogs").find().sort({ createdAt: -1 }).toArray();
+  const posts = rawPosts.map((post) => ({
+    ...post,
+    hasDraftChanges:
+      post.published && post.publishedVersion
+        ? hasActualDraftChanges(post, post.publishedVersion)
+        : Boolean(post.hasDraftChanges),
+  }));
   return NextResponse.json({ posts });
 }
 

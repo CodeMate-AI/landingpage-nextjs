@@ -154,23 +154,35 @@ function EditorContent() {
         setPublishedAtCustom(post.publishedAtCustom || "");
         setSections(post.sections || []);
 
-        // Snapshot initial state to prevent redundant auto-save immediately after load
+        const parsedTags: { label: string; tone: "slate" }[] = uniqueLabels.map((l) => ({
+          label: l,
+          tone: "slate" as const,
+        }));
+
+        const loadedFilterLabels =
+          post.filterLabels && post.filterLabels.length > 0
+            ? post.filterLabels
+            : uniqueLabels.length > 0
+            ? uniqueLabels.map((l: string) => l.toUpperCase())
+            : undefined;
+
+        // Snapshot initial state using exact format as buildSavePayload to prevent spurious auto-save on load
         lastSavedSnapshotRef.current = JSON.stringify({
-          title: post.title,
+          title: (post.title || "").trim() || "Untitled Article",
           subheading: post.subheading || "",
-          category: post.category,
+          category: post.category || "General",
           coverImage: post.coverImage || "",
-          published: post.published,
+          published: post.published || false,
           saveMode: "draft",
-          tags: post.tags || [],
-          filterLabels: post.filterLabels,
-          content: post.content,
-          author: post.author || "",
-          authorRole: post.authorRole || "",
+          tags: parsedTags.length > 0 ? parsedTags : [{ label: "Article", tone: "slate" as const }],
+          filterLabels: loadedFilterLabels,
+          content: post.content || { type: "doc", content: [] },
+          author: post.author || "Ayush Singhal",
+          authorRole: post.authorRole || "Founder & CEO",
           authorImage: post.authorImage || "",
           readTime: post.readTime || "",
           publishedAtCustom: post.publishedAtCustom || "",
-          sections: post.sections || [],
+          sections: post.sections && post.sections.length > 0 ? post.sections : undefined,
         });
         initialLoadedRef.current = true;
       } else if (res.status === 401) {
@@ -334,6 +346,11 @@ function EditorContent() {
       currentPostIdRef.current ? published : false,
       true
     );
+
+    const serialized = JSON.stringify(payload);
+    if (serialized === lastSavedSnapshotRef.current) {
+      return;
+    }
 
     const timer = setTimeout(() => {
       void executeAutoSave(payload);

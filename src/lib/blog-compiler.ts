@@ -401,3 +401,58 @@ export function calculateReadTime(content: any, customReadTime?: string): string
   const calculatedMinutes = Math.max(1, Math.ceil(wordCount / 200));
   return `${calculatedMinutes} min read`;
 }
+
+// Deeply compares current draft payload against the publishedVersion snapshot to detect genuine changes
+export function hasActualDraftChanges(currentDraft: any, publishedVersion: any): boolean {
+  if (!publishedVersion || typeof publishedVersion !== "object") return false;
+  if (!currentDraft || typeof currentDraft !== "object") return false;
+
+  const compareStr = (a: any, b: any) => (a ?? "").toString().trim() !== (b ?? "").toString().trim();
+
+  if (compareStr(currentDraft.title, publishedVersion.title)) return true;
+  if (compareStr(currentDraft.subheading, publishedVersion.subheading)) return true;
+  if (compareStr(currentDraft.category, publishedVersion.category)) return true;
+  if (compareStr(currentDraft.coverImage, publishedVersion.coverImage)) return true;
+  if (compareStr(currentDraft.author, publishedVersion.author)) return true;
+  if (compareStr(currentDraft.authorRole, publishedVersion.authorRole)) return true;
+  if (compareStr(currentDraft.authorImage, publishedVersion.authorImage)) return true;
+  if (compareStr(currentDraft.publishedAtCustom, publishedVersion.publishedAtCustom)) return true;
+
+  const normalizeTags = (tags: any[]) =>
+    Array.isArray(tags)
+      ? tags.map((t) => (typeof t === "string" ? t.trim() : (t.label || "").trim())).filter(Boolean)
+      : [];
+  if (JSON.stringify(normalizeTags(currentDraft.tags)) !== JSON.stringify(normalizeTags(publishedVersion.tags))) {
+    return true;
+  }
+
+  const normalizeFilters = (filters: any[]) =>
+    Array.isArray(filters)
+      ? filters.map((f) => String(f).trim().toUpperCase()).filter(Boolean)
+      : [];
+  if (
+    JSON.stringify(normalizeFilters(currentDraft.filterLabels)) !==
+    JSON.stringify(normalizeFilters(publishedVersion.filterLabels))
+  ) {
+    return true;
+  }
+
+  const normalizeSections = (sections: any[]) =>
+    Array.isArray(sections)
+      ? sections.map((s) => ({ id: (s.id || "").trim(), title: (s.title || "").trim() }))
+      : [];
+  if (
+    JSON.stringify(normalizeSections(currentDraft.sections)) !==
+    JSON.stringify(normalizeSections(publishedVersion.sections))
+  ) {
+    return true;
+  }
+
+  const draftContent = currentDraft.content || {};
+  const publishedContent = publishedVersion.content || {};
+  if (JSON.stringify(draftContent) !== JSON.stringify(publishedContent)) {
+    return true;
+  }
+
+  return false;
+}

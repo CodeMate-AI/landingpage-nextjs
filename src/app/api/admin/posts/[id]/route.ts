@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import { withAuth } from "@/lib/authWrapper";
 import clientPromise from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
-import { calculateReadTime } from "@/lib/blog-compiler";
+import { calculateReadTime, hasActualDraftChanges } from "@/lib/blog-compiler";
 import { ObjectId } from "mongodb";
 
 // Fetches a single blog post by its MongoDB ObjectId for the admin editor workspace
@@ -109,10 +109,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       }
     }
 
-    // Flag draft changes if a published article is being saved as a draft with pending changes
-    const hasDraftChanges = saveMode === "draft" && published;
-
-    // 6. Build the final update payload
+    // 5. Build base update payload
     const updatePayload = {
       ...parsed.data,
       tags: sanitizedTags,
@@ -121,13 +118,23 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       readTime,
       published,
       publishedVersion,
-      hasDraftChanges,
       publishedAt,
       updatedAt: new Date(),
     };
 
-    // 7. [MongoDB Collection: "blogs"] Update article document in MongoDB
-    await db.collection("blogs").updateOne({ _id: new ObjectId(id) }, { $set: updatePayload });
+    // Flag draft changes only if a published article is being saved as draft with genuine changes from publishedVersion
+    const hasDraftChanges =
+      saveMode === "publish"
+        ? false
+        : published && publishedVersion
+        ? hasActualDraftChanges(updatePayload, publishedVersion)
+        : false;
+
+    // 6. [MongoDB Collection: "blogs"] Update article document in MongoDB
+    await db.collection("blogs").updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...updatePayload, hasDraftChanges } }
+    );
 
     try {
       revalidatePath("/blog");
