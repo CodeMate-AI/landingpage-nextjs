@@ -807,15 +807,100 @@ function EditorContent() {
           {/* Dynamic Metadata overrides grid */}
           <div className="relative z-30 grid grid-cols-1 gap-6 border-t border-[#27272a] pt-6 md:grid-cols-2">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Author Name</label>
-              <input
-                type="text"
-                value={author}
-                onChange={(e) => setAuthor(e.target.value)}
-                placeholder="e.g. Biswajit Dash"
-                suppressHydrationWarning
-                className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
-              />
+              <div className="mb-1.5 flex items-center justify-between">
+                <label className="text-sm font-medium text-neutral-400">Author Name</label>
+                <span className="text-xs text-neutral-500">Click avatar to upload photo</span>
+              </div>
+              <div className="flex items-center gap-3">
+                {/* Interactive Click-to-Upload Avatar Circle */}
+                <div className="relative group shrink-0">
+                  <button
+                    type="button"
+                    disabled={authorUploading}
+                    onClick={() => authorFileInputRef.current?.click()}
+                    suppressHydrationWarning
+                    title={authorImage ? "Click to change author photo" : "Click to upload author photo"}
+                    className={`relative flex h-[48px] w-[48px] items-center justify-center overflow-hidden rounded-full transition cursor-pointer ${
+                      authorImage
+                        ? "border border-[#27272a] bg-[#18181b] hover:border-blue-500"
+                        : "border-2 border-dashed border-neutral-600 bg-[#18181b]/80 hover:border-blue-500 hover:bg-blue-500/10"
+                    }`}
+                  >
+                    {authorUploading ? (
+                      <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-400 border-t-transparent" />
+                    ) : authorImage ? (
+                      <>
+                        <img
+                          src={authorImage}
+                          alt={author || "Author avatar"}
+                          className="h-full w-full object-cover rounded-full"
+                        />
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center transition-opacity rounded-full">
+                          <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                          </svg>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="flex items-center justify-center text-neutral-400 group-hover:text-blue-400 transition-colors">
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      </div>
+                    )}
+                  </button>
+
+                  {/* Upload Plus Badge for Empty State */}
+                  {!authorImage && !authorUploading && (
+                    <div className="pointer-events-none absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-blue-600 text-white shadow text-[11px] font-bold">
+                      +
+                    </div>
+                  )}
+
+                  {/* Hidden File Input */}
+                  <input
+                    ref={authorFileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        void handleAuthorImageUpload(file);
+                        e.target.value = "";
+                      }
+                    }}
+                  />
+
+                  {/* Remove Button Badge if avatar exists */}
+                  {authorImage && !authorUploading && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setAuthorImage("");
+                      }}
+                      suppressHydrationWarning
+                      title="Remove author avatar"
+                      className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-white hover:bg-red-500 shadow text-[10px] leading-none transition cursor-pointer"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+
+                {/* Author Name Text Input */}
+                <input
+                  type="text"
+                  value={author}
+                  onChange={(e) => setAuthor(e.target.value)}
+                  placeholder="e.g. Biswajit Dash"
+                  suppressHydrationWarning
+                  className="w-full flex-1 rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
+                />
+              </div>
             </div>
             <div>
               <label className="mb-1.5 block text-sm font-medium text-neutral-400">Author Role</label>
@@ -845,70 +930,6 @@ function EditorContent() {
                 suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
-            </div>
-            <div className="md:col-span-2">
-              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Author Avatar / Image</label>
-              <div className="flex items-center gap-3.5">
-                {/* Circular Avatar Preview */}
-                <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#27272a] bg-[#09090b]">
-                  {authorImage ? (
-                    <img
-                      src={authorImage}
-                      alt={author || "Author avatar"}
-                      className="h-full w-full object-cover rounded-full"
-                    />
-                  ) : (
-                    <span className="font-bold text-blue-400 text-sm">
-                      {author ? author.trim().charAt(0).toUpperCase() : "A"}
-                    </span>
-                  )}
-                </div>
-
-                {/* Input & Upload Controls */}
-                <div className="flex flex-1 gap-2">
-                  <input
-                    type="text"
-                    value={authorImage}
-                    onChange={(e) => setAuthorImage(e.target.value)}
-                    placeholder="Enter author image URL or click Upload"
-                    suppressHydrationWarning
-                    className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none text-sm"
-                  />
-                  <input
-                    ref={authorFileInputRef}
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        void handleAuthorImageUpload(file);
-                        e.target.value = "";
-                      }
-                    }}
-                  />
-                  <button
-                    type="button"
-                    disabled={authorUploading}
-                    onClick={() => authorFileInputRef.current?.click()}
-                    suppressHydrationWarning
-                    className="rounded-lg border border-blue-500/20 bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap"
-                  >
-                    {authorUploading ? "Uploading..." : "Upload"}
-                  </button>
-                  {authorImage && (
-                    <button
-                      type="button"
-                      onClick={() => setAuthorImage("")}
-                      suppressHydrationWarning
-                      className="rounded-lg border border-[#27272a] bg-[#18181b] px-3 py-3 text-xs text-neutral-400 hover:text-red-400 transition"
-                      title="Clear author image"
-                    >
-                      ✕
-                    </button>
-                  )}
-                </div>
-              </div>
             </div>
           </div>
 
