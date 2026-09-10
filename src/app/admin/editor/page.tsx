@@ -344,18 +344,6 @@ function EditorContent() {
     setIsPreviewOpen(true);
   };
 
-  const handleOpenInNewTab = () => {
-    const postObj = buildPreviewPost();
-    try {
-      const serialized = JSON.stringify(postObj);
-      sessionStorage.setItem("admin_blog_preview", serialized);
-      localStorage.setItem("admin_blog_preview", serialized);
-      window.open("/admin/preview", "_blank");
-    } catch (err) {
-      console.error("Failed to store preview payload:", err);
-    }
-  };
-
   return (
     <main className="min-h-screen bg-[#09090b] p-4 sm:p-6 lg:p-8 font-sans text-neutral-100">
       <div className="mx-auto max-w-4xl">
@@ -962,7 +950,6 @@ function EditorContent() {
           isOpen={isPreviewOpen}
           onClose={() => setIsPreviewOpen(false)}
           post={previewPost}
-          onOpenInNewTab={handleOpenInNewTab}
         />
       )}
     </main>
