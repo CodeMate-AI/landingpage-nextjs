@@ -87,6 +87,7 @@ function EditorContent() {
   // Article author and display metadata overrides
   const [author, setAuthor] = useState("");
   const [authorRole, setAuthorRole] = useState("");
+  const [authorImage, setAuthorImage] = useState("");
   const [readTime, setReadTime] = useState("");
   const [publishedAtCustom, setPublishedAtCustom] = useState("");
   // Table of Contents anchor list
@@ -95,8 +96,10 @@ function EditorContent() {
   const [loading, setLoading] = useState(false);
   const [savingMode, setSavingMode] = useState<"draft" | "publish" | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [authorUploading, setAuthorUploading] = useState(false);
   const [loadError, setLoadError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const authorFileInputRef = useRef<HTMLInputElement | null>(null);
   const saveModeRef = useRef<"draft" | "publish">("draft");
 
   // Fetches existing article data from /api/admin/posts/:id when editing
@@ -120,6 +123,7 @@ function EditorContent() {
         );
         setAuthor(post.author || "");
         setAuthorRole(post.authorRole || "");
+        setAuthorImage(post.authorImage || "");
         setReadTime(post.readTime || "");
         setPublishedAtCustom(post.publishedAtCustom || "");
         setSections(post.sections || []);
@@ -232,6 +236,7 @@ function EditorContent() {
       content: contentJson,
       author,
       authorRole,
+      authorImage: authorImage || undefined,
       readTime,
       publishedAtCustom,
       sections: sections.length > 0 ? sections : undefined,
@@ -264,7 +269,7 @@ function EditorContent() {
     }
   };
 
-  // Uploads image through the /api/admin/upload route and sets coverImage URL
+  // Uploads cover image through the /api/admin/upload route and sets coverImage URL
   const handleImageUpload = async (file: File) => {
     setUploading(true);
     try {
@@ -287,6 +292,32 @@ function EditorContent() {
       alert("Image upload failed.");
     } finally {
       setUploading(false);
+    }
+  };
+
+  // Uploads author avatar image through the /api/admin/upload route and sets authorImage URL
+  const handleAuthorImageUpload = async (file: File) => {
+    setAuthorUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setAuthorImage(data.url || "");
+      } else if (res.status === 401) {
+        router.push("/admin/login");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        alert(data.error || "Author image upload failed.");
+      }
+    } catch {
+      alert("Author image upload failed.");
+    } finally {
+      setAuthorUploading(false);
     }
   };
 
@@ -324,12 +355,13 @@ function EditorContent() {
       htmlContent: compiledHtml,
       author: author || "Ayush Singhal",
       authorRole: authorRole || "Founder & CEO",
+      authorImage: authorImage || "",
       image: coverImage || "",
       coverImage: coverImage || "",
     };
 
     return postObj;
-  }, [author, authorRole, category, contentJson, coverImage, postId, publishedAtCustom, readTime, sections, slug, subheading, tagsInput, title]);
+  }, [author, authorRole, authorImage, category, contentJson, coverImage, postId, publishedAtCustom, readTime, sections, slug, subheading, tagsInput, title]);
 
   const handleOpenPreview = () => {
     const postObj = buildPreviewPost();
@@ -813,6 +845,70 @@ function EditorContent() {
                 suppressHydrationWarning
                 className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
               />
+            </div>
+            <div className="md:col-span-2">
+              <label className="mb-1.5 block text-sm font-medium text-neutral-400">Author Avatar / Image</label>
+              <div className="flex items-center gap-3.5">
+                {/* Circular Avatar Preview */}
+                <div className="relative flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-[#27272a] bg-[#09090b]">
+                  {authorImage ? (
+                    <img
+                      src={authorImage}
+                      alt={author || "Author avatar"}
+                      className="h-full w-full object-cover rounded-full"
+                    />
+                  ) : (
+                    <span className="font-bold text-blue-400 text-sm">
+                      {author ? author.trim().charAt(0).toUpperCase() : "A"}
+                    </span>
+                  )}
+                </div>
+
+                {/* Input & Upload Controls */}
+                <div className="flex flex-1 gap-2">
+                  <input
+                    type="text"
+                    value={authorImage}
+                    onChange={(e) => setAuthorImage(e.target.value)}
+                    placeholder="Enter author image URL or click Upload"
+                    suppressHydrationWarning
+                    className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none text-sm"
+                  />
+                  <input
+                    ref={authorFileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        void handleAuthorImageUpload(file);
+                        e.target.value = "";
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    disabled={authorUploading}
+                    onClick={() => authorFileInputRef.current?.click()}
+                    suppressHydrationWarning
+                    className="rounded-lg border border-blue-500/20 bg-blue-600 px-4 py-3 text-sm font-medium text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50 whitespace-nowrap"
+                  >
+                    {authorUploading ? "Uploading..." : "Upload"}
+                  </button>
+                  {authorImage && (
+                    <button
+                      type="button"
+                      onClick={() => setAuthorImage("")}
+                      suppressHydrationWarning
+                      className="rounded-lg border border-[#27272a] bg-[#18181b] px-3 py-3 text-xs text-neutral-400 hover:text-red-400 transition"
+                      title="Clear author image"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 

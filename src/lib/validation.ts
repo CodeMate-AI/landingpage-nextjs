@@ -64,6 +64,7 @@ export const BlogPostSchema = z.object({
   saveMode: z.enum(["draft", "publish"]).optional(),
   author: z.string().min(1, "Author Name is required"),
   authorRole: z.string().min(1, "Author Role Title is required"),
+  authorImage: z.string().optional(),
   readTime: z.string().min(1, "Read Time is required"),
   publishedAtCustom: z.string().min(1, "Date is required"),
   filterLabels: z.array(z.string()).optional(),

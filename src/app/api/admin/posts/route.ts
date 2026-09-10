@@ -71,6 +71,7 @@ async function createPostHandler(req: NextRequest) {
           content: parsed.data.content,
           author: parsed.data.author,
           authorRole: parsed.data.authorRole,
+          authorImage: parsed.data.authorImage || "",
           readTime,
           publishedAtCustom: parsed.data.publishedAtCustom,
           sections: parsed.data.sections,

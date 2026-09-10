@@ -191,12 +191,20 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
           <div className="hero-text">
             <h1 className="article-title">{post.title}</h1>
             <div className="byline-row">
-              <svg className="byline-avatar" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="20" cy="20" r="20" fill="#3b82f6" fillOpacity="0.15" />
-                <text x="20" y="25" textAnchor="middle" fontFamily="Montserrat" fontSize="14" fill="#60a5fa" fontWeight="700">
-                  {getInitials(post.author)}
-                </text>
-              </svg>
+              {post.authorImage ? (
+                <img
+                  src={post.authorImage}
+                  alt={post.author || "Author"}
+                  className="byline-avatar"
+                />
+              ) : (
+                <svg className="byline-avatar" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="20" cy="20" r="20" fill="#3b82f6" fillOpacity="0.15" />
+                  <text x="20" y="25" textAnchor="middle" fontFamily="Montserrat" fontSize="14" fill="#60a5fa" fontWeight="700">
+                    {getInitials(post.author)}
+                  </text>
+                </svg>
+              )}
               <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>{post.author || "Ayush Singhal"}</span>
               <span className="byline-divider"></span>
               <span style={{ color: "var(--text-secondary)" }}>{post.authorRole || "Founder & CEO"}</span>

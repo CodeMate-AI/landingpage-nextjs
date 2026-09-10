@@ -59,6 +59,7 @@ const getRelatedAndNavPosts = React.cache(async () => {
         readTime: 1,
         author: 1,
         authorRole: 1,
+        authorImage: 1,
         publishedAtCustom: 1,
         "publishedVersion.title": 1,
         "publishedVersion.category": 1,
@@ -68,6 +69,7 @@ const getRelatedAndNavPosts = React.cache(async () => {
         "publishedVersion.readTime": 1,
         "publishedVersion.author": 1,
         "publishedVersion.authorRole": 1,
+        "publishedVersion.authorImage": 1,
         "publishedVersion.publishedAtCustom": 1,
       })
       .sort({ publishedAt: -1 })
@@ -161,6 +163,7 @@ export default async function BlogPostPage({ params }: Props) {
     htmlContent: finalHtml,
     author: source.author || "Ayush Singhal",
     authorRole: source.authorRole || "Founder & CEO",
+    authorImage: source.authorImage || "",
   };
 
   const rawAllPosts = await getRelatedAndNavPosts();
@@ -184,6 +187,7 @@ export default async function BlogPostPage({ params }: Props) {
       readTime: sSource.readTime,
       author: sSource.author || "Ayush Singhal",
       authorRole: sSource.authorRole || "Founder & CEO",
+      authorImage: sSource.authorImage || "",
       visualMarkup: sSource.coverImage
         ? `<img src="${sSource.coverImage}" alt="${sSource.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`
         : "",
