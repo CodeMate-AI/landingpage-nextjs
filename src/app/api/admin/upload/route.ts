@@ -1,24 +1,34 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/authWrapper";
-import { v2 as cloudinary } from "cloudinary";
-
-// Initialize Cloudinary SDK configuration from environment variables
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 // Maximum allowed payload sizes: 5MB for images and 50MB for video assets
 const IMAGE_MAX_SIZE = 5 * 1024 * 1024;
 const VIDEO_MAX_SIZE = 50 * 1024 * 1024;
 
 // Permitted image and video MIME types
-const ALLOWED_MIMES = ["image/jpeg", "image/png", "image/webp", "image/gif", "video/mp4", "video/webm", "video/ogg", "video/quicktime"];
+const ALLOWED_MIMES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "video/mp4",
+  "video/webm",
+  "video/ogg",
+  "video/quicktime",
+];
 
-// Handles multipart form uploads, validates MIME/size, and streams directly to Cloudinary
+// Handles multipart form uploads, validates MIME/size, and forwards to custom upload service
 async function uploadHandler(req: NextRequest) {
   try {
+    const uploadEndpoint = process.env.CUSTOM_UPLOAD_ENDPOINT;
+    if (!uploadEndpoint) {
+      console.error("CUSTOM_UPLOAD_ENDPOINT is not defined in environment variables");
+      return NextResponse.json(
+        { error: "Upload endpoint is not configured in server environment." },
+        { status: 500 }
+      );
+    }
+
     // 1. Extract file payload from multipart form data
     const formData = await req.formData();
     const file = formData.get("file");
@@ -44,27 +54,47 @@ async function uploadHandler(req: NextRequest) {
       );
     }
 
-    // 4. Convert ArrayBuffer to Node.js Buffer
+    // 4. Convert ArrayBuffer to Base64 Data URL
     const buffer = Buffer.from(await file.arrayBuffer());
+    const base64Data = buffer.toString("base64");
+    const dataUrl = `data:${file.type};base64,${base64Data}`;
 
-    // 5. Pipe binary stream to Cloudinary inside the 'codemate_blog' storage folder
-    const uploadResult = await new Promise<{ secure_url?: string }>((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        { folder: "codemate_blog", resource_type: "auto" },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result ?? {});
-        }
-      );
-      uploadStream.end(buffer);
+    // 5. Send POST request to custom upload service
+    const response = await fetch(uploadEndpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ image: dataUrl }),
     });
 
-    if (!uploadResult.secure_url) {
-      return NextResponse.json({ error: "Cloudinary upload failed" }, { status: 500 });
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Custom upload error response:", response.status, errorText);
+      return NextResponse.json(
+        { error: "Upload service returned an error. Please try again." },
+        { status: response.status >= 400 && response.status < 500 ? response.status : 502 }
+      );
+    }
+
+    const data = await response.json();
+
+    const mediaOrigin = new URL(uploadEndpoint).origin;
+    const finalUrl =
+      data.url ||
+      (data.image_id
+        ? `${mediaOrigin}/uploaded/images/${data.image_id}`
+        : null);
+
+    if (data.status !== "success" || !finalUrl) {
+      return NextResponse.json(
+        { error: data.error || data.message || "Failed to retrieve uploaded asset URL" },
+        { status: 500 }
+      );
     }
 
     // 6. Return HTTPS secure asset URL to frontend editor
-    return NextResponse.json({ url: uploadResult.secure_url });
+    return NextResponse.json({ url: finalUrl, image_id: data.image_id });
   } catch (error: any) {
     console.error("Upload exception:", error);
     return NextResponse.json({ error: "Server upload error" }, { status: 500 });
@@ -73,3 +103,5 @@ async function uploadHandler(req: NextRequest) {
 
 // Protected upload endpoint wrapped with auth verification
 export const POST = withAuth(uploadHandler);
+
+

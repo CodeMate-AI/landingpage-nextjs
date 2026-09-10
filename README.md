@@ -17,7 +17,7 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 - **Tiptap Rich-Text Editor**: Headless WYSIWYG editor supporting custom code blocks, inline video players, tables, blockquotes, typography, and image uploads.
 - **Dual Versioning (Draft vs. Live Publish)**: Edit articles in draft mode without mutating live public snapshots (`publishedVersion`) until explicitly republished.
 - **Automatic TOC Generator**: Auto-scans H2–H4 headings to create unique anchor slugs for in-article side navigation.
-- **Media Asset Pipeline**: Direct multipart uploads to Cloudinary with MIME validation and size limits (5MB images / 50MB videos).
+- **Media Asset Pipeline**: Uploads to CodeMate custom media hosting endpoint (`https://your-api-domain.com/upload/image`) with MIME validation and size limits (5MB images / 50MB videos).
 - **Dynamic Taxonomy Management**: Inline CRUD for categories, product filters, and use cases persisted in MongoDB.
 
 ---
@@ -31,7 +31,7 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 | **Animations** | Framer Motion, GSAP, Lenis Smooth Scroll |
 | **CMS & Editor** | Tiptap v3 Headless Rich-Text Engine |
 | **Database** | MongoDB (Native Node.js Driver) |
-| **Media Storage** | Cloudinary SDK |
+| **Media Storage** | CodeMate Custom Upload Service (`https://your-api-domain.com/upload/image`) |
 | **Auth & Security** | Jose (Stateless JWT HS256), BcryptJS, MongoDB-backed Rate Limiter |
 | **Validation** | Zod |
 
@@ -99,7 +99,18 @@ Create a `.env.local` file in the `landingpage-nextjs` directory by copying `.en
 cp .env.example .env.local
 ```
 
-Configure the following environment variables:
+### Configuration Breakdown
+
+| Variable | Required | Description |
+|---|---|---|
+| `MONGODB_URI` | **Yes** | MongoDB connection string (`codemate_blog` database for articles, taxonomies, and admin users). |
+| `JWT_SECRET` | **Yes** | Secret key for signing and verifying stateless session tokens with `jose`. |
+| `ADMIN_EMAIL` | **Yes** | Administrator account email for login and initial database seeding. |
+| `ADMIN_PASSWORD` | **Yes** | Administrator account password for login and initial database seeding. |
+| `CUSTOM_UPLOAD_ENDPOINT` | **Yes** | Custom backend endpoint for media asset and image uploads in the CMS editor. |
+| `NEXT_PUBLIC_CONTACT_API_URL` | **Yes** | External API endpoint for public contact form submissions. |
+
+### Example `.env.local`
 
 ```env
 # MongoDB Connection
@@ -112,10 +123,8 @@ JWT_SECRET=your-secure-random-jwt-secret-minimum-32-characters
 ADMIN_EMAIL=admin@codemate.ai
 ADMIN_PASSWORD=your-secure-password
 
-# Cloudinary Media Storage
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_api_key
-CLOUDINARY_API_SECRET=your_api_secret
+# Custom Media Upload Endpoint
+CUSTOM_UPLOAD_ENDPOINT=https://your-api-domain.com/upload/image
 
 # External Public Contact API
 NEXT_PUBLIC_CONTACT_API_URL=https://your-api-domain.com/landing/contact

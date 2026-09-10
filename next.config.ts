@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  serverExternalPackages: ["mongodb", "bcryptjs", "cloudinary"],
+  serverExternalPackages: ["mongodb", "bcryptjs"],
 
   images: {
     remotePatterns: [

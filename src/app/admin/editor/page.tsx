@@ -264,7 +264,7 @@ function EditorContent() {
     }
   };
 
-  // Uploads image to Cloudinary through the /api/admin/upload route and sets coverImage URL
+  // Uploads image through the /api/admin/upload route and sets coverImage URL
   const handleImageUpload = async (file: File) => {
     setUploading(true);
     try {
