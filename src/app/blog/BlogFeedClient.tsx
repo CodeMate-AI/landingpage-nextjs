@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import type { BlogDetailPost } from "@/types/blog";
@@ -54,7 +54,7 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
   const useCaseFilters = filterOptions?.useCaseFilters ?? DEFAULT_USE_CASES;
 
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<"newest" | "a-z" | "z-a">("newest");
@@ -62,9 +62,11 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
   const [showFilters, setShowFilters] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
+
   const [openGroups, setOpenGroups] = useState({
     sortBy: false,
     category: false,
+    tags: true,
     product: false,
     useCase: false,
   });
@@ -90,6 +92,46 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
     };
   }, [showFilters, showSearch]);
 
+  const tagCounts = useMemo(() => {
+    const countsMap = new Map<string, { display: string; count: number }>();
+    for (const post of posts) {
+      const postSeen = new Set<string>();
+      for (const tag of post.tags) {
+        const norm = normalizeLabel(tag.label);
+        if (!norm) continue;
+        if (!postSeen.has(norm)) {
+          postSeen.add(norm);
+          const existing = countsMap.get(norm);
+          if (existing) {
+            existing.count += 1;
+          } else {
+            countsMap.set(norm, { display: tag.label.trim(), count: 1 });
+          }
+        }
+      }
+      for (const fl of post.filterLabels ?? []) {
+        const norm = normalizeLabel(fl);
+        if (!norm) continue;
+        if (!postSeen.has(norm)) {
+          postSeen.add(norm);
+          const existing = countsMap.get(norm);
+          if (existing) {
+            existing.count += 1;
+          } else {
+            countsMap.set(norm, { display: fl.trim(), count: 1 });
+          }
+        }
+      }
+    }
+    return Array.from(countsMap.entries())
+      .map(([norm, val]) => ({
+        normalized: norm,
+        name: val.display,
+        count: val.count,
+      }))
+      .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+  }, [posts]);
+
   const categoryCounts = useMemo(() => {
     return categories
       .map((cat) => ({
@@ -106,8 +148,13 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
         return {
           name: prod,
           count: posts.filter((post) => {
-            const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
-            return postFilterLabels.includes(normalizedProd);
+            const allPostLabels = Array.from(
+              new Set([
+                ...post.tags.map((tag) => normalizeLabel(tag.label)),
+                ...(post.filterLabels ?? []).map((label) => normalizeLabel(label)),
+              ])
+            );
+            return allPostLabels.includes(normalizedProd);
           }).length,
         };
       })
@@ -121,8 +168,13 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
         return {
           name: uc,
           count: posts.filter((post) => {
-            const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
-            return postFilterLabels.includes(normalizedUc);
+            const allPostLabels = Array.from(
+              new Set([
+                ...post.tags.map((tag) => normalizeLabel(tag.label)),
+                ...(post.filterLabels ?? []).map((label) => normalizeLabel(label)),
+              ])
+            );
+            return allPostLabels.includes(normalizedUc);
           }).length,
         };
       })
@@ -144,41 +196,35 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
     });
   }, [posts]);
 
-  // Quick-filter pills: deduplicate by normalized value, preserve original display label
-  const uniqueTagLabels = useMemo(() => {
-    const seen = new Set<string>();
-    const result: string[] = [];
-    for (const p of posts) {
-      for (const t of p.tags) {
-        const norm = normalizeLabel(t.label);
-        if (!seen.has(norm)) {
-          seen.add(norm);
-          result.push(t.label.trim()); // keep original casing for display
-        }
-      }
-    }
-    return result;
-  }, [posts]);
-
-
   const filteredAndSortedPosts = useMemo(() => {
     const result = posts.filter((post) => {
       const query = searchQuery.trim().toLowerCase();
+      const allPostLabels = Array.from(
+        new Set([
+          ...post.tags.map((tag) => normalizeLabel(tag.label)),
+          ...(post.filterLabels ?? []).map((label) => normalizeLabel(label)),
+        ])
+      );
+
       const matchesSearch =
         query === "" ||
         post.title.toLowerCase().includes(query) ||
         post.category.toLowerCase().includes(query) ||
-        post.tags.some((tag) => tag.label.toLowerCase().includes(query));
+        post.tags.some((tag) => tag.label.toLowerCase().includes(query)) ||
+        (post.filterLabels ?? []).some((label) => label.toLowerCase().includes(query));
 
-      const postFilterLabels = (post.filterLabels ?? post.tags.map((tag) => normalizeLabel(tag.label))).map((label) => normalizeLabel(label));
-      const matchesTag = selectedTag === null || postFilterLabels.includes(normalizeLabel(selectedTag));
+      const matchesTags =
+        selectedTags.length === 0 ||
+        selectedTags.some((st) => allPostLabels.includes(st));
 
-      const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(post.category);
+      const matchesCategory =
+        selectedCategories.length === 0 || selectedCategories.includes(post.category);
 
       const matchesProduct =
-        selectedProducts.length === 0 || postFilterLabels.some((label) => selectedProducts.map(p => normalizeLabel(p)).includes(label));
+        selectedProducts.length === 0 ||
+        selectedProducts.some((sp) => allPostLabels.includes(sp));
 
-      return matchesSearch && matchesTag && matchesCategory && matchesProduct;
+      return matchesSearch && matchesTags && matchesCategory && matchesProduct;
     });
 
     return result.sort((a, b) => {
@@ -186,11 +232,20 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
       if (sortBy === "z-a") return b.title.localeCompare(a.title);
       return b.dateValue.localeCompare(a.dateValue);
     });
-  }, [posts, searchQuery, selectedTag, selectedCategories, selectedProducts, sortBy]);
+  }, [posts, searchQuery, selectedTags, selectedCategories, selectedProducts, sortBy]);
 
   const handleCategoryToggle = (category: string) => {
     setSelectedCategories((current) =>
       current.includes(category) ? current.filter((c) => c !== category) : [...current, category]
+    );
+    setVisibleCount(6);
+  };
+
+  const handleTagToggle = (tagNormalized: string) => {
+    setSelectedTags((current) =>
+      current.includes(tagNormalized)
+        ? current.filter((t) => t !== tagNormalized)
+        : [...current, tagNormalized]
     );
     setVisibleCount(6);
   };
@@ -214,14 +269,14 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
 
   const hasActiveFilters =
     searchQuery.trim() !== "" ||
-    selectedTag !== null ||
+    selectedTags.length > 0 ||
     selectedCategories.length > 0 ||
     selectedProducts.length > 0 ||
     sortBy !== "newest";
 
   const handleReset = () => {
     setSearchQuery("");
-    setSelectedTag(null);
+    setSelectedTags([]);
     setSelectedCategories([]);
     setSelectedProducts([]);
     setSortBy("newest");
@@ -312,6 +367,46 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
                   <label className="filter-option" onClick={() => handleCategoryToggle(cat.name)}>
                     <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
                     {cat.name} ({cat.count})
+                  </label>
+                </div>
+              );
+            })}
+          </div>
+        ) : null}
+      </div>
+
+      <div className="filter-group">
+        <button
+          type="button"
+          className="filter-group-header"
+          onClick={() => toggleGroup("tags")}
+          aria-expanded={openGroups.tags}
+        >
+          <span>Tags</span>
+          <svg
+            className={`chevron-icon ${openGroups.tags ? "expanded" : ""}`}
+            width="12"
+            height="12"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </button>
+        {openGroups.tags ? (
+          <div className="filter-options-container">
+            {tagCounts.map((tag) => {
+              const isChecked = selectedTags.includes(tag.normalized);
+              return (
+                <div key={tag.normalized} className="filter-option-row">
+                  <label className="filter-option" onClick={() => handleTagToggle(tag.normalized)}>
+                    <span className={`fake-input fake-checkbox ${isChecked ? "checked" : ""}`}></span>
+                    {tag.name} ({tag.count})
                   </label>
                 </div>
               );
@@ -449,9 +544,9 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
         {/* Left Sidebar — Advanced Filters */}
         <aside className={`sidebar ${showFilters ? "open" : ""}`}>{renderSidebarFilters()}</aside>
 
-        {/* Right: Search + Quick Filters + Cards */}
+        {/* Right: Search + Cards */}
         <div className="main-content">
-          {/* Search Bar + View Toggle + Quick Filter Pills */}
+          {/* Search Bar + View Toggle */}
           <div className="content-header">
             {/* Desktop & Tablet Toolbar (width >= 768px) */}
             <div className="search-toolbar hidden md:flex">
@@ -646,66 +741,51 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
                 </button>
               </div>
             </div>
-
-            {/* Quick Filter Pills (hidden on mobile, visible on desktop/iPad) */}
-            <div className="quick-filters hidden md:flex">
-              <button
-                suppressHydrationWarning
-                className={`quick-filter-pill ${selectedTag === null ? "active" : ""}`}
-                onClick={() => {
-                  setSelectedTag(null);
-                  setVisibleCount(6);
-                }}
-              >
-                All
-              </button>
-              {uniqueTagLabels.map((tag) => (
-                <button
-                  key={normalizeLabel(tag)}
-                  suppressHydrationWarning
-                  className={`quick-filter-pill ${selectedTag !== null && normalizeLabel(selectedTag) === normalizeLabel(tag) ? "active" : ""}`}
-                  onClick={() => {
-                    const norm = normalizeLabel(tag);
-                    setSelectedTag(selectedTag !== null && normalizeLabel(selectedTag) === norm ? null : norm);
-                    setVisibleCount(6);
-                  }}
-                >
-                  {tag}
-                </button>
-              ))}
-            </div>
           </div>
 
           {/* Card Grid */}
           <div className={`card-grid ${viewMode === "list" ? "list" : ""}`}>
-            {filteredAndSortedPosts.slice(0, visibleCount).map((post) => (
-              <Link href={`/blog/${post.slug}`} prefetch={true} className="card" key={post.id}>
-                <div className="card-visual" style={{ background: "#07111f" }}>
-                  {post.image ? (
-                    <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
-                  ) : post.coverImage ? (
-                    <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
-                  ) : post.visualMarkup ? (
-                    <div className="w-full h-full" dangerouslySetInnerHTML={{ __html: post.visualMarkup }} />
-                  ) : (
-                    <div className="flex items-center justify-center w-full h-full text-neutral-500 bg-neutral-900 font-sans text-xs">
-                      No Image
-                    </div>
-                  )}
-                </div>
-                <div className="card-body">
-                  <div className="card-tags">
-                    {post.tags.map((tag, tIdx) => (
-                      <span key={tIdx} className={`tag tag-${tag.tone}`}>
-                        {normalizeLabel(tag.label)}
-                      </span>
-                    ))}
+            {filteredAndSortedPosts.slice(0, visibleCount).map((post) => {
+              const uniqueCardTags = Array.from(
+                new Map(post.tags.map((t) => [normalizeLabel(t.label), t])).values()
+              );
+              const displayTags = uniqueCardTags.slice(0, 2);
+              const overflowCount = uniqueCardTags.length - 2;
+
+              return (
+                <Link href={`/blog/${post.slug}`} prefetch={true} className="card" key={post.id}>
+                  <div className="card-visual" style={{ background: "#07111f" }}>
+                    {post.image ? (
+                      <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
+                    ) : post.coverImage ? (
+                      <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
+                    ) : post.visualMarkup ? (
+                      <div className="w-full h-full" dangerouslySetInnerHTML={{ __html: post.visualMarkup }} />
+                    ) : (
+                      <div className="flex items-center justify-center w-full h-full text-neutral-500 bg-neutral-900 font-sans text-xs">
+                        No Image
+                      </div>
+                    )}
                   </div>
-                  <h3 className="card-title">{post.title}</h3>
-                  <div className="card-date">{post.date}</div>
-                </div>
-              </Link>
-            ))}
+                  <div className="card-body">
+                    <div className="card-tags">
+                      {displayTags.map((tag, tIdx) => (
+                        <span key={tIdx} className={`tag tag-${tag.tone}`}>
+                          {normalizeLabel(tag.label)}
+                        </span>
+                      ))}
+                      {overflowCount > 0 && (
+                        <span className="tag tag-slate text-neutral-400">
+                          +{overflowCount}
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="card-title">{post.title}</h3>
+                    <div className="card-date">{post.date}</div>
+                  </div>
+                </Link>
+              );
+            })}
           </div>
 
           {filteredAndSortedPosts.length === 0 && (

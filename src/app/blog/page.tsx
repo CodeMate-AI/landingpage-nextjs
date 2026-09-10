@@ -67,6 +67,7 @@ export default async function BlogFeedPage() {
         coverImage: source.coverImage || "",
         author: source.author || "Ayush Singhal",
         authorRole: source.authorRole || "Founder & CEO",
+        authorImage: source.authorImage || "",
       };
     });
 

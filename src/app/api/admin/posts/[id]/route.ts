@@ -89,6 +89,14 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       };
     }
 
+    // Deduplicate tags and filter labels
+    const sanitizedTags = Array.from(
+      new Map(parsed.data.tags.map((t) => [t.label.trim().toUpperCase(), { ...t, label: t.label.trim() }])).values()
+    );
+    const sanitizedFilterLabels = parsed.data.filterLabels
+      ? Array.from(new Set(parsed.data.filterLabels.map((l) => l.trim().toUpperCase())))
+      : undefined;
+
     // 4. Overwrite publishedVersion snapshot when saving with 'publish' mode
     if (saveMode === "publish") {
       publishedVersion = {
@@ -96,8 +104,8 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         subheading: parsed.data.subheading,
         category: parsed.data.category,
         coverImage: parsed.data.coverImage,
-        tags: parsed.data.tags,
-        filterLabels: parsed.data.filterLabels,
+        tags: sanitizedTags,
+        filterLabels: sanitizedFilterLabels,
         content: parsed.data.content,
         author: parsed.data.author,
         authorRole: parsed.data.authorRole,
@@ -122,6 +130,8 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     // 6. Build the final update payload
     const updatePayload = {
       ...parsed.data,
+      tags: sanitizedTags,
+      filterLabels: sanitizedFilterLabels,
       authorImage: parsed.data.authorImage ?? "",
       readTime,
       published,

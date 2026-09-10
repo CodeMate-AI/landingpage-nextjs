@@ -59,6 +59,14 @@ async function createPostHandler(req: NextRequest) {
     const published = parsed.data.published;
     const publishedAt = published ? new Date() : null;
 
+    // Deduplicate tags and filter labels
+    const sanitizedTags = Array.from(
+      new Map(parsed.data.tags.map((t) => [t.label.trim().toUpperCase(), { ...t, label: t.label.trim() }])).values()
+    );
+    const sanitizedFilterLabels = parsed.data.filterLabels
+      ? Array.from(new Set(parsed.data.filterLabels.map((l) => l.trim().toUpperCase())))
+      : undefined;
+
     // 4. Create an immutable publishedVersion snapshot if post is published immediately
     const publishedVersion = published
       ? {
@@ -66,8 +74,8 @@ async function createPostHandler(req: NextRequest) {
           subheading: parsed.data.subheading,
           category: parsed.data.category,
           coverImage: parsed.data.coverImage,
-          tags: parsed.data.tags,
-          filterLabels: parsed.data.filterLabels,
+          tags: sanitizedTags,
+          filterLabels: sanitizedFilterLabels,
           content: parsed.data.content,
           author: parsed.data.author,
           authorRole: parsed.data.authorRole,
@@ -82,6 +90,8 @@ async function createPostHandler(req: NextRequest) {
     const newPost = {
       // Spread operator (...) unpacks all validated input fields (title, subheading, content, tags, author, etc.) from Zod
       ...parsed.data,
+      tags: sanitizedTags,
+      filterLabels: sanitizedFilterLabels,
       authorImage: parsed.data.authorImage ?? "",
       slug: finalSlug,
       readTime,

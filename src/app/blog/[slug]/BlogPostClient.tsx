@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import type { BlogDetailPost } from "@/types/blog";
+import type { BlogDetailPost, Tag } from "@/types/blog";
 
 interface Props {
   post: BlogDetailPost;
@@ -178,6 +178,19 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
   const nextPost = currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null;
   const relatedPosts = posts.filter((candidate) => candidate.id !== post.id).slice(0, 3);
 
+  const uniqueTags = useMemo<Tag[]>(() => {
+    const seen = new Set<string>();
+    const result: Tag[] = [];
+    for (const tag of post.tags || []) {
+      const norm = tag && tag.label ? tag.label.trim().toUpperCase() : "";
+      if (norm && !seen.has(norm)) {
+        seen.add(norm);
+        result.push(tag);
+      }
+    }
+    return result;
+  }, [post.tags]);
+
   return (
     <>
       {!isPreview && (
@@ -272,7 +285,7 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
           <div className="rail-section">
             <div className="rail-section-title">Tags</div>
             <div className="rail-tags">
-              {post.tags.map((tag, idx) => (
+              {uniqueTags.map((tag, idx) => (
                 <span key={idx} className="rail-tag">
                   {tag.label}
                 </span>

@@ -117,9 +117,18 @@ function EditorContent() {
         setPublished(post.published);
         setContentJson(post.content);
         setLoadError(false);
-        setTagsInput(post.tags.map((t: any) => t.label).join(", "));
+        const seenTags = new Set<string>();
+        const uniqueLabels: string[] = [];
+        for (const t of post.tags || []) {
+          const norm = (t.label || "").trim().toUpperCase();
+          if (norm && !seenTags.has(norm)) {
+            seenTags.add(norm);
+            uniqueLabels.push(t.label.trim());
+          }
+        }
+        setTagsInput(uniqueLabels.join(", "));
         setSelectedFilters(
-          post.filterLabels || post.tags?.map((t: any) => t.label.trim().toUpperCase()) || []
+          post.filterLabels || uniqueLabels.map((l) => l.toUpperCase()) || []
         );
         setAuthor(post.author || "");
         setAuthorRole(post.authorRole || "");
@@ -208,12 +217,17 @@ function EditorContent() {
     setLoading(true);
     setSavingMode(saveModeRef.current);
 
-    // Parse comma-separated tag input into structured tag objects
-    const tags = tagsInput
-      .split(",")
-      .map((t) => t.trim())
-      .filter((t) => t.length > 0)
-      .map((t) => ({ label: t, tone: "slate" as const }));
+    // Parse comma-separated tag input and deduplicate by normalized label
+    const seenSaveTags = new Set<string>();
+    const tags: { label: string; tone: "slate" }[] = [];
+    for (const raw of tagsInput.split(",")) {
+      const trimmed = raw.trim();
+      const norm = trimmed.toUpperCase();
+      if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
+        seenSaveTags.add(norm);
+        tags.push({ label: trimmed, tone: "slate" as const });
+      }
+    }
 
     // If saving as draft for an existing published post, maintain published flag
     const resolvedPublished =
@@ -325,14 +339,19 @@ function EditorContent() {
   const [previewPost, setPreviewPost] = useState<BlogDetailPost | null>(null);
 
   const buildPreviewPost = useCallback(() => {
-    const rawTags = tagsInput
-      .split(",")
-      .map((t) => t.trim())
-      .filter(Boolean);
-    const mappedTags = rawTags.map((tag) => ({
-      label: tag,
-      tone: "blue" as const,
-    }));
+    const seenPreviewTags = new Set<string>();
+    const mappedTags: { label: string; tone: "blue" }[] = [];
+    for (const raw of tagsInput.split(",")) {
+      const trimmed = raw.trim();
+      const norm = trimmed.toUpperCase();
+      if (trimmed.length > 0 && !seenPreviewTags.has(norm)) {
+        seenPreviewTags.add(norm);
+        mappedTags.push({
+          label: trimmed,
+          tone: "blue" as const,
+        });
+      }
+    }
 
     const { html: compiledHtml, sections: compiledSections } = compileTiptapToHtml(
       contentJson,
