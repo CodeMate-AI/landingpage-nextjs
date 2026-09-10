@@ -380,25 +380,43 @@ function EditorContent() {
     <main className="min-h-screen bg-[#09090b] p-4 sm:p-6 lg:p-8 font-sans text-neutral-100">
       <div className="mx-auto max-w-4xl">
         {/* Editor page header */}
-        <header className="mb-8 flex items-center justify-between border-b border-[#27272a] pb-6">
-          <h1 className="text-3xl font-bold text-white">{postId ? "Modify Article" : "Compose Article"}</h1>
-          <div className="flex items-center gap-3">
+        <header className="mb-8 border-b border-[#27272a] pb-6">
+          <div className="mb-3">
             <button
               type="button"
-              onClick={handleOpenPreview}
+              onClick={() => router.back()}
               suppressHydrationWarning
-              className="rounded-lg border border-[#27272a] bg-[#18181b] px-4 py-2 text-sm font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white"
+              className="inline-flex items-center gap-2 text-sm font-medium text-neutral-400 hover:text-white transition-colors py-1 px-2.5 -ml-2.5 rounded-lg hover:bg-[#18181b] cursor-pointer"
             >
-              Preview
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span>Back</span>
             </button>
-            <button
-              type="button"
-              onClick={() => router.push("/admin/dashboard")}
-              className="text-sm text-neutral-400 hover:text-neutral-200"
-              suppressHydrationWarning
-            >
-              Cancel
-            </button>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+              {postId ? "Modify Article" : "Compose Article"}
+            </h1>
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleOpenPreview}
+                suppressHydrationWarning
+                className="rounded-lg border border-[#27272a] bg-[#18181b] px-4 py-2 text-sm font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white"
+              >
+                Preview
+              </button>
+              <button
+                type="button"
+                onClick={() => router.push("/admin/dashboard")}
+                className="text-sm text-neutral-400 hover:text-neutral-200 transition-colors"
+                suppressHydrationWarning
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </header>
 
