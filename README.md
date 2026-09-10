@@ -1,18 +1,18 @@
 # CodeMate AI Landing Page & CMS Portal
 
-A modern, high-performance web application built with **Next.js 15 (App Router)** and **TypeScript**. This repository hosts the public-facing landing page and blog directory for [CodeMate AI](https://codemate.ai), alongside the **CodeMate CMS Portal**, an administrative content management system for composing, managing, and publishing rich-text technical articles.
+A modern, high-performance web application built with **Next.js 15 (App Router)** and **TypeScript**. This repository hosts the public-facing CodeMate AI landing page and blog directory for [CodeMate AI](https://codemate.ai), alongside the **CodeMate CMS Portal**, an administrative content management system for composing, managing, and publishing rich-text technical articles.
 
 ---
 
-## 🚀 Key Features
+## Key Features
 
-### 🌐 Public Landing Page & Blog
+### Public Landing Page & Blog
 - **Interactive UI**: Rich animations with Framer Motion, GSAP, and smooth inertial scrolling via Lenis.
 - **Fully Responsive**: Optimized fluid layouts across smartphone, tablet, and desktop viewports.
 - **Dynamic Blog Feed**: Search, tag filtering, category grouping, reading time estimation, and deep-linkable table-of-contents navigation.
 
-### 🛡️ CodeMate CMS Admin Portal
-- **Role & Route Protection**: Next.js Edge Middleware guarding all `/admin/*` routes with stateless JWT verification (`auth-token` HTTP-only cookies).
+### CodeMate CMS Admin Portal
+- **Role and Route Protection**: Next.js Edge Middleware guarding all `/admin/*` routes with stateless JWT verification (`auth-token` HTTP-only cookies).
 - **Dual-Key Brute-Force Rate Limiting**: MongoDB-backed sliding-window rate limiter (5-attempt ceiling per 15 min) providing dual protection at both the client IP level (`key: "ip:<ip>"`) and target account level (`key: "email:<email>"`).
 - **Tiptap Rich-Text Editor**: Headless WYSIWYG editor supporting custom code blocks, inline video players, tables, blockquotes, typography, and image uploads.
 - **Dual Versioning (Draft vs. Live Publish)**: Edit articles in draft mode without mutating live public snapshots (`publishedVersion`) until explicitly republished.
@@ -24,7 +24,7 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technologies |
 |---|---|
@@ -39,7 +39,7 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 
 ---
 
-## 🗄️ Database Architecture & Schema
+## Database Architecture and Schema
 
 The application connects to MongoDB using the official Node.js driver (`mongodb`) via a cached singleton connection pool ([`src/lib/mongodb.ts`](src/lib/mongodb.ts)). Runtime validation is enforced through Zod schemas ([`src/lib/validation.ts`](src/lib/validation.ts)).
 
@@ -60,7 +60,7 @@ The application connects to MongoDB using the official Node.js driver (`mongodb`
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```text
 landingpage-nextjs/
@@ -94,7 +94,7 @@ landingpage-nextjs/
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 Create a `.env.local` file in the `landingpage-nextjs` directory by copying `.env.example`:
 
@@ -135,7 +135,7 @@ NEXT_PUBLIC_CONTACT_API_URL=https://your-api-domain.com/landing/contact
 
 ---
 
-## 🏁 Getting Started
+## Getting Started
 
 ### 1. Prerequisites
 - **Node.js**: `v18.17+` or `v20+`
@@ -170,11 +170,11 @@ npx tsx scripts/seed-blogs.ts
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the landing page.
+Open [http://localhost:3000](http://localhost:3000) to view the CodeMate AI landing page.
 
 ---
 
-## 🔐 Admin Portal Access & Credential Management
+## Admin Portal Access & Credential Management
 
 1. **Accessing the Portal**:
    - Navigate to [http://localhost:3000/admin/login](http://localhost:3000/admin/login).
@@ -188,7 +188,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the landing page.
 
 ---
 
-## 🧪 Testing & Linting
+## Testing & Linting
 
 ```bash
 # Run TypeScript type check
