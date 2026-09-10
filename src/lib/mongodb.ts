@@ -1,43 +1,42 @@
 import { MongoClient } from "mongodb";
-import dns from "dns";
 
-if (typeof window === "undefined") {
-  try {
-    dns.setServers(["8.8.8.8", "1.1.1.1"]);
-  } catch {
-    // ignore if restricted
-  }
-}
-
-// MongoDB connection URI loaded from environment configuration
-const uri = process.env.MONGODB_URI;
-// Connection options passed to the MongoClient instance
-const options = {};
-
-let client: MongoClient;
-let clientPromise: Promise<MongoClient>;
-
-// Declare global variable to cache the MongoDB connection promise across Next.js HMR (hot module replacement) reloads
+// Declare global variable to cache the MongoDB connection promise across serverless invocations and Next.js HMR
 declare global {
   // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
-if (!uri) {
-  // Reject connection early if MONGODB_URI environment variable is missing
-  clientPromise = Promise.reject(new Error("Please add your MONGODB_URI to .env.local"));
-} else if (process.env.NODE_ENV === "development") {
-  // In development mode, use a global variable to preserve the client connection across module reloads
-  if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    global._mongoClientPromise = client.connect();
+function getClientPromise(): Promise<MongoClient> {
+  const uri = process.env.MONGODB_URI;
+
+  if (!uri) {
+    return Promise.reject(
+      new Error("MONGODB_URI environment variable is missing or not configured.")
+    );
   }
-  clientPromise = global._mongoClientPromise;
-} else {
-  // In production mode, instantiate a direct scoped connection promise
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+
+  if (!global._mongoClientPromise) {
+    const client = new MongoClient(uri, {});
+    global._mongoClientPromise = client.connect().catch((err) => {
+      // Reset cached promise on connection failure so subsequent requests can retry
+      global._mongoClientPromise = undefined;
+      throw err;
+    });
+  }
+
+  return global._mongoClientPromise;
 }
 
-// Export shared client connection promise for use across database operations
+// Lazy client promise proxy that only evaluates on-demand when awaited by caller functions
+const clientPromise = {
+  then: <TResult1 = MongoClient, TResult2 = never>(
+    onfulfilled?: ((value: MongoClient) => TResult1 | PromiseLike<TResult1>) | null,
+    onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | null
+  ) => getClientPromise().then(onfulfilled, onrejected),
+  catch: <TResult = never>(
+    onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | null
+  ) => getClientPromise().catch(onrejected),
+  finally: (onfinally?: (() => void) | null) => getClientPromise().finally(onfinally),
+} as unknown as Promise<MongoClient>;
+
 export default clientPromise;
