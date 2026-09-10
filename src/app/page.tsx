@@ -448,7 +448,7 @@ function Page() {
 
               <div className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl">
                 <p>
-                  Build and ship faster with AI that works where your data lives, keeping your data, code, intelligence, and AI under your control
+                  Build and ship faster with AI that works where your data lives, keeping your data, code, intelligence, and AI under your control.
                 </p>
               </div>
 
