@@ -122,6 +122,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     // 6. Build the final update payload
     const updatePayload = {
       ...parsed.data,
+      authorImage: parsed.data.authorImage ?? "",
       readTime,
       published,
       publishedVersion,

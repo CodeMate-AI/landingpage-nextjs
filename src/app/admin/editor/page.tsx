@@ -236,7 +236,7 @@ function EditorContent() {
       content: contentJson,
       author,
       authorRole,
-      authorImage: authorImage || undefined,
+      authorImage: authorImage || "",
       readTime,
       publishedAtCustom,
       sections: sections.length > 0 ? sections : undefined,

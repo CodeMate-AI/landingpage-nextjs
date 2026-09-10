@@ -82,6 +82,7 @@ async function createPostHandler(req: NextRequest) {
     const newPost = {
       // Spread operator (...) unpacks all validated input fields (title, subheading, content, tags, author, etc.) from Zod
       ...parsed.data,
+      authorImage: parsed.data.authorImage ?? "",
       slug: finalSlug,
       readTime,
       published,
