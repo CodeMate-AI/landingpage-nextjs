@@ -716,7 +716,7 @@ async function main() {
   const docs = [
     {
       slug: "hidden-dangers-of-autonomous-ai",
-      title: "The Hidden Dangers of Autonomous AI: How CodeMate Keeps Developers in Control",
+      title: "The Hidden Dangers of Autonomous AI",
       subheading: "The recent Replit AI agent incident is a wake-up call for AI access control and safe agent design.",
       coverImage: "/online_threat_images.png",
       category: "Security & Code Review",
@@ -731,7 +731,7 @@ async function main() {
     },
     {
       slug: "cora-sota-swe-bench",
-      title: "Cora Achieves SOTA with 76% Resolution Rate on SWE-bench verified subset, Outperforming Industry Leaders",
+      title: "Cora Hits SOTA: 76% on SWE-bench Verified",
       subheading: "Cora by CodeMate AI has achieved a 76% resolution rate on the SWE-bench verified subset, outperforming industry leaders on real-world software engineering tasks.",
       coverImage: "/blog2CoverImage.jpeg",
       category: "CORA Updates",

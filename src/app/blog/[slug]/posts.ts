@@ -56,7 +56,7 @@ export const blogPosts: BlogDetailPost[] = [
   {
     id: 2,
     slug: "cora-sota-swe-bench",
-    title: "Cora Achieves SOTA with 76% Resolution Rate on SWE-bench verified subset, Outperforming Industry Leaders",
+    title: "Cora Hits SOTA: 76% on SWE-bench Verified",
     category: "CORA Updates",
     date: "November 13, 2025",
     dateValue: "2025-11-13",
@@ -85,7 +85,7 @@ export const blogPosts: BlogDetailPost[] = [
   {
     id: 1,
     slug: "hidden-dangers-of-autonomous-ai",
-    title: "The Hidden Dangers of Autonomous AI: How CodeMate Keeps Developers in Control",
+    title: "The Hidden Dangers of Autonomous AI",
     category: "Security & Code Review",
     date: "November 13, 2025",
     dateValue: "2025-11-13",
