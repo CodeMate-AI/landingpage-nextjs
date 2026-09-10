@@ -889,37 +889,37 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
         <div className='pt-[2rem] lg:pt-[4rem]'>
           <div className="px-8 lg:px-16 ">
-            <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
-              className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
+            <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <span className="tabular-nums inline-flex items-baseline"><Counter
+              className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent tabular-nums'
               direction="up"
-              targetValue={100000} />+</h1>
+              targetValue={100000} />+</span></h1>
             <p className=' mt-2 text-sm md:text-xl lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
           </div>
 
 
 
           <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
+              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
                 direction="up"
-                targetValue={55} />%</h1>
+                targetValue={55} />%</h2>
               <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Faster coding</p>
             </div>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
 
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
+              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
                 direction="up"
-                targetValue={39} />%</h1>
+                targetValue={39} />%</h2>
               <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
             </div>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
 
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
+              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
                 direction="up"
-                targetValue={68} />%</h1>
+                targetValue={68} />%</h2>
               <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
             </div>
           </div>
