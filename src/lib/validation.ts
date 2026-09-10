@@ -36,9 +36,10 @@ const SectionSchema = z.object({
 // Validates full blog post creation and update request payloads
 export const BlogPostSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  subheading: z.string().min(1, "Subheading is required"),
+  subheading: z.string().default(""),
   coverImage: z
     .string()
+    .default("")
     .refine(
       (val) =>
         val === "" ||
@@ -47,7 +48,7 @@ export const BlogPostSchema = z.object({
         val.startsWith("https://"),
       { message: "Cover image must be a valid URL or local path" }
     ),
-  category: z.string().min(1, "Category is required"),
+  category: z.string().default("General"),
   tags: z
     .array(
       z.object({
@@ -55,26 +56,26 @@ export const BlogPostSchema = z.object({
         tone: z.enum(["slate", "blue", "cyan", "purple", "indigo", "violet", "teal"]),
       })
     )
-    .min(1, "At least one tag is required"),
+    .default([]),
   content: z.object({
     type: z.literal("doc"),
-    content: z.array(TiptapNodeSchema),
+    content: z.array(TiptapNodeSchema).optional().default([]),
   }),
   published: z.boolean().default(false),
   saveMode: z.enum(["draft", "publish"]).optional(),
-  author: z.string().min(1, "Author Name is required"),
-  authorRole: z.string().min(1, "Author Role Title is required"),
-  authorImage: z.string().optional(),
-  readTime: z.string().min(1, "Read Time is required"),
-  publishedAtCustom: z.string().min(1, "Date is required"),
+  author: z.string().default("Ayush Singhal"),
+  authorRole: z.string().default("Founder & CEO"),
+  authorImage: z.string().optional().default(""),
+  readTime: z.string().default("1 min read"),
+  publishedAtCustom: z.string().optional().default(""),
   filterLabels: z.array(z.string()).optional(),
   // Enforces that all table-of-contents anchor IDs within an article are unique
   sections: z.array(SectionSchema).optional().refine(
     (items) => {
       if (!items) return true;
       const ids = items.map((item) => item.id);
-      return ids.length === new Set(ids).size;
+      return new Set(ids).size === ids.length;
     },
-    { message: "Section Anchor IDs must be unique" }
+    { message: "Section anchor IDs must be unique within an article" }
   ),
 });

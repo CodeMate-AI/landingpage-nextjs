@@ -43,8 +43,14 @@ const DEFAULT_USE_CASES = [
 function EditorContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  // If postId is present in URL query params, component operates in edit mode
-  const postId = searchParams.get("id");
+  const searchParamId = searchParams.get("id");
+  const [postId, setPostId] = useState<string | null>(searchParamId);
+
+  useEffect(() => {
+    if (searchParamId) {
+      setPostId(searchParamId);
+    }
+  }, [searchParamId]);
 
   // Core article state hooks
   const [title, setTitle] = useState("");
@@ -102,6 +108,17 @@ function EditorContent() {
   const authorFileInputRef = useRef<HTMLInputElement | null>(null);
   const saveModeRef = useRef<"draft" | "publish">("draft");
 
+  // Background Auto-Save Tracking
+  const isAutosavingRef = useRef(false);
+  const pendingSavePayloadRef = useRef<any>(null);
+  const lastSavedSnapshotRef = useRef<string>("");
+  const initialLoadedRef = useRef(false);
+  const currentPostIdRef = useRef<string | null>(postId);
+
+  useEffect(() => {
+    currentPostIdRef.current = postId;
+  }, [postId]);
+
   // Fetches existing article data from /api/admin/posts/:id when editing
   const loadPost = useCallback(async () => {
     try {
@@ -136,6 +153,26 @@ function EditorContent() {
         setReadTime(post.readTime || "");
         setPublishedAtCustom(post.publishedAtCustom || "");
         setSections(post.sections || []);
+
+        // Snapshot initial state to prevent redundant auto-save immediately after load
+        lastSavedSnapshotRef.current = JSON.stringify({
+          title: post.title,
+          subheading: post.subheading || "",
+          category: post.category,
+          coverImage: post.coverImage || "",
+          published: post.published,
+          saveMode: "draft",
+          tags: post.tags || [],
+          filterLabels: post.filterLabels,
+          content: post.content,
+          author: post.author || "",
+          authorRole: post.authorRole || "",
+          authorImage: post.authorImage || "",
+          readTime: post.readTime || "",
+          publishedAtCustom: post.publishedAtCustom || "",
+          sections: post.sections || [],
+        });
+        initialLoadedRef.current = true;
       } else if (res.status === 401) {
         router.push("/admin/login");
       } else {
@@ -148,12 +185,255 @@ function EditorContent() {
     }
   }, [postId, router]);
 
-  // Trigger post loading when postId query parameter changes
+  // Trigger post loading when postId query parameter changes or restore local draft
   useEffect(() => {
     if (postId) {
       void loadPost();
+    } else {
+      // Check for local draft backup for a new post
+      try {
+        const localDraftStr = localStorage.getItem("codemate_editor_draft_new");
+        if (localDraftStr) {
+          const draft = JSON.parse(localDraftStr);
+          if (draft.title && draft.title !== "Untitled Article") setTitle(draft.title);
+          if (draft.subheading) setSubheading(draft.subheading);
+          if (draft.category) setCategory(draft.category);
+          if (draft.coverImage) setCoverImage(draft.coverImage);
+          if (draft.tags && Array.isArray(draft.tags)) {
+            setTagsInput(draft.tags.map((t: any) => t.label).join(", "));
+          }
+          if (draft.content) setContentJson(draft.content);
+          if (draft.author) setAuthor(draft.author);
+          if (draft.authorRole) setAuthorRole(draft.authorRole);
+          if (draft.authorImage) setAuthorImage(draft.authorImage);
+          if (draft.readTime) setReadTime(draft.readTime);
+          if (draft.publishedAtCustom) setPublishedAtCustom(draft.publishedAtCustom);
+          if (draft.sections) setSections(draft.sections);
+        }
+      } catch {
+        // Ignored
+      }
+      initialLoadedRef.current = true;
     }
   }, [postId, loadPost]);
+
+  // Silent background auto-save executor
+  const executeAutoSave = useCallback(async (payload: any) => {
+    const serialized = JSON.stringify(payload);
+    if (serialized === lastSavedSnapshotRef.current) {
+      return;
+    }
+
+    if (isAutosavingRef.current) {
+      pendingSavePayloadRef.current = payload;
+      return;
+    }
+
+    isAutosavingRef.current = true;
+    const targetId = currentPostIdRef.current;
+
+    // Always keep offline snapshot in localStorage
+    try {
+      const storageKey = targetId ? `codemate_editor_draft_${targetId}` : "codemate_editor_draft_new";
+      localStorage.setItem(storageKey, JSON.stringify({ ...payload, updatedAt: Date.now() }));
+    } catch {
+      // Storage quota or privacy sandbox safely handled
+    }
+
+    try {
+      const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
+      const method = targetId ? "PUT" : "POST";
+
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: serialized,
+      });
+
+      if (res.ok) {
+        lastSavedSnapshotRef.current = serialized;
+        if (!targetId) {
+          const data = await res.json().catch(() => ({}));
+          if (data.id) {
+            const newId = data.id.toString();
+            currentPostIdRef.current = newId;
+            setPostId(newId);
+            window.history.replaceState(null, "", `/admin/editor?id=${newId}`);
+            try {
+              localStorage.removeItem("codemate_editor_draft_new");
+              localStorage.setItem(`codemate_editor_draft_${newId}`, JSON.stringify({ ...payload, updatedAt: Date.now() }));
+            } catch {}
+          }
+        }
+      }
+    } catch {
+      // Auto-save failures are non-blocking and preserved in localStorage
+    } finally {
+      isAutosavingRef.current = false;
+      if (pendingSavePayloadRef.current) {
+        const nextPayload = pendingSavePayloadRef.current;
+        pendingSavePayloadRef.current = null;
+        void executeAutoSave(nextPayload);
+      }
+    }
+  }, []);
+
+  // Debounced auto-save listener on editor changes
+  useEffect(() => {
+    if (!initialLoadedRef.current) return;
+
+    const hasContent =
+      title.trim() !== "" ||
+      subheading.trim() !== "" ||
+      coverImage.trim() !== "" ||
+      tagsInput.trim() !== "" ||
+      (contentJson.content && contentJson.content.length > 0) ||
+      author.trim() !== "" ||
+      sections.length > 0;
+
+    if (!hasContent) return;
+
+    const seenSaveTags = new Set<string>();
+    const tags: { label: string; tone: "slate" }[] = [];
+    for (const raw of tagsInput.split(",")) {
+      const trimmed = raw.trim();
+      const norm = trimmed.toUpperCase();
+      if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
+        seenSaveTags.add(norm);
+        tags.push({ label: trimmed, tone: "slate" as const });
+      }
+    }
+
+    const payload = {
+      title: title.trim() || "Untitled Article",
+      subheading,
+      category: category || "General",
+      coverImage,
+      published: currentPostIdRef.current ? published : false,
+      saveMode: "draft",
+      tags: tags.length > 0 ? tags : [{ label: "Article", tone: "slate" as const }],
+      filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
+      content: contentJson,
+      author: author || "Ayush Singhal",
+      authorRole: authorRole || "Founder & CEO",
+      authorImage: authorImage || "",
+      readTime: readTime || "1 min read",
+      publishedAtCustom,
+      sections: sections.length > 0 ? sections : undefined,
+    };
+
+    const timer = setTimeout(() => {
+      void executeAutoSave(payload);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, [
+    title,
+    subheading,
+    category,
+    coverImage,
+    tagsInput,
+    selectedFilters,
+    contentJson,
+    author,
+    authorRole,
+    authorImage,
+    readTime,
+    publishedAtCustom,
+    sections,
+    published,
+    executeAutoSave,
+  ]);
+
+  // Keepalive flush on page unload
+  useEffect(() => {
+    const handleUnloadFlush = () => {
+      if (!initialLoadedRef.current) return;
+
+      const hasContent =
+        title.trim() !== "" ||
+        subheading.trim() !== "" ||
+        coverImage.trim() !== "" ||
+        tagsInput.trim() !== "" ||
+        (contentJson.content && contentJson.content.length > 0) ||
+        author.trim() !== "" ||
+        sections.length > 0;
+
+      if (!hasContent) return;
+
+      const seenSaveTags = new Set<string>();
+      const tags: { label: string; tone: "slate" }[] = [];
+      for (const raw of tagsInput.split(",")) {
+        const trimmed = raw.trim();
+        const norm = trimmed.toUpperCase();
+        if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
+          seenSaveTags.add(norm);
+          tags.push({ label: trimmed, tone: "slate" as const });
+        }
+      }
+
+      const payload = {
+        title: title.trim() || "Untitled Article",
+        subheading,
+        category: category || "General",
+        coverImage,
+        published: currentPostIdRef.current ? published : false,
+        saveMode: "draft",
+        tags: tags.length > 0 ? tags : [{ label: "Article", tone: "slate" as const }],
+        filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
+        content: contentJson,
+        author: author || "Ayush Singhal",
+        authorRole: authorRole || "Founder & CEO",
+        authorImage: authorImage || "",
+        readTime: readTime || "1 min read",
+        publishedAtCustom,
+        sections: sections.length > 0 ? sections : undefined,
+      };
+
+      const serialized = JSON.stringify(payload);
+      if (serialized === lastSavedSnapshotRef.current) return;
+
+      const targetId = currentPostIdRef.current;
+      const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
+      const method = targetId ? "PUT" : "POST";
+
+      try {
+        const storageKey = targetId ? `codemate_editor_draft_${targetId}` : "codemate_editor_draft_new";
+        localStorage.setItem(storageKey, JSON.stringify({ ...payload, updatedAt: Date.now() }));
+      } catch {}
+
+      try {
+        void fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: serialized,
+          keepalive: true,
+        });
+      } catch {}
+    };
+
+    window.addEventListener("beforeunload", handleUnloadFlush);
+    window.addEventListener("pagehide", handleUnloadFlush);
+    return () => {
+      window.removeEventListener("beforeunload", handleUnloadFlush);
+      window.removeEventListener("pagehide", handleUnloadFlush);
+    };
+  }, [
+    title,
+    subheading,
+    category,
+    coverImage,
+    tagsInput,
+    selectedFilters,
+    contentJson,
+    author,
+    authorRole,
+    authorImage,
+    readTime,
+    publishedAtCustom,
+    sections,
+    published,
+  ]);
 
   // Fetches dynamic filter options and categories from the database on component mount
   const loadFilters = useCallback(async () => {
@@ -268,6 +548,12 @@ function EditorContent() {
       });
 
       if (res.ok) {
+        lastSavedSnapshotRef.current = JSON.stringify(payload);
+        try {
+          const storageKey = postId ? `codemate_editor_draft_${postId}` : "codemate_editor_draft_new";
+          localStorage.removeItem(storageKey);
+          localStorage.removeItem("codemate_editor_draft_new");
+        } catch {}
         router.push("/admin/dashboard");
       } else if (res.status === 401) {
         router.push("/admin/login");
