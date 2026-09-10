@@ -1,8 +1,9 @@
 import { NextResponse } from "next/server";
 import { COOKIE_NAME } from "@/lib/auth";
+import { withAuth } from "@/lib/authWrapper";
 
 // Logs out the admin by invalidating and expiring the auth-token cookie
-export async function POST() {
+async function logoutHandler() {
   const response = NextResponse.json({ success: true });
   // Set empty cookie value with maxAge 0 to command browser to discard the session token
   response.cookies.set({
@@ -14,3 +15,5 @@ export async function POST() {
   });
   return response;
 }
+
+export const POST = withAuth(logoutHandler);

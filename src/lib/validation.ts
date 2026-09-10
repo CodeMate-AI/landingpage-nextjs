@@ -66,7 +66,7 @@ export const BlogPostSchema = z.object({
   author: z.string().default("Ayush Singhal"),
   authorRole: z.string().default("Founder & CEO"),
   authorImage: z.string().optional().default(""),
-  readTime: z.string().default("1 min read"),
+  readTime: z.string().optional().default(""),
   publishedAtCustom: z.string().optional().default(""),
   filterLabels: z.array(z.string()).optional(),
   // Enforces that all table-of-contents anchor IDs within an article are unique

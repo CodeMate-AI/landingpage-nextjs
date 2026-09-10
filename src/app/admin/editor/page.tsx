@@ -278,6 +278,42 @@ function EditorContent() {
     }
   }, []);
 
+  // Builds sanitized article payload for saving, deduplicating tags and preserving custom inputs
+  const buildSavePayload = (
+    mode: "draft" | "publish",
+    resolvedPublished: boolean,
+    isAutoSave = false
+  ) => {
+    const seenSaveTags = new Set<string>();
+    const tags: { label: string; tone: "slate" }[] = [];
+    for (const raw of tagsInput.split(",")) {
+      const trimmed = raw.trim();
+      const norm = trimmed.toUpperCase();
+      if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
+        seenSaveTags.add(norm);
+        tags.push({ label: trimmed, tone: "slate" as const });
+      }
+    }
+
+    return {
+      title: isAutoSave ? (title.trim() || "Untitled Article") : title,
+      subheading,
+      category: isAutoSave ? (category || "General") : category,
+      coverImage,
+      published: resolvedPublished,
+      saveMode: mode,
+      tags: isAutoSave && tags.length === 0 ? [{ label: "Article", tone: "slate" as const }] : tags,
+      filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
+      content: contentJson,
+      author: isAutoSave ? (author || "Ayush Singhal") : author,
+      authorRole: isAutoSave ? (authorRole || "Founder & CEO") : authorRole,
+      authorImage: authorImage || "",
+      readTime,
+      publishedAtCustom,
+      sections: sections.length > 0 ? sections : undefined,
+    };
+  };
+
   // Debounced auto-save listener on editor changes
   useEffect(() => {
     if (!initialLoadedRef.current) return;
@@ -293,34 +329,11 @@ function EditorContent() {
 
     if (!hasContent) return;
 
-    const seenSaveTags = new Set<string>();
-    const tags: { label: string; tone: "slate" }[] = [];
-    for (const raw of tagsInput.split(",")) {
-      const trimmed = raw.trim();
-      const norm = trimmed.toUpperCase();
-      if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
-        seenSaveTags.add(norm);
-        tags.push({ label: trimmed, tone: "slate" as const });
-      }
-    }
-
-    const payload = {
-      title: title.trim() || "Untitled Article",
-      subheading,
-      category: category || "General",
-      coverImage,
-      published: currentPostIdRef.current ? published : false,
-      saveMode: "draft",
-      tags: tags.length > 0 ? tags : [{ label: "Article", tone: "slate" as const }],
-      filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
-      content: contentJson,
-      author: author || "Ayush Singhal",
-      authorRole: authorRole || "Founder & CEO",
-      authorImage: authorImage || "",
-      readTime: readTime || "1 min read",
-      publishedAtCustom,
-      sections: sections.length > 0 ? sections : undefined,
-    };
+    const payload = buildSavePayload(
+      "draft",
+      currentPostIdRef.current ? published : false,
+      true
+    );
 
     const timer = setTimeout(() => {
       void executeAutoSave(payload);
@@ -361,34 +374,11 @@ function EditorContent() {
 
       if (!hasContent) return;
 
-      const seenSaveTags = new Set<string>();
-      const tags: { label: string; tone: "slate" }[] = [];
-      for (const raw of tagsInput.split(",")) {
-        const trimmed = raw.trim();
-        const norm = trimmed.toUpperCase();
-        if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
-          seenSaveTags.add(norm);
-          tags.push({ label: trimmed, tone: "slate" as const });
-        }
-      }
-
-      const payload = {
-        title: title.trim() || "Untitled Article",
-        subheading,
-        category: category || "General",
-        coverImage,
-        published: currentPostIdRef.current ? published : false,
-        saveMode: "draft",
-        tags: tags.length > 0 ? tags : [{ label: "Article", tone: "slate" as const }],
-        filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
-        content: contentJson,
-        author: author || "Ayush Singhal",
-        authorRole: authorRole || "Founder & CEO",
-        authorImage: authorImage || "",
-        readTime: readTime || "1 min read",
-        publishedAtCustom,
-        sections: sections.length > 0 ? sections : undefined,
-      };
+      const payload = buildSavePayload(
+        "draft",
+        currentPostIdRef.current ? published : false,
+        true
+      );
 
       const serialized = JSON.stringify(payload);
       if (serialized === lastSavedSnapshotRef.current) return;
@@ -497,18 +487,6 @@ function EditorContent() {
     setLoading(true);
     setSavingMode(saveModeRef.current);
 
-    // Parse comma-separated tag input and deduplicate by normalized label
-    const seenSaveTags = new Set<string>();
-    const tags: { label: string; tone: "slate" }[] = [];
-    for (const raw of tagsInput.split(",")) {
-      const trimmed = raw.trim();
-      const norm = trimmed.toUpperCase();
-      if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
-        seenSaveTags.add(norm);
-        tags.push({ label: trimmed, tone: "slate" as const });
-      }
-    }
-
     // If saving as draft for an existing published post, maintain published flag
     const resolvedPublished =
       saveModeRef.current === "publish"
@@ -517,24 +495,8 @@ function EditorContent() {
         ? published
         : false;
 
-    // Construct full article payload
-    const payload = {
-      title,
-      subheading,
-      category,
-      coverImage,
-      published: resolvedPublished,
-      saveMode: saveModeRef.current,
-      tags,
-      filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
-      content: contentJson,
-      author,
-      authorRole,
-      authorImage: authorImage || "",
-      readTime,
-      publishedAtCustom,
-      sections: sections.length > 0 ? sections : undefined,
-    };
+    // Construct full article payload via shared builder
+    const payload = buildSavePayload(saveModeRef.current, resolvedPublished, false);
 
     try {
       // Use PUT for updating existing post or POST for creating a new post
@@ -661,7 +623,6 @@ function EditorContent() {
       author: author || "Ayush Singhal",
       authorRole: authorRole || "Founder & CEO",
       authorImage: authorImage || "",
-      image: coverImage || "",
       coverImage: coverImage || "",
     };
 

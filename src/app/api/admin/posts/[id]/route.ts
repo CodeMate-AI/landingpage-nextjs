@@ -3,21 +3,8 @@ import { revalidatePath } from "next/cache";
 import { withAuth } from "@/lib/authWrapper";
 import clientPromise from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
+import { calculateReadTime } from "@/lib/blog-compiler";
 import { ObjectId } from "mongodb";
-
-// Recursively walks the Tiptap JSON AST to calculate the total word count of article text
-function calculateWordCount(node: any): number {
-  let count = 0;
-  if (node.text) {
-    count += node.text.trim().split(/\s+/).filter(Boolean).length;
-  }
-  if (node.content) {
-    for (const child of node.content) {
-      count += calculateWordCount(child);
-    }
-  }
-  return count;
-}
 
 // Fetches a single blog post by its MongoDB ObjectId for the admin editor workspace
 async function getSinglePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
@@ -63,9 +50,12 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       return NextResponse.json({ error: "Post not found" }, { status: 404 });
     }
 
-    // 2. Resolve save mode: publish immediately vs save as draft
-    const saveMode = body.saveMode || (parsed.data.published ? "publish" : "draft");
+    // 2. Resolve save mode: publish immediately vs save as draft using validated field
+    const saveMode = parsed.data.saveMode || (parsed.data.published ? "publish" : "draft");
     const published = parsed.data.published;
+
+    // Compute reading duration based on AST word count (200 words/min average)
+    const readTime = calculateReadTime(parsed.data.content, parsed.data.readTime);
 
     let publishedVersion = existing.publishedVersion || null;
     let publishedAt = existing.publishedAt || null;
@@ -110,7 +100,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         author: parsed.data.author,
         authorRole: parsed.data.authorRole,
         authorImage: parsed.data.authorImage || "",
-        readTime: parsed.data.readTime,
+        readTime,
         publishedAtCustom: parsed.data.publishedAtCustom,
         sections: parsed.data.sections,
       };
@@ -118,11 +108,6 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         publishedAt = new Date();
       }
     }
-
-    // 5. Recalculate reading time from updated AST content
-    const wordCount = calculateWordCount(parsed.data.content);
-    const calculatedMinutes = Math.max(1, Math.ceil(wordCount / 200));
-    const readTime = parsed.data.readTime || `${calculatedMinutes} min read`;
 
     // Flag draft changes if a published article is being saved as a draft with pending changes
     const hasDraftChanges = saveMode === "draft" && published;

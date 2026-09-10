@@ -1,40 +1,52 @@
 import clientPromise from "./mongodb";
 
-// Checks whether the combination of client IP and email has exceeded allowed login attempts
-export async function checkRateLimit(ip: string, email: string): Promise<boolean> {
+const LOCKOUT_DURATION_MS = 15 * 60 * 1000; // 15-minute sliding window
+const MAX_FAILED_ATTEMPTS = 5;
+
+// Pure check: Returns true if the client IP and email are currently rate-limited (locked out)
+export async function isRateLimited(ip: string, email: string): Promise<boolean> {
   const client = await clientPromise;
   const db = client.db("codemate_blog");
 
-  // [MongoDB Collection: "login_attempts"] Query existing attempt record for this IP and email pair
   const attempt = await db.collection("login_attempts").findOne({ ip, email });
+  if (!attempt) return false;
+
   const now = new Date();
-  const lockoutDurationMs = 15 * 60 * 1000; // 15-minute sliding window
+  const elapsed = now.getTime() - new Date(attempt.firstAttempt).getTime();
+
+  if (elapsed > LOCKOUT_DURATION_MS) {
+    // Window has expired, not locked out anymore
+    return false;
+  }
+
+  return attempt.count >= MAX_FAILED_ATTEMPTS;
+}
+
+// Records a failed login attempt for the given IP and email
+export async function recordFailedAttempt(ip: string, email: string): Promise<void> {
+  const client = await clientPromise;
+  const db = client.db("codemate_blog");
+  const now = new Date();
+
+  const attempt = await db.collection("login_attempts").findOne({ ip, email });
 
   if (attempt) {
     const elapsed = now.getTime() - new Date(attempt.firstAttempt).getTime();
-
-    if (elapsed > lockoutDurationMs) {
-      // [MongoDB Collection: "login_attempts"] 15-minute window expired: reset counter to 1 and restart the window timer
+    if (elapsed > LOCKOUT_DURATION_MS) {
+      // 15-minute window expired: reset counter to 1 and restart the window timer
       await db.collection("login_attempts").updateOne(
         { ip, email },
         { $set: { count: 1, firstAttempt: now } }
       );
-      return true;
     } else {
-      // [MongoDB Collection: "login_attempts"] Within 15-min window: atomically increment attempt count
-      const updated = await db.collection("login_attempts").findOneAndUpdate(
+      // Within window: increment failed attempt counter
+      await db.collection("login_attempts").updateOne(
         { ip, email },
-        { $inc: { count: 1 } },
-        { returnDocument: "after" }
+        { $inc: { count: 1 } }
       );
-      
-      // Block request if consecutive failed attempts exceed threshold of 5
-      if (updated && updated.count > 5) {
-        return false;
-      }
     }
   } else {
-    // [MongoDB Collection: "login_attempts"] First failed attempt: insert initial attempt document
+    // First failed attempt: insert initial document
     await db.collection("login_attempts").insertOne({
       ip,
       email,
@@ -42,14 +54,11 @@ export async function checkRateLimit(ip: string, email: string): Promise<boolean
       firstAttempt: now,
     });
   }
-
-  return true;
 }
 
 // Clears recorded login attempts for this IP and email upon successful authentication
 export async function resetRateLimit(ip: string, email: string): Promise<void> {
   const client = await clientPromise;
   const db = client.db("codemate_blog");
-  // [MongoDB Collection: "login_attempts"] Remove recorded login attempts after successful authentication
   await db.collection("login_attempts").deleteOne({ ip, email });
 }

@@ -156,7 +156,6 @@ export default async function BlogPostPage({ params }: Props) {
         : "Draft",
     dateValue: post.publishedAt ? new Date(post.publishedAt).toISOString().split("T")[0] : "",
     tags: source.tags,
-    bgColor: "#07111f",
     sections,
     dek: source.subheading || "",
     readTime: source.readTime,
@@ -170,6 +169,19 @@ export default async function BlogPostPage({ params }: Props) {
 
   const allPosts = rawAllPosts.map((s: any) => {
     const sSource = s.publishedVersion || s;
+    const safeCoverImage = (sSource.coverImage || "")
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    const safeTitle = (sSource.title || "")
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+
     return {
       id: s._id.toString(),
       slug: s.slug,
@@ -181,15 +193,14 @@ export default async function BlogPostPage({ params }: Props) {
           ? new Date(s.publishedAt).toLocaleDateString("en-US", { month: "long", year: "numeric" })
           : "",
       tags: sSource.tags,
-      bgColor: "#07111f",
       sections: [],
       dek: sSource.subheading || "",
       readTime: sSource.readTime,
       author: sSource.author || "Ayush Singhal",
       authorRole: sSource.authorRole || "Founder & CEO",
       authorImage: sSource.authorImage || "",
-      visualMarkup: sSource.coverImage
-        ? `<img src="${sSource.coverImage}" alt="${sSource.title}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`
+      visualMarkup: safeCoverImage
+        ? `<img src="${safeCoverImage}" alt="${safeTitle}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`
         : "",
     };
   });

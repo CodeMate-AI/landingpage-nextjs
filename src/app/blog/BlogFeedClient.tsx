@@ -755,9 +755,7 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
               return (
                 <Link href={`/blog/${post.slug}`} prefetch={true} className="card" key={post.id}>
                   <div className="card-visual" style={{ background: "#07111f" }}>
-                    {post.image ? (
-                      <img src={post.image} alt={post.title} className="w-full h-full object-cover" />
-                    ) : post.coverImage ? (
+                    {post.coverImage ? (
                       <img src={post.coverImage} alt={post.title} className="w-full h-full object-cover" />
                     ) : post.visualMarkup ? (
                       <div className="w-full h-full" dangerouslySetInnerHTML={{ __html: post.visualMarkup }} />

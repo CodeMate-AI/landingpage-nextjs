@@ -59,11 +59,9 @@ export default async function BlogFeedPage() {
           source.filterLabels ||
           source.tags?.map((t: any) => t.label.trim().toUpperCase()) ||
           [],
-        bgColor: "#07111f",
         sections: source.sections || [],
         dek: source.subheading || "",
         readTime: source.readTime || "1 min read",
-        image: source.coverImage || "",
         coverImage: source.coverImage || "",
         author: source.author || "Ayush Singhal",
         authorRole: source.authorRole || "Founder & CEO",

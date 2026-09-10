@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { signJWT, SESSION_DURATION, COOKIE_NAME } from "@/lib/auth";
-import { checkRateLimit, resetRateLimit } from "@/lib/rateLimit";
+import { isRateLimited, recordFailedAttempt, resetRateLimit } from "@/lib/rateLimit";
 import { LoginSchema } from "@/lib/validation";
 import bcrypt from "bcryptjs";
 
@@ -20,8 +20,8 @@ export async function POST(req: NextRequest) {
     const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
 
     // 2. Enforce MongoDB-backed sliding-window rate limit (max 5 attempts per 15 min)
-    const allowed = await checkRateLimit(ip, email);
-    if (!allowed) {
+    const locked = await isRateLimited(ip, email);
+    if (locked) {
       return NextResponse.json({ error: "Too many login attempts. Locked for 15m." }, { status: 429 });
     }
 
@@ -33,6 +33,7 @@ export async function POST(req: NextRequest) {
 
     // 4. Verify password hash using bcryptjs
     if (!user || !(await bcrypt.compare(password, user.password))) {
+      await recordFailedAttempt(ip, email);
       return NextResponse.json({ error: "Invalid email or password combination" }, { status: 401 });
     }
 

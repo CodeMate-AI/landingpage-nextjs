@@ -3,21 +3,8 @@ import { revalidatePath } from "next/cache";
 import { withAuth } from "@/lib/authWrapper";
 import clientPromise from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
+import { calculateReadTime } from "@/lib/blog-compiler";
 import slugify from "@/utils/slugify";
-
-// Recursively walks the Tiptap JSON AST to calculate the total word count of article text ( calculates read time if field is left empty by admin )
-function calculateWordCount(node: any): number {
-  let count = 0;
-  if (node.text) {
-    count += node.text.trim().split(/\s+/).filter(Boolean).length;
-  }
-  if (node.content) {
-    for (const child of node.content) {
-      count += calculateWordCount(child);
-    }
-  }
-  return count;
-}
 
 // Retrieves all blog articles from MongoDB sorted in reverse chronological order ( new one at top )
 async function getPostsHandler() {
@@ -53,9 +40,7 @@ async function createPostHandler(req: NextRequest) {
     }
 
     // 3. Compute reading duration based on AST word count (200 words/min average)
-    const wordCount = calculateWordCount(parsed.data.content);
-    const calculatedMinutes = Math.max(1, Math.ceil(wordCount / 200));
-    const readTime = parsed.data.readTime || `${calculatedMinutes} min read`;
+    const readTime = calculateReadTime(parsed.data.content, parsed.data.readTime);
     const published = parsed.data.published;
     const publishedAt = published ? new Date() : null;
 

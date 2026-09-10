@@ -376,3 +376,28 @@ export function compileTiptapToHtml(content: any, customSections?: { id: string;
 
   return { html: finalHtml, sections };
 }
+
+// Recursively walks the Tiptap JSON AST to calculate total text word count
+export function calculateWordCount(node: any): number {
+  if (!node) return 0;
+  let count = 0;
+  if (node.text && typeof node.text === "string") {
+    count += node.text.trim().split(/\s+/).filter(Boolean).length;
+  }
+  if (node.content && Array.isArray(node.content)) {
+    for (const child of node.content) {
+      count += calculateWordCount(child);
+    }
+  }
+  return count;
+}
+
+// Computes reading duration (200 words per minute average), preserving custom input if present
+export function calculateReadTime(content: any, customReadTime?: string): string {
+  if (customReadTime && customReadTime.trim()) {
+    return customReadTime.trim();
+  }
+  const wordCount = calculateWordCount(content);
+  const calculatedMinutes = Math.max(1, Math.ceil(wordCount / 200));
+  return `${calculatedMinutes} min read`;
+}

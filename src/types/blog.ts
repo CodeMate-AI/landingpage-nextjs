@@ -24,7 +24,6 @@ export interface BlogDetailPost {
   sections: BlogSection[];
   dek: string;
   readTime: string;
-  image?: string;
   coverImage?: string;
   htmlContent?: string;
   author?: string;
