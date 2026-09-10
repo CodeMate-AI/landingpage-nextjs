@@ -1,12 +1,20 @@
 import dns from "dns";
 import { MongoClient } from "mongodb";
 
-// Configure reliable DNS servers for Atlas SRV resolution in local/Windows environments
-try {
-  dns.setServers(["8.8.8.8", "1.1.1.1"]);
-} catch {
-  // Graceful fallback if environment does not allow modifying DNS servers
+// Configure reliable DNS resolution for Atlas SRV lookups across local, Windows, and container environments
+function configureDns() {
+  try {
+    dns.setServers(["8.8.8.8", "1.1.1.1"]);
+    if (typeof dns.setDefaultResultOrder === "function") {
+      dns.setDefaultResultOrder("ipv4first");
+    }
+  } catch {
+    // Gracefully falls back to system DNS if the host environment restricts overrides
+  }
 }
+
+// Initial DNS configuration
+configureDns();
 
 // Declare global variable to cache the MongoDB connection promise across serverless invocations and Next.js HMR
 declare global {
@@ -23,8 +31,14 @@ function getClientPromise(): Promise<MongoClient> {
     );
   }
 
+  // Ensure DNS resolvers are applied in active worker runtime before connecting
+  configureDns();
+
   if (!global._mongoClientPromise) {
-    const client = new MongoClient(uri, {});
+    const client = new MongoClient(uri, {
+      serverSelectionTimeoutMS: 8000,
+      connectTimeoutMS: 10000,
+    });
     global._mongoClientPromise = client.connect().catch((err) => {
       // Reset cached promise on connection failure so subsequent requests can retry
       global._mongoClientPromise = undefined;
