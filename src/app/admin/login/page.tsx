@@ -10,6 +10,7 @@ export default function AdminLogin() {
   const [passwordUnlocked, setPasswordUnlocked] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLocked, setIsLocked] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
@@ -39,6 +40,9 @@ export default function AdminLogin() {
         router.push("/admin/dashboard");
       } else {
         const data = await res.json();
+        if (res.status === 429) {
+          setIsLocked(true);
+        }
         setError(data.error || "Login validation failed.");
       }
     } catch {
@@ -82,11 +86,12 @@ export default function AdminLogin() {
             <input
               type="email"
               required
+              disabled={loading || isLocked}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
               suppressHydrationWarning
-              className="admin-login-input w-full rounded-lg border border-[#27272a] bg-[#09090b] p-3 text-sm text-white focus:border-blue-500 focus:outline-none"
+              className="admin-login-input w-full rounded-lg border border-[#27272a] bg-[#09090b] p-3 text-sm text-white focus:border-blue-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
           <div>
@@ -95,6 +100,7 @@ export default function AdminLogin() {
               <input
                 type={showPassword ? "text" : "password"}
                 required
+                disabled={loading || isLocked}
                 value={password}
                 readOnly={!passwordUnlocked}
                 onFocus={() => setPasswordUnlocked(true)}
@@ -103,13 +109,14 @@ export default function AdminLogin() {
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
                 suppressHydrationWarning
-                className="admin-login-input w-full rounded-lg border border-[#27272a] bg-[#09090b] p-3 pr-10 text-sm text-white focus:border-blue-500 focus:outline-none"
+                className="admin-login-input w-full rounded-lg border border-[#27272a] bg-[#09090b] p-3 pr-10 text-sm text-white focus:border-blue-500 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
               />
               {/* Toggle button to show or hide password characters */}
               <button
                 type="button"
+                disabled={loading || isLocked}
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-7 w-7 items-center justify-center rounded-md text-neutral-400 hover:bg-neutral-800/80 hover:text-neutral-200 transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-7 w-7 items-center justify-center rounded-md text-neutral-400 hover:bg-neutral-800/80 hover:text-neutral-200 transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-blue-500 disabled:opacity-40 disabled:cursor-not-allowed"
                 title={showPassword ? "Hide password" : "Show password"}
                 aria-label={showPassword ? "Hide password" : "Show password"}
                 suppressHydrationWarning
@@ -127,14 +134,18 @@ export default function AdminLogin() {
               </button>
             </div>
           </div>
-          {/* Submit button showing loading spinner state during network request */}
+          {/* Submit button showing loading spinner state during network request or locked state */}
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || isLocked}
             suppressHydrationWarning
-            className="w-full rounded-lg bg-blue-600 p-3 text-sm font-semibold text-white transition hover:bg-blue-500 disabled:opacity-50"
+            className={`w-full rounded-lg p-3 text-sm font-semibold text-white transition ${
+              isLocked
+                ? "bg-red-900/60 text-red-200 border border-red-800 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-500 disabled:opacity-50"
+            }`}
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Signing in..." : isLocked ? "Temporarily Locked (15m)" : "Sign In"}
           </button>
         </form>
 
