@@ -1,4 +1,12 @@
+import dns from "dns";
 import { MongoClient } from "mongodb";
+
+// Configure reliable DNS servers for Atlas SRV resolution in local/Windows environments
+try {
+  dns.setServers(["8.8.8.8", "1.1.1.1"]);
+} catch {
+  // Graceful fallback if environment does not allow modifying DNS servers
+}
 
 // Declare global variable to cache the MongoDB connection promise across serverless invocations and Next.js HMR
 declare global {

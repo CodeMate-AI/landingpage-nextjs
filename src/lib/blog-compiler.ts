@@ -187,46 +187,97 @@ function formatLogos(html: string): string {
 
     let gridHtml = `
       <style>
+        .logo-grid {
+          display: grid;
+          grid-template-columns: repeat(1, minmax(0, 1fr));
+          gap: 1.5rem;
+          margin: 2rem 0;
+        }
+        @media (min-width: 640px) {
+          .logo-grid {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+          }
+        }
         .logo-grid-card {
-          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-                      box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1), 
-                      border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          border-radius: 1rem;
+          border: 1px solid rgba(226, 232, 240, 0.8);
+          background-color: #ffffff;
+          padding: 1.5rem 1.25rem;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+          overflow: hidden;
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .logo-grid-card:hover {
-          transform: translateY(-6px) scale(1.02) !important;
-          border-color: rgba(59, 130, 246, 0.25) !important;
-          box-shadow: 0 20px 25px -5px rgba(59, 130, 246, 0.1), 0 10px 10px -5px rgba(59, 130, 246, 0.04) !important;
+          transform: translateY(-4px) scale(1.02);
+          border-color: rgba(0, 191, 255, 0.3);
+          box-shadow: 0 12px 24px -4px rgba(0, 191, 255, 0.12);
         }
-        .logo-grid-card img {
+        .logo-img-wrap {
+          display: flex;
+          height: 6rem;
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+          padding: 0.25rem;
+          overflow: hidden;
+        }
+        .logo-img-wrap img {
+          max-height: 4.5rem;
+          width: auto;
+          max-width: 85%;
+          object-fit: contain;
+          display: block;
           transform: scale(var(--logo-scale, 1));
-          transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .logo-grid-card:hover img {
-          transform: scale(calc(var(--logo-scale, 1) * 1.08)) !important;
+        .logo-grid-card:hover .logo-img-wrap img {
+          transform: scale(calc(var(--logo-scale, 1) * 1.05));
+        }
+        .logo-img-maruti {
+          --logo-scale: 1.35;
+          border-radius: 6px;
+        }
+        .logo-img-tvs {
+          --logo-scale: 1.5;
+        }
+        .logo-img-hp {
+          --logo-scale: 1.25;
+        }
+        .logo-grid-card .logo-tag {
+          margin-top: 0.85rem;
+          font-size: 0.75rem;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          color: #64748b;
         }
       </style>
-      <div class="logo-grid my-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
+      <div class="logo-grid">
     `;
     for (const item of items) {
-      let scale = "1";
-      if (item.name.toLowerCase().includes("maruti")) scale = "1.85";
-      else if (item.name.toLowerCase().includes("tvs")) scale = "2.2";
-      else if (item.name.toLowerCase().includes("hp")) scale = "1.3";
+      const lower = item.name.toLowerCase();
+      let logoClass = "";
+      if (lower.includes("maruti")) logoClass = "logo-img-maruti";
+      else if (lower.includes("tvs")) logoClass = "logo-img-tvs";
+      else if (lower.includes("hp")) logoClass = "logo-img-hp";
 
       gridHtml += `
-        <div class="logo-grid-card group relative flex flex-col items-center justify-center rounded-2xl border border-slate-200/80 bg-white p-6 shadow-xl">
-          <div class="flex h-20 w-full items-center justify-center overflow-hidden p-2">
+        <div class="logo-grid-card">
+          <div class="logo-img-wrap">
             <img
               src="${item.src}"
               alt="${item.name}"
-              class="max-h-16 w-auto max-w-[85%] object-contain"
-              style="--logo-scale: ${scale};"
+              class="${logoClass}"
               loading="lazy"
               decoding="async"
               aria-hidden="true"
             />
           </div>
-          <span class="mt-3 text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <span class="logo-tag">
             ${item.tag}
           </span>
         </div>
