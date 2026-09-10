@@ -279,17 +279,63 @@ body {
   line-height: 0 !important;
 }
 
-.ProseMirror h2 {
+.ProseMirror h1 {
   font-family: var(--font-montserrat), sans-serif;
-  font-size: 1.75rem; /* ~28px */
-  font-weight: 700;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  font-size: 2rem;
+  font-weight: 800;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
   color: #ffffff;
   line-height: 1.2;
 }
 
-.ProseMirror h2:first-child {
+.ProseMirror h2 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 1.625rem; /* ~26px */
+  font-weight: 700;
+  margin-top: 2.25rem;
+  margin-bottom: 0.875rem;
+  color: #ffffff;
+  line-height: 1.25;
+}
+
+.ProseMirror h3 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 1.375rem; /* ~22px */
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #ffffff;
+  line-height: 1.3;
+}
+
+.ProseMirror h4 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 1.125rem; /* ~18px */
+  font-weight: 600;
+  margin-top: 1.75rem;
+  margin-bottom: 0.625rem;
+  color: #ffffff;
+  line-height: 1.35;
+}
+
+.ProseMirror h5,
+.ProseMirror h6 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 1rem; /* ~16px */
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+.ProseMirror h1:first-child,
+.ProseMirror h2:first-child,
+.ProseMirror h3:first-child,
+.ProseMirror h4:first-child,
+.ProseMirror h5:first-child,
+.ProseMirror h6:first-child {
   margin-top: 0;
 }
 

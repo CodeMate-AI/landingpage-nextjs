@@ -1435,18 +1435,65 @@
 
 
 
-.article-content h2 {
+.article-content h1 {
   font-family: var(--font-montserrat), sans-serif;
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 800;
   color: var(--text-primary);
-  margin-top: 56px;
+  margin-top: 48px;
   margin-bottom: 20px;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
   line-height: 1.2;
 }
 
+.article-content h2 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 40px;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.article-content h3 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 32px;
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.article-content h4 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 24px;
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+
+.article-content h5,
+.article-content h6 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 20px;
+  margin-bottom: 10px;
+  line-height: 1.4;
+}
+
+.article-content h1:first-child,
 .article-content h2:first-child,
+.article-content h3:first-child,
+.article-content h4:first-child,
+.article-content h5:first-child,
+.article-content h6:first-child,
 .article-content section:first-child>h2:first-child {
   margin-top: 0;
 }
