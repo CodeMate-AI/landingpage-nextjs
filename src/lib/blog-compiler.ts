@@ -246,7 +246,7 @@ function formatLogos(html: string): string {
 }
 
 function formatFaqSection(html: string): string {
-  const faqHeadingRegex = /<h2([^>]*)>Frequently Asked Questions<\/h2>/i;
+  const faqHeadingRegex = /<h([2-4])[^>]*>([\s\S]*?(?:Frequently Asked Questions|FAQ|FAQs|Questions & Answers)[\s\S]*?)<\/h\1>/i;
   const match = html.match(faqHeadingRegex);
   if (!match || match.index == null) return html;
 
@@ -255,35 +255,103 @@ function formatFaqSection(html: string): string {
 
   const afterHeading = html.substring(headingIndex + headingLength);
 
-  let faqContentLength = 0;
-  let faqContainerHtml = '<div class="faq-pill-container">';
-  let questionCount = 0;
+  // Find where the FAQ section ends (next heading or end of string)
+  const nextHeadingMatch = afterHeading.match(/<h[1-6][^>]*>/i);
+  const faqSectionEndIndex = nextHeadingMatch && nextHeadingMatch.index != null ? nextHeadingMatch.index : afterHeading.length;
 
-  const qaPairRegex = /^\s*<p>\s*\+([\s\S]*?)<\/p>\s*<p>([\s\S]*?)<\/p>/i;
+  const faqRawContent = afterHeading.substring(0, faqSectionEndIndex);
+  const remainingContent = afterHeading.substring(faqSectionEndIndex);
 
-  let tempString = afterHeading;
-  while (true) {
-    const pairMatch = tempString.match(qaPairRegex);
-    if (!pairMatch) break;
+  const items: { question: string; answer: string }[] = [];
 
-    const matchedText = pairMatch[0];
-    const question = pairMatch[1].trim();
-    const answer = pairMatch[2].trim();
-
-    faqContainerHtml += `<div class="faq-pill-card"><button type="button" class="faq-pill-summary"><span class="faq-circle-badge">+</span><span class="faq-question-title">${escapeHtml(question)}</span></button><div class="faq-answer-body"><p>${escapeHtml(answer)}</p></div></div>`;
-    questionCount++;
-
-    faqContentLength += matchedText.length;
-    tempString = tempString.substring(matchedText.length);
+  // 1. Check for [faq: Question | Answer] shortcodes
+  const shortcodeRegex = /\[faq:\s*([^|\]]+)\|\s*([\s\S]*?)\]/gi;
+  let hasShortcode = false;
+  let scMatch: RegExpExecArray | null;
+  while ((scMatch = shortcodeRegex.exec(faqRawContent)) !== null) {
+    hasShortcode = true;
+    items.push({
+      question: scMatch[1].trim(),
+      answer: scMatch[2].trim(),
+    });
   }
 
-  faqContainerHtml += '</div>';
+  if (!hasShortcode) {
+    // 2. Stream-based question boundary extraction
+    // Normalize raw content: replace <br> with newlines and strip extraneous HTML tags except text
+    const normalizedText = faqRawContent
+      .replace(/<br\s*\/?>/gi, " ")
+      .replace(/<\/p>\s*<p>/gi, " ")
+      .replace(/<[^>]*>/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
 
-  if (questionCount === 0) return html;
+    // Sentence-boundary capitalized question matcher (strictly uppercase words or markers)
+    const questionRegex = /(?:^|(?<=[.!?\n]\s+))(?:(?:\+|•|&bull;|&#8226;|\u2022|\*|-|Q:|Question:|\d+[\.\)])\s*)?((?:(?:What|How|Why|When|Where|Who|Which|Is|Are|Can|Could|Should|Would|Will|Do|Does|Have|Has|Whom|Whose)\b|(?:\+|•|\*|-|Q:))[^?]{2,200}\?)/g;
+
+    const questionMatches: { start: number; end: number; question: string }[] = [];
+    let qm: RegExpExecArray | null;
+    while ((qm = questionRegex.exec(normalizedText)) !== null) {
+      const matchFull = qm[0];
+      const matchQuestion = qm[1];
+      const matchIndex = qm.index + (matchFull.length - matchQuestion.length);
+      questionMatches.push({
+        start: matchIndex,
+        end: matchIndex + matchQuestion.length,
+        question: matchQuestion.trim(),
+      });
+    }
+
+    if (questionMatches.length > 0) {
+      for (let i = 0; i < questionMatches.length; i++) {
+        const cur = questionMatches[i];
+        const next = questionMatches[i + 1];
+        const rawAnswer = next
+          ? normalizedText.substring(cur.end, next.start).trim()
+          : normalizedText.substring(cur.end).trim();
+
+        const cleanQ = cur.question
+          .replace(/^\s*(?:\+|•|&bull;|&#8226;|\u2022|\*|-|Q:|Question:|\d+[\.\)])\s*/i, "")
+          .trim();
+        const cleanA = rawAnswer
+          .replace(/^\s*(?:A:|Answer:)\s*/i, "")
+          .trim();
+
+        if (cleanQ) {
+          items.push({
+            question: cleanQ,
+            answer: cleanA || "No answer provided.",
+          });
+        }
+      }
+    }
+  }
+
+  if (items.length === 0) return html;
+
+  let faqContainerHtml = '<div class="faq-pill-container">';
+  for (const item of items) {
+    const cleanQ = escapeHtml(item.question.replace(/^\s*(?:\+|•|&bull;|&#8226;|\u2022|\*|-|Q:|Question:|\d+[\.\)])\s*/i, "").trim());
+    let answerHtml = item.answer.trim();
+    if (!answerHtml.startsWith("<p>") && !answerHtml.startsWith("<div>")) {
+      answerHtml = `<p>${escapeHtml(answerHtml)}</p>`;
+    }
+
+    faqContainerHtml += `
+      <div class="faq-pill-card">
+        <button type="button" class="faq-pill-summary">
+          <span class="faq-circle-badge">+</span>
+          <span class="faq-question-title">${cleanQ}</span>
+        </button>
+        <div class="faq-answer-body">
+          ${answerHtml}
+        </div>
+      </div>
+    `;
+  }
+  faqContainerHtml += "</div>";
 
   const beforeHeading = html.substring(0, headingIndex);
-  const remainingContent = afterHeading.substring(faqContentLength);
-
   return beforeHeading + match[0] + faqContainerHtml + remainingContent;
 }
 

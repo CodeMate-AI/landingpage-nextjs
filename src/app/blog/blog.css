@@ -2701,12 +2701,12 @@ ul[data-type="taskList"] li > div,
   }
 }
 
-/* Sleek FAQ Pill Accordion Design (Matching Screenshot) */
+/* Sleek FAQ Pill Accordion Design (Matching Published Blogs) */
 .faq-pill-container {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin: 28px 0;
+  gap: 14px;
+  margin: 36px 0 24px 0;
 }
 
 .faq-pill-card {
@@ -2718,17 +2718,29 @@ ul[data-type="taskList"] li > div,
 }
 
 .faq-pill-card:hover {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(59, 130, 246, 0.3);
+  background: #0b111c;
+}
+
+.faq-pill-card[open],
+.faq-pill-card.open {
+  border-color: rgba(59, 130, 246, 0.4);
   background: #0b111c;
 }
 
 .faq-pill-summary {
   display: flex;
   align-items: center;
-  padding: 16px 20px;
+  width: 100%;
+  padding: 18px 22px;
+  background: transparent;
+  border: none;
   cursor: pointer;
   user-select: none;
   list-style: none;
+  text-align: left;
+  font-family: inherit;
+  outline: none;
 }
 
 .faq-pill-summary::-webkit-details-marker {
@@ -2742,13 +2754,13 @@ ul[data-type="taskList"] li > div,
   width: 28px;
   height: 28px;
   border-radius: 999px;
-  background: #1a2230;
-  color: #e2e8f0;
+  background: #161e2e;
+  color: #94a3b8;
   font-size: 15px;
   font-weight: 700;
   line-height: 1;
   flex-shrink: 0;
-  margin-right: 14px;
+  margin-right: 16px;
   transition: background-color 200ms ease, color 200ms ease;
 }
 
@@ -2759,18 +2771,27 @@ ul[data-type="taskList"] li > div,
 }
 
 .faq-question-title {
-  color: #ffffff;
+  color: #f8fafc;
   font-family: var(--font-montserrat), sans-serif;
   font-size: 16px;
   font-weight: 600;
-  line-height: 1.4;
+  line-height: 1.45;
+  text-align: left;
 }
 
 .faq-answer-body {
-  padding: 0 20px 20px 62px;
+  padding: 0 24px 20px 68px;
   color: #cbd5e1;
-  font-size: 14px;
-  line-height: 1.6;
+  font-size: 14.5px;
+  line-height: 1.7;
+}
+
+.faq-answer-body p {
+  margin: 0 0 10px 0;
+}
+
+.faq-answer-body p:last-child {
+  margin-bottom: 0;
 }
 
 @media (max-width: 640px) {
@@ -2782,16 +2803,16 @@ ul[data-type="taskList"] li > div,
     width: 24px;
     height: 24px;
     font-size: 13px;
-    margin-right: 10px;
+    margin-right: 12px;
   }
 
   .faq-question-title {
-    font-size: 14px;
+    font-size: 14.5px;
   }
 
   .faq-answer-body {
-    padding: 0 16px 16px 50px;
-    font-size: 13px;
+    padding: 0 16px 16px 52px;
+    font-size: 13.5px;
   }
 }
 
