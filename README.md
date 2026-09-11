@@ -1,10 +1,10 @@
-# 📦 CodeMate AI Landing Page
+# CodeMate AI Landing Page
 
-This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website showcasing CodeMate's product suites, achievements, media presence, customer testimonials, and pricing structures.
+This is the codebase for [CodeMate AI's](https://codemate.ai) landing page, a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website showcasing CodeMate's product suites, achievements, media presence, customer testimonials, and pricing structures.
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Category | Technology |
 |---|---|
@@ -20,7 +20,7 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a
 
 ---
 
-## 📄 Key Features & Sections
+## Key Features and Sections
 
 - **Announcement Banner**: Sticky banner highlighting the SWE-bench SOTA achievement and limited offers.
 - **Dynamic Frosted-Glass Navbars**: Custom mega-menu support for Products, Open-Source, and Resources with active drop-downs on desktop and slider overlays on mobile.
@@ -29,35 +29,41 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a
 - **Partners Marquee**: Infinite-marquee animations displaying code integration partners and ecosystems.
 - **Testimonials Deck**: Smooth, staggered entrance animations for customer recommendation cards.
 - **Media Coverage**: Custom carousel highlighting press and publication presence from top media houses.
+- **HP x CodeMate AI Landing Page (`/hp`)**: Dedicated partnership page featuring product guides, interactive video demonstrations, and an exclusive trial registration form.
 
 ---
 
-## 🗂️ Project Structure
+## Project Structure
 
 ```
 CMLanding/
 └── landingpage-nextjs/
-    ├── public/                  # Brand assets, static mocks, and logos
+    ├── public/                  # Brand assets, static mocks, PDFs, and logos
+    │   └── pdfs/                # Downloadable product & security overview guides
     ├── src/
     │   ├── app/                 # App Router
     │   │   ├── page.tsx         # Main Landing Page client component
     │   │   ├── layout.tsx       # Layout with SEO metadata & Analytics
     │   │   ├── globals.css      # Core style tokens & keyframe animations
+    │   │   ├── sitemap.ts       # Dynamic sitemap indexer
+    │   │   ├── hp/              # HP x CodeMate AI partnership landing page
+    │   │   ├── api/
+    │   │   │   └── submit-trial/ # Exclusive trial submission API route
     │   │   ├── pricing/         # Pricing sub-route page & custom components
     │   │   └── download/        # Download sub-route page
     │   ├── components/          # Reusable react components
     │   │   ├── achivements.tsx  # Achievements slideshow
     │   │   ├── media-presence.tsx # Media slider
-    │   │   └── ui/              # 46 primitive animated UI components (Bento, Terminals, Gradients, etc.)
+    │   │   └── ui/              # Primitive animated UI components
     │   └── utils/               # Tailwind merge helpers
     ├── package.json             # Dependencies & scripts
-    ├── next.config.ts           # Next.config
+    ├── next.config.ts           # Next.js configuration
     └── tailwind.config.ts       # Custom Tailwind theme tokens & screens
 ```
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -86,7 +92,7 @@ You will need **Node.js (v18+)** and **npm** (or **Bun**) installed.
 
 ---
 
-## 🛠️ Build and Deploy
+## Build and Deploy
 
 To create an optimized production build of the website:
 
@@ -98,7 +104,7 @@ The static output will be compiled inside the `.next` directory.
 
 ---
 
-## ⚡ Performance Optimizations
+## Performance Optimizations
 
 1. **Lazy Resource Activation**: Using the `SmartGif` component, heavy GIFs are frozen into light Canvas frames and only activated on hover or direct viewport interaction.
 2. **Unified Event Listeners**: Window resize, viewport breakpoints, and parallax scroll handlers are consolidated into singular hooks to prevent layout shifting and state churn.

@@ -4,6 +4,18 @@ export const metadata: Metadata = {
   title: "HP × CodeMate AI",
   description:
     "CodeMate is an AI-native SDLC agent that accelerates the entire software development lifecycle. Run CodeMate seamlessly on HP's Next Gen AI PCs with codebase security.",
+  alternates: {
+    canonical: "https://codemate.ai/hp",
+  },
+  keywords: [
+    "HP",
+    "CodeMate AI",
+    "AI PC",
+    "HP Next Gen AI PCs",
+    "Software Development Lifecycle",
+    "AI Pair Programmer",
+    "Codebase Intelligence",
+  ],
   openGraph: {
     title: "HP × CodeMate AI",
     description:
