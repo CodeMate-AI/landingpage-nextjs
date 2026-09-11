@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { setAdminToken } from "@/lib/admin-api-client";
 
@@ -60,6 +61,17 @@ export default function AdminLogin() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-[#09090b] px-4 font-sans text-neutral-100">
       <div className="w-full max-w-[420px] rounded-xl border border-[#27272a] bg-[#18181b] p-8 shadow-2xl">
+        <div className="mb-4 flex items-center">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-400 hover:text-white transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="h-3.5 w-3.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+            </svg>
+            Back to Website
+          </Link>
+        </div>
         <h2 className="mb-6 text-center text-2xl font-bold tracking-tight text-white">
           CODEMATE CMS PORTAL
         </h2>
