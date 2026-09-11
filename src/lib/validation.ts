@@ -48,7 +48,7 @@ export const BlogPostSchema = z.object({
         val.startsWith("https://"),
       { message: "Cover image must be a valid URL or local path" }
     ),
-  category: z.string().default("General"),
+  category: z.string().default(""),
   tags: z
     .array(
       z.object({

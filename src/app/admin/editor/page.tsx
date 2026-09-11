@@ -137,7 +137,7 @@ function EditorContent() {
         setTitle(post.title || "");
         setSlug(post.slug || "");
         setSubheading(post.subheading || "");
-        setCategory(post.category || "General");
+        setCategory(post.category || "");
         setCoverImage(post.coverImage || "");
         setPublished(Boolean(post.published));
         const resolvedContent =
@@ -203,7 +203,7 @@ function EditorContent() {
         lastSavedSnapshotRef.current = JSON.stringify({
           title: (post.title || "").trim() || "Untitled Article",
           subheading: post.subheading || "",
-          category: post.category || "General",
+          category: post.category || "",
           coverImage: post.coverImage || "",
           published: Boolean(post.published),
           saveMode: "draft",
@@ -357,7 +357,7 @@ function EditorContent() {
     return {
       title: isAutoSave ? (title.trim() || "Untitled Article") : title,
       subheading,
-      category: isAutoSave ? (category || "General") : category,
+      category: category || "",
       coverImage,
       published: resolvedPublished,
       saveMode: mode,
@@ -677,7 +677,7 @@ function EditorContent() {
       id: postId || "preview-id",
       slug: previewSlug,
       title: title || "Untitled Article",
-      category: category || "General",
+      category: category || "",
       date: publishedAtCustom || new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
       dateValue: new Date().toISOString().split("T")[0],
       tags: mappedTags,
@@ -856,7 +856,7 @@ function EditorContent() {
                 >
                   <div className="flex items-center gap-2">
                     <span className="text-neutral-400">Category:</span>
-                    <span className="text-blue-400 font-semibold">{category || "None selected"}</span>
+                    <span className="text-blue-400 font-semibold">{category ? category : "0 selected"}</span>
                   </div>
                   <svg
                     className={`h-4 w-4 text-neutral-400 transform transition-transform ${openSections.category ? "rotate-180" : ""}`}
