@@ -138,7 +138,7 @@ export default async function BlogPostPage({ params }: Props) {
     notFound();
   }
 
-  const { html: finalHtml, sections } = compileTiptapToHtml(source.content, source.sections);
+  const { html: finalHtml, sections } = compileTiptapToHtml(source.content, source.sections, source.subheading);
 
   const mappedPost = {
     id: post._id.toString(),

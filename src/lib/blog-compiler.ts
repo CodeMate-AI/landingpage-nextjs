@@ -385,8 +385,11 @@ function formatVideos(html: string): string {
       return `<div class="video-embed-container my-6" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"><iframe src="https://player.vimeo.com/video/${videoId}" title="Vimeo video player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
     }
 
-    // 3. Direct Playable Video Files (.mp4, .webm, .ogg, .mov, etc.) or blob URLs
-    const isDirectVideo = /\.(mp4|webm|ogg|ogv|mov|m4v)(\?.*)?$/i.test(cleanUrl) || cleanUrl.startsWith("blob:");
+    // 3. Direct Playable Video Files (.mp4, .webm, .ogg, .mov, etc.), blob URLs, or CodeMate backend media uploads
+    const isDirectVideo =
+      /\.(mp4|webm|ogg|ogv|mov|m4v)(\?.*)?$/i.test(cleanUrl) ||
+      cleanUrl.startsWith("blob:") ||
+      /\/uploaded\/images\/[a-f0-9-]+/i.test(cleanUrl);
     if (isDirectVideo) {
       return `<div class="video-embed-container my-6"><video src="${safeUrl}" controls muted playsinline preload="metadata" class="blog-video" style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); display: block;"></video></div>`;
     }
@@ -407,12 +410,49 @@ function formatLinks(html: string): string {
   });
 }
 
-export function compileTiptapToHtml(content: any, customSections?: { id: string; title: string }[]): { html: string; sections: { id: string; title: string }[] } {
+function extractPlainTextFromNode(node: any): string {
+  if (!node) return "";
+  if (typeof node.text === "string") return node.text;
+  if (Array.isArray(node.content)) {
+    return node.content.map(extractPlainTextFromNode).join("");
+  }
+  return "";
+}
+
+export function stripDuplicateSubheadingNode(content: any, subheading?: string): any {
+  if (!subheading || !subheading.trim() || !content || !Array.isArray(content.content) || content.content.length === 0) {
+    return content;
+  }
+
+  const normalize = (str: string) => str.toLowerCase().replace(/[^a-z0-9]/g, "");
+  const cleanSub = normalize(subheading);
+  if (!cleanSub) return content;
+
+  const firstNode = content.content[0];
+  if (firstNode && firstNode.type === "paragraph") {
+    const firstText = normalize(extractPlainTextFromNode(firstNode));
+    if (firstText && (firstText === cleanSub || cleanSub.startsWith(firstText) || firstText.startsWith(cleanSub))) {
+      return {
+        ...content,
+        content: content.content.slice(1),
+      };
+    }
+  }
+
+  return content;
+}
+
+export function compileTiptapToHtml(
+  content: any,
+  customSections?: { id: string; title: string }[],
+  subheading?: string
+): { html: string; sections: { id: string; title: string }[] } {
   if (!content || typeof content !== "object" || content.type !== "doc") {
     return { html: "", sections: [] };
   }
 
-  const rawHtml = generateHTML(content, extensions);
+  const sanitizedContent = stripDuplicateSubheadingNode(content, subheading);
+  const rawHtml = generateHTML(sanitizedContent, extensions);
   const cleanHtml = DOMPurify.sanitize(rawHtml, {
     ALLOWED_TAGS: [
       "h1", "h2", "h3", "h4", "h5", "h6",
@@ -430,7 +470,7 @@ export function compileTiptapToHtml(content: any, customSections?: { id: string;
     ],
   });
 
-  const sections = customSections && customSections.length > 0 ? customSections : extractSectionsFromTiptapJson(content);
+  const sections = customSections && customSections.length > 0 ? customSections : extractSectionsFromTiptapJson(sanitizedContent);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
   const finalHtml = formatLinks(formatLogos(formatVideos(formatFaqSection(formatTableCells(headingHtml)))));
 

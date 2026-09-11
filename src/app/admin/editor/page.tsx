@@ -667,7 +667,8 @@ function EditorContent() {
 
     const { html: compiledHtml, sections: compiledSections } = compileTiptapToHtml(
       contentJson,
-      sections.length > 0 ? sections : undefined
+      sections.length > 0 ? sections : undefined,
+      subheading
     );
 
     const previewSlug = slug || (title ? slugify(title) : "preview-post");
@@ -704,6 +705,32 @@ function EditorContent() {
     }
     setPreviewPost(postObj);
     setIsPreviewOpen(true);
+  };
+
+  // Check if first paragraph of contentJson duplicates the subheading
+  const isDuplicateSubheadingInContent = React.useMemo(() => {
+    if (!subheading.trim() || !contentJson?.content || contentJson.content.length === 0) {
+      return false;
+    }
+    const firstNode = contentJson.content[0];
+    if (firstNode && firstNode.type === "paragraph") {
+      const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+      const cleanSub = normalize(subheading);
+      const cleanFirst = normalize(
+        (firstNode.content || []).map((c: any) => c.text || "").join("")
+      );
+      return Boolean(cleanFirst && (cleanFirst === cleanSub || cleanSub.startsWith(cleanFirst) || cleanFirst.startsWith(cleanSub)));
+    }
+    return false;
+  }, [subheading, contentJson]);
+
+  const handleRemoveDuplicateSubheadingFromContent = () => {
+    if (contentJson?.content && contentJson.content.length > 0) {
+      setContentJson({
+        ...contentJson,
+        content: contentJson.content.slice(1),
+      });
+    }
   };
 
   return (
@@ -756,6 +783,9 @@ function EditorContent() {
               onChange={(e) => setSubheading(e.target.value)}
               className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
             />
+            <p className="mt-1.5 text-xs text-neutral-400">
+              Appears directly beneath the title and above the author details on the published post. Do not repeat this inside the content editor below.
+            </p>
           </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -1267,7 +1297,19 @@ function EditorContent() {
 
           {/* Rich text Tiptap content editor area */}
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-neutral-400">Content Editor</label>
+            <div className="mb-1.5 flex items-center justify-between">
+              <label className="block text-sm font-medium text-neutral-400">Content Editor</label>
+              {isDuplicateSubheadingInContent && (
+                <button
+                  type="button"
+                  onClick={handleRemoveDuplicateSubheadingFromContent}
+                  className="inline-flex items-center gap-1.5 rounded bg-amber-500/10 border border-amber-500/30 px-2.5 py-1 text-xs font-semibold text-amber-300 hover:bg-amber-500/20 transition cursor-pointer"
+                >
+                  <span>Duplicate Subheading Detected</span>
+                  <span className="underline">Remove from content</span>
+                </button>
+              )}
+            </div>
             {loadError ? (
               <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-400">
                 Failed to load post content. Please refresh the page or go back to the dashboard.
