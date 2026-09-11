@@ -164,7 +164,7 @@ body {
 }
 
 .custom-cursor {
-  cursor: url("/cursor.svg") 3 2, auto;
+  cursor: url("/cursor.svg") 2 2, auto;
 }
 
 @media (min-width: 768px) {
