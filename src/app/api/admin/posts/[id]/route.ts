@@ -1,0 +1,198 @@
+import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
+import { withAuth } from "@/lib/authWrapper";
+import clientPromise from "@/lib/mongodb";
+import { BlogPostSchema } from "@/lib/validation";
+import { calculateReadTime, hasActualDraftChanges } from "@/lib/blog-compiler";
+import { ObjectId } from "mongodb";
+
+// Fetches a single blog post by its MongoDB ObjectId for the admin editor workspace
+async function getSinglePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  // Validate that the route parameter is a valid 24-character hexadecimal ObjectId
+  if (!ObjectId.isValid(id)) {
+    return NextResponse.json({ error: "Invalid post ID format" }, { status: 400 });
+  }
+
+  const client = await clientPromise;
+  const db = client.db("codemate_blog");
+  // [MongoDB Collection: "blogs"] Query single blog post document by its ObjectId
+  const post = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
+
+  if (!post) {
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ post });
+}
+
+// Updates an existing blog post, handling dual draft vs publish versioning
+async function updatePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid post ID format" }, { status: 400 });
+    }
+
+    // 1. Validate payload fields with Zod
+    const body = await req.json();
+    const parsed = BlogPostSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
+    }
+
+    const client = await clientPromise;
+    const db = client.db("codemate_blog");
+    // [MongoDB Collection: "blogs"] Find existing post document by ObjectId
+    const existing = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
+    if (!existing) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    // 2. Resolve save mode: publish immediately vs save as draft using validated field
+    const saveMode = parsed.data.saveMode || (parsed.data.published ? "publish" : "draft");
+    const published = parsed.data.published;
+
+    // Compute reading duration based on AST word count (200 words/min average)
+    const readTime = calculateReadTime(parsed.data.content, parsed.data.readTime);
+
+    let publishedVersion = existing.publishedVersion || null;
+    let publishedAt = existing.publishedAt || null;
+
+    // 3. Backfill publishedVersion if article was previously published without an explicit snapshot
+    if (existing.published && !publishedVersion) {
+      publishedVersion = {
+        title: existing.title,
+        subheading: existing.subheading || "",
+        category: existing.category,
+        coverImage: existing.coverImage || "",
+        tags: existing.tags || [],
+        filterLabels: existing.filterLabels || existing.tags?.map((t: any) => t.label.trim().toUpperCase()) || [],
+        content: existing.content,
+        author: existing.author || "",
+        authorRole: existing.authorRole || "",
+        authorImage: existing.authorImage || "",
+        readTime: existing.readTime || "",
+        publishedAtCustom: existing.publishedAtCustom || "",
+        sections: existing.sections || [],
+      };
+    }
+
+    // Deduplicate tags and filter labels
+    const sanitizedTags = Array.from(
+      new Map(parsed.data.tags.map((t) => [t.label.trim().toUpperCase(), { ...t, label: t.label.trim() }])).values()
+    );
+    const sanitizedFilterLabels = parsed.data.filterLabels
+      ? Array.from(new Set(parsed.data.filterLabels.map((l) => l.trim().toUpperCase())))
+      : undefined;
+
+    const finalAuthorRole = parsed.data.authorRole ?? existing.authorRole ?? "";
+    const publishedAtCustom =
+      parsed.data.publishedAtCustom && parsed.data.publishedAtCustom.trim() !== ""
+        ? parsed.data.publishedAtCustom.trim()
+        : existing.publishedAtCustom && existing.publishedAtCustom.trim() !== ""
+        ? existing.publishedAtCustom.trim()
+        : existing.publishedAt
+        ? new Date(existing.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+        : new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+    // 4. Overwrite publishedVersion snapshot when saving with 'publish' mode
+    if (saveMode === "publish") {
+      publishedVersion = {
+        title: parsed.data.title,
+        subheading: parsed.data.subheading,
+        category: parsed.data.category,
+        coverImage: parsed.data.coverImage,
+        tags: sanitizedTags,
+        filterLabels: sanitizedFilterLabels,
+        content: parsed.data.content,
+        author: parsed.data.author ?? existing.author ?? "",
+        authorRole: finalAuthorRole,
+        authorImage: parsed.data.authorImage || "",
+        readTime,
+        publishedAtCustom,
+        sections: parsed.data.sections,
+      };
+      if (!publishedAt) {
+        publishedAt = new Date();
+      }
+    }
+
+    // 5. Build base update payload
+    const updatePayload = {
+      ...parsed.data,
+      authorRole: finalAuthorRole,
+      publishedAtCustom,
+      tags: sanitizedTags,
+      filterLabels: sanitizedFilterLabels,
+      authorImage: parsed.data.authorImage ?? "",
+      readTime,
+      published,
+      publishedVersion,
+      publishedAt,
+      updatedAt: new Date(),
+    };
+
+    // Flag draft changes only if a published article is being saved as draft with genuine changes from publishedVersion
+    const hasDraftChanges =
+      saveMode === "publish"
+        ? false
+        : published && publishedVersion
+        ? hasActualDraftChanges(updatePayload, publishedVersion)
+        : false;
+
+    // 6. [MongoDB Collection: "blogs"] Update article document in MongoDB
+    await db.collection("blogs").updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...updatePayload, hasDraftChanges } }
+    );
+
+    try {
+      revalidatePath("/blog");
+      if (existing.slug) {
+        revalidatePath(`/blog/${existing.slug}`);
+      }
+    } catch (revErr) {
+      console.warn("Failed to revalidate blog paths on update:", revErr);
+    }
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+// Deletes a single blog post permanently by its ObjectId
+async function deletePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  if (!ObjectId.isValid(id)) {
+    return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+  }
+
+  const client = await clientPromise;
+  const db = client.db("codemate_blog");
+  const postToDelete = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
+  // [MongoDB Collection: "blogs"] Delete blog post document by ObjectId
+  const result = await db.collection("blogs").deleteOne({ _id: new ObjectId(id) });
+
+  if (result.deletedCount === 0) {
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  }
+
+  try {
+    revalidatePath("/blog");
+    if (postToDelete?.slug) {
+      revalidatePath(`/blog/${postToDelete.slug}`);
+    }
+  } catch (revErr) {
+    console.warn("Failed to revalidate blog paths on delete:", revErr);
+  }
+
+  return NextResponse.json({ success: true });
+}
+
+// Export authenticated route handlers
+export const GET = withAuth(getSinglePost);
+export const PUT = withAuth(updatePost);
+export const DELETE = withAuth(deletePost);

@@ -420,22 +420,22 @@ function Achivements() {
         </motion.div>
       </div>
 
-      <motion.div onClick={() => handleArrow('left')} whileHover={{ opacity: 1 }} className='absolute hidden lg:flex  size-16 left-16 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
+      <motion.div onClick={() => handleArrow('left')} whileHover={{ opacity: 1 }} aria-label="Previous achievement" className='absolute hidden lg:flex size-16 left-16 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
         <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M21 12h-12" /><path d="M13 16l-4 -4l4 -4" /><path d="M12 3a9 9 0 1 0 0 18" /></svg>
       </motion.div>
 
-      <motion.div onClick={() => handleArrow('right')} whileHover={{ opacity: 1 }} className='absolute hidden lg:flex size-16 right-16 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
+      <motion.div onClick={() => handleArrow('right')} whileHover={{ opacity: 1 }} aria-label="Next achievement" className='absolute hidden lg:flex size-16 right-16 top-[30rem] rounded-full cursor-pointer text-white opacity-70'>
         <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12h12" /><path d="M11 8l4 4l-4 4" /><path d="M12 21a9 9 0 0 0 0 -18" /></svg>
       </motion.div>
 
 
       {/* for mobile */}
       <div className='flex gap-10 mt-10 '>
-        <motion.div onClick={() => handleArrow2('left')} whileHover={{ opacity: 0.7 }} className='lg:hidden size-16  rounded-full cursor-pointer text-zinc-400'>
+        <motion.div onClick={() => handleArrow2('left')} whileHover={{ opacity: 0.7 }} aria-label="Previous achievement" className='lg:hidden size-16 rounded-full cursor-pointer text-zinc-400'>
           <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M21 12h-12" /><path d="M13 16l-4 -4l4 -4" /><path d="M12 3a9 9 0 1 0 0 18" /></svg>
         </motion.div>
 
-        <motion.div onClick={() => handleArrow2('right')} whileHover={{ opacity: 0.7 }} className=' lg:hidden size-16 right-24 top-[30rem] rounded-full cursor-pointer text-zinc-400'>
+        <motion.div onClick={() => handleArrow2('right')} whileHover={{ opacity: 0.7 }} aria-label="Next achievement" className='lg:hidden size-16 right-24 top-[30rem] rounded-full cursor-pointer text-zinc-400'>
           <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-right-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M3 12h12" /><path d="M11 8l4 4l-4 4" /><path d="M12 21a9 9 0 0 0 0 -18" /></svg>
         </motion.div>
       </div>
@@ -452,13 +452,15 @@ function Card({ image, alt, title, description, link, imagePosition }: { image: 
       <img src={image as string} alt={alt as string} className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : imagePosition === 'bottom' ? 'object-bottom' : ''}`} />
 
       <div className='px-5 md:px-10 flex flex-col gap-2 md:gap-4 mt-4 md:mt-8'>
-        <h1 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold '>{title}</h1>
+        <h3 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold '>{title}</h3>
         <p className='text-zinc-500 text-xs md:text-[1.3rem] md:leading-relaxed lg:text-xs'>{description}</p>
       </div>
 
       {link && link !== "" && (
-        <a href={link as string} target='_blank'>
-          <motion.button whileHover={{ opacity: 0.7 }} className='absolute text-lg md:text-[1.5rem] lg:text-lg px-5 md:px-10 bottom-8 md:bottom-12 text-[#00BFFF]'>Read More</motion.button>
+        <a href={link as string} target='_blank' rel='noopener noreferrer' aria-label={`Read more about ${title}`} className='absolute text-lg md:text-[1.5rem] lg:text-lg px-5 md:px-10 bottom-8 md:bottom-12 text-[#00BFFF] cursor-pointer inline-flex items-center'>
+          <motion.span whileHover={{ opacity: 0.7 }}>
+            Read More <span className='sr-only'>about {title}</span>
+          </motion.span>
         </a>
       )}
     </motion.div>

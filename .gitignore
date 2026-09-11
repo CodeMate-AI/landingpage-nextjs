@@ -54,3 +54,7 @@ videos/*
 !videos/*.ts
 public/_next-video
 .cora/
+.agents/
+
+# scripts
+/scripts/
