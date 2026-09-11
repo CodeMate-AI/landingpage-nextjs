@@ -295,11 +295,24 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
           <div className="rail-section">
             <div className="rail-section-title">Tags</div>
             <div className="rail-tags">
-              {uniqueTags.map((tag, idx) => (
-                <span key={idx} className="rail-tag">
-                  {tag.label}
-                </span>
-              ))}
+              {(() => {
+                const displayRailTags = uniqueTags.slice(0, 3);
+                const overflowRailCount = uniqueTags.length - 3;
+                return (
+                  <>
+                    {displayRailTags.map((tag, idx) => (
+                      <span key={idx} className="rail-tag">
+                        {tag.label}
+                      </span>
+                    ))}
+                    {overflowRailCount > 0 && (
+                      <span className="rail-tag text-neutral-400" title={`${overflowRailCount} more tags`}>
+                        +{overflowRailCount}
+                      </span>
+                    )}
+                  </>
+                );
+              })()}
             </div>
           </div>
         </aside>
@@ -348,11 +361,34 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
                   </div>
                   <div className="card-body">
                     <div className="card-pills">
-                      {relatedPost.tags.map((tag, tagIdx) => (
-                        <span key={tagIdx} className={`pill pill-${tag.tone}`}>
-                          {tag.label}
-                        </span>
-                      ))}
+                      {(() => {
+                        const seen = new Set<string>();
+                        const uniqueCardTags: Tag[] = [];
+                        for (const t of relatedPost.tags || []) {
+                          const norm = (t.label || "").trim().toUpperCase();
+                          if (norm && !seen.has(norm)) {
+                            seen.add(norm);
+                            uniqueCardTags.push(t);
+                          }
+                        }
+                        const displayTags = uniqueCardTags.slice(0, 2);
+                        const overflowCount = uniqueCardTags.length - 2;
+
+                        return (
+                          <>
+                            {displayTags.map((tag, tagIdx) => (
+                              <span key={tagIdx} className={`pill pill-${tag.tone}`}>
+                                {tag.label}
+                              </span>
+                            ))}
+                            {overflowCount > 0 && (
+                              <span className="pill pill-slate text-neutral-400" title={`${overflowCount} more tags`}>
+                                +{overflowCount}
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                     <div className="card-title">{relatedPost.title}</div>
                     <p className="card-excerpt">{relatedPost.dek}</p>

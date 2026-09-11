@@ -39,8 +39,11 @@ function getClientPromise(): Promise<MongoClient> {
 
   if (!global._mongoClientPromise) {
     const client = new MongoClient(uri, {
-      serverSelectionTimeoutMS: 8000,
-      connectTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 30000,
+      connectTimeoutMS: 30000,
+      socketTimeoutMS: 45000,
+      maxPoolSize: 20,
+      maxIdleTimeMS: 60000,
     });
     global._mongoClientPromise = client.connect().catch((err) => {
       // Reset cached promise on connection failure so subsequent requests can retry
