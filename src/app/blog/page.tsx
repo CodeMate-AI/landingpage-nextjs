@@ -23,8 +23,11 @@ export default async function BlogFeedPage() {
     const client = await clientPromise;
     const db = client.db("codemate_blog");
 
-    // Fetch posts and filter options in parallel with projection to avoid fetching heavy content ASTs
-    const [rawPosts, filterDoc] = await Promise.all([
+    const limit = 6;
+
+    // Fetch initial 6 posts, total count, and filter options in parallel with projection
+    const [total, rawPosts, filterDoc] = await Promise.all([
+      db.collection("blogs").countDocuments({ published: true }),
       db
         .collection("blogs")
         .find({ published: true })
@@ -32,7 +35,8 @@ export default async function BlogFeedPage() {
           content: 0,
           "publishedVersion.content": 0,
         })
-        .sort({ publishedAt: -1 })
+        .sort({ publishedAt: -1, _id: -1 })
+        .limit(limit)
         .toArray(),
       db.collection("filter_options").findOne({ _id: "global_filters" as any }),
     ]);
@@ -48,7 +52,7 @@ export default async function BlogFeedPage() {
           ? source.publishedAtCustom
           : post.publishedAt
             ? new Date(post.publishedAt).toLocaleDateString("en-US", {
-                month: "long",
+                month: "short",
                 day: "numeric",
                 year: "numeric",
               })
@@ -69,6 +73,15 @@ export default async function BlogFeedPage() {
       };
     });
 
+    const totalPages = Math.ceil(total / limit) || 1;
+    const initialPagination = {
+      total,
+      page: 1,
+      limit,
+      totalPages,
+      hasMore: 1 < totalPages,
+    };
+
     const filterOptions = filterDoc
       ? {
           categories: filterDoc.categories ?? [],
@@ -77,11 +90,22 @@ export default async function BlogFeedPage() {
         }
       : undefined;
 
-    return <BlogFeedClient posts={posts} filterOptions={filterOptions} />;
+    return (
+      <BlogFeedClient
+        posts={posts}
+        filterOptions={filterOptions}
+        initialPagination={initialPagination}
+      />
+    );
   } catch (error) {
     console.error("Failed to load blogs during build or render:", error);
     // Return empty feed to avoid crashing the build if MONGODB_URI is not set yet
-    return <BlogFeedClient posts={[]} />;
+    return (
+      <BlogFeedClient
+        posts={[]}
+        initialPagination={{ total: 0, page: 1, limit: 6, totalPages: 1, hasMore: false }}
+      />
+    );
   }
 }
 

@@ -11,9 +11,18 @@ interface FilterOptions {
   useCaseFilters: string[];
 }
 
+interface PaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
 interface BlogFeedClientProps {
   posts: BlogDetailPost[];
   filterOptions?: FilterOptions;
+  initialPagination?: PaginationMeta;
 }
 
 const DEFAULT_CATEGORIES = [
@@ -48,10 +57,19 @@ const DEFAULT_USE_CASES = [
 
 const normalizeLabel = (label: string) => label.trim().toUpperCase();
 
-export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientProps) {
+export default function BlogFeedClient({
+  posts: initialPosts,
+  filterOptions,
+  initialPagination,
+}: BlogFeedClientProps) {
   const categories = filterOptions?.categories ?? DEFAULT_CATEGORIES;
   const productFilters = filterOptions?.productFilters ?? DEFAULT_PRODUCTS;
   const useCaseFilters = filterOptions?.useCaseFilters ?? DEFAULT_USE_CASES;
+
+  const [posts, setPosts] = useState<BlogDetailPost[]>(initialPosts);
+  const [page, setPage] = useState<number>(initialPagination?.page ?? 1);
+  const [hasMore, setHasMore] = useState<boolean>(initialPagination?.hasMore ?? false);
+  const [loadingMore, setLoadingMore] = useState<boolean>(false);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -62,6 +80,45 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
   const [showFilters, setShowFilters] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [visibleCount, setVisibleCount] = useState(6);
+
+  // Synchronize initial SSR posts if changed
+  useEffect(() => {
+    setPosts(initialPosts);
+    setPage(initialPagination?.page ?? 1);
+    setHasMore(initialPagination?.hasMore ?? false);
+  }, [initialPosts, initialPagination]);
+
+  const handleLoadMore = async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+
+    try {
+      const nextPage = page + 1;
+      const params = new URLSearchParams({
+        page: nextPage.toString(),
+        limit: "6",
+      });
+
+      const res = await fetch(`/api/posts?${params.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        if (data.posts && data.posts.length > 0) {
+          setPosts((prev) => {
+            const existingIds = new Set(prev.map((p) => p.id));
+            const newUnique = data.posts.filter((p: BlogDetailPost) => !existingIds.has(p.id));
+            return [...prev, ...newUnique];
+          });
+          setPage(nextPage);
+          setVisibleCount((prev) => prev + data.posts.length);
+        }
+        setHasMore(Boolean(data.pagination?.hasMore));
+      }
+    } catch (err) {
+      console.error("Failed to load more posts:", err);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   const [openGroups, setOpenGroups] = useState({
     sortBy: false,
@@ -792,14 +849,21 @@ export default function BlogFeedClient({ posts, filterOptions }: BlogFeedClientP
             </div>
           )}
 
-          {filteredAndSortedPosts.length > visibleCount && (
+          {(filteredAndSortedPosts.length > visibleCount || hasMore) && (
             <div className="view-more">
               <button
                 suppressHydrationWarning
+                disabled={loadingMore}
                 className="btn-primary"
-                onClick={() => setVisibleCount((prev) => prev + 6)}
+                onClick={() => {
+                  if (filteredAndSortedPosts.length > visibleCount) {
+                    setVisibleCount((prev) => prev + 6);
+                  } else if (hasMore) {
+                    handleLoadMore();
+                  }
+                }}
               >
-                View more posts
+                {loadingMore ? "Loading more posts..." : "View more posts"}
               </button>
             </div>
           )}

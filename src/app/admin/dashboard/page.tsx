@@ -4,25 +4,46 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { adminFetch, clearAdminToken } from "@/lib/admin-api-client";
 
-// Administrative dashboard providing blog post management, status tracking, and deletion
+interface PaginationMeta {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  hasMore: boolean;
+}
+
+// Administrative dashboard providing blog post management, status tracking, deletion, and numbered pagination
 export default function AdminDashboard() {
-  // State variables for article list and data loading indicator
+  // State variables for article list, pagination metadata, and data loading indicator
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [pagination, setPagination] = useState<PaginationMeta>({
+    total: 0,
+    page: 1,
+    limit: 10,
+    totalPages: 1,
+    hasMore: false,
+  });
   const router = useRouter();
 
-  // Load posts list on component mount
+  // Load posts list whenever page or limit changes
   useEffect(() => {
-    fetchPosts();
-  }, []);
+    fetchPosts(page, limit);
+  }, [page, limit]);
 
-  // Fetches articles from /api/admin/posts, redirecting to login on 401 Unauthorized
-  const fetchPosts = async () => {
+  // Fetches articles from /api/admin/posts with page and limit parameters
+  const fetchPosts = async (currentPage = page, currentLimit = limit) => {
+    setLoading(true);
     try {
-      const res = await adminFetch("/api/admin/posts");
+      const res = await adminFetch(`/api/admin/posts?page=${currentPage}&limit=${currentLimit}`);
       if (res.ok) {
         const data = await res.json();
         setPosts(data.posts || []);
+        if (data.pagination) {
+          setPagination(data.pagination);
+        }
       } else if (res.status === 401) {
         router.push("/admin/login");
       }
@@ -48,8 +69,12 @@ export default function AdminDashboard() {
     try {
       const res = await adminFetch(`/api/admin/posts/${id}`, { method: "DELETE" });
       if (res.ok) {
-        // Optimistically remove deleted post from local state
-        setPosts((current) => current.filter((p) => p._id !== id));
+        // If this was the last item on a page > 1, navigate back one page
+        if (posts.length === 1 && page > 1) {
+          setPage((prev) => prev - 1);
+        } else {
+          fetchPosts(page, limit);
+        }
       } else if (res.status === 401) {
         router.push("/admin/login");
       } else {
@@ -59,6 +84,11 @@ export default function AdminDashboard() {
     } catch (err) {
       alert("Delete call failed.");
     }
+  };
+
+  const handleLimitChange = (newLimit: number) => {
+    setLimit(newLimit);
+    setPage(1); // Explicitly reset to page 1 on page size change
   };
 
   // Renders visual status badges: Published (emerald), Draft (yellow), or Draft Pending (pulsing blue)
@@ -80,6 +110,24 @@ export default function AdminDashboard() {
       </span>
     );
 
+  // Generate an array of page numbers with ellipsis if totalPages is large
+  const getPageNumbers = () => {
+    const totalPages = pagination.totalPages;
+    if (totalPages <= 7) {
+      return Array.from({ length: totalPages }, (_, i) => i + 1);
+    }
+    if (page <= 4) {
+      return [1, 2, 3, 4, 5, "...", totalPages];
+    }
+    if (page >= totalPages - 3) {
+      return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
+    }
+    return [1, "...", page - 1, page, page + 1, "...", totalPages];
+  };
+
+  const startRecord = pagination.total === 0 ? 0 : (page - 1) * limit + 1;
+  const endRecord = Math.min(page * limit, pagination.total);
+
   return (
     <main className="min-h-screen bg-[#09090b] p-4 font-sans text-neutral-100 sm:p-6 lg:p-8">
       <div className="mx-auto max-w-6xl">
@@ -93,14 +141,27 @@ export default function AdminDashboard() {
             <Link href="/admin/editor" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-500">
               Create New Post
             </Link>
-            <button onClick={handleLogout} className="inline-flex items-center justify-center rounded-lg border border-[#27272a] px-4 py-2.5 text-sm transition-colors hover:bg-[#18181b]">
+            <button onClick={handleLogout} className="inline-flex items-center justify-center rounded-lg border border-[#27272a] px-4 py-2.5 text-sm transition-colors hover:bg-[#18181b] cursor-pointer">
               Log Out
             </button>
           </div>
         </header>
 
         {loading ? (
-          <p>Loading posts...</p>
+          <div className="flex min-h-[300px] items-center justify-center">
+            <p className="text-sm text-neutral-400">Loading posts...</p>
+          </div>
+        ) : posts.length === 0 ? (
+          <div className="flex min-h-[300px] flex-col items-center justify-center rounded-xl border border-[#27272a] bg-[#18181b] p-8 text-center">
+            <p className="text-base text-neutral-300 font-medium">No articles found</p>
+            <p className="mt-1 text-sm text-neutral-500">Get started by creating your first blog article.</p>
+            <Link
+              href="/admin/editor"
+              className="mt-4 inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-blue-500"
+            >
+              Create New Post
+            </Link>
+          </div>
         ) : (
           <>
             {/* Mobile / Tablet view: responsive card layout */}
@@ -126,7 +187,7 @@ export default function AdminDashboard() {
                       </Link>
                       <button
                         onClick={() => handleDelete(post._id)}
-                        className="inline-flex flex-1 items-center justify-center rounded-lg border border-red-500/20 bg-red-500/10 px-3.5 py-2 text-sm font-semibold text-red-400 transition-all duration-200 hover:border-transparent hover:bg-red-600 hover:text-white sm:flex-none"
+                        className="inline-flex flex-1 items-center justify-center rounded-lg border border-red-500/20 bg-red-500/10 px-3.5 py-2 text-sm font-semibold text-red-400 transition-all duration-200 hover:border-transparent hover:bg-red-600 hover:text-white sm:flex-none cursor-pointer"
                       >
                         Delete
                       </button>
@@ -163,7 +224,7 @@ export default function AdminDashboard() {
                           </Link>
                           <button
                             onClick={() => handleDelete(post._id)}
-                            className="inline-flex items-center rounded-lg border border-red-500/20 bg-red-500/10 px-3.5 py-1.5 text-xs font-semibold text-red-400 transition-all duration-200 hover:border-transparent hover:bg-red-600 hover:text-white"
+                            className="inline-flex items-center rounded-lg border border-red-500/20 bg-red-500/10 px-3.5 py-1.5 text-xs font-semibold text-red-400 transition-all duration-200 hover:border-transparent hover:bg-red-600 hover:text-white cursor-pointer"
                           >
                             Delete
                           </button>
@@ -173,6 +234,72 @@ export default function AdminDashboard() {
                   ))}
                 </tbody>
               </table>
+            </div>
+
+            {/* Responsive Numbered Pagination Bar */}
+            <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-xl border border-[#27272a] bg-[#18181b] px-4 py-3 sm:flex-row sm:px-6">
+              <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-400">
+                <span>
+                  Showing <strong className="text-white">{startRecord}</strong> to{" "}
+                  <strong className="text-white">{endRecord}</strong> of{" "}
+                  <strong className="text-white">{pagination.total}</strong> articles
+                </span>
+                <div className="flex items-center gap-1.5 border-l border-[#27272a] pl-3">
+                  <span>Per page:</span>
+                  <select
+                    value={limit}
+                    onChange={(e) => handleLimitChange(Number(e.target.value))}
+                    className="rounded border border-[#27272a] bg-[#09090b] px-2 py-1 text-xs text-white focus:border-blue-500 focus:outline-none cursor-pointer"
+                  >
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={25}>25</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <button
+                  type="button"
+                  disabled={page <= 1}
+                  onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                  className="rounded-lg border border-[#27272a] bg-[#09090b] px-3 py-1.5 text-xs font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  &larr; Previous
+                </button>
+
+                <div className="flex items-center gap-1">
+                  {getPageNumbers().map((pNum, idx) =>
+                    pNum === "..." ? (
+                      <span key={`ellipsis-${idx}`} className="px-1 text-xs text-neutral-500">
+                        ...
+                      </span>
+                    ) : (
+                      <button
+                        key={`page-${pNum}`}
+                        type="button"
+                        onClick={() => setPage(Number(pNum))}
+                        className={`min-w-[32px] rounded-lg px-2.5 py-1.5 text-xs font-semibold transition cursor-pointer ${
+                          page === pNum
+                            ? "bg-blue-600 text-white shadow-sm"
+                            : "border border-[#27272a] bg-[#09090b] text-neutral-300 hover:bg-[#27272a] hover:text-white"
+                        }`}
+                      >
+                        {pNum}
+                      </button>
+                    )
+                  )}
+                </div>
+
+                <button
+                  type="button"
+                  disabled={page >= pagination.totalPages}
+                  onClick={() => setPage((prev) => Math.min(pagination.totalPages, prev + 1))}
+                  className="rounded-lg border border-[#27272a] bg-[#09090b] px-3 py-1.5 text-xs font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                >
+                  Next &rarr;
+                </button>
+              </div>
             </div>
           </>
         )}

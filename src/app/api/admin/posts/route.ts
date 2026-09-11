@@ -6,12 +6,30 @@ import { BlogPostSchema } from "@/lib/validation";
 import { calculateReadTime, hasActualDraftChanges } from "@/lib/blog-compiler";
 import slugify from "@/utils/slugify";
 
-// Retrieves all blog articles from MongoDB sorted in reverse chronological order ( new one at top )
-async function getPostsHandler() {
+// Retrieves blog articles from MongoDB with pagination and stable composite sorting
+async function getPostsHandler(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const pageParam = parseInt(searchParams.get("page") || "1", 10);
+  const limitParam = parseInt(searchParams.get("limit") || "10", 10);
+
+  const page = Math.max(1, isNaN(pageParam) ? 1 : pageParam);
+  const limit = Math.max(1, Math.min(100, isNaN(limitParam) ? 10 : limitParam));
+  const skip = (page - 1) * limit;
+
   const client = await clientPromise;
   const db = client.db("codemate_blog");
-  // [MongoDB Collection: "blogs"] Query all articles sorted newest-first
-  const rawPosts = await db.collection("blogs").find().sort({ createdAt: -1 }).toArray();
+
+  const [total, rawPosts] = await Promise.all([
+    db.collection("blogs").countDocuments(),
+    db
+      .collection("blogs")
+      .find()
+      .sort({ createdAt: -1, _id: -1 })
+      .skip(skip)
+      .limit(limit)
+      .toArray(),
+  ]);
+
   const posts = rawPosts.map((post) => ({
     ...post,
     hasDraftChanges:
@@ -19,7 +37,19 @@ async function getPostsHandler() {
         ? hasActualDraftChanges(post, post.publishedVersion)
         : Boolean(post.hasDraftChanges),
   }));
-  return NextResponse.json({ posts });
+
+  const totalPages = Math.ceil(total / limit) || 1;
+
+  return NextResponse.json({
+    posts,
+    pagination: {
+      total,
+      page,
+      limit,
+      totalPages,
+      hasMore: page < totalPages,
+    },
+  });
 }
 
 // Validates incoming article data, computes unique slug & read time, and inserts new blog document
