@@ -170,11 +170,36 @@ function formatTableCells(html: string): string {
   });
 }
 
+export function escapeHtml(str: string): string {
+  return String(str || "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+export function isSafeUrl(url: string): boolean {
+  if (!url) return false;
+  const trimmed = url.trim();
+  return /^https?:\/\//i.test(trimmed) || /^\//.test(trimmed) || /^\.\//.test(trimmed);
+}
+
 function formatLogos(html: string): string {
-  const logoRegex = /<p>\s*\[logos:\s*([\s\S]*?)\]\s*<\/p>/g;
+  const logoRegex = /(?:<p>\s*)?\[logos:\s*([\s\S]*?)\](?:\s*<\/p>)?/gi;
   return html.replace(logoRegex, (match, content) => {
-    const items = content
-      .split(",")
+    // Strip any inner HTML tags (e.g. <a href="...">...</a> or &lt;a href="..."&gt;...&lt;/a&gt;)
+    const cleanContent = content
+      .replace(/<[^>]*>/g, "")
+      .replace(/&lt;[^&]*?&gt;/gi, "")
+      .trim();
+    if (!cleanContent) return "";
+
+    // Split on comma boundaries followed by a URL pattern to protect roles containing commas
+    const entryDelimRegex = /,\s*(?=(?:https?:\/\/|\/|\.\/))/gi;
+    const rawEntries = cleanContent.split(entryDelimRegex);
+
+    const items = rawEntries
       .map((item: string) => {
         const parts = item.split("|").map((p) => p.trim());
         return {
@@ -183,81 +208,11 @@ function formatLogos(html: string): string {
           tag: parts[2] || "",
         };
       })
-      .filter((item: any) => item.src);
+      .filter((item: { src: string; name: string; tag: string }) => item.src && isSafeUrl(item.src));
 
-    let gridHtml = `
-      <style>
-        .logo-grid {
-          display: grid;
-          grid-template-columns: repeat(1, minmax(0, 1fr));
-          gap: 1.5rem;
-          margin: 2rem 0;
-        }
-        @media (min-width: 640px) {
-          .logo-grid {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-          }
-        }
-        .logo-grid-card {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          border-radius: 1rem;
-          border: 1px solid rgba(226, 232, 240, 0.8);
-          background-color: #ffffff;
-          padding: 1.5rem 1.25rem;
-          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-          overflow: hidden;
-          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .logo-grid-card:hover {
-          transform: translateY(-4px) scale(1.02);
-          border-color: rgba(0, 191, 255, 0.3);
-          box-shadow: 0 12px 24px -4px rgba(0, 191, 255, 0.12);
-        }
-        .logo-img-wrap {
-          display: flex;
-          height: 6rem;
-          width: 100%;
-          align-items: center;
-          justify-content: center;
-          padding: 0.25rem;
-          overflow: hidden;
-        }
-        .logo-img-wrap img {
-          max-height: 4.5rem;
-          width: auto;
-          max-width: 85%;
-          object-fit: contain;
-          display: block;
-          transform: scale(var(--logo-scale, 1));
-          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .logo-grid-card:hover .logo-img-wrap img {
-          transform: scale(calc(var(--logo-scale, 1) * 1.05));
-        }
-        .logo-img-maruti {
-          --logo-scale: 1.35;
-          border-radius: 6px;
-        }
-        .logo-img-tvs {
-          --logo-scale: 1.5;
-        }
-        .logo-img-hp {
-          --logo-scale: 1.25;
-        }
-        .logo-grid-card .logo-tag {
-          margin-top: 0.85rem;
-          font-size: 0.75rem;
-          font-weight: 600;
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          color: #64748b;
-        }
-      </style>
-      <div class="logo-grid">
-    `;
+    if (items.length === 0) return "";
+
+    let gridHtml = '<div class="logo-grid">';
     for (const item of items) {
       const lower = item.name.toLowerCase();
       let logoClass = "";
@@ -265,25 +220,27 @@ function formatLogos(html: string): string {
       else if (lower.includes("tvs")) logoClass = "logo-img-tvs";
       else if (lower.includes("hp")) logoClass = "logo-img-hp";
 
+      const safeSrc = escapeHtml(item.src);
+      const safeName = escapeHtml(item.name);
+      const safeTag = escapeHtml(item.tag);
+      const safeClass = logoClass ? ` class="${logoClass}"` : "";
+
       gridHtml += `
         <div class="logo-grid-card">
           <div class="logo-img-wrap">
             <img
-              src="${item.src}"
-              alt="${item.name}"
-              class="${logoClass}"
+              src="${safeSrc}"
+              alt="${safeName}"${safeClass}
               loading="lazy"
               decoding="async"
               aria-hidden="true"
             />
           </div>
-          <span class="logo-tag">
-            ${item.tag}
-          </span>
+          ${safeTag ? `<span class="logo-tag">${safeTag}</span>` : ""}
         </div>
       `;
     }
-    gridHtml += '</div>';
+    gridHtml += "</div>";
     return gridHtml;
   });
 }
@@ -313,7 +270,7 @@ function formatFaqSection(html: string): string {
     const question = pairMatch[1].trim();
     const answer = pairMatch[2].trim();
 
-    faqContainerHtml += `<div class="faq-pill-card"><button type="button" class="faq-pill-summary"><span class="faq-circle-badge">+</span><span class="faq-question-title">${question}</span></button><div class="faq-answer-body"><p>${answer}</p></div></div>`;
+    faqContainerHtml += `<div class="faq-pill-card"><button type="button" class="faq-pill-summary"><span class="faq-circle-badge">+</span><span class="faq-question-title">${escapeHtml(question)}</span></button><div class="faq-answer-body"><p>${escapeHtml(answer)}</p></div></div>`;
     questionCount++;
 
     faqContentLength += matchedText.length;
@@ -331,8 +288,43 @@ function formatFaqSection(html: string): string {
 }
 
 function formatVideos(html: string): string {
-  return html.replace(/<p>\s*\[video:\s*([^\]\s]+)\]\s*<\/p>/g, (match, url) => {
-    return `<video src="${url}" controls muted class="blog-video" style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); margin: 24px 0; display: block;"></video>`;
+  const videoRegex = /(?:<p>\s*)?\[video:\s*([\s\S]*?)\](?:\s*<\/p>)?/gi;
+  return html.replace(videoRegex, (match, rawUrl) => {
+    // Strip any inner anchor or span HTML tags from TipTap auto-linking or entity escaped tags
+    const cleanUrl = rawUrl
+      .replace(/<[^>]*>/g, "")
+      .replace(/&lt;[^&]*?&gt;/gi, "")
+      .trim();
+    if (!cleanUrl) return "";
+
+    if (!isSafeUrl(cleanUrl)) {
+      return `<div class="video-embed-warning p-3 my-4 rounded-lg border border-amber-800 bg-amber-950/40 text-amber-300 text-xs font-mono">Invalid or unsafe video URL</div>`;
+    }
+
+    const safeUrl = escapeHtml(cleanUrl);
+
+    // 1. YouTube Embed Detection
+    const ytMatch = cleanUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+    if (ytMatch && ytMatch[1]) {
+      const videoId = ytMatch[1];
+      return `<div class="video-embed-container my-6" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
+    }
+
+    // 2. Vimeo Embed Detection
+    const vimeoMatch = cleanUrl.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/i);
+    if (vimeoMatch && vimeoMatch[3]) {
+      const videoId = vimeoMatch[3];
+      return `<div class="video-embed-container my-6" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"><iframe src="https://player.vimeo.com/video/${videoId}" title="Vimeo video player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
+    }
+
+    // 3. Direct Playable Video Files (.mp4, .webm, .ogg, .mov, etc.) or blob URLs
+    const isDirectVideo = /\.(mp4|webm|ogg|ogv|mov|m4v)(\?.*)?$/i.test(cleanUrl) || cleanUrl.startsWith("blob:");
+    if (isDirectVideo) {
+      return `<div class="video-embed-container my-6"><video src="${safeUrl}" controls muted playsinline preload="metadata" class="blog-video" style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); display: block;"></video></div>`;
+    }
+
+    // 4. Fallback for non-embeddable pages
+    return `<div class="video-embed-warning p-3 my-4 rounded-lg border border-amber-800/80 bg-amber-950/30 text-amber-300 text-xs"><span class="font-semibold uppercase">Video Notice:</span> URL is not a direct video file or supported embed: <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="underline text-blue-400 font-mono">${safeUrl}</a></div>`;
   });
 }
 

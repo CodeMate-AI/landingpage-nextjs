@@ -2968,4 +2968,107 @@ ul[data-type="taskList"] li > div,
   .hero-search-input {
     font-size: 12px !important;
   }
-}
+}
+
+/* ==========================================================================
+   Logo Grid Component Styles
+   ========================================================================== */
+.logo-grid {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+@media (min-width: 640px) {
+  .logo-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.logo-grid-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+  background-color: #ffffff;
+  padding: 1.5rem 1.25rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-grid-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(0, 191, 255, 0.3);
+  box-shadow: 0 12px 24px -4px rgba(0, 191, 255, 0.12);
+}
+
+.logo-img-wrap {
+  display: flex;
+  height: 6rem;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  padding: 0.25rem;
+  overflow: hidden;
+}
+
+.logo-img-wrap img {
+  max-height: 4.5rem;
+  width: auto;
+  max-width: 85%;
+  object-fit: contain;
+  display: block;
+  transform: scale(var(--logo-scale, 1));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-grid-card:hover .logo-img-wrap img {
+  transform: scale(calc(var(--logo-scale, 1) * 1.05));
+}
+
+.logo-img-maruti {
+  --logo-scale: 1.35;
+  border-radius: 6px;
+}
+
+.logo-img-tvs {
+  --logo-scale: 1.5;
+}
+
+.logo-img-hp {
+  --logo-scale: 1.25;
+}
+
+.logo-grid-card .logo-tag {
+  margin-top: 0.85rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   Video Embed Component Styles
+   ========================================================================== */
+.video-embed-container {
+  margin: 1.5rem 0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-embed-warning {
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  background-color: rgba(69, 26, 3, 0.3);
+  border: 1px solid rgba(146, 64, 14, 0.6);
+  color: #fcd34d;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+

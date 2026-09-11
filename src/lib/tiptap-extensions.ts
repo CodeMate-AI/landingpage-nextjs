@@ -13,6 +13,7 @@ import { Subscript } from "@tiptap/extension-subscript";
 import { Superscript } from "@tiptap/extension-superscript";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
+import { MarkdownRulesExtension } from "./tiptap-markdown-rules";
 
 
 /**
@@ -113,6 +114,7 @@ export const extensions = [
     types: ["heading", "paragraph"],
   }),
   Typography,
+  MarkdownRulesExtension,
   VideoNodeServer,
   VideoUploadNodeServer,
 ];

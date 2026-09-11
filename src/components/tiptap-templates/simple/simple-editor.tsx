@@ -76,11 +76,13 @@ const CustomHeading = Heading.extend({
   levels: [2, 3, 4],
 })
 
+import { MarkdownRulesExtension } from "@/lib/tiptap-markdown-rules"
+
 const CustomTaskList = TaskList.extend({
   addInputRules() {
     return [
       wrappingInputRule({
-        find: /^\s*(\[([ |x])\])\s$/,
+        find: /^\s*(\[([ |xX])\])\s$/,
         type: this.type,
       }),
     ]
@@ -446,6 +448,11 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         horizontalRule: false,
         link: false,
       }),
+      MarkdownRulesExtension,
+      CustomTaskList,
+      TaskItem.configure({ nested: true }),
+      VideoNode,
+      VideoUploadNode,
       CustomLink,
       CustomHeading,
       HorizontalRule,
@@ -455,8 +462,6 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       }),
       Subscript,
       Superscript,
-      CustomTaskList,
-      TaskItem.configure({ nested: true }),
       Image,
       ImageUploadNode.configure({
         accept: "image/*",
@@ -464,8 +469,6 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         limit: 3,
         upload: handleImageUpload,
       }),
-      VideoNode,
-      VideoUploadNode,
       Table.configure({ resizable: true }),
       TableRow,
       TableHeader,
