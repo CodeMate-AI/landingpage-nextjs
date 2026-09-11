@@ -5,6 +5,9 @@ import { MongoClient } from "mongodb";
 function configureDns() {
   try {
     dns.setServers(["8.8.8.8", "1.1.1.1"]);
+    if (typeof (dns as any).promises?.setServers === "function") {
+      (dns as any).promises.setServers(["8.8.8.8", "1.1.1.1"]);
+    }
     if (typeof dns.setDefaultResultOrder === "function") {
       dns.setDefaultResultOrder("ipv4first");
     }

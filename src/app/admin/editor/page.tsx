@@ -1,6 +1,7 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { adminFetch } from "@/lib/admin-api-client";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { DatePicker } from "@/components/ui/date-picker";
 import BlogPreviewModal from "./BlogPreviewModal";
@@ -122,7 +123,7 @@ function EditorContent() {
   // Fetches existing article data from /api/admin/posts/:id when editing
   const loadPost = useCallback(async () => {
     try {
-      const res = await fetch(`/api/admin/posts/${postId}`);
+      const res = await adminFetch(`/api/admin/posts/${postId}`);
       if (res.ok) {
         const data = await res.json();
         const post = data.post;
@@ -256,7 +257,7 @@ function EditorContent() {
       const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
       const method = targetId ? "PUT" : "POST";
 
-      const res = await fetch(url, {
+      const res = await adminFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: serialized,
@@ -410,7 +411,7 @@ function EditorContent() {
       } catch {}
 
       try {
-        void fetch(url, {
+        void adminFetch(url, {
           method,
           headers: { "Content-Type": "application/json" },
           body: serialized,
@@ -445,7 +446,7 @@ function EditorContent() {
   // Fetches dynamic filter options and categories from the database on component mount
   const loadFilters = useCallback(async () => {
     try {
-      const res = await fetch("/api/admin/filters");
+      const res = await adminFetch("/api/admin/filters");
       if (res.ok) {
         const data = await res.json();
         if (data.categories?.length) setCategories(data.categories);
@@ -470,7 +471,7 @@ function EditorContent() {
     if (!value.trim()) return;
     setFilterSaving(true);
     try {
-      const res = await fetch("/api/admin/filters", {
+      const res = await adminFetch("/api/admin/filters", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ action, type, value: value.trim() }),
@@ -520,7 +521,7 @@ function EditorContent() {
       const url = postId ? `/api/admin/posts/${postId}` : "/api/admin/posts";
       const method = postId ? "PUT" : "POST";
 
-      const res = await fetch(url, {
+      const res = await adminFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -554,7 +555,7 @@ function EditorContent() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/api/admin/upload", {
+      const res = await adminFetch("/api/admin/upload", {
         method: "POST",
         body: formData,
       });
@@ -580,7 +581,7 @@ function EditorContent() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const res = await fetch("/api/admin/upload", {
+      const res = await adminFetch("/api/admin/upload", {
         method: "POST",
         body: formData,
       });

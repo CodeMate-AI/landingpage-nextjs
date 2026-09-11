@@ -17,7 +17,12 @@ export async function POST(req: NextRequest) {
     }
 
     const { email, password } = parsed.data;
-    const ip = req.headers.get("x-forwarded-for") || "127.0.0.1";
+    // Extract genuine client IP behind reverse proxies/CDNs
+    const rawForwarded = req.headers.get("x-forwarded-for");
+    const ip =
+      (rawForwarded ? rawForwarded.split(",")[0]?.trim() : null) ||
+      req.headers.get("x-real-ip") ||
+      "127.0.0.1";
 
     // 2. Enforce MongoDB-backed sliding-window rate limit (max 5 attempts per 15 min)
     const locked = await isRateLimited(ip, email);
@@ -40,15 +45,26 @@ export async function POST(req: NextRequest) {
     // 5. Successful login: reset failed login attempt counter for this IP/email
     await resetRateLimit(ip, email);
 
-    // 6. Sign stateless JWT token containing user identity
+    // 6. Ensure tokenVersion exists persistently in the database
+    let tokenVersion = user.tokenVersion;
+    if (typeof tokenVersion !== "number") {
+      tokenVersion = 1;
+      await db.collection("users").updateOne(
+        { _id: user._id },
+        { $set: { tokenVersion: 1 } }
+      );
+    }
+
+    // 7. Sign stateless JWT token containing user identity and current tokenVersion
     const token = await signJWT({
       userId: user._id.toString(),
       email: user.email,
       name: user.name,
+      tokenVersion,
     });
 
-    // 7. Attach signed JWT in a secure, HTTP-only cookie with 7-day expiration
-    const response = NextResponse.json({ success: true });
+    // 8. Attach signed JWT in a secure, HTTP-only cookie and return token string in JSON
+    const response = NextResponse.json({ success: true, token });
     response.cookies.set({
       name: COOKIE_NAME,
       value: token,
@@ -65,3 +81,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+

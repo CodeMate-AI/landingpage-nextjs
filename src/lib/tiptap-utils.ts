@@ -13,6 +13,7 @@ import {
   type Editor,
   type NodeWithPos,
 } from "@tiptap/react"
+import { getAdminToken } from "@/lib/admin-api-client"
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 
@@ -425,6 +426,10 @@ export const handleImageUpload = async (
     }
 
     xhr.open("POST", "/api/admin/upload")
+    const token = getAdminToken()
+    if (token) {
+      xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+    }
     xhr.send(formData)
   })
 }
@@ -468,6 +473,10 @@ export const handleVideoUpload = async (
     if (abortSignal) abortSignal.addEventListener("abort", () => xhr.abort())
 
     xhr.open("POST", "/api/admin/upload")
+    const token = getAdminToken()
+    if (token) {
+      xhr.setRequestHeader("Authorization", `Bearer ${token}`)
+    }
     xhr.send(formData)
   })
 }

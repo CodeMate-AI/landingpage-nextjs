@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { setAdminToken } from "@/lib/admin-api-client";
 
 // Client-side authentication page for CodeMate CMS administrative access
 export default function AdminLogin() {
@@ -35,11 +36,15 @@ export default function AdminLogin() {
         body: JSON.stringify({ email, password }),
       });
 
-      // 2. On 200 OK, navigate to admin dashboard; otherwise display error message
+      const data = await res.json().catch(() => ({}));
+
+      // 2. On 200 OK, store Bearer token and navigate to admin dashboard; otherwise display error message
       if (res.ok) {
+        if (data.token) {
+          setAdminToken(data.token);
+        }
         router.push("/admin/dashboard");
       } else {
-        const data = await res.json();
         if (res.status === 429) {
           setIsLocked(true);
         }

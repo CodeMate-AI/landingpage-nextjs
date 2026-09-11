@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { adminFetch, clearAdminToken } from "@/lib/admin-api-client";
 
 // Administrative dashboard providing blog post management, status tracking, and deletion
 export default function AdminDashboard() {
@@ -18,10 +19,10 @@ export default function AdminDashboard() {
   // Fetches articles from /api/admin/posts, redirecting to login on 401 Unauthorized
   const fetchPosts = async () => {
     try {
-      const res = await fetch("/api/admin/posts");
+      const res = await adminFetch("/api/admin/posts");
       if (res.ok) {
         const data = await res.json();
-        setPosts(data.posts);
+        setPosts(data.posts || []);
       } else if (res.status === 401) {
         router.push("/admin/login");
       }
@@ -32,9 +33,12 @@ export default function AdminDashboard() {
     }
   };
 
-  // Calls logout API to clear auth cookie and redirects user to login screen
+  // Calls logout API to increment tokenVersion, clears Bearer token, and redirects user to login screen
   const handleLogout = async () => {
-    await fetch("/api/admin/logout", { method: "POST" });
+    try {
+      await adminFetch("/api/admin/logout", { method: "POST" });
+    } catch {}
+    clearAdminToken();
     router.push("/admin/login");
   };
 
@@ -42,14 +46,14 @@ export default function AdminDashboard() {
   const handleDelete = async (id: string) => {
     if (!confirm("Are you sure you want to delete this post?")) return;
     try {
-      const res = await fetch(`/api/admin/posts/${id}`, { method: "DELETE" });
+      const res = await adminFetch(`/api/admin/posts/${id}`, { method: "DELETE" });
       if (res.ok) {
         // Optimistically remove deleted post from local state
         setPosts((current) => current.filter((p) => p._id !== id));
       } else if (res.status === 401) {
         router.push("/admin/login");
       } else {
-        const data = await res.json();
+        const data = await res.json().catch(() => ({}));
         alert(data.error || "Delete call failed.");
       }
     } catch (err) {

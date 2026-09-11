@@ -2,35 +2,71 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyJWT, COOKIE_NAME } from "./lib/auth";
 
-// Next.js Edge Middleware guarding all admin routes against unauthenticated access
+// Next.js Edge Middleware guarding admin pages and API endpoints
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("x-pathname", pathname);
 
-  // Intercept all /admin routes while keeping /admin/login publicly accessible
+  // 1. Allow CORS OPTIONS preflight requests cleanly
+  if (req.method.toUpperCase() === "OPTIONS") {
+    return new NextResponse(null, { status: 204 });
+  }
+
+  // 2. Guard administrative page routes (/admin/*)
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    // 1. Retrieve the auth-token session cookie
     const cookie = req.cookies.get(COOKIE_NAME);
 
-    // 2. If cookie is missing, redirect user to login page immediately
     if (!cookie) {
       return NextResponse.redirect(new URL("/admin/login", req.url));
     }
 
-    // 3. Verify JWT signature and token validity
     const payload = await verifyJWT(cookie.value);
     if (!payload) {
-      // If token is invalid or expired, redirect to login and clear corrupted cookie
       const res = NextResponse.redirect(new URL("/admin/login", req.url));
       res.cookies.delete(COOKIE_NAME);
       return res;
     }
   }
 
-  // Allow authenticated request to proceed to the destination page
-  return NextResponse.next();
+  // 3. Guard administrative API routes (/api/admin/*), allowing /api/admin/login
+  if (pathname.startsWith("/api/admin") && pathname !== "/api/admin/login") {
+    const authHeader = req.headers.get("authorization");
+    const match = authHeader?.match(/^Bearer +(\S+)$/i);
+
+    if (!match) {
+      return NextResponse.json(
+        { detail: "Not authenticated", error: "Unauthorized: Missing or malformed Authorization header" },
+        {
+          status: 401,
+          headers: { "WWW-Authenticate": "Bearer" },
+        }
+      );
+    }
+
+    const payload = await verifyJWT(match[1]);
+    if (!payload) {
+      return NextResponse.json(
+        { detail: "Not authenticated", error: "Unauthorized: Invalid or expired token" },
+        {
+          status: 401,
+          headers: { "WWW-Authenticate": "Bearer" },
+        }
+      );
+    }
+  }
+
+  // Forward request with injected x-pathname header
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 }
 
-// Scopes this middleware specifically to the /admin route hierarchy
+// Scopes this middleware specifically to admin pages and admin API endpoints
 export const config = {
-  matcher: ["/admin/:path*"],
+  matcher: ["/admin/:path*", "/api/admin/:path*"],
 };
+
+
