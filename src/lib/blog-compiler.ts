@@ -289,13 +289,14 @@ function formatFaqSection(html: string): string {
     // Sentence-boundary capitalized question matcher (strictly uppercase words or markers)
     const questionRegex = /(?:^|(?<=[.!?\n]\s+))(?:(?:\+|•|&bull;|&#8226;|\u2022|\*|-|Q:|Question:|\d+[\.\)])\s*)?((?:(?:What|How|Why|When|Where|Who|Which|Is|Are|Can|Could|Should|Would|Will|Do|Does|Have|Has|Whom|Whose)\b|(?:\+|•|\*|-|Q:))[^?]{2,200}\?)/g;
 
-    const questionMatches: { start: number; end: number; question: string }[] = [];
+    const questionMatches: { fullStart: number; start: number; end: number; question: string }[] = [];
     let qm: RegExpExecArray | null;
     while ((qm = questionRegex.exec(normalizedText)) !== null) {
       const matchFull = qm[0];
       const matchQuestion = qm[1];
       const matchIndex = qm.index + (matchFull.length - matchQuestion.length);
       questionMatches.push({
+        fullStart: qm.index,
         start: matchIndex,
         end: matchIndex + matchQuestion.length,
         question: matchQuestion.trim(),
@@ -307,7 +308,7 @@ function formatFaqSection(html: string): string {
         const cur = questionMatches[i];
         const next = questionMatches[i + 1];
         const rawAnswer = next
-          ? normalizedText.substring(cur.end, next.start).trim()
+          ? normalizedText.substring(cur.end, next.fullStart).trim()
           : normalizedText.substring(cur.end).trim();
 
         const cleanQ = cur.question
@@ -315,6 +316,7 @@ function formatFaqSection(html: string): string {
           .trim();
         const cleanA = rawAnswer
           .replace(/^\s*(?:A:|Answer:)\s*/i, "")
+          .replace(/[\s+•*—–-]+$/, "")
           .trim();
 
         if (cleanQ) {
