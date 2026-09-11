@@ -10,10 +10,10 @@ import slugify from "@/utils/slugify";
 async function getPostsHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const pageParam = parseInt(searchParams.get("page") || "1", 10);
-  const limitParam = parseInt(searchParams.get("limit") || "10", 10);
+  const limitParam = parseInt(searchParams.get("limit") || "5", 10);
 
   const page = Math.max(1, isNaN(pageParam) ? 1 : pageParam);
-  const limit = Math.max(1, Math.min(100, isNaN(limitParam) ? 10 : limitParam));
+  const limit = Math.max(1, Math.min(100, isNaN(limitParam) ? 5 : limitParam));
   const skip = (page - 1) * limit;
 
   const client = await clientPromise;
