@@ -117,6 +117,24 @@ export function formatInlineMarkdown(text: string): string {
   return result;
 }
 
+function isTableRow(line: string): boolean {
+  const trimmed = line.trim();
+  return trimmed.startsWith("|") && trimmed.endsWith("|") && trimmed.length > 1;
+}
+
+function parseTableCells(line: string): string[] {
+  const trimmed = line.trim();
+  const stripped = trimmed.replace(/^\|/, "").replace(/\|$/, "");
+  return stripped.split(/(?<!\\)\|/).map((c) => c.trim().replace(/\\\|/g, "|"));
+}
+
+function isTableDelimiterRow(line: string): boolean {
+  if (!isTableRow(line)) return false;
+  const cells = parseTableCells(line);
+  if (cells.length === 0) return false;
+  return cells.every((cell) => /^:?-{1,}:?$/.test(cell));
+}
+
 /**
  * Converts a plain-text markdown snippet or document into standard HTML for ProseMirror DOMParser.
  */
@@ -156,6 +174,46 @@ export function convertMarkdownToHtml(rawText: string): string {
     if (!trimmed) {
       closeOpenLists();
       continue;
+    }
+
+    // 0. Markdown Table (| col1 | col2 |)
+    if (isTableRow(trimmed)) {
+      closeOpenLists();
+      const tableLines: string[] = [];
+      while (i < lines.length && isTableRow(lines[i].trim())) {
+        tableLines.push(lines[i].trim());
+        i++;
+      }
+      i--; // Step back one since the loop increments i
+
+      if (tableLines.length > 0) {
+        const headerCells = parseTableCells(tableLines[0]);
+        let bodyStartIdx = 1;
+
+        if (tableLines.length > 1 && isTableDelimiterRow(tableLines[1])) {
+          bodyStartIdx = 2;
+        }
+
+        html += "<table><thead><tr>";
+        for (const hCell of headerCells) {
+          html += `<th><p>${formatInlineMarkdown(hCell)}</p></th>`;
+        }
+        html += "</tr></thead><tbody>";
+
+        for (let r = bodyStartIdx; r < tableLines.length; r++) {
+          const rowCells = parseTableCells(tableLines[r]);
+          html += "<tr>";
+          const colCount = Math.max(headerCells.length, rowCells.length);
+          for (let c = 0; c < colCount; c++) {
+            const cellText = rowCells[c] || "";
+            html += `<td><p>${formatInlineMarkdown(cellText)}</p></td>`;
+          }
+          html += "</tr>";
+        }
+
+        html += "</tbody></table>";
+        continue;
+      }
     }
 
     // 1. Task Item / Checklist (- [x], - [ ], * [x], [x], [ ])
@@ -268,7 +326,8 @@ export function shouldRouteToMarkdownPipeline(html: string | undefined, plainTex
     /^\s*\d+\.\s+\S/m.test(plainText) ||
     /^>\s+\S/m.test(plainText) ||
     /\[(?:video|logos):\s*[^\]]+\]/i.test(plainText) ||
-    /^(?:---|\*\*\*|___)\s*$/m.test(plainText);
+    /^(?:---|\*\*\*|___)\s*$/m.test(plainText) ||
+    /^\s*\|.+?\|\s*$/m.test(plainText);
 
   if (!hasMarkdownSyntax) return false;
 
