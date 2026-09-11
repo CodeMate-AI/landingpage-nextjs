@@ -103,10 +103,10 @@ export async function GET(req: NextRequest) {
           [],
         sections: source.sections || [],
         dek: source.subheading || "",
-        readTime: source.readTime || "1 min read",
+        readTime: source.readTime || "",
         coverImage: source.coverImage || "",
-        author: source.author || "Ayush Singhal",
-        authorRole: source.authorRole || "Founder & CEO",
+        author: source.author || "",
+        authorRole: source.authorRole || "",
         authorImage: source.authorImage || "",
       };
     });

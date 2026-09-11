@@ -70,8 +70,8 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         tags: existing.tags || [],
         filterLabels: existing.filterLabels || existing.tags?.map((t: any) => t.label.trim().toUpperCase()) || [],
         content: existing.content,
-        author: existing.author || "Ayush Singhal",
-        authorRole: existing.authorRole || "Founder & CEO",
+        author: existing.author || "",
+        authorRole: existing.authorRole || "",
         authorImage: existing.authorImage || "",
         readTime: existing.readTime || "",
         publishedAtCustom: existing.publishedAtCustom || "",
@@ -87,7 +87,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       ? Array.from(new Set(parsed.data.filterLabels.map((l) => l.trim().toUpperCase())))
       : undefined;
 
-    const finalAuthorRole = parsed.data.authorRole || existing.authorRole || "Founder & CEO";
+    const finalAuthorRole = parsed.data.authorRole ?? existing.authorRole ?? "";
     const publishedAtCustom =
       parsed.data.publishedAtCustom && parsed.data.publishedAtCustom.trim() !== ""
         ? parsed.data.publishedAtCustom.trim()
@@ -107,7 +107,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         tags: sanitizedTags,
         filterLabels: sanitizedFilterLabels,
         content: parsed.data.content,
-        author: parsed.data.author || "Ayush Singhal",
+        author: parsed.data.author ?? existing.author ?? "",
         authorRole: finalAuthorRole,
         authorImage: parsed.data.authorImage || "",
         readTime,

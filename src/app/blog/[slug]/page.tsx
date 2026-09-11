@@ -160,8 +160,8 @@ export default async function BlogPostPage({ params }: Props) {
     dek: source.subheading || "",
     readTime: source.readTime,
     htmlContent: finalHtml,
-    author: source.author || "Ayush Singhal",
-    authorRole: source.authorRole || "Founder & CEO",
+    author: source.author || "",
+    authorRole: source.authorRole || "",
     authorImage: source.authorImage || "",
   };
 
@@ -196,8 +196,8 @@ export default async function BlogPostPage({ params }: Props) {
       sections: [],
       dek: sSource.subheading || "",
       readTime: sSource.readTime,
-      author: sSource.author || "Ayush Singhal",
-      authorRole: sSource.authorRole || "Founder & CEO",
+      author: sSource.author || "",
+      authorRole: sSource.authorRole || "",
       authorImage: sSource.authorImage || "",
       visualMarkup: safeCoverImage
         ? `<img src="${safeCoverImage}" alt="${safeTitle}" style="width: 100%; height: 100%; object-fit: cover; display: block;" />`

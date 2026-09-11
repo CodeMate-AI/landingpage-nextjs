@@ -32,9 +32,10 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
   }, [post.slug, isPreview, liveUrl]);
 
   const getInitials = (name?: string) => {
-    if (!name) return "AS";
+    if (!name || !name.trim()) return "CM";
     return name
-      .split(" ")
+      .trim()
+      .split(/\s+/)
       .map((part) => part[0])
       .join("")
       .toUpperCase()
@@ -219,10 +220,18 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
                   </text>
                 </svg>
               )}
-              <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>{post.author || "Ayush Singhal"}</span>
-              <span className="byline-divider"></span>
-              <span style={{ color: "var(--text-secondary)" }}>{post.authorRole || "Founder & CEO"}</span>
-              <span className="byline-divider"></span>
+              {post.author ? (
+                <>
+                  <span style={{ color: "var(--text-primary)", fontWeight: 600 }}>{post.author}</span>
+                  <span className="byline-divider"></span>
+                </>
+              ) : null}
+              {post.authorRole ? (
+                <>
+                  <span style={{ color: "var(--text-secondary)" }}>{post.authorRole}</span>
+                  <span className="byline-divider"></span>
+                </>
+              ) : null}
               <span>{post.date}</span>
               <span className="byline-divider"></span>
               <span>{post.readTime}</span>
@@ -361,11 +370,11 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
                         <svg className="card-avatar" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <circle cx="12" cy="12" r="12" fill="#3b82f6" fillOpacity="0.15" />
                           <text x="12" y="16" textAnchor="middle" fontFamily="Montserrat" fontSize="9" fill="#22d3ee" fontWeight="700">
-                            {getInitials(relatedPost.author || "Ayush Singhal")}
+                            {getInitials(relatedPost.author)}
                           </text>
                         </svg>
                       )}
-                      <span>{relatedPost.author || "Ayush Singhal"}</span>
+                      <span>{relatedPost.author || ""}</span>
                       <span>·</span>
                       <span>{relatedPost.date}</span>
                     </div>

@@ -106,8 +106,8 @@ async function createPostHandler(req: NextRequest) {
           tags: sanitizedTags,
           filterLabels: sanitizedFilterLabels,
           content: parsed.data.content,
-          author: parsed.data.author || "Ayush Singhal",
-          authorRole: parsed.data.authorRole || "Founder & CEO",
+          author: parsed.data.author || "",
+          authorRole: parsed.data.authorRole || "",
           authorImage: parsed.data.authorImage || "",
           readTime,
           publishedAtCustom,
@@ -119,8 +119,8 @@ async function createPostHandler(req: NextRequest) {
     const newPost = {
       // Spread operator (...) unpacks all validated input fields (title, subheading, content, tags, author, etc.) from Zod
       ...parsed.data,
-      author: parsed.data.author || "Ayush Singhal",
-      authorRole: parsed.data.authorRole || "Founder & CEO",
+      author: parsed.data.author || "",
+      authorRole: parsed.data.authorRole || "",
       publishedAtCustom,
       tags: sanitizedTags,
       filterLabels: sanitizedFilterLabels,

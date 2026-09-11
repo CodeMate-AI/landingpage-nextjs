@@ -175,8 +175,8 @@ function EditorContent() {
             })
           : "";
 
-        const resolvedAuthor = post.author || "Ayush Singhal";
-        const resolvedAuthorRole = post.authorRole || "Founder & CEO";
+        const resolvedAuthor = post.author || "";
+        const resolvedAuthorRole = post.authorRole || "";
         const resolvedAuthorImage = post.authorImage || "";
         const resolvedReadTime = post.readTime || "";
 
@@ -207,7 +207,7 @@ function EditorContent() {
           coverImage: post.coverImage || "",
           published: Boolean(post.published),
           saveMode: "draft",
-          tags: parsedTags.length > 0 ? parsedTags : [{ label: "Article", tone: "slate" as const }],
+          tags: parsedTags,
           filterLabels: loadedFilterLabels,
           content: resolvedContent,
           author: resolvedAuthor,
@@ -361,11 +361,11 @@ function EditorContent() {
       coverImage,
       published: resolvedPublished,
       saveMode: mode,
-      tags: isAutoSave && tags.length === 0 ? [{ label: "Article", tone: "slate" as const }] : tags,
+      tags: tags,
       filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
       content: contentJson,
-      author: isAutoSave ? (author || "Ayush Singhal") : author,
-      authorRole: isAutoSave ? (authorRole || "Founder & CEO") : authorRole,
+      author: author,
+      authorRole: authorRole,
       authorImage: authorImage || "",
       readTime,
       publishedAtCustom: resolvedDate,
@@ -680,13 +680,13 @@ function EditorContent() {
       category: category || "General",
       date: publishedAtCustom || new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }),
       dateValue: new Date().toISOString().split("T")[0],
-      tags: mappedTags.length > 0 ? mappedTags : [{ label: "Article", tone: "blue" }],
+      tags: mappedTags,
       sections: compiledSections,
       dek: subheading || "",
-      readTime: readTime || "5 min read",
+      readTime: readTime || "",
       htmlContent: compiledHtml,
-      author: author || "Ayush Singhal",
-      authorRole: authorRole || "Founder & CEO",
+      author: author || "",
+      authorRole: authorRole || "",
       authorImage: authorImage || "",
       coverImage: coverImage || "",
     };
