@@ -54,3 +54,6 @@ videos/*
 !videos/*.ts
 public/_next-video
 .cora/
+
+# local scripts
+/scripts/
