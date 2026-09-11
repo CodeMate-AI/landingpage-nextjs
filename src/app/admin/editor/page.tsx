@@ -105,6 +105,7 @@ function EditorContent() {
   const [uploading, setUploading] = useState(false);
   const [authorUploading, setAuthorUploading] = useState(false);
   const [loadError, setLoadError] = useState(false);
+  const [isPostLoading, setIsPostLoading] = useState<boolean>(Boolean(searchParamId));
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const authorFileInputRef = useRef<HTMLInputElement | null>(null);
   const saveModeRef = useRef<"draft" | "publish">("draft");
@@ -122,18 +123,28 @@ function EditorContent() {
 
   // Fetches existing article data from /api/admin/posts/:id when editing
   const loadPost = useCallback(async () => {
+    if (!postId) {
+      setIsPostLoading(false);
+      initialLoadedRef.current = true;
+      return;
+    }
+    setIsPostLoading(true);
     try {
       const res = await adminFetch(`/api/admin/posts/${postId}`);
       if (res.ok) {
         const data = await res.json();
         const post = data.post;
-        setTitle(post.title);
+        setTitle(post.title || "");
         setSlug(post.slug || "");
         setSubheading(post.subheading || "");
-        setCategory(post.category);
+        setCategory(post.category || "General");
         setCoverImage(post.coverImage || "");
-        setPublished(post.published);
-        setContentJson(post.content);
+        setPublished(Boolean(post.published));
+        const resolvedContent =
+          post.content && typeof post.content === "object" && post.content.type === "doc"
+            ? post.content
+            : { type: "doc", content: [] };
+        setContentJson(resolvedContent);
         setLoadError(false);
         const seenTags = new Set<string>();
         const uniqueLabels: string[] = [];
@@ -194,11 +205,11 @@ function EditorContent() {
           subheading: post.subheading || "",
           category: post.category || "General",
           coverImage: post.coverImage || "",
-          published: post.published || false,
+          published: Boolean(post.published),
           saveMode: "draft",
           tags: parsedTags.length > 0 ? parsedTags : [{ label: "Article", tone: "slate" as const }],
           filterLabels: loadedFilterLabels,
-          content: post.content || { type: "doc", content: [] },
+          content: resolvedContent,
           author: resolvedAuthor,
           authorRole: resolvedAuthorRole,
           authorImage: resolvedAuthorImage,
@@ -216,6 +227,9 @@ function EditorContent() {
     } catch {
       alert("Failed to load post for editing.");
       setLoadError(true);
+    } finally {
+      setIsPostLoading(false);
+      initialLoadedRef.current = true;
     }
   }, [postId, router]);
 
@@ -667,7 +681,7 @@ function EditorContent() {
       dateValue: new Date().toISOString().split("T")[0],
       tags: mappedTags.length > 0 ? mappedTags : [{ label: "Article", tone: "blue" }],
       sections: compiledSections,
-      dek: subheading || "No subheading provided.",
+      dek: subheading || "",
       readTime: readTime || "5 min read",
       htmlContent: compiledHtml,
       author: author || "Ayush Singhal",
@@ -1258,12 +1272,13 @@ function EditorContent() {
               <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-400">
                 Failed to load post content. Please refresh the page or go back to the dashboard.
               </div>
-            ) : !postId || contentJson.content.length > 0 ? (
-              <SimpleEditor content={contentJson} onChange={setContentJson} />
-            ) : (
-              <div className="rounded-lg border border-[#27272a] bg-[#18181b] p-4 text-sm text-neutral-500">
-                Loading content...
+            ) : isPostLoading ? (
+              <div className="rounded-lg border border-[#27272a] bg-[#18181b] p-8 text-sm text-neutral-400 flex items-center justify-center gap-3">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-500 border-t-white" />
+                <span>Loading post content...</span>
               </div>
+            ) : (
+              <SimpleEditor content={contentJson} onChange={setContentJson} />
             )}
           </div>
 

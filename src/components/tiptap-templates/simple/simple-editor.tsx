@@ -47,36 +47,36 @@ const CustomLink = BaseLink.extend({
   },
 })
 
+import { MarkdownRulesExtension, HEADING_LEVEL_MAP } from "@/lib/tiptap-markdown-rules"
+
 const CustomHeading = Heading.extend({
   addInputRules() {
     return [
       textblockTypeInputRule({
         find: /^(#)\s$/,
         type: this.type,
-        getAttributes: () => ({ level: 2 }),
+        getAttributes: () => ({ level: HEADING_LEVEL_MAP[1] }),
       }),
       textblockTypeInputRule({
         find: /^(##)\s$/,
         type: this.type,
-        getAttributes: () => ({ level: 3 }),
+        getAttributes: () => ({ level: HEADING_LEVEL_MAP[2] }),
       }),
       textblockTypeInputRule({
         find: /^(###)\s$/,
         type: this.type,
-        getAttributes: () => ({ level: 4 }),
+        getAttributes: () => ({ level: HEADING_LEVEL_MAP[3] }),
       }),
       textblockTypeInputRule({
         find: /^(####)\s$/,
         type: this.type,
-        getAttributes: () => ({ level: 4 }),
+        getAttributes: () => ({ level: HEADING_LEVEL_MAP[4] }),
       }),
     ]
   },
 }).configure({
   levels: [2, 3, 4],
 })
-
-import { MarkdownRulesExtension } from "@/lib/tiptap-markdown-rules"
 
 const CustomTaskList = TaskList.extend({
   addInputRules() {
@@ -484,11 +484,14 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
 
 
   useEffect(() => {
-    if (!editor || isInitializedRef.current) return
+    if (!editor) return
 
-    if (content && content.content && content.content.length > 0) {
-      editor.commands.setContent(content)
-      isInitializedRef.current = true
+    if (content && content.content) {
+      const currentJson = editor.getJSON()
+      if (JSON.stringify(currentJson) !== JSON.stringify(content)) {
+        editor.commands.setContent(content, { emitUpdate: false })
+        isInitializedRef.current = true
+      }
     }
   }, [content, editor])
 

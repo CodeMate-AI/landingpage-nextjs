@@ -1269,12 +1269,13 @@
 }
 
 .hero-dek {
+  font-family: var(--font-montserrat), sans-serif;
   font-size: 18px;
   font-weight: 500;
   color: var(--text-secondary);
   line-height: 1.55;
-  max-width: 560px;
-  margin-bottom: 28px;
+  max-width: 720px;
+  margin-bottom: 24px;
 }
 
 .byline-row {
@@ -2548,6 +2549,12 @@ ul[data-type="taskList"] li > div,
 
   .article-title {
     font-size: 32px;
+  }
+ 
+  .hero-dek {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 18px;
   }
 
   .related-grid {

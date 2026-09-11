@@ -203,6 +203,7 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
         <div className="hero-grid">
           <div className="hero-text">
             <h1 className="article-title">{post.title}</h1>
+            {post.dek ? <p className="hero-dek">{post.dek}</p> : null}
             <div className="byline-row">
               {post.authorImage ? (
                 <img
