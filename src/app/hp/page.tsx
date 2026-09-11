@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import type { MouseEvent } from "react";
 
 
@@ -197,7 +198,7 @@ export default function Home() {
       {/* Navbar */}
       <nav className="sticky top-0 z-50 w-full bg-white border-b border-divider/60 h-18 md:h-22 flex flex-col justify-center">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 h-17 md:h-20 flex items-center justify-between gap-4">
-          <a href="#hero" className="shrink-0 flex items-center transition-opacity hover:opacity-90">
+          <Link href="/" className="shrink-0 flex items-center transition-opacity hover:opacity-90">
             <Image
               src="/HPxCodeMateAI_LOGO_NAV.png"
               alt="HP x CodeMate AI"
@@ -207,7 +208,7 @@ export default function Home() {
               unoptimized
               className="w-43 h-14.5 md:w-52.5 md:h-17.5 object-contain"
             />
-          </a>
+          </Link>
           <div className="flex items-center gap-4">
             <ul className="hidden md:flex items-center gap-10 list-none m-0 p-0">
               <li>
@@ -273,7 +274,7 @@ export default function Home() {
         >
           {/* Drawer Header */}
           <div className="h-16.5 px-6 border-b border-divider/60 flex items-center justify-between">
-            <a href="#hero" onClick={() => setIsMenuOpen(false)} className="shrink-0 flex items-center">
+            <Link href="/" onClick={() => setIsMenuOpen(false)} className="shrink-0 flex items-center">
               <Image
                 src="/HPxCodeMateAI_LOGO_NAV.png"
                 alt="HP x CodeMate AI"
@@ -283,7 +284,7 @@ export default function Home() {
                 unoptimized
                 className="w-43 h-14.5 object-contain"
               />
-            </a>
+            </Link>
             {/* Close button with custom proper X */}
             <button
               onClick={() => setIsMenuOpen(false)}
@@ -613,15 +614,17 @@ export default function Home() {
             </a>
           </div>
 
-          <Image
-            src="/HPxCodeMateAI_LOGO_NAV.png"
-            alt="HP x CodeMate"
-            width={280}
-            height={94}
-            unoptimized
-            className="h-15 sm:h-18 w-auto object-contain transition-opacity hover:opacity-95"
-            style={{ filter: "brightness(0) invert(1)" }}
-          />
+          <Link href="/" className="shrink-0 flex items-center">
+            <Image
+              src="/HPxCodeMateAI_LOGO_NAV.png"
+              alt="HP x CodeMate"
+              width={280}
+              height={94}
+              unoptimized
+              className="h-15 sm:h-18 w-auto object-contain transition-opacity hover:opacity-95"
+              style={{ filter: "brightness(0) invert(1)" }}
+            />
+          </Link>
 
           {/* Contact & Social Icon Buttons under HP x CodeMate Logo */}
           <div className="flex items-center gap-4 mt-2">
