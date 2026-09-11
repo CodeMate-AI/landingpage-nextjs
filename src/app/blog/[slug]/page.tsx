@@ -2,7 +2,7 @@ import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import clientPromise from "@/lib/mongodb";
-import { compileTiptapToHtml } from "@/lib/blog-compiler";
+import { compileTiptapToHtml, calculateReadTime } from "@/lib/blog-compiler";
 import BlogPostClient from "./BlogPostClient";
 
 export const revalidate = 60;
@@ -158,7 +158,7 @@ export default async function BlogPostPage({ params }: Props) {
     tags: source.tags,
     sections,
     dek: source.subheading || "",
-    readTime: source.readTime,
+    readTime: source.readTime?.trim() || calculateReadTime(source.content),
     htmlContent: finalHtml,
     author: source.author || "",
     authorRole: source.authorRole || "",
@@ -195,7 +195,7 @@ export default async function BlogPostPage({ params }: Props) {
       tags: sSource.tags,
       sections: [],
       dek: sSource.subheading || "",
-      readTime: sSource.readTime,
+      readTime: sSource.readTime?.trim() || calculateReadTime(sSource.content),
       author: sSource.author || "",
       authorRole: sSource.authorRole || "",
       authorImage: sSource.authorImage || "",

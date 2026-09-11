@@ -76,8 +76,8 @@ async function createPostHandler(req: NextRequest) {
       counter++;
     }
 
-    // 3. Compute reading duration based on AST word count (200 words/min average)
-    const readTime = calculateReadTime(parsed.data.content, parsed.data.readTime);
+    // 3. Preserve custom reading duration if entered; otherwise keep empty
+    const readTime = (parsed.data.readTime || "").trim();
     const published = parsed.data.published;
     const publishedAt = published ? new Date() : null;
 

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import clientPromise from "@/lib/mongodb";
 import BlogFeedClient from "./BlogFeedClient";
 import type { BlogDetailPost } from "@/types/blog";
+import { calculateReadTime } from "@/lib/blog-compiler";
 
 export const revalidate = 60;
 
@@ -65,10 +66,10 @@ export default async function BlogFeedPage() {
           [],
         sections: source.sections || [],
         dek: source.subheading || "",
-        readTime: source.readTime || "1 min read",
+        readTime: source.readTime?.trim() || calculateReadTime(source.content),
         coverImage: source.coverImage || "",
-        author: source.author || "Ayush Singhal",
-        authorRole: source.authorRole || "Founder & CEO",
+        author: source.author || "",
+        authorRole: source.authorRole || "",
         authorImage: source.authorImage || "",
       };
     });

@@ -54,8 +54,8 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     const saveMode = parsed.data.saveMode || (parsed.data.published ? "publish" : "draft");
     const published = parsed.data.published;
 
-    // Compute reading duration based on AST word count (200 words/min average)
-    const readTime = calculateReadTime(parsed.data.content, parsed.data.readTime);
+    // Preserve custom reading duration if entered; otherwise keep empty
+    const readTime = (parsed.data.readTime || "").trim();
 
     let publishedVersion = existing.publishedVersion || null;
     let publishedAt = existing.publishedAt || null;

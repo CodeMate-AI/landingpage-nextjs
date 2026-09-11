@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import type { BlogDetailPost } from "@/types/blog";
+import { calculateReadTime } from "@/lib/blog-compiler";
 
 // Public endpoint for paginated and filtered published blog articles
 export async function GET(req: NextRequest) {
@@ -103,7 +104,7 @@ export async function GET(req: NextRequest) {
           [],
         sections: source.sections || [],
         dek: source.subheading || "",
-        readTime: source.readTime || "",
+        readTime: source.readTime?.trim() || calculateReadTime(source.content),
         coverImage: source.coverImage || "",
         author: source.author || "",
         authorRole: source.authorRole || "",
