@@ -59,6 +59,13 @@ async function createPostHandler(req: NextRequest) {
       ? Array.from(new Set(parsed.data.filterLabels.map((l) => l.trim().toUpperCase())))
       : undefined;
 
+    const publishedAtCustom =
+      parsed.data.publishedAtCustom && parsed.data.publishedAtCustom.trim() !== ""
+        ? parsed.data.publishedAtCustom.trim()
+        : published
+        ? new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+        : "";
+
     // 4. Create an immutable publishedVersion snapshot if post is published immediately
     const publishedVersion = published
       ? {
@@ -69,11 +76,11 @@ async function createPostHandler(req: NextRequest) {
           tags: sanitizedTags,
           filterLabels: sanitizedFilterLabels,
           content: parsed.data.content,
-          author: parsed.data.author,
-          authorRole: parsed.data.authorRole,
+          author: parsed.data.author || "Ayush Singhal",
+          authorRole: parsed.data.authorRole || "Founder & CEO",
           authorImage: parsed.data.authorImage || "",
           readTime,
-          publishedAtCustom: parsed.data.publishedAtCustom,
+          publishedAtCustom,
           sections: parsed.data.sections,
         }
       : null;
@@ -82,6 +89,9 @@ async function createPostHandler(req: NextRequest) {
     const newPost = {
       // Spread operator (...) unpacks all validated input fields (title, subheading, content, tags, author, etc.) from Zod
       ...parsed.data,
+      author: parsed.data.author || "Ayush Singhal",
+      authorRole: parsed.data.authorRole || "Founder & CEO",
+      publishedAtCustom,
       tags: sanitizedTags,
       filterLabels: sanitizedFilterLabels,
       authorImage: parsed.data.authorImage ?? "",

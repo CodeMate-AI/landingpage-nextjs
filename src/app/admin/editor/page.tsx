@@ -148,11 +148,32 @@ function EditorContent() {
         setSelectedFilters(
           post.filterLabels || uniqueLabels.map((l) => l.toUpperCase()) || []
         );
-        setAuthor(post.author || "");
-        setAuthorRole(post.authorRole || "");
-        setAuthorImage(post.authorImage || "");
-        setReadTime(post.readTime || "");
-        setPublishedAtCustom(post.publishedAtCustom || "");
+        const resolvedDate = post.publishedAtCustom && post.publishedAtCustom.trim() !== ""
+          ? post.publishedAtCustom
+          : post.publishedAt
+          ? new Date(post.publishedAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
+          : post.createdAt
+          ? new Date(post.createdAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
+          : "";
+
+        const resolvedAuthor = post.author || "Ayush Singhal";
+        const resolvedAuthorRole = post.authorRole || "Founder & CEO";
+        const resolvedAuthorImage = post.authorImage || "";
+        const resolvedReadTime = post.readTime || "";
+
+        setAuthor(resolvedAuthor);
+        setAuthorRole(resolvedAuthorRole);
+        setAuthorImage(resolvedAuthorImage);
+        setReadTime(resolvedReadTime);
+        setPublishedAtCustom(resolvedDate);
         setSections(post.sections || []);
 
         const parsedTags: { label: string; tone: "slate" }[] = uniqueLabels.map((l) => ({
@@ -178,11 +199,11 @@ function EditorContent() {
           tags: parsedTags.length > 0 ? parsedTags : [{ label: "Article", tone: "slate" as const }],
           filterLabels: loadedFilterLabels,
           content: post.content || { type: "doc", content: [] },
-          author: post.author || "Ayush Singhal",
-          authorRole: post.authorRole || "Founder & CEO",
-          authorImage: post.authorImage || "",
-          readTime: post.readTime || "",
-          publishedAtCustom: post.publishedAtCustom || "",
+          author: resolvedAuthor,
+          authorRole: resolvedAuthorRole,
+          authorImage: resolvedAuthorImage,
+          readTime: resolvedReadTime,
+          publishedAtCustom: resolvedDate,
           sections: post.sections && post.sections.length > 0 ? post.sections : undefined,
         });
         initialLoadedRef.current = true;
@@ -308,6 +329,17 @@ function EditorContent() {
       }
     }
 
+    const resolvedDate =
+      publishedAtCustom && publishedAtCustom.trim() !== ""
+        ? publishedAtCustom.trim()
+        : resolvedPublished
+        ? new Date().toLocaleDateString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })
+        : "";
+
     return {
       title: isAutoSave ? (title.trim() || "Untitled Article") : title,
       subheading,
@@ -322,7 +354,7 @@ function EditorContent() {
       authorRole: isAutoSave ? (authorRole || "Founder & CEO") : authorRole,
       authorImage: authorImage || "",
       readTime,
-      publishedAtCustom,
+      publishedAtCustom: resolvedDate,
       sections: sections.length > 0 ? sections : undefined,
     };
   };

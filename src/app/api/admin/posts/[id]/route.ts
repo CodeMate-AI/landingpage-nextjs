@@ -87,6 +87,16 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       ? Array.from(new Set(parsed.data.filterLabels.map((l) => l.trim().toUpperCase())))
       : undefined;
 
+    const finalAuthorRole = parsed.data.authorRole || existing.authorRole || "Founder & CEO";
+    const publishedAtCustom =
+      parsed.data.publishedAtCustom && parsed.data.publishedAtCustom.trim() !== ""
+        ? parsed.data.publishedAtCustom.trim()
+        : existing.publishedAtCustom && existing.publishedAtCustom.trim() !== ""
+        ? existing.publishedAtCustom.trim()
+        : existing.publishedAt
+        ? new Date(existing.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+        : new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
     // 4. Overwrite publishedVersion snapshot when saving with 'publish' mode
     if (saveMode === "publish") {
       publishedVersion = {
@@ -97,11 +107,11 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         tags: sanitizedTags,
         filterLabels: sanitizedFilterLabels,
         content: parsed.data.content,
-        author: parsed.data.author,
-        authorRole: parsed.data.authorRole,
+        author: parsed.data.author || "Ayush Singhal",
+        authorRole: finalAuthorRole,
         authorImage: parsed.data.authorImage || "",
         readTime,
-        publishedAtCustom: parsed.data.publishedAtCustom,
+        publishedAtCustom,
         sections: parsed.data.sections,
       };
       if (!publishedAt) {
@@ -112,6 +122,8 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     // 5. Build base update payload
     const updatePayload = {
       ...parsed.data,
+      authorRole: finalAuthorRole,
+      publishedAtCustom,
       tags: sanitizedTags,
       filterLabels: sanitizedFilterLabels,
       authorImage: parsed.data.authorImage ?? "",
