@@ -88,6 +88,15 @@ export function formatInlineMarkdown(text: string): string {
     return `\x00CODE_${idx}\x00`;
   });
 
+  // Step 2.5: Markdown images with protocol validation (BEFORE links to avoid matching ![alt](url) as a link)
+  result = result.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (match, alt, rawUrl) => {
+    const decodedUrl = rawUrl.replace(/&amp;/g, "&");
+    if (isAllowedUrl(decodedUrl)) {
+      return `<img src="${rawUrl}" alt="${alt}" />`;
+    }
+    return "";
+  });
+
   // Step 3: Markdown links with protocol validation
   result = result.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, (match, label, rawUrl) => {
     // rawUrl was already escaped by escapeHtml, but let's verify protocol
@@ -174,6 +183,35 @@ export function convertMarkdownToHtml(rawText: string): string {
     if (!trimmed) {
       closeOpenLists();
       continue;
+    }
+
+    // -1. Fenced Code Block (```lang ... ```)
+    const codeFenceMatch = line.match(/^```([a-zA-Z0-9_+-]*)\s*$/);
+    if (codeFenceMatch) {
+      closeOpenLists();
+      const language = codeFenceMatch[1] || "";
+      const codeLines: string[] = [];
+      i++;
+      while (i < lines.length && !lines[i].trim().startsWith("```")) {
+        codeLines.push(escapeHtml(lines[i]));
+        i++;
+      }
+      const codeContent = codeLines.join("\n");
+      const langAttr = language ? ` class="language-${escapeHtml(language)}"` : "";
+      html += `<pre><code${langAttr}>${codeContent}</code></pre>`;
+      continue;
+    }
+
+    // -0.5. Standalone Image (![alt](url))
+    const standaloneImgMatch = trimmed.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
+    if (standaloneImgMatch) {
+      closeOpenLists();
+      const alt = escapeHtml(standaloneImgMatch[1].trim());
+      const rawUrl = standaloneImgMatch[2].trim();
+      if (isAllowedUrl(rawUrl)) {
+        html += `<p><img src="${escapeHtml(rawUrl)}" alt="${alt}" /></p>`;
+        continue;
+      }
     }
 
     // 0. Markdown Table (| col1 | col2 |)
@@ -327,7 +365,9 @@ export function shouldRouteToMarkdownPipeline(html: string | undefined, plainTex
     /^>\s+\S/m.test(plainText) ||
     /\[(?:video|logos):\s*[^\]]+\]/i.test(plainText) ||
     /^(?:---|\*\*\*|___)\s*$/m.test(plainText) ||
-    /^\s*\|.+?\|\s*$/m.test(plainText);
+    /^\s*\|.+?\|\s*$/m.test(plainText) ||
+    /^\s*```/m.test(plainText) ||
+    /!\[[^\]]*\]\([^)\s]+\)/.test(plainText);
 
   if (!hasMarkdownSyntax) return false;
 
