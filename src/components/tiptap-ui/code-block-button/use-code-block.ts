@@ -90,73 +90,93 @@ export function toggleCodeBlock(editor: Editor | null): boolean {
 
   try {
     const view = editor.view
-    let state = view.state
+    const state = view.state
     let tr = state.tr
 
-    const blocks = getSelectedBlockNodes(editor)
+    // Case 1: Code block is currently active -> Convert back to paragraphs
+    if (editor.isActive("codeBlock")) {
+      const { doc, selection } = state
+      const { from, to } = selection
+      const codeBlocksToConvert: { pos: number; node: any }[] = []
 
-    // In case a selection contains multiple blocks, we only allow
-    // toggling to node if there's exactly one block selected
-    // we also dont block the canToggle since it will fall back to the bottom logic
-    const isPossibleToTurnInto =
-      selectionWithinConvertibleTypes(editor, [
-        "paragraph",
-        "heading",
-        "bulletList",
-        "orderedList",
-        "taskList",
-        "blockquote",
-        "codeBlock",
-      ]) && blocks.length === 1
+      doc.nodesBetween(from, to, (node, pos) => {
+        if (node.type.name === "codeBlock") {
+          codeBlocksToConvert.push({ pos, node })
+          return false
+        }
+      })
 
-    // No selection, find the the cursor position
-    if (
-      (state.selection.empty || state.selection instanceof TextSelection) &&
-      isPossibleToTurnInto
-    ) {
-      const pos = findNodePosition({
-        editor,
-        node: state.selection.$anchor.node(1),
-      })?.pos
-      if (!isValidPosition(pos)) return false
+      if (codeBlocksToConvert.length === 0) {
+        // Find ancestor code block if selection is inside
+        const $anchor = selection.$anchor
+        for (let d = $anchor.depth; d > 0; d--) {
+          const ancestor = $anchor.node(d)
+          if (ancestor.type.name === "codeBlock") {
+            codeBlocksToConvert.push({ pos: $anchor.before(d), node: ancestor })
+            break
+          }
+        }
+      }
 
-      tr = tr.setSelection(NodeSelection.create(state.doc, pos))
-      view.dispatch(tr)
-      state = view.state
+      if (codeBlocksToConvert.length > 0) {
+        // Iterate backwards to maintain position validity
+        for (let i = codeBlocksToConvert.length - 1; i >= 0; i--) {
+          const { pos, node } = codeBlocksToConvert[i]
+          const text = node.textContent || ""
+          const lines = text.split("\n")
+          const paragraphNodes = lines.map((line: string) =>
+            line
+              ? state.schema.nodes.paragraph.create(null, state.schema.text(line))
+              : state.schema.nodes.paragraph.create()
+          )
+          tr = tr.replaceWith(pos, pos + node.nodeSize, paragraphNodes)
+        }
+        view.dispatch(tr)
+        editor.chain().focus().run()
+        return true
+      }
+
+      return editor.chain().focus().setNode("paragraph").run()
     }
 
-    const selection = state.selection
+    // Case 2: Code block is not active -> Merge selected blocks into ONE unified codeBlock
+    const { doc, selection } = state
+    const { from, to } = selection
 
-    let chain = editor.chain().focus()
+    const $from = doc.resolve(from)
+    const $to = doc.resolve(to)
 
-    // Handle NodeSelection
-    if (selection instanceof NodeSelection) {
-      const firstChild = selection.node.firstChild?.firstChild
-      const lastChild = selection.node.lastChild?.lastChild
-
-      const from = firstChild
-        ? selection.from + firstChild.nodeSize
-        : selection.from + 1
-
-      const to = lastChild
-        ? selection.to - lastChild.nodeSize
-        : selection.to - 1
-
-      const resolvedFrom = state.doc.resolve(from)
-      const resolvedTo = state.doc.resolve(to)
-
-      chain = chain
-        .setTextSelection(TextSelection.between(resolvedFrom, resolvedTo))
-        .clearNodes()
+    // Determine the top-level block boundaries for the selected range
+    let commonDepth = $from.depth
+    while (commonDepth > 0 && $from.node(commonDepth) !== $to.node(commonDepth)) {
+      commonDepth--
     }
 
-    const toggle = editor.isActive("codeBlock")
-      ? chain.setNode("paragraph")
-      : chain.toggleNode("codeBlock", "paragraph")
+    const blockDepth = commonDepth === 0 ? 1 : commonDepth
+    const startPos = $from.before(blockDepth)
+    const endPos = $to.after(blockDepth)
 
-    toggle.run()
+    const lines: string[] = []
+    doc.nodesBetween(startPos, endPos, (node) => {
+      if (node.isTextblock) {
+        lines.push(node.textContent || "")
+        return false
+      }
+      return true
+    })
 
-    editor.chain().focus().selectTextblockEnd().run()
+    const combinedText = lines.join("\n")
+    const codeBlockNode = state.schema.nodes.codeBlock.create(
+      null,
+      combinedText ? state.schema.text(combinedText) : null
+    )
+
+    tr = tr.replaceWith(startPos, endPos, codeBlockNode)
+    const targetPos = Math.min(startPos + 1 + combinedText.length, tr.doc.content.size)
+    const $resolved = tr.doc.resolve(targetPos)
+    tr = tr.setSelection(TextSelection.near($resolved))
+    view.dispatch(tr)
+    editor.chain().focus().run()
 
     return true
   } catch {
