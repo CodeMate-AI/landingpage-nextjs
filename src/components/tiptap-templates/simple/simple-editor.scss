@@ -37,6 +37,20 @@
     margin: 0 0 0.35em 0;
     line-height: 1.5;
   }
+
+  blockquote {
+    border-left: 3.5px solid #3b82f6;
+    padding: 2px 0 2px 14px;
+    margin: 1.25rem 0;
+    font-style: italic;
+    color: #e4e4e7;
+
+    p {
+      margin: 0;
+      line-height: 1.5;
+      font-style: italic;
+    }
+  }
 }
 
 @media screen and (max-width: 480px) {
