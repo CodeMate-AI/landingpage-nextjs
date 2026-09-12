@@ -109,11 +109,11 @@ export function formatInlineMarkdown(text: string): string {
 
   // Step 4: Bold (before italic)
   result = result.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
-  result = result.replace(/__([^_\n]+)__/g, "<strong>$1</strong>");
+  result = result.replace(/(?<=^|[\s(])__([^_]+)__(?=[\s).,!?;:]|$)/g, "<strong>$1</strong>");
 
   // Step 5: Italic
   result = result.replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
-  result = result.replace(/_([^_\n]+)_/g, "<em>$1</em>");
+  result = result.replace(/(?<=^|[\s(])_([^_ \t\n][^_]*?[^_ \t\n]|[^_ \t\n])_(?=[\s).,!?;:]|$)/g, "<em>$1</em>");
 
   // Step 6: Strikethrough
   result = result.replace(/~~([^~\n]+)~~/g, "<s>$1</s>");
