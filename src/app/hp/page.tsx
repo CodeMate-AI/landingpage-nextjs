@@ -506,9 +506,10 @@ export default function Home() {
             {/* Video Frame */}
             <div className="relative w-full aspect-video bg-black rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-white/10">
               <iframe
-                src={`https://www.youtube.com/embed/${activeModalVideo.id}?autoplay=1&vq=hd1080&rel=0&modestbranding=1`}
+                src={`https://www.youtube-nocookie.com/embed/${activeModalVideo.id}?autoplay=1&vq=hd1080&rel=0&modestbranding=1`}
                 title={activeModalVideo.name}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
                 allowFullScreen
                 className="w-full h-full border-0"
               />
