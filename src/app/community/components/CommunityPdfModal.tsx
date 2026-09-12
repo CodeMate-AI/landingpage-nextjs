@@ -84,7 +84,7 @@ export default function CommunityPdfModal({
                 </div>
                 <div className="min-w-0">
                   <h3 className="truncate text-sm font-bold text-white sm:text-base">
-                    {title} — Documentation
+                    {title} : Documentation
                   </h3>
                   <p className="truncate text-xs text-zinc-400">
                     PDF Architecture & Specification
@@ -94,7 +94,7 @@ export default function CommunityPdfModal({
 
               <div className="flex items-center gap-2">
                 <a
-                  href={pdfUrl}
+                  href={encodeURI(pdfUrl)}
                   download
                   className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-700/60 bg-zinc-800/60 px-3 py-1.5 text-xs font-semibold text-zinc-200 transition-colors hover:bg-zinc-700 hover:text-white"
                   title="Download PDF"
@@ -146,7 +146,7 @@ export default function CommunityPdfModal({
 
             <div className="relative flex-1 w-full bg-zinc-900">
               <iframe
-                src={`${pdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
+                src={`${encodeURI(pdfUrl)}#toolbar=1&navpanes=0&scrollbar=1`}
                 className="h-full w-full border-none"
                 title={`${title} Documentation`}
               />

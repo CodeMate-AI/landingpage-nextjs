@@ -206,7 +206,7 @@ export default function CommunityFeaturedProject() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <video
-                    src="/CRM.mp4"
+                    src={encodeURI("/CRM.mp4")}
                     autoPlay
                     controls
                     playsInline

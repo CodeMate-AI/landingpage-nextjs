@@ -131,7 +131,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
                   onClick={(e) => e.stopPropagation()}
                 >
                   <video
-                    src={project.videoUrl || "/SupportHub.mp4"}
+                    src={encodeURI(project.videoUrl || "/SupportHub.mp4")}
                     autoPlay
                     controls
                     playsInline
