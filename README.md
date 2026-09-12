@@ -1,10 +1,10 @@
-# 📦 CodeMate AI Landing Page
+# CodeMate AI Landing Page
 
 This is the codebase for [CodeMate AI's](https://codemate.ai) landing page: a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website showcasing CodeMate's product suites, achievements, media presence, customer testimonials, community projects, and pricing structures.
 
 ---
 
-## 🧰 Tech Stack
+## Tech Stack
 
 | Category | Technology |
 |---|---|
@@ -21,17 +21,17 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page: a st
 
 ---
 
-## 📄 Key Features & Pages
+## Key Features and Pages
 
 - **Announcement Banner**: Sticky banner highlighting the SWE-bench SOTA achievement and limited offers.
-- **Dynamic Frosted-Glass Navbars**: Custom mega-menu support for Products, Open-Source, and Resources with active drop-downs on desktop and slider overlays on mobile.
+- **Dynamic Frosted-Glass Navbars**: Custom mega-menu support for Products, Open-Source, and Resources (**HP** -> **Docs** -> **Blogs** -> **Community**) with active drop-downs on desktop and slider overlays on mobile.
 - **Scroll-Linked Parallax Showcase**: "What You'll Unlock" horizontal scroll deck linked via Framer Motion's `useScroll` + `useTransform`.
 - **Achievements Carousel**: Auto-sliding carousel housing 30+ major milestones and summit achievements with slide controls.
 - **Partners Marquee**: Infinite-marquee animations displaying code integration partners and ecosystems.
 - **Testimonials Deck**: Smooth, staggered entrance animations for customer recommendation cards.
 - **Media Coverage**: Custom carousel highlighting press and publication presence from top media houses.
 - **HP x CodeMate AI Landing Page (`/hp`)**: Dedicated partnership page featuring product guides, interactive video demonstrations, and an exclusive trial registration form.
-- **Community Showcase (`/community`)**: Live gallery of production-grade platforms (Orbit CRM, Support HUB, Smart Book, HRMS, Erpsphere, etc.) shipped autonomously using CodeMate AI. Includes responsive video modal previews with touch shielding and category filtering.
+- **Community Showcase (`/community`)**: Live gallery of production-grade platforms (Orbit CRM, Support HUB, Smart Book, HRMS, Erpsphere, etc.) shipped autonomously using CodeMate AI. Includes responsive video modal previews with touch shielding, PDF documentation viewer, and category filtering.
 - **Dynamic Pricing Engine (`/pricing`)**: Interactive plan cards, custom credit builders, trial banners, and product matrix comparisons.
 - **Technical Blog (`/blog` & `/blog/[slug]`)**: Dynamically routed architectural write-ups and benchmark deep-dives.
 - **Downloads Portal (`/download`)**: Direct links and installation video guides for CodeMate extensions and toolboxes.
@@ -39,26 +39,40 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page: a st
 
 ---
 
-## 🗂️ Project Structure
+## SEO and Discoverability
+
+The website automatically enforces modern technical SEO standards across all routes:
+1. **Dynamic Sitemap Indexing (`/sitemap.xml`)**: Generated dynamically via `src/app/sitemap.ts` covering all primary static routes (`/`, `/hp`, `/pricing`, `/download`, `/contact`, `/blog`, `/community`) and all individual blog post slugs (`/blog/[slug]`).
+2. **Crawl Directives (`robots.txt`)**: Located at `public/robots.txt` allowing indexing and pointing search engines directly to `https://codemate.ai/sitemap.xml`.
+3. **Structured Data (JSON-LD)**: Injected via root layout (`src/app/layout.tsx`) using Schema.org `SoftwareApplication` definitions for rich search snippets.
+4. **OpenGraph and Twitter Card Metadata**: Dedicated server layout definitions across root, `/hp`, and `/community` specifying 1200x630 preview banners, descriptions, and canonical URLs.
+5. **Canonical URL Protection**: Explicit canonical tags on every route to prevent duplicate content indexing.
+
+---
+
+## Project Structure
 
 ```
 CMLanding/
 └── landingpage-nextjs/
     ├── public/                  # Brand assets, static mocks, PDFs, and logos
-    │   └── pdfs/                # Downloadable product & security overview guides
+    │   ├── pdfs/                # Downloadable product & security overview guides
+    │   └── robots.txt           # Search engine crawling rules
     ├── src/
     │   ├── app/                 # Next.js App Router
     │   │   ├── page.tsx         # Main Landing Page client component
-    │   │   ├── layout.tsx       # Layout with SEO metadata & Analytics
+    │   │   ├── layout.tsx       # Root layout with SEO metadata & Analytics
     │   │   ├── globals.css      # Core style tokens & keyframe animations
     │   │   ├── sitemap.ts       # Dynamic sitemap indexer
     │   │   ├── hp/              # HP x CodeMate AI partnership landing page
-    │   │   │   ├── components/  # HP interactive guides and trial form
+    │   │   │   ├── layout.tsx   # HP dedicated SEO metadata
     │   │   │   └── page.tsx     # HP showcase view
     │   │   ├── api/
     │   │   │   └── submit-trial/# Exclusive trial submission API route
     │   │   ├── community/       # Community showcase page
-    │   │   │   ├── components/  # Featured Project, Gallery, Cards, Filters, Hero
+    │   │   │   ├── layout.tsx   # Community dedicated SEO metadata
+    │   │   │   ├── page.tsx     # Community showcase client entry
+    │   │   │   ├── components/  # Featured Project, Gallery, Cards, Filters, Hero, PDF Modal
     │   │   │   └── lib/         # Projects data & category definitions
     │   │   ├── pricing/         # Pricing sub-route page & custom calculators
     │   │   │   └── components/  # Custom credit cards & plan builders
@@ -68,7 +82,7 @@ CMLanding/
     │   │   ├── contact/         # Contact sub-route page
     │   │   └── context/         # Redux store & theme contexts
     │   ├── components/          # Reusable react components
-    │   │   ├── navbar.tsx       # Mega-menu navbar
+    │   │   ├── navbar.tsx       # Mega-menu navbar (HP -> Docs -> Blogs -> Community)
     │   │   ├── footer.tsx       # Responsive footer
     │   │   ├── achivements.tsx  # Achievements slideshow
     │   │   ├── media-presence.tsx # Media slider
@@ -82,7 +96,7 @@ CMLanding/
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -111,7 +125,7 @@ You will need **Node.js (v18+)** and **npm** (or **Bun**) installed.
 
 ---
 
-## 🛠️ Build and Deploy
+## Build and Deploy
 
 To create an optimized production build of the website:
 
@@ -123,7 +137,7 @@ The static output will be compiled inside the `.next` directory.
 
 ---
 
-## ⚡ Performance Optimizations
+## Performance Optimizations
 
 1. **GPU-Accelerated Card Animations**: Showcase and featured cards leverage `transform-gpu` and targeted CSS transitions (`transition-[border-color,box-shadow]`) to prevent layout thrashing and maintain silky 60fps scrolling.
 2. **Responsive Video Modal Containment**: Video modals enforce strict 16:9 aspect ratios across viewports with touch shields on mobile/tablet and full interactive controls on desktop.
