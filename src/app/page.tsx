@@ -302,25 +302,72 @@ function Page() {
             <div className='relative z-50 w-full px-5 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
               <h1 className='text-[clamp(1.65rem,6.8vw,2.25rem)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5'>
                 <span className='xxlHero z-50 block whitespace-nowrap'>
-                  <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
-                    Sovereign AI for
-                  </span>
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.3 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    Sovereign
+                  </motion.span>
+                  {' '}
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.3, delay: 0.25 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    AI
+                  </motion.span>
+                  {' '}
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.2, delay: 0.5 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    for
+                  </motion.span>
                 </span>
                 <span className='z-50 block whitespace-nowrap pb-1.5'>
-                  <span className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>
-                    Software Development
-                  </span>
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.3, delay: 0.7 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    Software
+                  </motion.span>
+                  {' '}
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.3, delay: 0.9 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    Development
+                  </motion.span>
                 </span>
               </h1>
 
-              <div className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl">
+              <motion.div
+                initial={{ opacity: 0, filter: "blur(10px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                transition={{ duration: 0.4, delay: 1.15 }}
+                className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl"
+              >
                 <p>
                   Build and ship faster with AI that works where your data lives, keeping your data, code, intelligence, and AI under your control.
                 </p>
-              </div>
+              </motion.div>
 
               {/* SOTA Announcement Badge */}
-              <div className="w-full flex justify-start mt-4 sm:mt-6 z-[100]">
+              <motion.div
+                initial={{ y: -12, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 1.35 }}
+                className="w-full flex justify-start mt-4 sm:mt-6 z-[100]"
+              >
                 <a
                   href="/blog/cora-sota-swe-bench"
                   aria-label="Read announcement: Cora is now State-of-the-Art"
@@ -333,9 +380,14 @@ function Page() {
                     <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
                   </div>
                 </a>
-              </div>
+              </motion.div>
 
-              <div className="flex flex-col sm:flex-row justify-start items-center gap-3 sm:gap-4 text-sm md:text-base mt-4 sm:mt-5 w-full sm:w-auto">
+              <motion.div
+                initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                transition={{ duration: 0.6, delay: 1.5 }}
+                className="flex flex-col sm:flex-row justify-start items-center gap-3 sm:gap-4 text-sm md:text-base mt-4 sm:mt-5 w-full sm:w-auto"
+              >
                 <a href="/download" aria-label="Download CodeMate AI's ToolBox" className="w-full sm:w-auto">
                   <motion.button
                     type="button"
@@ -356,7 +408,7 @@ function Page() {
                     Try for Free
                   </motion.button>
                 </a>
-              </div>
+              </motion.div>
             </div>
           </div>
         </BackgroundGradientAnimation>
