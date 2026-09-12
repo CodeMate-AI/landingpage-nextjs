@@ -2120,23 +2120,40 @@ mark,
 /* Task List */
 ul[data-type="taskList"],
 .article-content ul[data-type="taskList"] {
-  list-style: none;
+  list-style: none !important;
+  list-style-type: none !important;
   padding: 0;
   margin: 20px 0;
 }
 
 ul[data-type="taskList"] li,
 .article-content ul[data-type="taskList"] li {
+  list-style: none !important;
+  list-style-type: none !important;
   display: flex;
   align-items: flex-start;
   gap: 10px;
   margin: 8px 0;
 }
 
+ul[data-type="taskList"] li[data-checked="true"] > div,
+.article-content ul[data-type="taskList"] li[data-checked="true"] > div {
+  opacity: 0.55;
+  text-decoration: line-through;
+}
+
 ul[data-type="taskList"] li > label,
 .article-content ul[data-type="taskList"] li > label {
   user-select: none;
   margin-top: 3px;
+  display: inline-flex;
+  align-items: center;
+}
+
+ul[data-type="taskList"] li > label input[type="checkbox"],
+.article-content ul[data-type="taskList"] li > label input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: #6366f1;
 }
 
 ul[data-type="taskList"] li > div,

@@ -125,16 +125,16 @@
 
   // Task lists
   ul[data-type="taskList"] {
+    list-style: none !important;
+    list-style-type: none !important;
     padding-left: 0.25em;
 
     li {
+      list-style: none !important;
+      list-style-type: none !important;
       display: flex;
       flex-direction: row;
       align-items: flex-start;
-
-      &:not(:has(> p:first-child)) {
-        list-style-type: none;
-      }
 
       &[data-checked="true"] {
         > div > p {

@@ -254,8 +254,8 @@ export function convertMarkdownToHtml(rawText: string): string {
       }
     }
 
-    // 1. Task Item / Checklist (- [x], - [ ], * [x], [x], [ ])
-    const taskMatch = line.match(/^\s*(?:[-*+]\s+)?\[([ xX])\]\s*(.*)$/);
+    // 1. Task Item / Checklist (- [x], - [ ], * [x], • [x], [x], [ ])
+    const taskMatch = line.match(/^\s*(?:[-*+•\u2022]\s+)?\[([ xX])\]\s*(.*)$/);
     if (taskMatch) {
       if (inBulletList || inOrderedList || inBlockquote) {
         closeOpenLists();
@@ -350,6 +350,46 @@ export function convertMarkdownToHtml(rawText: string): string {
 }
 
 /**
+ * Normalizes task lists from rich HTML paste (e.g. GFM task items, checkboxes, bracket items).
+ */
+export function normalizeTaskListsInHtml(html: string): string {
+  if (!html) return html;
+
+  let processed = html.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (match, attrs, content) => {
+    const hasCheckedInput = /<input[^>]+type=["']checkbox["'][^>]*checked[^>]*>/i.test(content);
+    const hasUncheckedInput = /<input[^>]+type=["']checkbox["'][^>]*>/i.test(content);
+    const hasCheckedBracket = /^\s*(?:<p>)?\s*(?:[-*+•\u2022]\s+)?\[[xX]\]/i.test(content);
+    const hasUncheckedBracket = /^\s*(?:<p>)?\s*(?:[-*+•\u2022]\s+)?\[\s*\]/i.test(content);
+
+    if (hasCheckedInput || hasUncheckedInput || hasCheckedBracket || hasUncheckedBracket || /class=["'][^"']*task-list-item/i.test(attrs)) {
+      const isChecked = hasCheckedInput || hasCheckedBracket;
+      let cleanContent = content
+        .replace(/<input[^>]+type=["']checkbox["'][^>]*>/gi, "")
+        .replace(/^\s*(?:<p>)?\s*(?:[-*+•\u2022]\s+)?\[[ xX]\]\s*/i, (m: string) => (m.startsWith("<p>") ? "<p>" : ""))
+        .trim();
+
+      if (!cleanContent.startsWith("<p>") && !cleanContent.startsWith("<div>")) {
+        cleanContent = `<p>${cleanContent}</p>`;
+      }
+
+      return `<li data-type="taskItem" data-checked="${isChecked}">${cleanContent}</li>`;
+    }
+    return match;
+  });
+
+  processed = processed.replace(/<ul\b([^>]*)>([\s\S]*?)<\/ul>/gi, (match, attrs, inner) => {
+    if (inner.includes('data-type="taskItem"')) {
+      const cleanAttrs = attrs.replace(/data-type=["'][^"']*["']/gi, "").trim();
+      const attrStr = cleanAttrs ? ` ${cleanAttrs}` : "";
+      return `<ul${attrStr} data-type="taskList">${inner}</ul>`;
+    }
+    return match;
+  });
+
+  return processed;
+}
+
+/**
  * Deterministic router to decide if clipboard paste should be handled by the markdown parser
  * or passed through to ProseMirror's default rich HTML parser.
  */
@@ -359,8 +399,8 @@ export function shouldRouteToMarkdownPipeline(html: string | undefined, plainTex
   // 1. Check if plainText contains any markdown syntax heuristics
   const hasMarkdownSyntax =
     /^#{1,6}\s+\S/m.test(plainText) ||
-    /^\s*(?:[-*+]\s+)?\[[ xX]\]\s+\S/m.test(plainText) ||
-    /^\s*[-*+]\s+\S/m.test(plainText) ||
+    /^\s*(?:[-*+•\u2022]\s+)?\[[ xX]\](?:\s+\S|\S)/m.test(plainText) ||
+    /^\s*[-*+•\u2022]\s+\S/m.test(plainText) ||
     /^\s*\d+\.\s+\S/m.test(plainText) ||
     /^>\s+\S/m.test(plainText) ||
     /\[(?:video|logos):\s*[^\]]+\]/i.test(plainText) ||
@@ -440,8 +480,8 @@ export const MarkdownRulesExtension = Extension.create({
           },
 
           transformPastedHTML(html) {
-            // Normalize any shortcodes in rich HTML paste
-            return normalizeShortcodesPaste(html);
+            // Normalize any shortcodes and task lists in rich HTML paste
+            return normalizeTaskListsInHtml(normalizeShortcodesPaste(html));
           },
         },
       }),

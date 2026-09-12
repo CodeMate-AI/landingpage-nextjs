@@ -5,7 +5,7 @@ import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import { Plugin } from "@tiptap/pm/state"
 
 import { Heading } from "@tiptap/extension-heading"
-import { textblockTypeInputRule, wrappingInputRule } from "@tiptap/core"
+import { InputRule, textblockTypeInputRule, wrappingInputRule } from "@tiptap/core"
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
@@ -79,14 +79,86 @@ const CustomHeading = Heading.extend({
 })
 
 const CustomTaskList = TaskList.extend({
+  parseHTML() {
+    return [
+      {
+        tag: `ul[data-type="${this.name}"]`,
+        priority: 51,
+      },
+      {
+        tag: "ul.contains-task-list",
+        priority: 51,
+      },
+      {
+        tag: "ul.task-list",
+        priority: 51,
+      },
+    ]
+  },
+})
+
+const CustomTaskItem = TaskItem.extend({
+  parseHTML() {
+    return [
+      {
+        tag: `li[data-type="${this.name}"]`,
+        priority: 51,
+      },
+      {
+        tag: "li.task-list-item",
+        priority: 51,
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false
+          const checkbox = element.querySelector<HTMLInputElement>('input[type="checkbox"]')
+          const dataChecked = element.getAttribute("data-checked")
+          return {
+            checked: checkbox?.checked || dataChecked === "" || dataChecked === "true",
+          }
+        },
+      },
+      {
+        tag: "li",
+        priority: 51,
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false
+          const checkbox = element.querySelector<HTMLInputElement>('input[type="checkbox"]')
+          if (checkbox) {
+            return { checked: checkbox.checked }
+          }
+          return false
+        },
+      },
+    ]
+  },
+
   addInputRules() {
     return [
       wrappingInputRule({
-        find: /^\s*(\[([ |xX])\])\s$/,
+        find: /^\s*(?:[-*+•\u2022]\s+)?\[([ |xX])?\]\s$/,
         type: this.type,
+        getAttributes: (match) => ({
+          checked: match[1]?.toLowerCase() === "x",
+        }),
+      }),
+      new InputRule({
+        find: /^\s*\[([ |xX])?\]\s$/,
+        handler: ({ state, range, match, chain }) => {
+          const isChecked = match[1]?.toLowerCase() === "x"
+          const { $from } = state.selection
+          const parentName = $from.node(-1)?.type?.name
+          if (parentName === "listItem") {
+            chain()
+              .deleteRange({ from: range.from, to: range.to })
+              .toggleList("taskList", "taskItem")
+              .updateAttributes("taskItem", { checked: isChecked })
+              .run()
+          }
+        },
       }),
     ]
   },
+}).configure({
+  nested: true,
 })
 
 // --- UI Primitives ---
@@ -450,7 +522,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       }),
       MarkdownRulesExtension,
       CustomTaskList,
-      TaskItem.configure({ nested: true }),
+      CustomTaskItem,
       VideoNode,
       VideoUploadNode,
       CustomLink,

@@ -72,6 +72,62 @@ const VideoUploadNodeServer = Node.create({
   },
 });
 
+const CustomTaskList = TaskList.extend({
+  parseHTML() {
+    return [
+      {
+        tag: `ul[data-type="${this.name}"]`,
+        priority: 51,
+      },
+      {
+        tag: "ul.contains-task-list",
+        priority: 51,
+      },
+      {
+        tag: "ul.task-list",
+        priority: 51,
+      },
+    ];
+  },
+});
+
+const CustomTaskItem = TaskItem.extend({
+  parseHTML() {
+    return [
+      {
+        tag: `li[data-type="${this.name}"]`,
+        priority: 51,
+      },
+      {
+        tag: "li.task-list-item",
+        priority: 51,
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false;
+          const checkbox = element.querySelector<HTMLInputElement>('input[type="checkbox"]');
+          const dataChecked = element.getAttribute("data-checked");
+          return {
+            checked: checkbox?.checked || dataChecked === "" || dataChecked === "true",
+          };
+        },
+      },
+      {
+        tag: "li",
+        priority: 51,
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false;
+          const checkbox = element.querySelector<HTMLInputElement>('input[type="checkbox"]');
+          if (checkbox) {
+            return { checked: checkbox.checked };
+          }
+          return false;
+        },
+      },
+    ];
+  },
+}).configure({
+  nested: true,
+});
+
 export const extensions = [
   StarterKit.configure({
     heading: {
@@ -101,10 +157,8 @@ export const extensions = [
   TableRow,
   TableHeader,
   TableCell,
-  TaskList,
-  TaskItem.configure({
-    nested: true,
-  }),
+  CustomTaskList,
+  CustomTaskItem,
   Highlight.configure({
     multicolor: true,
   }),
