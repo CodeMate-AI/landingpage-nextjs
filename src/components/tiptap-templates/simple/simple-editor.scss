@@ -32,6 +32,11 @@
   outline: none;
   max-width: 100%;
   overflow-x: auto;
+
+  p {
+    margin: 0 0 0.35em 0;
+    line-height: 1.5;
+  }
 }
 
 @media screen and (max-width: 480px) {

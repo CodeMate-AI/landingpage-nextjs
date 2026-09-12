@@ -357,7 +357,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         autocorrect: "off",
         autocapitalize: "off",
         "aria-label": "Main content area, start typing to enter text.",
-        class: "simple-editor",
+        class: "tiptap ProseMirror simple-editor",
       },
       handleDrop: (view, event, slice, moved) => {
         if (moved) return false
