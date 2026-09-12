@@ -1,15 +1,9 @@
 'use client'
 import React, { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Montserrat } from 'next/font/google'
 import { Check, ChevronDown, Send, ArrowLeft, Mail, Phone, MapPin } from 'lucide-react'
 import Footer from '@/components/footer'
 import { FlagIndia, FlagUSA } from '@/components/flags'
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-montserrat',
-})
 
 // Helper to render flag (SVG vector for all countries across Windows/Mac/iOS/Android)
 function CountryFlag({ code, className = 'w-5 h-3.5' }: { code: string; fallback?: string; className?: string }) {
@@ -334,7 +328,7 @@ export default function ContactPage() {
   const labelClass = 'block text-zinc-400 text-sm font-medium mb-1.5'
 
   return (
-    <div className={`${montserrat.className} bg-zinc-950 min-h-screen text-white`}>
+    <div className="bg-zinc-950 min-h-screen text-white">
       {/* ========== PAGE HEADER ========== */}
       <div className="pt-16 lg:pt-20 pb-10 px-6 max-w-[1100px] mx-auto text-center">
         <motion.div

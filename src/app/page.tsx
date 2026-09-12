@@ -6,6 +6,7 @@ import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
 import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
+import Image from 'next/image';
 import SeamlessCarousel from '@/components/SeamlessCarousel';
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
 import { useRouter } from 'next/navigation';
@@ -24,6 +25,7 @@ const montserrat = Montserrat({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-montserrat',
+  display: 'swap',
 });
 
 
@@ -251,7 +253,7 @@ function Page() {
 
 
   return (
-    <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className={`${montserrat.className} bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]`} >
+    <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className="bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]" >
 
       {/* arrow for going to hero section */}
       <AnimatePresence>
@@ -269,142 +271,145 @@ function Page() {
       {/* mobile menu */}
 
 
-      {/* hero section  */}
-      {/* hero section  */}
-      <div ref={heroRef2} className='h-auto lg:h-screen w-full overflow-x-hidden relative'>
-        <BackgroundGradientAnimation className='w-full overflow-hidden' interactive={true} gradientBackgroundStart='rgb(9, 9, 11)' gradientBackgroundEnd='rgb(9, 9, 11)' firstColor='0, 255, 255' secondColor='30, 144, 255' thirdColor='0, 255, 255' fourthColor='255,255,255' pointerColor='30, 144, 255' size='100%'>
-          {/* ========================================== */}
-          {/* UI SECTION: HERO                         */}
-          {/* The main landing area with the primary CTA and background animation */}
-          {/* ========================================== */}
-          <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={heroRef} className='relative h-auto lg:h-screen w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-20 lg:pt-[8vh] pb-8 lg:pb-20'>
-
+      {/* ========================================================================= */}
+      {/* SECTION 1: HERO & PRIMARY ACTION AREA                                     */}
+      {/* Background animation canvas, headline, badge, and CTA action buttons      */}
+      {/* ========================================================================= */}
+      <div className='h-auto lg:h-screen lg:max-h-[740px] lg:min-h-[580px] w-full overflow-x-hidden relative'>
+        <BackgroundGradientAnimation
+          className='w-full overflow-hidden'
+          interactive={true}
+          gradientBackgroundStart='rgb(9, 9, 11)'
+          gradientBackgroundEnd='rgb(9, 9, 11)'
+          firstColor='0, 255, 255'
+          secondColor='30, 144, 255'
+          thirdColor='0, 255, 255'
+          fourthColor='255, 255, 255'
+          pointerColor='30, 144, 255'
+          size='100%'
+        >
+          <div
+            style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
+            className='relative h-auto lg:h-screen lg:max-h-[740px] lg:min-h-[580px] w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-14 sm:pt-16 lg:pt-10 xl:pt-12 pb-8 lg:pb-10'
+          >
             <motion.div
               style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="32" height="32"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
-              className='absolute inset-0 opacity-5 z-0'>
-              <img src="/bgNoise.png" className='w-full h-full object-cover' alt="" />
+              className='absolute inset-0 opacity-5 z-0 pointer-events-none'
+            >
+              <Image src="/bgNoise.png" alt="" fill priority={false} loading="lazy" className='object-cover' aria-hidden="true" />
             </motion.div>
 
-            <div className='relative z-50 w-full px-6 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
+            <div className='relative z-50 w-full px-5 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start'>
+              <h1 className='text-[clamp(1.65rem,6.8vw,2.25rem)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5'>
+                <span className='xxlHero z-50 block whitespace-nowrap'>
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.3 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    Sovereign
+                  </motion.span>
+                  {' '}
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.3, delay: 0.25 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    AI
+                  </motion.span>
+                  {' '}
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.2, delay: 0.5 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    for
+                  </motion.span>
+                </span>
+                <span className='z-50 block whitespace-nowrap pb-1.5'>
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.3, delay: 0.7 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    Software
+                  </motion.span>
+                  {' '}
+                  <motion.span
+                    initial={{ opacity: 0, filter: "blur(10px)" }}
+                    animate={{ opacity: 1, filter: "blur(0px)" }}
+                    transition={{ duration: 0.3, delay: 0.9 }}
+                    className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'
+                  >
+                    Development
+                  </motion.span>
+                </span>
+              </h1>
+
               <motion.div
-                className='text-[clamp(2.5rem,11vw,4.5rem)] lg:text-[clamp(5rem,8vw,8rem)] leading-[1.05] font-semibold flex flex-col z-50 xxlHerotext text-left'>
-
-
-                <div className={`${montserrat.className} `}>
-                  <div className='xxlHero z-50'>
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>On</motion.span>
-                    {' '}
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Device</motion.span>
-                    {' '}
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.2, delay: 0.6 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>First</motion.span>
-                    {' '}
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.1, delay: 0.8 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>AI</motion.span>
-                  </div>
-                </div>
-                <div className={`${montserrat.className} flex flex-wrap justify-start gap-x-4`}>
-                  <div className='pb-3'>
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3, delay: 0.3 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>SDLC</motion.span>
-                    {' '}
-                    <motion.span initial={{ opacity: 0, filter: "blur(10px)" }}
-                      animate={{ opacity: 1, filter: "blur(0px)" }}
-                      transition={{ duration: 0.3, delay: 0.4 }} className='bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]'>Agent</motion.span>
-                  </div>
-                </div>
-
-                <motion.div
-                  initial={{ opacity: 0, filter: "blur(10px)" }}
-                  animate={{ opacity: 1, filter: "blur(0px)" }}
-                  transition={{ duration: 0.4, delay: 1.5 }}
-                  className={`flex flex-col ${montserrat.className} font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-5 opacity-60 text-left max-w-[280px] sm:max-w-md md:max-w-2xl lg:max-w-none`}>
-                  <p>Build and ship 20x faster with CodeMate AI</p>
-                  <p>Your all-in-one accelerator to turn your ideas into code</p>
-                </motion.div>
-
-                {/* State-of-the-Art Badge */}
-                <motion.div
-                  ref={announcementRef}
-                  initial={{ y: -12, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.4 }}
-                  className="w-full flex justify-start mt-3 lg:mt-8 z-[100]"
-                >
-                  <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group">
-                    <div
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => window.open('/blog/cora-sota-swe-bench', '_blank')}
-                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); window.open('https://app.codemate.ai', '_blank'); } }}
-                      className="flex w-full h-full items-center justify-center gap-1.5 sm:gap-2 rounded-md bg-black px-4 py-3 sm:px-3 sm:py-2 md:px-4 md:py-2.5 text-white outline-none focus-visible:ring-2 focus-visible:ring-white/30"
-                    >
-                      <div className="flex min-w-0 items-center gap-1.5 sm:gap-2">
-                        <p className="text-[11px] sm:text-[13px] md:text-sm font-medium leading-snug text-neutral-300">
-                          Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
-                        </p>
-                        <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, filter: "blur(10px)", y: 100 }}
-                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                  transition={{ duration: 1, delay: 0.5 }}
-                  className={`${montserrat.className} flex flex-col-reverse sm:flex-row justify-start items-center gap-3 sm:gap-4 md:gap-6 text-xs sm:text-sm md:text-base lg:text-sm mt-6 lg:mt-10 w-full sm:w-auto`}
-                >
-                  <a href="/download" className="w-full sm:w-auto">
-                    <motion.button
-                      whileHover={{ opacity: 0.8 }}
-                      className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/5 whitespace-nowrap"
-                    >
-                      Download
-                    </motion.button>
-                  </a>
-                  <a href="https://app.codemate.ai/dashboard" target="_blank" className="w-full sm:w-auto">
-                    <motion.button
-                      whileHover={{ opacity: 0.9 }}
-                      className="h-12 sm:h-12 md:h-14 lg:h-12 px-6 sm:px-8 md:px-10 lg:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold whitespace-nowrap"
-                    >
-                      Try for Free
-                    </motion.button>
-                  </a>
-                </motion.div>
+                initial={{ opacity: 0, filter: "blur(10px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                transition={{ duration: 0.4, delay: 1.15 }}
+                className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl"
+              >
+                <p>
+                  Build and ship faster with AI that works where your data lives, keeping your data, code, intelligence, and AI under your control.
+                </p>
               </motion.div>
 
-              {/* <motion.span className='mt-32' initial={{display:'none',y:50,filter:'blur(10px)'}}
-       animate={{display:'block',y:0,filter:'blur(0px)'}}
-       transition={{delay:7,duration:1}}
-       >
-       <img src="/chat.png" className='object-cover w-[45rem]' alt="" />
-       </motion.span> */}
+              {/* SOTA Announcement Badge */}
+              <motion.div
+                initial={{ y: -12, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.3, delay: 1.35 }}
+                className="w-full flex justify-start mt-4 sm:mt-6 z-[100]"
+              >
+                <a
+                  href="/blog/cora-sota-swe-bench"
+                  aria-label="Read announcement: Cora is now State-of-the-Art"
+                  className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group"
+                >
+                  <div className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-black px-3.5 py-2 sm:px-4 sm:py-2.5 text-white">
+                    <p className="text-xs sm:text-sm font-medium leading-snug text-neutral-300">
+                      Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
+                    </p>
+                    <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
+                  </div>
+                </a>
+              </motion.div>
 
-              {/* <motion.p
-      initial={{opacity:0,display:'hidden',filter:'blur(10px)'}}
-      animate={{opacity:1,filter:'blur(0px)',display:'block'}}
-      transition={{duration:1,delay:8}}
-      className={`${montserrat.className} opacity-60 text-xl`}>You Think ! We Develop</motion.p> */}
-
-              {/* <motion.div 
-   initial={{opacity:0}}
-   animate={{opacity:0.6,y:[10,0,10]}}
-   transition={{duration:4,delay:10,repeat:Infinity,repeatType:'reverse'}}
-   className='absolute bottom-10 text-3xl opacity-50'>
-     <span className='flex justify-center items-center'>Scroll Up <svg  xmlns="http://www.w3.org/2000/svg"  width="32"  height="32"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></svg></span>
-   </motion.div> */}
+              <motion.div
+                initial={{ opacity: 0, filter: "blur(10px)", y: 20 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                transition={{ duration: 0.6, delay: 1.5 }}
+                className="flex flex-col sm:flex-row justify-start items-center gap-3 sm:gap-4 text-sm md:text-base mt-4 sm:mt-5 w-full sm:w-auto"
+              >
+                <a href="/download" aria-label="Download CodeMate AI's ToolBox" className="w-full sm:w-auto">
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="h-12 sm:h-12 px-7 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-black text-white rounded-md font-semibold border border-white/20 hover:border-white/40 transition-colors whitespace-nowrap"
+                  >
+                    Download
+                  </motion.button>
+                </a>
+                <a href="https://app.codemate.ai/dashboard" aria-label="Try CodeMate AI for Free" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="h-12 sm:h-12 px-7 sm:px-8 w-full sm:w-auto flex items-center justify-center bg-white text-black rounded-md font-semibold hover:bg-neutral-200 transition-colors whitespace-nowrap"
+                  >
+                    Try for Free
+                  </motion.button>
+                </a>
+              </motion.div>
             </div>
-
-
-
           </div>
         </BackgroundGradientAnimation>
       </div>
@@ -450,9 +455,9 @@ function Page() {
         {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
         {/* Features a sticky video player on the left and a scrollable list of products on the right */}
         {/* ========================================== */}
-        <div className={`${montserrat.className} mt-3 leading-tight text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-4 lg:pb-2 w-full text-center px-4 lg:px-0 `}>Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer</div>
+        <div className="mt-3 leading-tight text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-4 lg:pb-2 w-full text-center px-4 lg:px-0 ">Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer</div>
 
-        <div className={`relative z-20 w-full flex flex-col lg:flex-row items-start ${montserrat.className}`}>
+        <div className="relative z-20 w-full flex flex-col lg:flex-row items-start">
           {/* Left: Sticky video panel - desktop only */}
           <div className='hidden lg:flex sticky top-0 h-screen flex-1 items-center justify-center px-8'>
             <div className="flex flex-col gap-2 w-full max-w-[58vw]">
@@ -581,7 +586,7 @@ function Page() {
 
                 {/* Scrolling Title */}
                 <div className="w-[100vw] lg:w-[35vw] flex flex-col justify-center items-center text-center lg:items-start lg:text-left shrink-0 px-8 lg:px-0">
-                  <div className={`${montserrat.className} text-[clamp(2rem,10vw,3.5rem)] leading-[1.05] font-bold text-white`}>
+                  <div className="text-[clamp(2rem,10vw,3.5rem)] leading-[1.05] font-bold text-white">
                     What You'll
                     <div className="block">
                       <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Unlock</span>
@@ -625,7 +630,7 @@ function Page() {
                           {/* Top Text */}
                           <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
                             {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
-                            <h3 className={`${montserrat.className} text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
+                            <h3 className={`text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
                           </div>
 
                           {/* Image/Video Box */}
@@ -693,7 +698,7 @@ function Page() {
                   filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
                 }}
                 transition={{ duration: 0.6 }}
-                className={`${montserrat.className} text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+                className="text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto">
                 From <br /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl'>Web-Application</span>
               </motion.div>
             </div>
@@ -707,7 +712,7 @@ function Page() {
                 filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
               }}
               transition={{ duration: 0.6 }}
-              className={`${montserrat.className} text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto`}>
+              className="text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto">
               From <br className='lg:hidden' /> <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>Web-Application</span>
             </motion.div>
           </div>
@@ -721,7 +726,7 @@ function Page() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className={`${montserrat.className} text-[2.2rem] lg:text-[3rem] font-bold leading-[1.15]`}
+              className="text-[2.2rem] lg:text-[3rem] font-bold leading-[1.15]"
             >
               <span className="bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">Seamlessly </span>
               <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Integrated</span>
@@ -731,7 +736,7 @@ function Page() {
           </div>
           <SeamlessCarousel />
           <div className="mt-2 lg:mt-4 mb-2">
-            <div className={`${montserrat.className} text-xl lg:text-2xl pl-6 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full`}>
+            <div className="text-xl lg:text-2xl pl-6 lg:pl-[4rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent w-full">
               To your <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-3xl lg:text-4xl'>IDE</span>
             </div>
           </div>
@@ -857,13 +862,13 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
 
       {/* trusted by section */}
-      <div className={`${montserrat.className} lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50`}>
+      <div className="lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50">
         <div className='pt-[2rem] lg:pt-[4rem]'>
           <div className="px-8 lg:px-16 ">
             <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
               className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
               direction="up"
-              targetValue={1000000} />+</h1>
+              targetValue={100000} />+</h1>
             <p className=' mt-2 text-sm md:text-xl lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
           </div>
 
@@ -934,7 +939,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
       {/* bento */}
       {/* <div className=' relative h-[170vh] w-full bg-zinc-950 text-white overflow-hidden'>
-   <div className={`${montserrat.className}  text-8xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-10 mb-6 pt-20 text-center pb-1`}>What<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> else</span> we got?</div>
+   <div className="text-8xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent pl-10 mb-6 pt-20 text-center pb-1">What<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'> else</span> we got?</div>
    
   <MagicBento 
   textAutoHide={true}

@@ -1,15 +1,8 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Montserrat } from 'next/font/google'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import AutoCodeEditor from '@/components/motion-components/aEditor'
-
-const montserrat = Montserrat({
-    subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
-    variable: '--font-montserrat',
-})
 
 interface CarouselSlide {
     title: string
@@ -228,7 +221,7 @@ export default function SeamlessCarousel() {
                             transition={slideTransition}
                         >
                             <h2
-                                className={`${montserrat.className} text-3xl lg:text-4xl font-bold text-white mb-6`}
+                                className="text-3xl lg:text-4xl font-bold text-white mb-6"
                             >
                                 {currentSlide.title}
                             </h2>

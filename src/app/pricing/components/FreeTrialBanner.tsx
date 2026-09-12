@@ -1,21 +1,14 @@
 'use client'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Montserrat } from 'next/font/google'
 import { ChevronDown, ChevronUp, Clock, CheckCircle2 } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-
-const montserrat = Montserrat({
-    subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
-    variable: '--font-montserrat',
-})
 
 export default function FreeTrialBanner() {
     const [showDetails, setShowDetails] = useState(false)
 
     return (
-        <div className={`${montserrat.className} w-full px-6 lg:px-[6vw] mt-6 mb-8`}>
+        <div className="w-full px-6 lg:px-[6vw] mt-6 mb-8">
             {/* Badge Component - Absolute Top Right */}
             <div className="mx-auto w-fit mb-6">
                 <Badge variant="blue" showPulse>
