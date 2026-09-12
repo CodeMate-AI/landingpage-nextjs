@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Forma DJR Display";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/formadjrdisplay-regular-webfont%20(1).otf") format("opentype");
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -67,7 +75,6 @@ html {
   }
 }
 
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -80,8 +87,6 @@ html {
 
 @theme inline {
   --animate-aurora: aurora 8s ease-in-out infinite alternate;
-
-
 
   @keyframes aurora {
     0% {
@@ -110,8 +115,6 @@ html {
     }
   }
 }
-
-
 
 ::-webkit-scrollbar {
   width: 4px;
@@ -160,12 +163,9 @@ body {
   /* Ensures logos do not look stretched or shrunk */
 }
 
-
-
 .custom-cursor {
-  cursor: url("/cursor.svg") 16 16, auto;
+  cursor: url("/cursor.svg") 2 2, auto;
 }
-
 
 @media (min-width: 768px) {
   .panelTitle {

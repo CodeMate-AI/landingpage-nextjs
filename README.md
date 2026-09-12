@@ -1,6 +1,6 @@
 # 📦 CodeMate AI Landing Page
 
-This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website showcasing CodeMate's product suites, achievements, media presence, customer testimonials, community projects, and pricing structures.
+This is the codebase for [CodeMate AI's](https://codemate.ai) landing page: a state-of-the-art, AI-powered coding assistant platform. The repository contains a fully responsive, animation-rich, high-performance website showcasing CodeMate's product suites, achievements, media presence, customer testimonials, community projects, and pricing structures.
 
 ---
 
@@ -30,6 +30,7 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a
 - **Partners Marquee**: Infinite-marquee animations displaying code integration partners and ecosystems.
 - **Testimonials Deck**: Smooth, staggered entrance animations for customer recommendation cards.
 - **Media Coverage**: Custom carousel highlighting press and publication presence from top media houses.
+- **HP x CodeMate AI Landing Page (`/hp`)**: Dedicated partnership page featuring product guides, interactive video demonstrations, and an exclusive trial registration form.
 - **Community Showcase (`/community`)**: Live gallery of production-grade platforms (Orbit CRM, Support HUB, Smart Book, HRMS, Erpsphere, etc.) shipped autonomously using CodeMate AI. Includes responsive video modal previews with touch shielding and category filtering.
 - **Dynamic Pricing Engine (`/pricing`)**: Interactive plan cards, custom credit builders, trial banners, and product matrix comparisons.
 - **Technical Blog (`/blog` & `/blog/[slug]`)**: Dynamically routed architectural write-ups and benchmark deep-dives.
@@ -43,12 +44,19 @@ This is the codebase for [CodeMate AI's](https://codemate.ai) landing page — a
 ```
 CMLanding/
 └── landingpage-nextjs/
-    ├── public/                  # Brand assets, static mocks, and logos
+    ├── public/                  # Brand assets, static mocks, PDFs, and logos
+    │   └── pdfs/                # Downloadable product & security overview guides
     ├── src/
     │   ├── app/                 # Next.js App Router
     │   │   ├── page.tsx         # Main Landing Page client component
     │   │   ├── layout.tsx       # Layout with SEO metadata & Analytics
     │   │   ├── globals.css      # Core style tokens & keyframe animations
+    │   │   ├── sitemap.ts       # Dynamic sitemap indexer
+    │   │   ├── hp/              # HP x CodeMate AI partnership landing page
+    │   │   │   ├── components/  # HP interactive guides and trial form
+    │   │   │   └── page.tsx     # HP showcase view
+    │   │   ├── api/
+    │   │   │   └── submit-trial/# Exclusive trial submission API route
     │   │   ├── community/       # Community showcase page
     │   │   │   ├── components/  # Featured Project, Gallery, Cards, Filters, Hero
     │   │   │   └── lib/         # Projects data & category definitions

@@ -16,6 +16,40 @@ export default {
       "2xl": "1536px",
     },
     extend: {
+      spacing: {
+        '6.5': '1.625rem',
+        '14.5': '3.625rem',
+        '15': '3.75rem',
+        '16.5': '4.125rem',
+        '17': '4.25rem',
+        '17.5': '4.375rem',
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '43': '10.75rem',
+        '50': '12.5rem',
+        '52.5': '13.125rem',
+        '65': '16.25rem',
+        '75': '18.75rem',
+        '75.5': '18.875rem',
+        '95': '23.75rem',
+        '97.5': '24.375rem',
+        '120': '30rem',
+        '130': '32.5rem',
+        '340': '85rem',
+      },
+      lineHeight: {
+        '5.25': '1.3125rem',
+        '9.5': '2.375rem',
+        '10.5': '2.625rem',
+        '12.5': '3.125rem',
+        '13': '3.25rem',
+      },
+      zIndex: {
+        '100': '100',
+      },
+      fontFamily: {
+        heading: ['"Forma DJR Display"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+      },
       transformStyle: {
         'preserve-3d': 'preserve-3d',
       },
@@ -30,6 +64,15 @@ export default {
         fifth: "moveInCircle 20s ease infinite",
       },
       colors: {
+        'accent-blue': '#0A5BDF',
+        'accent-hover': '#084CB8',
+        navy: '#1a1a1a',
+        'menu-text': '#3d3d3d',
+        'light-blue': '#f7f7f9',
+        'pale-blue': '#f5f5f5',
+        'gray-text': '#485571',
+        divider: '#e0e0e0',
+        'divider-light': '#d3d2d2',
         clipPath: {
           'slash-cut': 'polygon(100% 0%, 100% 50%, 0 100%, 0 0%)'
         },
