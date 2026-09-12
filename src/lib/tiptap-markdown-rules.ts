@@ -185,14 +185,14 @@ export function convertMarkdownToHtml(rawText: string): string {
       continue;
     }
 
-    // -1. Fenced Code Block (```lang ... ```)
-    const codeFenceMatch = line.match(/^```([a-zA-Z0-9_+-]*)\s*$/);
+    // -1. Fenced Code Block (```lang ... ``` or ~~~lang ... ~~~)
+    const codeFenceMatch = line.match(/^(?:```|~~~)([a-zA-Z0-9_+-]*)\s*$/);
     if (codeFenceMatch) {
       closeOpenLists();
       const language = codeFenceMatch[1] || "";
       const codeLines: string[] = [];
       i++;
-      while (i < lines.length && !lines[i].trim().startsWith("```")) {
+      while (i < lines.length && !lines[i].trim().startsWith("```") && !lines[i].trim().startsWith("~~~")) {
         codeLines.push(escapeHtml(lines[i]));
         i++;
       }
@@ -326,8 +326,8 @@ export function convertMarkdownToHtml(rawText: string): string {
       continue;
     }
 
-    // 6. Horizontal Rule (---, ***, ___)
-    if (/^(\*{3,}|-{3,}|_{3,})$/.test(trimmed)) {
+    // 6. Horizontal Rule (---, ***, ___, - - -, * * *, _ _ _)
+    if (/^(?:(?:\*\s*){3,}|(?:-\s*){3,}|(?:_\s*){3,})$/.test(trimmed)) {
       closeOpenLists();
       html += "<hr>";
       continue;
@@ -364,10 +364,13 @@ export function shouldRouteToMarkdownPipeline(html: string | undefined, plainTex
     /^\s*\d+\.\s+\S/m.test(plainText) ||
     /^>\s+\S/m.test(plainText) ||
     /\[(?:video|logos):\s*[^\]]+\]/i.test(plainText) ||
-    /^(?:---|\*\*\*|___)\s*$/m.test(plainText) ||
+    /^(?:(?:\*\s*){3,}|(?:-\s*){3,}|(?:_\s*){3,})$/m.test(plainText) ||
     /^\s*\|.+?\|\s*$/m.test(plainText) ||
-    /^\s*```/m.test(plainText) ||
-    /!\[[^\]]*\]\([^)\s]+\)/.test(plainText);
+    /^\s*(?:```|~~~)/m.test(plainText) ||
+    /!\[[^\]]*\]\([^)\s]+\)/.test(plainText) ||
+    /\[[^\]]+\]\([^)\s]+\)/.test(plainText) ||
+    /\*\*[^*\n]+\*\*/.test(plainText) ||
+    /~~[^~\n]+~~/.test(plainText);
 
   if (!hasMarkdownSyntax) return false;
 
