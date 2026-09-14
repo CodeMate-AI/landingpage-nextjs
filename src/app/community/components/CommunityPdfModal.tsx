@@ -20,41 +20,15 @@ export default function CommunityPdfModal({
 }: CommunityPdfModalProps) {
   const [mounted, setMounted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
-  const [blobUrl, setBlobUrl] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const resolvedPdfUrl = pdfUrl
+    ? pdfUrl.startsWith("http")
+      ? `/api/pdf?url=${encodeURIComponent(pdfUrl)}`
+      : pdfUrl
+    : "";
 
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  useEffect(() => {
-    let activeObjectUrl: string | null = null;
-
-    if (isOpen && pdfUrl) {
-      setIsLoading(true);
-      fetch(pdfUrl)
-        .then((res) => res.blob())
-        .then((blob) => {
-          const pdfBlob = new Blob([blob], { type: "application/pdf" });
-          activeObjectUrl = URL.createObjectURL(pdfBlob);
-          setBlobUrl(activeObjectUrl);
-          setIsLoading(false);
-        })
-        .catch(() => {
-          setBlobUrl(pdfUrl);
-          setIsLoading(false);
-        });
-    } else {
-      setBlobUrl(null);
-      setIsLoading(false);
-    }
-
-    return () => {
-      if (activeObjectUrl) {
-        URL.revokeObjectURL(activeObjectUrl);
-      }
-    };
-  }, [isOpen, pdfUrl]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -126,10 +100,12 @@ export default function CommunityPdfModal({
               </div>
 
               <div className="flex items-center gap-2">
-                {blobUrl && (
+                {resolvedPdfUrl && (
                   <a
-                    href={blobUrl}
+                    href={resolvedPdfUrl}
                     download={downloadFilename}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-700/60 bg-zinc-800/60 px-3 py-1.5 text-xs font-semibold text-zinc-200 transition-colors hover:bg-zinc-700 hover:text-white"
                     title="Download PDF"
                   >
@@ -180,14 +156,9 @@ export default function CommunityPdfModal({
             </div>
 
             <div className="relative flex-1 w-full bg-zinc-900 flex items-center justify-center">
-              {isLoading ? (
-                <div className="flex flex-col items-center gap-3 text-zinc-400">
-                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-cyan-500 border-t-transparent" />
-                  <span className="text-xs font-mono">Loading documentation...</span>
-                </div>
-              ) : blobUrl ? (
+              {resolvedPdfUrl ? (
                 <iframe
-                  src={`${blobUrl}#toolbar=1&navpanes=0&scrollbar=1`}
+                  src={`${resolvedPdfUrl}#toolbar=1&navpanes=0&scrollbar=1`}
                   className="h-full w-full border-none"
                   title={`${title} Documentation`}
                 />

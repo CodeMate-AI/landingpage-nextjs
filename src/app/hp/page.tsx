@@ -356,7 +356,7 @@ export default function Home() {
           }}
         >
           <Image
-            src="/hero_workspace_v1.png"
+            src="https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702"
             alt="Professional using CodeMate on HP laptop"
             fill
             sizes="55vw"
@@ -388,10 +388,10 @@ export default function Home() {
           {/* Mobile/Tablet Image */}
           <div className="block lg:hidden w-full mt-8 relative h-65 sm:h-95 overflow-hidden rounded-xl border border-[#E2E8F0] shadow-sm">
             <Image
-              src="/hero_workspace_v1.png"
+              src="https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702"
               alt="Professional using CodeMate on HP laptop"
               fill
-              sizes="(max-width: 1024px) 100vw, 616px"
+              sizes="(max-width: 1024px) 100vw, 680px"
               priority
               className="object-cover"
             />
@@ -408,7 +408,7 @@ export default function Home() {
             {resources.map((resource) => (
               <a
                 key={resource.name}
-                href={resource.url}
+                href={`/api/pdf?url=${encodeURIComponent(resource.url)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 p-3.5 rounded-xl bg-white border border-[#E2E8F0] shadow-sm hover:shadow-md hover:border-accent-blue/40 transition-all duration-200 group"
@@ -556,7 +556,7 @@ export default function Home() {
             {/* Left Column: Image */}
             <div className="relative w-full lg:w-1/2 min-h-75">
               <Image
-                src="/footer_image.png"
+                src="https://backend.codemate.ai/uploaded/images/bf6916fd-580d-412c-8bbe-54b4ef8ee0b8"
                 alt="Team working together on HP laptops"
                 fill
                 priority
