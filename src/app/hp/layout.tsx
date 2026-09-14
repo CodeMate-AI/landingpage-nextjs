@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     siteName: "CodeMate AI",
     images: [
       {
-        url: "/hero_workspace_v1.png",
+        url: "https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702",
         width: 1200,
         height: 630,
         alt: "HP x CodeMate AI - Next Gen AI PCs",
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     title: "HP × CodeMate AI",
     description:
       "CodeMate is an AI-native SDLC agent that accelerates the entire software development lifecycle. Run CodeMate seamlessly on HP's Next Gen AI PCs with codebase security.",
-    images: ["/hero_workspace_v1.png"],
+    images: ["https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702"],
   },
 };
 
