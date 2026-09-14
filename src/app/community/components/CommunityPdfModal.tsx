@@ -20,10 +20,41 @@ export default function CommunityPdfModal({
 }: CommunityPdfModalProps) {
   const [mounted, setMounted] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [blobUrl, setBlobUrl] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    let activeObjectUrl: string | null = null;
+
+    if (isOpen && pdfUrl) {
+      setIsLoading(true);
+      fetch(pdfUrl)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const pdfBlob = new Blob([blob], { type: "application/pdf" });
+          activeObjectUrl = URL.createObjectURL(pdfBlob);
+          setBlobUrl(activeObjectUrl);
+          setIsLoading(false);
+        })
+        .catch(() => {
+          setBlobUrl(pdfUrl);
+          setIsLoading(false);
+        });
+    } else {
+      setBlobUrl(null);
+      setIsLoading(false);
+    }
+
+    return () => {
+      if (activeObjectUrl) {
+        URL.revokeObjectURL(activeObjectUrl);
+      }
+    };
+  }, [isOpen, pdfUrl]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -50,6 +81,8 @@ export default function CommunityPdfModal({
   }, [isOpen]);
 
   if (!mounted) return null;
+
+  const downloadFilename = `${title.replace(/[^a-zA-Z0-9_-]/g, "_")}_Documentation.pdf`;
 
   return createPortal(
     <AnimatePresence>
@@ -93,19 +126,21 @@ export default function CommunityPdfModal({
               </div>
 
               <div className="flex items-center gap-2">
-                <a
-                  href={encodeURI(pdfUrl)}
-                  download
-                  className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-700/60 bg-zinc-800/60 px-3 py-1.5 text-xs font-semibold text-zinc-200 transition-colors hover:bg-zinc-700 hover:text-white"
-                  title="Download PDF"
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <polyline points="7 10 12 15 17 10" />
-                    <line x1="12" y1="15" x2="12" y2="3" />
-                  </svg>
-                  <span className="hidden sm:inline">Download</span>
-                </a>
+                {blobUrl && (
+                  <a
+                    href={blobUrl}
+                    download={downloadFilename}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-zinc-700/60 bg-zinc-800/60 px-3 py-1.5 text-xs font-semibold text-zinc-200 transition-colors hover:bg-zinc-700 hover:text-white"
+                    title="Download PDF"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    <span className="hidden sm:inline">Download</span>
+                  </a>
+                )}
 
                 <button
                   type="button"
@@ -144,12 +179,21 @@ export default function CommunityPdfModal({
               </div>
             </div>
 
-            <div className="relative flex-1 w-full bg-zinc-900">
-              <iframe
-                src={`${encodeURI(pdfUrl)}#toolbar=1&navpanes=0&scrollbar=1`}
-                className="h-full w-full border-none"
-                title={`${title} Documentation`}
-              />
+            <div className="relative flex-1 w-full bg-zinc-900 flex items-center justify-center">
+              {isLoading ? (
+                <div className="flex flex-col items-center gap-3 text-zinc-400">
+                  <div className="h-8 w-8 animate-spin rounded-full border-2 border-cyan-500 border-t-transparent" />
+                  <span className="text-xs font-mono">Loading documentation...</span>
+                </div>
+              ) : blobUrl ? (
+                <iframe
+                  src={`${blobUrl}#toolbar=1&navpanes=0&scrollbar=1`}
+                  className="h-full w-full border-none"
+                  title={`${title} Documentation`}
+                />
+              ) : (
+                <div className="text-sm text-zinc-400">Unable to load document preview.</div>
+              )}
             </div>
           </motion.div>
         </motion.div>
@@ -158,3 +202,4 @@ export default function CommunityPdfModal({
     document.body
   );
 }
+

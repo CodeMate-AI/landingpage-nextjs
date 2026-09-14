@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     siteName: "CodeMate AI",
     images: [
       {
-        url: "/orbit_crm_community.png",
+        url: "https://backend.codemate.ai/uploaded/images/cdc78778-4f75-409d-b3d1-2c6486c9d810",
         width: 1200,
         height: 630,
         alt: "CodeMate AI Community Showcase",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     title: "Community Showcase | CodeMate AI",
     description:
       "Explore production-grade platforms, developer tools, and internal utilities built autonomously with CodeMate's AI-native development pipeline.",
-    images: ["/orbit_crm_community.png"],
+    images: ["https://backend.codemate.ai/uploaded/images/cdc78778-4f75-409d-b3d1-2c6486c9d810"],
   },
 };
 

@@ -13,7 +13,7 @@ function BrowserMockup() {
   return (
     <div className="relative h-full w-full overflow-hidden bg-zinc-950">
       <img
-        src="/orbit_crm_community.png"
+        src="https://backend.codemate.ai/uploaded/images/cdc78778-4f75-409d-b3d1-2c6486c9d810"
         alt="Orbit CRM Dashboard"
         className="h-full w-full object-cover object-top"
       />
@@ -206,7 +206,7 @@ export default function CommunityFeaturedProject() {
                   onClick={(e) => e.stopPropagation()}
                 >
                   <video
-                    src={encodeURI("/CRM.mp4")}
+                    src="https://backend.codemate.ai/uploaded/images/c2ca939c-5f2a-4281-b8a9-fddcd67f3b64"
                     autoPlay
                     controls
                     playsInline
@@ -224,7 +224,7 @@ export default function CommunityFeaturedProject() {
       <CommunityPdfModal
         isOpen={isDocsOpen}
         onClose={() => setIsDocsOpen(false)}
-        pdfUrl="/Orbit CRM .pdf"
+        pdfUrl="https://backend.codemate.ai/uploaded/images/460b768e-f805-41ef-862b-22f19f38431c"
         title="Orbit CRM"
       />
     </section>

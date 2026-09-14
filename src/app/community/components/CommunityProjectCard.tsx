@@ -131,7 +131,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
                   onClick={(e) => e.stopPropagation()}
                 >
                   <video
-                    src={encodeURI(project.videoUrl || "/SupportHub.mp4")}
+                    src={project.videoUrl || ""}
                     autoPlay
                     controls
                     playsInline
@@ -149,7 +149,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
       <CommunityPdfModal
         isOpen={isDocsOpen}
         onClose={() => setIsDocsOpen(false)}
-        pdfUrl={project.docsPdfUrl || "/SUPPORT HUB .pdf"}
+        pdfUrl={project.docsPdfUrl || ""}
         title={project.name}
       />
     </motion.article>
