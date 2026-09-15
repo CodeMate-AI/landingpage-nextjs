@@ -225,7 +225,7 @@ export default function Navbar() {
                 </span>
 
                 {isProducts &&
-                  <div className='absolute  h-[20rem] w-[14.5rem] mt-[22rem] -left-[1.65rem] rounded-md -z-10 '>
+                  <div className='absolute  h-[20rem] w-[14.5rem] mt-[22rem] -left-[1.2rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
