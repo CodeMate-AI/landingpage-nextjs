@@ -37,47 +37,47 @@ const resources = [
   {
     name: "Quick Start Guide",
     tagline: "Get Started with CodeMate",
-    url: "/pdfs/codemate-quick-start-guide.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/b899e5b2-1b26-47e7-ab45-e9556c71c3f3",
   },
   {
     name: "Product Overview",
     tagline: "Explore CodeMate Products",
-    url: "/pdfs/codemate-product-overview.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/44897f18-25bd-4902-88b9-0246a4a9f1f6",
   },
   {
     name: "CodeMate Build",
     tagline: "AI Full-Stack App Builder",
-    url: "/pdfs/codemate-build-guide.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/e1ff2e8a-de08-4dbb-87a2-6bcac324472d",
   },
   {
     name: "CodeMate Cora",
     tagline: "Agentic Software Architect",
-    url: "/pdfs/codemate-cora-guide.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/fd14b3e1-1d28-4797-b9ee-a71e32f5d717",
   },
   {
     name: "CodeMate C0 Web",
     tagline: "AI-Powered Research Agent",
-    url: "/pdfs/codemate-c0-guide.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/8b450672-4add-4346-acdc-62ffc423e431",
   },
   {
     name: "CodeMate PR Review Agent",
     tagline: "Automated PR Code Reviews",
-    url: "/pdfs/codemate-pr-review-guide.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/54b0b865-d8be-4fab-8352-228a3b17e859",
   },
   {
     name: "CodeMate Education",
     tagline: "AI Learning & Academic Platform",
-    url: "/pdfs/codemate-education.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/9b408477-9c1f-498d-ba84-f73c9dec2ff7",
   },
   {
     name: "FAQs",
     tagline: "Frequently Asked Questions",
-    url: "/pdfs/codemate-unified-faq.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/57c85bdf-b289-43aa-b707-df7a9c423924",
   },
   {
     name: "Technical & Security Overview",
     tagline: "Security Architecture & Safeguards",
-    url: "/pdfs/codemate-security-overview.pdf",
+    url: "https://backend.codemate.ai/uploaded/images/5d4ba684-9234-47f5-a97f-c2231670abb3",
   },
 ] as const;
 
@@ -356,7 +356,7 @@ export default function Home() {
           }}
         >
           <Image
-            src="/hero_workspace_v1.png"
+            src="https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702"
             alt="Professional using CodeMate on HP laptop"
             fill
             sizes="55vw"
@@ -388,10 +388,10 @@ export default function Home() {
           {/* Mobile/Tablet Image */}
           <div className="block lg:hidden w-full mt-8 relative h-65 sm:h-95 overflow-hidden rounded-xl border border-[#E2E8F0] shadow-sm">
             <Image
-              src="/hero_workspace_v1.png"
+              src="https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702"
               alt="Professional using CodeMate on HP laptop"
               fill
-              sizes="(max-width: 1024px) 100vw, 616px"
+              sizes="(max-width: 1024px) 100vw, 680px"
               priority
               className="object-cover"
             />
@@ -408,7 +408,7 @@ export default function Home() {
             {resources.map((resource) => (
               <a
                 key={resource.name}
-                href={resource.url}
+                href={`/api/pdf?url=${encodeURIComponent(resource.url)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-4 p-3.5 rounded-xl bg-white border border-[#E2E8F0] shadow-sm hover:shadow-md hover:border-accent-blue/40 transition-all duration-200 group"
@@ -556,7 +556,7 @@ export default function Home() {
             {/* Left Column: Image */}
             <div className="relative w-full lg:w-1/2 min-h-75">
               <Image
-                src="/footer_image.png"
+                src="https://backend.codemate.ai/uploaded/images/bf6916fd-580d-412c-8bbe-54b4ef8ee0b8"
                 alt="Team working together on HP laptops"
                 fill
                 priority
