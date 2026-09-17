@@ -28,7 +28,6 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
-
 interface UnlockItem {
   id: string;
   title: string;
@@ -304,9 +303,6 @@ function Page() {
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const SWE_BENCH_BLOG_URL = '/blog/cora-sota-swe-bench';
   const announcementRef = useRef<HTMLDivElement>(null);
-
-
-  //for codeEditor
   // ==========================================
   // 1F. EVENT HANDLERS
   // Functions to manage modal overlays, keyboard shortcuts, and button clicks.
@@ -324,13 +320,6 @@ function Page() {
     setIsArrow(latest >= lastScroll);
     setLastScroll(latest);
   });
-
-
-
-  ///for new products section
-
-
-
 
   // Discrete step switching for "What you'll Unlock"
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
@@ -361,17 +350,6 @@ function Page() {
     setIsCoraBlocked(imageVisible);
   });
 
-  // Hide product overlay once the unlock paragraph leaves view (e.g., scrolling up past it)
-
-
-
-
-
-
-
-
-
-
   const handleArrow = () => {
     if (isArrow) {
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -383,7 +361,6 @@ function Page() {
   const handleAnnouncementClick = () => {
     window.open(SWE_BENCH_BLOG_URL, '_blank', 'noopener,noreferrer');
   };
-
 
   return (
     <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className="bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]" >
@@ -402,7 +379,6 @@ function Page() {
 
       <Navbar />
       {/* mobile menu */}
-
 
       {/* ========================================================================= */}
       {/* SECTION 1: HERO & PRIMARY ACTION AREA                                     */}
@@ -570,7 +546,6 @@ function Page() {
 
       {/* scrolling bento */}
 
-
       <EventOffer
         isOpen={showEventPopup}
         onClose={() => setShowEventPopup(false)}
@@ -582,7 +557,6 @@ function Page() {
 
       <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-4 lg:mt-0'>
         <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg md:text-2xl lg:text-lg'>Introducing CodeMate AI</h1>
-
 
         {/* ========================================== */}
         {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
@@ -865,9 +839,7 @@ function Page() {
 
           <motion.img initial={{ scale: 1.1, y: 150 }} src="gl.png" alt="" className="absolute lg:hidden  " />
 
-
         </div>
-
 
         <div className='text-2xl lg:text-5xl  flex flex-col gap-1 font-semibold mt-20 opacity-70'>
           <h1 >Solutions that scales</h1>
@@ -938,8 +910,6 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       </div>
       {/* enterprises section */}
 
-
-
       {/* trusted by section */}
       <div className="lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50">
         <div className='pt-[2rem] lg:pt-[4rem]'>
@@ -950,8 +920,6 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
               targetValue={100000} />+</span></h1>
             <p className=' mt-2 text-sm md:text-xl lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
           </div>
-
-
 
           <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
             <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
@@ -1010,11 +978,8 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
         </div>
 
-
-
       </div>
       {/* trusted by section */}
-
 
       {/* bento */}
       {/* <div className=' relative h-[170vh] w-full bg-zinc-950 text-white overflow-hidden'>
@@ -1045,7 +1010,6 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       {/* ========================================== */}
       <MediaPresence />
 
-
       {/* ========================================== */}
       {/* UI SECTION: LOGO BANNER                   */}
       {/* ========================================== */}
@@ -1061,14 +1025,11 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       </div>
     </div>
 
-
   )
 }
 
 export default Page
 
-
-
 // function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
 
 //   const feature2Ref = useRef<HTMLDivElement>(null);
@@ -1083,8 +1044,6 @@ export default Page
 //      initial={{opacity:0,filter:'blur(50px)'}}
 //      whileInView={{opacity:1,filter:'blur(0px)'}}
 
-
-
 // function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
 
 //   const feature2Ref = useRef<HTMLDivElement>(null);
@@ -1098,5 +1057,4 @@ export default Page
 //     <motion.div
 //      initial={{opacity:0,filter:'blur(50px)'}}
 //      whileInView={{opacity:1,filter:'blur(0px)'}}
-
 
