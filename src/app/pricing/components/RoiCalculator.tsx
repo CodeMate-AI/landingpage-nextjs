@@ -327,7 +327,7 @@ export default function RoiCalculator({ planRatesUsd = { pro: 20, teams: 30, max
               <p className="text-xs font-medium text-zinc-400 uppercase tracking-wider mb-2">
                 Estimated annual productivity value
               </p>
-              <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight">
+              <div className="text-3xl sm:text-4xl lg:text-5xl font-bold text-emerald-400 tracking-tight">
                 {formatCurrency(metrics.productivityValue, currency)}
               </div>
             </div>
@@ -343,7 +343,7 @@ export default function RoiCalculator({ planRatesUsd = { pro: 20, teams: 30, max
 
               <div className="flex justify-between items-center text-sm sm:text-base">
                 <span className="text-zinc-300 font-medium">Estimated net annual value</span>
-                <span className="font-semibold text-white">
+                <span className="font-semibold text-emerald-400">
                   {formatCurrency(metrics.netAnnualValue, currency)}
                 </span>
               </div>
