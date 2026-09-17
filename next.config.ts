@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "assests.aceternity.com" },
       { protocol: "https", hostname: "backend.codemate.ai" },
+      { protocol: "https", hostname: "img.youtube.com" },
     ],
   },
 

@@ -59,6 +59,7 @@ export default function VideoEmbed() {
           disablekb: 1,
           iv_load_policy: 3,
           cc_load_policy: 0,
+          cc_lang_pref: 'none',
           playsinline: 1,
         },
         events: {

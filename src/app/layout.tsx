@@ -1,24 +1,24 @@
-
 import "./globals.css";
 import "../styles/_variables.scss";
 import "../styles/_keyframe-animations.scss";
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
 
-import { Montserrat, Mulish } from 'next/font/google';
+import { Montserrat } from "next/font/google";
 
 const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-montserrat',
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-montserrat",
+  display: "swap",
 });
 
-const mulish = Mulish({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700', '800'],
-  variable: '--font-mulish',
-});
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#09090b",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://codemate.ai'),
@@ -126,8 +126,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
+      </head>
       <body
-        className={`${montserrat.variable} ${mulish.variable} antialiased bg-zinc-950 text-white dark`}
+        className={`${montserrat.variable} ${montserrat.className} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning
       >
         {children}
@@ -185,4 +190,3 @@ export default function RootLayout({
     </html>
   );
 }
-

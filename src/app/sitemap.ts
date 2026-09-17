@@ -10,10 +10,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: baseUrl,
       lastModified,
       changeFrequency: "daily",
-      priority: 1,
+      priority: 1.0,
     },
     {
-      url: `${baseUrl}/download`,
+      url: `${baseUrl}/hp`,
       lastModified,
       changeFrequency: "weekly",
       priority: 0.9,
@@ -22,7 +22,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${baseUrl}/pricing`,
       lastModified,
       changeFrequency: "weekly",
-      priority: 0.9,
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/download`,
+      lastModified,
+      changeFrequency: "monthly",
+      priority: 0.8,
     },
     {
       url: `${baseUrl}/contact`,
@@ -33,7 +39,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${baseUrl}/blog`,
       lastModified,
-      changeFrequency: "daily",
+      changeFrequency: "weekly",
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/community`,
+      lastModified,
+      changeFrequency: "weekly",
       priority: 0.8,
     },
   ];
@@ -52,7 +64,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     if (posts && posts.length > 0) {
       blogRoutes = posts.map((post: any) => ({
         url: `${baseUrl}/blog/${post.slug}`,
-        lastModified: post.updatedAt ? new Date(post.updatedAt) : post.publishedAt ? new Date(post.publishedAt) : lastModified,
+        lastModified: post.updatedAt
+          ? new Date(post.updatedAt)
+          : post.publishedAt
+          ? new Date(post.publishedAt)
+          : lastModified,
         changeFrequency: "monthly" as const,
         priority: 0.8,
       }));

@@ -2,6 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Forma DJR Display";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/formadjrdisplay-regular-webfont%20(1).otf") format("opentype");
+}
+
 body {
   font-family: Arial, Helvetica, sans-serif;
 }
@@ -67,7 +75,6 @@ html {
   }
 }
 
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -80,8 +87,6 @@ html {
 
 @theme inline {
   --animate-aurora: aurora 8s ease-in-out infinite alternate;
-
-
 
   @keyframes aurora {
     0% {
@@ -110,8 +115,6 @@ html {
     }
   }
 }
-
-
 
 ::-webkit-scrollbar {
   width: 4px;
@@ -160,12 +163,9 @@ body {
   /* Ensures logos do not look stretched or shrunk */
 }
 
-
-
 .custom-cursor {
   cursor: url("/cursor.svg") 16 16, auto;
 }
-
 
 @media (min-width: 768px) {
   .panelTitle {
@@ -255,6 +255,49 @@ body {
   background-clip: text;
 }
 
+/* Gray & Darker Gradients */
+.text-gradient-gray {
+  background: linear-gradient(90deg, #71717a 0%, #e4e4e7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-dark-gray {
+  background: linear-gradient(90deg, #27272a 0%, #71717a 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-muted {
+  background: linear-gradient(90deg, #52525b 0%, #a1a1aa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-slate {
+  background: linear-gradient(90deg, #475569 0%, #cbd5e1 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-dark-blue {
+  background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-gradient-dark-purple {
+  background: linear-gradient(90deg, #581c87 0%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* Tiptap Rich Text Editor Workspace Styles */
 .ProseMirror {
   outline: none;
@@ -265,7 +308,6 @@ body {
 .ProseMirror h3[style*="text-align: justify"] {
   text-align-last: justify;
 }
-
 
 .ProseMirror sub {
   vertical-align: sub !important;
@@ -394,45 +436,3 @@ body {
   font-weight: 700;
   color: #ffffff;
 }
-/* Gray & Darker Gradients */
-.text-gradient-gray {
-  background: linear-gradient(90deg, #71717a 0%, #e4e4e7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-dark-gray {
-  background: linear-gradient(90deg, #27272a 0%, #71717a 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-muted {
-  background: linear-gradient(90deg, #52525b 0%, #a1a1aa 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-slate {
-  background: linear-gradient(90deg, #475569 0%, #cbd5e1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-dark-blue {
-  background: linear-gradient(90deg, #1e3a8a 0%, #3b82f6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.text-gradient-dark-purple {
-  background: linear-gradient(90deg, #581c87 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
