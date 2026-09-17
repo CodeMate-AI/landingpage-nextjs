@@ -734,73 +734,19 @@ function Page() {
 
                 {/* Cards */}
                 <div className="flex gap-0 md:gap-[40px] lg:gap-16">
-                  {[
-                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/Design mode_static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/figma-to-code-static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skill-static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "/cora-autonomous.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "/Pr_review_agent_parth.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "/documentation-static.png", isVideo: false, objectFit: "object-cover" },
-                  ].map((item, i) => {
-                    // Proximity-based effects: adjacent cards get softer treatment
-                    const dist = unlockStep === -1 ? 0 : Math.abs(i - unlockStep);
-                    const isActive = i === unlockStep;
-                    const proximityOpacity = unlockStep === -1 ? 1 : isActive ? 1 : dist === 1 ? 0.5 : 0.2;
-                    const proximityBlur = unlockStep === -1 ? 0 : isActive ? 0 : dist === 1 ? 1.5 : 3.5;
-                    const proximityScale = unlockStep === -1 ? 1 : isActive ? 1.03 : dist === 1 ? 0.97 : 0.92;
-                    const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
-
-                    return (
-                      <div key={i} className="w-[100vw] md:w-[82vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
-                        <div
-                          className="flex flex-col gap-6 md:gap-8 transition-all duration-700 ease-in-out items-center text-center lg:items-start lg:text-left"
-                          style={{
-                            opacity: proximityOpacity,
-                            filter: `blur(${proximityBlur}px)`,
-                            transform: `scale(${proximityScale}) translateY(${proximityY}px)`,
-                          }}
-                        >
-                          {/* Top Text */}
-                          <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
-                            {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
-                            <h3 className={`text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
-                          </div>
-
-                          {/* Image/Video Box */}
-                          <div
-                            className={`h-[200px] sm:h-[250px] md:h-[46vw] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
-                          >
-                            {/* Subtle radial glow behind active card media */}
-                            {isActive && (
-                              <div className="absolute inset-0 rounded-xl bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.06)_0%,transparent_70%)] pointer-events-none" />
-                            )}
-                            {item.isVideo ? (
-                              <video
-                                ref={(el) => { unlockVideoRefs.current[i] = el }}
-                                loop
-                                muted
-                                playsInline
-                                className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
-                                src={item.media}
-                              />
-                            ) : (
-                              <SmartGif
-                                src={item.media}
-                                alt={item.title}
-                                className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
-                                isActive={isActive}
-                              />
-                            )}
-                          </div>
-
-                          {/* Bottom Description */}
-                          <div className="flex flex-col gap-4 px-2 items-center lg:items-start h-[80px] md:h-[100px] lg:h-auto justify-center">
-                            <p className={`text-[14px] md:text-[18px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
+                  {UNLOCK_ITEMS.map((item, i) => (
+                    <UnlockCard
+                      key={item.id}
+                      item={item}
+                      index={i}
+                      total={UNLOCK_ITEMS.length}
+                      progress={PShowYProg}
+                      onVideoRef={(el) => {
+                        unlockVideoRefs.current[i] = el;
+                      }}
+                      isActive={i === unlockStep}
+                    />
+                  ))}
                 </div>
               </motion.div>
             </div>
