@@ -23,6 +23,16 @@ export interface CurrencyConfig {
     step: number;
     salaryLabel: string;
     formatSalary: (val: number) => string;
+    defaultHourlyCost: number;
+    minHourlyCost: number;
+    maxHourlyCost: number;
+    hourlyStep: number;
+    formatHourlyCost: (val: number) => string;
+    defaultAnnualSubPerDev: number;
+    defaultOnboardingCost: number;
+    minOnboardingCost: number;
+    maxOnboardingCost: number;
+    onboardingStep: number;
   };
 }
 
@@ -71,6 +81,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 5000,
       salaryLabel: 'Annual Salary ($/yr)',
       formatSalary: (val: number) => `$${(val / 1000).toFixed(0)}k/yr`,
+      defaultHourlyCost: 75,
+      minHourlyCost: 20,
+      maxHourlyCost: 250,
+      hourlyStep: 5,
+      formatHourlyCost: (val: number) => `$${val}/hr`,
+      defaultAnnualSubPerDev: 240,
+      defaultOnboardingCost: 500,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 5000,
+      onboardingStep: 100,
     },
   },
   INR: {
@@ -87,6 +107,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 50000,
       salaryLabel: 'Annual Salary (₹ LPA)',
       formatSalary: (val: number) => `₹${(val / 100000).toFixed(1)} LPA`,
+      defaultHourlyCost: 1500,
+      minHourlyCost: 300,
+      maxHourlyCost: 10000,
+      hourlyStep: 50,
+      formatHourlyCost: (val: number) => `₹${val.toLocaleString('en-IN')}/hr`,
+      defaultAnnualSubPerDev: 24000,
+      defaultOnboardingCost: 50000,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 500000,
+      onboardingStep: 5000,
     },
   },
   EUR: {
@@ -103,6 +133,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 2500,
       salaryLabel: 'Annual Salary (€/yr)',
       formatSalary: (val: number) => `€${(val / 1000).toFixed(0)}k/yr`,
+      defaultHourlyCost: 65,
+      minHourlyCost: 20,
+      maxHourlyCost: 200,
+      hourlyStep: 5,
+      formatHourlyCost: (val: number) => `€${val}/hr`,
+      defaultAnnualSubPerDev: 240,
+      defaultOnboardingCost: 500,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 5000,
+      onboardingStep: 100,
     },
   },
   GBP: {
@@ -119,6 +159,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 2500,
       salaryLabel: 'Annual Salary (£/yr)',
       formatSalary: (val: number) => `£${(val / 1000).toFixed(0)}k/yr`,
+      defaultHourlyCost: 60,
+      minHourlyCost: 20,
+      maxHourlyCost: 180,
+      hourlyStep: 5,
+      formatHourlyCost: (val: number) => `£${val}/hr`,
+      defaultAnnualSubPerDev: 200,
+      defaultOnboardingCost: 400,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 4000,
+      onboardingStep: 100,
     },
   },
   CAD: {
@@ -135,6 +185,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 5000,
       salaryLabel: 'Annual Salary (CA$/yr)',
       formatSalary: (val: number) => `CA$${(val / 1000).toFixed(0)}k/yr`,
+      defaultHourlyCost: 85,
+      minHourlyCost: 25,
+      maxHourlyCost: 250,
+      hourlyStep: 5,
+      formatHourlyCost: (val: number) => `CA$${val}/hr`,
+      defaultAnnualSubPerDev: 300,
+      defaultOnboardingCost: 600,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 6000,
+      onboardingStep: 100,
     },
   },
   AUD: {
@@ -151,6 +211,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 5000,
       salaryLabel: 'Annual Salary (A$/yr)',
       formatSalary: (val: number) => `A$${(val / 1000).toFixed(0)}k/yr`,
+      defaultHourlyCost: 90,
+      minHourlyCost: 30,
+      maxHourlyCost: 280,
+      hourlyStep: 5,
+      formatHourlyCost: (val: number) => `A$${val}/hr`,
+      defaultAnnualSubPerDev: 320,
+      defaultOnboardingCost: 650,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 6500,
+      onboardingStep: 100,
     },
   },
   JPY: {
@@ -167,6 +237,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 250000,
       salaryLabel: 'Annual Salary (¥/yr)',
       formatSalary: (val: number) => `¥${(val / 10000).toFixed(0)}万/yr`,
+      defaultHourlyCost: 6000,
+      minHourlyCost: 2000,
+      maxHourlyCost: 25000,
+      hourlyStep: 500,
+      formatHourlyCost: (val: number) => `¥${val.toLocaleString()}/hr`,
+      defaultAnnualSubPerDev: 35000,
+      defaultOnboardingCost: 75000,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 750000,
+      onboardingStep: 10000,
     },
   },
   SGD: {
@@ -183,6 +263,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 5000,
       salaryLabel: 'Annual Salary (S$/yr)',
       formatSalary: (val: number) => `S$${(val / 1000).toFixed(0)}k/yr`,
+      defaultHourlyCost: 70,
+      minHourlyCost: 25,
+      maxHourlyCost: 220,
+      hourlyStep: 5,
+      formatHourlyCost: (val: number) => `S$${val}/hr`,
+      defaultAnnualSubPerDev: 300,
+      defaultOnboardingCost: 600,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 6000,
+      onboardingStep: 100,
     },
   },
   AED: {
@@ -199,6 +289,16 @@ export const CURRENCY_CONFIGS: Record<CurrencyCode, CurrencyConfig> = {
       step: 10000,
       salaryLabel: 'Annual Salary (AED/yr)',
       formatSalary: (val: number) => `AED ${(val / 1000).toFixed(0)}k/yr`,
+      defaultHourlyCost: 180,
+      minHourlyCost: 50,
+      maxHourlyCost: 600,
+      hourlyStep: 10,
+      formatHourlyCost: (val: number) => `AED ${val}/hr`,
+      defaultAnnualSubPerDev: 880,
+      defaultOnboardingCost: 1800,
+      minOnboardingCost: 0,
+      maxOnboardingCost: 18000,
+      onboardingStep: 200,
     },
   },
 };
