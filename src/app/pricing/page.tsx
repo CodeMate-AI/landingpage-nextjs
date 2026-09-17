@@ -2,7 +2,6 @@
 import React, { useRef, useState, useLayoutEffect, useEffect, useCallback, useMemo } from 'react'
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Montserrat } from 'next/font/google'
 import Footer from '@/components/footer'
 import RoiCalculator from './components/RoiCalculator'
 import { useCurrency } from '@/context/CurrencyContext'
@@ -22,14 +21,6 @@ import {
   type Plan,
   type PlanLimits,
 } from '@/utils/planUtils'
-
-// ─── Font ─────────────────────────────────────────────────────────────────────
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-montserrat',
-})
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -289,7 +280,7 @@ function Page() {
   }, [currentPlans, categorizedPlans])
 
   return (
-    <div ref={pageRef} className={`${montserrat.className} w-full bg-zinc-950`}>
+    <div ref={pageRef} className="w-full bg-zinc-950">
 
       {/* ── Desktop Navbar ── */}
       <div className="hidden lg:flex fixed top-0 justify-center items-center w-full" style={{ zIndex: 9999 }}>
