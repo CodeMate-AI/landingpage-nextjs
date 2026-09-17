@@ -3,7 +3,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform, MotionValue } from 'framer-motion'
 import Lenis from 'lenis'
 import { Montserrat } from 'next/font/google';
 import Image from 'next/image';
@@ -28,6 +28,151 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
+interface UnlockItem {
+  id: string;
+  title: string;
+  desc: string;
+  media: string;
+  isVideo: boolean;
+  objectFit?: string;
+}
+
+const UNLOCK_ITEMS: UnlockItem[] = [
+  { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/Design mode_static.png", isVideo: false, objectFit: "object-cover" },
+  { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/figma-to-code-static.png", isVideo: false, objectFit: "object-cover" },
+  { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skill-static.png", isVideo: false, objectFit: "object-cover" },
+  { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "/cora-autonomous.png", isVideo: false, objectFit: "object-cover" },
+  { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "/Pr_review_agent_parth.png", isVideo: false, objectFit: "object-cover" },
+  { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "/documentation-static.png", isVideo: false, objectFit: "object-cover" },
+];
+
+const CARD_CENTERS = [0.16, 0.33, 0.50, 0.66, 0.83, 1.00];
+
+function getCardInputRange(index: number) {
+  if (index === 0) return [0, 0.16, 0.33];
+  if (index === 5) return [0.83, 1.00];
+  return [CARD_CENTERS[index - 1], CARD_CENTERS[index], CARD_CENTERS[index + 1]];
+}
+
+function UnlockCard({
+  item,
+  index,
+  total,
+  progress,
+  onVideoRef,
+  isActive,
+}: {
+  item: UnlockItem;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+  onVideoRef: (el: HTMLVideoElement | null) => void;
+  isActive: boolean;
+}) {
+  const inputRange = getCardInputRange(index);
+
+  const opacity = useTransform(
+    progress,
+    inputRange,
+    index === 0 ? [0.35, 1, 0.12] : index === 5 ? [0.12, 1] : [0.12, 1, 0.12],
+    { clamp: true }
+  );
+
+  const scale = useTransform(
+    progress,
+    inputRange,
+    index === 0 ? [0.95, 1.03, 0.90] : index === 5 ? [0.90, 1.03] : [0.90, 1.03, 0.90],
+    { clamp: true }
+  );
+
+  const translateY = useTransform(
+    progress,
+    inputRange,
+    index === 0 ? [0, -4, 8] : index === 5 ? [8, -4] : [8, -4, 8],
+    { clamp: true }
+  );
+
+  const titleColor = useTransform(
+    progress,
+    inputRange,
+    index === 0
+      ? ['rgb(161, 161, 170)', 'rgb(255, 255, 255)', 'rgb(82, 82, 91)']
+      : index === 5
+      ? ['rgb(82, 82, 91)', 'rgb(255, 255, 255)']
+      : ['rgb(82, 82, 91)', 'rgb(255, 255, 255)', 'rgb(82, 82, 91)'],
+    { clamp: true }
+  );
+
+  const descColor = useTransform(
+    progress,
+    inputRange,
+    index === 0
+      ? ['rgb(161, 161, 170)', 'rgb(228, 228, 231)', 'rgb(63, 63, 70)']
+      : index === 5
+      ? ['rgb(63, 63, 70)', 'rgb(228, 228, 231)']
+      : ['rgb(63, 63, 70)', 'rgb(228, 228, 231)', 'rgb(63, 63, 70)'],
+    { clamp: true }
+  );
+
+  return (
+    <div className="w-[100vw] md:w-[82vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
+      <motion.div
+        style={{
+          opacity,
+          scale,
+          y: translateY,
+          willChange: 'transform, opacity',
+        }}
+        className="flex flex-col gap-6 md:gap-8 items-center text-center lg:items-start lg:text-left w-full"
+      >
+        <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
+          <motion.h3
+            style={{ color: titleColor }}
+            className={`${montserrat.className} text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug`}
+          >
+            {item.title}
+          </motion.h3>
+        </div>
+        <div
+          className={`h-[200px] sm:h-[250px] md:h-[46vw] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 border transition-[box-shadow,border-color] duration-300 ${
+            isActive
+              ? 'border-[#00BFFF]/50 shadow-[0_0_40px_rgba(0,191,255,0.2),0_0_80px_rgba(0,191,255,0.08)]'
+              : 'border-white/[0.04] shadow-none'
+          }`}
+        >
+          {isActive && (
+            <div className="absolute inset-0 rounded-xl bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.08)_0%,transparent_70%)] pointer-events-none" />
+          )}
+          {item.isVideo ? (
+            <video
+              ref={onVideoRef}
+              loop
+              muted
+              playsInline
+              className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
+              src={item.media}
+            />
+          ) : (
+            <SmartGif
+              src={item.media}
+              alt={item.title}
+              className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
+              isActive={isActive}
+            />
+          )}
+        </div>
+        <div className="flex flex-col gap-4 px-2 items-center lg:items-start h-[80px] md:h-[100px] lg:h-auto justify-center">
+          <motion.p
+            style={{ color: descColor }}
+            className="text-[14px] md:text-[18px] lg:text-[16px] leading-relaxed"
+          >
+            {item.desc}
+          </motion.p>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
 
 // ==========================================
 // 1. MAIN COMPONENT DECLARATION
@@ -75,7 +220,7 @@ function Page() {
   // ==========================================
   const { scrollYProgress: PShowYProg } = useScroll({
     target: productShowRef,
-    offset: ['start start', 'end start']
+    offset: ['start start', 'end end']
   });
 
   const { scrollYProgress: codeMateImageProg } = useScroll({
@@ -92,22 +237,19 @@ function Page() {
   const { scrollY } = useScroll();
 
   // ========== "What you'll Unlock" section scroll math ==========
-  const UNLOCK_END = 0.76;
-  const UNLOCK_STEP = UNLOCK_END / 6;
-
   const [unlockStep, setUnlockStep] = useState<-1 | 0 | 1 | 2 | 3 | 4 | 5>(-1);
 
   // ========== iPad/Tablet Centering Transform ==========
   const xMobile = useTransform(
     PShowYProg,
-    [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-    ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw", "-600vw"]
+    [0, 0.16, 0.33, 0.5, 0.66, 0.83, 1],
+    ["0vw", "-100vw", "-200vw", "-300vw", "-400vw", "-500vw", "-600vw"]
   );
 
   const xDesktop = useTransform(
     PShowYProg,
-    [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END],
-    ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73%", "-73%"]
+    [0, 0.16, 0.33, 0.5, 0.66, 0.83, 1],
+    ["0%", "-6%", "-19.5%", "-33%", "-46.5%", "-60%", "-73.5%"]
   );
 
   const xTablet = useTransform(PShowYProg, (latest) => {
@@ -115,7 +257,7 @@ function Page() {
     const w = W * 0.82;
     const g = 40;
     const c0 = -(W / 2 + w / 2);
-    const input = [0, UNLOCK_STEP * 0.5, UNLOCK_STEP * 1.5, UNLOCK_STEP * 2.5, UNLOCK_STEP * 3.5, UNLOCK_STEP * 4.5, UNLOCK_STEP * 5.5, UNLOCK_END];
+    const input = [0, 0.16, 0.33, 0.5, 0.66, 0.83, 1];
     const output = [
       0,
       c0,
@@ -161,9 +303,6 @@ function Page() {
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const SWE_BENCH_BLOG_URL = '/blog/cora-sota-swe-bench';
   const announcementRef = useRef<HTMLDivElement>(null);
-
-
-  //for codeEditor
   // ==========================================
   // 1F. EVENT HANDLERS
   // Functions to manage modal overlays, keyboard shortcuts, and button clicks.
@@ -182,31 +321,14 @@ function Page() {
     setLastScroll(latest);
   });
 
-
-
-  ///for new products section
-
-
-
-
   // Discrete step switching for "What you'll Unlock"
-  // Uses midpoint thresholds so the step changes at the exact center between two cards.
-  // This makes scroll-up and scroll-down behavior perfectly symmetric.
   useMotionValueEvent(PShowYProg, 'change', (latest) => {
-    if (latest <= 0 || latest >= UNLOCK_END) {
-      setUnlockStep(-1);
-      return;
-    }
-
-    // Adjusted thresholds to sync dots with cards (0.76 range / 6 steps)
-    // Title is active from 0 to 0.03
-    // Card 0 (Design Mode) is centered at 0.063 and active until ~0.126
-    if (latest < UNLOCK_STEP * 0.25) setUnlockStep(-1);
-    else if (latest < UNLOCK_STEP * 1) setUnlockStep(0);
-    else if (latest < UNLOCK_STEP * 2) setUnlockStep(1);
-    else if (latest < UNLOCK_STEP * 3) setUnlockStep(2);
-    else if (latest < UNLOCK_STEP * 4) setUnlockStep(3);
-    else if (latest < UNLOCK_STEP * 5) setUnlockStep(4);
+    if (latest < 0.08) setUnlockStep(-1);
+    else if (latest < 0.245) setUnlockStep(0);
+    else if (latest < 0.415) setUnlockStep(1);
+    else if (latest < 0.58) setUnlockStep(2);
+    else if (latest < 0.745) setUnlockStep(3);
+    else if (latest < 0.915) setUnlockStep(4);
     else setUnlockStep(5);
   });
 
@@ -228,17 +350,6 @@ function Page() {
     setIsCoraBlocked(imageVisible);
   });
 
-  // Hide product overlay once the unlock paragraph leaves view (e.g., scrolling up past it)
-
-
-
-
-
-
-
-
-
-
   const handleArrow = () => {
     if (isArrow) {
       window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
@@ -250,7 +361,6 @@ function Page() {
   const handleAnnouncementClick = () => {
     window.open(SWE_BENCH_BLOG_URL, '_blank', 'noopener,noreferrer');
   };
-
 
   return (
     <div style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }} ref={mainRef} className="bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]" >
@@ -269,7 +379,6 @@ function Page() {
 
       <Navbar />
       {/* mobile menu */}
-
 
       {/* ========================================================================= */}
       {/* SECTION 1: HERO & PRIMARY ACTION AREA                                     */}
@@ -290,6 +399,7 @@ function Page() {
         >
           <div
             style={{ cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="26" height="26"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto` }}
+            ref={heroRef}
             className='relative h-auto lg:h-screen lg:max-h-[740px] lg:min-h-[580px] w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-14 sm:pt-16 lg:pt-10 xl:pt-12 pb-8 lg:pb-10'
           >
             <motion.div
@@ -413,7 +523,6 @@ function Page() {
           </div>
         </BackgroundGradientAnimation>
       </div>
-      {/* hero section */}
 
       {/* enter section */}
       {/* <div
@@ -437,7 +546,6 @@ function Page() {
 
       {/* scrolling bento */}
 
-
       <EventOffer
         isOpen={showEventPopup}
         onClose={() => setShowEventPopup(false)}
@@ -449,7 +557,6 @@ function Page() {
 
       <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-4 lg:mt-0'>
         <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg md:text-2xl lg:text-lg'>Introducing CodeMate AI</h1>
-
 
         {/* ========================================== */}
         {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
@@ -601,73 +708,19 @@ function Page() {
 
                 {/* Cards */}
                 <div className="flex gap-0 md:gap-[40px] lg:gap-16">
-                  {[
-                    { id: "00", title: "Design Mode", desc: "Generate pixel-perfect UI components and layouts instantly. Transform your visual ideas into production-ready code without writing boilerplate.", media: "/Design mode_static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/figma-to-code-static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skill-static.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "/cora-autonomous.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "/Pr_review_agent_parth.png", isVideo: false, objectFit: "object-cover" },
-                    { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "/documentation-static.png", isVideo: false, objectFit: "object-cover" },
-                  ].map((item, i) => {
-                    // Proximity-based effects: adjacent cards get softer treatment
-                    const dist = unlockStep === -1 ? 0 : Math.abs(i - unlockStep);
-                    const isActive = i === unlockStep;
-                    const proximityOpacity = unlockStep === -1 ? 1 : isActive ? 1 : dist === 1 ? 0.5 : 0.2;
-                    const proximityBlur = unlockStep === -1 ? 0 : isActive ? 0 : dist === 1 ? 1.5 : 3.5;
-                    const proximityScale = unlockStep === -1 ? 1 : isActive ? 1.03 : dist === 1 ? 0.97 : 0.92;
-                    const proximityY = unlockStep === -1 ? 0 : isActive ? -4 : dist === 1 ? 4 : 10;
-
-                    return (
-                      <div key={i} className="w-[100vw] md:w-[82vw] lg:w-[550px] shrink-0 flex flex-col relative pt-4 px-8 md:px-8 lg:px-0 items-center justify-center">
-                        <div
-                          className="flex flex-col gap-6 md:gap-8 transition-all duration-700 ease-in-out items-center text-center lg:items-start lg:text-left"
-                          style={{
-                            opacity: proximityOpacity,
-                            filter: `blur(${proximityBlur}px)`,
-                            transform: `scale(${proximityScale}) translateY(${proximityY}px)`,
-                          }}
-                        >
-                          {/* Top Text */}
-                          <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
-                            {/* <div className={`font-mono text-[15px] font-bold tracking-wider transition-all duration-700 ${isActive ? 'text-[#00BFFF] drop-shadow-[0_0_8px_rgba(0,191,255,0.6)]' : 'text-[#00BFFF]/60'}`}>[{item.id}]</div> */}
-                            <h3 className={`text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug transition-all duration-700 ${isActive ? 'text-white' : 'text-white/70'}`}>{item.title}</h3>
-                          </div>
-
-                          {/* Image/Video Box */}
-                          <div
-                            className={`h-[200px] sm:h-[250px] md:h-[46vw] lg:h-[300px] w-full shrink-0 overflow-hidden rounded-xl bg-[#0a0a0a] relative flex items-center justify-center p-1 transition-all duration-700 ${isActive ? 'border border-[#00BFFF]/30 shadow-[0_0_40px_rgba(0,191,255,0.15),0_0_80px_rgba(0,191,255,0.05)]' : 'border border-white/[0.04] shadow-2xl'}`}
-                          >
-                            {/* Subtle radial glow behind active card media */}
-                            {isActive && (
-                              <div className="absolute inset-0 rounded-xl bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.06)_0%,transparent_70%)] pointer-events-none" />
-                            )}
-                            {item.isVideo ? (
-                              <video
-                                ref={(el) => { unlockVideoRefs.current[i] = el }}
-                                loop
-                                muted
-                                playsInline
-                                className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
-                                src={item.media}
-                              />
-                            ) : (
-                              <SmartGif
-                                src={item.media}
-                                alt={item.title}
-                                className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
-                                isActive={isActive}
-                              />
-                            )}
-                          </div>
-
-                          {/* Bottom Description */}
-                          <div className="flex flex-col gap-4 px-2 items-center lg:items-start h-[80px] md:h-[100px] lg:h-auto justify-center">
-                            <p className={`text-[14px] md:text-[18px] lg:text-[16px] leading-relaxed transition-all duration-700 ${isActive ? 'text-[#d4d4d4]' : 'text-[#666]'}`}>{item.desc}</p>
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
+                  {UNLOCK_ITEMS.map((item, i) => (
+                    <UnlockCard
+                      key={item.id}
+                      item={item}
+                      index={i}
+                      total={UNLOCK_ITEMS.length}
+                      progress={PShowYProg}
+                      onVideoRef={(el) => {
+                        unlockVideoRefs.current[i] = el;
+                      }}
+                      isActive={i === unlockStep}
+                    />
+                  ))}
                 </div>
               </motion.div>
             </div>
@@ -694,8 +747,8 @@ function Page() {
             <div className="lg:hidden w-full px-8 pt-10 pb-8 text-right pointer-events-none">
               <motion.div
                 style={{
-                  opacity: useTransform(PShowYProg, [0.72, 0.76], [0, 1]),
-                  filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
+                  opacity: useTransform(PShowYProg, [0.92, 1], [0, 1]),
+                  filter: useTransform(PShowYProg, [0.92, 1], ['blur(10px)', 'blur(0px)']),
                 }}
                 transition={{ duration: 0.6 }}
                 className="text-xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto">
@@ -708,8 +761,8 @@ function Page() {
           <div className='hidden lg:block sticky top-[88vh] z-40 pointer-events-none'>
             <motion.div
               style={{
-                opacity: useTransform(PShowYProg, [0.72, 0.76], [0, 1]),
-                filter: useTransform(PShowYProg, [0.72, 0.76], ['blur(10px)', 'blur(0px)']),
+                opacity: useTransform(PShowYProg, [0.92, 1], [0, 1]),
+                filter: useTransform(PShowYProg, [0.92, 1], ['blur(10px)', 'blur(0px)']),
               }}
               transition={{ duration: 0.6 }}
               className="text-xl lg:text-2xl pr-4 lg:pr-[6rem] font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent pt-2 pb-2 w-full text-right pointer-events-auto">
@@ -786,9 +839,7 @@ function Page() {
 
           <motion.img initial={{ scale: 1.1, y: 150 }} src="gl.png" alt="" className="absolute lg:hidden  " />
 
-
         </div>
-
 
         <div className='text-2xl lg:text-5xl  flex flex-col gap-1 font-semibold mt-20 opacity-70'>
           <h1 >Solutions that scales</h1>
@@ -859,43 +910,39 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       </div>
       {/* enterprises section */}
 
-
-
       {/* trusted by section */}
       <div className="lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50">
         <div className='pt-[2rem] lg:pt-[4rem]'>
           <div className="px-8 lg:px-16 ">
-            <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <Counter
-              className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent'
+            <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <span className="tabular-nums inline-flex items-baseline"><Counter
+              className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent tabular-nums'
               direction="up"
-              targetValue={100000} />+</h1>
+              targetValue={100000} />+</span></h1>
             <p className=' mt-2 text-sm md:text-xl lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
           </div>
 
-
-
           <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
+              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
                 direction="up"
-                targetValue={55} />%</h1>
+                targetValue={55} />%</h2>
               <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Faster coding</p>
             </div>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
 
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
+              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
                 direction="up"
-                targetValue={39} />%</h1>
+                targetValue={39} />%</h2>
               <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
             </div>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem]'>
+            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
 
-              <h1 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl'
+              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
+                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
                 direction="up"
-                targetValue={68} />%</h1>
+                targetValue={68} />%</h2>
               <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
             </div>
           </div>
@@ -931,11 +978,8 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
 
         </div>
 
-
-
       </div>
       {/* trusted by section */}
-
 
       {/* bento */}
       {/* <div className=' relative h-[170vh] w-full bg-zinc-950 text-white overflow-hidden'>
@@ -966,7 +1010,6 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       {/* ========================================== */}
       <MediaPresence />
 
-
       {/* ========================================== */}
       {/* UI SECTION: LOGO BANNER                   */}
       {/* ========================================== */}
@@ -982,42 +1025,8 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       </div>
     </div>
 
-
   )
 }
 
-export default Page
-
-
-
-// function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
-
-//   const feature2Ref = useRef<HTMLDivElement>(null);
-//   const {scrollYProgress:p2YProg} = useScroll({
-//       target:productRef2,
-//       offset:['start end','end start']
-//     });
-//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
-//   return(
-//     <>
-//     <motion.div
-//      initial={{opacity:0,filter:'blur(50px)'}}
-//      whileInView={{opacity:1,filter:'blur(0px)'}}
-
-
-
-// function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
-
-//   const feature2Ref = useRef<HTMLDivElement>(null);
-//   const {scrollYProgress:p2YProg} = useScroll({
-//       target:productRef2,
-//       offset:['start end','end start']
-//     });
-//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
-//   return(
-//     <>
-//     <motion.div
-//      initial={{opacity:0,filter:'blur(50px)'}}
-//      whileInView={{opacity:1,filter:'blur(0px)'}}
-
+export default Page;
 
