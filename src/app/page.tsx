@@ -1028,33 +1028,5 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
   )
 }
 
-export default Page
-
-// function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
-
-//   const feature2Ref = useRef<HTMLDivElement>(null);
-//   const {scrollYProgress:p2YProg} = useScroll({
-//       target:productRef2,
-//       offset:['start end','end start']
-//     });
-//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
-//   return(
-//     <>
-//     <motion.div
-//      initial={{opacity:0,filter:'blur(50px)'}}
-//      whileInView={{opacity:1,filter:'blur(0px)'}}
-
-// function Product2({productRef2}:{productRef2:React.RefObject<HTMLDivElement>}){
-
-//   const feature2Ref = useRef<HTMLDivElement>(null);
-//   const {scrollYProgress:p2YProg} = useScroll({
-//       target:productRef2,
-//       offset:['start end','end start']
-//     });
-//   const drawerX = useTransform(p2YProg,[0.4,1],[0,-1500]);
-//   return(
-//     <>
-//     <motion.div
-//      initial={{opacity:0,filter:'blur(50px)'}}
-//      whileInView={{opacity:1,filter:'blur(0px)'}}
+export default Page;
 
