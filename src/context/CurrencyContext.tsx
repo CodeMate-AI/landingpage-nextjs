@@ -38,7 +38,16 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
     setCurrencyState(tzCurrency);
 
     // Edge Geo IP lookup with live rates
-    fetch('/api/geo', { cache: 'no-store' })
+    let geoUrl = '/api/geo';
+    if (typeof window !== 'undefined') {
+      const sp = new URLSearchParams(window.location.search);
+      const queryParam = sp.get('country') || sp.get('geo');
+      if (queryParam) {
+        geoUrl = `/api/geo?country=${encodeURIComponent(queryParam)}`;
+      }
+    }
+
+    fetch(geoUrl, { cache: 'no-store' })
       .then((r) => r.json())
       .then((data) => {
         if (data?.rates) {
