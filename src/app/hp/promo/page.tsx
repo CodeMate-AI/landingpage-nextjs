@@ -19,6 +19,30 @@ import {
 
 type RedeemState = "idle" | "submitting" | "complete";
 
+function generateRandomString(length = 43): string {
+  const charset = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~";
+  const bytes = new Uint8Array(length);
+  if (typeof window !== "undefined" && window.crypto?.getRandomValues) {
+    window.crypto.getRandomValues(bytes);
+  } else {
+    for (let i = 0; i < length; i++) {
+      bytes[i] = Math.floor(Math.random() * 256);
+    }
+  }
+  return Array.from(bytes, (b) => charset[b % charset.length]).join("");
+}
+
+async function generateCodeChallenge(verifier: string): Promise<string> {
+  if (typeof window !== "undefined" && window.crypto?.subtle) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(verifier);
+    const digest = await window.crypto.subtle.digest("SHA-256", data);
+    const base64 = btoa(String.fromCharCode(...new Uint8Array(digest)));
+    return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  }
+  return "BNtRp5GCWkdMb8zT6ZVGI4A7qFlQTfTftRA5dXmOC3g";
+}
+
 export default function PromotionPage() {
   return (
     <Suspense fallback={<div className="min-h-dvh bg-white" />}>
@@ -48,7 +72,19 @@ function PromotionPageContent() {
     setRedeemState("submitting");
 
     try {
-      const response = await fetch("https://api.identity.codemate.ai/v2/auth/init", {
+      const verifier = generateRandomString(64);
+      const codeChallenge = await generateCodeChallenge(verifier);
+      const state = `hp-${generateRandomString(32)}`;
+
+      try {
+        sessionStorage.setItem("oauth_code_verifier", verifier);
+        sessionStorage.setItem("oauth_state", state);
+      } catch {
+        // Storage might fail if cookies/storage are disabled
+      }
+
+      const iamBaseUrl = process.env.NEXT_PUBLIC_IAM_API_URL || "http://localhost:5001";
+      const response = await fetch(`${iamBaseUrl.replace(/\/+$/, "")}/v2/auth/init`, {
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -57,13 +93,13 @@ function PromotionPageContent() {
         },
         body: JSON.stringify({
           client_id: "landing",
-          code_challenge: "BNtRp5GCWkdMb8zT6ZVGI4A7qFlQTfTftRA5dXmOC3g",
+          state,
+          code_challenge: codeChallenge,
           code_challenge_method: "S256",
           fingerprint: "v1:54baed3b1d99dfdc8ad0fbeaeed5208d1083cff72dacfe46f7eb378688eaffd6",
           redirect_uri: "https://codemate.ai/download",
-          state: "pp1ZXRGIArvS2OnniJmMlE_XvRGNkJ8CMlqo_MMM-Sc",
-          ...(urlPromo ? { promo: normalizedCode } : {}),
-          ...(source ? { source } : {}),
+          promo_code: normalizedCode,
+          source: source || "hp",
         }),
       });
 
