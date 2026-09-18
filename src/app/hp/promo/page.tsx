@@ -56,7 +56,7 @@ function PromotionPageContent() {
           "X-Client-Id": "webapp",
         },
         body: JSON.stringify({
-          client_id: "webapp",
+          client_id: "landing",
           code_challenge: "BNtRp5GCWkdMb8zT6ZVGI4A7qFlQTfTftRA5dXmOC3g",
           code_challenge_method: "S256",
           fingerprint: "v1:54baed3b1d99dfdc8ad0fbeaeed5208d1083cff72dacfe46f7eb378688eaffd6",
