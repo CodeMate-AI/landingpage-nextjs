@@ -12,8 +12,6 @@ import {
   IconKey,
   IconLoader2,
   IconLock,
-  IconMail,
-  IconPhone,
   IconShieldCheck,
 } from "@tabler/icons-react";
 

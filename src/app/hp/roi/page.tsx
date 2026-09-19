@@ -3,7 +3,7 @@
 import { Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { IconArrowLeft, IconPhone, IconMail } from "@tabler/icons-react";
+import { IconArrowLeft } from "@tabler/icons-react";
 import HpRoiCalculator from "./components/HpRoiCalculator";
 
 export default function HpRoiPage() {
