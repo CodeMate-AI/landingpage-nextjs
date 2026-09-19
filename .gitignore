@@ -55,6 +55,9 @@ videos/*
 public/_next-video
 .cora/
 
+# scripts
+scripts/
+
 # local scripts
 /scripts/
 

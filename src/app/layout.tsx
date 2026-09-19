@@ -2,6 +2,7 @@ import "./globals.css";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
+import { CurrencyProvider } from "@/context/CurrencyContext";
 
 import { Montserrat } from "next/font/google";
 
@@ -123,7 +124,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
@@ -133,8 +134,10 @@ export default function RootLayout({
         className={`${montserrat.className} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning
       >
-        {children}
-        <Analytics />
+        <CurrencyProvider>
+          {children}
+          <Analytics />
+        </CurrencyProvider>
       </body>
       <Script
         id="structured-data"

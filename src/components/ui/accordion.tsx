@@ -144,6 +144,7 @@ function AccordionTrigger({
 
   return (
     <button
+      suppressHydrationWarning
       onClick={() => {
         if (value !== undefined) {
           toggleItem(value);
