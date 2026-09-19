@@ -83,7 +83,7 @@ function PromotionPageContent() {
         // Storage might fail if cookies/storage are disabled
       }
 
-      const iamBaseUrl = process.env.NEXT_PUBLIC_IAM_API_URL || "http://localhost:5001";
+      const iamBaseUrl = process.env.NEXT_PUBLIC_IAM_API_URL || "https://api.identity.codemate.ai";
       const response = await fetch(`${iamBaseUrl.replace(/\/+$/, "")}/v2/auth/init`, {
         method: "POST",
         headers: {
