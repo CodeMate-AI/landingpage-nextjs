@@ -3,7 +3,6 @@ import React, { useRef, useState, useLayoutEffect, useEffect, useCallback, useMe
 import { motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Footer from '@/components/footer'
-import RoiCalculator from './components/RoiCalculator'
 import { useCurrency } from '@/context/CurrencyContext'
 import {
   Accordion,
@@ -272,12 +271,6 @@ function Page() {
 
   const maxPlanInfo = buildMaxPlanInfo(categorizedPlans?.ultimatePlan)
   const currentPlans = categorizedPlans?.[selectedProduct] ?? []
-  const dynamicPlanRates = useMemo(() => {
-    const pro = currentPlans.find((p) => p.display_name.toLowerCase() === 'pro')?.price?.monthly ?? 20
-    const teams = currentPlans.find((p) => p.display_name.toLowerCase() === 'teams')?.price?.monthly ?? 30
-    const max = categorizedPlans?.ultimatePlan?.price?.monthly ?? currentPlans.find((p) => p.display_name.toLowerCase() === 'max')?.price?.monthly ?? 100
-    return { pro, teams, max }
-  }, [currentPlans, categorizedPlans])
 
   return (
     <div ref={pageRef} className="w-full bg-zinc-950">
@@ -473,7 +466,6 @@ function Page() {
         </>
       )}
 
-      <RoiCalculator planRatesUsd={dynamicPlanRates} />
       <FAQ />
       <Footer />
     </div>

@@ -205,6 +205,7 @@ function PromotionPageContent() {
                   Your promotion is now being verified. Follow the activation instructions delivered with your invitation to complete access.
                 </p>
                 <button
+                  suppressHydrationWarning
                   type="button"
                   onClick={() => setRedeemState("idle")}
                   className="mt-7 inline-flex w-fit items-center gap-2 border border-black bg-white px-5 py-3 font-heading text-[15px] tracking-[0.4px] text-black transition-colors hover:bg-black hover:text-white active:translate-y-px"
@@ -232,6 +233,7 @@ function PromotionPageContent() {
                     <label htmlFor="promo-code" className="font-sans text-sm font-semibold text-black">Unique promotion code</label>
                     <div className="group relative">
                       <input
+                        suppressHydrationWarning
                         id="promo-code"
                         name="promo-code"
                         value={promoCode}
@@ -255,6 +257,7 @@ function PromotionPageContent() {
                 {error && <p id="redeem-error" role="alert" className="mt-4 mb-0 border-l-2 border-red-600 bg-red-50 px-3 py-2 font-sans text-sm text-red-700">{error}</p>}
 
                 <button
+                  suppressHydrationWarning
                   type="submit"
                   disabled={redeemState === "submitting"}
                   className="mt-6 inline-flex h-12 w-full items-center justify-center gap-2 border border-black bg-black px-5 font-heading text-[16px] tracking-[0.5px] text-white transition-colors hover:bg-zinc-800 active:translate-y-px disabled:cursor-not-allowed disabled:opacity-70"
@@ -301,11 +304,23 @@ function PromotionPageContent() {
             <a href="mailto:contact@codemate.ai" className="transition-colors hover:text-white">Support</a>
           </div>
           <div className="flex items-center gap-3">
-            <a href="tel:+918766330253" aria-label="Call CodeMate" className="flex h-10 w-10 items-center justify-center border border-white/20 text-white transition-colors hover:border-white hover:bg-white/10">
-              <IconPhone size={18} stroke={1.8} aria-hidden="true" />
+            <a
+              href="tel:+918766330253"
+              aria-label="Call CodeMate"
+              className="flex h-10 w-10 items-center justify-center border border-white/20 text-white transition-colors hover:border-white hover:bg-white/10"
+            >
+              <svg className="w-5 h-5 text-white stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.824-1.802-5.122-4.1-6.924-6.924l1.293-.97a1.173 1.173 0 00.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
+              </svg>
             </a>
-            <a href="mailto:contact@codemate.ai" aria-label="Email CodeMate" className="flex h-10 w-10 items-center justify-center border border-white/20 text-white transition-colors hover:border-white hover:bg-white/10">
-              <IconMail size={18} stroke={1.8} aria-hidden="true" />
+            <a
+              href="mailto:contact@codemate.ai"
+              aria-label="Email CodeMate"
+              className="flex h-10 w-10 items-center justify-center border border-white/20 text-white transition-colors hover:border-white hover:bg-white/10"
+            >
+              <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
+                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+              </svg>
             </a>
           </div>
         </div>

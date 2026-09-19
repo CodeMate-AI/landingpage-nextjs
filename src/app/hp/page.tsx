@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent } from "react";
+import ExclusiveTrialModal from "./components/ExclusiveTrialModal";
 
 
 const demos = [
@@ -85,34 +86,16 @@ export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeModalVideo, setActiveModalVideo] = useState<{ id: string; name: string } | null>(null);
   const [isTrialModalOpen, setIsTrialModalOpen] = useState(false);
-  const [organizationName, setOrganizationName] = useState("");
-  const [hpPartnerId, setHpPartnerId] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
-  const [city, setCity] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [formError, setFormError] = useState("");
-  const firstInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setActiveModalVideo(null);
-        setIsTrialModalOpen(false);
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
-
-  useEffect(() => {
-    if (isTrialModalOpen) {
-      const timer = setTimeout(() => {
-        firstInputRef.current?.focus();
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [isTrialModalOpen]);
 
   const handleMobileNavClick = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -126,71 +109,7 @@ export default function Home() {
   };
 
   const handleOpenTrialModal = () => {
-    setOrganizationName("");
-    setHpPartnerId("");
-    setMobileNumber("");
-    setCity("");
-    setIsSubmitted(false);
-    setIsSubmitting(false);
-    setFormError("");
     setIsTrialModalOpen(true);
-  };
-
-  const handleTrialSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!organizationName.trim()) {
-      setFormError("Organization Name is required.");
-      return;
-    }
-    if (!hpPartnerId.trim()) {
-      setFormError("HP Partner ID is required.");
-      return;
-    }
-    if (!mobileNumber.trim()) {
-      setFormError("Mobile Number is required.");
-      return;
-    }
-    const phoneRegex = /^\+?[0-9\s\-()]{7,15}$/;
-    if (!phoneRegex.test(mobileNumber.trim())) {
-      setFormError("Please enter a valid mobile number.");
-      return;
-    }
-    if (!city.trim()) {
-      setFormError("City is required.");
-      return;
-    }
-
-    setFormError("");
-    setIsSubmitting(true);
-
-    // Post clean JSON to /api/submit-trial server route
-    try {
-      const res = await fetch("/api/submit-trial", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          organizationName: organizationName.trim(),
-          hpPartnerId: hpPartnerId.trim(),
-          mobileNumber: mobileNumber.trim(),
-          city: city.trim(),
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json();
-        setFormError(data.error || "Failed to submit request. Please try again.");
-        setIsSubmitting(false);
-        return;
-      }
-    } catch {
-      setFormError("Network error. Please try again.");
-      setIsSubmitting(false);
-      return;
-    }
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
   };
 
   return (
@@ -226,6 +145,14 @@ export default function Home() {
                 >
                   Demos
                 </a>
+              </li>
+              <li>
+                <Link
+                  href="/hp/roi"
+                  className="font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
+                >
+                  ROI
+                </Link>
               </li>
               <li>
                 <a
@@ -322,6 +249,15 @@ export default function Home() {
                 >
                   Demos
                 </a>
+              </li>
+              <li>
+                <Link
+                  href="/hp/roi"
+                  onClick={() => setIsMenuOpen(false)}
+                  className="block font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
+                >
+                  ROI
+                </Link>
               </li>
               <li>
                 <a
@@ -628,12 +564,12 @@ export default function Home() {
           </Link>
 
           {/* Contact & Social Icon Buttons under HP x CodeMate Logo */}
-          <div className="flex items-center gap-4 mt-2">
+          <div className="flex items-center gap-3 mt-2">
             {/* Phone Icon */}
             <a
               href="tel:+918766330253"
               aria-label="Call +91 87663 30253"
-              className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 text-white hover:border-white/60 hover:bg-white/10 transition-all duration-200"
+              className="flex items-center justify-center w-10 h-10 border border-white/20 text-white hover:border-white hover:bg-white/10 transition-colors"
             >
               <svg className="w-5 h-5 text-white stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.824-1.802-5.122-4.1-6.924-6.924l1.293-.97a1.173 1.173 0 00.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
@@ -646,7 +582,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Email contact@codemate.ai via Gmail"
-              className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 text-white hover:border-white/60 hover:bg-white/10 transition-all duration-200"
+              className="flex items-center justify-center w-10 h-10 border border-white/20 text-white hover:border-white hover:bg-white/10 transition-colors"
             >
               <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
                 <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
@@ -659,7 +595,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 text-white hover:border-white/60 hover:bg-white/10 transition-all duration-200"
+              className="flex items-center justify-center w-10 h-10 border border-white/20 text-white hover:border-white hover:bg-white/10 transition-colors"
             >
               <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
@@ -672,7 +608,7 @@ export default function Home() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Twitter / X"
-              className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 text-white hover:border-white/60 hover:bg-white/10 transition-all duration-200"
+              className="flex items-center justify-center w-10 h-10 border border-white/20 text-white hover:border-white hover:bg-white/10 transition-colors"
             >
               <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
@@ -682,152 +618,10 @@ export default function Home() {
         </div>
       </footer>
 
-      {isTrialModalOpen && (
-        <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsTrialModalOpen(false)} />
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="trial-modal-title"
-            className="relative z-10 flex max-h-[90vh] w-full max-w-lg transform flex-col gap-6 overflow-hidden overflow-y-auto rounded-2xl border border-divider/60 bg-white p-6 shadow-2xl transition-all duration-200 animate-in fade-in zoom-in-95 sm:p-8"
-          >
-            <button
-              onClick={() => setIsTrialModalOpen(false)}
-              className="absolute right-4 top-4 border-0 bg-transparent text-menu-text transition-colors duration-200 hover:text-navy cursor-pointer"
-              aria-label="Close modal"
-              type="button"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-
-            <form
-              onSubmit={handleTrialSubmit}
-              className={isSubmitted ? "hidden" : "flex flex-col gap-5"}
-            >
-              <div className="flex flex-col gap-2">
-                <h3 id="trial-modal-title" className="m-0 font-heading text-2xl tracking-[0.5px] text-navy sm:text-3xl">Exclusive Trial</h3>
-                <p className="m-0 font-sans text-sm text-gray-text sm:text-base">
-                  Request trial licenses of CodeMate AI, optimized for HP&apos;s Next Gen AI PCs.
-                </p>
-              </div>
-
-              {formError && <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 font-sans text-sm text-red-600">{formError}</div>}
-
-              <div className="flex flex-col gap-4">
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="org-name" className="font-sans text-sm font-semibold text-navy">
-                    Organization Name *
-                  </label>
-                  <input
-                    ref={firstInputRef}
-                    id="org-name"
-                    type="text"
-                    required
-                    value={organizationName}
-                    onChange={(e) => setOrganizationName(e.target.value)}
-                    placeholder="e.g. Acme Corporation"
-                    className="h-11 w-full rounded-lg border border-divider-light px-4 font-sans text-navy transition-colors duration-200 focus:border-accent-blue focus:outline-none focus:ring-1 focus:ring-accent-blue"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="partner-id" className="font-sans text-sm font-semibold text-navy">
-                    HP Partner ID *
-                  </label>
-                  <input
-                    id="partner-id"
-                    type="text"
-                    required
-                    value={hpPartnerId}
-                    onChange={(e) => setHpPartnerId(e.target.value)}
-                    placeholder="e.g. HP-12345"
-                    className="h-11 w-full rounded-lg border border-divider-light px-4 font-sans text-navy transition-colors duration-200 focus:border-accent-blue focus:outline-none focus:ring-1 focus:ring-accent-blue"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="mobile" className="font-sans text-sm font-semibold text-navy">
-                    Mobile Number *
-                  </label>
-                  <input
-                    id="mobile"
-                    type="tel"
-                    required
-                    value={mobileNumber}
-                    onChange={(e) => setMobileNumber(e.target.value.replace(/[^0-9+\s\-()]/g, ""))}
-                    placeholder="e.g. +91 98765 43210"
-                    className="h-11 w-full rounded-lg border border-divider-light px-4 font-sans text-navy transition-colors duration-200 focus:border-accent-blue focus:outline-none focus:ring-1 focus:ring-accent-blue"
-                  />
-                </div>
-                <div className="flex flex-col gap-1.5">
-                  <label htmlFor="city" className="font-sans text-sm font-semibold text-navy">
-                    City *
-                  </label>
-                  <input
-                    id="city"
-                    type="text"
-                    required
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    placeholder="e.g. San Francisco"
-                    className="h-11 w-full rounded-lg border border-divider-light px-4 font-sans text-navy transition-colors duration-200 focus:border-accent-blue focus:outline-none focus:ring-1 focus:ring-accent-blue"
-                  />
-                </div>
-              </div>
-
-              <div className="mt-2 flex gap-3">
-                <button
-                  type="button"
-                  disabled={isSubmitting}
-                  onClick={() => setIsTrialModalOpen(false)}
-                  className="flex-1 h-11 rounded-lg border border-divider-light bg-transparent font-sans font-semibold text-navy transition-all duration-200 hover:bg-pale-blue active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:pointer-events-none cursor-pointer"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="flex-1 h-11 inline-flex items-center justify-center gap-2 rounded-lg border-0 bg-accent-blue font-sans font-semibold text-white transition-all duration-200 hover:bg-accent-hover active:scale-[0.98] hover:shadow-md focus:outline-none focus:ring-2 focus:ring-accent-blue focus:ring-offset-2 disabled:opacity-75 disabled:cursor-not-allowed disabled:active:scale-100 cursor-pointer"
-                >
-                  {isSubmitting ? (
-                    <>
-                      <svg className="h-4 w-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                      </svg>
-                      <span>Submitting...</span>
-                    </>
-                  ) : (
-                    "Submit Request"
-                  )}
-                </button>
-              </div>
-            </form>
-
-            {isSubmitted && (
-              <div className="flex flex-col items-center gap-4 py-6 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-green-100 bg-green-50 text-green-500">
-                  <svg className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                  </svg>
-                </div>
-                <h3 className="m-0 font-heading text-2xl tracking-[0.5px] text-navy sm:text-3xl">Thank you!</h3>
-                <p className="m-0 max-w-sm font-sans text-sm text-gray-text sm:text-base">
-                  Your trial request has been submitted successfully. Our team will contact you shortly.
-                </p>
-                <button
-                  onClick={() => setIsTrialModalOpen(false)}
-                  className="mt-4 h-11 rounded-lg border-0 bg-navy px-8 font-sans font-semibold text-white transition-colors duration-200 hover:bg-zinc-800 cursor-pointer"
-                >
-                  Close Window
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      <ExclusiveTrialModal
+        isOpen={isTrialModalOpen}
+        onClose={() => setIsTrialModalOpen(false)}
+      />
     </div>
   );
 }
