@@ -105,7 +105,12 @@ function PromotionPageContent() {
 
       const payload = await response.json().catch(() => null);
       if (!response.ok) {
-        throw new Error(payload?.error?.message || payload?.detail || "Unable to start your promotion redemption.");
+        const message =
+          payload?.error?.message ||
+          (typeof payload?.detail === "string" ? payload.detail : null) ||
+          payload?.message ||
+          "Unable to start your promotion redemption.";
+        throw new Error(message);
       }
 
       const authorizationUrl = payload?.authorization_url;
@@ -230,10 +235,17 @@ function PromotionPageContent() {
                         id="promo-code"
                         name="promo-code"
                         value={promoCode}
-                        onChange={(event) => setPromoCode(event.target.value.toUpperCase())}
+                        onChange={(event) => {
+                          setPromoCode(event.target.value.toUpperCase());
+                          if (error) setError("");
+                        }}
                         placeholder="Enter your code"
                         autoComplete="off"
-                        className="h-14 w-full border border-[#aebdce] bg-[#f9fbfe] px-4 font-sans text-[16px] font-medium tracking-[1.5px] text-black outline-none transition-colors placeholder:font-normal placeholder:tracking-normal placeholder:text-[#737f8e] hover:border-[#6d8bb3] focus:border-accent-blue focus:bg-white focus:ring-1 focus:ring-accent-blue"
+                        className={`h-14 w-full border px-4 font-sans text-[16px] font-medium tracking-[1.5px] text-black outline-none transition-colors placeholder:font-normal placeholder:tracking-normal placeholder:text-[#737f8e] ${
+                          error
+                            ? "border-red-500 bg-red-50/20 focus:border-red-600 focus:ring-1 focus:ring-red-600"
+                            : "border-[#aebdce] bg-[#f9fbfe] hover:border-[#6d8bb3] focus:border-accent-blue focus:bg-white focus:ring-1 focus:ring-accent-blue"
+                        }`}
                         aria-describedby={error ? "redeem-error" : undefined}
                       />
                     </div>
