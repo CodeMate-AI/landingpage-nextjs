@@ -58,3 +58,7 @@ public/_next-video
 # scripts
 scripts/
 
+# local scripts
+/scripts/
+
+.cora-cli
