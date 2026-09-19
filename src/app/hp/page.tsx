@@ -151,7 +151,7 @@ export default function Home() {
                   href="/hp/roi"
                   className="font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
                 >
-                  ROI
+                  Roi
                 </Link>
               </li>
               <li>
@@ -256,7 +256,7 @@ export default function Home() {
                   onClick={() => setIsMenuOpen(false)}
                   className="block font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
                 >
-                  ROI
+                  Roi
                 </Link>
               </li>
               <li>
