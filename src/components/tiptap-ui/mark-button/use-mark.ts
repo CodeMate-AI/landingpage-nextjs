@@ -130,6 +130,7 @@ export function shouldShowButton(props: {
  * Gets the formatted mark name
  */
 export function getFormattedMarkName(type: Mark): string {
+  if (type === "code") return "Inline Code"
   return type.charAt(0).toUpperCase() + type.slice(1)
 }
 
