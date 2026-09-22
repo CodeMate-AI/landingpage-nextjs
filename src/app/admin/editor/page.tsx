@@ -299,8 +299,11 @@ function EditorContent() {
       });
 
       if (res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data?.slug) {
+          setSlug(data.slug);
+        }
         if (!targetId) {
-          const data = await res.json().catch(() => null);
           if (data && data.id) {
             const newId = data.id.toString();
             currentPostIdRef.current = newId;
@@ -593,6 +596,10 @@ function EditorContent() {
       });
 
       if (res.ok) {
+        const data = await res.json().catch(() => null);
+        if (data?.slug) {
+          setSlug(data.slug);
+        }
         lastSavedSnapshotRef.current = JSON.stringify(payload);
         try {
           const storageKey = postId ? `codemate_editor_draft_${postId}` : "codemate_editor_draft_new";
@@ -690,7 +697,7 @@ function EditorContent() {
       subheading
     );
 
-    const previewSlug = slug || (title ? slugify(title) : "preview-post");
+    const previewSlug = title.trim() ? slugify(title) : (slug || "preview-post");
 
     const postObj: BlogDetailPost = {
       id: postId || "preview-id",
@@ -787,7 +794,11 @@ function EditorContent() {
               type="text"
               required
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                const newTitle = e.target.value;
+                setTitle(newTitle);
+                setSlug(slugify(newTitle));
+              }}
               suppressHydrationWarning
               className="w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none"
             />

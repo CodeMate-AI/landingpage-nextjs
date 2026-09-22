@@ -4,6 +4,7 @@ import { withAuth } from "@/lib/authWrapper";
 import { getDatabase } from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
 import { calculateReadTime, hasActualDraftChanges } from "@/lib/blog-compiler";
+import slugify from "@/utils/slugify";
 import { ObjectId } from "mongodb";
 
 // Fetches a single blog post by its MongoDB ObjectId for the admin editor workspace
@@ -51,6 +52,22 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     // 2. Resolve save mode: publish immediately vs save as draft using validated field
     const saveMode = parsed.data.saveMode || (parsed.data.published ? "publish" : "draft");
     const published = parsed.data.published;
+
+    // Generate updated slug from the title automatically
+    const baseSlug = slugify(parsed.data.title || "untitled-article");
+    let finalSlug = baseSlug;
+    let counter = 1;
+
+    // Check if another post already has this slug (excluding current document)
+    while (
+      await db.collection("blogs").findOne({
+        slug: finalSlug,
+        _id: { $ne: new ObjectId(id) },
+      })
+    ) {
+      finalSlug = `${baseSlug}-${counter}`;
+      counter++;
+    }
 
     // Compute reliable reading duration server-side
     const rawReadTime = (parsed.data.readTime || "").trim();
@@ -118,9 +135,10 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       }
     }
 
-    // 5. Build base update payload
-    const updatePayload = {
+    // 5. Build base update payload with dynamically updated slug
+    const updatePayload: any = {
       ...parsed.data,
+      slug: finalSlug,
       authorRole: finalAuthorRole,
       publishedAtCustom,
       tags: sanitizedTags,
@@ -152,11 +170,14 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       if (existing.slug) {
         revalidatePath(`/blog/${existing.slug}`);
       }
+      if (finalSlug && finalSlug !== existing.slug) {
+        revalidatePath(`/blog/${finalSlug}`);
+      }
     } catch (revErr) {
       console.warn("Failed to revalidate blog paths on update:", revErr);
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, slug: finalSlug });
   } catch (error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
