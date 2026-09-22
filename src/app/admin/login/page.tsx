@@ -73,7 +73,11 @@ export default function AdminLogin() {
       } else {
         if (res.status === 429) {
           setIsLocked(true);
-          setLockRemaining(15 * 60);
+          const serverRemaining =
+            typeof data.retryAfter === "number" && data.retryAfter > 0
+              ? data.retryAfter
+              : 15 * 60;
+          setLockRemaining(serverRemaining);
         }
         setError(data.error || "Login validation failed.");
       }

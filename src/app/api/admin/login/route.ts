@@ -25,9 +25,21 @@ export async function POST(req: NextRequest) {
       "127.0.0.1";
 
     // 2. Enforce MongoDB-backed sliding-window rate limit (max 5 attempts per 15 min)
-    const locked = await isRateLimited(ip, email);
-    if (locked) {
-      return NextResponse.json({ error: "Too many login attempts. Locked for 15m." }, { status: 429 });
+    const { isLimited, retryAfter } = await isRateLimited(ip, email);
+    if (isLimited) {
+      const minutesRemaining = Math.max(1, Math.ceil(retryAfter / 60));
+      return NextResponse.json(
+        {
+          error: `Too many login attempts. Locked for ${minutesRemaining}m.`,
+          retryAfter,
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": retryAfter.toString(),
+          },
+        }
+      );
     }
 
     // 3. Connect to database and retrieve user record by email
