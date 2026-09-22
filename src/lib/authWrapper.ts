@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { verifyJWT, TokenPayload } from "./auth";
-import clientPromise from "./mongodb";
+import { verifyJWT, COOKIE_NAME, TokenPayload } from "./auth";
+import { getDatabase } from "./mongodb";
 import { ObjectId } from "mongodb";
 
 // Verifies JWT signature and checks tokenVersion against the MongoDB users collection
@@ -15,8 +15,7 @@ export async function validateSessionFromDb(token: string): Promise<TokenPayload
   }
 
   try {
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
     const user = await db.collection("users").findOne({ _id: new ObjectId(payload.userId) });
 
     if (!user) {
@@ -71,7 +70,7 @@ type AuthenticatedHandler = (
   context?: any
 ) => Promise<NextResponse> | Promise<Response>;
 
-// Higher-order wrapper that validates Bearer authentication, token revocation, and CSRF before delegating
+// Higher-order wrapper that validates Bearer authentication or HTTP-only cookie, token revocation, and CSRF before delegating
 export function withAuth(handler: AuthenticatedHandler) {
   return async (req: NextRequest, context?: any) => {
     // 1. Allow CORS OPTIONS preflight requests cleanly
@@ -90,13 +89,14 @@ export function withAuth(handler: AuthenticatedHandler) {
       }
     }
 
-    // 3. Extract Bearer token from Authorization header using robust case-insensitive regex
+    // 3. Extract Bearer token from Authorization header or fallback to HTTP-only auth cookie
     const authHeader = req.headers.get("authorization");
     const match = authHeader?.match(/^Bearer +(\S+)$/i);
+    const token = match ? match[1] : req.cookies.get(COOKIE_NAME)?.value;
 
-    if (!match) {
+    if (!token) {
       return NextResponse.json(
-        { detail: "Not authenticated", error: "Unauthorized: Missing or malformed Authorization header" },
+        { detail: "Not authenticated", error: "Unauthorized: Missing authentication token" },
         {
           status: 401,
           headers: { "WWW-Authenticate": "Bearer" },
@@ -104,18 +104,21 @@ export function withAuth(handler: AuthenticatedHandler) {
       );
     }
 
-    const token = match[1];
-
     // 4. Validate JWT signature, expiry, and tokenVersion against MongoDB
     const session = await validateSessionFromDb(token);
     if (!session) {
-      return NextResponse.json(
-        { detail: "Not authenticated", error: "Unauthorized: Invalid or expired token" },
+      const response = NextResponse.json(
+        { detail: "Not authenticated", error: "Unauthorized: Invalid or expired session" },
         {
           status: 401,
           headers: { "WWW-Authenticate": "Bearer" },
         }
       );
+      // Clear cookie if session is revoked/invalidated
+      if (req.cookies.has(COOKIE_NAME)) {
+        response.cookies.delete(COOKIE_NAME);
+      }
+      return response;
     }
 
     // 5. Forward request with the verified user session payload to the protected handler

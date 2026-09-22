@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { withAuth } from "@/lib/authWrapper";
-import clientPromise from "@/lib/mongodb";
+import { getDatabase } from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
 import { calculateReadTime, hasActualDraftChanges } from "@/lib/blog-compiler";
 import { ObjectId } from "mongodb";
@@ -14,8 +14,7 @@ async function getSinglePost(req: NextRequest, session: any, { params }: { param
     return NextResponse.json({ error: "Invalid post ID format" }, { status: 400 });
   }
 
-  const client = await clientPromise;
-  const db = client.db("codemate_blog");
+  const db = await getDatabase();
   // [MongoDB Collection: "blogs"] Query single blog post document by its ObjectId
   const post = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
 
@@ -42,8 +41,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
     // [MongoDB Collection: "blogs"] Find existing post document by ObjectId
     const existing = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
     if (!existing) {
@@ -54,8 +52,9 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     const saveMode = parsed.data.saveMode || (parsed.data.published ? "publish" : "draft");
     const published = parsed.data.published;
 
-    // Preserve custom reading duration if entered; otherwise keep empty
-    const readTime = (parsed.data.readTime || "").trim();
+    // Compute reliable reading duration server-side
+    const rawReadTime = (parsed.data.readTime || "").trim();
+    const readTime = rawReadTime || calculateReadTime(parsed.data.content);
 
     let publishedVersion = existing.publishedVersion || null;
     let publishedAt = existing.publishedAt || null;
@@ -170,8 +169,7 @@ async function deletePost(req: NextRequest, session: any, { params }: { params: 
     return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
   }
 
-  const client = await clientPromise;
-  const db = client.db("codemate_blog");
+  const db = await getDatabase();
   const postToDelete = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
   // [MongoDB Collection: "blogs"] Delete blog post document by ObjectId
   const result = await db.collection("blogs").deleteOne({ _id: new ObjectId(id) });

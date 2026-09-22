@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/authWrapper";
-import clientPromise from "@/lib/mongodb";
+import { getDatabase } from "@/lib/mongodb";
+
+const ALLOWED_FILTER_TYPES = ["categories", "productFilters", "useCaseFilters"] as const;
+type FilterType = (typeof ALLOWED_FILTER_TYPES)[number];
 
 // Default article category taxonomy options
 const INITIAL_CATEGORIES = [
@@ -55,8 +58,7 @@ async function getFiltersDocument(db: any) {
 // Handler returning all active categories, product filters, and use cases
 async function getFiltersHandler(req: NextRequest) {
   try {
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
     const doc = await getFiltersDocument(db);
     return NextResponse.json(doc);
   } catch (error) {
@@ -68,8 +70,6 @@ async function getFiltersHandler(req: NextRequest) {
 // Handler supporting inline addition or deletion of category and filter taxonomy items
 async function updateFiltersHandler(req: NextRequest) {
   try {
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
     const body = await req.json();
     const { action, type, value } = body; // action: 'add' | 'delete', type: 'categories' | 'productFilters' | 'useCaseFilters', value: string
 
@@ -78,11 +78,19 @@ async function updateFiltersHandler(req: NextRequest) {
       return NextResponse.json({ error: "Missing required parameters" }, { status: 400 });
     }
 
+    if (!ALLOWED_FILTER_TYPES.includes(type as FilterType)) {
+      return NextResponse.json(
+        { error: "Invalid filter type. Allowed types: categories, productFilters, useCaseFilters." },
+        { status: 400 }
+      );
+    }
+
     const trimmedValue = value.trim();
     if (!trimmedValue) {
       return NextResponse.json({ error: "Value cannot be empty" }, { status: 400 });
     }
 
+    const db = await getDatabase();
     const doc = await getFiltersDocument(db);
     let updatedList = [...(doc[type] || [])];
 

@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import clientPromise from "@/lib/mongodb";
+import { getDatabase } from "@/lib/mongodb";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://codemate.ai";
@@ -53,8 +53,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   let blogRoutes: MetadataRoute.Sitemap = [];
 
   try {
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
     const posts = await db
       .collection("blogs")
       .find({ published: true })

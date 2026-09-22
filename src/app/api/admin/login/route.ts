@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import { getDatabase } from "@/lib/mongodb";
 import { signJWT, SESSION_DURATION, COOKIE_NAME } from "@/lib/auth";
 import { isRateLimited, recordFailedAttempt, resetRateLimit } from "@/lib/rateLimit";
 import { LoginSchema } from "@/lib/validation";
@@ -31,8 +31,7 @@ export async function POST(req: NextRequest) {
     }
 
     // 3. Connect to database and retrieve user record by email
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
     // [MongoDB Collection: "users"] Query administrator document by email
     const user = await db.collection("users").findOne({ email });
 

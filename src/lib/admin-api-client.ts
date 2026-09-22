@@ -3,28 +3,30 @@
 const TOKEN_KEY = "codemate_admin_token";
 let isRedirectingToLogin = false;
 
-// Retrieves the stored admin Bearer token from localStorage
+// Retrieves the stored admin Bearer token from sessionStorage
 export function getAdminToken(): string | null {
   if (typeof window === "undefined") return null;
   try {
-    return localStorage.getItem(TOKEN_KEY);
+    return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
   } catch {
     return null;
   }
 }
 
-// Stores the admin Bearer token in localStorage
+// Stores the admin Bearer token in sessionStorage
 export function setAdminToken(token: string): void {
   if (typeof window === "undefined") return;
   try {
-    localStorage.setItem(TOKEN_KEY, token);
+    sessionStorage.setItem(TOKEN_KEY, token);
+    localStorage.removeItem(TOKEN_KEY); // Clean up legacy localStorage item
   } catch {}
 }
 
-// Clears the admin Bearer token from localStorage
+// Clears the admin Bearer token from session storage and legacy local storage
 export function clearAdminToken(): void {
   if (typeof window === "undefined") return;
   try {
+    sessionStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(TOKEN_KEY);
   } catch {}
 }
@@ -78,6 +80,7 @@ export async function adminFetch(
   }
 
   const response = await fetch(input, {
+    credentials: "include",
     ...init,
     headers,
   });

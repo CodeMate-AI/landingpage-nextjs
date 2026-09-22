@@ -1,7 +1,7 @@
 import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import clientPromise from "@/lib/mongodb";
+import { getDatabase } from "@/lib/mongodb";
 import { compileTiptapToHtml, calculateReadTime } from "@/lib/blog-compiler";
 import BlogPostClient from "./BlogPostClient";
 
@@ -13,8 +13,7 @@ interface Props {
 
 export async function generateStaticParams() {
   try {
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
     const posts = await db
       .collection("blogs")
       .find({ published: true })
@@ -32,8 +31,7 @@ export async function generateStaticParams() {
 
 const getPostBySlug = React.cache(async (slug: string) => {
   try {
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
     return await db.collection("blogs").findOne({ slug, published: true });
   } catch (error) {
     console.error(`Failed to fetch blog post for slug "${slug}":`, error);
@@ -43,8 +41,7 @@ const getPostBySlug = React.cache(async (slug: string) => {
 
 const getRelatedAndNavPosts = React.cache(async () => {
   try {
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
     return await db
       .collection("blogs")
       .find({ published: true })

@@ -33,10 +33,11 @@ export async function middleware(req: NextRequest) {
   if (pathname.startsWith("/api/admin") && pathname !== "/api/admin/login") {
     const authHeader = req.headers.get("authorization");
     const match = authHeader?.match(/^Bearer +(\S+)$/i);
+    const token = match ? match[1] : req.cookies.get(COOKIE_NAME)?.value;
 
-    if (!match) {
+    if (!token) {
       return NextResponse.json(
-        { detail: "Not authenticated", error: "Unauthorized: Missing or malformed Authorization header" },
+        { detail: "Not authenticated", error: "Unauthorized: Missing authentication credentials" },
         {
           status: 401,
           headers: { "WWW-Authenticate": "Bearer" },
@@ -44,15 +45,19 @@ export async function middleware(req: NextRequest) {
       );
     }
 
-    const payload = await verifyJWT(match[1]);
+    const payload = await verifyJWT(token);
     if (!payload) {
-      return NextResponse.json(
+      const res = NextResponse.json(
         { detail: "Not authenticated", error: "Unauthorized: Invalid or expired token" },
         {
           status: 401,
           headers: { "WWW-Authenticate": "Bearer" },
         }
       );
+      if (req.cookies.has(COOKIE_NAME)) {
+        res.cookies.delete(COOKIE_NAME);
+      }
+      return res;
     }
   }
 

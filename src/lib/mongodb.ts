@@ -67,4 +67,13 @@ const clientPromise = {
   finally: (onfinally?: (() => void) | null) => getClientPromise().finally(onfinally),
 } as unknown as Promise<MongoClient>;
 
+export function getDbName(): string {
+  return process.env.MONGODB_DB_NAME || "codemate_blog";
+}
+
+export async function getDatabase(dbName?: string) {
+  const client = await getClientPromise();
+  return client.db(dbName || getDbName());
+}
+
 export default clientPromise;

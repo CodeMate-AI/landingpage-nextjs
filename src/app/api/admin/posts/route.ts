@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { withAuth } from "@/lib/authWrapper";
-import clientPromise from "@/lib/mongodb";
+import { getDatabase } from "@/lib/mongodb";
 import { BlogPostSchema } from "@/lib/validation";
 import { calculateReadTime, hasActualDraftChanges } from "@/lib/blog-compiler";
 import slugify from "@/utils/slugify";
@@ -16,8 +16,7 @@ async function getPostsHandler(req: NextRequest) {
   const limit = Math.max(1, Math.min(100, isNaN(limitParam) ? 5 : limitParam));
   const skip = (page - 1) * limit;
 
-  const client = await clientPromise;
-  const db = client.db("codemate_blog");
+  const db = await getDatabase();
 
   const [total, rawPosts] = await Promise.all([
     db.collection("blogs").countDocuments(),
@@ -63,21 +62,14 @@ async function createPostHandler(req: NextRequest) {
       return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
     }
 
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
 
-    // 2. Generate base URL slug from title and resolve collisions by appending numeric counter
-    const baseSlug = slugify(parsed.data.title);
-    let finalSlug = baseSlug;
-    let counter = 1;
-    // [MongoDB Collection: "blogs"] Verify slug uniqueness to prevent duplicate URL collisions
-    while (await db.collection("blogs").findOne({ slug: finalSlug })) {
-      finalSlug = `${baseSlug}-${counter}`;
-      counter++;
-    }
+    // 2. Generate base URL slug from title
+    const baseSlug = slugify(parsed.data.title || "untitled-article");
 
-    // 3. Preserve custom reading duration if entered; otherwise keep empty
-    const readTime = (parsed.data.readTime || "").trim();
+    // 3. Compute reliable reading duration server-side
+    const rawReadTime = (parsed.data.readTime || "").trim();
+    const readTime = rawReadTime || calculateReadTime(parsed.data.content);
     const published = parsed.data.published;
     const publishedAt = published ? new Date() : null;
 
@@ -116,8 +108,7 @@ async function createPostHandler(req: NextRequest) {
       : null;
 
     // 5. Construct document with timestamps and draft flags
-    const newPost = {
-      // Spread operator (...) unpacks all validated input fields (title, subheading, content, tags, author, etc.) from Zod
+    const newPost: any = {
       ...parsed.data,
       author: parsed.data.author || "",
       authorRole: parsed.data.authorRole || "",
@@ -125,7 +116,6 @@ async function createPostHandler(req: NextRequest) {
       tags: sanitizedTags,
       filterLabels: sanitizedFilterLabels,
       authorImage: parsed.data.authorImage ?? "",
-      slug: finalSlug,
       readTime,
       published,
       publishedAt,
@@ -135,8 +125,29 @@ async function createPostHandler(req: NextRequest) {
       updatedAt: new Date(),
     };
 
-    // 6. [MongoDB Collection: "blogs"] Insert newly composed article document
-    const result = await db.collection("blogs").insertOne(newPost);
+    // 6. [MongoDB Collection: "blogs"] Insert article with duplicate slug collision retry loop
+    let finalSlug = baseSlug;
+    let counter = 1;
+    let result: any = null;
+
+    while (counter <= 20) {
+      try {
+        newPost.slug = finalSlug;
+        result = await db.collection("blogs").insertOne(newPost);
+        break;
+      } catch (err: any) {
+        if (err.code === 11000 && err.keyPattern?.slug) {
+          finalSlug = `${baseSlug}-${counter}`;
+          counter++;
+        } else {
+          throw err;
+        }
+      }
+    }
+
+    if (!result) {
+      return NextResponse.json({ error: "Could not generate unique slug for post" }, { status: 500 });
+    }
 
     if (published) {
       try {
@@ -147,8 +158,9 @@ async function createPostHandler(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ success: true, id: result.insertedId });
+    return NextResponse.json({ success: true, id: result.insertedId, slug: finalSlug });
   } catch (error) {
+    console.error("Create post error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

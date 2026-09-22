@@ -518,6 +518,7 @@ export function hasActualDraftChanges(currentDraft: any, publishedVersion: any):
   if (compareStr(currentDraft.author, publishedVersion.author)) return true;
   if (compareStr(currentDraft.authorRole, publishedVersion.authorRole)) return true;
   if (compareStr(currentDraft.authorImage, publishedVersion.authorImage)) return true;
+  if (compareStr(currentDraft.readTime, publishedVersion.readTime)) return true;
   if (compareStr(currentDraft.publishedAtCustom, publishedVersion.publishedAtCustom)) return true;
 
   const normalizeTags = (tags: any[]) =>

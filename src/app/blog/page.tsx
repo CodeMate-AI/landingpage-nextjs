@@ -1,6 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
-import clientPromise from "@/lib/mongodb";
+import { getDatabase } from "@/lib/mongodb";
 import BlogFeedClient from "./BlogFeedClient";
 import type { BlogDetailPost } from "@/types/blog";
 import { calculateReadTime } from "@/lib/blog-compiler";
@@ -21,8 +21,7 @@ export const metadata: Metadata = {
 
 export default async function BlogFeedPage() {
   try {
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
 
     const limit = 6;
 

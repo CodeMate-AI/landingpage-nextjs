@@ -13,6 +13,7 @@ export default function AdminLogin() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [isLocked, setIsLocked] = useState(false);
+  const [lockRemaining, setLockRemaining] = useState<number>(0);
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
@@ -22,6 +23,30 @@ export default function AdminLogin() {
     setPassword("");
     setPasswordUnlocked(false);
   }, []);
+
+  // Countdown timer when rate limited
+  useEffect(() => {
+    if (!isLocked || lockRemaining <= 0) return;
+
+    const interval = setInterval(() => {
+      setLockRemaining((prev) => {
+        if (prev <= 1) {
+          setIsLocked(false);
+          setError("");
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isLocked, lockRemaining]);
+
+  const formatLockRemaining = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}m ${secs.toString().padStart(2, "0")}s`;
+  };
 
   // Submits credentials to /api/admin/login and redirects to dashboard upon success
   const handleLogin = async (e: React.FormEvent) => {
@@ -48,6 +73,7 @@ export default function AdminLogin() {
       } else {
         if (res.status === 429) {
           setIsLocked(true);
+          setLockRemaining(15 * 60);
         }
         setError(data.error || "Login validation failed.");
       }
@@ -162,7 +188,11 @@ export default function AdminLogin() {
                 : "bg-blue-600 hover:bg-blue-500 disabled:opacity-50"
             }`}
           >
-            {loading ? "Signing in..." : isLocked ? "Temporarily Locked (15m)" : "Sign In"}
+            {loading
+              ? "Signing in..."
+              : isLocked
+              ? `Temporarily Locked (${formatLockRemaining(lockRemaining)})`
+              : "Sign In"}
           </button>
         </form>
 

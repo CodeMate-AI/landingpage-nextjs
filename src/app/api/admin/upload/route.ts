@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { withAuth } from "@/lib/authWrapper";
+import { fileTypeFromBuffer } from "file-type";
 
 // Maximum allowed payload sizes: 5MB for images and 50MB for video assets
 const IMAGE_MAX_SIZE = 5 * 1024 * 1024;
@@ -37,7 +38,7 @@ async function uploadHandler(req: NextRequest) {
       return NextResponse.json({ error: "Missing file payload" }, { status: 400 });
     }
 
-    // 2. Validate file MIME type against allowed image and video formats
+    // 2. Validate declared file MIME type against allowed image and video formats
     if (!ALLOWED_MIMES.includes(file.type)) {
       return NextResponse.json(
         { error: "Invalid format. Only JPEG, PNG, WEBP, GIF, MP4, WEBM, OGG, and MOV are allowed." },
@@ -54,10 +55,19 @@ async function uploadHandler(req: NextRequest) {
       );
     }
 
-    // 4. Convert ArrayBuffer to Base64 Data URL
+    // 4. Convert ArrayBuffer and validate magic bytes signature
     const buffer = Buffer.from(await file.arrayBuffer());
+    const detected = await fileTypeFromBuffer(buffer);
+
+    if (!detected || !ALLOWED_MIMES.includes(detected.mime)) {
+      return NextResponse.json(
+        { error: "Invalid file content. File signature does not match allowed image or video formats." },
+        { status: 400 }
+      );
+    }
+
     const base64Data = buffer.toString("base64");
-    const dataUrl = `data:${file.type};base64,${base64Data}`;
+    const dataUrl = `data:${detected.mime};base64,${base64Data}`;
 
     // 5. Send POST request to custom upload service
     const response = await fetch(uploadEndpoint, {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import clientPromise from "@/lib/mongodb";
+import { getDatabase } from "@/lib/mongodb";
 import type { BlogDetailPost } from "@/types/blog";
 import { calculateReadTime } from "@/lib/blog-compiler";
 
@@ -18,8 +18,7 @@ export async function GET(req: NextRequest) {
     const tag = searchParams.get("tag")?.trim();
     const search = searchParams.get("search")?.trim();
 
-    const client = await clientPromise;
-    const db = client.db("codemate_blog");
+    const db = await getDatabase();
 
     // Strictly enforce published: true
     const query: any = { published: true };
@@ -33,9 +32,10 @@ export async function GET(req: NextRequest) {
 
     if (tag) {
       const tagUpper = tag.toUpperCase();
+      const escapedTag = tag.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
       const tagCondition = [
-        { "tags.label": { $regex: `^${tag}$`, $options: "i" } },
-        { "publishedVersion.tags.label": { $regex: `^${tag}$`, $options: "i" } },
+        { "tags.label": { $regex: `^${escapedTag}$`, $options: "i" } },
+        { "publishedVersion.tags.label": { $regex: `^${escapedTag}$`, $options: "i" } },
         { filterLabels: tagUpper },
         { "publishedVersion.filterLabels": tagUpper },
       ];
@@ -48,7 +48,8 @@ export async function GET(req: NextRequest) {
     }
 
     if (search) {
-      const searchRegex = { $regex: search, $options: "i" };
+      const escapedSearch = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const searchRegex = { $regex: escapedSearch, $options: "i" };
       const searchCondition = [
         { title: searchRegex },
         { subheading: searchRegex },

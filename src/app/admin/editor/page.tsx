@@ -299,19 +299,21 @@ function EditorContent() {
       });
 
       if (res.ok) {
-        lastSavedSnapshotRef.current = serialized;
         if (!targetId) {
-          const data = await res.json().catch(() => ({}));
-          if (data.id) {
+          const data = await res.json().catch(() => null);
+          if (data && data.id) {
             const newId = data.id.toString();
             currentPostIdRef.current = newId;
             setPostId(newId);
+            lastSavedSnapshotRef.current = serialized;
             window.history.replaceState(null, "", `/admin/editor?id=${newId}`);
             try {
               localStorage.removeItem("codemate_editor_draft_new");
               localStorage.setItem(`codemate_editor_draft_${newId}`, JSON.stringify({ ...payload, updatedAt: Date.now() }));
             } catch {}
           }
+        } else {
+          lastSavedSnapshotRef.current = serialized;
         }
       }
     } catch {
@@ -327,51 +329,68 @@ function EditorContent() {
   }, []);
 
   // Builds sanitized article payload for saving, deduplicating tags and preserving custom inputs
-  const buildSavePayload = (
-    mode: "draft" | "publish",
-    resolvedPublished: boolean,
-    isAutoSave = false
-  ) => {
-    const seenSaveTags = new Set<string>();
-    const tags: { label: string; tone: "slate" }[] = [];
-    for (const raw of tagsInput.split(",")) {
-      const trimmed = raw.trim();
-      const norm = trimmed.toUpperCase();
-      if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
-        seenSaveTags.add(norm);
-        tags.push({ label: trimmed, tone: "slate" as const });
+  const buildSavePayload = useCallback(
+    (
+      mode: "draft" | "publish",
+      resolvedPublished: boolean,
+      isAutoSave = false
+    ) => {
+      const seenSaveTags = new Set<string>();
+      const tags: { label: string; tone: "slate" }[] = [];
+      for (const raw of tagsInput.split(",")) {
+        const trimmed = raw.trim();
+        const norm = trimmed.toUpperCase();
+        if (trimmed.length > 0 && !seenSaveTags.has(norm)) {
+          seenSaveTags.add(norm);
+          tags.push({ label: trimmed, tone: "slate" as const });
+        }
       }
-    }
 
-    const resolvedDate =
-      publishedAtCustom && publishedAtCustom.trim() !== ""
-        ? publishedAtCustom.trim()
-        : resolvedPublished
-        ? new Date().toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-          })
-        : "";
+      const resolvedDate =
+        publishedAtCustom && publishedAtCustom.trim() !== ""
+          ? publishedAtCustom.trim()
+          : resolvedPublished
+          ? new Date().toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })
+          : "";
 
-    return {
-      title: isAutoSave ? (title.trim() || "Untitled Article") : title,
+      return {
+        title: isAutoSave ? (title.trim() || "Untitled Article") : title,
+        subheading,
+        category: category || "",
+        coverImage,
+        published: resolvedPublished,
+        saveMode: mode,
+        tags: tags,
+        filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
+        content: contentJson,
+        author: author,
+        authorRole: authorRole,
+        authorImage: authorImage || "",
+        readTime,
+        publishedAtCustom: resolvedDate,
+        sections: sections.length > 0 ? sections : undefined,
+      };
+    },
+    [
+      title,
       subheading,
-      category: category || "",
+      category,
       coverImage,
-      published: resolvedPublished,
-      saveMode: mode,
-      tags: tags,
-      filterLabels: selectedFilters.length > 0 ? selectedFilters : undefined,
-      content: contentJson,
-      author: author,
-      authorRole: authorRole,
-      authorImage: authorImage || "",
+      tagsInput,
+      selectedFilters,
+      contentJson,
+      author,
+      authorRole,
+      authorImage,
       readTime,
-      publishedAtCustom: resolvedDate,
-      sections: sections.length > 0 ? sections : undefined,
-    };
-  };
+      publishedAtCustom,
+      sections,
+    ]
+  );
 
   // Debounced auto-save listener on editor changes
   useEffect(() => {
