@@ -17,7 +17,7 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 - **Technical Blog (`/blog` & `/blog/[slug]`)**: Dynamic blog feed with search, tag filtering, category grouping, reading time estimation, and deep-linkable table-of-contents navigation.
 
 ### CodeMate CMS Admin Portal
-- **Role and Route Protection**: Next.js Edge Middleware guarding all `/admin/*` routes with stateless JWT verification (`auth-token` HTTP-only cookies).
+- **Role and Route Protection**: Strict tab-isolated session architecture with client-side `AdminLayout` route guards and Edge Middleware protecting `/api/admin/*` routes via stateless `Authorization: Bearer <token>` JWT authentication (`sessionStorage`).
 - **Dual-Key Brute-Force Rate Limiting**: MongoDB-backed sliding-window rate limiter (5-attempt ceiling per 15 min) providing dual protection at both the client IP level (`key: "ip:<ip>"`) and target account level (`key: "email:<email>"`).
 - **Tiptap Rich-Text Editor**: Headless WYSIWYG editor supporting custom code blocks, inline video players, tables, blockquotes, typography, and image uploads.
 - **Dual Versioning (Draft vs. Live Publish)**: Edit articles in draft mode without mutating live public snapshots (`publishedVersion`) until explicitly republished.
@@ -39,7 +39,7 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 | **CMS & Editor** | Tiptap v3 Headless Rich-Text Engine |
 | **Database** | MongoDB (Native Node.js Driver) |
 | **Media Storage** | CodeMate Custom Upload Service (`https://backend.codemate.ai/upload/image`) |
-| **Auth & Security** | Jose (Stateless JWT HS256), BcryptJS, MongoDB-backed Dual-Key Rate Limiter |
+| **Auth & Security** | Jose (Stateless JWT HS256 Bearer Tokens in `sessionStorage`), BcryptJS, Dual-Key Rate Limiter |
 | **Validation** | Zod |
 | **Analytics** | Google Analytics 4 |
 
@@ -186,13 +186,15 @@ Open [http://localhost:3000](http://localhost:3000) to view the CodeMate AI land
 1. **Accessing the Portal**:
    - Navigate to [http://localhost:3000/admin/login](http://localhost:3000/admin/login).
    - Enter the admin email and password seeded in your database.
+   - Authentication issues a stateless JWT Bearer token stored in `sessionStorage` for strict tab isolation.
 2. **Managing Credentials**:
    - Authentication verifies against bcrypt-hashed passwords in the MongoDB `users` collection.
    - If you modify `ADMIN_EMAIL` or `ADMIN_PASSWORD` in your `.env.local`, re-run `npx tsx scripts/seed-admin.ts` or update the record in MongoDB to sync credentials.
 3. **Workspace Navigation**:
    - **Dashboard** (`/admin/dashboard`): View articles, review real-time publication badges, and perform safe deletions.
    - **Editor** (`/admin/editor`): Author articles with real-time auto-save, tag deduplication, taxonomy controls, and live preview.
-   
+4. **Session Security & Tab Isolation**:
+   - Sessions are tab-isolated via `sessionStorage` and Bearer tokens. Opening admin URLs in a new browser tab requires authenticating on that tab, preventing unauthorized cross-tab session leakage.
 
 ---
 

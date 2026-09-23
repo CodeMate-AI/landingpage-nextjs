@@ -3,22 +3,22 @@
 const TOKEN_KEY = "codemate_admin_token";
 let isRedirectingToLogin = false;
 
-// Retrieves the stored admin Bearer token from sessionStorage
+// Retrieves the stored admin Bearer token strictly from sessionStorage
 export function getAdminToken(): string | null {
   if (typeof window === "undefined") return null;
   try {
-    return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY);
+    return sessionStorage.getItem(TOKEN_KEY);
   } catch {
     return null;
   }
 }
 
-// Stores the admin Bearer token in sessionStorage
+// Stores the admin Bearer token exclusively in sessionStorage
 export function setAdminToken(token: string): void {
   if (typeof window === "undefined") return;
   try {
     sessionStorage.setItem(TOKEN_KEY, token);
-    localStorage.removeItem(TOKEN_KEY); // Clean up legacy localStorage item
+    localStorage.removeItem(TOKEN_KEY); // Clean up any legacy localStorage item
   } catch {}
 }
 

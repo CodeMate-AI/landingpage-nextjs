@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getDatabase } from "@/lib/mongodb";
-import { signJWT, SESSION_DURATION, COOKIE_NAME } from "@/lib/auth";
+import { signJWT } from "@/lib/auth";
 import { isRateLimited, recordFailedAttempt, resetRateLimit } from "@/lib/rateLimit";
 import { LoginSchema } from "@/lib/validation";
 import bcrypt from "bcryptjs";
@@ -74,19 +74,8 @@ export async function POST(req: NextRequest) {
       tokenVersion,
     });
 
-    // 8. Attach signed JWT in a secure, HTTP-only cookie and return token string in JSON
-    const response = NextResponse.json({ success: true, token });
-    response.cookies.set({
-      name: COOKIE_NAME,
-      value: token,
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: SESSION_DURATION,
-      path: "/",
-    });
-
-    return response;
+    // 8. Return signed JWT Bearer token in JSON for client-side sessionStorage
+    return NextResponse.json({ success: true, token });
   } catch (error) {
     console.error("Login route error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

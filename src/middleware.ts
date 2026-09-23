@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
-import { verifyJWT, COOKIE_NAME } from "./lib/auth";
+import { verifyJWT } from "./lib/auth";
 
 // Next.js Edge Middleware guarding admin pages and API endpoints
 export async function middleware(req: NextRequest) {
@@ -13,31 +13,15 @@ export async function middleware(req: NextRequest) {
     return new NextResponse(null, { status: 204 });
   }
 
-  // 2. Guard administrative page routes (/admin/*)
-  if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    const cookie = req.cookies.get(COOKIE_NAME);
-
-    if (!cookie) {
-      return NextResponse.redirect(new URL("/admin/login", req.url));
-    }
-
-    const payload = await verifyJWT(cookie.value);
-    if (!payload) {
-      const res = NextResponse.redirect(new URL("/admin/login", req.url));
-      res.cookies.delete(COOKIE_NAME);
-      return res;
-    }
-  }
-
-  // 3. Guard administrative API routes (/api/admin/*), allowing /api/admin/login
+  // 2. Guard administrative API routes (/api/admin/*), allowing /api/admin/login
   if (pathname.startsWith("/api/admin") && pathname !== "/api/admin/login") {
     const authHeader = req.headers.get("authorization");
     const match = authHeader?.match(/^Bearer +(\S+)$/i);
-    const token = match ? match[1] : req.cookies.get(COOKIE_NAME)?.value;
+    const token = match ? match[1] : null;
 
     if (!token) {
       return NextResponse.json(
-        { detail: "Not authenticated", error: "Unauthorized: Missing authentication credentials" },
+        { detail: "Not authenticated", error: "Unauthorized: Missing Bearer authentication credentials" },
         {
           status: 401,
           headers: { "WWW-Authenticate": "Bearer" },
@@ -47,17 +31,13 @@ export async function middleware(req: NextRequest) {
 
     const payload = await verifyJWT(token);
     if (!payload) {
-      const res = NextResponse.json(
-        { detail: "Not authenticated", error: "Unauthorized: Invalid or expired token" },
+      return NextResponse.json(
+        { detail: "Not authenticated", error: "Unauthorized: Invalid or expired Bearer token" },
         {
           status: 401,
           headers: { "WWW-Authenticate": "Bearer" },
         }
       );
-      if (req.cookies.has(COOKIE_NAME)) {
-        res.cookies.delete(COOKIE_NAME);
-      }
-      return res;
     }
   }
 
