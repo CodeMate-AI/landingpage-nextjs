@@ -123,7 +123,7 @@ export default function BlogFeedClient({
   const [openGroups, setOpenGroups] = useState({
     sortBy: false,
     category: false,
-    tags: true,
+    tags: false,
     product: false,
     useCase: false,
   });
