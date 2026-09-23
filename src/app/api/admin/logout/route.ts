@@ -4,7 +4,7 @@ import { withAuth } from "@/lib/authWrapper";
 import { getDatabase } from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 
-// Logs out the admin by invalidating tokenVersion in MongoDB and expiring the auth-token cookie
+// Logs out the admin by invalidating tokenVersion in MongoDB to revoke all active JWT sessions
 async function logoutHandler(req: NextRequest, session: TokenPayload) {
   try {
     if (session?.userId && ObjectId.isValid(session.userId)) {

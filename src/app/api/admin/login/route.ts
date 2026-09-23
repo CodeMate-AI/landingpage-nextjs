@@ -5,7 +5,7 @@ import { isRateLimited, recordFailedAttempt, resetRateLimit } from "@/lib/rateLi
 import { LoginSchema } from "@/lib/validation";
 import bcrypt from "bcryptjs";
 
-// Authenticates admin credentials, checks brute-force limits, and issues an HTTP-only JWT session cookie
+// Authenticates admin credentials, checks brute-force limits, and issues a stateless JWT Bearer token for sessionStorage
 export async function POST(req: NextRequest) {
   try {
     // 1. Parse JSON body and validate email and password constraints via Zod

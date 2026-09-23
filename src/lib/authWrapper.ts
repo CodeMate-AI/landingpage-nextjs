@@ -70,7 +70,7 @@ type AuthenticatedHandler = (
   context?: any
 ) => Promise<NextResponse> | Promise<Response>;
 
-// Higher-order wrapper that validates Bearer authentication or HTTP-only cookie, token revocation, and CSRF before delegating
+// Higher-order wrapper that validates Bearer authentication, database session revocation, and CSRF before delegating
 export function withAuth(handler: AuthenticatedHandler) {
   return async (req: NextRequest, context?: any) => {
     // 1. Allow CORS OPTIONS preflight requests cleanly

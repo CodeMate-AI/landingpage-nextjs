@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { verifyJWT } from "./lib/auth";
 
-// Next.js Edge Middleware guarding admin pages and API endpoints
+// Next.js Edge Middleware guarding administrative API endpoints with Bearer tokens and forwarding page navigation
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
   const requestHeaders = new Headers(req.headers);
