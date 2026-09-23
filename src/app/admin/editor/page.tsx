@@ -224,7 +224,8 @@ function EditorContent() {
         alert("Failed to load post for editing.");
         setLoadError(true);
       }
-    } catch {
+    } catch (err) {
+      console.error("Failed to load post for editing:", err);
       alert("Failed to load post for editing.");
       setLoadError(true);
     } finally {
@@ -258,8 +259,8 @@ function EditorContent() {
           if (draft.publishedAtCustom) setPublishedAtCustom(draft.publishedAtCustom);
           if (draft.sections) setSections(draft.sections);
         }
-      } catch {
-        // Ignored
+      } catch (err) {
+        console.warn("Failed to parse local draft from localStorage:", err);
       }
       initialLoadedRef.current = true;
     }
@@ -284,8 +285,8 @@ function EditorContent() {
     try {
       const storageKey = targetId ? `codemate_editor_draft_${targetId}` : "codemate_editor_draft_new";
       localStorage.setItem(storageKey, JSON.stringify({ ...payload, updatedAt: Date.now() }));
-    } catch {
-      // Storage quota or privacy sandbox safely handled
+    } catch (err) {
+      console.warn("Failed to persist offline draft to localStorage:", err);
     }
 
     try {
@@ -313,14 +314,16 @@ function EditorContent() {
             try {
               localStorage.removeItem("codemate_editor_draft_new");
               localStorage.setItem(`codemate_editor_draft_${newId}`, JSON.stringify({ ...payload, updatedAt: Date.now() }));
-            } catch {}
+            } catch (err) {
+              console.warn("Failed to update post draft in localStorage:", err);
+            }
           }
         } else {
           lastSavedSnapshotRef.current = serialized;
         }
       }
-    } catch {
-      // Auto-save failures are non-blocking and preserved in localStorage
+    } catch (err) {
+      console.error("Auto-save failed:", err);
     } finally {
       isAutosavingRef.current = false;
       if (pendingSavePayloadRef.current) {
@@ -476,7 +479,9 @@ function EditorContent() {
       try {
         const storageKey = targetId ? `codemate_editor_draft_${targetId}` : "codemate_editor_draft_new";
         localStorage.setItem(storageKey, JSON.stringify({ ...payload, updatedAt: Date.now() }));
-      } catch {}
+      } catch (err) {
+        console.warn("Failed to store unload snapshot in localStorage:", err);
+      }
 
       try {
         void adminFetch(url, {
@@ -485,7 +490,9 @@ function EditorContent() {
           body: serialized,
           keepalive: true,
         });
-      } catch {}
+      } catch (err) {
+        console.error("Failed to flush draft on unload:", err);
+      }
     };
 
     window.addEventListener("beforeunload", handleUnloadFlush);
@@ -521,8 +528,8 @@ function EditorContent() {
         if (data.productFilters?.length) setProductFilters(data.productFilters);
         if (data.useCaseFilters?.length) setUseCaseFilters(data.useCaseFilters);
       }
-    } catch {
-      // Fallback silently to pre-populated default taxonomies
+    } catch (err) {
+      console.warn("Failed to fetch dynamic filters from server, using default taxonomies:", err);
     }
   }, []);
 
@@ -560,7 +567,8 @@ function EditorContent() {
         const err = await res.json();
         alert(err.error || "Failed to update filter options");
       }
-    } catch {
+    } catch (err) {
+      console.error("Filter update exception:", err);
       alert("Failed to update filter options");
     } finally {
       setFilterSaving(false);
@@ -605,7 +613,9 @@ function EditorContent() {
           const storageKey = postId ? `codemate_editor_draft_${postId}` : "codemate_editor_draft_new";
           localStorage.removeItem(storageKey);
           localStorage.removeItem("codemate_editor_draft_new");
-        } catch {}
+        } catch (err) {
+          console.warn("Failed to clear local draft from localStorage after save:", err);
+        }
         router.push("/admin/dashboard");
       } else if (res.status === 401) {
         router.push("/admin/login");
@@ -613,7 +623,8 @@ function EditorContent() {
         const data = await res.json();
         alert(data.error || "Save error occurred.");
       }
-    } catch {
+    } catch (err) {
+      console.error("Save execution exception:", err);
       alert("Save execution failed.");
     } finally {
       setLoading(false);
@@ -640,7 +651,8 @@ function EditorContent() {
         const data = await res.json().catch(() => ({}));
         alert(data.error || "Image upload failed.");
       }
-    } catch {
+    } catch (err) {
+      console.error("Image upload exception:", err);
       alert("Image upload failed.");
     } finally {
       setUploading(false);
@@ -666,7 +678,8 @@ function EditorContent() {
         const data = await res.json().catch(() => ({}));
         alert(data.error || "Author image upload failed.");
       }
-    } catch {
+    } catch (err) {
+      console.error("Author image upload exception:", err);
       alert("Author image upload failed.");
     } finally {
       setAuthorUploading(false);
