@@ -192,6 +192,7 @@ Open [http://localhost:3000](http://localhost:3000) to view the CodeMate AI land
 3. **Workspace Navigation**:
    - **Dashboard** (`/admin/dashboard`): View articles, review real-time publication badges, and perform safe deletions.
    - **Editor** (`/admin/editor`): Author articles with real-time auto-save, tag deduplication, taxonomy controls, and live preview.
+   
 
 ---
 
