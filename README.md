@@ -54,9 +54,44 @@ The application connects to MongoDB using the official Node.js driver (`mongodb`
 | Collection | Schema / Key Fields | Purpose & Indexes |
 |---|---|---|
 | **`blogs`** | `title`, `slug`, `category`, `tags[]`, `content` (Tiptap AST JSON), `published`, `publishedVersion`, `hasDraftChanges`, `author`, `readTime`, `sections[]`, `createdAt`, `updatedAt` | Stores articles with dual draft/live snapshots. **Indexes**: `{ slug: 1 }` (unique), `{ published: 1, publishedAt: -1 }`. |
-| **`users`** | `email`, `password` (bcrypt hash), `name`, `createdAt` | Stores administrator credentials. **Index**: `{ email: 1 }` (unique). |
+| **`users`** | `email`, `password` (bcrypt hash), `tokenVersion`, `name`, `createdAt` | Stores administrator credentials. **Index**: `{ email: 1 }` (unique). |
 | **`login_attempts`** | `key` (`"ip:<ip>"` or `"email:<email>"`), `count`, `firstAttempt` | Brute-force rate limiting (5 attempts/15m). **Indexes**: `{ key: 1 }`, `{ firstAttempt: 1 }` (TTL: 900s). |
 | **`filter_options`** | `_id: "global_filters"`, `categories[]`, `productFilters[]`, `useCaseFilters[]` | Dynamic taxonomy configuration document for article filters and categories. |
+
+### MongoDB Collections Reference Map
+
+| Collection | File Name | Line Number | Operation / Context |
+| :--- | :--- | :--- | :--- |
+| **`users`** | `src/lib/authWrapper.ts` | Line 19 | `findOne` (validate token session & tokenVersion) |
+| **`users`** | `src/app/api/admin/login/route.ts` | Line 48 | `findOne` (find user by email) |
+| **`users`** | `src/app/api/admin/login/route.ts` | Line 63 | `updateOne` (seed / initialize tokenVersion) |
+| **`users`** | `src/app/api/admin/logout/route.ts` | Line 13 | `updateOne` (increment tokenVersion to logout) |
+| **`blogs`** | `src/app/blog/page.tsx` | Line 30 | `countDocuments` (total published posts) |
+| **`blogs`** | `src/app/blog/page.tsx` | Line 32 | `find` (fetch published posts for SSR) |
+| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 18 | `find` (generate static params slugs) |
+| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 35 | `findOne` (fetch single published article) |
+| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 46 | `find` (fetch related blog articles) |
+| **`blogs`** | `src/app/sitemap.ts` | Line 58 | `find` (fetch slugs for sitemap generation) |
+| **`blogs`** | `src/app/api/posts/route.ts` | Line 70 | `countDocuments` (search/filtered count) |
+| **`blogs`** | `src/app/api/posts/route.ts` | Line 72 | `find` (fetch paginated/filtered posts) |
+| **`blogs`** | `src/app/api/admin/posts/route.ts` | Line 22 | `countDocuments` (admin total count) |
+| **`blogs`** | `src/app/api/admin/posts/route.ts` | Line 24 | `find` (admin paginated post list) |
+| **`blogs`** | `src/app/api/admin/posts/route.ts` | Line 136 | `insertOne` (create new blog post) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 20 | `findOne` (fetch single post by ID for editor) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 47 | `findOne` (check existing post before update) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 63 | `findOne` (slug collision verification) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 163 | `updateOne` (update blog post content / draft) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 194 | `findOne` (check post existence before delete) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 196 | `deleteOne` (delete blog post by ID) |
+| **`filter_options`** | `src/app/blog/page.tsx` | Line 41 | `findOne` (fetch `global_filters` for sidebar) |
+| **`filter_options`** | `src/app/api/admin/filters/route.ts` | Line 44 | `findOne` (fetch current `global_filters`) |
+| **`filter_options`** | `src/app/api/admin/filters/route.ts` | Line 53 | `insertOne` (seed default filters if not found) |
+| **`filter_options`** | `src/app/api/admin/filters/route.ts` | Line 110 | `updateOne` (update filter categories) |
+| **`login_attempts`** | `src/lib/rateLimit.ts` | Line 19 | `createIndex` (create TTL index for auto-expiry) |
+| **`login_attempts`** | `src/lib/rateLimit.ts` | Line 37 | `findOne` (check recent failed attempts) |
+| **`login_attempts`** | `src/lib/rateLimit.ts` | Line 63 | `updateOne` (increment attempt count) |
+| **`login_attempts`** | `src/lib/rateLimit.ts` | Line 70 | `updateOne` (set lock until timestamp) |
+| **`login_attempts`** | `src/lib/rateLimit.ts` | Line 84 | `deleteMany` (clear records on successful login) |
 
 ---
 
