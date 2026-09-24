@@ -5,23 +5,27 @@ import { ObjectId } from "mongodb";
 
 // Verifies JWT signature and checks tokenVersion against the MongoDB users collection
 export async function validateSessionFromDb(token: string): Promise<TokenPayload | null> {
+  // 1. Verify cryptographic JWT signature, expiry, and payload structure
   const payload = await verifyJWT(token);
   if (!payload || typeof payload.tokenVersion !== "number" || !payload.userId || !payload.email) {
     return null;
   }
 
+  // 2. Validate MongoDB ObjectId format to prevent database query errors
   if (!ObjectId.isValid(payload.userId)) {
     return null;
   }
 
   try {
     const db = await getDatabase();
+    // 3. Look up active user record from MongoDB "users" collection
     const user = await db.collection("users").findOne({ _id: new ObjectId(payload.userId) });
 
     if (!user) {
       return null;
     }
 
+    // 4. Compare tokenVersion against database document to enforce instant session revocation on logout
     const currentVersion = user.tokenVersion ?? 1;
     if (payload.tokenVersion !== currentVersion) {
       return null;
