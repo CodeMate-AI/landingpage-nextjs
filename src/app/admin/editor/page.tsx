@@ -121,6 +121,16 @@ function EditorContent() {
     currentPostIdRef.current = postId;
   }, [postId]);
 
+  // Clean up transient preview storage when navigating away from editor
+  useEffect(() => {
+    return () => {
+      try {
+        sessionStorage.removeItem("admin_blog_preview");
+        localStorage.removeItem("admin_blog_preview");
+      } catch {}
+    };
+  }, []);
+
   // Fetches existing article data from /api/admin/posts/:id when editing
   const loadPost = useCallback(async () => {
     if (!postId) {
@@ -744,6 +754,17 @@ function EditorContent() {
     }
     setPreviewPost(postObj);
     setIsPreviewOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setIsPreviewOpen(false);
+    setPreviewPost(null);
+    try {
+      sessionStorage.removeItem("admin_blog_preview");
+      localStorage.removeItem("admin_blog_preview");
+    } catch (err) {
+      console.warn("Failed to clear preview storage on close:", err);
+    }
   };
 
   // Check if first paragraph of contentJson duplicates the subheading
@@ -1483,7 +1504,7 @@ function EditorContent() {
       {previewPost && (
         <BlogPreviewModal
           isOpen={isPreviewOpen}
-          onClose={() => setIsPreviewOpen(false)}
+          onClose={handleClosePreview}
           post={previewPost}
         />
       )}

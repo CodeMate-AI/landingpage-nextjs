@@ -28,6 +28,14 @@ export default function AdminDashboard() {
   });
   const router = useRouter();
 
+  // Purge any lingering transient preview payload upon landing on the dashboard
+  useEffect(() => {
+    try {
+      sessionStorage.removeItem("admin_blog_preview");
+      localStorage.removeItem("admin_blog_preview");
+    } catch {}
+  }, []);
+
   // Load posts list whenever page or limit changes
   useEffect(() => {
     fetchPosts(page, limit);
@@ -69,6 +77,20 @@ export default function AdminDashboard() {
     try {
       const res = await adminFetch(`/api/admin/posts/${id}`, { method: "DELETE" });
       if (res.ok) {
+        try {
+          localStorage.removeItem(`codemate_editor_draft_${id}`);
+          const preview = localStorage.getItem("admin_blog_preview");
+          if (preview) {
+            const parsed = JSON.parse(preview);
+            if (parsed?.id === id || parsed?._id === id) {
+              localStorage.removeItem("admin_blog_preview");
+              sessionStorage.removeItem("admin_blog_preview");
+            }
+          }
+        } catch (storageErr) {
+          console.warn("Failed to clear local storage after deletion:", storageErr);
+        }
+
         // If this was the last item on a page > 1, navigate back one page
         if (posts.length === 1 && page > 1) {
           setPage((prev) => prev - 1);

@@ -38,6 +38,13 @@ function PreviewContent() {
     } finally {
       setLoading(false);
     }
+
+    return () => {
+      try {
+        sessionStorage.removeItem("admin_blog_preview");
+        localStorage.removeItem("admin_blog_preview");
+      } catch {}
+    };
   }, []);
 
   if (loading) {
