@@ -152,6 +152,8 @@ async function createPostHandler(req: NextRequest) {
     if (published) {
       try {
         revalidatePath("/blog");
+        revalidatePath("/blog", "layout");
+        revalidatePath("/blog/[slug]", "page");
         revalidatePath(`/blog/${finalSlug}`);
       } catch (revErr) {
         console.warn("Failed to revalidate blog paths:", revErr);

@@ -167,6 +167,8 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
 
     try {
       revalidatePath("/blog");
+      revalidatePath("/blog", "layout");
+      revalidatePath("/blog/[slug]", "page");
       if (existing.slug) {
         revalidatePath(`/blog/${existing.slug}`);
       }
@@ -201,6 +203,8 @@ async function deletePost(req: NextRequest, session: any, { params }: { params: 
 
   try {
     revalidatePath("/blog");
+    revalidatePath("/blog", "layout");
+    revalidatePath("/blog/[slug]", "page");
     if (postToDelete?.slug) {
       revalidatePath(`/blog/${postToDelete.slug}`);
     }
