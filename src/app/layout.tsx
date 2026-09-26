@@ -1,4 +1,6 @@
 import "./globals.css";
+import "../styles/_variables.scss";
+import "../styles/_keyframe-animations.scss";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
@@ -127,64 +129,64 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet"></link>
+        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`${montserrat.className} antialiased bg-zinc-950 text-white dark`}
+        className={`${montserrat.variable} ${montserrat.className} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning
       >
         {children}
         <Analytics />
-      </body>
-      <Script
-        id="structured-data"
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@graph": [
-              {
-                "@type": "SoftwareApplication",
-                "@id": "https://codemate.ai/#software",
-                name: "CodeMate AI",
-                alternateName: ["CodeMate", "Code Mate", "CodeMate AI Assistant"],
-                applicationCategory: "DeveloperApplication",
-                applicationSubCategory: "AI Coding Assistant",
-                description:
-                  "CodeMate AI is the sovereign AI pair programmer and software development agent providing secure, private, and self-hosted code generation, code review, and debugging.",
-                operatingSystem: ["Windows", "macOS", "Linux", "Web", "VS Code Extension"],
-                offers: {
-                  "@type": "Offer",
-                  price: "0",
-                  priceCurrency: "USD",
+        <Script
+          id="structured-data"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@graph": [
+                {
+                  "@type": "SoftwareApplication",
+                  "@id": "https://codemate.ai/#software",
+                  name: "CodeMate AI",
+                  alternateName: ["CodeMate", "Code Mate", "CodeMate AI Assistant"],
+                  applicationCategory: "DeveloperApplication",
+                  applicationSubCategory: "AI Coding Assistant",
+                  description:
+                    "CodeMate AI is the sovereign AI pair programmer and software development agent providing secure, private, and self-hosted code generation, code review, and debugging.",
+                  operatingSystem: ["Windows", "macOS", "Linux", "Web", "VS Code Extension"],
+                  offers: {
+                    "@type": "Offer",
+                    price: "0",
+                    priceCurrency: "USD",
+                  },
+                  url: "https://codemate.ai",
                 },
-                url: "https://codemate.ai",
-              },
-              {
-                "@type": "Organization",
-                "@id": "https://codemate.ai/#organization",
-                name: "CodeMate AI",
-                url: "https://codemate.ai",
-                logo: "https://codemate.ai/logo.png",
-                sameAs: [
-                  "https://twitter.com/codemateai",
-                  "https://github.com/codemateai",
-                  "https://linkedin.com/company/codemateai",
-                ],
-              },
-              {
-                "@type": "WebSite",
-                "@id": "https://codemate.ai/#website",
-                url: "https://codemate.ai",
-                name: "CodeMate AI",
-                publisher: {
+                {
+                  "@type": "Organization",
                   "@id": "https://codemate.ai/#organization",
+                  name: "CodeMate AI",
+                  url: "https://codemate.ai",
+                  logo: "https://codemate.ai/logo.png",
+                  sameAs: [
+                    "https://twitter.com/codemateai",
+                    "https://github.com/codemateai",
+                    "https://linkedin.com/company/codemateai",
+                  ],
                 },
-              },
-            ],
-          }),
-        }}
-      />
+                {
+                  "@type": "WebSite",
+                  "@id": "https://codemate.ai/#website",
+                  url: "https://codemate.ai",
+                  name: "CodeMate AI",
+                  publisher: {
+                    "@id": "https://codemate.ai/#organization",
+                  },
+                },
+              ],
+            }),
+          }}
+        />
+      </body>
     </html>
   );
 }
