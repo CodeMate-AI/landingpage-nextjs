@@ -158,6 +158,7 @@ function UnlockCard({
               alt={item.title}
               className={`w-full h-full ${item.objectFit || "object-contain"} rounded-lg relative z-10`}
               isActive={isActive}
+              disableHoverScale={true}
             />
           )}
         </div>
