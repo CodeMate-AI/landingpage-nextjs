@@ -26,6 +26,9 @@ export default function AdminDashboard() {
     totalPages: 1,
     hasMore: false,
   });
+  // State tracking article selected for deletion and in-flight delete status
+  const [postToDelete, setPostToDelete] = useState<{ id: string; title: string } | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const router = useRouter();
 
   // Purge any lingering transient preview payload upon landing on the dashboard
@@ -35,6 +38,24 @@ export default function AdminDashboard() {
       localStorage.removeItem("admin_blog_preview");
     } catch {}
   }, []);
+
+  // Trap escape key to close delete confirmation modal safely
+  useEffect(() => {
+    if (!postToDelete) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && !isDeleting) {
+        setPostToDelete(null);
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = "";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [postToDelete, isDeleting]);
 
   // Load posts list whenever page or limit changes
   useEffect(() => {
@@ -71,9 +92,11 @@ export default function AdminDashboard() {
     router.push("/admin/login");
   };
 
-  // Prompts user confirmation and deletes article document by ObjectId
-  const handleDelete = async (id: string) => {
-    if (!confirm("Are you sure you want to delete this post?")) return;
+  // Executes post deletion after explicit user confirmation in the in-UI modal
+  const handleConfirmDelete = async () => {
+    if (!postToDelete) return;
+    const { id } = postToDelete;
+    setIsDeleting(true);
     try {
       const res = await adminFetch(`/api/admin/posts/${id}`, { method: "DELETE" });
       if (res.ok) {
@@ -91,6 +114,8 @@ export default function AdminDashboard() {
           console.warn("Failed to clear local storage after deletion:", storageErr);
         }
 
+        setPostToDelete(null);
+
         // If this was the last item on a page > 1, navigate back one page
         if (posts.length === 1 && page > 1) {
           setPage((prev) => prev - 1);
@@ -105,6 +130,8 @@ export default function AdminDashboard() {
       }
     } catch (err) {
       alert("Delete call failed.");
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -208,7 +235,8 @@ export default function AdminDashboard() {
                         Edit
                       </Link>
                       <button
-                        onClick={() => handleDelete(post._id)}
+                        type="button"
+                        onClick={() => setPostToDelete({ id: post._id, title: post.title || "Untitled Article" })}
                         className="inline-flex flex-1 items-center justify-center rounded-lg border border-red-500/20 bg-red-500/10 px-3.5 py-2 text-sm font-semibold text-red-400 transition-all duration-200 hover:border-transparent hover:bg-red-600 hover:text-white sm:flex-none cursor-pointer"
                       >
                         Delete
@@ -245,7 +273,8 @@ export default function AdminDashboard() {
                             Edit
                           </Link>
                           <button
-                            onClick={() => handleDelete(post._id)}
+                            type="button"
+                            onClick={() => setPostToDelete({ id: post._id, title: post.title || "Untitled Article" })}
                             className="inline-flex items-center rounded-lg border border-red-500/20 bg-red-500/10 px-3.5 py-1.5 text-xs font-semibold text-red-400 transition-all duration-200 hover:border-transparent hover:bg-red-600 hover:text-white cursor-pointer"
                           >
                             Delete
@@ -326,6 +355,77 @@ export default function AdminDashboard() {
           </>
         )}
       </div>
+
+      {/* In-UI Delete Confirmation Modal */}
+      {postToDelete && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="delete-modal-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => {
+            if (!isDeleting) setPostToDelete(null);
+          }}
+        >
+          <div
+            className="w-full max-w-md rounded-xl border border-[#27272a] bg-[#18181b] p-6 shadow-2xl space-y-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start gap-4">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/10 border border-red-500/20 text-red-400">
+                <svg
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.8}
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                  />
+                </svg>
+              </div>
+              <div className="space-y-1.5 flex-1">
+                <h3 id="delete-modal-title" className="text-lg font-semibold text-white">
+                  Delete Article
+                </h3>
+                <p className="text-sm text-neutral-400 leading-relaxed">
+                  Are you sure you want to delete <strong className="text-white font-medium">&ldquo;{postToDelete.title}&rdquo;</strong>? This action will permanently remove this post.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={() => setPostToDelete(null)}
+                className="rounded-lg border border-[#27272a] bg-[#27272a]/60 px-4 py-2 text-xs font-semibold text-neutral-300 transition hover:bg-[#27272a] hover:text-white disabled:opacity-50 cursor-pointer"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={isDeleting}
+                onClick={handleConfirmDelete}
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-red-500 disabled:opacity-50 cursor-pointer"
+              >
+                {isDeleting ? (
+                  <>
+                    <div className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                    <span>Deleting...</span>
+                  </>
+                ) : (
+                  <span>Delete Post</span>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
