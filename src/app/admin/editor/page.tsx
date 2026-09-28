@@ -114,6 +114,8 @@ function EditorContent() {
   const docVersionRef = useRef<number>(1);
   const isDirtyRef = useRef<boolean>(false);
   const [conflictData, setConflictData] = useState<{ email: string; at: string } | null>(null);
+  const [isCopied, setIsCopied] = useState<boolean>(false);
+  const [conflictModalAction, setConflictModalAction] = useState<"reload" | "overwrite" | null>(null);
 
   // Background Auto-Save Tracking
   const isAutosavingRef = useRef(false);
@@ -686,7 +688,9 @@ function EditorContent() {
       } else if (res.status === 409) {
         const data = await res.json().catch(() => ({}));
         setConflictData(data.lastModifiedBy || { email: "another admin", at: new Date().toISOString() });
-        alert("Conflict detected: This article was modified in another session. Please review the conflict banner.");
+        if (typeof window !== "undefined") {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
       } else if (res.status === 401) {
         router.push("/admin/login");
       } else {
@@ -910,32 +914,38 @@ function EditorContent() {
                         .join("\n\n")
                     : "";
                   const exportText = `Title: ${title}\nSubheading: ${subheading}\n\n${plainContent}`;
-                  navigator.clipboard.writeText(exportText);
-                  alert("Your current edits were copied to the clipboard!");
+                  void navigator.clipboard.writeText(exportText);
+                  setIsCopied(true);
+                  setTimeout(() => setIsCopied(false), 2500);
                 }}
-                className="rounded-lg border border-amber-500/30 bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-200 hover:bg-amber-500/30 transition cursor-pointer"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-200 hover:bg-amber-500/30 transition cursor-pointer"
               >
-                Copy My Content
+                {isCopied ? (
+                  <>
+                    <svg className="h-3.5 w-3.5 text-emerald-400" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-emerald-300">Copied to Clipboard!</span>
+                  </>
+                ) : (
+                  <>
+                    <svg className="h-3.5 w-3.5 text-amber-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    <span>Copy My Content</span>
+                  </>
+                )}
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (confirm("Discard your local unsaved changes and load the latest version from the server?")) {
-                    void loadPost();
-                    setConflictData(null);
-                  }
-                }}
+                onClick={() => setConflictModalAction("reload")}
                 className="rounded-lg border border-neutral-700 bg-[#18181b] px-3 py-1.5 text-xs font-semibold text-white hover:bg-neutral-800 transition cursor-pointer"
               >
                 Reload Latest Version
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (confirm("Are you sure you want to overwrite the server version with your current changes?")) {
-                    void handleSave(undefined, true);
-                  }
-                }}
+                onClick={() => setConflictModalAction("overwrite")}
                 className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-500 transition cursor-pointer sm:ml-auto"
               >
                 Overwrite Server Version
@@ -1630,6 +1640,85 @@ function EditorContent() {
           onClose={handleClosePreview}
           post={previewPost}
         />
+      )}
+
+      {/* In-UI Conflict Resolution Confirmation Modal */}
+      {conflictModalAction && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="conflict-modal-title"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+        >
+          <div className="w-full max-w-md rounded-2xl border border-[#27272a] bg-[#18181b] p-6 shadow-2xl space-y-4">
+            <div className="flex items-start gap-4">
+              <div
+                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-base ${
+                  conflictModalAction === "overwrite"
+                    ? "bg-red-500/20 text-red-400"
+                    : "bg-blue-500/20 text-blue-400"
+                }`}
+              >
+                {conflictModalAction === "overwrite" ? "⚠️" : "🔄"}
+              </div>
+              <div className="space-y-1.5 flex-1">
+                <h3 id="conflict-modal-title" className="text-lg font-semibold text-white">
+                  {conflictModalAction === "overwrite"
+                    ? "Overwrite Server Version?"
+                    : "Discard Changes & Reload?"}
+                </h3>
+                <p className="text-sm text-neutral-400 leading-relaxed">
+                  {conflictModalAction === "overwrite" ? (
+                    <>
+                      Are you sure you want to force overwrite the server version? Any modifications saved by{" "}
+                      <strong className="text-white font-medium">{conflictData?.email || "another admin"}</strong>{" "}
+                      will be permanently replaced with your current content.
+                    </>
+                  ) : (
+                    <>
+                      Discard your unsaved local changes and load the latest version saved by{" "}
+                      <strong className="text-white font-medium">{conflictData?.email || "another admin"}</strong>?
+                    </>
+                  )}
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-3 pt-2">
+              <button
+                type="button"
+                onClick={() => setConflictModalAction(null)}
+                className="rounded-lg border border-[#27272a] bg-[#27272a]/60 px-4 py-2 text-xs font-semibold text-neutral-300 transition hover:bg-[#27272a] hover:text-white cursor-pointer"
+              >
+                Cancel
+              </button>
+              {conflictModalAction === "overwrite" ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConflictModalAction(null);
+                    void handleSave(undefined, true);
+                  }}
+                  className="rounded-lg bg-red-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-red-500 cursor-pointer"
+                >
+                  Yes, Overwrite
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConflictModalAction(null);
+                    setConflictData(null);
+                    void loadPost();
+                  }}
+                  className="rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-blue-500 cursor-pointer"
+                >
+                  Discard & Reload
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
       )}
     </main>
   );
