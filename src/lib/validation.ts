@@ -69,6 +69,9 @@ export const BlogPostSchema = z.object({
   readTime: z.string().optional().default(""),
   publishedAtCustom: z.string().optional().default(""),
   filterLabels: z.array(z.string()).optional(),
+  // Concurrency tracking fields
+  version: z.number().int().nonnegative().optional(),
+  forceOverwrite: z.boolean().optional().default(false),
   // Enforces that all table-of-contents anchor IDs within an article are unique
   sections: z.array(SectionSchema).optional().refine(
     (items) => {

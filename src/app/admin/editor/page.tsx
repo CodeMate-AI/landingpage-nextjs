@@ -110,6 +110,11 @@ function EditorContent() {
   const authorFileInputRef = useRef<HTMLInputElement | null>(null);
   const saveModeRef = useRef<"draft" | "publish">("draft");
 
+  // Concurrency tracking and conflict resolution
+  const docVersionRef = useRef<number>(1);
+  const isDirtyRef = useRef<boolean>(false);
+  const [conflictData, setConflictData] = useState<{ email: string; at: string } | null>(null);
+
   // Background Auto-Save Tracking
   const isAutosavingRef = useRef(false);
   const pendingSavePayloadRef = useRef<any>(null);
@@ -144,6 +149,10 @@ function EditorContent() {
       if (res.ok) {
         const data = await res.json();
         const post = data.post;
+        // Synchronize document version from server and reset local conflict state
+        docVersionRef.current = post.version || 1;
+        setConflictData(null);
+        isDirtyRef.current = false;
         setTitle(post.title || "");
         setSlug(post.slug || "");
         setSubheading(post.subheading || "");
@@ -302,15 +311,23 @@ function EditorContent() {
     try {
       const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
       const method = targetId ? "PUT" : "POST";
+      // Inject latest live version counter into payload at dispatch time
+      const outboundPayload = targetId
+        ? { ...payload, version: docVersionRef.current }
+        : payload;
 
       const res = await adminFetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: serialized,
+        body: JSON.stringify(outboundPayload),
       });
 
       if (res.ok) {
         const data = await res.json().catch(() => null);
+        if (data?.version) {
+          docVersionRef.current = data.version;
+        }
+        setConflictData(null);
         if (data?.slug) {
           setSlug(data.slug);
         }
@@ -331,6 +348,13 @@ function EditorContent() {
         } else {
           lastSavedSnapshotRef.current = serialized;
         }
+      } else if (res.status === 409) {
+        // Handle concurrent edit conflict: pause auto-save and activate in-UI resolution banner
+        const errData = await res.json().catch(() => ({}));
+        isAutosavingRef.current = false;
+        pendingSavePayloadRef.current = null;
+        setConflictData(errData.lastModifiedBy || { email: "another admin", at: new Date().toISOString() });
+        return;
       }
     } catch (err) {
       console.error("Auto-save failed:", err);
@@ -411,6 +435,8 @@ function EditorContent() {
   // Debounced auto-save listener on editor changes
   useEffect(() => {
     if (!initialLoadedRef.current) return;
+    if (conflictData) return;
+    isDirtyRef.current = true;
 
     const hasContent =
       title.trim() !== "" ||
@@ -497,7 +523,7 @@ function EditorContent() {
         void adminFetch(url, {
           method,
           headers: { "Content-Type": "application/json" },
-          body: serialized,
+          body: targetId ? JSON.stringify({ ...payload, version: docVersionRef.current }) : serialized,
           keepalive: true,
         });
       } catch (err) {
@@ -527,6 +553,29 @@ function EditorContent() {
     sections,
     published,
   ]);
+
+  // Idle freshness check: when tab refocuses and user has not typed locally, sync if server version is newer
+  useEffect(() => {
+    const handleVisibilityChange = async () => {
+      if (document.visibilityState === "visible" && currentPostIdRef.current && !isDirtyRef.current && !conflictData) {
+        try {
+          const res = await adminFetch(`/api/admin/posts/${currentPostIdRef.current}`);
+          if (res.ok) {
+            const data = await res.json();
+            const serverVersion = data.post?.version || 1;
+            if (serverVersion > docVersionRef.current) {
+              void loadPost();
+            }
+          }
+        } catch {}
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [loadPost, conflictData]);
 
   // Fetches dynamic filter options and categories from the database on component mount
   const loadFilters = useCallback(async () => {
@@ -585,9 +634,9 @@ function EditorContent() {
     }
   };
 
-  // Submits article payload to backend, resolving draft vs publish versioning
-  const handleSave = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Submits article payload to backend, resolving draft vs publish versioning and concurrency
+  const handleSave = async (e?: React.FormEvent, forceOverwrite = false) => {
+    if (e) e.preventDefault();
     setLoading(true);
     setSavingMode(saveModeRef.current);
 
@@ -600,7 +649,10 @@ function EditorContent() {
         : false;
 
     // Construct full article payload via shared builder
-    const payload = buildSavePayload(saveModeRef.current, resolvedPublished, false);
+    const basePayload = buildSavePayload(saveModeRef.current, resolvedPublished, false);
+    const payload = postId
+      ? { ...basePayload, version: docVersionRef.current, forceOverwrite }
+      : basePayload;
 
     try {
       // Use PUT for updating existing post or POST for creating a new post
@@ -615,10 +667,14 @@ function EditorContent() {
 
       if (res.ok) {
         const data = await res.json().catch(() => null);
+        if (data?.version) {
+          docVersionRef.current = data.version;
+        }
+        setConflictData(null);
         if (data?.slug) {
           setSlug(data.slug);
         }
-        lastSavedSnapshotRef.current = JSON.stringify(payload);
+        lastSavedSnapshotRef.current = JSON.stringify(basePayload);
         try {
           const storageKey = postId ? `codemate_editor_draft_${postId}` : "codemate_editor_draft_new";
           localStorage.removeItem(storageKey);
@@ -627,6 +683,10 @@ function EditorContent() {
           console.warn("Failed to clear local draft from localStorage after save:", err);
         }
         router.push("/admin/dashboard");
+      } else if (res.status === 409) {
+        const data = await res.json().catch(() => ({}));
+        setConflictData(data.lastModifiedBy || { email: "another admin", at: new Date().toISOString() });
+        alert("Conflict detected: This article was modified in another session. Please review the conflict banner.");
       } else if (res.status === 401) {
         router.push("/admin/login");
       } else {
@@ -820,6 +880,69 @@ function EditorContent() {
             </button>
           </div>
         </header>
+
+        {/* In-UI Conflict Banner for concurrent multi-admin editing */}
+        {conflictData && (
+          <div className="mb-6 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 sm:p-5 text-amber-200 space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-amber-400 text-sm">
+                ⚠️
+              </div>
+              <div className="flex-1 space-y-1">
+                <h3 className="text-sm font-semibold text-white">Concurrent Edit Conflict Detected</h3>
+                <p className="text-xs text-amber-300/90 leading-relaxed">
+                  This post was modified by <strong className="text-white font-medium">{conflictData.email}</strong> on{" "}
+                  <strong className="text-white font-medium">
+                    {new Date(conflictData.at).toLocaleDateString("en-US", { month: "short", day: "numeric" })},{" "}
+                    {new Date(conflictData.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  </strong>. Auto-save has been paused to protect both versions.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 pt-1 border-t border-amber-500/20">
+              <button
+                type="button"
+                onClick={() => {
+                  const plainContent = contentJson?.content
+                    ? contentJson.content
+                        .map((n: any) => n.text || (n.content ? n.content.map((c: any) => c.text || "").join("") : ""))
+                        .join("\n\n")
+                    : "";
+                  const exportText = `Title: ${title}\nSubheading: ${subheading}\n\n${plainContent}`;
+                  navigator.clipboard.writeText(exportText);
+                  alert("Your current edits were copied to the clipboard!");
+                }}
+                className="rounded-lg border border-amber-500/30 bg-amber-500/20 px-3 py-1.5 text-xs font-semibold text-amber-200 hover:bg-amber-500/30 transition cursor-pointer"
+              >
+                Copy My Content
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm("Discard your local unsaved changes and load the latest version from the server?")) {
+                    void loadPost();
+                    setConflictData(null);
+                  }
+                }}
+                className="rounded-lg border border-neutral-700 bg-[#18181b] px-3 py-1.5 text-xs font-semibold text-white hover:bg-neutral-800 transition cursor-pointer"
+              >
+                Reload Latest Version
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (confirm("Are you sure you want to overwrite the server version with your current changes?")) {
+                    void handleSave(undefined, true);
+                  }
+                }}
+                className="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white hover:bg-red-500 transition cursor-pointer sm:ml-auto"
+              >
+                Overwrite Server Version
+              </button>
+            </div>
+          </div>
+        )}
 
         <form onSubmit={handleSave} className="space-y-6">
           <div>

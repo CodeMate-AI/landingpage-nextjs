@@ -52,6 +52,24 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     // 2. Resolve save mode: publish immediately vs save as draft using validated field
     const saveMode = parsed.data.saveMode || (parsed.data.published ? "publish" : "draft");
     const published = parsed.data.published;
+    const incomingVersion = parsed.data.version;
+    const forceOverwrite = Boolean(parsed.data.forceOverwrite);
+
+    // Optimistic Concurrency Control: detect conflicting updates from concurrent admin sessions
+    const currentVersion = typeof existing.version === "number" ? existing.version : 1;
+    if (!forceOverwrite && typeof incomingVersion === "number" && existing.version && incomingVersion !== existing.version) {
+      return NextResponse.json(
+        {
+          error: "This article was modified in another session.",
+          currentVersion: existing.version,
+          lastModifiedBy: existing.lastModifiedBy || {
+            email: process.env.ADMIN_EMAIL || "",
+            at: existing.updatedAt || new Date(),
+          },
+        },
+        { status: 409 }
+      );
+    }
 
     // Generate updated slug from the title automatically
     const baseSlug = slugify(parsed.data.title || "untitled-article");
@@ -135,7 +153,9 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       }
     }
 
-    // 5. Build base update payload with dynamically updated slug
+    const nextVersion = currentVersion + 1;
+
+    // 5. Build base update payload with dynamically updated slug and version counter
     const updatePayload: any = {
       ...parsed.data,
       slug: finalSlug,
@@ -148,8 +168,15 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       published,
       publishedVersion,
       publishedAt,
+      version: nextVersion,
+      lastModifiedBy: {
+        // Source admin email dynamically from verified session or environment config
+        email: session?.email || process.env.ADMIN_EMAIL || "",
+        at: new Date(),
+      },
       updatedAt: new Date(),
     };
+    delete updatePayload.forceOverwrite;
 
     // Flag draft changes only if a published article is being saved as draft with genuine changes from publishedVersion
     const hasDraftChanges =
@@ -179,7 +206,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
       console.warn("Failed to revalidate blog paths on update:", revErr);
     }
 
-    return NextResponse.json({ success: true, slug: finalSlug });
+    return NextResponse.json({ success: true, slug: finalSlug, version: nextVersion });
   } catch (error) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }

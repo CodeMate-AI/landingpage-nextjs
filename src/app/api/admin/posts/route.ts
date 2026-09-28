@@ -52,7 +52,7 @@ async function getPostsHandler(req: NextRequest) {
 }
 
 // Validates incoming article data, computes unique slug & read time, and inserts new blog document
-async function createPostHandler(req: NextRequest) {
+async function createPostHandler(req: NextRequest, session: any) {
   try {
     // 1. Validate request payload against Zod BlogPostSchema
     const body = await req.json();
@@ -107,7 +107,7 @@ async function createPostHandler(req: NextRequest) {
         }
       : null;
 
-    // 5. Construct document with timestamps and draft flags
+    // 5. Construct document with timestamps, initial version, and attribution
     const newPost: any = {
       ...parsed.data,
       author: parsed.data.author || "",
@@ -121,6 +121,12 @@ async function createPostHandler(req: NextRequest) {
       publishedAt,
       publishedVersion,
       hasDraftChanges: false,
+      version: 1,
+      lastModifiedBy: {
+        // Source admin email dynamically from verified session or environment config
+        email: session?.email || process.env.ADMIN_EMAIL || "",
+        at: new Date(),
+      },
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -160,7 +166,7 @@ async function createPostHandler(req: NextRequest) {
       }
     }
 
-    return NextResponse.json({ success: true, id: result.insertedId, slug: finalSlug });
+    return NextResponse.json({ success: true, id: result.insertedId, slug: finalSlug, version: 1 });
   } catch (error) {
     console.error("Create post error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
