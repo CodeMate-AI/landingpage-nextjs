@@ -42,7 +42,7 @@ const UNLOCK_ITEMS: UnlockItem[] = [
   { id: "01", title: "Figma to Code", desc: "Seamlessly connect your Figma designs directly to CodeMate Build and export fully functional, responsive code that perfectly matches your mockups.", media: "/figma-to-code-static.png", isVideo: false, objectFit: "object-cover" },
   { id: "02", title: "Custom AI Skills", desc: "Teach CORA specific tasks, coding standards, and architectural patterns tailored perfectly to your team's unique workflows.", media: "/skill-static.png", isVideo: false, objectFit: "object-cover" },
   { id: "03", title: "Ship Autonomously with CORA", desc: "Delegate tasks to our smartest coding agent that knows your codebase", media: "/cora-autonomous.png", isVideo: false, objectFit: "object-cover" },
-  { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "/Pr_review_agent_parth.png", isVideo: false, objectFit: "object-cover" },
+  { id: "04", title: "Automated PR Reviews", desc: "Integrated in your desired version control (GitHub, Bitbucket, GitLab, Azure DevOps) and automates your entire code reviews. Ship clean code to production up to 80% faster.", media: "/PR_review_agent_image.png", isVideo: false, objectFit: "object-cover" },
   { id: "05", title: "Documentation", desc: "Acts as your AI coding partner by simplifying documentation and keeping it up-to-date, so you can focus on writing clean, impactful code.", media: "/documentation-static.png", isVideo: false, objectFit: "object-cover" },
 ];
 
