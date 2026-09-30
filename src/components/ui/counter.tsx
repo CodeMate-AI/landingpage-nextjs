@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
-import { useInView, useMotionValue, useSpring } from "framer-motion";
+'use client';
 
+import { useEffect, useRef } from "react";
+import { useInView } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface CounterProps {
@@ -28,53 +29,90 @@ interface CounterProps {
   delay?: number;
 
   /**
+   * Total duration of the counting animation in milliseconds.
+   */
+  duration?: number;
+
+  /**
    * Additional classes for the counter.
    */
   className?: string;
 }
 
 export const Formatter = {
-  number: (value: number) => Intl.NumberFormat("en-US").format(+value.toFixed(0)),
+  number: (value: number) => Intl.NumberFormat("en-US").format(Math.round(value)),
   currency: (value: number) =>
-    Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(+value.toFixed(0)),
+    Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(Math.round(value)),
 };
+
+// Ease out cubic for silky smooth deceleration
+function easeOutCubic(t: number): number {
+  return 1 - Math.pow(1 - t, 3);
+}
 
 export default function Counter({
   format = Formatter.number,
   targetValue,
   direction = "up",
   delay = 0,
+  duration = 1400,
   className,
 }: CounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isGoingUp = direction === "up";
-  const motionValue = useMotionValue(isGoingUp ? 0 : targetValue);
+  const startValue = isGoingUp ? 0 : targetValue;
+  const endValue = isGoingUp ? targetValue : 0;
 
-  const springValue = useSpring(motionValue, {
-    damping: 60 / 1.5,
-    stiffness: 80 * 1.5,
-  });
   const isInView = useInView(ref, { margin: "0px", once: true });
 
   useEffect(() => {
     if (!isInView) {
+      if (ref.current) {
+        ref.current.textContent = format(startValue);
+      }
       return;
     }
 
-    const timer = setTimeout(() => {
-      motionValue.set(isGoingUp ? targetValue : 0);
+    let rafId: number;
+    let timeoutId: NodeJS.Timeout;
+
+    timeoutId = setTimeout(() => {
+      const startTime = performance.now();
+
+      function update(currentTime: number) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const easedProgress = easeOutCubic(progress);
+        const currentValue = startValue + (endValue - startValue) * easedProgress;
+
+        if (ref.current) {
+          ref.current.textContent = format(currentValue);
+        }
+
+        if (progress < 1) {
+          rafId = requestAnimationFrame(update);
+        } else if (ref.current) {
+          ref.current.textContent = format(endValue);
+        }
+      }
+
+      rafId = requestAnimationFrame(update);
     }, delay);
 
-    return () => clearTimeout(timer);
-  }, [isInView, delay, isGoingUp, targetValue, motionValue]);
-
-  useEffect(() => {
-    springValue.on("change", (value) => {
-      if (ref.current) {
-        ref.current.textContent = format(value) 
+    return () => {
+      clearTimeout(timeoutId);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
       }
-    });
-  }, [springValue, format]);
+    };
+  }, [isInView, startValue, endValue, duration, delay, format]);
 
-  return <span ref={ref} className={cn("text-4xl font-bold text-foreground", className)} />;
+  return (
+    <span
+      ref={ref}
+      className={cn("tabular-nums inline-block font-variant-numeric font-bold text-foreground", className)}
+    >
+      {format(startValue)}
+    </span>
+  );
 }

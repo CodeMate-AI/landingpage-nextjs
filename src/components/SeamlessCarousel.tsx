@@ -31,39 +31,32 @@ const AutoCompleteComponent = [
 
 const slides: CarouselSlide[] = [
     {
-        title: 'Codemaps',
-        media: '/CodeMaps_Static.png',
+        title: 'MCP in Work',
+        media: '/work MCP.png',
         type: 'gif',
         description:
-            'Navigate your entire codebase visually with intelligent code maps that reveal structure, dependencies, and relationships at a glance.',
+            'Connect your workspace to external tools and services with MCP servers, letting CodeMate fetch data and take action across your stack instantly.',
     },
     {
-        title: 'Deepwiki',
-        media: '/DeepWiki_static.png',
+        title: 'Rules in Work',
+        media: '/rulebook work.png',
         type: 'gif',
         description:
-            'Query deep contextual knowledge from your codebase wiki, instantly getting answers about architecture, patterns, and implementation details.',
+            "Define reusable instructions that guide how WORK responds, keeping output consistent with your team's standards every time.",
     },
     {
-        title: 'MCP',
+        title: 'MCP in CORA',
         media: '/MCP-static.png',
         type: 'gif',
         description:
             'Connect and manage external tools and contexts via Model Context Protocol, supercharging your Build agent with seamless integrations.',
     },
     {
-        title: 'Debug',
-        media: '/debug-static.png',
+        title: 'Remote File System',
+        media: '/remote file system.png',
         type: 'gif',
         description:
-            'An AI-Powered Debugger that quickly identifies errors, explains their causes, and suggests precise fixes—making it easier to resolve issues and keep development moving smoothly.',
-    },
-    {
-        title: 'Review',
-        media: '/review-static.png',
-        type: 'gif',
-        description:
-            'An AI-Powered Code Reviewer that scans your code in real time, detects bugs and vulnerabilities, and suggests improvements for readability, performance, and best practices—helping you write cleaner, more reliable code faster.',
+            'Browse, manage, and access files and folders on your remote file system, keeping every project resource organized and within reach.',
     },
     {
         title: 'Auto-Complete',

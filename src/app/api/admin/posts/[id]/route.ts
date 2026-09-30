@@ -1,0 +1,248 @@
+import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
+import { withAuth } from "@/lib/authWrapper";
+import { getDatabase } from "@/lib/mongodb";
+import { BlogPostSchema } from "@/lib/validation";
+import { calculateReadTime, hasActualDraftChanges } from "@/lib/blog-compiler";
+import slugify from "@/utils/slugify";
+import { ObjectId } from "mongodb";
+
+// Fetches a single blog post by its MongoDB ObjectId for the admin editor workspace
+async function getSinglePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  // Validate that the route parameter is a valid 24-character hexadecimal ObjectId
+  if (!ObjectId.isValid(id)) {
+    return NextResponse.json({ error: "Invalid post ID format" }, { status: 400 });
+  }
+
+  const db = await getDatabase();
+  // [MongoDB Collection: "blogs"] Query single blog post document by its ObjectId
+  const post = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
+
+  if (!post) {
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  }
+
+  return NextResponse.json({ post });
+}
+
+// Updates an existing blog post, handling dual draft vs publish versioning
+async function updatePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+    if (!ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Invalid post ID format" }, { status: 400 });
+    }
+
+    // 1. Validate payload fields with Zod
+    const body = await req.json();
+    const parsed = BlogPostSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
+    }
+
+    const db = await getDatabase();
+    // [MongoDB Collection: "blogs"] Find existing post document by ObjectId
+    const existing = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
+    if (!existing) {
+      return NextResponse.json({ error: "Post not found" }, { status: 404 });
+    }
+
+    // 2. Resolve save mode: publish immediately vs save as draft using validated field
+    const saveMode = parsed.data.saveMode || (parsed.data.published ? "publish" : "draft");
+    const published = parsed.data.published;
+    const incomingVersion = parsed.data.version;
+    const forceOverwrite = Boolean(parsed.data.forceOverwrite);
+
+    // Optimistic Concurrency Control: detect conflicting updates from concurrent admin sessions
+    const currentVersion = typeof existing.version === "number" ? existing.version : 1;
+    if (!forceOverwrite && typeof incomingVersion === "number" && existing.version && incomingVersion !== existing.version) {
+      return NextResponse.json(
+        {
+          error: "This article was modified in another session.",
+          currentVersion: existing.version,
+          lastModifiedBy: existing.lastModifiedBy || {
+            email: process.env.ADMIN_EMAIL || "",
+            at: existing.updatedAt || new Date(),
+          },
+        },
+        { status: 409 }
+      );
+    }
+
+    // Generate updated slug from the title automatically
+    const baseSlug = slugify(parsed.data.title || "untitled-article");
+    let finalSlug = baseSlug;
+    let counter = 1;
+
+    // Check if another post already has this slug (excluding current document)
+    while (
+      await db.collection("blogs").findOne({
+        slug: finalSlug,
+        _id: { $ne: new ObjectId(id) },
+      })
+    ) {
+      finalSlug = `${baseSlug}-${counter}`;
+      counter++;
+    }
+
+    // Compute reliable reading duration server-side
+    const rawReadTime = (parsed.data.readTime || "").trim();
+    const readTime = rawReadTime || calculateReadTime(parsed.data.content);
+
+    let publishedVersion = existing.publishedVersion || null;
+    let publishedAt = existing.publishedAt || null;
+
+    // 3. Backfill publishedVersion if article was previously published without an explicit snapshot
+    if (existing.published && !publishedVersion) {
+      publishedVersion = {
+        title: existing.title,
+        subheading: existing.subheading || "",
+        category: existing.category,
+        coverImage: existing.coverImage || "",
+        tags: existing.tags || [],
+        filterLabels: existing.filterLabels || existing.tags?.map((t: any) => t.label.trim().toUpperCase()) || [],
+        content: existing.content,
+        author: existing.author || "",
+        authorRole: existing.authorRole || "",
+        authorImage: existing.authorImage || "",
+        readTime: existing.readTime || "",
+        publishedAtCustom: existing.publishedAtCustom || "",
+        sections: existing.sections || [],
+      };
+    }
+
+    // Deduplicate tags and filter labels
+    const sanitizedTags = Array.from(
+      new Map(parsed.data.tags.map((t) => [t.label.trim().toUpperCase(), { ...t, label: t.label.trim() }])).values()
+    );
+    const sanitizedFilterLabels = parsed.data.filterLabels
+      ? Array.from(new Set(parsed.data.filterLabels.map((l) => l.trim().toUpperCase())))
+      : undefined;
+
+    const finalAuthorRole = parsed.data.authorRole ?? existing.authorRole ?? "";
+    const publishedAtCustom =
+      parsed.data.publishedAtCustom && parsed.data.publishedAtCustom.trim() !== ""
+        ? parsed.data.publishedAtCustom.trim()
+        : existing.publishedAtCustom && existing.publishedAtCustom.trim() !== ""
+        ? existing.publishedAtCustom.trim()
+        : existing.publishedAt
+        ? new Date(existing.publishedAt).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
+        : new Date().toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+
+    // 4. Overwrite publishedVersion snapshot when saving with 'publish' mode
+    if (saveMode === "publish") {
+      publishedVersion = {
+        title: parsed.data.title,
+        subheading: parsed.data.subheading,
+        category: parsed.data.category,
+        coverImage: parsed.data.coverImage,
+        tags: sanitizedTags,
+        filterLabels: sanitizedFilterLabels,
+        content: parsed.data.content,
+        author: parsed.data.author ?? existing.author ?? "",
+        authorRole: finalAuthorRole,
+        authorImage: parsed.data.authorImage || "",
+        readTime,
+        publishedAtCustom,
+        sections: parsed.data.sections,
+      };
+      if (!publishedAt) {
+        publishedAt = new Date();
+      }
+    }
+
+    const nextVersion = currentVersion + 1;
+
+    // 5. Build base update payload with dynamically updated slug and version counter
+    const updatePayload: any = {
+      ...parsed.data,
+      slug: finalSlug,
+      authorRole: finalAuthorRole,
+      publishedAtCustom,
+      tags: sanitizedTags,
+      filterLabels: sanitizedFilterLabels,
+      authorImage: parsed.data.authorImage ?? "",
+      readTime,
+      published,
+      publishedVersion,
+      publishedAt,
+      version: nextVersion,
+      lastModifiedBy: {
+        // Source admin email dynamically from verified session or environment config
+        email: session?.email || process.env.ADMIN_EMAIL || "",
+        at: new Date(),
+      },
+      updatedAt: new Date(),
+    };
+    delete updatePayload.forceOverwrite;
+
+    // Flag draft changes only if a published article is being saved as draft with genuine changes from publishedVersion
+    const hasDraftChanges =
+      saveMode === "publish"
+        ? false
+        : published && publishedVersion
+        ? hasActualDraftChanges(updatePayload, publishedVersion)
+        : false;
+
+    // 6. [MongoDB Collection: "blogs"] Update article document in MongoDB
+    await db.collection("blogs").updateOne(
+      { _id: new ObjectId(id) },
+      { $set: { ...updatePayload, hasDraftChanges } }
+    );
+
+    try {
+      revalidatePath("/blog");
+      revalidatePath("/blog", "layout");
+      revalidatePath("/blog/[slug]", "page");
+      if (existing.slug) {
+        revalidatePath(`/blog/${existing.slug}`);
+      }
+      if (finalSlug && finalSlug !== existing.slug) {
+        revalidatePath(`/blog/${finalSlug}`);
+      }
+    } catch (revErr) {
+      console.warn("Failed to revalidate blog paths on update:", revErr);
+    }
+
+    return NextResponse.json({ success: true, slug: finalSlug, version: nextVersion });
+  } catch (error) {
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+// Deletes a single blog post permanently by its ObjectId
+async function deletePost(req: NextRequest, session: any, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  if (!ObjectId.isValid(id)) {
+    return NextResponse.json({ error: "Invalid ID format" }, { status: 400 });
+  }
+
+  const db = await getDatabase();
+  const postToDelete = await db.collection("blogs").findOne({ _id: new ObjectId(id) });
+  // [MongoDB Collection: "blogs"] Delete blog post document by ObjectId
+  const result = await db.collection("blogs").deleteOne({ _id: new ObjectId(id) });
+
+  if (result.deletedCount === 0) {
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
+  }
+
+  try {
+    revalidatePath("/blog");
+    revalidatePath("/blog", "layout");
+    revalidatePath("/blog/[slug]", "page");
+    if (postToDelete?.slug) {
+      revalidatePath(`/blog/${postToDelete.slug}`);
+    }
+  } catch (revErr) {
+    console.warn("Failed to revalidate blog paths on delete:", revErr);
+  }
+
+  return NextResponse.json({ success: true });
+}
+
+// Export authenticated route handlers
+export const GET = withAuth(getSinglePost);
+export const PUT = withAuth(updatePost);
+export const DELETE = withAuth(deletePost);

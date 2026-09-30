@@ -10,9 +10,10 @@ interface SmartGifProps {
    *  true = play the GIF, false = freeze it. */
   isActive?: boolean
   fallbackSrc?: string
+  disableHoverScale?: boolean
 }
 
-const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: externalActive, fallbackSrc }) => {
+const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: externalActive, fallbackSrc, disableHoverScale }) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const imgRef = useRef<HTMLImageElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -87,7 +88,7 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
   if (!isGif) {
     return (
       <motion.img
-        whileHover={{ scale: 1.05 }}
+        whileHover={disableHoverScale ? undefined : { scale: 1.05 }}
         transition={{ duration: 0.2 }}
         src={currentSrc}
         className={className}
@@ -105,7 +106,7 @@ const SmartGif: React.FC<SmartGifProps> = ({ src, alt, className, isActive: exte
   return (
     <motion.div
       ref={containerRef}
-      whileHover={{ scale: 1.05 }}
+      whileHover={disableHoverScale ? undefined : { scale: 1.05 }}
       transition={{ duration: 0.2 }}
       className="relative w-full h-full cursor-pointer"
       style={{ display: 'grid', placeItems: 'center' }}
