@@ -79,7 +79,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Fallback core blog post slugs if db is empty or failed
   if (blogRoutes.length === 0) {
     const fallbackSlugs = [
-      "cora-sota-swe-bench",
+      "cora-hits-sota-76-on-swe-bench-verified",
       "codemate-vs-github-copilot",
       "codemate-vs-claude-code",
       "hidden-dangers-of-autonomous-ai",

@@ -302,7 +302,7 @@ function Page() {
 
   // Top announcement banner
   const [showAnnouncement, setShowAnnouncement] = useState(true);
-  const SWE_BENCH_BLOG_URL = '/blog/cora-sota-swe-bench';
+  const SWE_BENCH_BLOG_URL = '/blog/cora-hits-sota-76-on-swe-bench-verified';
   const announcementRef = useRef<HTMLDivElement>(null);
   // ==========================================
   // 1F. EVENT HANDLERS
@@ -480,7 +480,7 @@ function Page() {
                 className="w-full flex justify-start mt-4 sm:mt-6 z-[100]"
               >
                 <a
-                  href="/blog/cora-sota-swe-bench"
+                  href={SWE_BENCH_BLOG_URL}
                   aria-label="Read announcement: Cora is now State-of-the-Art"
                   className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group"
                 >

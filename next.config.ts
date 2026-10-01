@@ -58,6 +58,16 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  async redirects() {
+    return [
+      {
+        source: "/blog/cora-sota-swe-bench",
+        destination: "/blog/cora-hits-sota-76-on-swe-bench-verified",
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withNextVideo(nextConfig, { folder: "video" });
