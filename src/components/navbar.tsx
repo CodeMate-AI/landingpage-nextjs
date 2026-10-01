@@ -66,7 +66,7 @@ export default function Navbar() {
     setIsNBack(latest >= 10);
   });
 
-  const SWE_BENCH_BLOG_URL = '/blog/cora-sota-swe-bench';
+  const SWE_BENCH_BLOG_URL = '/blog/cora-hits-sota-76-on-swe-bench-verified';
 
   // Track announcement banner height for responsive navbar offset
   useEffect(() => {
