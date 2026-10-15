@@ -31,7 +31,7 @@ export default function EnterpriseArchitectureSection() {
           src={ENTERPRISE_ARCHITECTURE_DATA.backgroundImage}
           alt=""
           aria-hidden="true"
-          className="w-full max-w-[1250px] sm:max-w-[1450px] lg:max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[55%] pointer-events-none select-none"
+          className="w-full max-w-[1250px] sm:max-w-[1450px] lg:max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[51%] pointer-events-none select-none"
         />
       </div>
 
