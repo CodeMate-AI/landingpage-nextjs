@@ -18,7 +18,7 @@ import SmartGif from '@/components/ui/SmartGif';
 import Achivements from '@/components/achivements';
 import MediaPresence from '@/components/media-presence';
 import EventOffer from './pricing/components/EventOffer';
-import { cn } from './utils/cn';
+import ToolboxSection from '@/components/landing/ToolboxSection';
 import Navbar from '@/components/navbar';
 
 const montserrat = Montserrat({
@@ -525,6 +525,11 @@ function Page() {
         </BackgroundGradientAnimation>
       </div>
 
+      {/* ========================================================================= */}
+      {/* 1:TOOLBOX. YOUR ENTIRE SDLC                                    */}
+      {/* ========================================================================= */}
+      <ToolboxSection />
+
       {/* enter section */}
       {/* <div
    ref={exploreRef} 
@@ -547,6 +552,8 @@ function Page() {
 
       {/* scrolling bento */}
 
+      {/* OLD SECTIONS COMMENTED OUT AS PER FIGMA REDESIGN */}
+      {/*
       <EventOffer
         isOpen={showEventPopup}
         onClose={() => setShowEventPopup(false)}
@@ -558,15 +565,9 @@ function Page() {
 
       <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-4 lg:mt-0'>
         <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg md:text-2xl lg:text-lg'>Introducing CodeMate AI</h1>
-
-        {/* ========================================== */}
-        {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
-        {/* Features a sticky video player on the left and a scrollable list of products on the right */}
-        {/* ========================================== */}
         <div className="mt-3 leading-tight text-[10vw] sm:text-[8vw]   lg:text-6xl  font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent  pt-2 pb-4 lg:pb-2 w-full text-center px-4 lg:px-0 ">Your<span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent  lg:text-7xl'> Full-Stack</span> AI Engineer</div>
 
         <div className="relative z-20 w-full flex flex-col lg:flex-row items-start">
-          {/* Left: Sticky video panel - desktop only */}
           <div className='hidden lg:flex sticky top-0 h-screen flex-1 items-center justify-center px-8'>
             <div className="flex flex-col gap-2 w-full max-w-[58vw]">
               <motion.div
@@ -582,9 +583,7 @@ function Page() {
             </div>
           </div>
 
-          {/* Right: Product cards - pushed to far right */}
           <div className="flex flex-col items-center w-full lg:w-[32vw] lg:mr-6 lg:py-8 lg:gap-2 pb-8">
-            {/* Mobile-only video */}
             <div className='lg:hidden w-full px-4 mb-8 mt-2 flex flex-col items-center'>
               <div className='aspect-video w-full max-w-none md:w-[95%] md:max-w-[880px] md:mx-auto lg:w-full lg:max-w-none rounded-xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.5)]'>
                 <VideoEmbed />
@@ -632,7 +631,6 @@ function Page() {
               </motion.div>
             ))}
 
-            {/* PR Review Agent - special (has icons) */}
             <motion.div
               initial={{ opacity: 0.3, scale: 0.9, filter: 'blur(4px)' }}
               whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
@@ -672,14 +670,14 @@ function Page() {
               </a>
             </motion.div>
           </div>
-
         </div>
       </div>
+      */}
       {/* scrolling bento */}
 
       <div>
         {/* horizontal scroll section: What You'll Unlock */}
-        <div id="features" ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 -mt-[15vh]'>
+        <div id="features" ref={productShowRef} className='relative z-10 h-[430vh] w-full bg-zinc-950 mt-0'>
 
           <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center pt-[8vh] lg:pt-0">
             {/* Horizontal Scrolling Content */}
