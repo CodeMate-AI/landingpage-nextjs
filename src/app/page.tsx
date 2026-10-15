@@ -956,13 +956,14 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       {/* bento   */}
 
       {/* ========================================== */}
-      {/* UI SECTION: ACHIEVEMENTS & STATISTICS    */}
+      {/* UI SECTION: ACHIEVEMENTS & STATISTICS (COMMENTED OUT) */}
       {/* ========================================== */}
-      <Achivements />
+      {/* <Achivements /> */}
+
       {/* ========================================== */}
-      {/* UI SECTION: MEDIA PRESENCE (AS SEEN ON)  */}
+      {/* UI SECTION: MEDIA PRESENCE (AS SEEN ON) (COMMENTED OUT) */}
       {/* ========================================== */}
-      <MediaPresence />
+      {/* <MediaPresence /> */}
 
       {/* ========================================== */}
       {/* UI SECTION: LOGO BANNER                   */}
