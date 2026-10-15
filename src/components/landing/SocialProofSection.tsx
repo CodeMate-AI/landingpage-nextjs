@@ -17,12 +17,12 @@ export default function SocialProofSection() {
   return (
     <section
       aria-label="Social Proof and Enterprise Trust"
-      className={`${montserrat.className} relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center overflow-hidden py-16 px-4 sm:py-20 sm:px-8 lg:py-[90px] lg:px-[90px]`}
+      className={`${montserrat.className} relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center overflow-hidden py-16 sm:py-20 lg:py-[90px]`}
     >
-      <div className="w-full max-w-[1740px] flex flex-col items-center gap-10 sm:gap-12 lg:gap-[40px]">
-        {/* ========================================================================= */}
-        {/* Frame 34: Top Header and Statistics Metrics Row                           */}
-        {/* ========================================================================= */}
+      {/* ========================================================================= */}
+      {/* Frame 34: Top Header and Statistics Metrics Row (Grid Padded)             */}
+      {/* ========================================================================= */}
+      <div className="w-full max-w-[1740px] px-4 sm:px-8 lg:px-[90px] flex flex-col items-center">
         <div className="w-full flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 lg:gap-10 pb-2">
           {/* Frame 14: Left Block (Heading 1 + Subtitle) */}
           <div className="flex flex-col items-start gap-3 max-w-[620px]">
@@ -86,25 +86,22 @@ export default function SocialProofSection() {
             ))}
           </div>
         </div>
+      </div>
 
-        {/* ========================================================================= */}
-        {/* Container: Flowing Partner Logos Marquee (Previous Landing Page Design)   */}
-        {/* ========================================================================= */}
-        <div className="relative w-full overflow-hidden flex justify-center items-center">
-          <div className="absolute -left-10 top-0 bg-[#0C0C0E] h-full w-[10%] blur-2xl z-20 pointer-events-none" />
-          <div className="absolute -right-10 top-0 bg-[#0C0C0E] h-full w-[10%] blur-2xl z-20 pointer-events-none" />
-
-          <Marquee pauseOnHover className="[--duration:20s] flex justify-center items-center mt-5">
-            {SOCIAL_PROOF_DATA.partners.map((partner) => (
-              <img
-                key={partner.id}
-                src={partner.logo}
-                alt={partner.name}
-                className={partner.className}
-              />
-            ))}
-          </Marquee>
-        </div>
+      {/* ========================================================================= */}
+      {/* Container: Flowing Partner Logos Marquee (Full Bleed Edge to Edge)        */}
+      {/* ========================================================================= */}
+      <div className="relative w-full overflow-hidden flex justify-center items-center mt-6 sm:mt-8 lg:mt-10 [mask-image:linear-gradient(to_right,transparent_0%,black_3%,black_97%,transparent_100%)]">
+        <Marquee pauseOnHover className="[--duration:20s] flex justify-center items-center">
+          {SOCIAL_PROOF_DATA.partners.map((partner) => (
+            <img
+              key={partner.id}
+              src={partner.logo}
+              alt={partner.name}
+              className={partner.className}
+            />
+          ))}
+        </Marquee>
       </div>
     </section>
   );

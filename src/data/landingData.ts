@@ -474,49 +474,166 @@ export const SOCIAL_PROOF_DATA: SocialProofSectionData = {
       id: 'dell',
       name: 'Dell',
       logo: 'dell.svg',
-      className: 'object-fit size-[30vw] lg:size-[12vw] opacity-100 brightness-150 lg:mt-0',
+      className: 'object-contain size-[30vw] lg:size-[12vw] opacity-100 brightness-150 lg:mt-0 shrink-0',
     },
     {
       id: 'qual',
       name: 'Qualcomm',
       logo: 'qual.svg',
-      className: 'object-fit w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9',
+      className: 'object-contain w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9 shrink-0',
     },
     {
       id: 'paytm',
-      name: 'Paytm',
+      name: 'PayPal',
       logo: 'paytm.svg',
-      className: 'object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150',
+      className: 'object-contain w-[40vw] lg:w-[18vw] opacity-100 brightness-150 shrink-0',
     },
     {
       id: 'amazon',
       name: 'Amazon',
       logo: 'amazon.svg',
-      className: 'object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10',
+      className: 'object-contain w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10 shrink-0',
     },
     {
       id: 'fampay',
       name: 'FamPay',
       logo: 'fampay.svg',
-      className: 'object-fit w-[45vw] lg:w-[20vw] opacity-100 brightness-150',
+      className: 'object-contain w-[45vw] lg:w-[20vw] opacity-100 brightness-150 shrink-0',
     },
     {
       id: 'inno',
       name: 'Innovaccer',
       logo: 'inno.svg',
-      className: 'object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150',
+      className: 'object-contain w-[50vw] lg:w-[20vw] opacity-100 brightness-150 shrink-0',
     },
     {
       id: 'maruti',
       name: 'Maruti Suzuki',
       logo: 'maruti-suzuki.svg',
-      className: 'object-fit w-[64vw] lg:w-[26vw] opacity-100 brightness-150',
+      className: 'object-contain w-[64vw] lg:w-[26vw] opacity-100 brightness-150 shrink-0',
     },
     {
       id: 'atl',
       name: 'Atlassian',
       logo: 'atl.svg',
-      className: 'object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150',
+      className: 'object-contain w-[50vw] lg:w-[20vw] opacity-100 brightness-150 shrink-0',
     },
   ],
 };
+
+export interface EnterpriseArchitectureItem {
+  id: string;
+  title: string;
+  subtitle: string;
+}
+
+export interface EnterpriseArchitectureGroup {
+  id: string;
+  category: string;
+  columns: number;
+  items: EnterpriseArchitectureItem[];
+}
+
+export interface EnterpriseArchitectureSectionData {
+  titlePrefix: string;
+  titleAccent: string;
+  titleHighlight: string;
+  backgroundImage: string;
+  groups: EnterpriseArchitectureGroup[];
+}
+
+export const ENTERPRISE_ARCHITECTURE_DATA: EnterpriseArchitectureSectionData = {
+  titlePrefix: 'From Legacy Systems to Next-Gen Apps',
+  titleAccent: 'CodeMate AI Accelerates',
+  titleHighlight: 'Your Enterprise Journey.',
+  backgroundImage: '/figma/img_11_image_5.png',
+  groups: [
+    {
+      id: 'group-orchestration',
+      category: 'Enterprise-Ready AI Orchestration',
+      columns: 4,
+      items: [
+        {
+          id: 'agent-orchestration',
+          title: 'Agent Orchestration',
+          subtitle: 'Coordinate AI agents across workflows',
+        },
+        {
+          id: 'human-in-the-loop',
+          title: 'Human-in-the-loop',
+          subtitle: 'Human oversight and approvals',
+        },
+        {
+          id: 'enterprise-integrations',
+          title: 'Enterprise Integrations',
+          subtitle: 'Connect tools and existing systems',
+        },
+        {
+          id: 'shared-context',
+          title: 'Shared Context & Knowledge',
+          subtitle: 'Leverage organizational context',
+        },
+      ],
+    },
+    {
+      id: 'group-toolbox',
+      category: 'One Toolbox. Your Entire SDLC.',
+      columns: 6,
+      items: [
+        {
+          id: 'codemate-work',
+          title: 'CodeMate Work',
+          subtitle: 'AI-powered development workspace',
+        },
+        {
+          id: 'codemate-build',
+          title: 'CodeMate Build',
+          subtitle: 'Design and prototype applications',
+        },
+        {
+          id: 'codemate-cora',
+          title: 'CodeMate CORA',
+          subtitle: 'Autonomous coding agent',
+        },
+        {
+          id: 'pr-review-agent',
+          title: 'PR Review Agent',
+          subtitle: 'Automated code review and quality checks',
+        },
+        {
+          id: 'cora-cli',
+          title: 'CORA-CLI',
+          subtitle: 'AI-powered development in your terminal',
+        },
+        {
+          id: 'codemate-academy',
+          title: 'CodeMate Academy',
+          subtitle: 'Master modern AI development with interactive labs',
+        },
+      ],
+    },
+    {
+      id: 'group-infrastructure',
+      category: 'Your Models. Your Infrastructure. Your Control.',
+      columns: 3,
+      items: [
+        {
+          id: 'on-premise',
+          title: 'On-Premise',
+          subtitle: 'Deploy within your own environment',
+        },
+        {
+          id: 'hybrid',
+          title: 'Hybrid',
+          subtitle: 'Run workloads across private and public cloud environments.',
+        },
+        {
+          id: 'cloud',
+          title: 'Cloud',
+          subtitle: 'Flexible, scalable deployment',
+        },
+      ],
+    },
+  ],
+};
+
