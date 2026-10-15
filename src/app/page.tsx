@@ -22,6 +22,7 @@ import ToolboxSection from '@/components/landing/ToolboxSection';
 import ProductTabsSection from '@/components/landing/ProductTabsSection';
 import SocialProofSection from '@/components/landing/SocialProofSection';
 import EnterpriseArchitectureSection from '@/components/landing/EnterpriseArchitectureSection';
+import WatchActionSection from '@/components/landing/WatchActionSection';
 import Navbar from '@/components/navbar';
 
 const montserrat = Montserrat({
@@ -547,6 +548,11 @@ function Page() {
       {/* 4:ENTERPRISE ARCHITECTURE & JOURNEY                                       */}
       {/* ========================================================================= */}
       <EnterpriseArchitectureSection />
+
+      {/* ========================================================================= */}
+      {/* 5:WATCH CODEMATE IN ACTION                                                */}
+      {/* ========================================================================= */}
+      <WatchActionSection />
 
       {/* enter section */}
       {/* <div

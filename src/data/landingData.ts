@@ -637,3 +637,18 @@ export const ENTERPRISE_ARCHITECTURE_DATA: EnterpriseArchitectureSectionData = {
   ],
 };
 
+export interface WatchActionSectionData {
+  title: string;
+  description: string;
+  buttonText: string;
+  youtubeVideoId: string;
+}
+
+export const WATCH_ACTION_DATA: WatchActionSectionData = {
+  title: 'Watch CodeMate in Action',
+  description:
+    'From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.',
+  buttonText: 'Watch Video',
+  youtubeVideoId: 'ux5jJgNkslE',
+};
+
