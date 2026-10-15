@@ -20,6 +20,7 @@ import MediaPresence from '@/components/media-presence';
 import EventOffer from './pricing/components/EventOffer';
 import ToolboxSection from '@/components/landing/ToolboxSection';
 import ProductTabsSection from '@/components/landing/ProductTabsSection';
+import SocialProofSection from '@/components/landing/SocialProofSection';
 import Navbar from '@/components/navbar';
 
 const montserrat = Montserrat({
@@ -536,6 +537,11 @@ function Page() {
       {/* ========================================================================= */}
       <ProductTabsSection />
 
+      {/* ========================================================================= */}
+      {/* 3:SOCIAL PROOF & METRICS                                                  */}
+      {/* ========================================================================= */}
+      <SocialProofSection />
+
       {/* enter section */}
       {/* <div
    ref={exploreRef} 
@@ -915,76 +921,7 @@ Codemate’s full-stack nature bridges the gap between developers and non-develo
       </div>
       {/* enterprises section */}
 
-      {/* trusted by section */}
-      <div className="lg:pb-16 pb-8 w-full bg-zinc-950 text-white z-50">
-        <div className='pt-[2rem] lg:pt-[4rem]'>
-          <div className="px-8 lg:px-16 ">
-            <h1 className=' text-3xl md:text-5xl lg:text-7xl font-bold pb-1 leading-[1.1] bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent text-center lg:text-start'><span className="bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent text-center">Trusted </span> by <span className="tabular-nums inline-flex items-baseline"><Counter
-              className='text-3xl md:text-5xl lg:text-7xl bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent tabular-nums'
-              direction="up"
-              targetValue={100000} />+</span></h1>
-            <p className=' mt-2 text-sm md:text-xl lg:text-2xl opacity-60 text-center lg:text-start'><span className=''>Developers across the globe and </span> from startups to Fortune 500 companies</p>
-          </div>
 
-          <div className='flex flex-col w-full lg:flex-row gap-10 justify-center items-center lg:gap-32 mt-10 lg:mt-16 pt-10'>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
-              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
-                direction="up"
-                targetValue={55} />%</h2>
-              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Faster coding</p>
-            </div>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
-
-              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
-                direction="up"
-                targetValue={39} />%</h2>
-              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Improvement in code quality</p>
-            </div>
-            <div className=' w-full lg:w-[50vw] xl:size-[13rem] flex flex-col items-center'>
-
-              <h2 className="text-6xl md:text-7xl lg:text-8xl text-center w-full font-semibold opacity-70 tabular-nums flex items-center justify-center"><Counter
-                className='text-6xl md:text-7xl lg:text-8xl tabular-nums'
-                direction="up"
-                targetValue={68} />%</h2>
-              <p className='text-sm md:text-xl lg:text-xl opacity-70 mt-3 text-center'>Had a positive experience</p>
-            </div>
-          </div>
-
-          <div className='relative flex justify-center items-center overflow-hidden'>
-
-            <div className="absolute -left-10 top-0 bg-zinc-950 h-full w-[10%] blur-2xl z-50" />
-            <div className="absolute -right-10 top-0 bg-zinc-950 h-full w-[10%] blur-2xl z-50" />
-
-            <Marquee pauseOnHover className="[--duration:20s] flex justify-center items-center mt-5">
-              <img src='dell.svg' className='object-fit  size-[30vw] lg:size-[12vw] opacity-100 brightness-150 lg:mt-0' />
-              <img src='qual.svg' className='object-fit w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9' />
-              <img src='paytm.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150' />
-              <img src='amazon.svg' className='object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10' />
-              <img src='fampay.svg' className='object-fit w-[45vw] lg:w-[20vw] opacity-100 brightness-150' />
-              <img src='inno.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
-              <img src='maruti-suzuki.svg' className='object-fit w-[64vw] lg:w-[26vw] opacity-100 brightness-150' alt="Maruti Suzuki" />
-              <img src='atl.svg' className='object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150' />
-            </Marquee>
-          </div>
-
-          {/* <div className='flex flex-col justify-center items-center w-full'>
-      <div className='flex lg:gap-10 justify-center items-center mt-4'>
-       <img src='paytm.svg' className='object-fit w-[30vw] lg:w-[25vw]'/>
-       <img src='amazon.svg' className='object-fit w-[30vw] lg:w-[25vw]'/>
-       <img src='fampay.svg' className='object-fit w-[30vw] lg:w-[25vw]'/>
-      </div>
-      <div className='flex gap-4'>
-        <img src='inno.svg' className='object-fit w-[35vw] lg:w-[25vw]]'/>
-        <img src='atl.svg' className='object-fit w-[35vw] lg:w-[25vw]'/>
-      </div>
-     </div> */}
-
-        </div>
-
-      </div>
-      {/* trusted by section */}
 
       {/* bento */}
       {/* <div className=' relative h-[170vh] w-full bg-zinc-950 text-white overflow-hidden'>

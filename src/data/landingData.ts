@@ -416,3 +416,107 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
     },
   ],
 };
+
+export interface SocialProofMetric {
+  id: string;
+  value: number;
+  suffix: string;
+  label: string;
+}
+
+export interface PartnerLogoItem {
+  id: string;
+  name: string;
+  logo: string;
+  className?: string;
+}
+
+export interface SocialProofSectionData {
+  titleHighlight: string;
+  titlePrefix: string;
+  userCountValue: number;
+  userCountSuffix: string;
+  titleSuffix?: string;
+  subtitle: string;
+  metrics: SocialProofMetric[];
+  partners: PartnerLogoItem[];
+}
+
+export const SOCIAL_PROOF_DATA: SocialProofSectionData = {
+  titleHighlight: 'Trusted',
+  titlePrefix: 'by',
+  userCountValue: 100000,
+  userCountSuffix: '+',
+  titleSuffix: 'by 100,000+',
+  subtitle: 'Developers across the globe and from startups to Fortune 500 companies',
+  metrics: [
+    {
+      id: 'stat-coding',
+      value: 55,
+      suffix: '%',
+      label: 'Faster coding',
+    },
+    {
+      id: 'stat-quality',
+      value: 39,
+      suffix: '%',
+      label: 'Improvement in code quality',
+    },
+    {
+      id: 'stat-experience',
+      value: 68,
+      suffix: '%',
+      label: 'Had a positive experience',
+    },
+  ],
+  partners: [
+    {
+      id: 'dell',
+      name: 'Dell',
+      logo: 'dell.svg',
+      className: 'object-fit size-[30vw] lg:size-[12vw] opacity-100 brightness-150 lg:mt-0',
+    },
+    {
+      id: 'qual',
+      name: 'Qualcomm',
+      logo: 'qual.svg',
+      className: 'object-fit w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9',
+    },
+    {
+      id: 'paytm',
+      name: 'Paytm',
+      logo: 'paytm.svg',
+      className: 'object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150',
+    },
+    {
+      id: 'amazon',
+      name: 'Amazon',
+      logo: 'amazon.svg',
+      className: 'object-fit w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10',
+    },
+    {
+      id: 'fampay',
+      name: 'FamPay',
+      logo: 'fampay.svg',
+      className: 'object-fit w-[45vw] lg:w-[20vw] opacity-100 brightness-150',
+    },
+    {
+      id: 'inno',
+      name: 'Innovaccer',
+      logo: 'inno.svg',
+      className: 'object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150',
+    },
+    {
+      id: 'maruti',
+      name: 'Maruti Suzuki',
+      logo: 'maruti-suzuki.svg',
+      className: 'object-fit w-[64vw] lg:w-[26vw] opacity-100 brightness-150',
+    },
+    {
+      id: 'atl',
+      name: 'Atlassian',
+      logo: 'atl.svg',
+      className: 'object-fit w-[50vw] lg:w-[20vw] opacity-100 brightness-150',
+    },
+  ],
+};
