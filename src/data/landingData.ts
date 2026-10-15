@@ -348,23 +348,37 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
       cards: [
         {
           id: 'academy-1',
-          title: 'Interactive AI Labs',
+          title: 'Coding Playground',
           description:
-            'Real-time automated grading, intelligent code suggestions, and guided problem solving for students.',
+            'Interactive notebook and editor support hands-on coding, debugging, and experimentation.',
           image: '/Codemate Education Static.png',
         },
         {
           id: 'academy-2',
-          title: 'University & Enterprise MoUs',
+          title: 'CodeMate Chatbot',
           description:
-            'Partnered with leading institutions like GLA University to bridge academic training with industry-ready AI development.',
-          image: '/GLA_MOU.jpg',
+            'Built-in AI assistant helps students solve coding issues and learn faster.',
+          image: '/Codemate Education Static.png',
         },
         {
           id: 'academy-3',
-          title: 'Comprehensive Curriculums',
+          title: 'Offline Learning Support',
           description:
-            'From software engineering fundamentals to advanced LLM-powered autonomous agent architectures.',
+            'Resource syncing and local storage keep learning usable without internet.',
+          image: '/Codemate Education Static.png',
+        },
+        {
+          id: 'academy-4',
+          title: 'Structured Courses',
+          description:
+            'Guided modules organize topics, resources, and progress into clear learning paths.',
+          image: '/Codemate Education Static.png',
+        },
+        {
+          id: 'academy-5',
+          title: 'Certification Tracking',
+          description:
+            'Certificate eligibility, claims, and previews recognize course completion and achievements.',
           image: '/Codemate Education Static.png',
         },
       ],
