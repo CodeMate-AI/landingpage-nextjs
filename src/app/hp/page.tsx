@@ -14,6 +14,7 @@ const demos = [
     title: "AI WebApp Builder | Build Production Ready Application Instantly",
     description:
       "In this demo, we will explore how CodeMate Build turns a simple prompt into a fully functional application.",
+    thumbnail: "/hp/thumbnail-build.png",
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const demos = [
     title: "Autonomous Coding Agent | Deep Codebase Reasoning & Auto Mode",
     description:
       "In this demo, we will explore CORA’s Auto Mode, designed to automate entire development workflows from planning to execution.",
+    thumbnail: "/hp/thumbnail-cora.png",
   },
   {
     id: 3,
@@ -30,8 +32,10 @@ const demos = [
     title: "Research Agent | Local On-Device AI Intelligence & Assistance",
     description:
       "In this demo, we explore how the c0 web app combines knowledge base and rulebooks to generate more accurate and structured outputs.",
+    thumbnail: "/hp/thumbnail-c0.png",
   },
 ] as const;
+
 
 const resources = [
   {
@@ -448,7 +452,7 @@ export default function Home() {
               >
                 <div className="relative w-full aspect-video bg-black overflow-hidden pointer-events-none">
                   <Image
-                    src={`https://img.youtube.com/vi/${demo.videoId}/hqdefault.jpg`}
+                    src={demo.thumbnail}
                     alt={demo.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
