@@ -50,36 +50,68 @@ export default function ToolboxSection() {
   return (
     <section className="relative w-full bg-[#0C0C0E] px-4 py-16 sm:px-8 lg:px-[90px] lg:py-[120px] overflow-hidden">
       <div className="mx-auto flex max-w-[1740px] flex-col items-center gap-8 lg:gap-[48px]">
-        {/* Section Header: Left-aligned strictly as in Figma Frame 1 */}
-        <div className="flex w-full flex-col items-start text-left">
-          <motion.span
-            initial={{ opacity: 0, y: 8 }}
-            whileInView={{ opacity: 0.75, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.4 }}
-            className="font-sans text-[16px] sm:text-[18px] font-normal leading-[18px] tracking-normal text-white"
-            style={{ opacity: 0.75 }}
-          >
-            {TOOLBOX_DATA.overline}
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.4 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[60px] lg:leading-[60px] text-left"
-            style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
-          >
-            <span className="bg-gradient-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
-              {TOOLBOX_DATA.titlePrefix}
-            </span>
-            <span className="bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
-              {TOOLBOX_DATA.titleHighlight}
-            </span>
-            <span className="bg-gradient-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
-              {TOOLBOX_DATA.titleSuffix}
-            </span>
-          </motion.h2>
+        {/* Section Header: Left-aligned with Right-aligned Navigation Controls */}
+        <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 sm:gap-8 pb-2">
+          <div className="flex flex-col items-start text-left max-w-[956px]">
+            <motion.span
+              initial={{ opacity: 0, y: 8 }}
+              whileInView={{ opacity: 0.75, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.4 }}
+              className="font-sans text-[16px] sm:text-[18px] font-normal leading-[18px] tracking-normal text-white"
+              style={{ opacity: 0.75 }}
+            >
+              {TOOLBOX_DATA.overline}
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.4 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[60px] lg:leading-[60px] text-left"
+              style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
+            >
+              <span className="bg-gradient-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
+                {TOOLBOX_DATA.titlePrefix}
+              </span>
+              <span className="bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+                {TOOLBOX_DATA.titleHighlight}
+              </span>
+              <span className="bg-gradient-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
+                {TOOLBOX_DATA.titleSuffix}
+              </span>
+            </motion.h2>
+          </div>
+
+          {/* Slider Navigation Arrow Buttons: Matching Phase 2 Design */}
+          <div className="flex items-center gap-2 pt-2 self-end sm:self-auto">
+            <button
+              type="button"
+              onClick={() => handleScroll('left')}
+              disabled={!canScrollLeft}
+              aria-label="Slide cards left"
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
+                canScrollLeft
+                  ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
+                  : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
+              }`}
+            >
+              <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => handleScroll('right')}
+              disabled={!canScrollRight}
+              aria-label="Slide cards right"
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
+                canScrollRight
+                  ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
+                  : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
+              }`}
+            >
+              <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+          </div>
         </div>
 
         {/* 6 Product Cards Row: Native scrollbar disabled, navigated via left/right slider or touch swipe */}
@@ -210,40 +242,7 @@ export default function ToolboxSection() {
           })}
         </div>
 
-        {/* Navigation Slider Pill: Just under the cards, on the right-hand side */}
-        <div className="flex w-full justify-end pr-1 sm:pr-2 -mt-2 lg:-mt-4">
-          <div className="relative flex h-[44px] w-[92px] items-center rounded-full bg-[#F5F5F7] p-1 shadow-sm border border-black/5">
-            {/* Left Button: Covers 50% width and 100% height */}
-            <button
-              type="button"
-              onClick={() => handleScroll('left')}
-              disabled={!canScrollLeft}
-              aria-label="Slide cards left"
-              className={`group relative flex h-full w-1/2 items-center justify-center rounded-full transition-all duration-200 ${
-                canScrollLeft
-                  ? 'cursor-pointer hover:bg-[#E5E5EA] active:scale-90 text-zinc-900'
-                  : 'cursor-not-allowed opacity-25 text-zinc-400'
-              }`}
-            >
-              <ChevronLeft size={18} strokeWidth={2.2} className="transition-transform group-active:scale-90" />
-            </button>
 
-            {/* Right Button: Covers 50% width and 100% height */}
-            <button
-              type="button"
-              onClick={() => handleScroll('right')}
-              disabled={!canScrollRight}
-              aria-label="Slide cards right"
-              className={`group relative flex h-full w-1/2 items-center justify-center rounded-full transition-all duration-200 ${
-                canScrollRight
-                  ? 'cursor-pointer hover:bg-[#E5E5EA] active:scale-90 text-zinc-900'
-                  : 'cursor-not-allowed opacity-25 text-zinc-400'
-              }`}
-            >
-              <ChevronRight size={18} strokeWidth={2.2} className="transition-transform group-active:scale-90" />
-            </button>
-          </div>
-        </div>
 
         {/* Bottom CTA Button: Centered just below the navigation pill */}
         <motion.div
