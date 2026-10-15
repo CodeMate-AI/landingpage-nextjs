@@ -19,6 +19,7 @@ import Achivements from '@/components/achivements';
 import MediaPresence from '@/components/media-presence';
 import EventOffer from './pricing/components/EventOffer';
 import ToolboxSection from '@/components/landing/ToolboxSection';
+import ProductTabsSection from '@/components/landing/ProductTabsSection';
 import Navbar from '@/components/navbar';
 
 const montserrat = Montserrat({
@@ -526,9 +527,14 @@ function Page() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 1:TOOLBOX. YOUR ENTIRE SDLC                                    */}
+      {/* 1:TOOLBOX. YOUR ENTIRE SDLC                                               */}
       {/* ========================================================================= */}
       <ToolboxSection />
+
+      {/* ========================================================================= */}
+      {/* 2:PRODUCT TABS SHOWCASE                                                   */}
+      {/* ========================================================================= */}
+      <ProductTabsSection />
 
       {/* enter section */}
       {/* <div
