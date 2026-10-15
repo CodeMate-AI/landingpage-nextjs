@@ -20,11 +20,11 @@ export default function SocialProofSection() {
       className={`${montserrat.className} relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center overflow-hidden py-16 sm:py-20 lg:py-[90px]`}
     >
       {/* ========================================================================= */}
-      {/* Frame 34: Top Header and Statistics Metrics Row (Grid Padded)             */}
+      {/* Top Header and Statistics Metrics Row                                     */}
       {/* ========================================================================= */}
       <div className="w-full max-w-[1740px] px-4 sm:px-8 lg:px-[90px] flex flex-col items-center">
         <div className="w-full flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 lg:gap-10 pb-2">
-          {/* Frame 14: Left Block (Heading 1 + Subtitle) */}
+          {/* Left Block (Heading + Subtitle) */}
           <div className="flex flex-col items-start gap-3 max-w-[620px]">
             <motion.div
               initial={{ opacity: 0, y: 12 }}
@@ -57,10 +57,10 @@ export default function SocialProofSection() {
             </motion.p>
           </div>
 
-          {/* Vector 7: Vertical Divider Line between header and metrics */}
+          {/* Vertical Divider Line between header and metrics */}
           <div className="hidden xl:block w-[1px] h-[104px] bg-white/20 shrink-0" />
 
-          {/* Frame 20: Right Block (3 Statistics Metrics) */}
+          {/* Right Block (Statistics Metrics) */}
           <div className="w-full xl:w-auto flex flex-row flex-wrap sm:flex-nowrap justify-between sm:justify-start items-start gap-6 sm:gap-10 lg:gap-[64px]">
             {SOCIAL_PROOF_DATA.metrics.map((metric, idx) => (
               <motion.div

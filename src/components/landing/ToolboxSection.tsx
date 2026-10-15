@@ -83,7 +83,7 @@ export default function ToolboxSection() {
             </motion.h2>
           </div>
 
-          {/* Slider Navigation Arrow Buttons: Matching Phase 2 Design */}
+          {/* Slider Navigation Controls */}
           <div className="flex items-center gap-2 pt-2 self-end sm:self-auto">
             <button
               type="button"
@@ -147,9 +147,9 @@ export default function ToolboxSection() {
                     : 'border-white/5 shadow-none'
                 }`}
               >
-                {/* Frame 6: Top Info (Header and Expandable Description) */}
+                {/* Product Information (Header and Expandable Description) */}
                 <div className="flex flex-col gap-2 z-20 pr-4">
-                  {/* Frame 32: Logo + Title */}
+                  {/* Product Logo and Title */}
                   <div className="flex items-center gap-[8px] min-h-[28px]">
                     <div className="flex size-[28px] shrink-0 items-center justify-center">
                       <Image
@@ -203,7 +203,7 @@ export default function ToolboxSection() {
                   </motion.div>
                 </div>
 
-                {/* Frame 11: Integration Logos (Strictly exclusive to PR Review Agent, revealed at bottom when hovered) */}
+                {/* Integration Logos (Exclusive to PR Review Agent, revealed on hover) */}
                 {isPRReview && (
                   <motion.div
                     initial={false}

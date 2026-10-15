@@ -58,7 +58,7 @@ export default function EnterpriseArchitectureSection() {
       </motion.div>
 
       {/* ========================================================================= */}
-      {/* Frame 50: Three Architecture Glassmorphism Rows                           */}
+      {/* Architecture Glassmorphism Rows                                           */}
       {/* ========================================================================= */}
       <div className="w-full max-w-[1740px] flex flex-col gap-6 sm:gap-7 lg:gap-[24px] z-10">
         {ENTERPRISE_ARCHITECTURE_DATA.groups.map((group, groupIdx) => (
@@ -77,7 +77,7 @@ export default function EnterpriseArchitectureSection() {
               {group.category}
             </h3>
 
-            {/* Frame 30: Glassmorphic Row / Card Strip */}
+            {/* Glassmorphic Row Container */}
             <div className="w-full border-[0.5px] border-white/20 rounded-[4px] overflow-hidden flex flex-col lg:flex-row bg-[rgba(20,20,22,0.4)] backdrop-blur-[12px] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
               {group.items.map((item) => (
                 <div

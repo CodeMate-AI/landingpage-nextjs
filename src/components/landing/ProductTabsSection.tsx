@@ -60,7 +60,7 @@ export default function ProductTabsSection() {
     >
       <div className="w-full max-w-[1740px] flex flex-col items-center gap-10 sm:gap-14 lg:gap-20">
         {/* ========================================================================= */}
-        {/* Frame 35: Header (Responsive Left / Right layout + Navigation Controls)   */}
+        {/* Product Header (Responsive Left / Right layout with Navigation Controls)  */}
         {/* ========================================================================= */}
         <div className="w-full flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 sm:gap-8 pb-2">
           {/* Left Block: Product Label + Headline */}
@@ -130,7 +130,7 @@ export default function ProductTabsSection() {
         </div>
 
         {/* ========================================================================= */}
-        {/* Frame 16: Horizontal Carousel Track (Swipeable, Scrollable, Keyboardable) */}
+        {/* Horizontal Product Carousel Track (Swipeable, Scrollable, Keyboardable)  */}
         {/* ========================================================================= */}
         <div className="w-full relative">
           <div
@@ -163,7 +163,7 @@ export default function ProductTabsSection() {
                       />
                     </div>
 
-                    {/* Card Content: Frame 38 */}
+                    {/* Card Content Details */}
                     <div className="w-full flex flex-col items-start gap-2 sm:gap-3 px-1 sm:px-2">
                       <h3 className="text-white text-base sm:text-xl lg:text-[24px] lg:leading-[28px] font-medium tracking-tight">
                         {card.title}
@@ -180,7 +180,7 @@ export default function ProductTabsSection() {
         </div>
 
         {/* ========================================================================= */}
-        {/* Frame 36: Tab Switcher Pill                                               */}
+        {/* Tab Switcher Navigation Controls                                          */}
         {/* ========================================================================= */}
         <div className="w-full flex justify-center px-1">
           <nav

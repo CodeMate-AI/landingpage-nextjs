@@ -530,27 +530,27 @@ function Page() {
       </div>
 
       {/* ========================================================================= */}
-      {/* 1:TOOLBOX. YOUR ENTIRE SDLC                                               */}
+      {/* TOOLBOX SECTION                                                           */}
       {/* ========================================================================= */}
       <ToolboxSection />
 
       {/* ========================================================================= */}
-      {/* 2:PRODUCT TABS SHOWCASE                                                   */}
+      {/* PRODUCT TABS SHOWCASE                                                     */}
       {/* ========================================================================= */}
       <ProductTabsSection />
 
       {/* ========================================================================= */}
-      {/* 3:SOCIAL PROOF & METRICS                                                  */}
+      {/* SOCIAL PROOF & METRICS                                                    */}
       {/* ========================================================================= */}
       <SocialProofSection />
 
       {/* ========================================================================= */}
-      {/* 4:ENTERPRISE ARCHITECTURE & JOURNEY                                       */}
+      {/* ENTERPRISE ARCHITECTURE & JOURNEY                                         */}
       {/* ========================================================================= */}
       <EnterpriseArchitectureSection />
 
       {/* ========================================================================= */}
-      {/* 5:WATCH CODEMATE IN ACTION                                                */}
+      {/* WATCH CODEMATE IN ACTION                                                  */}
       {/* ========================================================================= */}
       <WatchActionSection />
 
@@ -576,7 +576,7 @@ function Page() {
 
       {/* scrolling bento */}
 
-      {/* OLD SECTIONS COMMENTED OUT AS PER FIGMA REDESIGN */}
+      {/* DEPRECATED LANDING SECTIONS */}
       {/*
       <EventOffer
         isOpen={showEventPopup}
@@ -727,7 +727,7 @@ function Page() {
       {/* <Achivements /> */}
 
       {/* ========================================== */}
-      {/* UI SECTION: MEDIA PRESENCE (AS SEEN ON) (COMMENTED OUT) */}
+      {/* UI SECTION: MEDIA PRESENCE (COMMENTED OUT) */}
       {/* ========================================== */}
       {/* <MediaPresence /> */}
 
