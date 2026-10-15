@@ -294,51 +294,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
       ],
     },
     {
-      id: 'pr-review',
-      tabName: 'PR Review Agent',
-      productLabel: 'CodeMate PR Review Agent',
-      headline: 'Every pull request, reviewed.',
-      description:
-        'Automate code reviews with actionable feedback on correctness, maintainability, security, and performance: directly in your pull request.',
-      cards: [
-        {
-          id: 'pr-1',
-          title: 'Automated PR Reviews',
-          description:
-            'Analyze pull requests and surface potential issues with structured, actionable feedback.',
-          image: '/figma/img_24_image__15__1.png',
-        },
-        {
-          id: 'pr-2',
-          title: 'Security & Quality Checks',
-          description:
-            'Identify potential security concerns, code smells, complexity, and maintainability issues.',
-          image: '/figma/img_25_image__15__1.png',
-        },
-        {
-          id: 'pr-3',
-          title: 'Actionable Improvements',
-          description:
-            'Get AI-generated suggestions to improve readability, performance, and coding practices.',
-          image: '/figma/img_26_image__15__1.png',
-        },
-        {
-          id: 'pr-4',
-          title: 'PR Documentation',
-          description:
-            'Generate pull request descriptions, code walkthroughs, labels, and changelog updates.',
-          image: '/figma/img_27_image__15__1.png',
-        },
-        {
-          id: 'pr-5',
-          title: 'Command-Driven Workflows',
-          description:
-            'Trigger reviews, tests, documentation, and targeted improvements directly through PR comments.',
-          image: '/figma/img_25_image__15__1.png',
-        },
-      ],
-    },
-    {
       id: 'cora-cli',
       tabName: 'Cora CLI',
       productLabel: 'CodeMate Cora CLI',
@@ -380,6 +335,82 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Access AI-assisted development from familiar terminal environments, including Bash, PowerShell, and Command Prompt.',
           image: '/figma/img_33_image_10.png',
+        },
+      ],
+    },
+    {
+      id: 'academy',
+      tabName: 'Academy',
+      productLabel: 'CodeMate Academy',
+      headline: 'Master Modern AI Development.',
+      description:
+        'AI-powered classroom management, curriculum pathways, and hands-on coding labs built for universities, educators, and aspiring software engineers.',
+      cards: [
+        {
+          id: 'academy-1',
+          title: 'Interactive AI Labs',
+          description:
+            'Real-time automated grading, intelligent code suggestions, and guided problem solving for students.',
+          image: '/Codemate Education Static.png',
+        },
+        {
+          id: 'academy-2',
+          title: 'University & Enterprise MoUs',
+          description:
+            'Partnered with leading institutions like GLA University to bridge academic training with industry-ready AI development.',
+          image: '/GLA_MOU.jpg',
+        },
+        {
+          id: 'academy-3',
+          title: 'Comprehensive Curriculums',
+          description:
+            'From software engineering fundamentals to advanced LLM-powered autonomous agent architectures.',
+          image: '/Codemate Education Static.png',
+        },
+      ],
+    },
+    {
+      id: 'pr-review',
+      tabName: 'PR Review Agent',
+      productLabel: 'CodeMate PR Review Agent',
+      headline: 'Every pull request, reviewed.',
+      description:
+        'Automate code reviews with actionable feedback on correctness, maintainability, security, and performance: directly in your pull request.',
+      cards: [
+        {
+          id: 'pr-1',
+          title: 'Automated PR Reviews',
+          description:
+            'Analyze pull requests and surface potential issues with structured, actionable feedback.',
+          image: '/figma/img_24_image__15__1.png',
+        },
+        {
+          id: 'pr-2',
+          title: 'Security & Quality Checks',
+          description:
+            'Identify potential security concerns, code smells, complexity, and maintainability issues.',
+          image: '/figma/img_25_image__15__1.png',
+        },
+        {
+          id: 'pr-3',
+          title: 'Actionable Improvements',
+          description:
+            'Get AI-generated suggestions to improve readability, performance, and coding practices.',
+          image: '/figma/img_26_image__15__1.png',
+        },
+        {
+          id: 'pr-4',
+          title: 'PR Documentation',
+          description:
+            'Generate pull request descriptions, code walkthroughs, labels, and changelog updates.',
+          image: '/figma/img_27_image__15__1.png',
+        },
+        {
+          id: 'pr-5',
+          title: 'Command-Driven Workflows',
+          description:
+            'Trigger reviews, tests, documentation, and targeted improvements directly through PR comments.',
+          image: '/figma/img_25_image__15__1.png',
         },
       ],
     },
