@@ -21,6 +21,7 @@ import EventOffer from './pricing/components/EventOffer';
 import ToolboxSection from '@/components/landing/ToolboxSection';
 import ProductTabsSection from '@/components/landing/ProductTabsSection';
 import SocialProofSection from '@/components/landing/SocialProofSection';
+import EnterpriseArchitectureSection from '@/components/landing/EnterpriseArchitectureSection';
 import Navbar from '@/components/navbar';
 
 const montserrat = Montserrat({
@@ -541,6 +542,11 @@ function Page() {
       {/* 3:SOCIAL PROOF & METRICS                                                  */}
       {/* ========================================================================= */}
       <SocialProofSection />
+
+      {/* ========================================================================= */}
+      {/* 4:ENTERPRISE ARCHITECTURE & JOURNEY                                       */}
+      {/* ========================================================================= */}
+      <EnterpriseArchitectureSection />
 
       {/* enter section */}
       {/* <div
