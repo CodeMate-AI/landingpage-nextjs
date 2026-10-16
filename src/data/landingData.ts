@@ -83,7 +83,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       description:
         'Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.',
       logo: '/pr_logo.svg',
-      previewImage: '/figma/img_4_codemate_c0.png',
+      previewImage: '/PR_review_agent_image.png',
       link: 'https://github.com/apps/codemate-ai-pr-review-agent',
       isExternal: true,
     },

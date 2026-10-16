@@ -166,6 +166,8 @@ export default function ToolboxSection() {
                         alt={product.name}
                         width={28}
                         height={28}
+                        quality={95}
+                        sizes="56px"
                         className={`object-contain transition-transform ${
                           TOOLBOX_LOGO_SCALES[product.id] || ''
                         }`}
@@ -209,6 +211,8 @@ export default function ToolboxSection() {
                       alt={product.name}
                       width={458}
                       height={258}
+                      quality={95}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 916px"
                       className="h-full w-full object-cover object-left-top rounded-tl-[6px]"
                     />
                   </motion.div>
