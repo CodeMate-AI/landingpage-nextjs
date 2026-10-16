@@ -66,20 +66,19 @@ export default function Navbar() {
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
 
-  // Detect when user starts scrolling to move navbar to top and compact
+  // Detect when user starts scrolling to move navbar to top and compact with hysteresis to avoid boundary flutter
   useMotionValueEvent(scrollY, 'change', (latest) => {
-    if (latest > 10) {
-      setHasScrolled(true);
-    } else {
-      setHasScrolled(false);
-    }
-    setIsCompact(latest > 60);
     setIsNBack(latest >= 10);
-    if (latest > 30) {
+    if (latest > 70) {
+      setIsCompact(true);
+      setHasScrolled(true);
       setIsProducts(false);
       setIsOS(false);
       setIsResources(false);
       setIsPartners(false);
+    } else if (latest < 30) {
+      setIsCompact(false);
+      setHasScrolled(false);
     }
   });
 
@@ -189,19 +188,79 @@ export default function Navbar() {
             WebkitBackdropFilter: isCompact ? 'blur(20px)' : 'blur(10px)',
           }}
           className={cn(
-            'transition-all duration-300 ease-out z-[9999999999]',
+            'transition-all duration-300 ease-out transform-gpu z-[9999999999]',
             isCompact
               ? 'mt-3 w-[75%] max-w-[1050px] rounded-xl border border-white/10'
-              : `${hasScrolled ? 'mt-5' : 'mt-2'} w-[90%] rounded-lg bg-opacity-65 ${isNBack ? 'border-y-[1px] border-gray-400 border-opacity-10' : ''}`
+              : 'mt-3 w-[90%] rounded-lg bg-opacity-65'
           )}>
           <div className='flex h-full w-full text-white px-[1rem] py-2'>
             <div className='flex justify-between items-center w-full h-10'>
 
+              {/* Original logo size and styling preserved */}
               <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
-                <img onClick={() => router.push("/")} src="/logos/brand/codemate-logo.svg" alt="CodeMate Logo" className='cursor-pointer' />
+                <img
+                  onClick={() => router.push("/")}
+                  src="/logos/brand/codemate-logo.svg"
+                  alt="CodeMate AI Logo"
+                  className='cursor-pointer'
+                />
               </div>
               <div className="relative flex flex-col gap-3 text-md justify-center items-center cursor-pointer text-right z-50">
-                <span className='flex gap-5 justify-center items-center z-50'>
+                {/* Compact Scrolled Navigation (Concurrent Layer) */}
+                <div
+                  className={cn(
+                    'flex gap-5 lg:gap-6 justify-center items-center z-50 pr-2 transition-all duration-300 ease-out transform-gpu',
+                    isCompact
+                      ? 'opacity-100 translate-y-0 pointer-events-auto'
+                      : 'opacity-0 -translate-y-2 pointer-events-none absolute'
+                  )}
+                >
+                  <motion.h1
+                    onClick={handleFeaturesClick}
+                    whileHover={{ opacity: 1 }}
+                    className='opacity-70 hover:opacity-100 transition-opacity cursor-pointer text-sm font-medium'
+                  >
+                    Features
+                  </motion.h1>
+                  <motion.h1
+                    onClick={() => { router.push('/pricing?product=cora') }}
+                    whileHover={{ opacity: 1 }}
+                    className='opacity-70 hover:opacity-100 transition-opacity cursor-pointer text-sm font-medium'
+                  >
+                    Pricing
+                  </motion.h1>
+                  <Link href="/download">
+                    <motion.h1
+                      whileHover={{ opacity: 1 }}
+                      className='opacity-70 hover:opacity-100 transition-opacity cursor-pointer text-sm font-medium'
+                    >
+                      Download
+                    </motion.h1>
+                  </Link>
+                  <a
+                    href="https://app.codemate.ai"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <motion.button
+                      whileHover={{ opacity: 1, scale: 1.05 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="px-3.5 py-1.5 bg-[#FFFFFF] text-black rounded-sm font-semibold opacity-90 hover:opacity-100 text-nowrap transition-all text-sm"
+                    >
+                      Sign Up
+                    </motion.button>
+                  </a>
+                </div>
+
+                {/* Full Un-scrolled Navigation (Concurrent Layer) */}
+                <div
+                  className={cn(
+                    'flex gap-5 justify-center items-center z-50 transition-all duration-300 ease-out transform-gpu',
+                    !isCompact
+                      ? 'opacity-100 translate-y-0 pointer-events-auto'
+                      : 'opacity-0 translate-y-2 pointer-events-none absolute'
+                  )}
+                >
                   <motion.h1
                     onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center z-50 ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
                       initial={{ rotate: 180 }}
@@ -213,56 +272,48 @@ export default function Navbar() {
                       />
                     </motion.span></motion.h1>
 
-                  {!isCompact && (
-                    <>
-                      <motion.h1
-                        onMouseEnter={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
-                          initial={{ rotate: 180 }}
-                          animate={{ rotate: !isOS ? 180 : 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <ChevronUp
-                            className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                          />
-                        </motion.span></motion.h1>
-                      <motion.h1
-                        onMouseEnter={() => { setIsResources(state => !state); setIsOS(false); setIsProducts(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
-                          initial={{ rotate: 180 }}
-                          animate={{ rotate: !isResources ? 180 : 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <ChevronUp
-                            className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                          />
-                        </motion.span></motion.h1>
-                    </>
-                  )}
+                  <motion.h1
+                    onMouseEnter={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
+                      initial={{ rotate: 180 }}
+                      animate={{ rotate: !isOS ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ChevronUp
+                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                      />
+                    </motion.span></motion.h1>
+                  <motion.h1
+                    onMouseEnter={() => { setIsResources(state => !state); setIsOS(false); setIsProducts(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
+                      initial={{ rotate: 180 }}
+                      animate={{ rotate: !isResources ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ChevronUp
+                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                      />
+                    </motion.span></motion.h1>
 
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65 cursor-pointer'>Features</motion.h1>
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} onClick={() => { router.push('/pricing?product=cora') }} className='opacity-65'>Pricing</motion.h1>
 
-                  {!isCompact && (
-                    <>
-                      <motion.h1
-                        onMouseEnter={() => { setIsPartners(state => !state); setIsOS(false); setIsProducts(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isPartners ? '' : 'opacity-65'}`}>Partners<motion.span
-                          initial={{ rotate: 180 }}
-                          animate={{ rotate: !isPartners ? 180 : 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <ChevronUp
-                            className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                          />
-                        </motion.span></motion.h1>
-                      <a href='https://edu.codemate.ai/' target='_blank'>
-                        <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} className='opacity-65'>Academy</motion.h1>
-                      </a>
-                    </>
-                  )}
+                  <motion.h1
+                    onMouseEnter={() => { setIsPartners(state => !state); setIsOS(false); setIsProducts(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isPartners ? '' : 'opacity-65'}`}>Partners<motion.span
+                      initial={{ rotate: 180 }}
+                      animate={{ rotate: !isPartners ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <ChevronUp
+                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                      />
+                    </motion.span></motion.h1>
+                  <a href='https://edu.codemate.ai/' target='_blank'>
+                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} className='opacity-65'>Academy</motion.h1>
+                  </a>
 
                   <Link href="/contact">
                     <motion.button onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1 bg-[#FFFFFF] text-black rounded-sm font-semibold opacity-85 text-nowrap">Contact Us</motion.button>
                   </Link>
-                </span>
+                </div>
 
                 {isProducts && (
                   <div className={cn(
