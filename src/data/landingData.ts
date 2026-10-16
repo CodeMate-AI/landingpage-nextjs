@@ -68,16 +68,6 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       isExternal: true,
     },
     {
-      id: 'academy',
-      name: 'CodeMate Academy',
-      description:
-        'AI-powered classroom management, curriculum pathways, and hands-on coding labs for modern developers.',
-      logo: '/academy_logo.svg',
-      previewImage: '/Codemate Education Static.png',
-      link: 'https://edu.codemate.ai/',
-      isExternal: true,
-    },
-    {
       id: 'pr-review',
       name: 'CodeMate PR Review Agent',
       description:

@@ -14,7 +14,6 @@ const TOOLBOX_LOGO_SCALES: Record<string, string> = {
   build: 'scale-[2.1]',
   cora: 'scale-[1.15]',
   'cora-cli': 'scale-[1.15]',
-  academy: 'scale-[1.05]',
   'pr-review': 'scale-[0.75]',
 };
 
@@ -130,7 +129,7 @@ export default function ToolboxSection() {
           </div>
         </div>
 
-        {/* 6 Product Cards Row: Native scrollbar disabled, navigated via left/right slider or touch swipe */}
+        {/* 5 Product Cards Row: Native scrollbar disabled, navigated via left/right slider or touch swipe */}
         <div
           ref={scrollContainerRef}
           onMouseLeave={() => setHoveredIndex(null)}
