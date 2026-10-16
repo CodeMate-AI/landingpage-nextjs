@@ -24,14 +24,14 @@ export default function EnterpriseArchitectureSection() {
       className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center overflow-hidden pt-8 sm:pt-10 lg:pt-12 pb-8 sm:pb-10 lg:pb-12 px-4 sm:px-8 lg:px-[90px] gap-10 sm:gap-12 lg:gap-[60px] isolate`}
     >
       {/* ========================================================================= */}
-      {/* Background: Half Glowing Portal Orb Dome (Lower half clipped)            */}
+      {/* Background: Half Glowing Portal Orb Dome (Desktop only, hidden on mobile/iPad) */}
       {/* ========================================================================= */}
-      <div className="absolute inset-x-0 top-0 flex justify-center items-start pointer-events-none z-0 overflow-hidden select-none">
+      <div className="hidden xl:flex absolute inset-x-0 top-0 justify-center items-start pointer-events-none z-0 overflow-hidden select-none">
         <img
           src={ENTERPRISE_ARCHITECTURE_DATA.backgroundImage}
           alt=""
           aria-hidden="true"
-          className="w-full max-w-[1250px] sm:max-w-[1450px] lg:max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[60px] sm:translate-y-[80px] lg:translate-y-[105px] pointer-events-none select-none"
+          className="w-full max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[105px] pointer-events-none select-none"
         />
       </div>
 
