@@ -386,35 +386,28 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Automated PR Reviews',
           description:
             'Analyze pull requests and surface potential issues with structured, actionable feedback.',
-          image: '/figma/img_24_image__15__1.png',
+          image: '/pr-review/pr-automated-reviews.png',
         },
         {
           id: 'pr-2',
           title: 'Security & Quality Checks',
           description:
             'Identify potential security concerns, code smells, complexity, and maintainability issues.',
-          image: '/figma/img_25_image__15__1.png',
+          image: '/pr-review/pr-security-quality.png',
         },
         {
           id: 'pr-3',
           title: 'Actionable Improvements',
           description:
             'Get AI-generated suggestions to improve readability, performance, and coding practices.',
-          image: '/figma/img_26_image__15__1.png',
+          image: '/pr-review/pr-actionable-improvements.png',
         },
         {
           id: 'pr-4',
           title: 'PR Documentation',
           description:
             'Generate pull request descriptions, code walkthroughs, labels, and changelog updates.',
-          image: '/figma/img_27_image__15__1.png',
-        },
-        {
-          id: 'pr-5',
-          title: 'Command-Driven Workflows',
-          description:
-            'Trigger reviews, tests, documentation, and targeted improvements directly through PR comments.',
-          image: '/figma/img_25_image__15__1.png',
+          image: '/pr-review/pr-documentation.png',
         },
       ],
     },
