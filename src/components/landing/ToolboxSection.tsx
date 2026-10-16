@@ -51,9 +51,16 @@ export default function ToolboxSection() {
 
   const handleScroll = (direction: 'left' | 'right') => {
     if (!scrollContainerRef.current) return;
-    const cardStep = 348; // Card width (336px) + gap (12px)
+    const el = scrollContainerRef.current;
+    const isMobile = el.clientWidth < 640;
+    const isTablet = el.clientWidth >= 640 && el.clientWidth < 1024;
+    const cardStep = isMobile
+      ? el.clientWidth + 16
+      : isTablet
+      ? (el.clientWidth - 16) / 2 + 16
+      : (el.clientWidth - 48) / 4 + 16;
     const scrollAmount = direction === 'left' ? -cardStep : cardStep;
-    scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    el.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
 
   return (
@@ -92,14 +99,14 @@ export default function ToolboxSection() {
             </motion.h2>
           </div>
 
-          {/* Slider Navigation Controls */}
-          <div className="flex items-center gap-2 pt-2 self-end sm:self-auto">
+          {/* Slider Navigation Controls: Pinned to right-hand side on mobile and desktop */}
+          <div className="w-full sm:w-auto flex justify-end items-center gap-2 pt-2 self-end">
             <button
               type="button"
               onClick={() => handleScroll('left')}
               disabled={!canScrollLeft}
               aria-label="Slide cards left"
-              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
+              className={`w-10 h-10 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
                 canScrollLeft
                   ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
                   : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
@@ -112,7 +119,7 @@ export default function ToolboxSection() {
               onClick={() => handleScroll('right')}
               disabled={!canScrollRight}
               aria-label="Slide cards right"
-              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
+              className={`w-10 h-10 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
                 canScrollRight
                   ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
                   : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
@@ -127,7 +134,7 @@ export default function ToolboxSection() {
         <div
           ref={scrollContainerRef}
           onMouseLeave={() => setHoveredIndex(null)}
-          className="flex w-full flex-nowrap items-stretch gap-3 lg:gap-[12px] overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-2 select-none"
+          className="flex w-full flex-nowrap items-stretch gap-3 sm:gap-4 lg:gap-4 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-2 select-none touch-pan-x snap-x snap-mandatory"
         >
           {TOOLBOX_DATA.products.map((product: ToolboxProduct, idx: number) => {
             const isHovered = hoveredIndex === idx;
@@ -150,7 +157,7 @@ export default function ToolboxSection() {
                 style={{
                   padding: '24px 0px 24px 20px',
                 }}
-                className={`group relative flex h-[540px] w-[320px] min-w-[300px] shrink-0 2xl:w-[336px] 2xl:shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 ${
+                className={`group relative flex h-[480px] sm:h-[520px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-48px)/4)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 snap-start ${
                   isHovered
                     ? 'border-white/15 shadow-[0_12px_40px_rgba(0,191,255,0.08)]'
                     : 'border-white/5 shadow-none'
@@ -181,10 +188,12 @@ export default function ToolboxSection() {
                     </h3>
                   </div>
 
-                  {/* Expandable Description: 66px height, Montserrat 14px/22px, opacity 0.7 */}
+                  {/* Expandable Description: Accessible on mobile, interactive hover-reveal on desktop */}
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      isHovered ? 'max-h-[72px] opacity-70 mt-1' : 'max-h-0 opacity-0 mt-0'
+                      isHovered
+                        ? 'max-h-[72px] opacity-70 mt-1'
+                        : 'max-lg:max-h-[72px] max-lg:opacity-70 max-lg:mt-1 lg:max-h-0 lg:opacity-0 lg:mt-0'
                     }`}
                   >
                     <p

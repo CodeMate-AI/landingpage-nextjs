@@ -22,7 +22,7 @@ export default function SocialProofSection() {
       {/* ========================================================================= */}
       {/* Top Header and Statistics Metrics Row                                     */}
       {/* ========================================================================= */}
-      <div className="w-full max-w-[1740px] px-4 sm:px-8 lg:px-[90px] flex flex-col items-center">
+      <div className="w-full max-w-[1740px] flex flex-col items-center">
         <div className="w-full flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 lg:gap-10 pb-2">
           {/* Left Block (Heading + Subtitle) */}
           <div className="flex flex-col items-start gap-3 max-w-[620px]">
@@ -60,8 +60,8 @@ export default function SocialProofSection() {
           {/* Vertical Divider Line between header and metrics */}
           <div className="hidden xl:block w-[1px] h-[104px] bg-white/20 shrink-0" />
 
-          {/* Right Block (Statistics Metrics) */}
-          <div className="w-full xl:w-auto flex flex-row flex-wrap sm:flex-nowrap justify-between sm:justify-start items-start gap-6 sm:gap-10 lg:gap-[64px]">
+          {/* Right Block (Statistics Metrics: Clean 3-col grid on mobile, flex on tablet/desktop) */}
+          <div className="w-full xl:w-auto grid grid-cols-3 gap-2 sm:gap-6 sm:flex sm:flex-row sm:flex-nowrap justify-between sm:justify-start items-start lg:gap-[64px]">
             {SOCIAL_PROOF_DATA.metrics.map((metric, idx) => (
               <motion.div
                 key={metric.id}
@@ -69,9 +69,9 @@ export default function SocialProofSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.3 }}
                 transition={{ duration: 0.45, delay: 0.1 * (idx + 1) }}
-                className="flex flex-col items-start sm:items-center text-left sm:text-center min-w-[130px] sm:min-w-[150px] lg:min-w-[170px]"
+                className="flex flex-col items-start sm:items-center text-left sm:text-center w-full sm:w-auto min-w-0 sm:min-w-[150px] lg:min-w-[170px]"
               >
-                <div className="flex items-baseline text-white font-semibold text-4xl sm:text-5xl lg:text-[54px] lg:leading-[46px] tabular-nums tracking-tight">
+                <div className="flex items-baseline text-white font-semibold text-2xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[46px] tabular-nums tracking-tight">
                   <Counter
                     className="tabular-nums"
                     direction="up"
@@ -79,7 +79,7 @@ export default function SocialProofSection() {
                   />
                   <span>{metric.suffix}</span>
                 </div>
-                <p className="mt-2.5 sm:mt-3 text-white/70 font-normal text-sm sm:text-base lg:text-[20px] lg:leading-[28px] max-w-[200px] leading-snug">
+                <p className="mt-1.5 sm:mt-3 text-white/70 font-normal text-xs sm:text-base lg:text-[20px] lg:leading-[28px] max-w-[200px] leading-snug">
                   {metric.label}
                 </p>
               </motion.div>

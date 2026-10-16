@@ -31,7 +31,7 @@ export default function EnterpriseArchitectureSection() {
           src={ENTERPRISE_ARCHITECTURE_DATA.backgroundImage}
           alt=""
           aria-hidden="true"
-          className="w-full max-w-[1250px] sm:max-w-[1450px] lg:max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[105px] pointer-events-none select-none"
+          className="w-full max-w-[1250px] sm:max-w-[1450px] lg:max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[60px] sm:translate-y-[80px] lg:translate-y-[105px] pointer-events-none select-none"
         />
       </div>
 
@@ -82,7 +82,7 @@ export default function EnterpriseArchitectureSection() {
               {group.items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex-1 flex flex-col justify-center items-start p-4 sm:p-5 min-h-[110px] sm:min-h-[130px] lg:h-[150px] gap-1.5 border-b lg:border-b-0 lg:border-r border-white/20 last:border-b-0 lg:last:border-r-0 transition-all duration-300 hover:bg-white/[0.06] group"
+                  className="flex-1 flex flex-col justify-center items-start p-3.5 sm:p-5 min-h-[85px] sm:min-h-[110px] lg:h-[150px] gap-1.5 border-b lg:border-b-0 lg:border-r border-white/20 last:border-b-0 lg:last:border-r-0 transition-all duration-300 hover:bg-white/[0.06] group"
                 >
                   <h4 className="text-white font-semibold text-base sm:text-lg lg:text-[20px] lg:leading-[28px] tracking-tight group-hover:text-white transition-colors">
                     {item.title}

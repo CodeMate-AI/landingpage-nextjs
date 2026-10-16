@@ -42,13 +42,19 @@ export default function ProductTabsSection() {
     return () => clearTimeout(timer);
   }, [activeTabId, checkScrollBoundaries]);
 
-  // Handle smooth scroll clicks
+  // Handle smooth scroll clicks: 1 full card step on mobile, tablet, and desktop
   const handleScroll = (direction: 'left' | 'right') => {
     const el = scrollContainerRef.current;
     if (!el) return;
-    const scrollAmount = Math.max(300, Math.floor(el.clientWidth * 0.75));
+    const isMobile = el.clientWidth < 640;
+    const isTablet = el.clientWidth >= 640 && el.clientWidth < 1024;
+    const cardStep = isMobile
+      ? el.clientWidth + 20
+      : isTablet
+      ? (el.clientWidth - 24) / 2 + 24
+      : (el.clientWidth - 64) / 3 + 32;
     el.scrollBy({
-      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      left: direction === 'left' ? -cardStep : cardStep,
       behavior: 'smooth',
     });
   };
@@ -97,14 +103,14 @@ export default function ProductTabsSection() {
               </motion.p>
             </AnimatePresence>
 
-            {/* Slider Navigation Arrow Buttons */}
-            <div className="flex items-center gap-2 pt-2">
+            {/* Slider Navigation Arrow Buttons: Pinned to right-hand side on mobile, matching original desktop placement */}
+            <div className="w-full sm:w-auto lg:w-auto flex justify-end items-center gap-2 pt-2">
               <button
                 type="button"
                 onClick={() => handleScroll('left')}
                 disabled={!canScrollLeft}
                 aria-label="Previous cards"
-                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
+                className={`w-10 h-10 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
                   canScrollLeft
                     ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
                     : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
@@ -117,7 +123,7 @@ export default function ProductTabsSection() {
                 onClick={() => handleScroll('right')}
                 disabled={!canScrollRight}
                 aria-label="Next cards"
-                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
+                className={`w-10 h-10 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
                   canScrollRight
                     ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
                     : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
@@ -136,7 +142,7 @@ export default function ProductTabsSection() {
           <div
             ref={scrollContainerRef}
             onScroll={checkScrollBoundaries}
-            className="w-full flex flex-row items-stretch gap-5 sm:gap-8 lg:gap-[40px] overflow-x-auto scroll-smooth py-2 px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+            className="w-full flex flex-row items-stretch gap-5 sm:gap-6 lg:gap-8 overflow-x-auto scroll-smooth py-2 px-0 sm:px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x snap-x snap-mandatory"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -145,22 +151,22 @@ export default function ProductTabsSection() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4, ease: 'easeOut' }}
-                className="flex flex-row items-stretch gap-5 sm:gap-8 lg:gap-[40px]"
+                className="flex flex-row items-stretch gap-5 sm:gap-6 lg:gap-8 w-full"
               >
                 {currentTab.cards.map((card, idx) => (
                   <article
                     key={card.id || `card-${idx}`}
-                    className="group flex flex-col items-start gap-4 sm:gap-5 w-[280px] sm:w-[380px] md:w-[440px] lg:w-[500px] flex-shrink-0 transition-transform duration-300"
+                    className="group flex flex-col items-start gap-4 sm:gap-5 w-full min-w-full sm:min-w-0 sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-64px)/3)] flex-shrink-0 transition-transform duration-300 snap-start"
                   >
                     {/* Media Container: Background+Border+Shadow */}
-                    <div className="relative w-full h-[200px] sm:h-[260px] md:h-[280px] lg:h-[300px] bg-[#121216] border border-white/[0.06] rounded-[12px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.35)] overflow-hidden transition-all duration-300 group-hover:border-white/15">
+                    <div className="relative w-full aspect-video bg-[#121216] border border-white/[0.06] rounded-[12px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.35)] overflow-hidden transition-all duration-300 group-hover:border-white/15">
                       <Image
                         src={card.image}
                         alt={card.title}
                         fill
                         quality={95}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 1200px"
-                        className="object-contain object-top transition-none"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 600px"
+                        className="object-contain object-center transition-none"
                       />
                     </div>
 
