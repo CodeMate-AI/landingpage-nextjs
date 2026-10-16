@@ -21,9 +21,17 @@ export default function Navbar() {
 
     // Disable Next.js default scroll-to-top on router push, then scroll to target element
     router.push('/', { scroll: false });
-    setTimeout(() => {
-      document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      const el = document.getElementById('features');
+      if (el) {
+        clearInterval(interval);
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else if (attempts > 15) {
+        clearInterval(interval);
+      }
+    }, 100);
   };
 
   const [isNBack, setIsNBack] = useState(false);
@@ -204,7 +212,7 @@ export default function Navbar() {
                         className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
                       />
                     </motion.span></motion.h1>
-                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
+                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65 cursor-pointer'>Features</motion.h1>
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} onClick={() => { router.push('/pricing?product=cora') }} className='opacity-65'>Pricing</motion.h1>
                   <motion.h1
                     onMouseEnter={() => { setIsPartners(state => !state); setIsOS(false); setIsProducts(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isPartners ? '' : 'opacity-65'}`}>Partners<motion.span
