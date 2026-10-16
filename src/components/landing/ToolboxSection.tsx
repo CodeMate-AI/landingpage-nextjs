@@ -63,7 +63,7 @@ export default function ToolboxSection() {
   };
 
   return (
-    <section className="relative w-full bg-[#0C0C0E] px-4 pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-10 lg:pb-12 sm:px-8 lg:px-[90px] overflow-hidden">
+    <section className="relative w-full bg-[#0C0C0E] px-4 pt-6 sm:pt-8 lg:pt-10 pb-3 sm:pb-4 lg:pb-5 sm:px-8 lg:px-[90px] overflow-hidden">
       <div className="mx-auto flex max-w-[1740px] flex-col items-center gap-4 sm:gap-6 lg:gap-8">
         {/* Section Header: Left-aligned with Right-aligned Navigation Controls */}
         <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2.5 sm:gap-6 lg:gap-8 pb-1">
