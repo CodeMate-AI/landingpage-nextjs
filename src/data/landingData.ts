@@ -216,14 +216,14 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Prompt-to-App',
           description:
             'Describe what you want to build and turn your idea into a functional application.',
-          image: '/figma/img_14_screenshot_2026-10-10_at_2_09_.png',
+          image: '/build-prompt-to-app.png',
         },
         {
           id: 'build-2',
           title: 'Design-to-Code',
           description:
             'Translate visual designs into working interfaces and code.',
-          image: '/figma/img_15_figma_to_code.png',
+          image: '/figma-to-code-static.png',
         },
         {
           id: 'build-3',
