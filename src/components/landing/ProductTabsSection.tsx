@@ -62,7 +62,7 @@ export default function ProductTabsSection() {
   return (
     <section
       aria-label="CodeMate Product Details"
-      className={`${montserrat.className} relative w-full bg-[#0C0C0E] text-white flex flex-col items-center overflow-hidden pt-2 sm:pt-3 lg:pt-4 pb-8 sm:pb-8 lg:pb-10 px-4 sm:px-8 lg:px-[90px]`}
+      className={`${montserrat.className} relative w-full bg-[#0C0C0E] text-white flex flex-col items-center overflow-hidden pt-2 sm:pt-3 lg:pt-4 pb-4 sm:pb-5 lg:pb-6 px-4 sm:px-8 lg:px-[90px]`}
     >
       <div className="w-full max-w-[1740px] flex flex-col items-center gap-5 sm:gap-6 lg:gap-8">
         {/* ========================================================================= */}

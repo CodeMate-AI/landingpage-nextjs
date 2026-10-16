@@ -17,7 +17,7 @@ export default function SocialProofSection() {
   return (
     <section
       aria-label="Social Proof and Enterprise Trust"
-      className={`${montserrat.className} relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center overflow-hidden pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-10 lg:pb-12 px-4 sm:px-8 lg:px-[90px]`}
+      className={`${montserrat.className} relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center overflow-hidden pt-4 sm:pt-5 lg:pt-6 pb-4 sm:pb-5 lg:pb-6 px-4 sm:px-8 lg:px-[90px]`}
     >
       {/* ========================================================================= */}
       {/* Top Header and Statistics Metrics Row                                     */}
