@@ -33,7 +33,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       description:
         'Turns deep research and feasibility into production-ready code through AI-driven intelligence.',
       logo: '/Co_Logo.png',
-      previewImage: '/figma/img_1_codemate_c0.png',
+      previewImage: '/work/work-preview-toolbox.png',
       link: 'https://app.codemate.ai/chat',
       isExternal: true,
     },
@@ -175,7 +175,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Research & Explore',
           description:
             'Investigate ideas, explore possibilities, and gather the context you need before making decisions.',
-          image: '/figma/img_8_background_border_shadow.png',
+          image: '/work/work-research-explore.png',
         },
         {
           id: 'work-4',
