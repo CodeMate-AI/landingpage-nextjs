@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState, useRef } from 'react';
+import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import Lenis from 'lenis';
@@ -83,7 +84,7 @@ function Page() {
         cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto`,
       }}
       ref={mainRef}
-      className={`${montserrat.variable} bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]`}
+      className={`relative ${montserrat.variable} bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]`}
     >
       {/* Floating scroll-to-top / scroll-to-bottom arrow button */}
       <AnimatePresence>
@@ -155,8 +156,7 @@ function Page() {
                 src="/ui/bg-noise.png"
                 alt=""
                 fill
-                priority={false}
-                loading="lazy"
+                priority
                 className="object-cover"
                 aria-hidden="true"
               />
@@ -249,7 +249,7 @@ function Page() {
                 transition={{ duration: 0.6, delay: 1.5 }}
                 className="flex flex-col sm:flex-row justify-start items-center gap-3 sm:gap-4 text-sm md:text-base mt-4 sm:mt-5 w-full sm:w-auto"
               >
-                <a href="/download" aria-label="Download CodeMate AI's ToolBox" className="w-full sm:w-auto">
+                <Link href="/download" aria-label="Download CodeMate AI's ToolBox" className="w-full sm:w-auto">
                   <motion.button
                     type="button"
                     whileHover={{ scale: 1.02 }}
@@ -258,7 +258,7 @@ function Page() {
                   >
                     Download
                   </motion.button>
-                </a>
+                </Link>
                 <a href="https://app.codemate.ai/dashboard" aria-label="Try CodeMate AI for Free" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto">
                   <motion.button
                     type="button"

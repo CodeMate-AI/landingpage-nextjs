@@ -174,6 +174,7 @@ export default function ToolboxSection() {
                         height={28}
                         quality={95}
                         sizes="56px"
+                        style={{ width: 'auto', height: 'auto' }}
                         className={`object-contain transition-transform ${
                           TOOLBOX_LOGO_SCALES[product.id] || ''
                         }`}
