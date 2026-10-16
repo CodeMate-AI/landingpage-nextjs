@@ -160,7 +160,7 @@ export default function ProductTabsSection() {
                         fill
                         quality={95}
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 1200px"
-                        className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+                        className="object-contain object-top transition-none"
                       />
                     </div>
 
