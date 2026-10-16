@@ -365,7 +365,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Offline Learning Support',
           description:
             'Resource syncing and local storage keep learning usable without internet.',
-          image: '/Codemate Education Static.png',
+          image: '/academy/academy-offline-support.png',
         },
         {
           id: 'academy-4',
