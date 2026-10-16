@@ -187,12 +187,12 @@ export default function ProductTabsSection() {
         </div>
 
         {/* ========================================================================= */}
-        {/* Tab Switcher Navigation Controls                                          */}
+        {/* Tab Switcher Navigation Controls (Animated Sliding Spring Pill)           */}
         {/* ========================================================================= */}
         <div className="w-full flex justify-center px-1">
           <nav
             aria-label="CodeMate Products Navigation"
-            className="w-auto max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-[#141A21] border border-white/20 rounded-[12px] sm:rounded-[14px] p-1.5 sm:p-2 lg:py-3 lg:px-6 flex flex-row items-center justify-start sm:justify-center gap-1 sm:gap-1.5 shadow-lg"
+            className="w-auto max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-[#141A21]/90 backdrop-blur-md border border-white/15 rounded-[14px] p-1.5 sm:p-2 flex flex-row items-center justify-start sm:justify-center gap-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] touch-pan-x"
           >
             {PRODUCT_TABS_DATA.tabs.map((tab) => {
               const isActive = tab.id === activeTabId;
@@ -203,13 +203,20 @@ export default function ProductTabsSection() {
                   onClick={() => setActiveTabId(tab.id)}
                   aria-selected={isActive}
                   role="tab"
-                  className={`relative px-3 sm:px-5 lg:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-[15px] lg:text-[16px] lg:leading-[24px] font-normal transition-all duration-200 whitespace-nowrap cursor-pointer ${
+                  className={`relative px-3.5 sm:px-5 lg:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-[14px] lg:text-[15px] lg:leading-[22px] transition-colors duration-200 whitespace-nowrap cursor-pointer select-none ${
                     isActive
-                      ? 'bg-white text-[#121212] font-medium shadow-sm'
-                      : 'bg-transparent text-white/80 hover:text-white hover:bg-white/[0.05]'
+                      ? 'text-[#0C0C0E] font-semibold'
+                      : 'text-white/70 hover:text-white hover:bg-white/[0.04]'
                   }`}
                 >
-                  {tab.tabName}
+                  {isActive && (
+                    <motion.span
+                      layoutId="active-product-tab-pill"
+                      className="absolute inset-0 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.25)]"
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                    />
+                  )}
+                  <span className="relative z-10">{tab.tabName}</span>
                 </button>
               );
             })}
