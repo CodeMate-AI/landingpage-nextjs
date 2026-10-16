@@ -159,7 +159,7 @@ export default function ToolboxSection() {
                 {/* Product Information (Header and Expandable Description) */}
                 <div className="flex flex-col gap-2 z-20 pr-4">
                   {/* Product Logo and Title */}
-                  <div className="flex items-center gap-[8px] min-h-[28px]">
+                  <div className="flex items-start gap-[8px] min-h-[28px]">
                     <div className="flex size-[28px] shrink-0 items-center justify-center">
                       <Image
                         src={product.logo}
