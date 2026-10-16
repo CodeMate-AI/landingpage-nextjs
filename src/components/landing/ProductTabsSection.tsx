@@ -89,7 +89,7 @@ export default function ProductTabsSection() {
           </AnimatePresence>
 
           {/* Right Block: Description + Slider Controls */}
-          <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between w-full lg:w-auto gap-4 max-w-[620px]">
+          <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between w-full lg:w-auto gap-4 lg:max-w-[620px]">
             <AnimatePresence mode="wait">
               <motion.p
                 key={`header-desc-${currentTab.id}`}
@@ -97,14 +97,14 @@ export default function ProductTabsSection() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="text-white/90 text-sm sm:text-base lg:text-[16px] lg:leading-[25px] font-normal text-left"
+                className="text-white/90 text-sm sm:text-base lg:text-[16px] lg:leading-[25px] font-normal text-left max-w-[500px] lg:max-w-none"
               >
                 {currentTab.description}
               </motion.p>
             </AnimatePresence>
 
             {/* Slider Navigation Arrow Buttons: Pinned to right-hand side on mobile, matching original desktop placement */}
-            <div className="w-full sm:w-auto lg:w-auto flex justify-end items-center gap-2 pt-2">
+            <div className="w-full sm:w-auto lg:w-auto flex justify-end items-center gap-2 pt-2 shrink-0">
               <button
                 type="button"
                 onClick={() => handleScroll('left')}
