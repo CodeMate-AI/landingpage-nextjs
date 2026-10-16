@@ -575,7 +575,7 @@ export const ENTERPRISE_ARCHITECTURE_DATA: EnterpriseArchitectureSectionData = {
     {
       id: 'group-toolbox',
       category: 'One Toolbox. Your Entire SDLC.',
-      columns: 6,
+      columns: 5,
       items: [
         {
           id: 'codemate-work',
@@ -593,19 +593,14 @@ export const ENTERPRISE_ARCHITECTURE_DATA: EnterpriseArchitectureSectionData = {
           subtitle: 'Autonomous coding agent',
         },
         {
-          id: 'pr-review-agent',
-          title: 'PR Review Agent',
-          subtitle: 'Automated code review and quality checks',
-        },
-        {
           id: 'cora-cli',
           title: 'CORA-CLI',
           subtitle: 'AI-powered development in your terminal',
         },
         {
-          id: 'codemate-academy',
-          title: 'CodeMate Academy',
-          subtitle: 'Master modern AI development with interactive labs',
+          id: 'pr-review-agent',
+          title: 'PR Review Agent',
+          subtitle: 'Automated code review and quality checks',
         },
       ],
     },
