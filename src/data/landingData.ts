@@ -161,14 +161,14 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Rules & Context',
           description:
             'Define instructions, attach files, and reference remote resources to guide how Work handles tasks.',
-          image: '/figma/img_6_figma_to_code.png',
+          image: '/work/work-rules-context.png',
         },
         {
           id: 'work-2',
           title: 'Connected Tools',
           description:
             'Connect external services through MCP to bring relevant information and workflows into Work.',
-          image: '/figma/img_7_figma_to_code.png',
+          image: '/work/work-connected-tools.png',
         },
         {
           id: 'work-3',
@@ -182,14 +182,14 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Resources & Knowledge',
           description:
             'Organize files, documents, and project resources in one searchable workspace.',
-          image: '/figma/img_9_background_border_shadow.png',
+          image: '/work/work-resources-knowledge.png',
         },
         {
           id: 'work-5',
           title: 'Requirements to Plans',
           description:
             'Structure requirements into clear scopes, deliverables, and actionable next steps.',
-          image: '/figma/img_10_background_border_shadow.png',
+          image: '/work/work-requirements-to-plans.png',
         },
       ],
     },
