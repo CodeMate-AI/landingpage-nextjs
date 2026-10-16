@@ -64,16 +64,16 @@ export default function ToolboxSection() {
 
   return (
     <section className="relative w-full bg-[#0C0C0E] px-4 pt-6 sm:pt-8 lg:pt-10 pb-8 sm:pb-10 lg:pb-12 sm:px-8 lg:px-[90px] overflow-hidden">
-      <div className="mx-auto flex max-w-[1740px] flex-col items-center gap-8 lg:gap-[48px]">
+      <div className="mx-auto flex max-w-[1740px] flex-col items-center gap-4 sm:gap-6 lg:gap-8">
         {/* Section Header: Left-aligned with Right-aligned Navigation Controls */}
-        <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 sm:gap-8 pb-2">
+        <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2.5 sm:gap-6 lg:gap-8 pb-1">
           <div className="flex flex-col items-start text-left max-w-[956px]">
             <motion.span
               initial={{ opacity: 0, y: 8 }}
               whileInView={{ opacity: 0.75, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.4 }}
-              className="font-sans text-[16px] sm:text-[18px] font-normal leading-[18px] tracking-normal text-white"
+              className="font-sans text-[14px] sm:text-[18px] font-normal leading-[18px] tracking-normal text-white"
               style={{ opacity: 0.75 }}
             >
               {TOOLBOX_DATA.overline}
@@ -83,7 +83,7 @@ export default function ToolboxSection() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.4 }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[60px] lg:leading-[60px] text-left"
+              className="mt-2 sm:mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[60px] lg:leading-[60px] text-left"
               style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
             >
               <span className="bg-gradient-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
@@ -99,13 +99,13 @@ export default function ToolboxSection() {
           </div>
 
           {/* Slider Navigation Controls: Pinned to right-hand side on mobile and desktop */}
-          <div className="w-full sm:w-auto flex justify-end items-center gap-2 pt-2 self-end">
+          <div className="w-full sm:w-auto flex justify-end items-center gap-2 pt-0 sm:pt-0 self-end">
             <button
               type="button"
               onClick={() => handleScroll('left')}
               disabled={!canScrollLeft}
               aria-label="Slide cards left"
-              className={`w-10 h-10 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
                 canScrollLeft
                   ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
                   : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
@@ -118,7 +118,7 @@ export default function ToolboxSection() {
               onClick={() => handleScroll('right')}
               disabled={!canScrollRight}
               aria-label="Slide cards right"
-              className={`w-10 h-10 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
+              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
                 canScrollRight
                   ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
                   : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
@@ -133,7 +133,7 @@ export default function ToolboxSection() {
         <div
           ref={scrollContainerRef}
           onMouseLeave={() => setHoveredIndex(null)}
-          className="flex w-full flex-nowrap items-stretch gap-3 sm:gap-4 lg:gap-4 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-2 select-none touch-pan-x snap-x snap-mandatory"
+          className="flex w-full flex-nowrap items-stretch gap-3 sm:gap-4 lg:gap-4 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-0 sm:pt-0.5 select-none touch-pan-x snap-x snap-mandatory"
         >
           {TOOLBOX_DATA.products.map((product: ToolboxProduct, idx: number) => {
             const isHovered = hoveredIndex === idx;
@@ -156,7 +156,7 @@ export default function ToolboxSection() {
                 style={{
                   padding: '24px 0px 24px 20px',
                 }}
-                className={`group relative flex h-[480px] sm:h-[520px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-48px)/4)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 snap-start ${
+                className={`group relative flex h-[450px] sm:h-[510px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-48px)/4)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 snap-start ${
                   isHovered
                     ? 'border-white/15 shadow-[0_12px_40px_rgba(0,191,255,0.08)]'
                     : 'border-white/5 shadow-none'
@@ -273,7 +273,7 @@ export default function ToolboxSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="flex justify-center w-full mt-2"
+          className="flex justify-center w-full mt-0 sm:mt-1"
         >
           <Link
             href={TOOLBOX_DATA.ctaLink}
