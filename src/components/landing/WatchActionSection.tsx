@@ -27,9 +27,17 @@ export default function WatchActionSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.4 }}
         transition={{ duration: 0.5 }}
-        className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[60px] font-semibold text-center tracking-tight bg-gradient-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent max-w-[850px]"
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[60px] font-semibold text-center tracking-tight max-w-[850px]"
       >
-        {WATCH_ACTION_DATA.title}
+        <span className="bg-gradient-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent">
+          {WATCH_ACTION_DATA.titlePrefix}
+        </span>
+        <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+          {WATCH_ACTION_DATA.titleHighlight}
+        </span>
+        <span className="bg-gradient-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent">
+          {WATCH_ACTION_DATA.titleSuffix}
+        </span>
       </motion.h2>
 
       {/* ========================================================================= */}

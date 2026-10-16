@@ -652,6 +652,9 @@ export const ENTERPRISE_ARCHITECTURE_DATA: EnterpriseArchitectureSectionData = {
 };
 
 export interface WatchActionSectionData {
+  titlePrefix: string;
+  titleHighlight: string;
+  titleSuffix: string;
   title: string;
   description: string;
   buttonText: string;
@@ -659,6 +662,9 @@ export interface WatchActionSectionData {
 }
 
 export const WATCH_ACTION_DATA: WatchActionSectionData = {
+  titlePrefix: 'Watch ',
+  titleHighlight: 'CodeMate',
+  titleSuffix: ' in Action',
   title: 'Watch CodeMate in Action',
   description:
     'From developers to non-developers, it acts like your autonomous team mate that assist you in shipping code with AI.',

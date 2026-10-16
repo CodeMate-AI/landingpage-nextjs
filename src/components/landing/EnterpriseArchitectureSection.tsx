@@ -26,12 +26,12 @@ export default function EnterpriseArchitectureSection() {
       {/* ========================================================================= */}
       {/* Background: Half Glowing Portal Orb Dome (Lower half clipped)            */}
       {/* ========================================================================= */}
-      <div className="absolute inset-x-0 bottom-0 flex justify-center items-end pointer-events-none z-0 overflow-hidden select-none">
+      <div className="absolute inset-x-0 top-0 flex justify-center items-start pointer-events-none z-0 overflow-hidden select-none">
         <img
           src={ENTERPRISE_ARCHITECTURE_DATA.backgroundImage}
           alt=""
           aria-hidden="true"
-          className="w-full max-w-[1250px] sm:max-w-[1450px] lg:max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[51%] pointer-events-none select-none"
+          className="w-full max-w-[1250px] sm:max-w-[1450px] lg:max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[105px] pointer-events-none select-none"
         />
       </div>
 
