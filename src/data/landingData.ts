@@ -32,7 +32,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       name: 'CodeMate Work',
       description:
         'Turns deep research and feasibility into production-ready code through AI-driven intelligence.',
-      logo: '/Co_Logo.png',
+      logo: '/logos/brand/codemate-work-logo.png',
       previewImage: '/work/work-preview-toolbox.png',
       link: 'https://app.codemate.ai/chat',
       isExternal: true,
@@ -42,7 +42,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       name: 'CodeMate Build',
       description:
         'Turns prompts and Figma designs into deployable apps instantly with full design mode support.',
-      logo: '/Build_Logo.png',
+      logo: '/logos/brand/codemate-build-logo.png',
       previewImage: '/build/build-preview-toolbox.png',
       link: 'http://build.codemate.ai/',
       isExternal: true,
@@ -52,8 +52,8 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       name: 'CodeMate Cora',
       description:
         'End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE.',
-      logo: '/CORA_Logo.png',
-      previewImage: '/figma/img_3_codemate_c0.png',
+      logo: '/logos/brand/codemate-cora-logo.png',
+      previewImage: '/cora/cora-preview-toolbox.png',
       link: 'https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent',
       isExternal: true,
     },
@@ -62,8 +62,8 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       name: 'CodeMate Cora CLI',
       description:
         'Run code and scripts instantly through an AI-powered command-line interface directly in your terminal.',
-      logo: '/CORA_Logo.png',
-      previewImage: '/figma/img_5_codemate_c0.png',
+      logo: '/logos/brand/codemate-cora-logo.png',
+      previewImage: '/cora-cli/cora-cli-preview-toolbox.png',
       link: 'https://cli.codemate.ai/',
       isExternal: true,
     },
@@ -72,8 +72,8 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       name: 'CodeMate PR Review Agent',
       description:
         'Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.',
-      logo: '/pr_logo.svg',
-      previewImage: '/PR_review_agent_image.png',
+      logo: '/logos/brand/codemate-pr-review-logo.svg',
+      previewImage: '/pr-review/pr-review-preview-toolbox.png',
       link: 'https://github.com/apps/codemate-ai-pr-review-agent',
       isExternal: true,
     },
@@ -206,28 +206,28 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Prompt-to-App',
           description:
             'Describe what you want to build and turn your idea into a functional application.',
-          image: '/build-prompt-to-app.png',
+          image: '/build/build-prompt-to-app.png',
         },
         {
           id: 'build-2',
           title: 'Design-to-Code',
           description:
             'Translate visual designs into working interfaces and code.',
-          image: '/figma-to-code-static.png',
+          image: '/build/build-figma-to-code.png',
         },
         {
           id: 'build-3',
           title: 'Design Mode',
           description:
             'Explore and refine interface ideas while shaping the experience you want to build.',
-          image: '/figma/img_16_background_border_shadow.png',
+          image: '/build/build-design-mode.png',
         },
         {
           id: 'build-4',
           title: 'Rapid Prototyping',
           description:
             'Move from an early concept to a working prototype without building everything from scratch.',
-          image: '/figma/img_17_background_border_shadow.png',
+          image: '/build/build-rapid-prototyping.png',
         },
       ],
     },
@@ -244,42 +244,42 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Codebase Understanding',
           description:
             'Work with code in context, using relationships between files and your existing project knowledge.',
-          image: '/figma/img_18_background_border_shadow.png',
+          image: '/cora/cora-codebase-understanding.png',
         },
         {
           id: 'cora-2',
           title: 'Agentic Coding',
           description:
             'Delegate coding tasks to an AI agent that can help implement changes across your project.',
-          image: '/figma/img_19_background_border_shadow.png',
+          image: '/cora/cora-agentic-coding.png',
         },
         {
           id: 'cora-3',
           title: 'Debug & Fix',
           description:
             'Identify syntax, logical, and runtime issues, understand their causes, and work toward targeted fixes.',
-          image: '/figma/img_20_background_border_shadow.png',
+          image: '/cora/cora-debug-fix.png',
         },
         {
           id: 'cora-4',
           title: 'Refactor & Optimize',
           description:
             'Improve code quality, readability, and efficiency with context-aware suggestions.',
-          image: '/figma/img_21_background_border_shadow.png',
+          image: '/cora/cora-refactor-optimize.png',
         },
         {
           id: 'cora-5',
           title: 'Test Generation',
           description:
             'Generate unit tests for your code and inspect results to validate implementation behavior.',
-          image: '/figma/img_22_background_border_shadow.png',
+          image: '/cora/cora-test-generation.png',
         },
         {
           id: 'cora-6',
           title: 'Commit Prompt Generation',
           description:
             'Generate a commit message with the Cora extension.',
-          image: '/figma/img_23_background_border_shadow.png',
+          image: '/cora/cora-commit-prompt-generation.png',
         },
       ],
     },
@@ -296,35 +296,35 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Natural Language Commands',
           description:
             'Describe what you want to do and get executable terminal commands without memorizing syntax.',
-          image: '/figma/img_28_background_border_shadow.png',
+          image: '/cora-cli/cora-cli-natural-language-commands.png',
         },
         {
           id: 'cli-2',
           title: 'Debug from the Terminal',
           description:
             'Investigate errors and get AI-assisted guidance to help diagnose and resolve issues.',
-          image: '/figma/img_29_background_border_shadow.png',
+          image: '/cora-cli/cora-cli-debug-terminal.png',
         },
         {
           id: 'cli-3',
           title: 'Review & Improve Code',
           description:
             'Get code-review feedback and optimization suggestions from your command-line workflow.',
-          image: '/figma/img_30_background_border_shadow.png',
+          image: '/cora-cli/cora-cli-review-improve.png',
         },
         {
           id: 'cli-4',
           title: 'Process Monitoring',
           description:
             'Monitor development processes and get suggestions based on errors printed to the console.',
-          image: '/figma/img_31_figma_to_code.png',
+          image: '/cora-cli/cora-cli-process-monitoring.png',
         },
         {
           id: 'cli-5',
           title: 'Work in Your Existing Shell',
           description:
             'Access AI-assisted development from familiar terminal environments, including Bash, PowerShell, and Command Prompt.',
-          image: '/figma/img_33_image_10.png',
+          image: '/cora-cli/cora-cli-existing-shell.png',
         },
       ],
     },
@@ -470,49 +470,49 @@ export const SOCIAL_PROOF_DATA: SocialProofSectionData = {
     {
       id: 'dell',
       name: 'Dell',
-      logo: 'dell.svg',
+      logo: '/logos/partners/dell.svg',
       className: 'object-contain size-[30vw] lg:size-[12vw] opacity-100 brightness-150 lg:mt-0 shrink-0',
     },
     {
       id: 'qual',
       name: 'Qualcomm',
-      logo: 'qual.svg',
+      logo: '/logos/partners/qualcomm.svg',
       className: 'object-contain w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9 shrink-0',
     },
     {
       id: 'paytm',
       name: 'PayPal',
-      logo: 'paytm.svg',
+      logo: '/logos/partners/paytm.svg',
       className: 'object-contain w-[40vw] lg:w-[18vw] opacity-100 brightness-150 shrink-0',
     },
     {
       id: 'amazon',
       name: 'Amazon',
-      logo: 'amazon.svg',
+      logo: '/logos/partners/amazon.svg',
       className: 'object-contain w-[40vw] lg:w-[18vw] opacity-100 brightness-150 mt-5 lg:mt-10 shrink-0',
     },
     {
       id: 'fampay',
       name: 'FamPay',
-      logo: 'fampay.svg',
+      logo: '/logos/partners/fampay.svg',
       className: 'object-contain w-[45vw] lg:w-[20vw] opacity-100 brightness-150 shrink-0',
     },
     {
       id: 'inno',
       name: 'Innovaccer',
-      logo: 'inno.svg',
+      logo: '/logos/partners/innovaccer.svg',
       className: 'object-contain w-[50vw] lg:w-[20vw] opacity-100 brightness-150 shrink-0',
     },
     {
       id: 'maruti',
       name: 'Maruti Suzuki',
-      logo: 'maruti-suzuki.svg',
+      logo: '/logos/partners/maruti-suzuki.svg',
       className: 'object-contain w-[64vw] lg:w-[26vw] opacity-100 brightness-150 shrink-0',
     },
     {
       id: 'atl',
       name: 'Atlassian',
-      logo: 'atl.svg',
+      logo: '/logos/partners/atlassian.svg',
       className: 'object-contain w-[50vw] lg:w-[20vw] opacity-100 brightness-150 shrink-0',
     },
   ],
@@ -543,7 +543,7 @@ export const ENTERPRISE_ARCHITECTURE_DATA: EnterpriseArchitectureSectionData = {
   titlePrefix: 'From Legacy Systems to Next-Gen Apps :',
   titleAccent: 'CodeMate AI Accelerates',
   titleHighlight: 'Your Enterprise Journey.',
-  backgroundImage: '/figma/img_11_image_5.png',
+  backgroundImage: '/enterprise-architecture/enterprise-architecture-bg.png',
   groups: [
     {
       id: 'group-orchestration',

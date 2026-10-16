@@ -10,7 +10,7 @@ const mediaItems = [
     logoColor: "text-[#D8232A]",
     fontFamily: "font-serif font-bold italic",
     headline: "Maruti Suzuki selects CodeMate AI for its Incubation Program. Powering the next generation of AI-driven enterprise productivity.",
-    image: "/economicsTimes-media.jpg",
+    image: "/media/economic-times.jpg",
     link: "https://m.economictimes.com/industry/auto/auto-news/maruti-suzuki-picks-5-startups-including-sarvam-ai-for-multilingual-customer-support/amp_articleshow/132065492.cms",
     scale: 1.4
   },
@@ -20,7 +20,7 @@ const mediaItems = [
     logoColor: "text-[#004A96]",
     fontFamily: "font-sans font-bold",
     headline: "CodeMate AI joins an elite cohort of startups backed by Maruti Suzuki. Driving enterprise AI innovation from idea to impact.",
-    image: "/angelOneMedia.jpg",
+    image: "/media/angel-one.jpg",
     link: "https://www.angelone.in/news/stocks/maruti-suzuki-incubation-program-onboards-5-startups-for-ai-battery-recycling-solutions",
     scale: 1.4
   },
@@ -30,7 +30,7 @@ const mediaItems = [
     logoColor: "text-[#D8232A]",
     fontFamily: "font-sans font-bold",
     headline: "CodeMate AI joins Maruti Suzuki's Incubation Program. Accelerating AI-powered innovation for the future of manufacturing.",
-    image: "/aniNews.jpg",
+    image: "/media/ani-news.jpg",
     link: "https://www.aninews.in/news/business/maruti-suzuki-partners-with-five-startups-to-boost-efficiency-and-customer-experience20260629124343/",
     scale: 1.4
   },
@@ -50,7 +50,7 @@ const mediaItems = [
     logoColor: "text-[#002F6C]",
     fontFamily: "font-sans font-bold",
     headline: "CodeMate AI joins forces with Maruti Suzuki to bring AI-driven software development into enterprise operations.",
-    image: "/cnbc media.jpg",
+    image: "/media/cnbc-tv18.jpg",
     link: "https://x.com/cnbctv18live/status/2071483119191110081?s=46",
     scale: 1.4
   },
@@ -60,7 +60,7 @@ const mediaItems = [
     logoColor: "text-[#002D62]",
     fontFamily: "font-sans font-bold",
     headline: "CodeMate AI chosen by Maruti Suzuki to accelerate software development with AI.",
-    image: "/whalesbook news.png",
+    image: "/media/whalesbook.png",
     link: "https://www.whalesbook.com/news/English/technology/Maruti-Suzuki-Partners-With-5-Startups-to-Advance-AI-and-Battery-Tech/6a422024fb97bcde4ce5b059",
     scale: 1.4
   },
@@ -70,7 +70,7 @@ const mediaItems = [
     logoColor: "text-[#005B94]",
     fontFamily: "font-sans font-bold",
     headline: "Recognized among five startups selected by Maruti Suzuki for its Incubation Program",
-    image: "/devdiscourseMedia.png",
+    image: "/media/devdiscourse.png",
     link: "https://www.devdiscourse.com/article/business/3942107-maruti-suzuki-teams-up-with-startups-to-boost-efficiency-and-customer-experience?amp",
     scale: 1.4
   },
@@ -80,7 +80,7 @@ const mediaItems = [
     logoColor: "text-[#E31E24]",
     fontFamily: "font-sans font-bold",
     headline: "Maruti Suzuki partners with CodeMate AI to advance AI-driven software engineering.",
-    image: "/kalingaTV.jpg",
+    image: "/media/kalinga-tv.jpg",
     link: "https://kalingatv.com/business/maruti-suzuki-partners-with-five-startups-to-boost-efficiency-and-customer-experience/",
     scale: 1.4
   },
@@ -90,7 +90,7 @@ const mediaItems = [
     logoColor: "text-[#005A9C]",
     fontFamily: "font-sans font-bold",
     headline: "Recognized in the media for joining Maruti Suzuki's startup incubation cohort.",
-    image: "/prameyaNews.jpg",
+    image: "/media/prameya-news.jpg",
     link: "https://www.prameyanews.com/maruti-suzuki-partners-with-five-startups-to-boost-efficiency-and-customer-experience",
     scale: 1.4
   },
@@ -100,7 +100,7 @@ const mediaItems = [
     logoColor: "text-red-600",
     fontFamily: "font-sans font-bold italic",
     headline: "CodeMate AI featured as a Maruti Suzuki Incubation Program Cohort 5 startup.",
-    image: "/autocar media.jpg",
+    image: "/media/autocar-professional.jpg",
     link: "https://www.autocarpro.in/news/maruti-suzuki-onboards-five-startups-under-incubation-program-133270",
     scale: 1.4
   },
@@ -110,7 +110,7 @@ const mediaItems = [
     logoColor: "text-[#BF262A]",
     fontFamily: "font-serif font-bold",
     headline: "Featured by leading media for joining Maruti Suzuki's Incubation Program (MSIP)",
-    image: "/Business-Standard-Media.jpg",
+    image: "/media/business-standard.jpg",
     link: "https://www.business-standard.com/industry/auto/maruti-suzuki-five-startups-ai-battery-recycling-solutions-126062900338_1.html",
     scale: 1.4
   },
@@ -120,7 +120,7 @@ const mediaItems = [
     logoColor: "text-black",
     fontFamily: "font-serif font-bold",
     headline: "Maruti Suzuki onboards CodeMate AI to boost AI and sustainability initiatives",
-    image: "/the_founder_media.jpg",
+    image: "/media/the-founder.jpg",
     link: "https://thefoundermedia.com/maruti-suzuki-onboards-five-startups-to-boost-ai-and-sustainability-initiatives/",
     fill: true
   },
@@ -130,7 +130,7 @@ const mediaItems = [
     logoColor: "text-[#0A3055]",
     fontFamily: "font-serif",
     headline: "CodeMate AI presented its AI-powered development platform to an Austrian delegation, aiming to transform how software is designed, built, and maintained at scale.",
-    image: "/The HINDU.png",
+    image: "/media/the-hindu.png",
     link: "https://www.thehindubusinessline.com/info-tech/codemate-ai-chief-meets-austrian-ministerial-delegation/article70887794.ece"
   },
   {

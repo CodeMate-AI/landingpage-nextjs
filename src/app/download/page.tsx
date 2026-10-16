@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Download, CheckCircle2, ExternalLink } from 'lucide-react';
 import { FaWindows, FaApple, FaLinux } from 'react-icons/fa';
 import Image from 'next/image';
+import Link from 'next/link';
 import { HeroVideoDialog } from '@/components/ui/hero-video-dialog';
 import Footer from '@/components/footer';
 
@@ -41,24 +42,16 @@ const DownloadPage = () => {
             <div className="flex flex-col items-center px-4 pb-20 w-full">
                 {/* Global Navbar */}
                 <nav className="absolute top-0 w-full flex items-center justify-between px-6 py-5 md:px-10 z-50">
-                    <div onClick={() => { window.location.href = "https://codemate.ai" }} className="flex items-center gap-2 cursor-pointer">
+                    <Link href="/" className="flex items-center gap-2 cursor-pointer">
                         <Image
-                            src="/codemateLogo.svg"
+                            src="/logos/brand/codemate-logo.svg"
                             alt="Codemate Logo"
-                            width={64}
-                            height={64}
-                            className={`-ml-8 -mt-4 h-16 p-0.5 rounded-full w-auto dark:block hidden`}
+                            width={160}
+                            height={40}
+                            className="-ml-8 -mt-4 h-16 p-0.5 w-auto"
                             priority
                         />
-                        <Image
-                            src="/codemateLogo.png"
-                            alt="Codemate Logo"
-                            width={64}
-                            height={64}
-                            className={`-ml-8 -mt-4 h-16 p-0.5 rounded-full w-auto block dark:hidden`}
-                            priority
-                        />
-                    </div>
+                    </Link>
                     <div className="hidden items-center gap-8">
                         <a href="#" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors font-medium">Product</a>
                         <a href="#" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors font-medium">Enterprise</a>
@@ -84,7 +77,7 @@ const DownloadPage = () => {
                             className="flex-shrink-0 relative group"
                         >
                             <div className="w-20 h-20 bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] rounded-[22px] border border-white/10 shadow-2xl flex items-center justify-center relative overflow-hidden backdrop-blur-md">
-                                <Image src="/toolbox.png" alt="ToolBox Icon" width={80} height={80} />
+                                <Image src="/logos/brand/codemate-toolbox-icon.png" alt="ToolBox Icon" width={80} height={80} />
                             </div>
                         </motion.div>
                         {/* Text and Button Sequence */}

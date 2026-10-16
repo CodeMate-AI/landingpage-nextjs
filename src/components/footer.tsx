@@ -71,7 +71,7 @@ function Footer() {
           {/* Left: Brand Column */}
           <div className="md:col-span-5 flex flex-col gap-6">
             <div>
-              <img src="/codemateLogo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
+              <img src="/logos/brand/codemate-logo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
             </div>
             <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed -mt-4">
               CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.

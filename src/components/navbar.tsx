@@ -170,7 +170,7 @@ export default function Navbar() {
             <div className='flex justify-between items-center w-full h-10'>
 
               <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
-                <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="" className='cursor-pointer' />
+                <img onClick={() => router.push("/")} src="/logos/brand/codemate-logo.svg" alt="" className='cursor-pointer' />
               </div>
               <div className="relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50">
                 <span className=' flex gap-5 justify-center items-center z-50'>
@@ -242,7 +242,7 @@ export default function Navbar() {
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/Co_Logo.png" alt="Chat" className="size-5 object-contain" />
+                                <img src="/logos/brand/codemate-work-logo.png" alt="Chat" className="size-5 object-contain" />
                               </div>
                               <h1>Work</h1>
                             </div>
@@ -255,7 +255,7 @@ export default function Navbar() {
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/Build_Logo.png" alt="Build" className="size-5 scale-[1.5] object-contain" />
+                                <img src="/logos/brand/codemate-build-logo.png" alt="Build" className="size-5 scale-[1.5] object-contain" />
                               </div>
                               <h1>Build</h1>
                             </div>
@@ -270,7 +270,7 @@ export default function Navbar() {
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
+                                <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 object-contain" />
                               </div>
                               <h1>CORA</h1>
                             </div>
@@ -285,7 +285,7 @@ export default function Navbar() {
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
+                                <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 object-contain" />
                               </div>
                               <h1>CORA</h1>
                             </div>
@@ -435,7 +435,7 @@ export default function Navbar() {
             top: 0
           }}
           className={`${isMenu && (isProducts || isOS || isResources || isPartners) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 md:px-8 md:pl-8 py-[1.1rem] md:py-4 justify-between items-center z-[99999999999]`}>
-          <img src="/codemateLogo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
+          <img src="/logos/brand/codemate-logo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
           <motion.div
             onClick={() => { setMenu(state => !state); }} className="flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right">
             <Menu
@@ -513,14 +513,14 @@ export default function Navbar() {
                             <a href="https://app.codemate.ai/chat" target='_blank'>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
-                                  <img src="/Co_Logo.png" alt="Chat" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                  <img src="/logos/brand/codemate-work-logo.png" alt="Chat" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1>Work</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/Co_Logo.png" alt="Work" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                    <img src="/logos/brand/codemate-work-logo.png" alt="Work" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1>Work</h1>
                                 </motion.div>
@@ -531,14 +531,14 @@ export default function Navbar() {
                             <a href="http://build.codemate.ai/" target='_blank'>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
-                                  <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
+                                  <img src="/logos/brand/codemate-build-logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1>Build</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
+                                    <img src="/logos/brand/codemate-build-logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
                                   </div>
                                   <h1>Build</h1>
                                 </motion.div>
@@ -551,14 +551,14 @@ export default function Navbar() {
                             <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
-                                  <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                  <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1>CORA</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                    <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1>CORA</h1>
                                 </motion.div>
@@ -571,14 +571,14 @@ export default function Navbar() {
                             <a href="https://plugins.jetbrains.com/plugin/29932-cora" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
-                                  <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                  <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1>CORA</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                    <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1>CORA</h1>
                                 </motion.div>

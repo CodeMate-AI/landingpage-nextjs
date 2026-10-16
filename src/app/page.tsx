@@ -152,7 +152,7 @@ function Page() {
           >
             <motion.div className="absolute inset-0 opacity-5 z-0 pointer-events-none">
               <Image
-                src="/bgNoise.png"
+                src="/ui/bg-noise.png"
                 alt=""
                 fill
                 priority={false}

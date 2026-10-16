@@ -72,13 +72,13 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
             <span className="text-zinc-500 font-bold uppercase text-xs tracking-widest">Includes</span>
             <div className="flex items-center gap-4">
               <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-2 hover:border-zinc-500 transition-all hover:scale-110">
-                <img src="/Build_Logo.png" alt="Build" className="w-full h-full object-contain scale-[1.55]" />
+                <img src="/logos/brand/codemate-build-logo.png" alt="Build" className="w-full h-full object-contain scale-[1.55]" />
               </div>
               <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-2 hover:border-zinc-500 transition-all hover:scale-110">
-                <img src="/Co_Logo.png" alt="Work" className="w-full h-full object-contain" />
+                <img src="/logos/brand/codemate-work-logo.png" alt="Work" className="w-full h-full object-contain" />
               </div>
               <div className="w-10 h-10 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center p-2 hover:border-zinc-500 transition-all hover:scale-110">
-                <img src="/CORA_Logo.png" alt="CORA" className="w-full h-full object-contain" />
+                <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="w-full h-full object-contain" />
               </div>
             </div>
           </div>
