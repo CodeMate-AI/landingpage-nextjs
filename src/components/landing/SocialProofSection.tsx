@@ -60,30 +60,39 @@ export default function SocialProofSection() {
           {/* Vertical Divider Line between header and metrics */}
           <div className="hidden xl:block w-[1px] h-[104px] bg-white/20 shrink-0" />
 
-          {/* Right Block (Statistics Metrics: Clean 3-col grid on mobile, flex on tablet/desktop) */}
-          <div className="w-full xl:w-auto grid grid-cols-3 gap-2 sm:gap-6 sm:flex sm:flex-row sm:flex-nowrap justify-between sm:justify-start items-start lg:gap-[64px]">
-            {SOCIAL_PROOF_DATA.metrics.map((metric, idx) => (
-              <motion.div
-                key={metric.id}
-                initial={{ opacity: 0, y: 14 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.3 }}
-                transition={{ duration: 0.45, delay: 0.1 * (idx + 1) }}
-                className="flex flex-col items-start sm:items-center text-left sm:text-center w-full sm:w-auto min-w-0 sm:min-w-[150px] lg:min-w-[170px]"
-              >
-                <div className="flex items-baseline text-white font-semibold text-2xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[46px] tabular-nums tracking-tight">
-                  <Counter
-                    className="tabular-nums"
-                    direction="up"
-                    targetValue={metric.value}
-                  />
-                  <span>{metric.suffix}</span>
-                </div>
-                <p className="mt-1.5 sm:mt-3 text-white/70 font-normal text-xs sm:text-base lg:text-[20px] lg:leading-[28px] max-w-[200px] leading-snug">
-                  {metric.label}
-                </p>
-              </motion.div>
-            ))}
+          {/* Right Block (Statistics Metrics: Proper left, center, right distribution for mobile & iPad) */}
+          <div className="w-full xl:w-auto grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 xl:flex xl:flex-row xl:items-start xl:gap-[48px] 2xl:gap-[64px]">
+            {SOCIAL_PROOF_DATA.metrics.map((metric, idx) => {
+              const alignmentClass =
+                idx === 0
+                  ? 'items-start text-left'
+                  : idx === 1
+                  ? 'items-center text-center'
+                  : 'items-end text-right';
+
+              return (
+                <motion.div
+                  key={metric.id}
+                  initial={{ opacity: 0, y: 14 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, amount: 0.3 }}
+                  transition={{ duration: 0.45, delay: 0.1 * (idx + 1) }}
+                  className={`flex flex-col ${alignmentClass} w-full min-w-0`}
+                >
+                  <div className="flex items-baseline text-white font-semibold text-2xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[46px] tabular-nums tracking-tight">
+                    <Counter
+                      className="tabular-nums"
+                      direction="up"
+                      targetValue={metric.value}
+                    />
+                    <span>{metric.suffix}</span>
+                  </div>
+                  <p className="mt-1.5 sm:mt-3 text-white/70 font-normal text-xs sm:text-base lg:text-[20px] lg:leading-[28px] max-w-[200px] leading-snug">
+                    {metric.label}
+                  </p>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>
