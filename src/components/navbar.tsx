@@ -58,6 +58,7 @@ export default function Navbar() {
   const [isOS, setIsOS] = useState(false);
   const [isPartners, setIsPartners] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
   const [announcementHeight, setAnnouncementHeight] = useState(0);
   const announcementRef = useRef<HTMLDivElement>(null);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
@@ -65,14 +66,21 @@ export default function Navbar() {
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
 
-  // Detect when user starts scrolling to move navbar to top
+  // Detect when user starts scrolling to move navbar to top and compact
   useMotionValueEvent(scrollY, 'change', (latest) => {
     if (latest > 10) {
       setHasScrolled(true);
     } else {
       setHasScrolled(false);
     }
+    setIsCompact(latest > 60);
     setIsNBack(latest >= 10);
+    if (latest > 30) {
+      setIsProducts(false);
+      setIsOS(false);
+      setIsResources(false);
+      setIsPartners(false);
+    }
   });
 
   const SWE_BENCH_BLOG_URL = '/blog/cora-hits-sota-76-on-swe-bench-verified';
@@ -169,22 +177,33 @@ export default function Navbar() {
           animate={{ y: 0 }}
           transition={{ duration: 0.2, delay: 0 }}
           style={{
-            background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
+            background: isCompact
+              ? 'rgba(12, 12, 14, 0.82)'
+              : !isNBack
+              ? 'rgba(15, 12, 12, 0.2)'
+              : 'rgba(15, 20, 20, 0.45)',
+            boxShadow: isCompact
+              ? '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
+              : '0 4px 25px rgba(0, 0, 0, 0.1)',
+            backdropFilter: isCompact ? 'blur(20px)' : 'blur(10px)',
+            WebkitBackdropFilter: isCompact ? 'blur(20px)' : 'blur(10px)',
           }}
-          className={`${hasScrolled ? 'mt-5' : 'mt-2'} w-[90%] bg-opacity-65 z-[9999999999] rounded-lg ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''} transition-all duration-300`}>
-          <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
+          className={cn(
+            'transition-all duration-300 ease-out z-[9999999999]',
+            isCompact
+              ? 'mt-3 w-[75%] max-w-[1050px] rounded-xl border border-white/10'
+              : `${hasScrolled ? 'mt-5' : 'mt-2'} w-[90%] rounded-lg bg-opacity-65 ${isNBack ? 'border-y-[1px] border-gray-400 border-opacity-10' : ''}`
+          )}>
+          <div className='flex h-full w-full text-white px-[1rem] py-2'>
             <div className='flex justify-between items-center w-full h-10'>
 
               <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
                 <img onClick={() => router.push("/")} src="/logos/brand/codemate-logo.svg" alt="CodeMate Logo" className='cursor-pointer' />
               </div>
-              <div className="relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50">
-                <span className=' flex gap-5 justify-center items-center z-50'>
+              <div className="relative flex flex-col gap-3 text-md justify-center items-center cursor-pointer text-right z-50">
+                <span className='flex gap-5 justify-center items-center z-50'>
                   <motion.h1
-                    onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center  z-50  ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
+                    onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center z-50 ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isProducts ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -193,48 +212,63 @@ export default function Navbar() {
                         className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
                       />
                     </motion.span></motion.h1>
-                  <motion.h1
-                    onMouseEnter={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
-                      initial={{ rotate: 180 }}
-                      animate={{ rotate: !isOS ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <ChevronUp
-                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                      />
-                    </motion.span></motion.h1>
-                  <motion.h1
-                    onMouseEnter={() => { setIsResources(state => !state); setIsOS(false); setIsProducts(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
-                      initial={{ rotate: 180 }}
-                      animate={{ rotate: !isResources ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <ChevronUp
-                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                      />
-                    </motion.span></motion.h1>
+
+                  {!isCompact && (
+                    <>
+                      <motion.h1
+                        onMouseEnter={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
+                          initial={{ rotate: 180 }}
+                          animate={{ rotate: !isOS ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ChevronUp
+                            className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                          />
+                        </motion.span></motion.h1>
+                      <motion.h1
+                        onMouseEnter={() => { setIsResources(state => !state); setIsOS(false); setIsProducts(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
+                          initial={{ rotate: 180 }}
+                          animate={{ rotate: !isResources ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ChevronUp
+                            className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                          />
+                        </motion.span></motion.h1>
+                    </>
+                  )}
+
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65 cursor-pointer'>Features</motion.h1>
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} onClick={() => { router.push('/pricing?product=cora') }} className='opacity-65'>Pricing</motion.h1>
-                  <motion.h1
-                    onMouseEnter={() => { setIsPartners(state => !state); setIsOS(false); setIsProducts(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isPartners ? '' : 'opacity-65'}`}>Partners<motion.span
-                      initial={{ rotate: 180 }}
-                      animate={{ rotate: !isPartners ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                    >
-                      <ChevronUp
-                        className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
-                      />
-                    </motion.span></motion.h1>
-                  <a href='https://edu.codemate.ai/' target='_blank'>
-                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} className='opacity-65'>Academy</motion.h1>
-                  </a>
+
+                  {!isCompact && (
+                    <>
+                      <motion.h1
+                        onMouseEnter={() => { setIsPartners(state => !state); setIsOS(false); setIsProducts(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isPartners ? '' : 'opacity-65'}`}>Partners<motion.span
+                          initial={{ rotate: 180 }}
+                          animate={{ rotate: !isPartners ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <ChevronUp
+                            className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
+                          />
+                        </motion.span></motion.h1>
+                      <a href='https://edu.codemate.ai/' target='_blank'>
+                        <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} className='opacity-65'>Academy</motion.h1>
+                      </a>
+                    </>
+                  )}
+
                   <Link href="/contact">
-                    <motion.button onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap">Contact Us</motion.button>
+                    <motion.button onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1 bg-[#FFFFFF] text-black rounded-sm font-semibold opacity-85 text-nowrap">Contact Us</motion.button>
                   </Link>
                 </span>
 
-                {isProducts &&
-                  <div className='absolute  h-[20rem] w-[14.5rem] mt-[22rem] -left-[1.2rem] rounded-md -z-10 '>
+                {isProducts && (
+                  <div className={cn(
+                    'absolute h-[20rem] w-[14.5rem] rounded-md -z-10',
+                    'mt-[22rem] -left-[1.2rem]'
+                  )}>
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -306,9 +340,9 @@ export default function Navbar() {
                       </div>
                     </motion.div>
                   </div>
-                }
+                )}
 
-                {isOS &&
+                {isOS && !isCompact &&
                   <div className='absolute  h-[20rem] w-[12rem] mt-[22rem] left-[5.8rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -341,7 +375,7 @@ export default function Navbar() {
                   </div>
                 }
 
-                {isResources &&
+                {isResources && !isCompact &&
                   <div className='absolute  h-[20rem] w-[12rem] mt-[22rem] left-[14.8rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -382,7 +416,7 @@ export default function Navbar() {
                   </div>
                 }
 
-                {isPartners &&
+                {isPartners && !isCompact &&
                   <div className='absolute  h-[20rem] w-[9rem] mt-[22rem] left-[33.2rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
