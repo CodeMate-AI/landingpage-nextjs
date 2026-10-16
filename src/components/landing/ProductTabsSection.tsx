@@ -158,7 +158,8 @@ export default function ProductTabsSection() {
                         src={card.image}
                         alt={card.title}
                         fill
-                        sizes="(max-width: 640px) 280px, (max-width: 768px) 380px, (max-width: 1024px) 440px, 500px"
+                        quality={95}
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 75vw, 1200px"
                         className="object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     </div>

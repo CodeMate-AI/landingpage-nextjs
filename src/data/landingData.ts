@@ -351,14 +351,14 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Coding Playground',
           description:
             'Interactive notebook and editor support hands-on coding, debugging, and experimentation.',
-          image: '/Codemate Education Static.png',
+          image: '/academy/academy-playground.png',
         },
         {
           id: 'academy-2',
           title: 'CodeMate Chatbot',
           description:
             'Built-in AI assistant helps students solve assignments and learn faster.',
-          image: '/Codemate Education Static.png',
+          image: '/academy/academy-chatbot.png',
         },
         {
           id: 'academy-3',
@@ -372,14 +372,14 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           title: 'Structured Courses',
           description:
             'Guided modules organize topics, resources, and progress into clear learning paths.',
-          image: '/Codemate Education Static.png',
+          image: '/academy/academy-courses.png',
         },
         {
           id: 'academy-5',
           title: 'Certification Tracking',
           description:
             'Earn certifications that demonstrate industry-relevant skills and practical understanding of real-world enterprise workflows.',
-          image: '/Codemate Education Static.png',
+          image: '/academy/academy-certification.png',
         },
       ],
     },
