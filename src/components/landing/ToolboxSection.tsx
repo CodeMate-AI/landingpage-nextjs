@@ -9,6 +9,15 @@ import { FaGithub, FaBitbucket, FaGitlab } from 'react-icons/fa6';
 import { VscAzureDevops } from 'react-icons/vsc';
 import { TOOLBOX_DATA, ToolboxProduct } from '@/data/landingData';
 
+// Normalized optical scales for toolbox card logos to ensure uniform visual mass
+const TOOLBOX_LOGO_SCALES: Record<string, string> = {
+  build: 'scale-[2.1]',
+  cora: 'scale-[1.15]',
+  'cora-cli': 'scale-[1.15]',
+  academy: 'scale-[1.05]',
+  'pr-review': 'scale-[0.75]',
+};
+
 export default function ToolboxSection() {
   // At first, all cards are shown at the bottom without description.
   // When hovered, the card lifts up and description reveals.
@@ -157,7 +166,9 @@ export default function ToolboxSection() {
                         alt={product.name}
                         width={28}
                         height={28}
-                        className="object-contain"
+                        className={`object-contain transition-transform ${
+                          TOOLBOX_LOGO_SCALES[product.id] || ''
+                        }`}
                       />
                     </div>
                     <h3
