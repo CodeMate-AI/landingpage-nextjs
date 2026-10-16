@@ -147,7 +147,7 @@ export default function ProductTabsSection() {
           <div
             ref={scrollContainerRef}
             onScroll={checkScrollBoundaries}
-            className="w-full flex flex-row items-stretch gap-5 sm:gap-6 lg:gap-8 overflow-x-auto scroll-smooth py-1 px-0 sm:px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x snap-x snap-mandatory"
+            className="w-full flex flex-row items-stretch gap-5 sm:gap-6 lg:gap-8 overflow-x-auto scroll-smooth py-1 px-0 sm:px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -197,7 +197,7 @@ export default function ProductTabsSection() {
         <div className="w-full flex justify-center px-1 pt-0 sm:pt-1">
           <nav
             aria-label="CodeMate Products Navigation"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-2xl border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-2xl border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"
           >
             {PRODUCT_TABS_DATA.tabs.map((tab) => {
               const isActive = tab.id === activeTabId;

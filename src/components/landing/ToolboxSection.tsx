@@ -133,7 +133,7 @@ export default function ToolboxSection() {
         <div
           ref={scrollContainerRef}
           onMouseLeave={() => setHoveredIndex(null)}
-          className="flex w-full flex-nowrap items-stretch gap-3 sm:gap-4 lg:gap-4 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-0 sm:pt-0.5 select-none touch-pan-x snap-x snap-mandatory"
+          className="flex w-full flex-nowrap items-stretch gap-3 sm:gap-4 lg:gap-4 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-0 sm:pt-0.5 select-none [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
         >
           {TOOLBOX_DATA.products.map((product: ToolboxProduct, idx: number) => {
             const isHovered = hoveredIndex === idx;
