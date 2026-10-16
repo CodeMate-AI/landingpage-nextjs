@@ -14,6 +14,7 @@ const demos = [
     title: "AI WebApp Builder | Build Production Ready Application Instantly",
     description:
       "In this demo, we will explore how CodeMate Build turns a simple prompt into a fully functional application.",
+    thumbnail: "/hp/thumbnail-build.png",
   },
   {
     id: 2,
@@ -22,6 +23,7 @@ const demos = [
     title: "Autonomous Coding Agent | Deep Codebase Reasoning & Auto Mode",
     description:
       "In this demo, we will explore CORA’s Auto Mode, designed to automate entire development workflows from planning to execution.",
+    thumbnail: "/hp/thumbnail-cora.png",
   },
   {
     id: 3,
@@ -29,9 +31,11 @@ const demos = [
     name: "CodeMate C0",
     title: "Research Agent | Local On-Device AI Intelligence & Assistance",
     description:
-      "In this demo, we explore how the c0 web app combines knowledge base and rulebooks to generate more accurate and structured outputs.",
+      "In this demo, we explore how CodeMate Work combines knowledge base and rulebooks to generate more accurate and structured outputs.",
+    thumbnail: "/hp/thumbnail-c0.png",
   },
 ] as const;
+
 
 const resources = [
   {
@@ -55,7 +59,7 @@ const resources = [
     url: "https://backend.codemate.ai/uploaded/images/fd14b3e1-1d28-4797-b9ee-a71e32f5d717",
   },
   {
-    name: "CodeMate C0 Web",
+    name: "CodeMate Work",
     tagline: "AI-Powered Research Agent",
     url: "https://backend.codemate.ai/uploaded/images/8b450672-4add-4346-acdc-62ffc423e431",
   },
@@ -65,7 +69,7 @@ const resources = [
     url: "https://backend.codemate.ai/uploaded/images/54b0b865-d8be-4fab-8352-228a3b17e859",
   },
   {
-    name: "CodeMate Education",
+    name: "CodeMate Academy",
     tagline: "AI Learning & Academic Platform",
     url: "https://backend.codemate.ai/uploaded/images/9b408477-9c1f-498d-ba84-f73c9dec2ff7",
   },
@@ -448,7 +452,7 @@ export default function Home() {
               >
                 <div className="relative w-full aspect-video bg-black overflow-hidden pointer-events-none">
                   <Image
-                    src={`https://img.youtube.com/vi/${demo.videoId}/hqdefault.jpg`}
+                    src={demo.thumbnail}
                     alt={demo.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
