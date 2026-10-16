@@ -43,7 +43,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
       description:
         'Turns prompts and Figma designs into deployable apps instantly with full design mode support.',
       logo: '/Build_Logo.png',
-      previewImage: '/figma/img_2_codemate_c0.png',
+      previewImage: '/build/build-preview-toolbox.png',
       link: 'http://build.codemate.ai/',
       isExternal: true,
     },
