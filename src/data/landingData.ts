@@ -357,7 +357,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           id: 'academy-2',
           title: 'CodeMate Chatbot',
           description:
-            'Built-in AI assistant helps students solve coding issues and learn faster.',
+            'Built-in AI assistant helps students solve assignments and learn faster.',
           image: '/Codemate Education Static.png',
         },
         {
@@ -378,7 +378,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           id: 'academy-5',
           title: 'Certification Tracking',
           description:
-            'Certificate eligibility, claims, and previews recognize course completion and achievements.',
+            'Earn certifications that demonstrate industry-relevant skills and practical understanding of real-world enterprise workflows.',
           image: '/Codemate Education Static.png',
         },
       ],
