@@ -68,40 +68,44 @@ export default function ProductTabsSection() {
         {/* ========================================================================= */}
         {/* Product Header (Responsive Left / Right layout with Navigation Controls)  */}
         {/* ========================================================================= */}
-        <div className="w-full flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 sm:gap-8 pb-2">
+        <div className="w-full flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6 sm:gap-8 pb-2 min-h-[316px] sm:min-h-[356px] lg:min-h-[228px]">
           {/* Left Block: Product Label + Headline */}
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={`header-left-${currentTab.id}`}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
-              className="flex flex-col items-start gap-1 sm:gap-2 max-w-[760px]"
-            >
-              <span className="text-white/60 text-base sm:text-xl lg:text-[24px] lg:leading-[32px] font-normal tracking-wide">
-                {currentTab.productLabel}
-              </span>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[60px] font-semibold bg-gradient-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent">
-                {currentTab.headline}
-              </h2>
-            </motion.div>
-          </AnimatePresence>
+          <div className="flex flex-col items-start gap-1 sm:gap-2 max-w-[760px] w-full lg:w-auto min-h-[140px] sm:min-h-[160px] lg:min-h-[220px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={`header-left-${currentTab.id}`}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.35, ease: 'easeOut' }}
+                className="flex flex-col items-start gap-1 sm:gap-2 w-full"
+              >
+                <span className="text-white/60 text-base sm:text-xl lg:text-[24px] lg:leading-[32px] font-normal tracking-wide">
+                  {currentTab.productLabel}
+                </span>
+                <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[60px] font-semibold bg-gradient-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent min-h-[64px] sm:min-h-[80px] lg:min-h-[180px]">
+                  {currentTab.headline}
+                </h2>
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
           {/* Right Block: Description + Slider Controls */}
           <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between w-full lg:w-auto gap-4 lg:max-w-[620px]">
-            <AnimatePresence mode="wait">
-              <motion.p
-                key={`header-desc-${currentTab.id}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="text-white/90 text-sm sm:text-base lg:text-[16px] lg:leading-[25px] font-normal text-left max-w-[500px] lg:max-w-none"
-              >
-                {currentTab.description}
-              </motion.p>
-            </AnimatePresence>
+            <div className="w-full min-h-[60px] sm:min-h-[72px] lg:min-h-[50px] flex items-start sm:items-end lg:items-end">
+              <AnimatePresence mode="wait">
+                <motion.p
+                  key={`header-desc-${currentTab.id}`}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.35, ease: 'easeOut' }}
+                  className="text-white/90 text-sm sm:text-base lg:text-[16px] lg:leading-[25px] font-normal text-left max-w-[500px] lg:max-w-none min-h-[48px] sm:min-h-[72px] lg:min-h-[50px]"
+                >
+                  {currentTab.description}
+                </motion.p>
+              </AnimatePresence>
+            </div>
 
             {/* Slider Navigation Arrow Buttons: Pinned to right-hand side on mobile, matching original desktop placement */}
             <div className="w-full sm:w-auto lg:w-auto flex justify-end items-center gap-2 pt-2 shrink-0">
@@ -138,7 +142,7 @@ export default function ProductTabsSection() {
         {/* ========================================================================= */}
         {/* Horizontal Product Carousel Track (Swipeable, Scrollable, Keyboardable)  */}
         {/* ========================================================================= */}
-        <div className="w-full relative">
+        <div className="w-full relative min-h-[330px] sm:min-h-[400px] lg:min-h-[392px]">
           <div
             ref={scrollContainerRef}
             onScroll={checkScrollBoundaries}
@@ -172,10 +176,10 @@ export default function ProductTabsSection() {
 
                     {/* Card Content Details */}
                     <div className="w-full flex flex-col items-start gap-2 sm:gap-3 px-1 sm:px-2">
-                      <h3 className="text-white text-base sm:text-xl lg:text-[24px] lg:leading-[28px] font-medium tracking-tight">
+                      <h3 className="text-white text-base sm:text-xl lg:text-[24px] lg:leading-[28px] font-medium tracking-tight min-h-[28px] sm:min-h-[32px] lg:min-h-[56px]">
                         {card.title}
                       </h3>
-                      <p className="text-[#868686] text-xs sm:text-[15px] lg:text-[16px] lg:leading-[24px] font-normal leading-relaxed">
+                      <p className="text-[#868686] text-xs sm:text-[15px] lg:text-[16px] lg:leading-[24px] font-normal leading-relaxed min-h-[66px] sm:min-h-[72px] lg:min-h-[96px]">
                         {card.description}
                       </p>
                     </div>
@@ -187,12 +191,12 @@ export default function ProductTabsSection() {
         </div>
 
         {/* ========================================================================= */}
-        {/* Tab Switcher Navigation Controls (Animated Sliding Spring Pill)           */}
+        {/* Tab Switcher Navigation Controls (Community-style Pill Strip)             */}
         {/* ========================================================================= */}
         <div className="w-full flex justify-center px-1">
           <nav
             aria-label="CodeMate Products Navigation"
-            className="w-auto max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden bg-[#141A21]/90 backdrop-blur-md border border-white/15 rounded-[14px] p-1.5 sm:p-2 flex flex-row items-center justify-start sm:justify-center gap-1 shadow-[0_8px_32px_rgba(0,0,0,0.4)] touch-pan-x"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-2xl border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden touch-pan-x"
           >
             {PRODUCT_TABS_DATA.tabs.map((tab) => {
               const isActive = tab.id === activeTabId;
@@ -203,16 +207,16 @@ export default function ProductTabsSection() {
                   onClick={() => setActiveTabId(tab.id)}
                   aria-selected={isActive}
                   role="tab"
-                  className={`relative px-3.5 sm:px-5 lg:px-6 py-1.5 sm:py-2 rounded-full text-xs sm:text-[14px] lg:text-[15px] lg:leading-[22px] transition-colors duration-200 whitespace-nowrap cursor-pointer select-none ${
+                  className={`relative shrink-0 select-none whitespace-nowrap rounded-xl px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${
                     isActive
-                      ? 'text-[#0C0C0E] font-semibold'
-                      : 'text-white/70 hover:text-white hover:bg-white/[0.04]'
+                      ? 'text-black font-semibold'
+                      : 'bg-transparent text-zinc-400 hover:bg-zinc-800/60 hover:text-white'
                   }`}
                 >
                   {isActive && (
                     <motion.span
                       layoutId="active-product-tab-pill"
-                      className="absolute inset-0 bg-white rounded-full shadow-[0_2px_10px_rgba(0,0,0,0.25)]"
+                      className="absolute inset-0 bg-white rounded-xl shadow-lg"
                       transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
