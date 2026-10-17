@@ -1,0 +1,101 @@
+'use client';
+
+import React from 'react';
+import { Montserrat, Inter } from 'next/font/google';
+import { motion } from 'framer-motion';
+import { ENTERPRISE_ARCHITECTURE_DATA } from '@/data/landingData';
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+});
+
+const inter = Inter({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  display: 'swap',
+});
+
+export default function EnterpriseArchitectureSection() {
+  return (
+    <section
+      aria-label="Enterprise Architecture and Acceleration Showcase"
+      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 px-4 sm:px-8 lg:px-[90px] gap-10 sm:gap-12 lg:gap-[60px] isolate`}
+    >
+      {/* ========================================================================= */}
+      {/* Background: Half Glowing Portal Orb Dome (Desktop only, hidden on mobile/iPad) */}
+      {/* ========================================================================= */}
+      <div className="hidden xl:flex absolute inset-x-0 top-0 justify-center items-start pointer-events-none z-0 overflow-hidden select-none">
+        <img
+          src={ENTERPRISE_ARCHITECTURE_DATA.backgroundImage}
+          alt=""
+          aria-hidden="true"
+          className="w-full max-w-[1700px] h-auto object-contain object-top opacity-90 mix-blend-screen translate-y-[105px] pointer-events-none select-none"
+        />
+      </div>
+
+      {/* ========================================================================= */}
+      {/* Headline: From Legacy Systems to Next-Gen Apps                            */}
+      {/* ========================================================================= */}
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
+        transition={{ duration: 0.55 }}
+        className="z-10 flex flex-col items-center text-center max-w-[1362px] px-2 sm:px-4"
+      >
+        <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[76px] font-medium text-white tracking-tight text-center">
+          <span>{ENTERPRISE_ARCHITECTURE_DATA.titlePrefix}</span>
+          <br className="hidden sm:inline" />
+          <span className="mt-1 inline-block">
+            {ENTERPRISE_ARCHITECTURE_DATA.titleAccent}{' '}
+            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold">
+              {ENTERPRISE_ARCHITECTURE_DATA.titleHighlight}
+            </span>
+          </span>
+        </h2>
+      </motion.div>
+
+      {/* ========================================================================= */}
+      {/* Architecture Glassmorphism Rows                                           */}
+      {/* ========================================================================= */}
+      <div className="w-full max-w-[1740px] flex flex-col gap-6 sm:gap-7 lg:gap-[24px] z-10">
+        {ENTERPRISE_ARCHITECTURE_DATA.groups.map((group, groupIdx) => (
+          <motion.div
+            key={group.id}
+            initial={{ opacity: 0, y: 18 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 * groupIdx }}
+            className="w-full flex flex-col items-start gap-3 sm:gap-4 lg:gap-[16px]"
+          >
+            {/* Category Header */}
+            <h3
+              className={`${inter.className} text-white/75 font-normal text-sm sm:text-base lg:text-[18px] lg:leading-[18px] tracking-normal`}
+            >
+              {group.category}
+            </h3>
+
+            {/* Glassmorphic Row Container */}
+            <div className="w-full border-[0.5px] border-white/20 rounded-[4px] overflow-hidden flex flex-col lg:flex-row bg-[rgba(20,20,22,0.4)] backdrop-blur-[12px] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+              {group.items.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex-1 flex flex-col justify-center items-start p-3.5 sm:p-5 min-h-[85px] sm:min-h-[110px] lg:h-[150px] gap-1.5 border-b lg:border-b-0 lg:border-r border-white/20 last:border-b-0 lg:last:border-r-0 transition-all duration-300 hover:bg-white/[0.06] group"
+                >
+                  <h4 className="text-white font-semibold text-base sm:text-lg lg:text-[20px] lg:leading-[28px] tracking-tight group-hover:text-white transition-colors">
+                    {item.title}
+                  </h4>
+                  <p className="text-white/70 font-normal text-xs sm:text-sm lg:text-[14px] lg:leading-[22px] group-hover:text-white/85 transition-colors">
+                    {item.subtitle}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </section>
+  );
+}

@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["mongodb", "bcryptjs"],
 
   images: {
+    qualities: [75, 90, 95, 100],
     remotePatterns: [
       { protocol: "https", hostname: "assets.aceternity.com" },
       { protocol: "https", hostname: "api.microlink.io" },

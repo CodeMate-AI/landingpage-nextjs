@@ -5,12 +5,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Download, CheckCircle2, ExternalLink } from 'lucide-react';
 import { FaWindows, FaApple, FaLinux } from 'react-icons/fa';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { HeroVideoDialog } from '@/components/ui/hero-video-dialog';
 import Footer from '@/components/footer';
 
 type OS = 'Windows' | 'macOS' | 'Linux' | 'Unknown';
 
 const DownloadPage = () => {
+    const router = useRouter();
     const [detectedOS, setDetectedOS] = useState<OS>('Unknown');
     const [downloadState, setDownloadState] = useState<'idle' | 'downloading' | 'done'>('idle');
 
@@ -38,39 +41,85 @@ const DownloadPage = () => {
 
     return (
         <div className="min-h-screen bg-background text-foreground font-sans flex flex-col justify-between pt-28 relative">
+            {/* Desktop Navbar identical to /pricing */}
+            <div className="hidden lg:flex fixed top-0 justify-center items-center w-full" style={{ zIndex: 9999 }}>
+                <motion.div
+                    initial={{ y: -100 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                    className="mt-5 w-[90%] rounded-lg border-y border-gray-400/10"
+                    style={{
+                        background: 'rgba(15, 20, 20, 0.45)',
+                        backdropFilter: 'blur(5px)',
+                        WebkitBackdropFilter: 'blur(5px)',
+                        boxShadow: '0 4px 25px rgba(0,0,0,0.1)',
+                    }}
+                >
+                    <div className="flex justify-between items-center w-full text-white px-4 py-2 h-10">
+                        <div className="w-56 flex justify-center overflow-hidden">
+                            <img onClick={() => router.push('/')} src="/logos/brand/codemate-logo.svg" alt="CodeMate" className="cursor-pointer" />
+                        </div>
+                        <div className="flex gap-5 items-center">
+                            <motion.button
+                                onClick={() => router.push('/')}
+                                whileHover={{ opacity: 1 }}
+                                className="flex items-center gap-1 opacity-65 hover:opacity-100 transition-opacity"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M5 12l14 0" /><path d="M5 12l4 4" /><path d="M5 12l4 -4" />
+                                </svg>
+                                Back
+                            </motion.button>
+                            <a href="https://app.codemate.ai" target="_blank" rel="noreferrer">
+                                <motion.button
+                                    whileHover={{ opacity: 1, scale: 1.05 }}
+                                    className="px-2 py-1 bg-white text-black rounded-sm font-semibold opacity-85 hover:opacity-100 text-sm"
+                                >
+                                    Get Started
+                                </motion.button>
+                            </a>
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+
+            {/* Mobile Navbar identical to /pricing */}
+            <div className="lg:hidden fixed flex top-0 justify-center items-center w-full" style={{ zIndex: 9999 }}>
+                <motion.div
+                    initial={{ y: -100 }}
+                    animate={{ y: 0 }}
+                    transition={{ duration: 1, delay: 0.2 }}
+                    className="mt-5 w-[90%] rounded-lg border-y border-gray-400/10"
+                    style={{
+                        background: 'rgba(15, 20, 20, 0.45)',
+                        backdropFilter: 'blur(5px)',
+                        WebkitBackdropFilter: 'blur(5px)',
+                        boxShadow: '0 4px 25px rgba(0,0,0,0.1)',
+                    }}
+                >
+                    <div className="flex justify-between items-center w-full text-white px-3 py-2">
+                        <div className="w-[30vw] flex justify-start overflow-hidden">
+                            <img onClick={() => router.push('/')} src="/logos/brand/codemate-logo.svg" alt="CodeMate" className="cursor-pointer" />
+                        </div>
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={() => router.push('/')}
+                                className="text-xs text-neutral-300 hover:text-white flex items-center gap-0.5"
+                            >
+                                Back
+                            </button>
+                            <a href="https://app.codemate.ai" target="_blank" rel="noreferrer">
+                                <button className="px-2 py-1 bg-white text-black text-xs rounded-sm font-semibold opacity-90 mr-1">
+                                    Get Started
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                </motion.div>
+            </div>
+
             <div className="flex flex-col items-center px-4 pb-20 w-full">
-                {/* Global Navbar */}
-                <nav className="absolute top-0 w-full flex items-center justify-between px-6 py-5 md:px-10 z-50">
-                    <div onClick={() => { window.location.href = "https://codemate.ai" }} className="flex items-center gap-2 cursor-pointer">
-                        <Image
-                            src="/codemateLogo.svg"
-                            alt="Codemate Logo"
-                            width={64}
-                            height={64}
-                            className={`-ml-8 -mt-4 h-16 p-0.5 rounded-full w-auto dark:block hidden`}
-                            priority
-                        />
-                        <Image
-                            src="/codemateLogo.png"
-                            alt="Codemate Logo"
-                            width={64}
-                            height={64}
-                            className={`-ml-8 -mt-4 h-16 p-0.5 rounded-full w-auto block dark:hidden`}
-                            priority
-                        />
-                    </div>
-                    <div className="hidden items-center gap-8">
-                        <a href="#" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors font-medium">Product</a>
-                        <a href="#" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors font-medium">Enterprise</a>
-                        <a href="#" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors font-medium">Pricing</a>
-                        <a href="#" className="text-[14px] text-muted-foreground hover:text-foreground transition-colors font-medium">Resources</a>
-                    </div>
-                    <div className="hidden items-center gap-5">
-                        <a href="/login" className="hidden xl:block text-[14px] text-muted-foreground hover:text-foreground transition-colors font-medium">Sign in</a>
-                        <a href="#" className="hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-full border border-white/10 hover:bg-white/5 text-[14px] transition-colors">Contact sales</a>
-                        <a href="#download" className="px-4 py-1.5 bg-foreground text-background rounded-full text-[14px] font-medium hover:bg-foreground/90 transition-colors">Download</a>
-                    </div>
-                </nav>
                 {/* Background Glow */}
                 {/* <div className="fixed top-[-20%] left-1/2 transform -translate-x-1/2 w-[800px] h-[600px] bg-emerald blur-[120px] rounded-full pointer-events-none z-0"></div> */}
                 <div className="z-10 flex flex-col items-center text-center w-full max-w-4xl">
@@ -84,7 +133,7 @@ const DownloadPage = () => {
                             className="flex-shrink-0 relative group"
                         >
                             <div className="w-20 h-20 bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] rounded-[22px] border border-white/10 shadow-2xl flex items-center justify-center relative overflow-hidden backdrop-blur-md">
-                                <Image src="/toolbox.png" alt="ToolBox Icon" width={80} height={80} />
+                                <Image src="/logos/brand/codemate-toolbox-icon.png" alt="ToolBox Icon" width={80} height={80} />
                             </div>
                         </motion.div>
                         {/* Text and Button Sequence */}

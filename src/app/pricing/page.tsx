@@ -288,7 +288,7 @@ function Page() {
         >
           <div className="flex justify-between items-center w-full text-white px-4 py-2 h-10">
             <div className="w-56 flex justify-center overflow-hidden">
-              <img onClick={() => router.push('/')} src="/codemateLogo.svg" alt="CodeMate" className="cursor-pointer" />
+              <img onClick={() => router.push('/')} src="/logos/brand/codemate-logo.svg" alt="CodeMate" className="cursor-pointer" />
             </div>
             <div className="flex gap-5 items-center">
               <motion.button
@@ -331,7 +331,7 @@ function Page() {
         >
           <div className="flex justify-between items-center w-full text-white px-2 py-2">
             <div className="w-[30vw] flex justify-start overflow-hidden">
-              <img src="/codemateLogo.svg" alt="CodeMate" />
+              <img src="/logos/brand/codemate-logo.svg" alt="CodeMate" />
             </div>
             <a href="https://app.codemate.ai" target="_blank" rel="noreferrer">
               <button className="px-1.5 py-0.5 bg-white text-black text-sm rounded-lg font-semibold opacity-85 mr-1">
@@ -494,7 +494,7 @@ function buildFeatureConfig(mobile: boolean): Record<string, { label: string; re
   const tick = (ok: boolean) => mobile
     ? <p className="opacity-80">{ok ? '✓ Available' : '✗ Not Available'}</p>
     : ok
-      ? <img src="/tick.svg" className="object-fit size-[48%]" alt="Yes" />
+      ? <img src="/ui/tick.svg" className="object-fit size-[48%]" alt="Yes" />
       : <svg xmlns="http://www.w3.org/2000/svg" width={36} height={36} viewBox="0 0 24 24" fill="currentColor"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M17 3.34a10 10 0 1 1 -14.995 8.984l-.005 -.324l.005 -.324a10 10 0 0 1 14.995 -8.336zm-6.489 5.8a1 1 0 0 0 -1.218 1.567l1.292 1.293l-1.292 1.293l-.083 .094a1 1 0 0 0 1.497 1.32l1.293 -1.292l1.293 1.292l.094 .083a1 1 0 0 0 1.32 -1.497l-1.292 -1.293l1.292 -1.293l.083 -.094a1 1 0 0 0 -1.497 -1.32l-1.293 1.292l-1.293 -1.292l-.094 -.083z" /></svg>
 
   return {
