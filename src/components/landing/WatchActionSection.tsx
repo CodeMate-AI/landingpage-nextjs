@@ -17,7 +17,7 @@ export default function WatchActionSection() {
     <section
       id="watch-action"
       aria-label="Watch CodeMate in Action"
-      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center justify-center pt-4 sm:pt-5 lg:pt-6 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-8 lg:px-[90px] gap-8 sm:gap-10`}
+      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center justify-center pt-8 sm:pt-12 lg:pt-14 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-8 lg:px-[90px] gap-8 sm:gap-10`}
     >
       {/* ========================================================================= */}
       {/* Title: Watch CodeMate in Action                                           */}

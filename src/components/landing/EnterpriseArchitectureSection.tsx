@@ -21,7 +21,7 @@ export default function EnterpriseArchitectureSection() {
   return (
     <section
       aria-label="Enterprise Architecture and Acceleration Showcase"
-      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center overflow-hidden pt-4 sm:pt-5 lg:pt-6 pb-4 sm:pb-5 lg:pb-6 px-4 sm:px-8 lg:px-[90px] gap-10 sm:gap-12 lg:gap-[60px] isolate`}
+      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 px-4 sm:px-8 lg:px-[90px] gap-10 sm:gap-12 lg:gap-[60px] isolate`}
     >
       {/* ========================================================================= */}
       {/* Background: Half Glowing Portal Orb Dome (Desktop only, hidden on mobile/iPad) */}

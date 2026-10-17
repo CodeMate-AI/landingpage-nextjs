@@ -63,7 +63,7 @@ export default function ProductTabsSection() {
     <section
       id="features"
       aria-label="CodeMate Product Details"
-      className={`${montserrat.className} relative w-full bg-[#0C0C0E] text-white flex flex-col items-center overflow-hidden pt-2 sm:pt-3 lg:pt-4 pb-4 sm:pb-5 lg:pb-6 px-4 sm:px-8 lg:px-[90px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28`}
+      className={`${montserrat.className} relative w-full bg-[#0C0C0E] text-white flex flex-col items-center overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 px-4 sm:px-8 lg:px-[90px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28`}
     >
       <div className="w-full max-w-[1740px] flex flex-col items-center gap-5 sm:gap-6 lg:gap-8">
         {/* ========================================================================= */}
@@ -194,7 +194,7 @@ export default function ProductTabsSection() {
         {/* ========================================================================= */}
         {/* Tab Switcher Navigation Controls (Community-style Pill Strip)             */}
         {/* ========================================================================= */}
-        <div className="w-full flex justify-center px-1 pt-0 sm:pt-1">
+        <div className="w-full flex justify-center px-1 pt-2 sm:pt-3 lg:pt-4">
           <nav
             aria-label="CodeMate Products Navigation"
             className="inline-flex shrink-0 items-center gap-1.5 rounded-2xl border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"
