@@ -98,8 +98,8 @@ export default function ToolboxSection() {
             </motion.h2>
           </div>
 
-          {/* Slider Navigation Controls: Pinned to right-hand side on mobile and desktop */}
-          <div className="w-full sm:w-auto flex justify-end items-center gap-2 pt-0 sm:pt-0 self-end">
+          {/* Slider Navigation Controls: Pinned to right-hand side on mobile, hidden on desktop */}
+          <div className="w-full sm:w-auto flex lg:hidden justify-end items-center gap-2 pt-0 sm:pt-0 self-end">
             <button
               type="button"
               onClick={() => handleScroll('left')}
@@ -156,7 +156,7 @@ export default function ToolboxSection() {
                 style={{
                   padding: '24px 0px 24px 20px',
                 }}
-                className={`group relative flex h-[450px] sm:h-[510px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-48px)/4)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 snap-start ${
+                className={`group relative flex h-[450px] sm:h-[510px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-64px)/5)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 snap-start ${
                   isHovered
                     ? 'border-white/15 shadow-[0_12px_40px_rgba(0,191,255,0.08)]'
                     : 'border-white/5 shadow-none'
@@ -192,12 +192,12 @@ export default function ToolboxSection() {
                   <div
                     className={`overflow-hidden transition-all duration-300 ease-in-out ${
                       isHovered
-                        ? 'max-h-[72px] opacity-70 mt-1'
-                        : 'max-lg:max-h-[72px] max-lg:opacity-70 max-lg:mt-1 lg:max-h-0 lg:opacity-0 lg:mt-0'
+                        ? 'max-h-[140px] opacity-70 mt-1'
+                        : 'max-lg:max-h-[140px] max-lg:opacity-70 max-lg:mt-1 lg:max-h-0 lg:opacity-0 lg:mt-0'
                     }`}
                   >
                     <p
-                      className="text-[14px] leading-[22px] text-white max-w-[300px]"
+                      className="text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px] text-white max-w-[300px]"
                       style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)', opacity: 0.7 }}
                     >
                       {product.description}

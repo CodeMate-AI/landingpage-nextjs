@@ -29,7 +29,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
   products: [
     {
       id: 'work',
-      name: 'CodeMate Work',
+      name: 'Work',
       description:
         'Turns deep research and feasibility into production-ready code through AI-driven intelligence.',
       logo: '/logos/brand/codemate-work-logo.png',
@@ -39,7 +39,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
     },
     {
       id: 'build',
-      name: 'CodeMate Build',
+      name: 'Build',
       description:
         'Turns prompts and Figma designs into deployable apps instantly with full design mode support.',
       logo: '/logos/brand/codemate-build-logo.png',
@@ -49,7 +49,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
     },
     {
       id: 'cora',
-      name: 'CodeMate Cora',
+      name: 'Cora',
       description:
         'End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE.',
       logo: '/logos/brand/codemate-cora-logo.png',
@@ -59,7 +59,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
     },
     {
       id: 'cora-cli',
-      name: 'CodeMate Cora CLI',
+      name: 'Cora CLI',
       description:
         'Run code and scripts instantly through an AI-powered command-line interface directly in your terminal.',
       logo: '/logos/brand/codemate-cora-logo.png',
@@ -69,7 +69,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
     },
     {
       id: 'pr-review',
-      name: 'CodeMate PR Review Agent',
+      name: 'PR Review Agent',
       description:
         'Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.',
       logo: '/logos/brand/codemate-pr-review-logo.svg',
