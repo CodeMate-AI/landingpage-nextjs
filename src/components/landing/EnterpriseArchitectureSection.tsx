@@ -21,7 +21,7 @@ export default function EnterpriseArchitectureSection() {
   return (
     <section
       aria-label="Enterprise Architecture and Acceleration Showcase"
-      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 px-4 sm:px-8 lg:px-[90px] gap-10 sm:gap-12 lg:gap-[60px] isolate`}
+      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center overflow-hidden pt-10 sm:pt-14 lg:pt-20 2xl:pt-[140px] pb-10 sm:pb-14 lg:pb-20 2xl:pb-[140px] px-4 sm:px-6 lg:px-6 xl:px-8 2xl:px-[90px] gap-8 sm:gap-10 lg:gap-[48px] 2xl:gap-[60px] isolate`}
     >
       {/* ========================================================================= */}
       {/* Background: Half Glowing Portal Orb Dome (Desktop only, hidden on mobile/iPad) */}
@@ -68,7 +68,7 @@ export default function EnterpriseArchitectureSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.5, delay: 0.1 * groupIdx }}
-            className="w-full flex flex-col items-start gap-3 sm:gap-4 lg:gap-[16px]"
+            className="w-full flex flex-col items-start gap-2.5 sm:gap-3 lg:gap-[16px]"
           >
             {/* Category Header */}
             <h3
@@ -78,16 +78,24 @@ export default function EnterpriseArchitectureSection() {
             </h3>
 
             {/* Glassmorphic Row Container */}
-            <div className="w-full border-[0.5px] border-white/20 rounded-[4px] overflow-hidden flex flex-col lg:flex-row bg-[rgba(20,20,22,0.4)] backdrop-blur-[12px] shadow-[0_4px_30px_rgba(0,0,0,0.5)]">
+            <div
+              className={`w-full border-[0.5px] border-white/20 rounded-[4px] overflow-hidden flex flex-col lg:flex-row bg-[rgba(20,20,22,0.4)] shadow-[0_4px_30px_rgba(0,0,0,0.5)] ${
+                group.columns === 5
+                  ? 'backdrop-blur-[10.5px]'
+                  : group.columns === 3
+                  ? 'backdrop-blur-[17px]'
+                  : 'backdrop-blur-[12px]'
+              }`}
+            >
               {group.items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex-1 flex flex-col justify-center items-start p-3.5 sm:p-5 min-h-[85px] sm:min-h-[110px] lg:h-[150px] gap-1.5 border-b lg:border-b-0 lg:border-r border-white/20 last:border-b-0 lg:last:border-r-0 transition-all duration-300 hover:bg-white/[0.06] group"
+                  className="flex-1 lg:flex-auto min-w-0 flex flex-col justify-center items-start p-3.5 sm:p-4 lg:px-3 xl:px-3.5 2xl:px-5 lg:py-3.5 xl:py-4 2xl:py-5 min-h-[85px] sm:min-h-[100px] lg:h-[140px] xl:h-[150px] gap-1.5 border-b lg:border-b-0 lg:border-r border-white/20 last:border-b-0 lg:last:border-r-0 transition-all duration-300 hover:bg-white/[0.06] group"
                 >
-                  <h4 className="text-white font-semibold text-base sm:text-lg lg:text-[20px] lg:leading-[28px] tracking-tight group-hover:text-white transition-colors">
+                  <h4 className="text-white font-semibold text-base sm:text-lg lg:text-[15px] xl:text-[17px] 2xl:text-[19px] lg:leading-[22px] xl:leading-[24px] 2xl:leading-[26px] tracking-tight group-hover:text-white transition-colors whitespace-nowrap">
                     {item.title}
                   </h4>
-                  <p className="text-white/70 font-normal text-xs sm:text-sm lg:text-[14px] lg:leading-[22px] group-hover:text-white/85 transition-colors">
+                  <p className="text-white/70 font-normal text-xs sm:text-sm lg:text-[11px] xl:text-[11.5px] 2xl:text-[13px] lg:leading-[16px] xl:leading-[18px] 2xl:leading-[20px] tracking-tight whitespace-nowrap group-hover:text-white/85 transition-colors">
                     {item.subtitle}
                   </p>
                 </div>
