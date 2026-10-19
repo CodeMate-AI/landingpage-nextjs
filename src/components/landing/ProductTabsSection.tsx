@@ -51,8 +51,8 @@ export default function ProductTabsSection() {
     const cardStep = isMobile
       ? el.clientWidth + 20
       : isTablet
-      ? (el.clientWidth - 24) / 2 + 24
-      : (el.clientWidth - 64) / 3 + 32;
+        ? (el.clientWidth - 24) / 2 + 24
+        : (el.clientWidth - 64) / 3 + 32;
     el.scrollBy({
       left: direction === 'left' ? -cardStep : cardStep,
       behavior: 'smooth',
@@ -71,7 +71,7 @@ export default function ProductTabsSection() {
         {/* ========================================================================= */}
         <div className="w-full flex flex-col lg:flex-row justify-start lg:justify-between items-start lg:items-start gap-3 sm:gap-4 lg:gap-6 pb-1 min-h-[190px] sm:min-h-[148px] lg:min-h-0">
           {/* Left Block: Product Label + Headline */}
-          <div className="flex flex-col items-start gap-1 sm:gap-1.5 max-w-[760px] w-full lg:w-auto min-h-[68px] sm:min-h-[76px] lg:min-h-0">
+          <div className="flex flex-col items-start gap-1 sm:gap-1.5 max-w-[760px] lg:max-w-none w-full lg:w-auto min-h-[68px] sm:min-h-[76px] lg:min-h-0">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`header-left-${currentTab.id}`}
@@ -84,7 +84,7 @@ export default function ProductTabsSection() {
                 <span className="text-white/60 text-sm sm:text-base lg:text-[22px] lg:leading-[28px] font-normal tracking-wide">
                   {currentTab.productLabel}
                 </span>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] lg:leading-[54px] font-semibold bg-gradient-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent min-h-[34px] sm:min-h-[44px] lg:min-h-0">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[36px] xl:text-[42px] 2xl:text-[46px] lg:leading-[54px] font-semibold bg-gradient-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent min-h-[34px] sm:min-h-[44px] lg:min-h-0 lg:whitespace-nowrap">
                   {currentTab.headline}
                 </h2>
               </motion.div>
@@ -92,7 +92,7 @@ export default function ProductTabsSection() {
           </div>
 
           {/* Right Block: Description + Slider Controls */}
-          <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between w-full lg:w-auto gap-2.5 sm:gap-4 lg:gap-3 lg:max-w-[580px]">
+          <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between w-full lg:w-auto gap-2.5 sm:gap-4 lg:gap-3 lg:max-w-[480px] xl:max-w-[540px] shrink-0">
             <div className="w-full min-h-[50px] sm:min-h-[48px] lg:min-h-[54px] flex items-start sm:items-end lg:items-start lg:pt-[34px]">
               <AnimatePresence mode="wait">
                 <motion.p
@@ -115,11 +115,10 @@ export default function ProductTabsSection() {
                 onClick={() => handleScroll('left')}
                 disabled={!canScrollLeft}
                 aria-label="Previous cards"
-                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
-                  canScrollLeft
+                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${canScrollLeft
                     ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
                     : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
-                }`}
+                  }`}
               >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
@@ -128,11 +127,10 @@ export default function ProductTabsSection() {
                 onClick={() => handleScroll('right')}
                 disabled={!canScrollRight}
                 aria-label="Next cards"
-                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
-                  canScrollRight
+                className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${canScrollRight
                     ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
                     : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
-                }`}
+                  }`}
               >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
@@ -208,11 +206,10 @@ export default function ProductTabsSection() {
                   onClick={() => setActiveTabId(tab.id)}
                   aria-selected={isActive}
                   role="tab"
-                  className={`relative shrink-0 select-none whitespace-nowrap rounded-xl px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${
-                    isActive
+                  className={`relative shrink-0 select-none whitespace-nowrap rounded-xl px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${isActive
                       ? 'text-black font-semibold'
                       : 'bg-transparent text-zinc-400 hover:bg-zinc-800/60 hover:text-white'
-                  }`}
+                    }`}
                 >
                   {isActive && (
                     <motion.span

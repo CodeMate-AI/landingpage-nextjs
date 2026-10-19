@@ -334,7 +334,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
       productLabel: 'CodeMate Academy',
       headline: 'Master Modern AI Development.',
       description:
-        'AI-powered classroom management, curriculum pathways, and hands-on coding labs built for universities, educators, and aspiring software engineers.',
+        'Classrooms, curriculum pathways, and hands-on coding labs for universities, educators, and developers.',
       cards: [
         {
           id: 'academy-1',
