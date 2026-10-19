@@ -51,7 +51,7 @@ export const projects: Project[] = [
     category: "Internal Utilities",
     videoUrl: "https://backend.codemate.ai/uploaded/images/ac2337b2-e7e3-41e5-bf6d-7d0ab6983daf",
     docsPdfUrl: "https://backend.codemate.ai/uploaded/images/4ddbfd07-8d89-46e1-b7e4-2f289768baaa",
-    demoUrl: "https://hrms.codemate.build/",
+    demoUrl: "https://hrms-community.codemate.build/",
     previewImage: "https://backend.codemate.ai/uploaded/images/5a42d01f-d107-4ce7-ae8d-7ee99a891b54",
   },
   {
