@@ -63,6 +63,49 @@ export default function Navbar() {
   const announcementRef = useRef<HTMLDivElement>(null);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
 
+  // Prevent background scrolling and pause smooth scroll while mobile hamburger menu is open
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    if (isMenu) {
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalDocOverflow = document.documentElement.style.overflow;
+      const originalTouchAction = document.body.style.touchAction;
+
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+
+      // Pause Lenis smooth scroll if instance is registered
+      if ((window as any).__lenis) {
+        (window as any).__lenis.stop();
+      }
+
+      // Prevent touchmove and wheel gestures outside of the scrollable drawer
+      const preventBackgroundScroll = (e: TouchEvent | WheelEvent) => {
+        const target = e.target;
+        const element = target instanceof Element ? target : null;
+        if (!element?.closest('[data-lenis-prevent]')) {
+          e.preventDefault();
+        }
+      };
+
+      window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+      window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalDocOverflow;
+        document.body.style.touchAction = originalTouchAction;
+        if ((window as any).__lenis) {
+          (window as any).__lenis.start();
+        }
+        window.removeEventListener('touchmove', preventBackgroundScroll);
+        window.removeEventListener('wheel', preventBackgroundScroll);
+      };
+    }
+  }, [isMenu]);
+
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
 
@@ -516,41 +559,128 @@ export default function Navbar() {
       {/* Hamburger menu overlay for mobile devices*/}
       {/* ========================================== */}
       <AnimatePresence>
-        <motion.div
-          key="mobile-navbar-container"
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          style={{
-            background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            top: 0
-          }}
-          className={`${isMenu && (isProducts || isOS || isResources || isPartners) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 md:px-8 md:pl-8 py-[1.1rem] md:py-4 justify-between items-center z-[99999999999]`}>
-          <img src="/logos/brand/codemate-logo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
+        {/* Mobile & Tablet floating compact navbar wrapper */}
+        <div
+          style={{ top: 0 }}
+          className="lg:hidden fixed inset-x-0 flex justify-center items-center w-full z-[99999999999] pointer-events-none transition-all duration-300"
+        >
           <motion.div
-            onClick={() => { setMenu(state => !state); }} className="flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right">
-            <Menu
-              className={cn(
-                "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",
-                isMenu
-                  ? "hidden scale-75 -rotate-45"
-                  : "opacity-100 scale-100 rotate-0"
-              )}
-            />
+            key="mobile-navbar-container"
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              background: isMenu
+                ? 'rgb(24, 24, 27)'
+                : isCompact
+                ? 'rgba(12, 12, 14, 0.85)'
+                : !isNBack
+                ? 'rgba(15, 12, 12, 0.2)'
+                : 'rgba(15, 20, 20, 0.45)',
+              boxShadow: isCompact && !isMenu
+                ? '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
+                : '0 4px 25px rgba(0, 0, 0, 0.1)',
+              backdropFilter: isCompact || isMenu ? 'blur(20px)' : 'blur(10px)',
+              WebkitBackdropFilter: isCompact || isMenu ? 'blur(20px)' : 'blur(10px)',
+            }}
+            className={cn(
+              'pointer-events-auto transition-all duration-300 ease-out transform-gpu flex justify-between items-center',
+              isCompact && !isMenu
+                ? 'mt-2.5 w-[94%] sm:w-[90%] md:w-[85%] max-w-[640px] rounded-xl border border-white/10 px-3.5 sm:px-5 py-2'
+                : 'w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5'
+            )}
+          >
+            {/* Left side: CodeMate logo */}
+            <div
+              className="flex items-center justify-start overflow-hidden cursor-pointer shrink-0"
+              onClick={() => {
+                if (isMenu) setMenu(false);
+                router.push('/');
+              }}
+            >
+              <img
+                src="/logos/brand/codemate-logo.svg"
+                alt="CodeMate AI Logo"
+                className={cn(
+                  'transition-all duration-300 object-contain',
+                  isCompact && !isMenu
+                    ? 'w-[132px] xs:w-[142px] sm:w-[160px] md:w-[175px] h-auto'
+                    : 'w-[136px] xs:w-[146px] sm:w-[165px] md:w-[185px] h-auto'
+                )}
+              />
+            </div>
 
-            <X
-              className={cn(
-                "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",
-                isMenu
-                  ? "opacity-100 scale-100 rotate-0"
-                  : "hidden scale-75 rotate-45"
+            {/* Right side: Pricing, Sign Up, and Hamburger icon */}
+            <div className="flex items-center gap-2 xs:gap-3 sm:gap-4 shrink-0 text-right">
+              {/* Pricing link */}
+              {!isMenu && (
+                <motion.span
+                  onClick={() => { router.push('/pricing?product=cora'); }}
+                  whileHover={{ opacity: 1 }}
+                  whileTap={{ scale: 0.96 }}
+                  className={cn(
+                    'text-xs sm:text-sm font-medium text-neutral-200 hover:text-white cursor-pointer transition-all duration-200 select-none',
+                    isCompact
+                      ? 'opacity-80 scale-100'
+                      : 'hidden sm:inline-block opacity-75'
+                  )}
+                >
+                  Pricing
+                </motion.span>
               )}
-            />
+
+              {/* Sign Up button */}
+              {!isMenu && (
+                <a
+                  href="https://app.codemate.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cn(
+                    'transition-all duration-200 select-none',
+                    isCompact
+                      ? 'inline-flex'
+                      : 'hidden sm:inline-flex'
+                  )}
+                >
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    className="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white text-black text-xs sm:text-sm rounded-sm font-semibold hover:bg-neutral-200 transition-colors whitespace-nowrap"
+                  >
+                    Sign Up
+                  </motion.button>
+                </a>
+              )}
+
+              {/* Hamburger / Close icon (right-most) */}
+              <motion.div
+                onClick={() => { setMenu(state => !state); }}
+                whileTap={{ scale: 0.92 }}
+                aria-label={isMenu ? "Close menu" : "Open menu"}
+                role="button"
+                className="flex justify-center items-center cursor-pointer p-1 text-white hover:text-neutral-200 transition-colors"
+              >
+                <Menu
+                  className={cn(
+                    "w-5 h-5 sm:w-6 sm:h-6 transition-all duration-200",
+                    isMenu
+                      ? "hidden scale-75 -rotate-45"
+                      : "opacity-100 scale-100 rotate-0"
+                  )}
+                />
+                <X
+                  className={cn(
+                    "w-5 h-5 sm:w-6 sm:h-6 transition-all duration-200",
+                    isMenu
+                      ? "opacity-100 scale-100 rotate-0"
+                      : "hidden scale-75 rotate-45"
+                  )}
+                />
+              </motion.div>
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
         {isMenu && (
           <div
             key="mobile-menu-overlay"
@@ -581,7 +711,7 @@ export default function Navbar() {
                 transition={{ duration: 0.2, delay: 0.2 }}
                 className="absolute h-full  w-[100%] bg-zinc-900  z-[999999999999]"
               >
-                <div data-lenis-prevent className='relative h-full w-full overflow-y-auto  z-[9999999999]'>
+                <div data-lenis-prevent className='relative h-full w-full overflow-y-auto overscroll-contain z-[9999999999]'>
                 <div className='flex flex-col leading-[1] text-[8vw] pt-24 pl-5 gap-10 '>
                   <motion.div onClick={() => { setMenu(false); router.push('/'); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
                   <motion.div className='flex flex-col gap-2 cursor-pointer'>

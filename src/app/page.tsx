@@ -41,6 +41,7 @@ function Page() {
   // Lenis smooth scroll initialization
   useEffect(() => {
     const lenis = new Lenis({ duration: 2 });
+    (window as any).__lenis = lenis;
     let rafId: number;
 
     function raf(time: number) {
@@ -50,6 +51,7 @@ function Page() {
     rafId = requestAnimationFrame(raf);
 
     return () => {
+      delete (window as any).__lenis;
       cancelAnimationFrame(rafId);
       lenis.destroy();
     };
