@@ -63,10 +63,9 @@ export default function ToolboxSection() {
   };
 
   return (
-    <section className="relative w-full bg-[#0C0C0E] px-4 pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 sm:px-8 lg:px-[90px] overflow-hidden">
-      <div className="mx-auto flex max-w-[1740px] flex-col items-center gap-4 sm:gap-6 lg:gap-8">
-        {/* Section Header: Left-aligned with Right-aligned Navigation Controls */}
-        <div className="w-full flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2.5 sm:gap-6 lg:gap-8 pb-1">
+    <section className="relative w-full bg-[#0C0C0E] flex flex-col items-center [box-sizing:border-box] px-4 pt-8 sm:pt-12 sm:px-8 pb-8 sm:pb-12 2xl:py-[120px] 2xl:px-[90px] gap-4 sm:gap-6 lg:gap-8 2xl:gap-[60px] overflow-hidden">
+      {/* Section Header: Left-aligned with Right-aligned Navigation Controls */}
+      <div className="w-full max-w-[1740px] flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2.5 sm:gap-6 lg:gap-8 pb-1 2xl:pb-0">
           <div className="flex flex-col items-start text-left max-w-[956px]">
             <motion.span
               initial={{ opacity: 0, y: 8 }}
@@ -133,7 +132,7 @@ export default function ToolboxSection() {
         <div
           ref={scrollContainerRef}
           onMouseLeave={() => setHoveredIndex(null)}
-          className="flex w-full flex-nowrap items-stretch gap-3 sm:gap-4 lg:gap-4 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-0 sm:pt-0.5 select-none [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
+          className="flex w-full max-w-[1740px] flex-nowrap items-stretch gap-3 sm:gap-4 lg:gap-4 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-0 sm:pt-0.5 2xl:pb-0 2xl:pt-0 select-none [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
         >
           {TOOLBOX_DATA.products.map((product: ToolboxProduct, idx: number) => {
             const isHovered = hoveredIndex === idx;
@@ -274,7 +273,7 @@ export default function ToolboxSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="flex justify-center w-full mt-2 sm:mt-3"
+          className="flex justify-center w-full max-w-[1740px] mt-2 sm:mt-3 2xl:mt-0"
         >
           <Link href={TOOLBOX_DATA.ctaLink} className="inline-block">
             <motion.button
@@ -292,7 +291,6 @@ export default function ToolboxSection() {
             </motion.button>
           </Link>
         </motion.div>
-      </div>
     </section>
   );
 }

@@ -45,7 +45,7 @@ export default function WatchActionSection() {
     <section
       id="watch-action"
       aria-label="Watch CodeMate in Action"
-      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center justify-center pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 px-4 sm:px-8 lg:px-[90px] gap-8 sm:gap-10 overflow-hidden`}
+      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center justify-center [box-sizing:border-box] pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 2xl:py-[110px] px-4 sm:px-8 2xl:px-[80px] gap-8 sm:gap-10 2xl:gap-[40px] overflow-hidden`}
     >
       {/* ========================================================================= */}
       {/* Title: Watch CodeMate in Action                                           */}
@@ -71,7 +71,7 @@ export default function WatchActionSection() {
       {/* ========================================================================= */}
       {/* Scroll-Driven Expanding Video Container                                   */}
       {/* ========================================================================= */}
-      <div ref={videoWrapperRef} className="relative w-full flex items-center justify-center my-1 sm:my-2">
+      <div ref={videoWrapperRef} className="relative w-full flex items-center justify-center my-1 sm:my-2 2xl:my-0">
         {/* Subtle ambient cyan/blue back-glow expanding organically with the box */}
         <motion.div
           style={{ scale: glowScale, opacity: glowOpacity }}

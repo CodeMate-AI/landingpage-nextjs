@@ -17,13 +17,13 @@ export default function SocialProofSection() {
   return (
     <section
       aria-label="Social Proof and Enterprise Trust"
-      className={`${montserrat.className} relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 px-4 sm:px-8 lg:px-[90px]`}
+      className={`${montserrat.className} relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 2xl:pt-[90px] 2xl:pb-[50px] px-4 sm:px-8 2xl:px-[90px] gap-6 sm:gap-8 2xl:gap-[40px]`}
     >
       {/* ========================================================================= */}
       {/* Top Header and Statistics Metrics Row                                     */}
       {/* ========================================================================= */}
       <div className="w-full max-w-[1740px] flex flex-col items-center">
-        <div className="w-full flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 lg:gap-10 pb-2">
+        <div className="w-full flex flex-col xl:flex-row justify-between items-start xl:items-center gap-8 lg:gap-10 pb-2 2xl:pb-0">
           {/* Left Block (Heading + Subtitle) */}
           <div className="flex flex-col items-start gap-3 max-w-[620px]">
             <motion.div
@@ -100,7 +100,7 @@ export default function SocialProofSection() {
       {/* ========================================================================= */}
       {/* Container: Flowing Partner Logos Marquee (Full Bleed Edge to Edge)        */}
       {/* ========================================================================= */}
-      <div className="relative w-full overflow-hidden flex justify-center items-center mt-6 sm:mt-8 lg:mt-10 [mask-image:linear-gradient(to_right,transparent_0%,black_3%,black_97%,transparent_100%)]">
+      <div className="relative w-full 2xl:w-[calc(100%+180px)] 2xl:max-w-none 2xl:-mx-[90px] overflow-hidden flex justify-center items-center mt-6 sm:mt-8 lg:mt-10 2xl:mt-0 [mask-image:linear-gradient(to_right,transparent_0%,black_3%,black_97%,transparent_100%)]">
         <Marquee pauseOnHover className="[--duration:20s] flex justify-center items-center">
           {SOCIAL_PROOF_DATA.partners.map((partner) => (
             <img
