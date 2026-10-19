@@ -276,16 +276,20 @@ export default function ToolboxSection() {
           transition={{ duration: 0.4, delay: 0.1 }}
           className="flex justify-center w-full mt-2 sm:mt-3"
         >
-          <Link
-            href={TOOLBOX_DATA.ctaLink}
-            className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] border border-white/5 bg-[#000000] font-semibold text-white transition-all duration-200 hover:border-white/20 hover:bg-zinc-900"
-            style={{
-              fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)',
-              fontSize: '14px',
-              lineHeight: '20px',
-            }}
-          >
-            {TOOLBOX_DATA.ctaText}
+          <Link href={TOOLBOX_DATA.ctaLink} className="inline-block">
+            <motion.button
+              type="button"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] bg-white font-semibold text-black transition-colors duration-200 hover:bg-neutral-200"
+              style={{
+                fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)',
+                fontSize: '14px',
+                lineHeight: '20px',
+              }}
+            >
+              {TOOLBOX_DATA.ctaText}
+            </motion.button>
           </Link>
         </motion.div>
       </div>
