@@ -69,9 +69,9 @@ export default function ProductTabsSection() {
         {/* ========================================================================= */}
         {/* Product Header (Responsive Left / Right layout with Navigation Controls)  */}
         {/* ========================================================================= */}
-        <div className="w-full flex flex-col lg:flex-row justify-start lg:justify-between items-start lg:items-end gap-3 sm:gap-4 lg:gap-6 pb-1 min-h-[190px] sm:min-h-[148px] lg:min-h-[228px]">
+        <div className="w-full flex flex-col lg:flex-row justify-start lg:justify-between items-start lg:items-start gap-3 sm:gap-4 lg:gap-6 pb-1 min-h-[190px] sm:min-h-[148px] lg:min-h-0">
           {/* Left Block: Product Label + Headline */}
-          <div className="flex flex-col items-start gap-1 sm:gap-1.5 max-w-[760px] w-full lg:w-auto min-h-[68px] sm:min-h-[76px] lg:min-h-[220px]">
+          <div className="flex flex-col items-start gap-1 sm:gap-1.5 max-w-[760px] w-full lg:w-auto min-h-[68px] sm:min-h-[76px] lg:min-h-0">
             <AnimatePresence mode="wait">
               <motion.div
                 key={`header-left-${currentTab.id}`}
@@ -84,7 +84,7 @@ export default function ProductTabsSection() {
                 <span className="text-white/60 text-sm sm:text-base lg:text-[22px] lg:leading-[28px] font-normal tracking-wide">
                   {currentTab.productLabel}
                 </span>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] lg:leading-[54px] font-semibold bg-gradient-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent min-h-[34px] sm:min-h-[44px] lg:min-h-[110px]">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[46px] lg:leading-[54px] font-semibold bg-gradient-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent min-h-[34px] sm:min-h-[44px] lg:min-h-0">
                   {currentTab.headline}
                 </h2>
               </motion.div>
@@ -92,8 +92,8 @@ export default function ProductTabsSection() {
           </div>
 
           {/* Right Block: Description + Slider Controls */}
-          <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between w-full lg:w-auto gap-2.5 sm:gap-4 lg:max-w-[580px]">
-            <div className="w-full min-h-[50px] sm:min-h-[48px] lg:min-h-[54px] flex items-start sm:items-end lg:items-end">
+          <div className="flex flex-col sm:flex-row lg:flex-col items-start sm:items-end lg:items-end justify-between w-full lg:w-auto gap-2.5 sm:gap-4 lg:gap-3 lg:max-w-[580px]">
+            <div className="w-full min-h-[50px] sm:min-h-[48px] lg:min-h-[54px] flex items-start sm:items-end lg:items-start lg:pt-[34px]">
               <AnimatePresence mode="wait">
                 <motion.p
                   key={`header-desc-${currentTab.id}`}
