@@ -63,12 +63,12 @@ export default function ProductTabsSection() {
     <section
       id="features"
       aria-label="CodeMate Product Details"
-      className={`${montserrat.className} relative w-full bg-[#0C0C0E] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 2xl:py-[140px] px-4 sm:px-8 2xl:px-[90px] gap-5 sm:gap-6 lg:gap-8 2xl:gap-[80px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28`}
+      className={`${montserrat.className} relative w-full bg-[#0C0C0E] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[140px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[80px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28`}
     >
       {/* ========================================================================= */}
       {/* Product Header (Responsive Left / Right layout with Navigation Controls)  */}
       {/* ========================================================================= */}
-      <div className="w-full max-w-[1740px] flex flex-col lg:flex-row justify-start lg:justify-between items-start lg:items-start gap-3 sm:gap-4 lg:gap-6 pb-1 2xl:pb-0 min-h-[190px] sm:min-h-[148px] lg:min-h-0">
+      <div className="w-full max-w-[1740px] flex flex-col lg:flex-row justify-start lg:justify-between items-start lg:items-start gap-3 sm:gap-4 lg:gap-6 pb-1 xl:pb-0 min-h-[190px] sm:min-h-[148px] lg:min-h-0">
           {/* Left Block: Product Label + Headline */}
           <div className="flex flex-col items-start gap-1 sm:gap-1.5 max-w-[760px] lg:max-w-none w-full lg:w-auto min-h-[68px] sm:min-h-[76px] lg:min-h-0">
             <AnimatePresence mode="wait">
@@ -191,7 +191,7 @@ export default function ProductTabsSection() {
         {/* ========================================================================= */}
         {/* Tab Switcher Navigation Controls (border-radius 12px container, 40px pill buttons) */}
         {/* ========================================================================= */}
-        <div className="w-full max-w-[1740px] flex justify-center px-1 pt-2 sm:pt-3 lg:pt-4 2xl:pt-0">
+        <div className="w-full max-w-[1740px] flex justify-center px-1 pt-2 sm:pt-4 md:pt-6 xl:pt-0">
           <nav
             aria-label="CodeMate Products Navigation"
             className="inline-flex shrink-0 items-center gap-1.5 rounded-[12px] border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"

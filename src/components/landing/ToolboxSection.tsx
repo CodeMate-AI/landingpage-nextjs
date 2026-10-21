@@ -53,19 +53,22 @@ export default function ToolboxSection() {
     const el = scrollContainerRef.current;
     const isMobile = el.clientWidth < 640;
     const isTablet = el.clientWidth >= 640 && el.clientWidth < 1024;
+    const isLaptop = el.clientWidth >= 1024 && el.clientWidth < 1280;
     const cardStep = isMobile
       ? el.clientWidth + 16
       : isTablet
-      ? (el.clientWidth - 16) / 2 + 16
-      : (el.clientWidth - 48) / 4 + 16;
+      ? (el.clientWidth - 20) / 2 + 20
+      : isLaptop
+      ? (el.clientWidth - 32) / 3 + 16
+      : (el.clientWidth - 48) / 4 + 12;
     const scrollAmount = direction === 'left' ? -cardStep : cardStep;
     el.scrollBy({ left: scrollAmount, behavior: 'smooth' });
   };
 
   return (
-    <section className="relative w-full bg-[#0C0C0E] flex flex-col items-center [box-sizing:border-box] px-4 pt-8 sm:pt-12 sm:px-8 pb-8 sm:pb-12 2xl:py-[120px] 2xl:px-[90px] gap-4 sm:gap-6 lg:gap-8 2xl:gap-[60px] overflow-hidden">
+    <section className="relative w-full bg-[#0C0C0E] flex flex-col items-center [box-sizing:border-box] py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[120px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[60px] overflow-hidden">
       {/* Section Header: Left-aligned with Right-aligned Navigation Controls */}
-      <div className="w-full max-w-[1740px] flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2.5 sm:gap-6 lg:gap-8 pb-1 2xl:pb-0">
+      <div className="w-full max-w-[1740px] flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2.5 sm:gap-6 lg:gap-8 pb-1 xl:pb-0">
           <div className="flex flex-col items-start text-left max-w-[956px]">
             <motion.span
               initial={{ opacity: 0, y: 8 }}
@@ -97,8 +100,8 @@ export default function ToolboxSection() {
             </motion.h2>
           </div>
 
-          {/* Slider Navigation Controls: Pinned to right-hand side on mobile, hidden on desktop */}
-          <div className="w-full sm:w-auto flex lg:hidden justify-end items-center gap-2 pt-0 sm:pt-0 self-end">
+          {/* Slider Navigation Controls: Accessible on mobile, tablet/iPad, and laptops */}
+          <div className="w-full sm:w-auto flex 2xl:hidden justify-end items-center gap-2 pt-0 sm:pt-0 self-end">
             <button
               type="button"
               onClick={() => handleScroll('left')}
@@ -132,7 +135,7 @@ export default function ToolboxSection() {
         <div
           ref={scrollContainerRef}
           onMouseLeave={() => setHoveredIndex(null)}
-          className="flex w-full max-w-[1740px] flex-nowrap items-stretch gap-3 sm:gap-4 lg:gap-4 overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-0 sm:pt-0.5 2xl:pb-0 2xl:pt-0 select-none [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
+          className="flex w-full max-w-[1740px] flex-nowrap items-stretch gap-3 sm:gap-4 md:gap-5 xl:gap-[12px] overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-0 sm:pt-0.5 xl:pb-0 xl:pt-0 select-none [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
         >
           {TOOLBOX_DATA.products.map((product: ToolboxProduct, idx: number) => {
             const isHovered = hoveredIndex === idx;
@@ -155,7 +158,7 @@ export default function ToolboxSection() {
                 style={{
                   padding: '24px 0px 24px 20px',
                 }}
-                className={`group relative flex h-[450px] sm:h-[510px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] lg:w-[calc((100%-64px)/5)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 snap-start ${
+                className={`group relative flex h-[450px] sm:h-[510px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] md:w-[calc((100%-20px)/2)] lg:w-[calc((100%-32px)/3)] xl:w-[calc((100%-36px)/4)] 2xl:w-[calc((100%-48px)/5)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 snap-start ${
                   isHovered
                     ? 'border-white/15 shadow-[0_12px_40px_rgba(0,191,255,0.08)]'
                     : 'border-white/5 shadow-none'
@@ -267,20 +270,20 @@ export default function ToolboxSection() {
 
 
 
-        {/* Bottom CTA Button: Centered just below the navigation pill */}
+        {/* Bottom CTA Button: Centered below the product cards */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.1 }}
-          className="flex justify-center w-full max-w-[1740px] mt-2 sm:mt-3 2xl:mt-0"
+          className="flex justify-center w-full max-w-[1740px] mt-3 sm:mt-4 md:mt-6 xl:mt-0"
         >
           <Link href={TOOLBOX_DATA.ctaLink} className="inline-block">
             <motion.button
               type="button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] bg-white font-semibold text-black transition-colors duration-200 hover:bg-neutral-200"
+              className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] bg-black border border-white/10 font-semibold text-white transition-all duration-200 hover:border-white/25 hover:bg-white/[0.04] cursor-pointer"
               style={{
                 fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)',
                 fontSize: '14px',
