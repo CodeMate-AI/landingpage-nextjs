@@ -328,6 +328,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
         },
       ],
     },
+    /*
     {
       id: 'academy',
       tabName: 'Academy',
@@ -373,6 +374,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
         },
       ],
     },
+    */
     {
       id: 'pr-review',
       tabName: 'PR Review Agent',
