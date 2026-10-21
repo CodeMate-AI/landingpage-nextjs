@@ -17,6 +17,10 @@ const TOOLBOX_LOGO_SCALES: Record<string, string> = {
   'pr-review': 'scale-[0.75]',
 };
 
+// Motion-enabled Next.js Link for seamless SPA client routing on internal paths
+const MotionLink = motion.create(Link);
+
+
 export default function ToolboxSection() {
   // At first, all cards are shown at the bottom without description.
   // When hovered, the card lifts up and description reveals.
@@ -142,10 +146,10 @@ export default function ToolboxSection() {
             const isPRReview = product.id === 'pr-review';
 
             return (
-              <motion.a
+              <MotionLink
                 key={product.id}
                 href={product.link}
-                target={product.isExternal ? '_blank' : '_self'}
+                target={product.isExternal ? '_blank' : undefined}
                 rel={product.isExternal ? 'noopener noreferrer' : undefined}
                 onMouseEnter={() => setHoveredIndex(idx)}
                 onClick={() => setHoveredIndex(idx)}
@@ -263,7 +267,7 @@ export default function ToolboxSection() {
                     />
                   </motion.div>
                 )}
-              </motion.a>
+              </MotionLink>
             );
           })}
         </div>

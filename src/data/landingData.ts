@@ -34,7 +34,7 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
         'Turns deep research and feasibility into production-ready code through AI-driven intelligence.',
       logo: '/logos/brand/codemate-work-logo.png',
       previewImage: '/work/work-preview-toolbox.png',
-      link: 'https://app.codemate.ai/chat',
+      link: 'https://app.codemate.ai/work',
       isExternal: true,
     },
     {
@@ -54,8 +54,8 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
         'End-to-end AI coding agent for writing, securing, and quality-gating code directly in your IDE.',
       logo: '/logos/brand/codemate-cora-logo.png',
       previewImage: '/cora/cora-preview-toolbox.png',
-      link: 'https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent',
-      isExternal: true,
+      link: '/download',
+      isExternal: false,
     },
     {
       id: 'cora-cli',
@@ -64,8 +64,8 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
         'Run code and scripts instantly through an AI-powered command-line interface directly in your terminal.',
       logo: '/logos/brand/codemate-cora-logo.png',
       previewImage: '/cora-cli/cora-cli-preview-toolbox.png',
-      link: 'https://cli.codemate.ai/',
-      isExternal: true,
+      link: '/download',
+      isExternal: false,
     },
     {
       id: 'pr-review',

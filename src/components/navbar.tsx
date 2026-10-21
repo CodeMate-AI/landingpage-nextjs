@@ -375,7 +375,7 @@ export default function Navbar() {
                       <div className="py-3 px-2 flex flex-col gap-0">
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 text-sm opacity-50">Web-Application</h1>
-                        <a href="https://app.codemate.ai/chat" target="_blank" className="w-full">
+                        <a href="https://app.codemate.ai/work" target="_blank" className="w-full">
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
@@ -403,7 +403,7 @@ export default function Navbar() {
                         </a>
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 mt-3 text-sm opacity-50">VS Code Extension</h1>
-                        <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank" className="w-full">
+                        <Link href="/download" className="w-full" onClick={() => setIsProducts(false)}>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
@@ -415,7 +415,7 @@ export default function Navbar() {
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
                             </div>
                           </motion.div>
-                        </a>
+                        </Link>
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 mt-3 text-sm opacity-50">JetBrains Plugin</h1>
                         <a href="https://plugins.jetbrains.com/plugin/29932-cora" target="_blank" className="w-full">
@@ -734,7 +734,7 @@ export default function Navbar() {
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-1'>Web-Application</h1>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
-                            <a href="https://app.codemate.ai/chat" target='_blank'>
+                            <a href="https://app.codemate.ai/work" target='_blank'>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/logos/brand/codemate-work-logo.png" alt="Chat" width={28} height={28} className="size-5 md:size-7 lg:size-5 object-contain" />
@@ -772,7 +772,7 @@ export default function Navbar() {
 
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>VS Code Extension</h1>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
-                            <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">
+                            <Link href="/download" onClick={() => setMenu(false)}>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
@@ -787,7 +787,7 @@ export default function Navbar() {
                                   <h1>CORA</h1>
                                 </motion.div>
                               </motion.div>
-                            </a>
+                            </Link>
                           </div>
 
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>JetBrains Plugin</h1>
