@@ -287,7 +287,7 @@ export default function ToolboxSection() {
               type="button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] bg-black border border-white/10 font-semibold text-white transition-all duration-200 hover:border-white/25 hover:bg-white/[0.04] cursor-pointer"
+              className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] bg-white font-semibold text-black transition-all duration-200 hover:bg-neutral-200 cursor-pointer"
               style={{
                 fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)',
                 fontSize: '14px',
