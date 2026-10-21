@@ -189,12 +189,12 @@ export default function ProductTabsSection() {
         </div>
 
         {/* ========================================================================= */}
-        {/* Tab Switcher Navigation Controls (Community-style Pill Strip)             */}
+        {/* Tab Switcher Navigation Controls (border-radius 12px container, 40px pill buttons) */}
         {/* ========================================================================= */}
         <div className="w-full max-w-[1740px] flex justify-center px-1 pt-2 sm:pt-3 lg:pt-4 2xl:pt-0">
           <nav
             aria-label="CodeMate Products Navigation"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-2xl border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-[12px] border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"
           >
             {PRODUCT_TABS_DATA.tabs.map((tab) => {
               const isActive = tab.id === activeTabId;
@@ -205,7 +205,7 @@ export default function ProductTabsSection() {
                   onClick={() => setActiveTabId(tab.id)}
                   aria-selected={isActive}
                   role="tab"
-                  className={`relative shrink-0 select-none whitespace-nowrap rounded-xl px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${isActive
+                  className={`relative shrink-0 select-none whitespace-nowrap rounded-[40px] px-3.5 sm:px-4 py-2 text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${isActive
                       ? 'text-black font-semibold'
                       : 'bg-transparent text-zinc-400 hover:bg-zinc-800/60 hover:text-white'
                     }`}
@@ -213,7 +213,7 @@ export default function ProductTabsSection() {
                   {isActive && (
                     <motion.span
                       layoutId="active-product-tab-pill"
-                      className="absolute inset-0 bg-white rounded-xl shadow-lg"
+                      className="absolute inset-0 bg-white rounded-[40px] shadow-lg"
                       transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
