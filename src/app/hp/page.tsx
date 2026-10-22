@@ -46,7 +46,7 @@ const resources = [
   {
     name: "Product Overview",
     tagline: "Explore CodeMate Products",
-    url: "https://backend.codemate.ai/uploaded/images/9ef4e3e5-1035-45ec-b8f7-1abeafb07600",
+    url: "https://backend.codemate.ai/uploaded/images/94b54bf1-d432-4e91-945b-42b9dd49d7e4",
   },
   {
     name: "CodeMate Build",
