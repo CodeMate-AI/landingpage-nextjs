@@ -195,14 +195,8 @@ export default function ToolboxSection() {
                     </h3>
                   </div>
 
-                  {/* Expandable Description: Accessible on mobile, interactive hover-reveal on desktop */}
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                      isHovered
-                        ? 'max-h-[140px] opacity-70 mt-1'
-                        : 'max-lg:max-h-[140px] max-lg:opacity-70 max-lg:mt-1 lg:max-h-0 lg:opacity-0 lg:mt-0'
-                    }`}
-                  >
+                  {/* Product Description: Visible by default across all viewports */}
+                  <div className="mt-1 opacity-70">
                     <p
                       className="text-[13px] sm:text-[14px] leading-[20px] sm:leading-[22px] text-white max-w-[300px]"
                       style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)', opacity: 0.7 }}
@@ -212,16 +206,9 @@ export default function ToolboxSection() {
                   </div>
                 </div>
 
-                {/* Internal Preview Image: Smooth vertical lift to middle without any tilt */}
+                {/* Internal Preview Image: Static preview sitting naturally at bottom */}
                 <div className="relative w-full overflow-hidden flex-1 flex flex-col justify-end">
-                  <motion.div
-                    animate={{
-                      y: isHovered ? (isPRReview ? -12 : -20) : 0,
-                      scale: isHovered ? 1.08 : 1,
-                    }}
-                    transition={{ duration: 0.35, ease: 'easeOut' }}
-                    className="relative left-0 h-[258px] w-[458px] rounded-tl-[6px] overflow-hidden origin-bottom-left"
-                  >
+                  <div className="relative left-0 h-[258px] w-[458px] rounded-tl-[6px] overflow-hidden origin-bottom-left">
                     <Image
                       src={product.previewImage}
                       alt={product.name}
@@ -231,7 +218,7 @@ export default function ToolboxSection() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 916px"
                       className="h-full w-full object-cover object-left-top rounded-tl-[6px]"
                     />
-                  </motion.div>
+                  </div>
                 </div>
 
                 {/* Integration Logos (Exclusive to PR Review Agent, revealed on hover) */}
