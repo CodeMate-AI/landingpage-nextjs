@@ -22,8 +22,8 @@ const MotionLink = motion.create(Link);
 
 
 export default function ToolboxSection() {
-  // At first, all cards are shown at the bottom without description.
-  // When hovered, the card lifts up and description reveals.
+  // Descriptions stay visible at all times. Hovering subtly lifts the card
+  // background and animates the preview image (lift + scale) without hiding text.
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -206,9 +206,16 @@ export default function ToolboxSection() {
                   </div>
                 </div>
 
-                {/* Internal Preview Image: Static preview sitting naturally at bottom */}
+                {/* Internal Preview Image: Smooth vertical lift and scale on hover */}
                 <div className="relative w-full overflow-hidden flex-1 flex flex-col justify-end">
-                  <div className="relative left-0 h-[258px] w-[458px] rounded-tl-[6px] overflow-hidden origin-bottom-left">
+                  <motion.div
+                    animate={{
+                      y: isHovered ? (isPRReview ? -12 : -48) : 0,
+                      scale: isHovered ? 1.08 : 1,
+                    }}
+                    transition={{ duration: 0.35, ease: 'easeOut' }}
+                    className="relative left-0 h-[258px] w-[458px] rounded-tl-[6px] overflow-hidden origin-bottom-left"
+                  >
                     <Image
                       src={product.previewImage}
                       alt={product.name}
@@ -218,7 +225,7 @@ export default function ToolboxSection() {
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 916px"
                       className="h-full w-full object-cover object-left-top rounded-tl-[6px]"
                     />
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Integration Logos (Exclusive to PR Review Agent, revealed on hover) */}
