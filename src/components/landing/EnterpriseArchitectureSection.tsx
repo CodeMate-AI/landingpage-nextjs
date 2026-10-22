@@ -90,7 +90,7 @@ export default function EnterpriseArchitectureSection() {
               {group.items.map((item) => (
                 <div
                   key={item.id}
-                  className="flex-1 lg:flex-auto min-w-0 flex flex-col justify-center items-start p-3.5 sm:p-4 lg:px-3 xl:px-3.5 2xl:px-5 lg:py-3.5 xl:py-4 2xl:py-5 min-h-[85px] sm:min-h-[100px] lg:h-[140px] xl:h-[150px] gap-1.5 border-b lg:border-b-0 lg:border-r border-white/20 last:border-b-0 lg:last:border-r-0 transition-all duration-300 hover:bg-white/[0.06] group"
+                  className="flex-1 lg:flex-auto min-w-0 flex flex-col justify-start items-start p-3 sm:p-3.5 lg:px-3.5 xl:px-4 2xl:px-5 lg:pt-3.5 xl:pt-4 2xl:pt-4.5 lg:pb-3 min-h-[85px] sm:min-h-[95px] lg:h-[135px] xl:h-[145px] gap-1.5 sm:gap-2 border-b lg:border-b-0 lg:border-r border-white/20 last:border-b-0 lg:last:border-r-0 transition-all duration-300 hover:bg-white/[0.06] group"
                 >
                   <h4 className="text-white font-semibold text-base sm:text-lg lg:text-[15px] xl:text-[17px] 2xl:text-[19px] lg:leading-[22px] xl:leading-[24px] 2xl:leading-[26px] tracking-tight group-hover:text-white transition-colors whitespace-nowrap">
                     {item.title}
