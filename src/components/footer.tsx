@@ -74,7 +74,7 @@ function Footer() {
               <img src="/codemateLogo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
             </div>
             <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed -mt-4">
-              CodeMate AI, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
+              <span translate="no">CodeMate AI</span>, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
             </p>
 
             {/* Socials */}
@@ -96,7 +96,7 @@ function Footer() {
             {/* Ask AI Section */}
             <div className="mt-4">
               <h4 className="font-semibold text-zinc-400 text-xs md:text-sm uppercase tracking-wider mb-3">
-                Ask AI for summary of CodeMate AI
+                Ask AI for summary of <span translate="no">CodeMate AI</span>
               </h4>
               <div className="flex flex-wrap gap-3 items-center">
                 <a

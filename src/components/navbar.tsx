@@ -217,7 +217,7 @@ export default function Navbar() {
                       />
                     </motion.span></motion.h1>
                   <a href='https://edu.codemate.ai/' target='_blank'>
-                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} className='opacity-65'>Academy</motion.h1>
+                    <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} className='opacity-65'><span translate="no">Academy</span></motion.h1>
                   </a>
                   <a href="/contact">
                     <motion.button onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap">Contact Us</motion.button>
@@ -244,7 +244,7 @@ export default function Navbar() {
                               <div className="w-8 flex justify-center">
                                 <img src="/Co_Logo.png" alt="Chat" className="size-5 object-contain" />
                               </div>
-                              <h1>Work</h1>
+                              <h1 translate="no">Work</h1>
                             </div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -257,7 +257,7 @@ export default function Navbar() {
                               <div className="w-8 flex justify-center">
                                 <img src="/Build_Logo.png" alt="Build" className="size-5 scale-[1.5] object-contain" />
                               </div>
-                              <h1>Build</h1>
+                              <h1 translate="no">Build</h1>
                             </div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -272,7 +272,7 @@ export default function Navbar() {
                               <div className="w-8 flex justify-center">
                                 <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
                               </div>
-                              <h1>CORA</h1>
+                              <h1 translate="no">CORA</h1>
                             </div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -287,7 +287,7 @@ export default function Navbar() {
                               <div className="w-8 flex justify-center">
                                 <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
                               </div>
-                              <h1>CORA</h1>
+                              <h1 translate="no">CORA</h1>
                             </div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
@@ -515,14 +515,14 @@ export default function Navbar() {
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/Co_Logo.png" alt="Chat" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
-                                <motion.h1>Work</motion.h1>
+                                <motion.h1 translate="no">Work</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
                                     <img src="/Co_Logo.png" alt="Work" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
-                                  <h1>Work</h1>
+                                  <h1 translate="no">Work</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -533,14 +533,14 @@ export default function Navbar() {
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
                                 </div>
-                                <motion.h1>Build</motion.h1>
+                                <motion.h1 translate="no">Build</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
                                     <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
                                   </div>
-                                  <h1>Build</h1>
+                                  <h1 translate="no">Build</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -553,14 +553,14 @@ export default function Navbar() {
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
-                                <motion.h1>CORA</motion.h1>
+                                <motion.h1 translate="no">CORA</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
                                     <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
-                                  <h1>CORA</h1>
+                                  <h1 translate="no">CORA</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -573,14 +573,14 @@ export default function Navbar() {
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
-                                <motion.h1>CORA</motion.h1>
+                                <motion.h1 translate="no">CORA</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
                                     <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
-                                  <h1>CORA</h1>
+                                  <h1 translate="no">CORA</h1>
                                 </motion.div>
                               </motion.div>
                             </a>
@@ -622,7 +622,7 @@ export default function Navbar() {
                               <motion.h1 className='z-20 opacity-90'>Terminal</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
-                                  <h1>Build</h1>
+                                  <h1 translate="no">Build</h1>
                                 </motion.div>
                               </motion.div>
                             </a>

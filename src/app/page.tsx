@@ -486,7 +486,7 @@ function Page() {
                 >
                   <div className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-black px-3.5 py-2 sm:px-4 sm:py-2.5 text-white">
                     <p className="text-xs sm:text-sm font-medium leading-snug text-neutral-300">
-                      Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
+                      <span translate="no">Cora</span> is now <span className="text-white font-semibold">State-of-the-Art</span>
                     </p>
                     <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
                   </div>
@@ -557,7 +557,7 @@ function Page() {
       />
 
       <div className='w-full bg-zinc-950 text-white -z-10 flex flex-col justify-center items-center mt-4 lg:mt-0'>
-        <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg md:text-2xl lg:text-lg'>Introducing CodeMate AI</h1>
+        <h1 className=' font-mono pt-8 lg:pt-8 opacity-75  text-center  text-lg md:text-2xl lg:text-lg'>Introducing <span translate="no">CodeMate AI</span></h1>
 
         {/* ========================================== */}
         {/* UI SECTION: FULL-STACK AI ENGINEER SHOWCASE */}
@@ -624,7 +624,7 @@ function Page() {
                       </div>
                     </div>
                     <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
-                      <h1 className='text-2xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
+                      <h1 translate="no" className='text-2xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>{product.title}</h1>
                     </div>
                     <p className='text-center lg:text-left opacity-70 text-base md:text-[1.2rem] lg:text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>{product.desc}</p>
                   </div>
@@ -659,7 +659,7 @@ function Page() {
                     </div>
                   </div>
                   <div className="flex items-center justify-center lg:justify-start flex-wrap gap-2 mt-6">
-                    <h1 className='text-2xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
+                    <h1 translate="no" className='text-2xl md:text-3xl lg:text-2xl font-bold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent group-hover:from-[#00BFFF] group-hover:to-[#1E90FF] transition-all duration-300'>CodeMate PR Review Agent</h1>
                   </div>
                   <p className='text-center lg:text-left opacity-70 text-base md:text-[1.2rem] lg:text-base w-[88vw] md:w-[95%] md:max-w-[800px] lg:w-[28vw] lg:max-w-none mt-2 leading-relaxed group-hover:opacity-100 transition-opacity'>Automates code reviews and security analysis across GitHub, GitLab, Bitbucket, and Azure DevOps.</p>
                   <div className='flex items-center gap-6 mt-6 opacity-60 text-white group-hover:opacity-100 transition-opacity'>
@@ -702,7 +702,7 @@ function Page() {
                     </div>
                     <div className="mt-1 lg:mt-2 text-[clamp(1.5rem,7vw,2.5rem)] font-semibold leading-tight whitespace-nowrap">
                       <span className="hidden lg:inline">with </span>
-                      CodeMate AI
+                      <span translate="no">CodeMate AI</span>
                     </div>
                   </div>
                 </div>
@@ -808,7 +808,7 @@ function Page() {
         </h1>
         <div className='mt-5 lg:mt-7 text-sm lg:text-[2.1vw] lg:text-6xl flex flex-col lg:gap-1 font-semibold bg-gradient-to-b from-white to-gray-400 bg-clip-text text-transparent pb-1 text-center lg:text-start'>
           <h1>From Legacy Systems to Next-Gen Apps -</h1>
-          <h1>CodeMate AI Accelerates Your Enterprise Journey.</h1>
+          <h1><span translate="no">CodeMate AI</span> Accelerates Your Enterprise Journey.</h1>
         </div>
 
         <div className='relative flex justify-center items-center mt-20 w-full'>
@@ -826,13 +826,13 @@ function Page() {
                 “
               </h1>
               <div className='text-[6vw] lg:text-[2.75rem] leading-[1.1] font-semibold'>
-                Through the insights CodeMate provides, teams are inspired to achieve what truly matters <span className='opacity-60'>— building impactful solutions, shaping future growth, and delivering measurable value.</span>
+                Through the insights <span translate="no">CodeMate</span> provides, teams are inspired to achieve what truly matters <span className='opacity-60'>— building impactful solutions, shaping future growth, and delivering measurable value.</span>
               </div>
             </div>
 
             <div className=''>
-              <h1 className='font-semibold'>Ayush Singhal</h1>
-              <p className='opacity-50'>Founder of CodeMate AI</p>
+              <h1 className='font-semibold' translate="no">Ayush Singhal</h1>
+              <p className='opacity-50'>Founder of <span translate="no">CodeMate AI</span></p>
             </div>
           </div>
 

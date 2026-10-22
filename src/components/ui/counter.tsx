@@ -110,6 +110,7 @@ export default function Counter({
   return (
     <span
       ref={ref}
+      translate="no"
       className={cn("tabular-nums inline-block font-variant-numeric font-bold text-foreground", className)}
     >
       {format(startValue)}

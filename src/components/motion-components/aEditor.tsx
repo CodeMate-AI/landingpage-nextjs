@@ -32,7 +32,7 @@ useEffect(() => {
 }, []);
 
   return(
-    <div className='relative h-full w-full bg-gradient-to-br from-[#0b0b0d]/95 to-[#161619]/90 backdrop-blur-2xl border border-white/10 hover:border-[#00BFFF]/20 shadow-[0_20px_50px_rgba(0,0,0,0.65)] hover:shadow-[0_20px_50px_rgba(0,191,255,0.06)] rounded-xl flex overflow-hidden transition-all duration-700 group/editor'>
+    <div className='relative h-full w-full bg-gradient-to-br from-[#0b0b0d]/95 to-[#161619]/90 backdrop-blur-2xl border border-white/10 hover:border-[#00BFFF]/20 shadow-[0_20px_50px_rgba(0,0,0,0.65)] hover:shadow-[0_20px_50px_rgba(0,191,255,0.06)] rounded-xl flex overflow-hidden transition-all duration-700 group/editor' translate="no">
        {/* Ambient glow backdrop */}
        <div className="absolute inset-0 bg-radial-gradient from-[#00BFFF]/5 via-transparent to-transparent opacity-0 group-hover/editor:opacity-100 transition-opacity duration-700 pointer-events-none blur-[40px]" />
        
