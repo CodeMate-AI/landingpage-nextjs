@@ -189,12 +189,12 @@ export default function ProductTabsSection() {
         </div>
 
         {/* ========================================================================= */}
-        {/* Tab Switcher Navigation Controls (border-radius 12px container, 40px pill buttons) */}
+        {/* Tab Switcher Navigation Controls (rounded-full pill container and buttons) */}
         {/* ========================================================================= */}
         <div className="w-full max-w-[1740px] flex justify-center px-1 pt-2 sm:pt-4 md:pt-6 xl:pt-0">
           <nav
             aria-label="CodeMate Products Navigation"
-            className="inline-flex shrink-0 items-center gap-1.5 rounded-[12px] border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"
+            className="inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"
           >
             {PRODUCT_TABS_DATA.tabs.map((tab) => {
               const isActive = tab.id === activeTabId;
