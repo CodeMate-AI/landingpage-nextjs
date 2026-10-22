@@ -49,8 +49,8 @@ export default function EnterpriseArchitectureSection() {
           <span>{ENTERPRISE_ARCHITECTURE_DATA.titlePrefix}</span>
           <br className="hidden sm:inline" />
           <span className="mt-1 inline-block">
-            {ENTERPRISE_ARCHITECTURE_DATA.titleAccent}{' '}
-            <span translate="no" className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold">
+            <span translate="no">CodeMate AI</span> Accelerates{' '}
+            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold">
               {ENTERPRISE_ARCHITECTURE_DATA.titleHighlight}
             </span>
           </span>
