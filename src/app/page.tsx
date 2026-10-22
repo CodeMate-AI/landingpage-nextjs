@@ -237,7 +237,7 @@ function Page() {
                 >
                   <div className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-black px-3.5 py-2 sm:px-4 sm:py-2.5 text-white">
                     <p className="text-xs sm:text-sm font-medium leading-snug text-neutral-300">
-                      Cora is now <span className="text-white font-semibold">State-of-the-Art</span>
+                      <span translate="no">Cora</span> is now <span className="text-white font-semibold">State-of-the-Art</span>
                     </p>
                     <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
                   </div>

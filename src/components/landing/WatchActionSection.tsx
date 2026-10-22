@@ -60,7 +60,7 @@ export default function WatchActionSection() {
         <span className="bg-gradient-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent">
           {WATCH_ACTION_DATA.titlePrefix}
         </span>
-        <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+        <span translate="no" className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
           {WATCH_ACTION_DATA.titleHighlight}
         </span>
         <span className="bg-gradient-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent">

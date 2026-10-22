@@ -50,7 +50,7 @@ export default function EnterpriseArchitectureSection() {
           <br className="hidden sm:inline" />
           <span className="mt-1 inline-block">
             {ENTERPRISE_ARCHITECTURE_DATA.titleAccent}{' '}
-            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold">
+            <span translate="no" className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold">
               {ENTERPRISE_ARCHITECTURE_DATA.titleHighlight}
             </span>
           </span>

@@ -80,7 +80,7 @@ export default function ProductTabsSection() {
                 transition={{ duration: 0.3, ease: 'easeOut' }}
                 className="flex flex-col items-start gap-1 sm:gap-1.5 w-full"
               >
-                <span className="text-white/60 text-sm sm:text-base lg:text-[22px] lg:leading-[28px] font-normal tracking-wide">
+                <span translate="no" className="text-white/60 text-sm sm:text-base lg:text-[22px] lg:leading-[28px] font-normal tracking-wide">
                   {currentTab.productLabel}
                 </span>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[36px] xl:text-[42px] 2xl:text-[46px] lg:leading-[54px] font-semibold bg-gradient-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent min-h-[34px] sm:min-h-[44px] lg:min-h-0 lg:whitespace-nowrap">
@@ -217,7 +217,7 @@ export default function ProductTabsSection() {
                       transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
-                  <span className="relative z-10">{tab.tabName}</span>
+                  <span className="relative z-10" translate="no">{tab.tabName}</span>
                 </button>
               );
             })}

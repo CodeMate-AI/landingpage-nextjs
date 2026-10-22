@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start -H 0.0.0.0 -p 8182",
+    "check:translate": "node scripts/check-translation-ready.mjs",
     "lint": "next lint"
   },
   "dependencies": {

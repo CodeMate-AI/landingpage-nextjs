@@ -82,7 +82,7 @@ export default function ToolboxSection() {
               className="font-sans text-[14px] sm:text-[18px] font-normal leading-[18px] tracking-normal text-white"
               style={{ opacity: 0.75 }}
             >
-              {TOOLBOX_DATA.overline}
+              Introducing <span translate="no">CodeMate AI</span>
             </motion.span>
             <motion.h2
               initial={{ opacity: 0, y: 12 }}
@@ -187,6 +187,7 @@ export default function ToolboxSection() {
                       />
                     </div>
                     <h3
+                      translate="no"
                       className="text-[20px] font-semibold leading-[28px] text-white tracking-normal"
                       style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
                     >
