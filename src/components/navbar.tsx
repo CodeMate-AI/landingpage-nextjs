@@ -539,22 +539,22 @@ export default function Navbar() {
           >
             <div
               style={{
-                background: 'rgba(12, 12, 14, 0.85)',
-                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+                background: 'rgba(15, 15, 18, 0.92)',
+                boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08)',
                 backdropFilter: 'blur(20px)',
                 WebkitBackdropFilter: 'blur(20px)',
               }}
-              className="pointer-events-auto flex items-center gap-4 sm:gap-6 rounded-full border border-white/15 px-4 sm:px-5 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] transition-shadow hover:shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
+              className="pointer-events-auto flex items-center gap-3.5 sm:gap-5 rounded-full pl-3.5 pr-1.5 py-1.5 sm:pl-4 sm:pr-2 sm:py-1.5 border border-white/[0.08] transition-all hover:border-white/15"
             >
               {/* CodeMate Icon Mark */}
               <div
                 onClick={() => router.push("/")}
-                className="flex items-center justify-center cursor-pointer shrink-0"
+                className="flex items-center justify-center cursor-pointer shrink-0 pl-1"
               >
                 <img
                   src="/logos/brand/codemate-icon.svg"
                   alt="CodeMate AI Logo"
-                  className="h-6 sm:h-7 w-auto object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
+                  className="h-5.5 sm:h-6 w-auto object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
                 />
               </div>
 
@@ -562,8 +562,8 @@ export default function Navbar() {
               <Link href="/download" className="shrink-0 select-none">
                 <motion.button
                   type="button"
-                  whileHover={{ scale: 1.03 }}
-                  whileTap={{ scale: 0.97 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   className="flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white text-black text-xs sm:text-sm font-semibold rounded-full hover:bg-neutral-200 transition-colors whitespace-nowrap shadow-sm group"
                 >
                   <span>Download Toolbox</span>
