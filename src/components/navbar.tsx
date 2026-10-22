@@ -549,12 +549,13 @@ export default function Navbar() {
               {/* CodeMate Icon Mark */}
               <div
                 onClick={() => router.push("/")}
-                className="flex items-center justify-center cursor-pointer shrink-0 pl-1"
+                className="flex items-center justify-center cursor-pointer shrink-0 pl-1 h-6 w-auto"
               >
                 <img
                   src="/logos/brand/codemate-icon.svg"
                   alt="CodeMate AI Logo"
-                  className="h-5.5 sm:h-6 w-auto object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
+                  className="h-6 w-auto max-h-6 object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
+                  style={{ maxHeight: '24px', height: '24px', width: 'auto' }}
                 />
               </div>
 
