@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState, useRef } from 'react'
-import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
+import { ChevronUp, Menu, X, ChevronRight, ArrowRight } from 'lucide-react';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
@@ -208,101 +208,49 @@ export default function Navbar() {
       )}
 
       {/* ========================================== */}
-      {/* UI SECTION: DESKTOP NAVIGATION           */}
-      {/* Sticky top navigation with mega-menus    */}
+      {/* UI SECTION: DESKTOP TOP NAVIGATION         */}
+      {/* Sticky top mega-menu header on desktop     */}
       {/* ========================================== */}
       <div
         style={{ top: 0 }}
-        className="hidden lg:flex fixed justify-center items-center w-full cursor-default z-[999999] transition-all duration-300 linear">
+        className={cn(
+          "hidden lg:flex fixed justify-center items-center w-full cursor-default z-[999999] transition-all duration-300 ease-out",
+          isCompact ? "opacity-0 -translate-y-6 pointer-events-none" : "opacity-100 translate-y-0 pointer-events-auto"
+        )}>
         <motion.div
           initial={{ y: -110 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.2, delay: 0 }}
           style={{
-            background: isCompact
-              ? 'rgba(12, 12, 14, 0.82)'
-              : !isNBack
+            background: !isNBack
               ? 'rgba(15, 12, 12, 0.2)'
               : 'rgba(15, 20, 20, 0.45)',
-            boxShadow: isCompact
-              ? '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
-              : '0 4px 25px rgba(0, 0, 0, 0.1)',
-            backdropFilter: isCompact ? 'blur(20px)' : 'blur(10px)',
-            WebkitBackdropFilter: isCompact ? 'blur(20px)' : 'blur(10px)',
+            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
           }}
-          className={cn(
-            'transition-all duration-300 ease-out transform-gpu z-[9999999999]',
-            isCompact
-              ? 'mt-3 w-[75%] max-w-[1050px] rounded-xl border border-white/10'
-              : 'mt-3 w-[90%] rounded-lg bg-opacity-65'
-          )}>
-          <div className='flex h-full w-full text-white px-[1rem] py-2'>
-            <div className='flex justify-between items-center w-full h-10'>
+          className="mt-3 w-[90%] rounded-lg bg-opacity-65 transition-all duration-300 ease-out transform-gpu z-[9999999999]">
+          <div className="flex h-full w-full text-white px-[1rem] py-2">
+            <div className="flex justify-between items-center w-full h-10">
 
-              {/* Original logo size and styling preserved */}
-              <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
+              {/* Logo */}
+              <div
+                className="h-fit w-[15vw] flex justify-center cursor-pointer overflow-hidden"
+                onClick={() => router.push("/")}
+              >
                 <img
-                  onClick={() => router.push("/")}
                   src="/logos/brand/codemate-logo.svg"
                   alt="CodeMate AI Logo"
-                  className='cursor-pointer'
+                  className="cursor-pointer h-auto w-full object-contain"
                 />
               </div>
-              <div className="relative flex flex-col gap-3 text-md justify-center items-center cursor-pointer text-right z-50">
-                {/* Compact Scrolled Navigation (Concurrent Layer) */}
-                <div
-                  className={cn(
-                    'flex gap-5 lg:gap-6 justify-center items-center z-50 pr-2 transition-all duration-300 ease-out transform-gpu',
-                    isCompact
-                      ? 'opacity-100 translate-y-0 pointer-events-auto'
-                      : 'opacity-0 -translate-y-2 pointer-events-none absolute'
-                  )}
-                >
-                  <motion.h1
-                    onClick={handleFeaturesClick}
-                    whileHover={{ opacity: 1 }}
-                    className='opacity-70 hover:opacity-100 transition-opacity cursor-pointer text-sm font-medium'
-                  >
-                    Features
-                  </motion.h1>
-                  <motion.h1
-                    onClick={() => { router.push('/pricing?product=cora') }}
-                    whileHover={{ opacity: 1 }}
-                    className='opacity-70 hover:opacity-100 transition-opacity cursor-pointer text-sm font-medium'
-                  >
-                    Pricing
-                  </motion.h1>
-                  <Link href="/download">
-                    <motion.h1
-                      whileHover={{ opacity: 1 }}
-                      className='opacity-70 hover:opacity-100 transition-opacity cursor-pointer text-sm font-medium'
-                    >
-                      Download
-                    </motion.h1>
-                  </Link>
-                  <a
-                    href="https://app.codemate.ai"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <motion.button
-                      whileHover={{ opacity: 1, scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="px-3.5 py-1.5 bg-[#FFFFFF] text-black rounded-sm font-semibold opacity-90 hover:opacity-100 text-nowrap transition-all text-sm"
-                    >
-                      Sign Up
-                    </motion.button>
-                  </a>
-                </div>
 
-                {/* Full Un-scrolled Navigation (Concurrent Layer) */}
+              {/* Full Un-scrolled Navigation */}
+              <div
+                className="relative flex flex-col gap-3 text-md justify-center items-center cursor-pointer text-right z-50"
+              >
                 <div
-                  className={cn(
-                    'flex gap-5 justify-center items-center z-50 transition-all duration-300 ease-out transform-gpu',
-                    !isCompact
-                      ? 'opacity-100 translate-y-0 pointer-events-auto'
-                      : 'opacity-0 translate-y-2 pointer-events-none absolute'
-                  )}
+                  className="flex gap-5 justify-center items-center z-50"
                 >
                   <motion.h1
                     onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center z-50 ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
@@ -570,14 +518,75 @@ export default function Navbar() {
       </div>
 
       {/* ========================================== */}
+      {/* UI SECTION: SCROLLED FLOATING PILL NAVBAR */}
+      {/* Drops in from top to bottom on scroll      */}
+      {/* Universal across mobile, iPad, and desktop*/}
+      {/* ========================================== */}
+      <AnimatePresence>
+        {isCompact && !isMenu && (
+          <motion.div
+            key="scrolled-floating-pill-navbar"
+            initial={{ y: -70, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -70, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 30,
+              mass: 0.8,
+            }}
+            className="fixed top-3 inset-x-0 mx-auto z-[999999999] flex justify-center items-center pointer-events-none px-4"
+          >
+            <div
+              style={{
+                background: 'rgba(12, 12, 14, 0.85)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+              }}
+              className="pointer-events-auto flex items-center gap-4 sm:gap-6 rounded-full border border-white/15 px-4 sm:px-5 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.08)] transition-shadow hover:shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
+            >
+              {/* CodeMate Icon Mark */}
+              <div
+                onClick={() => router.push("/")}
+                className="flex items-center justify-center cursor-pointer shrink-0"
+              >
+                <img
+                  src="/logos/brand/codemate-icon.svg"
+                  alt="CodeMate AI Logo"
+                  className="h-6 sm:h-7 w-auto object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
+                />
+              </div>
+
+              {/* Download Toolbox Button with Right Arrow */}
+              <Link href="/download" className="shrink-0 select-none">
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.03 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white text-black text-xs sm:text-sm font-semibold rounded-full hover:bg-neutral-200 transition-colors whitespace-nowrap shadow-sm group"
+                >
+                  <span>Download Toolbox</span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                </motion.button>
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================== */}
       {/* UI SECTION: MOBILE NAVIGATION & MENU     */}
       {/* Hamburger menu overlay for mobile devices*/}
       {/* ========================================== */}
       <AnimatePresence>
-        {/* Mobile & Tablet floating compact navbar wrapper */}
+        {/* Mobile & Tablet navbar wrapper (unscrolled header or open menu drawer) */}
         <div
           style={{ top: 0 }}
-          className="lg:hidden fixed inset-x-0 flex justify-center items-center w-full z-[99999999999] pointer-events-none transition-all duration-300"
+          className={cn(
+            "lg:hidden fixed inset-x-0 flex justify-center items-center w-full z-[99999999999] pointer-events-none transition-all duration-300 ease-out",
+            isCompact && !isMenu ? "opacity-0 -translate-y-6 pointer-events-none" : "opacity-100 translate-y-0"
+          )}
         >
           <motion.div
             key="mobile-navbar-container"
@@ -587,23 +596,14 @@ export default function Navbar() {
             style={{
               background: isMenu
                 ? 'rgb(24, 24, 27)'
-                : isCompact
-                ? 'rgba(12, 12, 14, 0.85)'
                 : !isNBack
                 ? 'rgba(15, 12, 12, 0.2)'
                 : 'rgba(15, 20, 20, 0.45)',
-              boxShadow: isCompact && !isMenu
-                ? '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.06)'
-                : '0 4px 25px rgba(0, 0, 0, 0.1)',
-              backdropFilter: isCompact || isMenu ? 'blur(20px)' : 'blur(10px)',
-              WebkitBackdropFilter: isCompact || isMenu ? 'blur(20px)' : 'blur(10px)',
+              boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
+              backdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
+              WebkitBackdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
             }}
-            className={cn(
-              'pointer-events-auto transition-all duration-300 ease-out transform-gpu flex justify-between items-center',
-              isCompact && !isMenu
-                ? 'mt-2.5 w-[94%] sm:w-[90%] md:w-[85%] max-w-[640px] rounded-xl border border-white/10 px-3.5 sm:px-5 py-2'
-                : 'w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5'
-            )}
+            className="w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5 pointer-events-auto transition-all duration-300 ease-out transform-gpu flex justify-between items-center"
           >
             {/* Left side: CodeMate logo */}
             <div
@@ -616,46 +616,31 @@ export default function Navbar() {
               <img
                 src="/logos/brand/codemate-logo.svg"
                 alt="CodeMate AI Logo"
-                className={cn(
-                  'transition-all duration-300 object-contain',
-                  isCompact && !isMenu
-                    ? 'w-[132px] xs:w-[142px] sm:w-[160px] md:w-[175px] h-auto'
-                    : 'w-[136px] xs:w-[146px] sm:w-[165px] md:w-[185px] h-auto'
-                )}
+                className="w-[136px] xs:w-[146px] sm:w-[165px] md:w-[185px] h-auto transition-all duration-300 object-contain"
               />
             </div>
 
             {/* Right side: Pricing, Sign Up, and Hamburger icon */}
             <div className="flex items-center gap-2 xs:gap-3 sm:gap-4 shrink-0 text-right">
-              {/* Pricing link */}
+              {/* Pricing link when unscrolled */}
               {!isMenu && (
                 <motion.span
                   onClick={() => { router.push('/pricing?product=cora'); }}
                   whileHover={{ opacity: 1 }}
                   whileTap={{ scale: 0.96 }}
-                  className={cn(
-                    'text-xs sm:text-sm font-medium text-neutral-200 hover:text-white cursor-pointer transition-all duration-200 select-none',
-                    isCompact
-                      ? 'opacity-80 scale-100'
-                      : 'hidden sm:inline-block opacity-75'
-                  )}
+                  className="hidden sm:inline-block text-xs sm:text-sm font-medium text-neutral-200 hover:text-white cursor-pointer transition-all duration-200 select-none opacity-75"
                 >
                   Pricing
                 </motion.span>
               )}
 
-              {/* Sign Up button */}
+              {/* Sign Up button when unscrolled */}
               {!isMenu && (
                 <a
                   href="https://app.codemate.ai"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={cn(
-                    'transition-all duration-200 select-none',
-                    isCompact
-                      ? 'inline-flex'
-                      : 'hidden sm:inline-flex'
-                  )}
+                  className="hidden sm:inline-flex transition-all duration-200 select-none"
                 >
                   <motion.button
                     type="button"
