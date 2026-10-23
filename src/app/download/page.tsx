@@ -17,6 +17,23 @@ const DownloadPage = () => {
     const [detectedOS, setDetectedOS] = useState<OS>('Unknown');
     const [downloadState, setDownloadState] = useState<'idle' | 'downloading' | 'done'>('idle');
 
+    // Ensure the page always opens at the top and disable automatic scroll retention
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+
+        if ("scrollRestoration" in window.history) {
+            window.history.scrollRestoration = "manual";
+        }
+
+        window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+
+        const frameId = requestAnimationFrame(() => {
+            window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        });
+
+        return () => cancelAnimationFrame(frameId);
+    }, []);
+
     useEffect(() => {
         // Basic OS detection
         const userAgent = window.navigator.userAgent.toLowerCase();

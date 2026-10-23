@@ -35,6 +35,16 @@ export default function Navbar() {
     }, 100);
   };
 
+  // Instantly resets window and Lenis scroll to top before navigating to download
+  const handleNavToDownload = () => {
+    if (typeof window !== 'undefined') {
+      if ((window as any).__lenis) {
+        (window as any).__lenis.scrollTo(0, { immediate: true });
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
+  };
+
   const [isNBack, setIsNBack] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isTablet, setIsTablet] = useState(false);
@@ -351,7 +361,7 @@ export default function Navbar() {
                         </a>
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 mt-3 text-sm opacity-50">VS Code Extension</h1>
-                        <Link href="/download" className="w-full" onClick={() => setIsProducts(false)}>
+                        <Link href="/download" className="w-full" onClick={() => { setIsProducts(false); handleNavToDownload(); }}>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
@@ -366,7 +376,7 @@ export default function Navbar() {
                         </Link>
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 mt-3 text-sm opacity-50">Command Line</h1>
-                        <Link href="/download" className="w-full" onClick={() => setIsProducts(false)}>
+                        <Link href="/download" className="w-full" onClick={() => { setIsProducts(false); handleNavToDownload(); }}>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
@@ -560,7 +570,7 @@ export default function Navbar() {
               </div>
 
               {/* Download Toolbox Button with Right Arrow */}
-              <Link href="/download" className="shrink-0 select-none">
+              <Link href="/download" onClick={handleNavToDownload} className="shrink-0 select-none">
                 <motion.button
                   type="button"
                   whileHover={{ scale: 1.02 }}
@@ -773,7 +783,7 @@ export default function Navbar() {
 
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>VS Code Extension</h1>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
-                            <Link href="/download" onClick={() => setMenu(false)}>
+                            <Link href="/download" onClick={() => { setMenu(false); handleNavToDownload(); }}>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
@@ -793,7 +803,7 @@ export default function Navbar() {
 
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>Command Line</h1>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
-                            <Link href="/download" onClick={() => setMenu(false)}>
+                            <Link href="/download" onClick={() => { setMenu(false); handleNavToDownload(); }}>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
                                   <img src="/logos/brand/codemate-cora-logo.png" alt="Cora CLI" className="size-5 md:size-7 lg:size-5 object-contain" />
