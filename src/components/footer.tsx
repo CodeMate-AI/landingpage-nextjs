@@ -2,6 +2,7 @@
 
 import { FaXTwitter, FaLinkedin, FaInstagram, FaYoutube } from "react-icons/fa6";
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const EVAL_PROMPT = `As a senior software engineer, evaluating AI developer tools, I'd like an objective overview of CodeMate AI, including what it is, the problems it solves, and how it supports the Software Development Lifecycle (SDLC). Explain its core products (such as Build, CORA, AI Debugging, PR Review, Knowledge Base, and other key capabilities), how they work together, who the platform is best suited for, and its deployment options. Also provide a high-level comparison with other AI developer tools, focusing on differences in approach, workflows, and typical use cases rather than ranking them. Base the answer primarily on the official CodeMate website (https://codemate.ai) and documentation (https://docs.codemate.ai), and avoid making assumptions about capabilities that are not explicitly documented.`;
 
@@ -71,7 +72,7 @@ function Footer() {
           {/* Left: Brand Column */}
           <div className="md:col-span-5 flex flex-col gap-6">
             <div>
-              <img src="/codemateLogo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
+              <img src="/logos/brand/codemate-logo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
             </div>
             <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed -mt-4">
               <span translate="no">CodeMate AI</span>, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
@@ -170,7 +171,7 @@ function Footer() {
             <div>
               <h4 className="font-semibold mb-4 text-white text-sm md:text-base">OTHERS</h4>
               <ul className="space-y-3 text-xs md:text-sm">
-                <li><a href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Contact Us</a></li>
+                <li><Link href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Contact Us</Link></li>
                 <li><a href="https://docs.codemate.ai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Docs</a></li>
                 <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Hugging Face</a></li>
                 <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Refund Policy</a></li>
@@ -183,7 +184,7 @@ function Footer() {
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
                 <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Terms of Service</a></li>
-                <li><img src="https://drive.codemate.ai/iso.png" alt="" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
+                <li><img src="https://drive.codemate.ai/iso.png" alt="ISO 27001 Certification Badge" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
               </ul>
             </div>
           </div>

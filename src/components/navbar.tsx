@@ -1,10 +1,11 @@
 'use client'
 import React, { useEffect, useState, useRef } from 'react'
-import { ChevronUp, Menu, X, ChevronRight } from 'lucide-react';
+import { ChevronUp, Menu, X, ChevronRight, ArrowRight } from 'lucide-react';
 import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, FaBitbucket, FaGitlab } from "react-icons/fa6";
 import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion'
 import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { cn } from '@/app/utils/cn';
 
 export default function Navbar() {
@@ -21,9 +22,27 @@ export default function Navbar() {
 
     // Disable Next.js default scroll-to-top on router push, then scroll to target element
     router.push('/', { scroll: false });
-    setTimeout(() => {
-      document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' });
-    }, 300);
+    let attempts = 0;
+    const interval = setInterval(() => {
+      attempts++;
+      const el = document.getElementById('features');
+      if (el) {
+        clearInterval(interval);
+        el.scrollIntoView({ behavior: 'smooth' });
+      } else if (attempts > 15) {
+        clearInterval(interval);
+      }
+    }, 100);
+  };
+
+  // Instantly resets window and Lenis scroll to top before navigating to download
+  const handleNavToDownload = () => {
+    if (typeof window !== 'undefined') {
+      if ((window as any).__lenis) {
+        (window as any).__lenis.scrollTo(0, { immediate: true });
+      }
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    }
   };
 
   const [isNBack, setIsNBack] = useState(false);
@@ -49,21 +68,71 @@ export default function Navbar() {
   const [isOS, setIsOS] = useState(false);
   const [isPartners, setIsPartners] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
   const [announcementHeight, setAnnouncementHeight] = useState(0);
   const announcementRef = useRef<HTMLDivElement>(null);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
 
+  // Prevent background scrolling and pause smooth scroll while mobile hamburger menu is open
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+
+    if (isMenu) {
+      const originalBodyOverflow = document.body.style.overflow;
+      const originalDocOverflow = document.documentElement.style.overflow;
+      const originalTouchAction = document.body.style.touchAction;
+
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+      document.body.style.touchAction = 'none';
+
+      // Pause Lenis smooth scroll if instance is registered
+      if ((window as any).__lenis) {
+        (window as any).__lenis.stop();
+      }
+
+      // Prevent touchmove and wheel gestures outside of the scrollable drawer
+      const preventBackgroundScroll = (e: TouchEvent | WheelEvent) => {
+        const target = e.target;
+        const element = target instanceof Element ? target : null;
+        if (!element?.closest('[data-lenis-prevent]')) {
+          e.preventDefault();
+        }
+      };
+
+      window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+      window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+
+      return () => {
+        document.body.style.overflow = originalBodyOverflow;
+        document.documentElement.style.overflow = originalDocOverflow;
+        document.body.style.touchAction = originalTouchAction;
+        if ((window as any).__lenis) {
+          (window as any).__lenis.start();
+        }
+        window.removeEventListener('touchmove', preventBackgroundScroll);
+        window.removeEventListener('wheel', preventBackgroundScroll);
+      };
+    }
+  }, [isMenu]);
+
   // Track window scroll for navbar positioning
   const { scrollY } = useScroll();
 
-  // Detect when user starts scrolling to move navbar to top
+  // Detect when user starts scrolling to move navbar to top and compact with hysteresis to avoid boundary flutter
   useMotionValueEvent(scrollY, 'change', (latest) => {
-    if (latest > 10) {
+    setIsNBack(latest >= 10);
+    if (latest > 70) {
+      setIsCompact(true);
       setHasScrolled(true);
-    } else {
+      setIsProducts(false);
+      setIsOS(false);
+      setIsResources(false);
+      setIsPartners(false);
+    } else if (latest < 30) {
+      setIsCompact(false);
       setHasScrolled(false);
     }
-    setIsNBack(latest >= 10);
   });
 
   const SWE_BENCH_BLOG_URL = '/blog/cora-hits-sota-76-on-swe-bench-verified';
@@ -149,33 +218,52 @@ export default function Navbar() {
       )}
 
       {/* ========================================== */}
-      {/* UI SECTION: DESKTOP NAVIGATION           */}
-      {/* Sticky top navigation with mega-menus    */}
+      {/* UI SECTION: DESKTOP TOP NAVIGATION         */}
+      {/* Sticky top mega-menu header on desktop     */}
       {/* ========================================== */}
       <div
         style={{ top: 0 }}
-        className="hidden lg:flex fixed justify-center items-center w-full cursor-default z-[999999] transition-all duration-300 linear">
+        className={cn(
+          "hidden lg:flex fixed justify-center items-center w-full cursor-default z-[999999] transition-all duration-300 ease-out",
+          isCompact ? "opacity-0 -translate-y-6 pointer-events-none" : "opacity-100 translate-y-0 pointer-events-auto"
+        )}>
         <motion.div
           initial={{ y: -110 }}
           animate={{ y: 0 }}
           transition={{ duration: 0.2, delay: 0 }}
           style={{
-            background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
+            background: !isNBack
+              ? 'rgba(15, 12, 12, 0.2)'
+              : 'rgba(15, 20, 20, 0.45)',
             boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
           }}
-          className={`${hasScrolled ? 'mt-5' : 'mt-2'} w-[90%] bg-opacity-65 z-[9999999999] rounded-lg ${isNBack ? 'border-y-[1px]   border-gray-400 border-opacity-10' : ''} transition-all duration-300`}>
-          <div className='flex  h-full w-full text-white px-[1rem] py-2 '>
-            <div className='flex justify-between items-center w-full h-10'>
+          className="mt-3 w-[90%] rounded-lg bg-opacity-65 transition-all duration-300 ease-out transform-gpu z-[9999999999]">
+          <div className="flex h-full w-full text-white px-[1rem] py-2">
+            <div className="flex justify-between items-center w-full h-10">
 
-              <div className="h-fit w-[15vw] flex justify-center overflow-hidden">
-                <img onClick={() => router.push("/")} src="/codemateLogo.svg" alt="" className='cursor-pointer' />
+              {/* Logo */}
+              <div
+                className="h-fit w-[15vw] flex justify-center cursor-pointer overflow-hidden"
+                onClick={() => router.push("/")}
+              >
+                <img
+                  src="/logos/brand/codemate-logo.svg"
+                  alt="CodeMate AI Logo"
+                  className="cursor-pointer h-auto w-full object-contain"
+                />
               </div>
-              <div className="relative flex flex-col gap-3 text-md  justify-center items-center cursor-pointer text-right z-50">
-                <span className=' flex gap-5 justify-center items-center z-50'>
+
+              {/* Full Un-scrolled Navigation */}
+              <div
+                className="relative flex flex-col gap-3 text-md justify-center items-center cursor-pointer text-right z-50"
+              >
+                <div
+                  className="flex gap-5 justify-center items-center z-50"
+                >
                   <motion.h1
-                    onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center  z-50  ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
+                    onMouseEnter={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center z-50 ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isProducts ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -184,8 +272,9 @@ export default function Navbar() {
                         className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
                       />
                     </motion.span></motion.h1>
+
                   <motion.h1
-                    onMouseEnter={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
+                    onMouseEnter={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isOS ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -195,7 +284,7 @@ export default function Navbar() {
                       />
                     </motion.span></motion.h1>
                   <motion.h1
-                    onMouseEnter={() => { setIsResources(state => !state); setIsOS(false); setIsProducts(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
+                    onMouseEnter={() => { setIsResources(state => !state); setIsOS(false); setIsProducts(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isResources ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -204,10 +293,12 @@ export default function Navbar() {
                         className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
                       />
                     </motion.span></motion.h1>
-                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65'>Features</motion.h1>
+
+                  <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65 cursor-pointer'>Features</motion.h1>
                   <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} onClick={() => { router.push('/pricing?product=cora') }} className='opacity-65'>Pricing</motion.h1>
+
                   <motion.h1
-                    onMouseEnter={() => { setIsPartners(state => !state); setIsOS(false); setIsProducts(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap  z-50  ${isPartners ? '' : 'opacity-65'}`}>Partners<motion.span
+                    onMouseEnter={() => { setIsPartners(state => !state); setIsOS(false); setIsProducts(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isPartners ? '' : 'opacity-65'}`}>Partners<motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isPartners ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -219,13 +310,17 @@ export default function Navbar() {
                   <a href='https://edu.codemate.ai/' target='_blank'>
                     <motion.h1 onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} className='opacity-65'><span translate="no">Academy</span></motion.h1>
                   </a>
-                  <a href="/contact">
-                    <motion.button onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1  bg-[#FFFFFF] text-black  rounded-sm font-semibold opacity-85 text-nowrap">Contact Us</motion.button>
-                  </a>
-                </span>
 
-                {isProducts &&
-                  <div className='absolute  h-[20rem] w-[14.5rem] mt-[22rem] -left-[1.2rem] rounded-md -z-10 '>
+                  <Link href="/contact">
+                    <motion.button onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1 bg-[#FFFFFF] text-black rounded-sm font-semibold opacity-85 text-nowrap">Contact Us</motion.button>
+                  </Link>
+                </div>
+
+                {isProducts && (
+                  <div className={cn(
+                    'absolute h-[20rem] w-[14.5rem] rounded-md -z-10',
+                    'mt-[22rem] -left-[1.2rem]'
+                  )}>
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -238,11 +333,11 @@ export default function Navbar() {
                       <div className="py-3 px-2 flex flex-col gap-0">
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 text-sm opacity-50">Web-Application</h1>
-                        <a href="https://app.codemate.ai/chat" target="_blank" className="w-full">
+                        <a href="https://app.codemate.ai/work" target="_blank" className="w-full">
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/Co_Logo.png" alt="Chat" className="size-5 object-contain" />
+                                <img src="/logos/brand/codemate-work-logo.png" alt="Chat" className="size-5 object-contain" />
                               </div>
                               <h1 translate="no">Work</h1>
                             </div>
@@ -255,7 +350,7 @@ export default function Navbar() {
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/Build_Logo.png" alt="Build" className="size-5 scale-[1.5] object-contain" />
+                                <img src="/logos/brand/codemate-build-logo.png" alt="Build" className="size-5 scale-[1.5] object-contain" />
                               </div>
                               <h1 translate="no">Build</h1>
                             </div>
@@ -266,11 +361,11 @@ export default function Navbar() {
                         </a>
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 mt-3 text-sm opacity-50">VS Code Extension</h1>
-                        <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank" className="w-full">
+                        <Link href="/download" className="w-full" onClick={() => { setIsProducts(false); handleNavToDownload(); }}>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
+                                <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 object-contain" />
                               </div>
                               <h1 translate="no">CORA</h1>
                             </div>
@@ -278,14 +373,29 @@ export default function Navbar() {
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
                             </div>
                           </motion.div>
-                        </a>
+                        </Link>
+
+                        <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 mt-3 text-sm opacity-50">Command Line</h1>
+                        <Link href="/download" className="w-full" onClick={() => { setIsProducts(false); handleNavToDownload(); }}>
+                          <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 flex justify-center">
+                                <img src="/logos/brand/codemate-cora-logo.png" alt="Cora CLI" className="size-5 object-contain" />
+                              </div>
+                              <h1>Cora CLI</h1>
+                            </div>
+                            <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                              <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
+                            </div>
+                          </motion.div>
+                        </Link>
 
                         <h1 style={{ fontWeight: 450 }} className="text-left px-3 mb-1 mt-3 text-sm opacity-50">JetBrains Plugin</h1>
                         <a href="https://plugins.jetbrains.com/plugin/29932-cora" target="_blank" className="w-full">
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-70 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div className="flex items-center gap-3">
                               <div className="w-8 flex justify-center">
-                                <img src="/CORA_Logo.png" alt="CORA" className="size-5 object-contain" />
+                                <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 object-contain" />
                               </div>
                               <h1 translate="no">CORA</h1>
                             </div>
@@ -297,9 +407,9 @@ export default function Navbar() {
                       </div>
                     </motion.div>
                   </div>
-                }
+                )}
 
-                {isOS &&
+                {isOS && !isCompact &&
                   <div className='absolute  h-[20rem] w-[12rem] mt-[22rem] left-[5.8rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -332,7 +442,7 @@ export default function Navbar() {
                   </div>
                 }
 
-                {isResources &&
+                {isResources && !isCompact &&
                   <div className='absolute  h-[20rem] w-[12rem] mt-[22rem] left-[14.8rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -352,28 +462,28 @@ export default function Navbar() {
                             </div>
                           </motion.div>
                         </a>
-                        <a href='/blog' className='w-full'>
+                        <Link href='/blog' className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <h1>Blogs</h1>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
                             </div>
                           </motion.div>
-                        </a>
-                        <a href="/community" className='w-full'>
+                        </Link>
+                        <Link href="/community" className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <h1>Community</h1>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
                             </div>
                           </motion.div>
-                        </a>
+                        </Link>
                       </div>
                     </motion.div>
                   </div>
                 }
 
-                {isPartners &&
+                {isPartners && !isCompact &&
                   <div className='absolute  h-[20rem] w-[9rem] mt-[22rem] left-[33.2rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -385,14 +495,14 @@ export default function Navbar() {
                         WebkitBackdropFilter: 'blur(50px)'
                       }} className=' h-auto w-full left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl overflow-hidden'>
                       <div className="py-3 px-2 flex flex-col gap-0">
-                        <a href='/hp' className='w-full'>
+                        <Link href='/hp' className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <h1>HP</h1>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                               <motion.svg initial={{ rotate: 50, opacity: 0.7 }} xmlns="http://www.w3.org/2000/svg" width={17} height={17} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-narrow-up"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 5l0 14" /><path d="M16 9l-4 -4" /><path d="M8 9l4 -4" /></motion.svg>
                             </div>
                           </motion.div>
-                        </a>
+                        </Link>
                       </div>
                     </motion.div>
                   </div>
@@ -418,45 +528,170 @@ export default function Navbar() {
       </div>
 
       {/* ========================================== */}
+      {/* UI SECTION: SCROLLED FLOATING PILL NAVBAR */}
+      {/* Drops in from top to bottom on scroll      */}
+      {/* Universal across mobile, iPad, and desktop*/}
+      {/* ========================================== */}
+      <AnimatePresence>
+        {isCompact && !isMenu && (
+          <motion.div
+            key="scrolled-floating-pill-navbar"
+            initial={{ y: -70, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: -70, opacity: 0 }}
+            transition={{
+              type: "spring",
+              stiffness: 400,
+              damping: 30,
+              mass: 0.8,
+            }}
+            className="fixed top-3 inset-x-0 mx-auto z-[999999999] flex justify-center items-center pointer-events-none px-4"
+          >
+            <div
+              style={{
+                background: 'rgba(15, 15, 18, 0.92)',
+                boxShadow: '0 10px 30px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+              }}
+              className="pointer-events-auto flex items-center gap-3.5 sm:gap-5 rounded-full pl-3.5 pr-1.5 py-1.5 sm:pl-4 sm:pr-2 sm:py-1.5 border border-white/[0.08] transition-all hover:border-white/15"
+            >
+              {/* CodeMate Icon Mark */}
+              <div
+                onClick={() => router.push("/")}
+                className="flex items-center justify-center cursor-pointer shrink-0 pl-1 h-6 w-auto"
+              >
+                <img
+                  src="/logos/brand/codemate-icon.svg"
+                  alt="CodeMate AI Logo"
+                  className="h-6 w-auto max-h-6 object-contain cursor-pointer transition-transform duration-200 hover:scale-105"
+                  style={{ maxHeight: '24px', height: '24px', width: 'auto' }}
+                />
+              </div>
+
+              {/* Download Toolbox Button with Right Arrow */}
+              <Link href="/download" onClick={handleNavToDownload} className="shrink-0 select-none">
+                <motion.button
+                  type="button"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center gap-1.5 sm:gap-2 px-3.5 py-1.5 sm:px-4 sm:py-2 bg-white text-black text-xs sm:text-sm font-semibold rounded-full hover:bg-neutral-200 transition-colors whitespace-nowrap shadow-sm group"
+                >
+                  <span>Download Toolbox</span>
+                  <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+                </motion.button>
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ========================================== */}
       {/* UI SECTION: MOBILE NAVIGATION & MENU     */}
       {/* Hamburger menu overlay for mobile devices*/}
       {/* ========================================== */}
       <AnimatePresence>
-        <motion.div
-          key="mobile-navbar-container"
-          initial={{ y: -100 }}
-          animate={{ y: 0 }}
-          transition={{ duration: 1, delay: 0.5 }}
-          style={{
-            background: !isNBack ? 'rgba(15, 12, 12, 0.2)' : 'rgba(15, 20, 20, 0.45)',
-            boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            top: 0
-          }}
-          className={`${isMenu && (isProducts || isOS || isResources || isPartners) ? 'bg-zinc-900' : ''} lg:hidden fixed flex w-full px-5 pl-0 md:px-8 md:pl-8 py-[1.1rem] md:py-4 justify-between items-center z-[99999999999]`}>
-          <img src="/codemateLogo.svg" alt="CodeMate AI" className='h-full w-[50vw] md:w-[200px] md:h-auto object-contain' />
+        {/* Mobile & Tablet navbar wrapper (unscrolled header or open menu drawer) */}
+        <div
+          style={{ top: 0 }}
+          className={cn(
+            "lg:hidden fixed inset-x-0 flex justify-center items-center w-full z-[99999999999] pointer-events-none transition-all duration-300 ease-out",
+            isCompact && !isMenu ? "opacity-0 -translate-y-6 pointer-events-none" : "opacity-100 translate-y-0"
+          )}
+        >
           <motion.div
-            onClick={() => { setMenu(state => !state); }} className="flex gap-2 text-[4vw] md:text-xl justify-center items-center cursor-pointer text-right">
-            <Menu
-              className={cn(
-                "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",
-                isMenu
-                  ? "hidden scale-75 -rotate-45"
-                  : "opacity-100 scale-100 rotate-0"
-              )}
-            />
+            key="mobile-navbar-container"
+            initial={{ y: -100 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.3 }}
+            style={{
+              background: isMenu
+                ? 'rgb(24, 24, 27)'
+                : !isNBack
+                ? 'rgba(15, 12, 12, 0.2)'
+                : 'rgba(15, 20, 20, 0.45)',
+              boxShadow: '0 4px 25px rgba(0, 0, 0, 0.1)',
+              backdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
+              WebkitBackdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
+            }}
+            className="w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5 pointer-events-auto transition-all duration-300 ease-out transform-gpu flex justify-between items-center"
+          >
+            {/* Left side: CodeMate logo */}
+            <div
+              className="flex items-center justify-start overflow-hidden cursor-pointer shrink-0"
+              onClick={() => {
+                if (isMenu) setMenu(false);
+                router.push('/');
+              }}
+            >
+              <img
+                src="/logos/brand/codemate-logo.svg"
+                alt="CodeMate AI Logo"
+                className="w-[136px] xs:w-[146px] sm:w-[165px] md:w-[185px] h-auto transition-all duration-300 object-contain"
+              />
+            </div>
 
-            <X
-              className={cn(
-                "w-[5vw] h-[5vw] md:w-8 md:h-8 transition-all duration-200",
-                isMenu
-                  ? "opacity-100 scale-100 rotate-0"
-                  : "hidden scale-75 rotate-45"
+            {/* Right side: Pricing, Sign Up, and Hamburger icon */}
+            <div className="flex items-center gap-2 xs:gap-3 sm:gap-4 shrink-0 text-right">
+              {/* Pricing link when unscrolled */}
+              {!isMenu && (
+                <motion.span
+                  onClick={() => { router.push('/pricing?product=cora'); }}
+                  whileHover={{ opacity: 1 }}
+                  whileTap={{ scale: 0.96 }}
+                  className="hidden sm:inline-block text-xs sm:text-sm font-medium text-neutral-200 hover:text-white cursor-pointer transition-all duration-200 select-none opacity-75"
+                >
+                  Pricing
+                </motion.span>
               )}
-            />
+
+              {/* Sign Up button when unscrolled */}
+              {!isMenu && (
+                <a
+                  href="https://app.codemate.ai"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:inline-flex transition-all duration-200 select-none"
+                >
+                  <motion.button
+                    type="button"
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    className="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white text-black text-xs sm:text-sm rounded-sm font-semibold hover:bg-neutral-200 transition-colors whitespace-nowrap"
+                  >
+                    Sign Up
+                  </motion.button>
+                </a>
+              )}
+
+              {/* Hamburger / Close icon (right-most) */}
+              <motion.div
+                onClick={() => { setMenu(state => !state); }}
+                whileTap={{ scale: 0.92 }}
+                aria-label={isMenu ? "Close menu" : "Open menu"}
+                role="button"
+                className="flex justify-center items-center cursor-pointer p-1 text-white hover:text-neutral-200 transition-colors"
+              >
+                <Menu
+                  className={cn(
+                    "w-5 h-5 sm:w-6 sm:h-6 transition-all duration-200",
+                    isMenu
+                      ? "hidden scale-75 -rotate-45"
+                      : "opacity-100 scale-100 rotate-0"
+                  )}
+                />
+                <X
+                  className={cn(
+                    "w-5 h-5 sm:w-6 sm:h-6 transition-all duration-200",
+                    isMenu
+                      ? "opacity-100 scale-100 rotate-0"
+                      : "hidden scale-75 rotate-45"
+                  )}
+                />
+              </motion.div>
+            </div>
           </motion.div>
-        </motion.div>
+        </div>
         {isMenu && (
           <div
             key="mobile-menu-overlay"
@@ -487,7 +722,7 @@ export default function Navbar() {
                 transition={{ duration: 0.2, delay: 0.2 }}
                 className="absolute h-full  w-[100%] bg-zinc-900  z-[999999999999]"
               >
-                <div data-lenis-prevent className='relative h-full w-full overflow-y-auto  z-[9999999999]'>
+                <div data-lenis-prevent className='relative h-full w-full overflow-y-auto overscroll-contain z-[9999999999]'>
                 <div className='flex flex-col leading-[1] text-[8vw] pt-24 pl-5 gap-10 '>
                   <motion.div onClick={() => { setMenu(false); router.push('/'); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
                   <motion.div className='flex flex-col gap-2 cursor-pointer'>
@@ -510,17 +745,17 @@ export default function Navbar() {
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-1'>Web-Application</h1>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
-                            <a href="https://app.codemate.ai/chat" target='_blank'>
+                            <a href="https://app.codemate.ai/work" target='_blank'>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
-                                  <img src="/Co_Logo.png" alt="Chat" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                  <img src="/logos/brand/codemate-work-logo.png" alt="Chat" width={28} height={28} className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1 translate="no">Work</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/Co_Logo.png" alt="Work" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                    <img src="/logos/brand/codemate-work-logo.png" alt="Work" width={28} height={28} className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1 translate="no">Work</h1>
                                 </motion.div>
@@ -531,14 +766,14 @@ export default function Navbar() {
                             <a href="http://build.codemate.ai/" target='_blank'>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
-                                  <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
+                                  <img src="/logos/brand/codemate-build-logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1 translate="no">Build</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/Build_Logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
+                                    <img src="/logos/brand/codemate-build-logo.png" alt="Build" className="size-5 md:size-7 scale-[1.5] lg:size-5 object-contain" />
                                   </div>
                                   <h1 translate="no">Build</h1>
                                 </motion.div>
@@ -548,22 +783,42 @@ export default function Navbar() {
 
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>VS Code Extension</h1>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
-                            <a href="https://marketplace.visualstudio.com/items?itemName=CodeMateAI.codemate-agent" target="_blank">
+                            <Link href="/download" onClick={() => { setMenu(false); handleNavToDownload(); }}>
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
-                                  <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                  <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1 translate="no">CORA</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                    <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1 translate="no">CORA</h1>
                                 </motion.div>
                               </motion.div>
-                            </a>
+                            </Link>
+                          </div>
+
+                          <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>Command Line</h1>
+                          <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 mb-2'>
+                            <Link href="/download" onClick={() => { setMenu(false); handleNavToDownload(); }}>
+                              <div className='flex items-center gap-2 z-20 opacity-90'>
+                                <div className="w-8 md:w-10 flex justify-center">
+                                  <img src="/logos/brand/codemate-cora-logo.png" alt="Cora CLI" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                </div>
+                                <motion.h1>Cora CLI</motion.h1>
+                              </div>
+                              <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
+                                <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
+                                  <div className="w-8 md:w-10 flex justify-center">
+                                    <img src="/logos/brand/codemate-cora-logo.png" alt="Cora CLI" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                  </div>
+                                  <h1>Cora CLI</h1>
+                                </motion.div>
+                              </motion.div>
+                            </Link>
                           </div>
 
                           <h1 style={{ fontWeight: 600 }} className='text-lg md:text-[1.35rem] lg:text-lg text-left mb-1 mt-3'>JetBrains Plugin</h1>
@@ -571,14 +826,14 @@ export default function Navbar() {
                             <a href="https://plugins.jetbrains.com/plugin/29932-cora" target="_blank">
                               <div className='flex items-center gap-2 z-20 opacity-90'>
                                 <div className="w-8 md:w-10 flex justify-center">
-                                  <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                  <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                 </div>
                                 <motion.h1 translate="no">CORA</motion.h1>
                               </div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600 flex items-center gap-2'>
                                   <div className="w-8 md:w-10 flex justify-center">
-                                    <img src="/CORA_Logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
+                                    <img src="/logos/brand/codemate-cora-logo.png" alt="CORA" className="size-5 md:size-7 lg:size-5 object-contain" />
                                   </div>
                                   <h1 translate="no">CORA</h1>
                                 </motion.div>
@@ -660,24 +915,24 @@ export default function Navbar() {
                             </a>
                           </div>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
-                            <a href="/blog">
+                            <Link href="/blog" onClick={() => setMenu(false)}>
                               <motion.h1 className='z-20 opacity-90'>Blogs</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full top-0'>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
                                   <h1>Blogs</h1>
                                 </motion.div>
                               </motion.div>
-                            </a>
+                            </Link>
                           </div>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
-                            <a href="/community">
+                            <Link href="/community" onClick={() => setMenu(false)}>
                               <motion.h1 className='z-20 opacity-90'>Community</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
                                   <h1>Community</h1>
                                 </motion.div>
                               </motion.div>
-                            </a>
+                            </Link>
                           </div>
                         </motion.div>
                       }
@@ -704,14 +959,14 @@ export default function Navbar() {
                       {isPartners &&
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
-                            <a href="/hp">
+                            <Link href="/hp" onClick={() => setMenu(false)}>
                               <motion.h1 className='z-20 opacity-90'>HP</motion.h1>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full top-0'>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
                                   <h1>HP</h1>
                                 </motion.div>
                               </motion.div>
-                            </a>
+                            </Link>
                           </div>
                         </motion.div>
                       }
