@@ -204,6 +204,31 @@ export default function ToolboxSection() {
                       {product.description}
                     </p>
                   </div>
+
+                  {/* Integration logos for PR Review Agent on mobile and tablet */}
+                  {isPRReview && (
+                    <div
+                      aria-label="Supported Git platforms"
+                      className="flex lg:hidden items-center gap-2.5 sm:gap-4 mt-0.5 sm:mt-1 z-20"
+                    >
+                      <FaGithub
+                        className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px] text-white/70 transition-colors hover:text-white shrink-0"
+                        title="GitHub"
+                      />
+                      <FaBitbucket
+                        className="w-3 h-3 sm:w-[17px] sm:h-[17px] text-white/70 transition-colors hover:text-white shrink-0"
+                        title="Bitbucket"
+                      />
+                      <FaGitlab
+                        className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px] text-white/70 transition-colors hover:text-white shrink-0"
+                        title="GitLab"
+                      />
+                      <VscAzureDevops
+                        className="w-3.5 h-3.5 sm:w-[19px] sm:h-[19px] text-white/70 transition-colors hover:text-white shrink-0"
+                        title="Azure DevOps"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 {/* Internal Preview Image: Smooth vertical lift and scale on hover */}
@@ -238,7 +263,7 @@ export default function ToolboxSection() {
                       marginTop: isHovered ? 12 : 0,
                     }}
                     transition={{ duration: 0.3, ease: 'easeOut' }}
-                    className="flex items-center gap-[24px] overflow-hidden z-20 pointer-events-none"
+                    className="hidden lg:flex items-center gap-[24px] overflow-hidden z-20 pointer-events-none"
                   >
                     <FaGithub
                       size={22}
