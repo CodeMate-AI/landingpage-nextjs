@@ -162,12 +162,12 @@ export default function ProductTabsSection() {
                   >
                     {/* Media Container: Background+Border+Shadow */}
                     <div className="relative w-full aspect-video bg-[#121216] border border-white/[0.06] rounded-[12px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.35)] overflow-hidden transition-all duration-300 group-hover:border-white/15">
+                      {/* unoptimized preserves 100% lossless fidelity without Next.js downsampling */}
                       <Image
                         src={card.image}
                         alt={card.title}
                         fill
-                        quality={95}
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1536px) 33vw, 600px"
+                        unoptimized
                         className="object-contain object-center transition-none"
                       />
                     </div>
