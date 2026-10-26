@@ -131,6 +131,7 @@ export interface ProductFeatureCard {
   title: string;
   description: string;
   image: string;
+  imageFit?: 'contain' | 'cover' | 'fill';
 }
 
 export interface ProductTabItem {
@@ -224,10 +225,11 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
         },
         {
           id: 'build-4',
-          title: 'Rapid Prototyping',
+          title: 'Artifact Mode',
           description:
-            'Move from an early concept to a working prototype without building everything from scratch.',
-          image: '/build/build-rapid-prototyping.png',
+            'Generate animated explainers, diagrams, and interactive presentations effortlessly from a single prompt.',
+          image: '/build/build-artifact-mode.png',
+          imageFit: 'fill',
         },
       ],
     },

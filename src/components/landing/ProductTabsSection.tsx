@@ -168,7 +168,9 @@ export default function ProductTabsSection() {
                         alt={card.title}
                         fill
                         unoptimized
-                        className="object-contain object-center transition-none"
+                        className={`${
+                          card.imageFit === 'fill' ? 'object-fill' : 'object-contain'
+                        } object-center transition-none`}
                       />
                     </div>
 
