@@ -444,6 +444,103 @@ export function stripDuplicateSubheadingNode(content: any, subheading?: string):
   return content;
 }
 
+function escapeHtmlAttr(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function escapeHtmlText(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+function formatReferenceBlogs(html: string): string {
+  return html.replace(/<div\b([^>]*data-type=["']reference-blogs["'][^>]*)>(?:[\s\S]*?<\/div>)?/gi, (match, attrs) => {
+    const headingMatch = attrs.match(/data-heading=["']([^"']*)["']/i);
+    const showBottomMatch = attrs.match(/data-show-bottom=["']([^"']*)["']/i);
+    const bottomTextMatch = attrs.match(/data-bottom-text=["']([^"']*)["']/i);
+    const bottomUrlMatch = attrs.match(/data-bottom-url=["']([^"']*)["']/i);
+    const blogsMatch = attrs.match(/data-blogs=(?:"([^"]*)"|'([^']*)')/i);
+
+    const heading = headingMatch ? headingMatch[1].trim() : "Writing";
+    const showBottom = showBottomMatch ? showBottomMatch[1] !== "false" : true;
+    const bottomText = bottomTextMatch ? bottomTextMatch[1].trim() : "Read the blog";
+    const bottomUrl = bottomUrlMatch ? bottomUrlMatch[1].trim() : "/blog";
+
+    let rawBlogsJson = blogsMatch ? (blogsMatch[1] || blogsMatch[2] || "[]") : "[]";
+    rawBlogsJson = rawBlogsJson
+      .replace(/&quot;/g, '"')
+      .replace(/&#34;/g, '"')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>');
+
+    let blogs: { id?: string; slug?: string; title?: string; category?: string }[] = [];
+    try {
+      blogs = JSON.parse(rawBlogsJson);
+      if (!Array.isArray(blogs)) blogs = [];
+    } catch {
+      blogs = [];
+    }
+
+    if (blogs.length === 0) {
+      return "";
+    }
+
+    const cardsHtml = blogs
+      .map((blog, idx) => {
+        const num = String(idx + 1).padStart(2, "0");
+        const slug = (blog.slug || "").trim();
+        const href = slug ? (slug.startsWith("/") ? slug : `/blog/${slug}`) : "#";
+        const title = escapeHtmlText(blog.title || "Untitled Article");
+
+        return `
+          <a href="${escapeHtmlAttr(href)}" class="ref-blog-card" role="listitem">
+            <span class="ref-blog-icon-wrap" aria-hidden="true">
+              <svg class="ref-blog-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M17 7H7M17 7V17"></path>
+              </svg>
+            </span>
+            <span class="ref-blog-num">${num}</span>
+            <span class="ref-blog-title">${title}</span>
+          </a>
+        `.trim();
+      })
+      .join("\n");
+
+    let bottomLinkHtml = "";
+    if (showBottom) {
+      const cleanBottomUrl = bottomUrl.startsWith("http") || bottomUrl.startsWith("/") ? bottomUrl : `/${bottomUrl}`;
+      bottomLinkHtml = `
+        <div class="ref-blogs-bottom">
+          <a href="${escapeHtmlAttr(cleanBottomUrl)}" class="ref-blogs-footer-link">
+            <span>${escapeHtmlText(bottomText)}</span>
+            <svg class="ref-blogs-bottom-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17L17 7M17 7H7M17 7V17"></path>
+            </svg>
+          </a>
+        </div>
+      `.trim();
+    }
+
+    return `
+      <section class="ref-blogs-section my-8" aria-label="${escapeHtmlAttr(heading)}">
+        <h3 class="ref-blogs-heading">${escapeHtmlText(heading)}</h3>
+        <div class="ref-blogs-list" role="list">
+          ${cardsHtml}
+        </div>
+        ${bottomLinkHtml}
+      </section>
+    `.trim();
+  });
+}
+
 export function compileTiptapToHtml(
   content: any,
   customSections?: { id: string; title: string }[],
@@ -462,19 +559,24 @@ export function compileTiptapToHtml(
       "table", "thead", "tbody", "tr", "th", "td", "colgroup", "col",
       "span", "div", "video", "s", "del", "strike", "u", "sub", "sup", "mark",
       "input", "label", "blockquote", "hr", "br", "figure", "figcaption", "cite",
-      "b", "i", "summary", "details"
+      "b", "i", "summary", "details", "section", "svg", "path"
     ],
     ALLOWED_ATTR: [
       "href", "src", "alt", "class", "target", "rel", "id", "title",
       "controls", "muted", "autoplay", "loop", "playsinline", "type",
       "style", "checked", "disabled", "colspan", "rowspan", "colwidth",
-      "width", "height", "name", "data-type", "data-checked"
+      "width", "height", "name", "data-type", "data-checked",
+      "data-heading", "data-show-bottom", "data-bottom-text", "data-bottom-url", "data-blogs",
+      "viewbox", "viewBox", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin",
+      "d", "aria-hidden", "aria-label", "role"
     ],
   });
 
   const sections = customSections && customSections.length > 0 ? customSections : extractSectionsFromTiptapJson(sanitizedContent);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
-  const finalHtml = formatLinks(formatLogos(formatVideos(formatFaqSection(formatTableCells(headingHtml)))));
+  const finalHtml = formatLinks(
+    formatLogos(formatVideos(formatFaqSection(formatReferenceBlogs(formatTableCells(headingHtml)))))
+  );
 
   return { html: finalHtml, sections };
 }

@@ -72,6 +72,74 @@ const VideoUploadNodeServer = Node.create({
   },
 });
 
+/**
+ * Server-safe referenceBlogs node for headless generateHTML compilation.
+ * Outputs a div container with data attributes, which formatReferenceBlogs() in
+ * blog-compiler.ts post-processes into clean semantic HTML.
+ */
+const ReferenceBlogsNodeServer = Node.create({
+  name: "referenceBlogs",
+  group: "block",
+  atom: true,
+
+  addAttributes() {
+    return {
+      heading: { default: "Writing" },
+      showBottomLink: { default: true },
+      bottomLinkText: { default: "Read the blog" },
+      bottomLinkUrl: { default: "/blog" },
+      blogs: { default: [] },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "div[data-type='reference-blogs']",
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false;
+          let blogs: any[] = [];
+          const rawBlogs = element.getAttribute("data-blogs");
+          if (rawBlogs) {
+            try {
+              blogs = JSON.parse(rawBlogs);
+            } catch {
+              blogs = [];
+            }
+          }
+          return {
+            heading: element.getAttribute("data-heading") || "Writing",
+            showBottomLink: element.getAttribute("data-show-bottom") !== "false",
+            bottomLinkText: element.getAttribute("data-bottom-text") || "Read the blog",
+            bottomLinkUrl: element.getAttribute("data-bottom-url") || "/blog",
+            blogs,
+          };
+        },
+      },
+    ];
+  },
+
+  renderHTML({ node }) {
+    const heading = (node.attrs.heading as string) || "Writing";
+    const showBottomLink = String(node.attrs.showBottomLink ?? true);
+    const bottomLinkText = (node.attrs.bottomLinkText as string) || "Read the blog";
+    const bottomLinkUrl = (node.attrs.bottomLinkUrl as string) || "/blog";
+    const blogs = Array.isArray(node.attrs.blogs) ? node.attrs.blogs : [];
+
+    return [
+      "div",
+      {
+        "data-type": "reference-blogs",
+        "data-heading": heading,
+        "data-show-bottom": showBottomLink,
+        "data-bottom-text": bottomLinkText,
+        "data-bottom-url": bottomLinkUrl,
+        "data-blogs": JSON.stringify(blogs),
+      },
+    ];
+  },
+});
+
 const CustomTaskList = TaskList.extend({
   parseHTML() {
     return [
@@ -171,5 +239,6 @@ export const extensions = [
   MarkdownRulesExtension,
   VideoNodeServer,
   VideoUploadNodeServer,
+  ReferenceBlogsNodeServer,
 ];
 

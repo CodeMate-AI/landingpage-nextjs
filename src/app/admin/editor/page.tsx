@@ -1517,7 +1517,13 @@ function EditorContent() {
                 <span>Loading post content...</span>
               </div>
             ) : (
-              <SimpleEditor content={contentJson} onChange={setContentJson} />
+              <SimpleEditor
+                content={contentJson}
+                onChange={setContentJson}
+                currentPostId={postId}
+                currentSlug={slug}
+                currentTitle={title}
+              />
             )}
           </div>
 

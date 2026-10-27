@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState, createContext } from "react"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import { Plugin } from "@tiptap/pm/state"
 
@@ -175,6 +175,7 @@ import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/imag
 import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { VideoNode } from "@/components/tiptap-node/video-node/video-node-extension"
 import { VideoUploadNode } from "@/components/tiptap-node/video-node/video-upload-node-extension"
+import { ReferenceBlogsNode } from "@/components/tiptap-node/reference-blogs-node/reference-blogs-node-extension"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss"
@@ -315,6 +316,36 @@ const MainToolbarContent = ({
         >
           Table
         </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => {
+            editor?.chain().focus().insertContent({
+              type: "referenceBlogs",
+              attrs: {
+                heading: "Writing",
+                showBottomLink: true,
+                bottomLinkText: "Read the blog",
+                bottomLinkUrl: "/blog",
+                blogs: [],
+              },
+            }).run()
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+          title="Add Reference Blogs"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.8}
+            stroke="currentColor"
+            className="tiptap-button-icon"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+          </svg>
+          <span className="tiptap-button-text">Ref Blogs</span>
+        </Button>
       </ToolbarGroup>
 
       <ToolbarSeparator />
@@ -406,12 +437,29 @@ const MobileToolbarContent = ({
   </>
 )
 
+export interface CurrentPostContextType {
+  postId?: string | null
+  slug?: string | null
+  title?: string | null
+}
+
+export const CurrentPostContext = React.createContext<CurrentPostContextType>({})
+
 interface SimpleEditorProps {
   content: any
   onChange: (json: any) => void
+  currentPostId?: string | null
+  currentSlug?: string | null
+  currentTitle?: string | null
 }
 
-export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
+export function SimpleEditor({
+  content,
+  onChange,
+  currentPostId,
+  currentSlug,
+  currentTitle,
+}: SimpleEditorProps) {
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
@@ -525,6 +573,7 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       CustomTaskItem,
       VideoNode,
       VideoUploadNode,
+      ReferenceBlogsNode,
       CustomLink,
       CustomHeading,
       HorizontalRule,
@@ -574,36 +623,38 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
   }, [isMobile])
 
   return (
-    <EditorContext.Provider value={{ editor }}>
-      <div className="simple-editor-wrapper">
-        <Toolbar ref={toolbarRef}>
-          {mobileView === "main" ? (
-            <MainToolbarContent
-              isMobile={isMobile}
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              onVideoClick={() => editor?.chain().focus().insertContent({ type: "videoUpload" }).run()}
-            />
-          ) : (
-            <MobileToolbarContent
-              type={mobileView}
-              onBack={() => setMobileView("main")}
-            />
-          )}
-        </Toolbar>
-        <div
-          className="simple-editor-content"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              editor?.commands.focus()
-            }
-          }}
-          style={{ cursor: "text" }}
-        >
-          <EditorContent editor={editor} />
+    <CurrentPostContext.Provider value={{ postId: currentPostId, slug: currentSlug, title: currentTitle }}>
+      <EditorContext.Provider value={{ editor }}>
+        <div className="simple-editor-wrapper">
+          <Toolbar ref={toolbarRef}>
+            {mobileView === "main" ? (
+              <MainToolbarContent
+                isMobile={isMobile}
+                onHighlighterClick={() => setMobileView("highlighter")}
+                onLinkClick={() => setMobileView("link")}
+                onVideoClick={() => editor?.chain().focus().insertContent({ type: "videoUpload" }).run()}
+              />
+            ) : (
+              <MobileToolbarContent
+                type={mobileView}
+                onBack={() => setMobileView("main")}
+              />
+            )}
+          </Toolbar>
+          <div
+            className="simple-editor-content"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                editor?.commands.focus()
+              }
+            }}
+            style={{ cursor: "text" }}
+          >
+            <EditorContent editor={editor} />
+          </div>
         </div>
-      </div>
-    </EditorContext.Provider>
+      </EditorContext.Provider>
+    </CurrentPostContext.Provider>
   )
 }
 
