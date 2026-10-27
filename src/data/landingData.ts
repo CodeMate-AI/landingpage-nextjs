@@ -180,7 +180,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
         },
         {
           id: 'work-4',
-          title: 'Resources & Knowledge',
+          title: 'Resources & Knowledge Base',
           description:
             'Organize files, documents, and project resources in one searchable workspace.',
           image: '/work/work-resources-knowledge.png',
@@ -278,7 +278,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
         },
         {
           id: 'cora-6',
-          title: 'Commit Prompt Generation',
+          title: 'Commit Message Generation',
           description:
             'Generate a commit message with the Cora extension.',
           image: '/cora/cora-commit-prompt-generation.png',
