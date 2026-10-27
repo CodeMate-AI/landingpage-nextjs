@@ -166,7 +166,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
         },
         {
           id: 'work-2',
-          title: 'Connected Tools',
+          title: 'MCP Connectors',
           description:
             'Connect external services through MCP to bring relevant information and workflows into Work.',
           image: '/work/work-connected-tools.png',
