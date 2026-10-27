@@ -204,14 +204,14 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
       cards: [
         {
           id: 'build-1',
-          title: 'Prompt-to-App',
+          title: 'Prototype Mode',
           description:
             'Describe what you want to build and turn your idea into a functional application.',
           image: '/build/build-prompt-to-app.png',
         },
         {
           id: 'build-2',
-          title: 'Design-to-Code',
+          title: 'Figma to Prototype',
           description:
             'Translate visual designs into working interfaces and code.',
           image: '/build/build-figma-to-code.png',
