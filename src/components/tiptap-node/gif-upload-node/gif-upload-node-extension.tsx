@@ -117,8 +117,11 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
     }
   }
 
-  const handleUrlSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleUrlSubmit = (e?: React.SyntheticEvent) => {
+    if (e) {
+      e.preventDefault()
+      e.stopPropagation()
+    }
     const trimmed = gifUrl.trim()
     if (!trimmed) {
       setError("Please enter a valid URL")
@@ -182,18 +185,26 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
           </div>
         ) : urlMode ? (
           <div className="flex flex-col items-center justify-center p-6 gap-3 w-full" style={{ minHeight: "140px" }}>
-            <form onSubmit={handleUrlSubmit} className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md">
+            <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md">
               <input
                 type="url"
                 value={gifUrl}
                 onChange={(e) => setGifUrl(e.target.value)}
+                onKeyDown={(e) => {
+                  e.stopPropagation()
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    handleUrlSubmit(e)
+                  }
+                }}
                 placeholder="https://media.giphy.com/... or direct .gif URL"
                 className="flex-1 px-3 py-2 text-sm rounded-lg bg-neutral-900 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-indigo-500"
                 autoFocus
               />
               <div className="flex gap-2">
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleUrlSubmit}
                   className="px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
                 >
                   Insert GIF
@@ -206,7 +217,7 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
                   Back
                 </button>
               </div>
-            </form>
+            </div>
           </div>
         ) : (
           <div
