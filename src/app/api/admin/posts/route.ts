@@ -127,10 +127,13 @@ async function createPostHandler(req: NextRequest, session: any) {
         // Source admin email dynamically from verified session or environment config
         email: session?.email || process.env.ADMIN_EMAIL || "",
         at: new Date(),
+        clientSessionId: parsed.data.clientSessionId || "",
       },
       createdAt: new Date(),
       updatedAt: new Date(),
     };
+    delete newPost.forceOverwrite;
+    delete newPost.clientSessionId;
 
     // 6. [MongoDB Collection: "blogs"] Insert article with duplicate slug collision retry loop
     let finalSlug = baseSlug;

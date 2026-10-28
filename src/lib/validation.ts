@@ -73,6 +73,7 @@ export const BlogPostSchema = z.object({
   // Concurrency tracking fields
   version: z.number().int().nonnegative().optional(),
   forceOverwrite: z.boolean().optional().default(false),
+  clientSessionId: z.string().max(100).optional(),
   // Enforces that all table-of-contents anchor IDs within an article are unique
   sections: z.array(SectionSchema).optional().refine(
     (items) => {

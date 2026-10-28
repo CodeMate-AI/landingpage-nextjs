@@ -53,11 +53,18 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
     const saveMode = parsed.data.saveMode || (parsed.data.published ? "publish" : "draft");
     const published = parsed.data.published;
     const incomingVersion = parsed.data.version;
+    const incomingSessionId = parsed.data.clientSessionId;
     const forceOverwrite = Boolean(parsed.data.forceOverwrite);
 
     // Optimistic Concurrency Control: detect conflicting updates from concurrent admin sessions
     const currentVersion = typeof existing.version === "number" ? existing.version : 1;
-    if (!forceOverwrite && typeof incomingVersion === "number" && existing.version && incomingVersion !== existing.version) {
+    const isSameSession = Boolean(
+      incomingSessionId &&
+      existing.lastModifiedBy?.clientSessionId &&
+      incomingSessionId === existing.lastModifiedBy.clientSessionId
+    );
+
+    if (!forceOverwrite && typeof incomingVersion === "number" && existing.version && incomingVersion !== existing.version && !isSameSession) {
       return NextResponse.json(
         {
           error: "This article was modified in another session.",
@@ -175,10 +182,12 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         // Source admin email dynamically from verified session or environment config
         email: session?.email || process.env.ADMIN_EMAIL || "",
         at: new Date(),
+        clientSessionId: incomingSessionId || existing.lastModifiedBy?.clientSessionId || "",
       },
       updatedAt: new Date(),
     };
     delete updatePayload.forceOverwrite;
+    delete updatePayload.clientSessionId;
 
     // Flag draft changes only if a published article is being saved as draft with genuine changes from publishedVersion
     const hasDraftChanges =

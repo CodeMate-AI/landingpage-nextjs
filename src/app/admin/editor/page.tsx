@@ -125,6 +125,23 @@ function EditorContent() {
   const lastSavedSnapshotRef = useRef<string>("");
   const initialLoadedRef = useRef(false);
   const currentPostIdRef = useRef<string | null>(postId);
+  // Unique per-tab client session identifier for optimistic concurrency coordination
+  const clientSessionIdRef = useRef<string>("");
+  if (!clientSessionIdRef.current && typeof window !== "undefined") {
+    clientSessionIdRef.current =
+      typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : "sess_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
+  }
+
+  // Tracks active in-flight network save promise to prevent concurrent dispatch collisions
+  const activeSavePromiseRef = useRef<Promise<any> | null>(null);
+  // Auto-save debounce timer ref so manual saves can cleanly cancel pending timers
+  const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Prevents redundant re-loading when postId is set following initial auto-save of a new article
+  const justCreatedPostIdRef = useRef<string | null>(null);
+  // Signals that handleSave succeeded and editor is navigating away to suppress unload keepalive flush
+  const isNavigatingAwayRef = useRef<boolean>(false);
 
   useEffect(() => {
     currentPostIdRef.current = postId;
@@ -136,7 +153,9 @@ function EditorContent() {
       try {
         sessionStorage.removeItem("admin_blog_preview");
         localStorage.removeItem("admin_blog_preview");
-      } catch {}
+      } catch (err) {
+        console.warn("Failed to clear preview storage on unmount:", err);
+      }
     };
   }, []);
 
@@ -262,6 +281,10 @@ function EditorContent() {
   // Trigger post loading when postId query parameter changes or restore local draft
   useEffect(() => {
     if (postId) {
+      if (justCreatedPostIdRef.current === postId) {
+        justCreatedPostIdRef.current = null;
+        return;
+      }
       void loadPost();
     } else {
       // Check for local draft backup for a new post
@@ -314,64 +337,74 @@ function EditorContent() {
       console.warn("Failed to persist offline draft to localStorage:", err);
     }
 
-    try {
-      const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
-      const method = targetId ? "PUT" : "POST";
-      // Inject latest live version counter into payload at dispatch time
-      const outboundPayload = targetId
-        ? { ...payload, version: docVersionRef.current }
-        : payload;
+    const saveRoutine = async () => {
+      try {
+        const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
+        const method = targetId ? "PUT" : "POST";
+        // Inject latest live version counter and clientSessionId into payload at dispatch time
+        const outboundPayload = {
+          ...payload,
+          clientSessionId: clientSessionIdRef.current,
+          ...(targetId ? { version: docVersionRef.current } : {}),
+        };
 
-      const res = await adminFetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(outboundPayload),
-      });
+        const res = await adminFetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(outboundPayload),
+        });
 
-      if (res.ok) {
-        const data = await res.json().catch(() => null);
-        if (data?.version) {
-          docVersionRef.current = data.version;
-        }
-        setConflictData(null);
-        if (data?.slug) {
-          setSlug(data.slug);
-        }
-        if (!targetId) {
-          if (data && data.id) {
-            const newId = data.id.toString();
-            currentPostIdRef.current = newId;
-            setPostId(newId);
-            lastSavedSnapshotRef.current = serialized;
-            window.history.replaceState(null, "", `/admin/editor?id=${newId}`);
-            try {
-              localStorage.removeItem("codemate_editor_draft_new");
-              localStorage.setItem(`codemate_editor_draft_${newId}`, JSON.stringify({ ...payload, updatedAt: Date.now() }));
-            } catch (err) {
-              console.warn("Failed to update post draft in localStorage:", err);
-            }
+        if (res.ok) {
+          const data = await res.json().catch(() => null);
+          if (data?.version) {
+            docVersionRef.current = data.version;
           }
-        } else {
-          lastSavedSnapshotRef.current = serialized;
+          setConflictData(null);
+          if (data?.slug) {
+            setSlug(data.slug);
+          }
+          if (!targetId) {
+            if (data && data.id) {
+              const newId = data.id.toString();
+              justCreatedPostIdRef.current = newId;
+              currentPostIdRef.current = newId;
+              setPostId(newId);
+              lastSavedSnapshotRef.current = serialized;
+              window.history.replaceState(null, "", `/admin/editor?id=${newId}`);
+              try {
+                localStorage.removeItem("codemate_editor_draft_new");
+                localStorage.setItem(`codemate_editor_draft_${newId}`, JSON.stringify({ ...payload, updatedAt: Date.now() }));
+              } catch (err) {
+                console.warn("Failed to update post draft in localStorage:", err);
+              }
+            }
+          } else {
+            lastSavedSnapshotRef.current = serialized;
+          }
+        } else if (res.status === 409) {
+          // Handle concurrent edit conflict: pause auto-save and activate in-UI resolution banner
+          const errData = await res.json().catch(() => ({}));
+          isAutosavingRef.current = false;
+          pendingSavePayloadRef.current = null;
+          setConflictData(errData.lastModifiedBy || { email: "another admin", at: new Date().toISOString() });
+          return;
         }
-      } else if (res.status === 409) {
-        // Handle concurrent edit conflict: pause auto-save and activate in-UI resolution banner
-        const errData = await res.json().catch(() => ({}));
+      } catch (err) {
+        console.error("Auto-save failed:", err);
+      } finally {
+        activeSavePromiseRef.current = null;
         isAutosavingRef.current = false;
-        pendingSavePayloadRef.current = null;
-        setConflictData(errData.lastModifiedBy || { email: "another admin", at: new Date().toISOString() });
-        return;
+        if (pendingSavePayloadRef.current) {
+          const nextPayload = pendingSavePayloadRef.current;
+          pendingSavePayloadRef.current = null;
+          void executeAutoSave(nextPayload);
+        }
       }
-    } catch (err) {
-      console.error("Auto-save failed:", err);
-    } finally {
-      isAutosavingRef.current = false;
-      if (pendingSavePayloadRef.current) {
-        const nextPayload = pendingSavePayloadRef.current;
-        pendingSavePayloadRef.current = null;
-        void executeAutoSave(nextPayload);
-      }
-    }
+    };
+
+    const savePromise = saveRoutine();
+    activeSavePromiseRef.current = savePromise;
+    await savePromise;
   }, []);
 
   // Builds sanitized article payload for saving, deduplicating tags and preserving custom inputs
@@ -420,6 +453,7 @@ function EditorContent() {
         publishedAtCustom: resolvedDate,
         baseFont: baseFont || "Montserrat",
         sections: sections.length > 0 ? sections : undefined,
+        clientSessionId: clientSessionIdRef.current,
       };
     },
     [
@@ -444,7 +478,6 @@ function EditorContent() {
   useEffect(() => {
     if (!initialLoadedRef.current) return;
     if (conflictData) return;
-    isDirtyRef.current = true;
 
     const hasContent =
       title.trim() !== "" ||
@@ -468,11 +501,23 @@ function EditorContent() {
       return;
     }
 
-    const timer = setTimeout(() => {
+    isDirtyRef.current = true;
+
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+    }
+
+    autoSaveTimerRef.current = setTimeout(() => {
+      autoSaveTimerRef.current = null;
       void executeAutoSave(payload);
     }, 1500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+        autoSaveTimerRef.current = null;
+      }
+    };
   }, [
     title,
     subheading,
@@ -494,7 +539,7 @@ function EditorContent() {
   // Keepalive flush on page unload
   useEffect(() => {
     const handleUnloadFlush = () => {
-      if (!initialLoadedRef.current) return;
+      if (!initialLoadedRef.current || isNavigatingAwayRef.current) return;
 
       const hasContent =
         title.trim() !== "" ||
@@ -531,7 +576,7 @@ function EditorContent() {
         void adminFetch(url, {
           method,
           headers: { "Content-Type": "application/json" },
-          body: targetId ? JSON.stringify({ ...payload, version: docVersionRef.current }) : serialized,
+          body: targetId ? JSON.stringify({ ...payload, version: docVersionRef.current, clientSessionId: clientSessionIdRef.current }) : JSON.stringify({ ...payload, clientSessionId: clientSessionIdRef.current }),
           keepalive: true,
         });
       } catch (err) {
@@ -575,7 +620,9 @@ function EditorContent() {
               void loadPost();
             }
           }
-        } catch {}
+        } catch (err) {
+          console.warn("Failed to check server freshness on tab focus:", err);
+        }
       }
     };
 
@@ -648,24 +695,41 @@ function EditorContent() {
     setLoading(true);
     setSavingMode(saveModeRef.current);
 
+    // Clear any pending debounced auto-save timer to prevent save collision
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+      autoSaveTimerRef.current = null;
+    }
+
+    // Await any active in-flight auto-save request so versions advance monotonically
+    if (activeSavePromiseRef.current) {
+      try {
+        await activeSavePromiseRef.current;
+      } catch (err) {
+        console.warn("In-flight auto-save settled with error before manual save:", err);
+      }
+    }
+
+    const targetId = postId || currentPostIdRef.current;
+
     // If saving as draft for an existing published post, maintain published flag
     const resolvedPublished =
       saveModeRef.current === "publish"
         ? true
-        : postId
+        : targetId
         ? published
         : false;
 
     // Construct full article payload via shared builder
     const basePayload = buildSavePayload(saveModeRef.current, resolvedPublished, false);
-    const payload = postId
-      ? { ...basePayload, version: docVersionRef.current, forceOverwrite }
-      : basePayload;
+    const payload = targetId
+      ? { ...basePayload, version: docVersionRef.current, forceOverwrite, clientSessionId: clientSessionIdRef.current }
+      : { ...basePayload, clientSessionId: clientSessionIdRef.current };
 
     try {
       // Use PUT for updating existing post or POST for creating a new post
-      const url = postId ? `/api/admin/posts/${postId}` : "/api/admin/posts";
-      const method = postId ? "PUT" : "POST";
+      const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
+      const method = targetId ? "PUT" : "POST";
 
       const res = await adminFetch(url, {
         method,
@@ -684,12 +748,13 @@ function EditorContent() {
         }
         lastSavedSnapshotRef.current = JSON.stringify(basePayload);
         try {
-          const storageKey = postId ? `codemate_editor_draft_${postId}` : "codemate_editor_draft_new";
+          const storageKey = targetId ? `codemate_editor_draft_${targetId}` : "codemate_editor_draft_new";
           localStorage.removeItem(storageKey);
           localStorage.removeItem("codemate_editor_draft_new");
         } catch (err) {
           console.warn("Failed to clear local draft from localStorage after save:", err);
         }
+        isNavigatingAwayRef.current = true;
         router.push("/admin/dashboard");
       } else if (res.status === 409) {
         const data = await res.json().catch(() => ({}));
