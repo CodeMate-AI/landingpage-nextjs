@@ -4,6 +4,7 @@ import "../styles/_keyframe-animations.scss";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
+import { GOOGLE_FONTS_STYLESHEET_URL } from "@/lib/fonts-config";
 
 import { Montserrat } from "next/font/google";
 
@@ -130,6 +131,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
+        <link href={GOOGLE_FONTS_STYLESHEET_URL} rel="stylesheet" />
       </head>
       <body
         className={`${montserrat.variable} ${montserrat.className} antialiased bg-zinc-950 text-white dark`}

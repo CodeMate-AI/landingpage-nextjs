@@ -187,6 +187,7 @@ import "@/components/tiptap-node/paragraph-node/paragraph-node.scss"
 
 // --- Tiptap UI ---
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu"
+import { FontDropdownMenu } from "@/components/tiptap-ui/font-dropdown-menu"
 import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
 import { ListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu"
 import { BlockquoteButton } from "@/components/tiptap-ui/blockquote-button"
@@ -220,6 +221,8 @@ import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 
 // --- Lib ---
 import { handleImageUpload, handleVideoUpload, MAX_FILE_SIZE, MAX_VIDEO_SIZE } from "@/lib/tiptap-utils"
+import { TextStyleMark, FontFamilyExtension } from "@/lib/tiptap-font-family"
+import { getFontCssValue } from "@/lib/fonts-config"
 
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
@@ -229,11 +232,15 @@ const MainToolbarContent = ({
   onLinkClick,
   onVideoClick,
   isMobile,
+  baseFont,
+  onBaseFontChange,
 }: {
   onHighlighterClick: () => void
   onLinkClick: () => void
   onVideoClick: () => void
   isMobile: boolean
+  baseFont?: string | null
+  onBaseFontChange?: (fontKey: string) => void
 }) => {
   const { editor } = useTiptapEditor()
 
@@ -248,6 +255,7 @@ const MainToolbarContent = ({
 
       <ToolbarGroup>
         <HeadingDropdownMenu modal={false} levels={[2, 3, 4]} />
+        <FontDropdownMenu modal={false} baseFont={baseFont} onBaseFontChange={onBaseFontChange} />
         <ListDropdownMenu
           modal={false}
           types={["bulletList", "orderedList", "taskList"]}
@@ -456,6 +464,8 @@ interface SimpleEditorProps {
   currentPostId?: string | null
   currentSlug?: string | null
   currentTitle?: string | null
+  baseFont?: string | null
+  onBaseFontChange?: (fontKey: string) => void
 }
 
 export function SimpleEditor({
@@ -464,6 +474,8 @@ export function SimpleEditor({
   currentPostId,
   currentSlug,
   currentTitle,
+  baseFont,
+  onBaseFontChange,
 }: SimpleEditorProps) {
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
@@ -590,6 +602,8 @@ export function SimpleEditor({
       MarkdownRulesExtension,
       CustomTaskList,
       CustomTaskItem,
+      TextStyleMark,
+      FontFamilyExtension,
       VideoNode,
       VideoUploadNode,
       ReferenceBlogsNode,
@@ -645,11 +659,16 @@ export function SimpleEditor({
   return (
     <CurrentPostContext.Provider value={{ postId: currentPostId, slug: currentSlug, title: currentTitle }}>
       <EditorContext.Provider value={{ editor }}>
-        <div className="simple-editor-wrapper">
+        <div
+          className="simple-editor-wrapper"
+          style={{ "--article-base-font": getFontCssValue(baseFont) } as React.CSSProperties}
+        >
           <Toolbar ref={toolbarRef}>
             {mobileView === "main" ? (
               <MainToolbarContent
                 isMobile={isMobile}
+                baseFont={baseFont}
+                onBaseFontChange={onBaseFontChange}
                 onHighlighterClick={() => setMobileView("highlighter")}
                 onLinkClick={() => setMobileView("link")}
                 onVideoClick={() => editor?.chain().focus().insertContent({ type: "videoUpload" }).run()}

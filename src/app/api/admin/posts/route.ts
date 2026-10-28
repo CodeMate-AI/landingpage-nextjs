@@ -104,6 +104,7 @@ async function createPostHandler(req: NextRequest, session: any) {
           readTime,
           publishedAtCustom,
           sections: parsed.data.sections,
+          baseFont: parsed.data.baseFont || "",
         }
       : null;
 

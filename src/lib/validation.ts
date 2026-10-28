@@ -66,6 +66,7 @@ export const BlogPostSchema = z.object({
   author: z.string().default(""),
   authorRole: z.string().default(""),
   authorImage: z.string().optional().default(""),
+  baseFont: z.string().max(50, "Font name exceeds maximum length").optional().default(""),
   readTime: z.string().optional().default(""),
   publishedAtCustom: z.string().optional().default(""),
   filterLabels: z.array(z.string()).optional(),

@@ -13,6 +13,7 @@ import { Superscript } from "@tiptap/extension-superscript";
 import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
 import { MarkdownRulesExtension } from "./tiptap-markdown-rules";
+import { TextStyleMark, FontFamilyExtension } from "./tiptap-font-family";
 
 /**
  * Server-safe video node — no ReactNodeViewRenderer.
@@ -332,6 +333,8 @@ export const extensions = [
   TableCell,
   CustomTaskList,
   CustomTaskItem,
+  TextStyleMark,
+  FontFamilyExtension,
   Highlight.configure({
     multicolor: true,
   }),

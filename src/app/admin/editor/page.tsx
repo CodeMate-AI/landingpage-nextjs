@@ -97,6 +97,8 @@ function EditorContent() {
   const [authorImage, setAuthorImage] = useState("");
   const [readTime, setReadTime] = useState("");
   const [publishedAtCustom, setPublishedAtCustom] = useState("");
+  // Document base typography font family
+  const [baseFont, setBaseFont] = useState<string>("Montserrat");
   // Table of Contents anchor list
   const [sections, setSections] = useState<{ id: string; title: string }[]>([]);
   // Form submission and network status flags
@@ -206,6 +208,7 @@ function EditorContent() {
         setAuthorImage(resolvedAuthorImage);
         setReadTime(resolvedReadTime);
         setPublishedAtCustom(resolvedDate);
+        setBaseFont(post.baseFont || "Montserrat");
         setSections(post.sections || []);
 
         const parsedTags: { label: string; tone: "slate" }[] = uniqueLabels.map((l) => ({
@@ -236,6 +239,7 @@ function EditorContent() {
           authorImage: resolvedAuthorImage,
           readTime: resolvedReadTime,
           publishedAtCustom: resolvedDate,
+          baseFont: post.baseFont || "Montserrat",
           sections: post.sections && post.sections.length > 0 ? post.sections : undefined,
         });
         initialLoadedRef.current = true;
@@ -414,6 +418,7 @@ function EditorContent() {
         authorImage: authorImage || "",
         readTime,
         publishedAtCustom: resolvedDate,
+        baseFont: baseFont || "Montserrat",
         sections: sections.length > 0 ? sections : undefined,
       };
     },
@@ -431,6 +436,7 @@ function EditorContent() {
       readTime,
       publishedAtCustom,
       sections,
+      baseFont,
     ]
   );
 
@@ -802,10 +808,11 @@ function EditorContent() {
       authorRole: authorRole || "",
       authorImage: authorImage || "",
       coverImage: coverImage || "",
+      baseFont: baseFont || "Montserrat",
     };
 
     return postObj;
-  }, [author, authorRole, authorImage, category, contentJson, coverImage, postId, publishedAtCustom, readTime, sections, slug, subheading, tagsInput, title]);
+  }, [author, authorRole, authorImage, baseFont, category, contentJson, coverImage, postId, publishedAtCustom, readTime, sections, slug, subheading, tagsInput, title]);
 
   const handleOpenPreview = () => {
     const postObj = buildPreviewPost();
@@ -1523,6 +1530,8 @@ function EditorContent() {
                 currentPostId={postId}
                 currentSlug={slug}
                 currentTitle={title}
+                baseFont={baseFont}
+                onBaseFontChange={setBaseFont}
               />
             )}
           </div>

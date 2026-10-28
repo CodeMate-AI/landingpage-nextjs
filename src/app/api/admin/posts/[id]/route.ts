@@ -110,6 +110,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         readTime: existing.readTime || "",
         publishedAtCustom: existing.publishedAtCustom || "",
         sections: existing.sections || [],
+        baseFont: existing.baseFont || "",
       };
     }
 
@@ -147,6 +148,7 @@ async function updatePost(req: NextRequest, session: any, { params }: { params: 
         readTime,
         publishedAtCustom,
         sections: parsed.data.sections,
+        baseFont: parsed.data.baseFont || existing.baseFont || "",
       };
       if (!publishedAt) {
         publishedAt = new Date();

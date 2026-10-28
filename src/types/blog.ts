@@ -29,5 +29,6 @@ export interface BlogDetailPost {
   author?: string;
   authorRole?: string;
   authorImage?: string;
+  baseFont?: string;
 }
 

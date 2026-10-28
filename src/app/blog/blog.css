@@ -1369,6 +1369,7 @@
 
 /* Article Content */
 .article-content {
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 17px;
   line-height: 1.7;
   color: var(--text-secondary);
@@ -1413,7 +1414,7 @@
 
 
 .article-content h1 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 32px;
   font-weight: 800;
   color: var(--text-primary);
@@ -1424,7 +1425,7 @@
 }
 
 .article-content h2 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 26px;
   font-weight: 700;
   color: var(--text-primary);
@@ -1435,7 +1436,7 @@
 }
 
 .article-content h3 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 22px;
   font-weight: 600;
   color: var(--text-primary);
@@ -1445,7 +1446,7 @@
 }
 
 .article-content h4 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
@@ -1456,7 +1457,7 @@
 
 .article-content h5,
 .article-content h6 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
