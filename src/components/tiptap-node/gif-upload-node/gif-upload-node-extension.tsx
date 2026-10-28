@@ -6,6 +6,7 @@ import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react"
 import { Node } from "@tiptap/core"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { CloseIcon } from "@/components/tiptap-icons/close-icon"
+import { GifUploadIcon } from "@/components/tiptap-icons/gif-upload-icon"
 import { handleImageUpload, MAX_GIF_SIZE } from "@/lib/tiptap-utils"
 import "@/components/tiptap-node/image-upload-node/image-upload-node.scss"
 
@@ -16,26 +17,6 @@ function formatFileSize(bytes: number): string {
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`
 }
-
-const GifBadgeIcon: React.FC = () => (
-  <svg
-    width="28"
-    height="28"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="2"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className="tiptap-image-upload-icon text-indigo-400"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect x="3" y="3" width="18" height="18" rx="3" ry="3" />
-    <path d="M7 8h3m-3 4h2m-2 4h3" />
-    <path d="M14 8v8" />
-    <path d="M17 8h3v8h-3" />
-  </svg>
-)
 
 const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -234,7 +215,7 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
             style={{ minHeight: "140px" }}
           >
             <div className="flex items-center justify-center w-12 h-12 rounded-full bg-neutral-800/80 border border-neutral-700/60 mb-1">
-              <GifBadgeIcon />
+              <GifUploadIcon width="28" height="28" className="tiptap-image-upload-icon text-indigo-400" />
             </div>
             <div className="text-center">
               <span className="text-sm font-medium text-neutral-200">

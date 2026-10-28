@@ -209,6 +209,9 @@ import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button"
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon"
 import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
 import { LinkIcon } from "@/components/tiptap-icons/link-icon"
+import { ImageUploadIcon } from "@/components/tiptap-icons/image-upload-icon"
+import { VideoUploadIcon } from "@/components/tiptap-icons/video-upload-icon"
+import { GifUploadIcon } from "@/components/tiptap-icons/gif-upload-icon"
 
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
@@ -288,7 +291,7 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton text="Add" />
+        <ImageUploadButton text="IMG" icon={ImageUploadIcon} />
         <Button
           type="button"
           variant="ghost"
@@ -296,17 +299,8 @@ const MainToolbarContent = ({
           tooltip="Add video"
           onMouseDown={(e) => e.preventDefault()}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.8}
-            stroke="currentColor"
-            className="tiptap-button-icon"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-          </svg>
-          <span className="tiptap-button-text">Add</span>
+          <VideoUploadIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">VID</span>
         </Button>
         <Button
           type="button"
@@ -315,21 +309,7 @@ const MainToolbarContent = ({
           tooltip="Add GIF"
           onMouseDown={(e) => e.preventDefault()}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={1.8}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="tiptap-button-icon"
-          >
-            <rect x="3" y="3" width="18" height="18" rx="3" ry="3" />
-            <path d="M7 8h3m-3 4h2m-2 4h3" />
-            <path d="M14 8v8" />
-            <path d="M17 8h3v8h-3" />
-          </svg>
+          <GifUploadIcon className="tiptap-button-icon" />
           <span className="tiptap-button-text">GIF</span>
         </Button>
         <Button
