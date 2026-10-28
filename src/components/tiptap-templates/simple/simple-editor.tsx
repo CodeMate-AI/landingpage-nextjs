@@ -10,7 +10,8 @@ import { InputRule, textblockTypeInputRule, wrappingInputRule } from "@tiptap/co
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
 import { Link as BaseLink } from "@tiptap/extension-link"
-import { Image } from "@tiptap/extension-image"
+import { CustomImageNode } from "@/components/tiptap-node/image-node/image-node-extension"
+import { GifUploadNode } from "@/components/tiptap-node/gif-upload-node/gif-upload-node-extension"
 import { TaskItem, TaskList } from "@tiptap/extension-list"
 import { TextAlign } from "@tiptap/extension-text-align"
 import { Typography } from "@tiptap/extension-typography"
@@ -310,6 +311,30 @@ const MainToolbarContent = ({
         <Button
           type="button"
           variant="ghost"
+          onClick={() => editor?.chain().focus().insertContent({ type: "gifUpload" }).run()}
+          tooltip="Add GIF"
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.8}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="tiptap-button-icon"
+          >
+            <rect x="3" y="3" width="18" height="18" rx="3" ry="3" />
+            <path d="M7 8h3m-3 4h2m-2 4h3" />
+            <path d="M14 8v8" />
+            <path d="M17 8h3v8h-3" />
+          </svg>
+          <span className="tiptap-button-text">GIF</span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
           onClick={() => editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
           onMouseDown={(e) => e.preventDefault()}
           title="Insert Table"
@@ -486,11 +511,20 @@ export function SimpleEditor({
         if (!file) return false
 
         if (file.type.startsWith("image/")) {
+          const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif")
+          if (isGif) {
+            alert("GIF files cannot be uploaded as regular images. Please use the dedicated GIF tool in the toolbar.")
+            return true
+          }
+          if (file.size > MAX_FILE_SIZE) {
+            alert(`File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`)
+            return true
+          }
           handleImageUpload(file)
             .then((url) => {
               const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
               const pos = coordinates ? coordinates.pos : view.state.selection.from
-              const node = view.state.schema.nodes.image.create({ src: url })
+              const node = view.state.schema.nodes.image.create({ src: url, caption: "" })
               const transaction = view.state.tr.insert(pos, node)
               view.dispatch(transaction)
             })
@@ -520,13 +554,18 @@ export function SimpleEditor({
       handlePaste: (view, event, slice) => {
         const file = event.clipboardData?.files?.[0]
         if (file && file.type.startsWith("image/")) {
+          const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif")
+          if (isGif) {
+            alert("GIF files cannot be uploaded as regular images. Please use the dedicated GIF tool in the toolbar.")
+            return true
+          }
           if (file.size > MAX_FILE_SIZE) {
             alert(`File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`)
             return true
           }
           handleImageUpload(file)
             .then((url) => {
-              const node = view.state.schema.nodes.image.create({ src: url })
+              const node = view.state.schema.nodes.image.create({ src: url, caption: "" })
               const transaction = view.state.tr.replaceSelectionWith(node)
               view.dispatch(transaction)
             })
@@ -583,9 +622,10 @@ export function SimpleEditor({
       }),
       Subscript,
       Superscript,
-      Image,
+      CustomImageNode,
+      GifUploadNode,
       ImageUploadNode.configure({
-        accept: "image/*",
+        accept: "image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif",
         maxSize: MAX_FILE_SIZE,
         limit: 3,
         upload: handleImageUpload,

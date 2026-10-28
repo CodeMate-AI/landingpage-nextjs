@@ -359,7 +359,14 @@ function formatFaqSection(html: string): string {
 
 function formatVideos(html: string): string {
   const videoRegex = /(?:<p>\s*)?\[video:\s*([\s\S]*?)\](?:\s*<\/p>)?/gi;
-  return html.replace(videoRegex, (match, rawUrl) => {
+  return html.replace(videoRegex, (match, rawPayload) => {
+    let rawUrl = rawPayload;
+    let caption = "";
+    const capMatch = rawPayload.match(/^([\s\S]*?)\s*\|\s*caption:[ ]?([\s\S]*)$/i);
+    if (capMatch) {
+      rawUrl = capMatch[1];
+      caption = capMatch[2].replace(/<[^>]*>/g, "").replace(/&lt;[^&]*?&gt;/gi, "");
+    }
     // Strip any inner anchor or span HTML tags from TipTap auto-linking or entity escaped tags
     const cleanUrl = rawUrl
       .replace(/<[^>]*>/g, "")
@@ -374,17 +381,18 @@ function formatVideos(html: string): string {
     const safeUrl = escapeHtml(cleanUrl);
 
     // 1. YouTube Embed Detection
+    let embedHtml = "";
     const ytMatch = cleanUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
     if (ytMatch && ytMatch[1]) {
       const videoId = ytMatch[1];
-      return `<div class="video-embed-container my-6" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
+      embedHtml = `<div class="video-embed-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); width: 100%;"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
     }
 
     // 2. Vimeo Embed Detection
     const vimeoMatch = cleanUrl.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/i);
     if (vimeoMatch && vimeoMatch[3]) {
       const videoId = vimeoMatch[3];
-      return `<div class="video-embed-container my-6" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"><iframe src="https://player.vimeo.com/video/${videoId}" title="Vimeo video player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
+      embedHtml = `<div class="video-embed-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); width: 100%;"><iframe src="https://player.vimeo.com/video/${videoId}" title="Vimeo video player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
     }
 
     // 3. Direct Playable Video Files (.mp4, .webm, .ogg, .mov, etc.), blob URLs, or CodeMate backend media uploads
@@ -393,11 +401,22 @@ function formatVideos(html: string): string {
       cleanUrl.startsWith("blob:") ||
       /\/uploaded\/images\/[a-f0-9-]+/i.test(cleanUrl);
     if (isDirectVideo) {
-      return `<div class="video-embed-container my-6"><video src="${safeUrl}" controls muted playsinline preload="metadata" class="blog-video" style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); display: block;"></video></div>`;
+      embedHtml = `<div class="video-embed-container" style="width: 100%;"><video src="${safeUrl}" controls muted playsinline preload="metadata" class="blog-video" style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); display: block;"></video></div>`;
+    }
+
+    if (embedHtml) {
+      if (caption && caption.trim().length > 0) {
+        return `<figure class="blog-media-figure blog-video-figure my-6" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;">${embedHtml}<figcaption class="blog-media-caption">${escapeHtmlText(caption)}</figcaption></figure>`;
+      }
+      return `<div class="video-embed-container my-6" style="width: 100%;">${embedHtml}</div>`;
     }
 
     // 4. Fallback for non-embeddable pages
-    return `<div class="video-embed-warning p-3 my-4 rounded-lg border border-amber-800/80 bg-amber-950/30 text-amber-300 text-xs"><span class="font-semibold uppercase">Video Notice:</span> URL is not a direct video file or supported embed: <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="underline text-blue-400 font-mono">${safeUrl}</a></div>`;
+    const warningHtml = `<div class="video-embed-warning p-3 my-4 rounded-lg border border-amber-800/80 bg-amber-950/30 text-amber-300 text-xs w-full"><span class="font-semibold uppercase">Video Notice:</span> URL is not a direct video file or supported embed: <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="underline text-blue-400 font-mono">${safeUrl}</a></div>`;
+    if (caption && caption.trim().length > 0) {
+      return `<figure class="blog-media-figure blog-video-figure my-6" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;">${warningHtml}<figcaption class="blog-media-caption">${escapeHtmlText(caption)}</figcaption></figure>`;
+    }
+    return warningHtml;
   });
 }
 
@@ -566,7 +585,7 @@ export function compileTiptapToHtml(
       "controls", "muted", "autoplay", "loop", "playsinline", "type",
       "style", "checked", "disabled", "colspan", "rowspan", "colwidth",
       "width", "height", "name", "data-type", "data-checked",
-      "data-heading", "data-show-bottom", "data-bottom-text", "data-bottom-url", "data-blogs",
+      "data-heading", "data-show-bottom", "data-bottom-text", "data-bottom-url", "data-blogs", "data-caption",
       "viewbox", "viewBox", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin",
       "d", "aria-hidden", "aria-label", "role"
     ],

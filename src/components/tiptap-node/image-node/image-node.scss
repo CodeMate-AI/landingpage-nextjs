@@ -23,6 +23,62 @@
     outline-color: var(--tt-brand-color-500);
   }
 
+  // Media figure container in editor (anchors caption to media width)
+  .tiptap-media-figure {
+    display: flex;
+    flex-direction: column;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 100%;
+    margin: 1.75rem auto;
+    box-sizing: border-box;
+
+    img.blog-image {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      display: block;
+      margin: 0 !important;
+    }
+  }
+
+  // Media caption input wrapper
+  .tiptap-caption-wrapper {
+    width: 100%;
+    margin-top: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  // Inline editable caption input
+  .tiptap-media-caption-input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 0;
+    padding: 0.35rem 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    font-style: italic;
+    font-weight: 400;
+    color: #a1a1aa;
+    text-align: left;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+    outline: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+
+    &::placeholder {
+      color: #52525b;
+      font-style: italic;
+    }
+
+    &:focus {
+      border-bottom: 1px solid #6366f1;
+      color: #f4f4f5;
+    }
+  }
+
   // Thread image handling
   .tiptap-thread:has(> img) {
     margin: 2rem 0;

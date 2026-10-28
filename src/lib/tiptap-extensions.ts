@@ -1,6 +1,5 @@
 import { StarterKit } from "@tiptap/starter-kit";
 import { Link } from "@tiptap/extension-link";
-import { Image } from "@tiptap/extension-image";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { Table } from "@tiptap/extension-table";
 import { TableRow } from "@tiptap/extension-table-row";
@@ -15,11 +14,10 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
 import { MarkdownRulesExtension } from "./tiptap-markdown-rules";
 
-
 /**
  * Server-safe video node — no ReactNodeViewRenderer.
- * renderHTML outputs <p>[video: URL]</p> which the blog page's
- * formatVideos() post-processor converts to a real <video> element.
+ * renderHTML outputs <p>[video: URL | caption: TEXT]</p> or <p>[video: URL]</p>
+ * which formatVideos() converts to an embed or <figure> on the reader page.
  */
 const VideoNodeServer = Node.create({
   name: "video",
@@ -30,6 +28,7 @@ const VideoNodeServer = Node.create({
   addAttributes() {
     return {
       src: { default: "" },
+      caption: { default: "" },
     };
   },
 
@@ -40,9 +39,17 @@ const VideoNodeServer = Node.create({
         getAttrs: (element) => {
           if (!(element instanceof HTMLElement)) return false;
           const text = element.textContent?.trim() ?? "";
-          const match = text.match(/^\[video:\s*(.+)\]$/);
+          const match = text.match(/^\[video:\s*([\s\S]+?)\]$/i);
           if (!match) return false;
-          return { src: match[1].trim() };
+          const fullPayload = match[1].trim();
+          const capMatch = fullPayload.match(/^([\s\S]*?)\s*\|\s*caption:[ ]?([\s\S]*)$/i);
+          if (capMatch) {
+            return {
+              src: capMatch[1].trim(),
+              caption: capMatch[2],
+            };
+          }
+          return { src: fullPayload, caption: "" };
         },
       },
     ];
@@ -50,6 +57,10 @@ const VideoNodeServer = Node.create({
 
   renderHTML({ node }) {
     const src = (node.attrs.src as string) || "";
+    const caption = (node.attrs.caption as string) || "";
+    if (caption && caption.trim().length > 0) {
+      return ["p", {}, `[video: ${src} | caption: ${caption}]`];
+    }
     return ["p", {}, `[video: ${src}]`];
   },
 });
@@ -69,6 +80,104 @@ const VideoUploadNodeServer = Node.create({
 
   renderHTML() {
     return ["p", {}];
+  },
+});
+
+/**
+ * Server-safe gifUpload stub — renders as an empty paragraph.
+ */
+const GifUploadNodeServer = Node.create({
+  name: "gifUpload",
+  group: "block",
+  atom: true,
+
+  parseHTML() {
+    return [{ tag: "div[data-type='gif-upload']" }];
+  },
+
+  renderHTML() {
+    return ["p", {}];
+  },
+});
+
+/**
+ * Server-safe image node for headless generateHTML compilation.
+ * Renders semantic <figure class="blog-media-figure"> with <figcaption class="blog-media-caption">
+ * when caption is present, or clean figure without caption.
+ */
+const ImageNodeServer = Node.create({
+  name: "image",
+  group: "block",
+  atom: true,
+
+  addAttributes() {
+    return {
+      src: { default: null },
+      alt: { default: null },
+      title: { default: null },
+      caption: {
+        default: "",
+        parseHTML: (element) => {
+          if (element.getAttribute("data-caption")) {
+            return element.getAttribute("data-caption");
+          }
+          const figcaption = element.closest("figure")?.querySelector("figcaption");
+          return figcaption?.textContent || "";
+        },
+        renderHTML: (attributes) => {
+          return attributes.caption ? { "data-caption": attributes.caption } : {};
+        },
+      },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "figure:has(img)",
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false;
+          const img = element.querySelector("img");
+          if (!img) return false;
+          const figcaption = element.querySelector("figcaption");
+          return {
+            src: img.getAttribute("src"),
+            alt: img.getAttribute("alt"),
+            title: img.getAttribute("title"),
+            caption: figcaption ? (figcaption.textContent || "") : (img.getAttribute("data-caption") || ""),
+          };
+        },
+      },
+      {
+        tag: "img[src]",
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false;
+          return {
+            src: element.getAttribute("src"),
+            alt: element.getAttribute("alt"),
+            title: element.getAttribute("title"),
+            caption: element.getAttribute("data-caption") || "",
+          };
+        },
+      },
+    ];
+  },
+
+  renderHTML({ node, HTMLAttributes }) {
+    const caption = (node.attrs.caption as string) || "";
+    if (caption && caption.trim().length > 0) {
+      return [
+        "figure",
+        { class: "blog-media-figure" },
+        ["img", { ...HTMLAttributes, src: node.attrs.src, alt: node.attrs.alt || "", loading: "lazy", class: "blog-image" }],
+        ["figcaption", { class: "blog-media-caption" }, caption],
+      ];
+    }
+    return [
+      "figure",
+      { class: "blog-media-figure" },
+      ["img", { ...HTMLAttributes, src: node.attrs.src, alt: node.attrs.alt || "", loading: "lazy", class: "blog-image" }],
+    ];
   },
 });
 
@@ -211,11 +320,7 @@ export const extensions = [
       target: "_blank",
     },
   }),
-  Image.configure({
-    HTMLAttributes: {
-      class: "blog-image",
-    },
-  }),
+  ImageNodeServer,
   Placeholder.configure({
     placeholder: "Write something amazing...",
   }),
@@ -239,6 +344,6 @@ export const extensions = [
   MarkdownRulesExtension,
   VideoNodeServer,
   VideoUploadNodeServer,
+  GifUploadNodeServer,
   ReferenceBlogsNodeServer,
 ];
-

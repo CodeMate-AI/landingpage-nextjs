@@ -2555,7 +2555,7 @@ ul[data-type="taskList"] li > div,
   .article-title {
     font-size: 32px;
   }
- 
+
   .hero-dek {
     font-size: 15px;
     line-height: 1.5;
@@ -3314,4 +3314,76 @@ ul[data-type="taskList"] li > div,
     font-size: 0.9375rem;
   }
 }
-
+
+
+
+/* ==========================================================================
+   Media Captions (Images, GIFs, and Videos)
+   ========================================================================== */
+.blog-media-figure {
+  display: flex;
+  flex-direction: column;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  margin: 2rem auto;
+  box-sizing: border-box;
+}
+
+.blog-media-figure .blog-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 0 !important;
+}
+
+.blog-media-figure.blog-video-figure {
+  display: block;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.blog-media-figure.blog-video-figure .video-embed-container {
+  margin: 0;
+  width: 100%;
+}
+
+.blog-media-caption {
+  width: 100%;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  font-style: italic;
+  font-weight: 400;
+  color: #a1a1aa;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
+/* Mobile & Small Device Adaptation (< 640px) */
+@media (max-width: 639px) {
+  .blog-media-figure {
+    margin: 1.5rem auto;
+  }
+
+  .blog-media-caption {
+    font-size: 0.8125rem;
+    margin-top: 0.5rem;
+    line-height: 1.45;
+  }
+}
+
+/* iPad / Tablet Adaptation (640px to 1024px) */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .blog-media-figure {
+    margin: 1.75rem auto;
+  }
+
+  .blog-media-caption {
+    font-size: 0.84rem;
+  }
+}

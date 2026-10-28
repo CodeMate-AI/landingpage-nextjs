@@ -438,6 +438,7 @@ const DropZoneContent: React.FC<{ maxSize: number; limit: number }> = ({
 
 export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
   const { accept, limit, maxSize } = props.node.attrs
+  const [error, setError] = useState<string | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const extension = props.extension
 
@@ -447,13 +448,26 @@ export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
     accept,
     upload: extension.options.upload,
     onSuccess: extension.options.onSuccess,
-    onError: extension.options.onError,
+    onError: (err) => {
+      setError(err.message)
+      extension.options.onError?.(err)
+    },
   }
 
   const { fileItems, uploadFiles, removeFileItem, clearAllFiles } =
     useFileUpload(uploadOptions)
 
   const handleUpload = async (files: File[]) => {
+    setError(null)
+    const hasGif = files.some(
+      (f) => f.type === "image/gif" || f.name.toLowerCase().endsWith(".gif")
+    )
+    if (hasGif) {
+      const err = new Error("GIF files cannot be uploaded in the image section. Please use the dedicated GIF upload option.")
+      setError(err.message)
+      extension.options.onError?.(err)
+      return
+    }
     const urls = await uploadFiles(files)
 
     if (urls.length > 0) {
@@ -546,12 +560,20 @@ export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
       <input
         ref={inputRef}
         name="file"
-        accept={accept}
+        accept={accept || "image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif"}
         type="file"
         multiple={limit > 1}
         onChange={handleChange}
         onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}
       />
+      {error && (
+        <div className="mt-2 text-xs text-red-400 bg-red-950/40 border border-red-800/50 rounded px-3 py-1.5 flex items-center justify-between" onClick={(e) => e.stopPropagation()}>
+          <span>{error}</span>
+          <button type="button" onClick={() => setError(null)} className="ml-2 hover:text-white">
+            ✕
+          </button>
+        </div>
+      )}
     </NodeViewWrapper>
   )
 }
