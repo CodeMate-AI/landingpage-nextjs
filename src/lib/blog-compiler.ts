@@ -357,6 +357,18 @@ function formatFaqSection(html: string): string {
   return beforeHeading + match[0] + faqContainerHtml + remainingContent;
 }
 
+// Extracts the 11-character YouTube video ID from watch, embed, shorts, or youtu.be URLs
+function getYouTubeId(url: string): string | null {
+  const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+  return match && match[1] ? match[1] : null;
+}
+
+// Extracts the numeric Vimeo video ID from standard, channel, group, or album URLs
+function getVimeoId(url: string): string | null {
+  const match = url.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/i);
+  return match && match[3] ? match[3] : null;
+}
+
 function formatVideos(html: string): string {
   const videoRegex = /(?:<p>\s*)?\[video:\s*([\s\S]*?)\](?:\s*<\/p>)?/gi;
   return html.replace(videoRegex, (match, rawPayload) => {
@@ -382,16 +394,16 @@ function formatVideos(html: string): string {
 
     // 1. YouTube Embed Detection
     let embedHtml = "";
-    const ytMatch = cleanUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
-    if (ytMatch && ytMatch[1]) {
-      const videoId = ytMatch[1];
+    const youTubeId = getYouTubeId(cleanUrl);
+    if (youTubeId) {
+      const videoId = youTubeId;
       embedHtml = `<div class="video-embed-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); width: 100%;"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
     }
 
     // 2. Vimeo Embed Detection
-    const vimeoMatch = cleanUrl.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/i);
-    if (vimeoMatch && vimeoMatch[3]) {
-      const videoId = vimeoMatch[3];
+    const vimeoId = getVimeoId(cleanUrl);
+    if (vimeoId) {
+      const videoId = vimeoId;
       embedHtml = `<div class="video-embed-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); width: 100%;"><iframe src="https://player.vimeo.com/video/${videoId}" title="Vimeo video player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
     }
 
@@ -560,6 +572,117 @@ function formatReferenceBlogs(html: string): string {
   });
 }
 
+function formatBentoGrids(html: string): string {
+  // Attribute-aware tag match: serialized attribute values keep raw "<" / ">" (e.g. a caption "<b>"),
+  // so quoted values must be skipped as a whole rather than stopping at the first ">"
+  const bentoTagRegex =
+    /<div\b((?:[^>"']|"[^"]*"|'[^']*')*?data-type=["']bento-grid["'](?:[^>"']|"[^"]*"|'[^']*')*)>(?:[\s\S]*?<\/div>)?/gi;
+  return html.replace(bentoTagRegex, (match, attrs) => {
+    const colsMatch = attrs.match(/data-columns=["']([^"']*)["']/i);
+    const gapMatch = attrs.match(/data-gap=["']([^"']*)["']/i);
+    const cardsMatch = attrs.match(/data-cards=(?:"([^"]*)"|'([^']*)')/i);
+
+    // Clamp to supported layouts so stale or tampered attributes cannot produce unknown classes
+    const columns = colsMatch && parseInt(colsMatch[1], 10) === 3 ? 3 : 2;
+    const rawGap = gapMatch ? gapMatch[1].trim() : "md";
+    const gap = rawGap === "sm" || rawGap === "lg" ? rawGap : "md";
+
+    let rawCardsJson = cardsMatch ? (cardsMatch[1] || cardsMatch[2] || "[]") : "[]";
+    rawCardsJson = rawCardsJson
+      .replace(/&quot;/g, '"')
+      .replace(/&#34;/g, '"')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>');
+
+    let cards: any[] = [];
+    try {
+      cards = JSON.parse(rawCardsJson);
+      if (!Array.isArray(cards)) cards = [];
+    } catch {
+      cards = [];
+    }
+
+    if (cards.length === 0) {
+      return "";
+    }
+
+    const cardsHtml = cards
+      .map((card, idx) => {
+        const mediaType = card.mediaType || "image";
+        const rawMediaUrl = (card.mediaUrl || "").trim();
+        const safeMediaUrl = rawMediaUrl && isSafeUrl(rawMediaUrl) ? escapeHtml(rawMediaUrl) : "";
+        // Cards show media plus an optional caption; legacy title/linkUrl values are intentionally ignored
+        const rawCaption = typeof card.caption === "string" ? card.caption.trim() : "";
+        const caption = escapeHtmlText(rawCaption);
+        const altText = escapeHtmlAttr(card.altText || rawCaption || `Bento visual ${idx + 1}`);
+
+        // Never span wider than the grid, e.g. a "Full" card left over after switching 3 -> 2 columns
+        const spanCols = Math.min(card.spanCols === 3 ? 3 : card.spanCols === 2 ? 2 : 1, columns);
+        const spanRows = card.spanRows === 3 ? 3 : card.spanRows === 2 ? 2 : 1;
+
+        const colClass = `bento-col-${spanCols}`;
+        const rowClass = `bento-row-${spanRows}`;
+
+        let mediaHtml = "";
+        if (safeMediaUrl) {
+          if (mediaType === "video") {
+            // Detect embeds on the raw URL; the escaped form turns "&" into "&amp;" and breaks "?a=b&v=ID" matching
+            const youTubeId = getYouTubeId(rawMediaUrl);
+            const vimeoId = youTubeId ? null : getVimeoId(rawMediaUrl);
+            const iframeTitle = escapeHtmlAttr(rawCaption || "Video player");
+            if (youTubeId) {
+              mediaHtml = `
+                <div class="bento-media-wrap bento-embed-wrap">
+                  <iframe src="https://www.youtube-nocookie.com/embed/${youTubeId}" title="${iframeTitle}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                </div>
+              `;
+            } else if (vimeoId) {
+              mediaHtml = `
+                <div class="bento-media-wrap bento-embed-wrap">
+                  <iframe src="https://player.vimeo.com/video/${vimeoId}" title="${iframeTitle}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                </div>
+              `;
+            } else {
+              mediaHtml = `
+                <div class="bento-media-wrap">
+                  <video src="${safeMediaUrl}" autoplay loop muted playsinline preload="metadata" class="bento-media-video"></video>
+                </div>
+              `;
+            }
+          } else {
+            mediaHtml = `
+              <div class="bento-media-wrap">
+                <img src="${safeMediaUrl}" alt="${altText}" loading="lazy" decoding="async" class="bento-media-img" />
+              </div>
+            `;
+          }
+        }
+
+        const captionHtml = caption
+          ? `
+            <div class="bento-card-info">
+              <p class="bento-card-caption">${caption}</p>
+            </div>
+          `
+          : "";
+
+        return `
+          <div class="bento-card ${colClass} ${rowClass}">
+            ${mediaHtml}${captionHtml}
+          </div>
+        `.trim();
+      })
+      .join("\n");
+
+    return `
+      <section class="bento-grid-wrapper bento-cols-${columns} bento-gap-${gap} my-8" role="region" aria-label="Bento Grid">
+        ${cardsHtml}
+      </section>
+    `.trim();
+  });
+}
+
 export function compileTiptapToHtml(
   content: any,
   customSections?: { id: string; title: string }[],
@@ -585,7 +708,7 @@ export function compileTiptapToHtml(
       "controls", "muted", "autoplay", "loop", "playsinline", "type",
       "style", "checked", "disabled", "colspan", "rowspan", "colwidth",
       "width", "height", "name", "data-type", "data-checked",
-      "data-heading", "data-show-bottom", "data-bottom-text", "data-bottom-url", "data-blogs", "data-caption",
+      "data-heading", "data-show-bottom", "data-bottom-text", "data-bottom-url", "data-blogs", "data-caption", "data-columns", "data-gap", "data-cards",
       "viewbox", "viewBox", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin",
       "d", "aria-hidden", "aria-label", "role"
     ],
@@ -594,7 +717,7 @@ export function compileTiptapToHtml(
   const sections = customSections && customSections.length > 0 ? customSections : extractSectionsFromTiptapJson(sanitizedContent);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
   const finalHtml = formatLinks(
-    formatLogos(formatVideos(formatFaqSection(formatReferenceBlogs(formatTableCells(headingHtml)))))
+    formatLogos(formatVideos(formatFaqSection(formatReferenceBlogs(formatBentoGrids(formatTableCells(headingHtml))))))
   );
 
   return { html: finalHtml, sections };
