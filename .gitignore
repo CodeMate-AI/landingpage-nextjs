@@ -60,3 +60,7 @@ public/_next-video
 /scripts/
 
 .cora-cli
+
+# agent skills (local only)
+.claude/
+skills-lock.json
