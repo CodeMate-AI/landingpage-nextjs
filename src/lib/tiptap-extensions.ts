@@ -250,6 +250,66 @@ const ReferenceBlogsNodeServer = Node.create({
   },
 });
 
+/**
+ * Server-safe bentoGrid node for headless generateHTML compilation.
+ * Outputs a div container with data attributes, which formatBentoGrids() in
+ * blog-compiler.ts post-processes into clean semantic responsive CSS Grid HTML.
+ */
+const BentoGridNodeServer = Node.create({
+  name: "bentoGrid",
+  group: "block",
+  atom: true,
+
+  addAttributes() {
+    return {
+      columns: { default: 2 },
+      gap: { default: "md" },
+      cards: { default: [] },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "div[data-type='bento-grid']",
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false;
+          let cards: any[] = [];
+          const rawCards = element.getAttribute("data-cards");
+          if (rawCards) {
+            try {
+              cards = JSON.parse(rawCards);
+            } catch {
+              cards = [];
+            }
+          }
+          return {
+            columns: parseInt(element.getAttribute("data-columns") || "2", 10) || 2,
+            gap: element.getAttribute("data-gap") || "md",
+            cards,
+          };
+        },
+      },
+    ];
+  },
+
+  renderHTML({ node }) {
+    const columns = node.attrs.columns || 2;
+    const gap = node.attrs.gap || "md";
+    const cards = Array.isArray(node.attrs.cards) ? node.attrs.cards : [];
+
+    return [
+      "div",
+      {
+        "data-type": "bento-grid",
+        "data-columns": String(columns),
+        "data-gap": gap,
+        "data-cards": JSON.stringify(cards),
+      },
+    ];
+  },
+});
+
 const CustomTaskList = TaskList.extend({
   parseHTML() {
     return [
@@ -349,4 +409,5 @@ export const extensions = [
   VideoUploadNodeServer,
   GifUploadNodeServer,
   ReferenceBlogsNodeServer,
+  BentoGridNodeServer,
 ];

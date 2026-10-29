@@ -177,6 +177,8 @@ import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/ho
 import { VideoNode } from "@/components/tiptap-node/video-node/video-node-extension"
 import { VideoUploadNode } from "@/components/tiptap-node/video-node/video-upload-node-extension"
 import { ReferenceBlogsNode } from "@/components/tiptap-node/reference-blogs-node/reference-blogs-node-extension"
+import { BentoGridNode } from "@/components/tiptap-node/bento-grid-node"
+import { BentoGridIcon } from "@/components/tiptap-icons/bento-grid-icon"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss"
@@ -358,6 +360,44 @@ const MainToolbarContent = ({
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
           </svg>
           <span className="tiptap-button-text">Ref Blogs</span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => {
+            editor?.chain().focus().insertContent({
+              type: "bentoGrid",
+              attrs: {
+                columns: 2,
+                gap: "md",
+                cards: [
+                  {
+                    id: "bento-" + Date.now() + "-1",
+                    mediaType: "image",
+                    mediaUrl: "",
+                    caption: "",
+                    spanCols: 1,
+                    spanRows: 1,
+                    aspectRatio: "auto",
+                  },
+                  {
+                    id: "bento-" + Date.now() + "-2",
+                    mediaType: "image",
+                    mediaUrl: "",
+                    caption: "",
+                    spanCols: 1,
+                    spanRows: 1,
+                    aspectRatio: "auto",
+                  },
+                ],
+              },
+            }).run()
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+          title="Insert Bento Grid"
+        >
+          <BentoGridIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">Bento Grid</span>
         </Button>
       </ToolbarGroup>
 
@@ -607,6 +647,7 @@ export function SimpleEditor({
       VideoNode,
       VideoUploadNode,
       ReferenceBlogsNode,
+      BentoGridNode,
       CustomLink,
       CustomHeading,
       HorizontalRule,
