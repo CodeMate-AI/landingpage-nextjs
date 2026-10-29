@@ -532,6 +532,7 @@ function EditorContent() {
     readTime,
     publishedAtCustom,
     sections,
+    baseFont,
     published,
     executeAutoSave,
   ]);
@@ -604,6 +605,7 @@ function EditorContent() {
     readTime,
     publishedAtCustom,
     sections,
+    baseFont,
     published,
   ]);
 
