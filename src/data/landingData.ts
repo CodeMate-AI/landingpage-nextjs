@@ -415,6 +415,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Analyze pull requests and surface potential issues with structured, actionable feedback.',
           image: '/pr-review/pr-automated-reviews.png',
+          figure: 'prreview',
         },
         {
           id: 'pr-2',
@@ -422,6 +423,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Identify potential security concerns, code smells, complexity, and maintainability issues.',
           image: '/pr-review/pr-security-quality.png',
+          figure: 'prshield',
         },
         {
           id: 'pr-3',
@@ -429,6 +431,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Get AI-generated suggestions to improve readability, performance, and coding practices.',
           image: '/pr-review/pr-actionable-improvements.png',
+          figure: 'prsuggest',
         },
         {
           id: 'pr-4',
@@ -436,6 +439,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Generate pull request descriptions, code walkthroughs, labels, and changelog updates.',
           image: '/pr-review/pr-documentation.png',
+          figure: 'prdocs',
         },
       ],
     },

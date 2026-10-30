@@ -24,6 +24,10 @@ const FIGURES = {
   review: () => import('./figures/review'),
   monitor: () => import('./figures/monitor'),
   shells: () => import('./figures/shells'),
+  prreview: () => import('./figures/prreview'),
+  prshield: () => import('./figures/prshield'),
+  prsuggest: () => import('./figures/prsuggest'),
+  prdocs: () => import('./figures/prdocs'),
 } as const;
 
 export type HairlineFigureName = keyof typeof FIGURES;
