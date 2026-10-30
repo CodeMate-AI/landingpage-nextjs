@@ -260,6 +260,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Work with code in context, using relationships between files and your existing project knowledge.',
           image: '/cora/cora-codebase-understanding.png',
+          figure: 'depgraph',
         },
         {
           id: 'cora-2',
@@ -267,6 +268,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Delegate coding tasks to an AI agent that can help implement changes across your project.',
           image: '/cora/cora-agentic-coding.png',
+          figure: 'agent',
         },
         {
           id: 'cora-3',
@@ -274,6 +276,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Identify syntax, logical, and runtime issues, understand their causes, and work toward targeted fixes.',
           image: '/cora/cora-debug-fix.png',
+          figure: 'debug',
         },
         {
           id: 'cora-4',
@@ -281,6 +284,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Improve code quality, readability, and efficiency with context-aware suggestions.',
           image: '/cora/cora-refactor-optimize.png',
+          figure: 'refactor',
         },
         {
           id: 'cora-5',
@@ -288,6 +292,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Generate unit tests for your code and inspect results to validate implementation behavior.',
           image: '/cora/cora-test-generation.png',
+          figure: 'tests',
         },
         {
           id: 'cora-6',
@@ -295,6 +300,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Generate a commit message with the Cora extension.',
           image: '/cora/cora-commit-prompt-generation.png',
+          figure: 'commit',
         },
       ],
     },

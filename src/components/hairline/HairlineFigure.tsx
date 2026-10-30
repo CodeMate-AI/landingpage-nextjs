@@ -13,6 +13,12 @@ const FIGURES = {
   'design-to-code': () => import('./figures/design-to-code'),
   'design-mode': () => import('./figures/design-mode'),
   'artifact-mode': () => import('./figures/artifact-mode'),
+  depgraph: () => import('./figures/depgraph'),
+  agent: () => import('./figures/agent'),
+  debug: () => import('./figures/debug'),
+  refactor: () => import('./figures/refactor'),
+  tests: () => import('./figures/tests'),
+  commit: () => import('./figures/commit'),
 } as const;
 
 export type HairlineFigureName = keyof typeof FIGURES;
