@@ -60,3 +60,6 @@ public/_next-video
 /scripts/
 
 .cora-cli
+.claude/
+agent/
+skills-lock.json
