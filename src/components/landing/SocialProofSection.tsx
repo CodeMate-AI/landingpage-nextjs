@@ -1,23 +1,16 @@
 'use client';
 
 import React from 'react';
-import { Montserrat } from 'next/font/google';
 import { motion } from 'framer-motion';
 import Counter from '@/components/ui/counter';
 import { Marquee } from '@/components/ui/marquee';
 import { SOCIAL_PROOF_DATA } from '@/data/landingData';
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
-
 export default function SocialProofSection() {
   return (
     <section
       aria-label="Social Proof and Enterprise Trust"
-      className={`${montserrat.className} relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 2xl:pt-[90px] 2xl:pb-[50px] px-4 sm:px-8 2xl:px-[90px] gap-6 sm:gap-8 2xl:gap-[40px]`}
+      className="relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 2xl:pt-[90px] 2xl:pb-[50px] px-4 sm:px-8 2xl:px-[90px] gap-6 sm:gap-8 2xl:gap-[40px]"
     >
       {/* ========================================================================= */}
       {/* Top Header and Statistics Metrics Row                                     */}

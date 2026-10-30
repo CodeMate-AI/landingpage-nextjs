@@ -1,16 +1,9 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { Montserrat } from 'next/font/google';
 import { motion, useScroll, useTransform, useSpring, useInView } from 'framer-motion';
 import VideoEmbed from '@/components/video';
 import { WATCH_ACTION_DATA } from '@/data/landingData';
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
 
 export default function WatchActionSection() {
   const videoWrapperRef = useRef<HTMLDivElement>(null);
@@ -45,7 +38,7 @@ export default function WatchActionSection() {
     <section
       id="watch-action"
       aria-label="Watch CodeMate in Action"
-      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center justify-center [box-sizing:border-box] pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 2xl:py-[110px] px-4 sm:px-8 2xl:px-[80px] gap-8 sm:gap-10 2xl:gap-[40px] overflow-hidden`}
+      className="relative w-full bg-[#000000] text-white flex flex-col items-center justify-center [box-sizing:border-box] pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 2xl:py-[110px] px-4 sm:px-8 2xl:px-[80px] gap-8 sm:gap-10 2xl:gap-[40px] overflow-hidden"
     >
       {/* ========================================================================= */}
       {/* Title: Watch CodeMate in Action                                           */}

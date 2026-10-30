@@ -5,14 +5,7 @@ import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
 
-import { Montserrat } from "next/font/google";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
+import { montserrat, inter } from "@/lib/fonts";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -134,7 +127,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
       </head>
       <body
-        className={`${montserrat.variable} ${montserrat.className} antialiased bg-zinc-950 text-white dark`}
+        className={`${montserrat.variable} ${inter.variable} ${montserrat.className} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning
       >
         {children}

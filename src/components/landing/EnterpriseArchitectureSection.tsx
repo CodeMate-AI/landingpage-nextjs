@@ -1,27 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Montserrat, Inter } from 'next/font/google';
 import { motion } from 'framer-motion';
 import { ENTERPRISE_ARCHITECTURE_DATA } from '@/data/landingData';
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
-
-const inter = Inter({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  display: 'swap',
-});
 
 export default function EnterpriseArchitectureSection() {
   return (
     <section
       aria-label="Enterprise Architecture and Acceleration Showcase"
-      className={`${montserrat.className} relative w-full bg-[#000000] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden pt-10 sm:pt-14 lg:pt-20 2xl:pt-[140px] pb-10 sm:pb-14 lg:pb-20 2xl:pb-[140px] px-4 sm:px-6 lg:px-6 xl:px-8 2xl:px-[90px] gap-8 sm:gap-10 lg:gap-[48px] 2xl:gap-[60px] isolate`}
+      className="relative w-full bg-[#000000] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden pt-10 sm:pt-14 lg:pt-20 2xl:pt-[140px] pb-10 sm:pb-14 lg:pb-20 2xl:pb-[140px] px-4 sm:px-6 lg:px-6 xl:px-8 2xl:px-[90px] gap-8 sm:gap-10 lg:gap-[48px] 2xl:gap-[60px] isolate"
     >
       {/* ========================================================================= */}
       {/* Background: Half Glowing Portal Orb Dome (Desktop only, hidden on mobile/iPad) */}
@@ -72,7 +59,7 @@ export default function EnterpriseArchitectureSection() {
           >
             {/* Category Header */}
             <h3
-              className={`${inter.className} text-white/75 font-normal text-sm sm:text-base lg:text-[18px] lg:leading-[18px] tracking-normal`}
+              className="font-[family-name:var(--font-inter)] text-white/75 font-normal text-sm sm:text-base lg:text-[18px] lg:leading-[18px] tracking-normal"
             >
               {group.category}
             </h3>

@@ -4,15 +4,8 @@ import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { Montserrat } from 'next/font/google';
 import HairlineFigure from '@/components/hairline/HairlineFigure';
 import { PRODUCT_TABS_DATA, ProductTabItem } from '@/data/landingData';
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-});
 
 export default function ProductTabsSection() {
   const [activeTabId, setActiveTabId] = useState<string>('work');
@@ -64,7 +57,7 @@ export default function ProductTabsSection() {
     <section
       id="features"
       aria-label="CodeMate Product Details"
-      className={`${montserrat.className} relative w-full bg-[#0C0C0E] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[140px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[80px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28`}
+      className="relative w-full bg-[#0C0C0E] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[140px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[80px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28"
     >
       {/* ========================================================================= */}
       {/* Product Header (Responsive Left / Right layout with Navigation Controls)  */}
