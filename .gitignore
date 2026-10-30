@@ -64,3 +64,5 @@ public/_next-video
 # agent skills (local only)
 .claude/
 skills-lock.json
+/agent/
+/.agents/
