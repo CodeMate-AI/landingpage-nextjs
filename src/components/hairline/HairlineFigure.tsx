@@ -19,6 +19,11 @@ const FIGURES = {
   refactor: () => import('./figures/refactor'),
   tests: () => import('./figures/tests'),
   commit: () => import('./figures/commit'),
+  nlcmd: () => import('./figures/nlcmd'),
+  termdebug: () => import('./figures/termdebug'),
+  review: () => import('./figures/review'),
+  monitor: () => import('./figures/monitor'),
+  shells: () => import('./figures/shells'),
 } as const;
 
 export type HairlineFigureName = keyof typeof FIGURES;

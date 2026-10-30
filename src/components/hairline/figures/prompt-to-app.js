@@ -1,6 +1,6 @@
 /**
  * Prompt to App: a prompt sheet of five lines on the left, an app window on
- * the right (a title strip with three dots, then a sidebar, a header, two
+ * the right (a title strip, then a sidebar, a header, two
  * cards and an action row laid out as dashed footprints on its floor), and
  * between them three stepping tiles that turn a flat bar into a block. The
  * pointer's x scrubs how far the build has come: each line of the prompt
@@ -16,7 +16,7 @@ import HL from '../kernel';
 
 const {
   Cam, fit, proj, facing, rings, prism, ringAt, poly, seg, clamp,
-  spring, stepS, mk, solid, put, flatDot, place, register, pointer, disposer,
+  spring, stepS, mk, solid, put, register, pointer, disposer,
 } = HL;
 
 const SX = -46, SY = 44, WX = 26, WY = -24, WH = 3, PH = 2, REST_P = 0.6, HMAX = 16;
@@ -57,10 +57,9 @@ function mount({ stage, svg, read }, value) {
     put(solid(g), prism(P, front, ...rings(x - hx, y - hy, x + hx, y + hy, 1, 0.5), 0, h));
   });
 
-  // the window: its plate, the title strip's crease and three dots, then the parts' footprints
+  // the window: its plate, the title strip's crease, then the parts' footprints
   put(solid(g), prism(P, front, ...rings(WX - 30, WY - 30, WX + 30, WY + 30, 4, 1.4), 0, WH));
   mk("path", { d: seg(P(WX - 28, WY - 22, WH), P(WX + 28, WY - 22, WH)), class: "nf lo" }, g);
-  [-25, -21, -17].forEach((x) => place(flatDot(g, C, 1.3, "dot off"), P(WX + x, WY - 26, WH)));
   const parts = PARTS.map(([x0, y0, x1, y1, share], k) => {
     const [ring, inner] = rings(WX + x0, WY + y0, WX + x1, WY + y1, 2, 0.9);
     mk("path", { d: poly(ringAt(P, ring, WH)), class: "nf dash" }, g);

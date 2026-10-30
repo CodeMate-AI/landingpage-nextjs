@@ -318,6 +318,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Describe what you want to do and get executable terminal commands without memorizing syntax.',
           image: '/cora-cli/cora-cli-natural-language-commands.png',
+          figure: 'nlcmd',
         },
         {
           id: 'cli-2',
@@ -325,6 +326,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Investigate errors and get AI-assisted guidance to help diagnose and resolve issues.',
           image: '/cora-cli/cora-cli-debug-terminal.png',
+          figure: 'termdebug',
         },
         {
           id: 'cli-3',
@@ -332,6 +334,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Get code-review feedback and optimization suggestions from your command-line workflow.',
           image: '/cora-cli/cora-cli-review-improve.png',
+          figure: 'review',
         },
         {
           id: 'cli-4',
@@ -339,6 +342,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Monitor development processes and get suggestions based on errors printed to the console.',
           image: '/cora-cli/cora-cli-process-monitoring.png',
+          figure: 'monitor',
         },
         {
           id: 'cli-5',
@@ -346,6 +350,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Access AI-assisted development from familiar terminal environments, including Bash, PowerShell, and Command Prompt.',
           image: '/cora-cli/cora-cli-existing-shell.png',
+          figure: 'shells',
         },
       ],
     },
