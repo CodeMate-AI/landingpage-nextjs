@@ -4,86 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent } from "react";
-
-
-const demos = [
-  {
-    id: 1,
-    videoId: "hamhzIcbDKg",
-    name: "CodeMate BUILD",
-    title: "AI WebApp Builder | Build Production Ready Application Instantly",
-    description:
-      "In this demo, we will explore how CodeMate Build turns a simple prompt into a fully functional application.",
-    thumbnail: "/hp/thumbnail-build.png",
-  },
-  {
-    id: 2,
-    videoId: "jA3S5KuvFkM",
-    name: "CodeMate CORA",
-    title: "Autonomous Coding Agent | Deep Codebase Reasoning & Auto Mode",
-    description:
-      "In this demo, we will explore CORA’s Auto Mode, designed to automate entire development workflows from planning to execution.",
-    thumbnail: "/hp/thumbnail-cora.png",
-  },
-  {
-    id: 3,
-    videoId: "7vTEW_eNZC8",
-    name: "CodeMate C0",
-    title: "Research Agent | Local On-Device AI Intelligence & Assistance",
-    description:
-      "In this demo, we explore how CodeMate Work combines knowledge base and rulebooks to generate more accurate and structured outputs.",
-    thumbnail: "/hp/thumbnail-c0.png",
-  },
-] as const;
-
-
-const resources = [
-  {
-    name: "Quick Start Guide",
-    tagline: "Get Started with CodeMate",
-    url: "https://backend.codemate.ai/uploaded/images/b899e5b2-1b26-47e7-ab45-e9556c71c3f3",
-  },
-  {
-    name: "Product Overview",
-    tagline: "Explore CodeMate Products",
-    url: "https://backend.codemate.ai/uploaded/images/94b54bf1-d432-4e91-945b-42b9dd49d7e4",
-  },
-  {
-    name: "CodeMate Build",
-    tagline: "AI Full-Stack App Builder",
-    url: "https://backend.codemate.ai/uploaded/images/e1ff2e8a-de08-4dbb-87a2-6bcac324472d",
-  },
-  {
-    name: "CodeMate Cora",
-    tagline: "Agentic Software Architect",
-    url: "https://backend.codemate.ai/uploaded/images/fd14b3e1-1d28-4797-b9ee-a71e32f5d717",
-  },
-  {
-    name: "CodeMate Work",
-    tagline: "AI-Powered Research Agent",
-    url: "https://backend.codemate.ai/uploaded/images/8b450672-4add-4346-acdc-62ffc423e431",
-  },
-  {
-    name: "CodeMate PR Review Agent",
-    tagline: "Automated PR Code Reviews",
-    url: "https://backend.codemate.ai/uploaded/images/54b0b865-d8be-4fab-8352-228a3b17e859",
-  },
-  {
-    name: "CodeMate Academy",
-    tagline: "AI Learning & Academic Platform",
-    url: "https://backend.codemate.ai/uploaded/images/9b408477-9c1f-498d-ba84-f73c9dec2ff7",
-  },
-  {
-    name: "FAQs",
-    tagline: "Frequently Asked Questions",
-    url: "https://backend.codemate.ai/uploaded/images/57c85bdf-b289-43aa-b707-df7a9c423924",
-  },
-  {
-    name: "Technical & Security Overview",
-    tagline: "Security Architecture & Safeguards",
-    url: "https://backend.codemate.ai/uploaded/images/5d4ba684-9234-47f5-a97f-c2231670abb3",
-  },
-] as const;
+import { hpDemos, hpResources, hpContact } from "./config/hpData";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -93,11 +14,13 @@ export default function Home() {
   const [hpPartnerId, setHpPartnerId] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
   const [city, setCity] = useState("");
+  const [honeypot, setHoneypot] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
   const firstInputRef = useRef<HTMLInputElement>(null);
 
+  // Close modals on Escape key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -109,6 +32,18 @@ export default function Home() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Lock body scroll whenever a modal is open
+  useEffect(() => {
+    if (isTrialModalOpen || activeModalVideo) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isTrialModalOpen, activeModalVideo]);
+
+  // Auto-focus first input when trial modal opens
   useEffect(() => {
     if (isTrialModalOpen) {
       const timer = setTimeout(() => {
@@ -134,6 +69,7 @@ export default function Home() {
     setHpPartnerId("");
     setMobileNumber("");
     setCity("");
+    setHoneypot("");
     setIsSubmitted(false);
     setIsSubmitting(false);
     setFormError("");
@@ -168,7 +104,7 @@ export default function Home() {
     setFormError("");
     setIsSubmitting(true);
 
-    // Post clean JSON to /api/submit-trial server route
+    // Post clean JSON to /api/submit-trial server route with honeypot protection
     try {
       const res = await fetch("/api/submit-trial", {
         method: "POST",
@@ -178,6 +114,7 @@ export default function Home() {
           hpPartnerId: hpPartnerId.trim(),
           mobileNumber: mobileNumber.trim(),
           city: city.trim(),
+          website: honeypot.trim(),
         }),
       });
 
@@ -187,7 +124,9 @@ export default function Home() {
         setIsSubmitting(false);
         return;
       }
-    } catch {
+    } catch (err) {
+      // Explicitly log the error with context to comply with error handling standards
+      console.error("Trial submission request failed:", err);
       setFormError("Network error. Please try again.");
       setIsSubmitting(false);
       return;
@@ -248,6 +187,7 @@ export default function Home() {
                 </a>
               </li>
             </ul>
+
             {/* Custom Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(true)}
@@ -289,7 +229,7 @@ export default function Home() {
                 className="w-43 h-14.5 object-contain"
               />
             </Link>
-            {/* Close button with custom proper X */}
+            {/* Close button */}
             <button
               onClick={() => setIsMenuOpen(false)}
               className="w-8 h-8 flex items-center justify-center bg-transparent border-0 cursor-pointer focus:outline-none"
@@ -301,6 +241,7 @@ export default function Home() {
                 stroke="currentColor"
                 strokeWidth="2.5"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
@@ -360,7 +301,7 @@ export default function Home() {
           }}
         >
           <Image
-            src="https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702"
+            src={hpContact.heroImageUrl}
             alt="Professional using CodeMate on HP laptop"
             fill
             sizes="55vw"
@@ -392,7 +333,7 @@ export default function Home() {
           {/* Mobile/Tablet Image */}
           <div className="block lg:hidden w-full mt-8 relative h-65 sm:h-95 overflow-hidden rounded-xl border border-[#E2E8F0] shadow-sm">
             <Image
-              src="https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702"
+              src={hpContact.heroImageUrl}
               alt="Professional using CodeMate on HP laptop"
               fill
               sizes="(max-width: 1024px) 100vw, 680px"
@@ -402,6 +343,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
       {/* Resources Section */}
       <section className="bg-[#EBF3FF] py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 sm:scroll-mt-22" id="resources">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 flex flex-col items-center gap-4 sm:gap-5">
@@ -409,7 +351,7 @@ export default function Home() {
             Resources
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
-            {resources.map((resource) => (
+            {hpResources.map((resource) => (
               <a
                 key={resource.name}
                 href={`/api/pdf?url=${encodeURIComponent(resource.url)}`}
@@ -419,7 +361,7 @@ export default function Home() {
               >
                 {/* Blue Icon Box */}
                 <div className="w-11 h-11 rounded-lg bg-[#EBF3FF] flex items-center justify-center shrink-0 group-hover:bg-accent-blue/10 transition-colors duration-200">
-                  <svg className="w-5 h-5 text-accent-blue" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <svg className="w-5 h-5 text-accent-blue" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0 1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0 0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244" />
                   </svg>
                 </div>
@@ -445,7 +387,7 @@ export default function Home() {
             Demos
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
-            {demos.map((demo) => (
+            {hpDemos.map((demo) => (
               <div
                 key={demo.id}
                 className="group flex flex-col bg-white border border-[#E2E8F0] rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-200"
@@ -488,6 +430,9 @@ export default function Home() {
       {/* Video Modal Pop-up */}
       {activeModalVideo && (
         <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={activeModalVideo.name}
           className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-8 transition-opacity duration-300"
           onClick={() => setActiveModalVideo(null)}
         >
@@ -502,7 +447,7 @@ export default function Home() {
               className="mb-3 w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center backdrop-blur-md transition-all duration-200 cursor-pointer border border-white/20 shadow-lg"
               aria-label="Close video modal"
             >
-              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -534,12 +479,12 @@ export default function Home() {
             </p>
             <div className="mt-2">
               <a
-                href="https://codemate.ai/download"
+                href={hpContact.downloadUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center bg-black hover:bg-zinc-800 text-white font-heading text-[16px] tracking-[1px] px-6 h-11 transition-colors duration-200 gap-3"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                 </svg>
                 Download
@@ -549,7 +494,6 @@ export default function Home() {
         </div>
       </section>
 
-
       {/* Contact Section */}
       <section className="bg-white py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 sm:scroll-mt-22" id="contact">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 flex flex-col items-center gap-4 sm:gap-5">
@@ -557,13 +501,12 @@ export default function Home() {
             Contact Us
           </h2>
           <div className="flex flex-col lg:flex-row items-stretch border border-[#E2E8F0] overflow-hidden w-full rounded-2xl shadow-sm bg-white min-h-75.5">
-            {/* Left Column: Image */}
+            {/* Left Column: Image - below-the-fold image loads lazily without priority */}
             <div className="relative w-full lg:w-1/2 min-h-75">
               <Image
-                src="https://backend.codemate.ai/uploaded/images/bf6916fd-580d-412c-8bbe-54b4ef8ee0b8"
+                src={hpContact.contactImageUrl}
                 alt="Team working together on HP laptops"
                 fill
-                priority
                 sizes="(max-width: 1024px) 100vw, 680px"
                 className="object-cover"
               />
@@ -578,7 +521,7 @@ export default function Home() {
               </p>
               <div className="w-full flex justify-center lg:justify-start">
                 <a
-                  href="https://codemate.ai/contact"
+                  href={hpContact.contactUrl}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center justify-center bg-black hover:bg-zinc-800 text-white font-heading text-[16px] tracking-[1px] px-6 h-11 transition-colors duration-200"
@@ -596,7 +539,7 @@ export default function Home() {
         <div className="max-w-340 mx-auto flex w-full flex-col items-center gap-6 px-6 sm:px-10">
           <div className="flex flex-wrap items-center justify-center gap-8 sm:gap-12 text-center">
             <a
-              href="https://docs.codemate.ai/faqs/privacy-policy"
+              href={hpContact.privacyUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-heading text-[15px] font-normal uppercase tracking-[0.15em] text-white/75 transition-colors duration-200 hover:text-white"
@@ -604,7 +547,7 @@ export default function Home() {
               Privacy
             </a>
             <a
-              href="https://docs.codemate.ai/faqs/terms-of-service"
+              href={hpContact.termsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="font-heading text-[15px] font-normal uppercase tracking-[0.15em] text-white/75 transition-colors duration-200 hover:text-white"
@@ -612,7 +555,7 @@ export default function Home() {
               Terms of Service
             </a>
             <a
-              href="mailto:contact@codemate.ai"
+              href={`mailto:${hpContact.email}`}
               className="font-heading text-[15px] font-normal uppercase tracking-[0.15em] text-white/75 transition-colors duration-200 hover:text-white"
             >
               Support
@@ -635,50 +578,50 @@ export default function Home() {
           <div className="flex items-center gap-4 mt-2">
             {/* Phone Icon */}
             <a
-              href="tel:+918766330253"
-              aria-label="Call +91 87663 30253"
+              href={`tel:${hpContact.phone}`}
+              aria-label={`Call ${hpContact.displayPhone}`}
               className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 text-white hover:border-white/60 hover:bg-white/10 transition-all duration-200"
             >
-              <svg className="w-5 h-5 text-white stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-white stroke-current" fill="none" strokeWidth="2.2" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.824-1.802-5.122-4.1-6.924-6.924l1.293-.97a1.173 1.173 0 00.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" />
               </svg>
             </a>
 
             {/* Gmail / Mail Icon */}
             <a
-              href="https://mail.google.com/mail/?view=cm&fs=1&to=contact@codemate.ai"
+              href={hpContact.gmailComposeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Email contact@codemate.ai via Gmail"
+              aria-label={`Email ${hpContact.email} via Gmail`}
               className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 text-white hover:border-white/60 hover:bg-white/10 transition-all duration-200"
             >
-              <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
               </svg>
             </a>
 
             {/* LinkedIn Icon */}
             <a
-              href="https://www.linkedin.com/company/codemateai/"
+              href={hpContact.linkedInUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
               className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 text-white hover:border-white/60 hover:bg-white/10 transition-all duration-200"
             >
-              <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
               </svg>
             </a>
 
             {/* X (Twitter) Icon */}
             <a
-              href="https://x.com/codemateai"
+              href={hpContact.twitterUrl}
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Twitter / X"
               className="flex items-center justify-center w-11 h-11 rounded-full border border-white/20 text-white hover:border-white/60 hover:bg-white/10 transition-all duration-200"
             >
-              <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 text-white fill-current" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
               </svg>
             </a>
@@ -701,7 +644,7 @@ export default function Home() {
               aria-label="Close modal"
               type="button"
             >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
@@ -718,6 +661,18 @@ export default function Home() {
               </div>
 
               {formError && <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-2.5 font-sans text-sm text-red-600">{formError}</div>}
+
+              {/* Hidden honeypot anti-spam field */}
+              <div className="hidden" aria-hidden="true">
+                <input
+                  type="text"
+                  name="website"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
 
               <div className="flex flex-col gap-4">
                 <div className="flex flex-col gap-1.5">
@@ -797,7 +752,7 @@ export default function Home() {
                 >
                   {isSubmitting ? (
                     <>
-                      <svg className="h-4 w-4 animate-spin text-white" fill="none" viewBox="0 0 24 24">
+                      <svg className="h-4 w-4 animate-spin text-white" fill="none" viewBox="0 0 24 24" aria-hidden="true">
                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                       </svg>
@@ -813,7 +768,7 @@ export default function Home() {
             {isSubmitted && (
               <div className="flex flex-col items-center gap-4 py-6 text-center">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full border border-green-100 bg-green-50 text-green-500">
-                  <svg className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <svg className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>

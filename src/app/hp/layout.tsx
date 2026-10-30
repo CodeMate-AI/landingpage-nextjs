@@ -1,42 +1,33 @@
 import type { Metadata } from "next";
+import { hpMetadata } from "./config/hpData";
 
+// Sourced page metadata from centralized config module
 export const metadata: Metadata = {
-  title: "HP × CodeMate AI",
-  description:
-    "CodeMate is an AI-native SDLC agent that accelerates the entire software development lifecycle. Run CodeMate seamlessly on HP's Next Gen AI PCs with codebase security.",
+  title: hpMetadata.title,
+  description: hpMetadata.description,
   alternates: {
-    canonical: "https://codemate.ai/hp",
+    canonical: hpMetadata.canonical,
   },
-  keywords: [
-    "HP",
-    "CodeMate AI",
-    "AI PC",
-    "HP Next Gen AI PCs",
-    "Software Development Lifecycle",
-    "AI Pair Programmer",
-    "Codebase Intelligence",
-  ],
+  keywords: [...hpMetadata.keywords],
   openGraph: {
-    title: "HP × CodeMate AI",
-    description:
-      "CodeMate is an AI-native SDLC agent that accelerates the entire software development lifecycle. Run CodeMate seamlessly on HP's Next Gen AI PCs with codebase security.",
+    title: hpMetadata.title,
+    description: hpMetadata.description,
     type: "website",
     siteName: "CodeMate AI",
     images: [
       {
-        url: "https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702",
+        url: hpMetadata.ogImage,
         width: 1200,
         height: 630,
-        alt: "HP x CodeMate AI - Next Gen AI PCs",
+        alt: `${hpMetadata.title} - Next Gen AI PCs`,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "HP × CodeMate AI",
-    description:
-      "CodeMate is an AI-native SDLC agent that accelerates the entire software development lifecycle. Run CodeMate seamlessly on HP's Next Gen AI PCs with codebase security.",
-    images: ["https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702"],
+    title: hpMetadata.title,
+    description: hpMetadata.description,
+    images: [hpMetadata.ogImage],
   },
 };
 

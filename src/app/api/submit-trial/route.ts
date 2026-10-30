@@ -2,7 +2,12 @@ import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const { organizationName, hpPartnerId, mobileNumber, city } = await request.json();
+    const { organizationName, hpPartnerId, mobileNumber, city, website } = await request.json();
+
+    // Honeypot spam defense: if hidden website field is populated, silently accept and drop
+    if (website && String(website).trim().length > 0) {
+      return NextResponse.json({ success: true });
+    }
 
     if (!organizationName || !hpPartnerId || !mobileNumber || !city) {
       return NextResponse.json(
@@ -32,6 +37,7 @@ export async function POST(request: Request) {
     }
 
     const formUrl =
+      process.env.GOOGLE_TRIAL_FORM_URL ||
       "https://docs.google.com/forms/d/e/1FAIpQLSfoJNnBTdvkg4GKgXup4PHtkDKT3GR2sbwNDe7eTQTqDWBtsw/formResponse";
 
     const body = new URLSearchParams({
