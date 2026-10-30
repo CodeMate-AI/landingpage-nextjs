@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { hpMetadata } from "./config/hpData";
+import { formaDJRDisplay } from "@/lib/fonts";
 
 // Sourced page metadata from centralized config module
 export const metadata: Metadata = {
@@ -36,5 +37,5 @@ export default function HPLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="custom-cursor min-h-screen">{children}</div>;
+  return <div className={`${formaDJRDisplay.variable} custom-cursor min-h-screen`}>{children}</div>;
 }
