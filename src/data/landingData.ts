@@ -217,6 +217,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Describe what you want to build and turn your idea into a functional application.',
           image: '/build/build-prompt-to-app.png',
+          figure: 'prompt-to-app',
         },
         {
           id: 'build-2',
@@ -224,6 +225,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Translate visual designs into working interfaces and code.',
           image: '/build/build-figma-to-code.png',
+          figure: 'design-to-code',
         },
         {
           id: 'build-3',
@@ -231,6 +233,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Explore and refine interface ideas while shaping the experience you want to build.',
           image: '/build/build-design-mode.png',
+          figure: 'design-mode',
         },
         {
           id: 'build-4',
@@ -239,6 +242,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
             'Generate animated explainers, diagrams, and interactive presentations effortlessly from a single prompt.',
           image: '/build/build-artifact-mode.png',
           imageFit: 'fill',
+          figure: 'artifact-mode',
         },
       ],
     },

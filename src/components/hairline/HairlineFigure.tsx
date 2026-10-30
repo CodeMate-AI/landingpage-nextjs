@@ -9,6 +9,10 @@ const FIGURES = {
   lens: () => import('./figures/lens'),
   library: () => import('./figures/library'),
   plan: () => import('./figures/plan'),
+  'prompt-to-app': () => import('./figures/prompt-to-app'),
+  'design-to-code': () => import('./figures/design-to-code'),
+  'design-mode': () => import('./figures/design-mode'),
+  'artifact-mode': () => import('./figures/artifact-mode'),
 } as const;
 
 export type HairlineFigureName = keyof typeof FIGURES;
