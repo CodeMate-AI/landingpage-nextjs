@@ -136,7 +136,7 @@ function PromotionPageContent() {
         <div className="mx-auto flex h-18 w-full max-w-340 items-center justify-between gap-5 px-6 sm:px-10">
           <Link href="/hp" className="flex shrink-0 items-center transition-opacity hover:opacity-80" aria-label="Back to HP x CodeMate AI">
             <Image
-              src="/HPxCodeMateAI_LOGO_NAV.png"
+              src="/logos/brand/hp-codemate-nav-logo.png"
               alt="HP x CodeMate AI"
               width={210}
               height={70}
@@ -286,7 +286,7 @@ function PromotionPageContent() {
         <div className="mx-auto flex w-full max-w-340 flex-col items-center justify-between gap-8 px-6 sm:px-10 lg:flex-row">
           <Link href="/hp" className="flex shrink-0 items-center" aria-label="HP x CodeMate AI home">
             <Image
-              src="/HPxCodeMateAI_LOGO_NAV.png"
+              src="/logos/brand/hp-codemate-nav-logo.png"
               alt="HP x CodeMate"
               width={210}
               height={70}

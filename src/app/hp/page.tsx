@@ -204,7 +204,7 @@ export default function Home() {
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 h-17 md:h-20 flex items-center justify-between gap-4">
           <Link href="/" className="shrink-0 flex items-center transition-opacity hover:opacity-90">
             <Image
-              src="/HPxCodeMateAI_LOGO_NAV.png"
+              src="/logos/brand/hp-codemate-nav-logo.png"
               alt="HP x CodeMate AI"
               width={210}
               height={70}
@@ -280,7 +280,7 @@ export default function Home() {
           <div className="h-16.5 px-6 border-b border-divider/60 flex items-center justify-between">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="shrink-0 flex items-center">
               <Image
-                src="/HPxCodeMateAI_LOGO_NAV.png"
+                src="/logos/brand/hp-codemate-nav-logo.png"
                 alt="HP x CodeMate AI"
                 width={172}
                 height={58}
@@ -621,7 +621,7 @@ export default function Home() {
 
           <Link href="/" className="shrink-0 flex items-center">
             <Image
-              src="/HPxCodeMateAI_LOGO_NAV.png"
+              src="/logos/brand/hp-codemate-nav-logo.png"
               alt="HP x CodeMate"
               width={280}
               height={94}

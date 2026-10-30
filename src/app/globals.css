@@ -7,11 +7,11 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("/formadjrdisplay-regular-webfont%20(1).otf") format("opentype");
+  src: url("/fonts/formadjrdisplay-regular-webfont.otf") format("opentype");
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
 html {
@@ -164,7 +164,7 @@ body {
 }
 
 .custom-cursor {
-  cursor: url("/cursor.svg") 16 16, auto;
+  cursor: url("/ui/cursor.svg") 16 16, auto;
 }
 
 @media (min-width: 768px) {
