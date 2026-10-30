@@ -1,3 +1,5 @@
+import type { HairlineFigureName } from '@/components/hairline/HairlineFigure';
+
 export interface ToolboxProduct {
   id: string;
   name: string;
@@ -132,6 +134,8 @@ export interface ProductFeatureCard {
   description: string;
   image: string;
   imageFit?: 'contain' | 'cover' | 'fill';
+  // Interactive Hairline figure shown in place of the image when set
+  figure?: HairlineFigureName;
 }
 
 export interface ProductTabItem {
@@ -163,6 +167,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Define instructions, attach files, and reference remote resources to guide how Work handles tasks.',
           image: '/work/work-rules-context.png',
+          figure: 'rulebook',
         },
         {
           id: 'work-2',
@@ -170,6 +175,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Connect external services through MCP to bring relevant information and workflows into Work.',
           image: '/work/work-connected-tools.png',
+          figure: 'connectors',
         },
         {
           id: 'work-3',
@@ -177,6 +183,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Investigate ideas, explore possibilities, and gather the context you need before making decisions.',
           image: '/work/work-research-explore.png',
+          figure: 'lens',
         },
         {
           id: 'work-4',
@@ -184,6 +191,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Organize files, documents, and project resources in one searchable workspace.',
           image: '/work/work-resources-knowledge.png',
+          figure: 'library',
         },
         {
           id: 'work-5',
@@ -191,6 +199,7 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Structure requirements into clear scopes, deliverables, and actionable next steps.',
           image: '/work/work-requirements-to-plans.png',
+          figure: 'plan',
         },
       ],
     },

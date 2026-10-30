@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Montserrat } from 'next/font/google';
+import HairlineFigure from '@/components/hairline/HairlineFigure';
 import { PRODUCT_TABS_DATA, ProductTabItem } from '@/data/landingData';
 
 const montserrat = Montserrat({
@@ -162,16 +163,35 @@ export default function ProductTabsSection() {
                   >
                     {/* Media Container: Background+Border+Shadow */}
                     <div className="relative w-full aspect-video bg-[#121216] border border-white/[0.06] rounded-[12px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.35)] overflow-hidden transition-all duration-300 group-hover:border-white/15">
-                      {/* unoptimized preserves 100% lossless fidelity without Next.js downsampling */}
-                      <Image
-                        src={card.image}
-                        alt={card.title}
-                        fill
-                        unoptimized
-                        className={`${
-                          card.imageFit === 'fill' ? 'object-fill' : 'object-contain'
-                        } object-center transition-none`}
-                      />
+                      {card.figure ? (
+                        // Interactive Hairline figure, drawn on the card's own background
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <HairlineFigure
+                            name={card.figure}
+                            className="h-full max-w-full scale-[1.15]"
+                            // Palette lifted above the kernel's dark default so the lines hold up on the card
+                            style={{
+                              '--hairline-plate': '#121216',
+                              '--hairline-hi': '#F4F6FA',
+                              '--hairline-edge': '#8B8F99',
+                              '--hairline-mid': '#50525A',
+                              '--hairline-lo': '#34363D',
+                              '--hairline-stroke': '1',
+                            } as React.CSSProperties}
+                          />
+                        </div>
+                      ) : (
+                        // unoptimized preserves 100% lossless fidelity without Next.js downsampling
+                        <Image
+                          src={card.image}
+                          alt={card.title}
+                          fill
+                          unoptimized
+                          className={`${
+                            card.imageFit === 'fill' ? 'object-fill' : 'object-contain'
+                          } object-center transition-none`}
+                        />
+                      )}
                     </div>
 
                     {/* Card Content Details */}
