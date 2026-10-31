@@ -324,6 +324,7 @@ export default function Home() {
             fill
             sizes="55vw"
             priority
+            unoptimized
             className="object-cover object-center"
           />
         </div>
@@ -356,6 +357,7 @@ export default function Home() {
               fill
               sizes="(max-width: 1024px) 100vw, 680px"
               priority
+              unoptimized
               className="object-cover"
             />
           </div>

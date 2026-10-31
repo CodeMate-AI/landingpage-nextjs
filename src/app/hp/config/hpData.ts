@@ -36,7 +36,7 @@ export const hpMetadata = {
     "AI Pair Programmer",
     "Codebase Intelligence",
   ],
-  ogImage: "https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702",
+  ogImage: "/hp/hero-cozy-workspace.png",
 } as const;
 
 export const hpDemos: readonly DemoItem[] = [
@@ -137,6 +137,6 @@ export const hpContact = {
   termsUrl: "https://docs.codemate.ai/faqs/terms-of-service",
   downloadUrl: "https://codemate.ai/download",
   contactUrl: "https://codemate.ai/contact",
-  heroImageUrl: "https://backend.codemate.ai/uploaded/images/ee959115-9252-4e9f-8287-ea84bdadf702",
+  heroImageUrl: "/hp/hero-cozy-workspace.png",
   contactImageUrl: "https://backend.codemate.ai/uploaded/images/bf6916fd-580d-412c-8bbe-54b4ef8ee0b8",
 } as const;
