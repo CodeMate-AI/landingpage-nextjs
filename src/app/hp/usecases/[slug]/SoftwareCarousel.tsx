@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { UsecaseSoftware } from "../../config/usecaseContent";
+import { trackHpEvent } from "../../lib/analytics";
 
 const CARD_GAP = 20;
 
@@ -47,7 +48,7 @@ function VisitArrow() {
 export default function SoftwareCarousel({ softwares }: { softwares: readonly UsecaseSoftware[] }) {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canScrollPrevious, setCanScrollPrevious] = useState(false);
-  const [canScrollNext, setCanScrollNext] = useState(true);
+  const [canScrollNext, setCanScrollNext] = useState(false);
 
   const updateArrows = useCallback(() => {
     const scroller = scrollerRef.current;
@@ -88,7 +89,7 @@ export default function SoftwareCarousel({ softwares }: { softwares: readonly Us
       <div
         ref={scrollerRef}
         role="region"
-        aria-label="Softwares developed using CodeMate"
+        aria-label="Software built with CodeMate"
         tabIndex={0}
         className="flex gap-5 overflow-x-auto snap-x snap-mandatory mr-[calc(50%-50vw)] pr-[calc(50vw-50%)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue"
       >
@@ -116,6 +117,7 @@ export default function SoftwareCarousel({ softwares }: { softwares: readonly Us
                 href={software.url}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackHpEvent({ name: "hp_software_visited", software: software.name })}
                 className={`${linkClass} mt-auto hover:text-accent-blue transition-colors duration-200`}
               >
                 {software.linkLabel}

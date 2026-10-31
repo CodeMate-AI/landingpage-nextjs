@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { notFound } from "next/navigation";
+import HpHeroImage from "../../components/HpHeroImage";
 import HpSubpageFooter from "../../components/HpSubpageFooter";
 import HpSubpageNav from "../../components/HpSubpageNav";
-import { hpUsecases } from "../../config/hpData";
+import { hpMetadata, hpUsecases } from "../../config/hpData";
 import { hpUsecaseContent } from "../../config/usecaseContent";
 import SoftwareCarousel from "./SoftwareCarousel";
 
@@ -28,11 +28,28 @@ export async function generateMetadata({ params }: UsecasePageProps): Promise<Me
   const usecase = hpUsecases.find((item) => item.slug === slug);
   if (!usecase) return {};
 
+  const title = `${usecase.name} Use Cases | HP x CodeMate AI`;
+  const description = hpUsecaseContent[slug]?.description;
+  const canonical = `${hpMetadata.canonical}/usecases/${slug}`;
+
   return {
-    title: `${usecase.name} Usecases | HP x CodeMate AI`,
-    description: hpUsecaseContent[slug]?.description,
-    // Hidden from search until the pages are ready to launch.
-    robots: { index: false, follow: true },
+    title,
+    description,
+    alternates: { canonical },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      type: "website",
+      siteName: "CodeMate AI",
+      images: [{ url: usecase.ogImage, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: [usecase.ogImage],
+    },
   };
 }
 
@@ -45,7 +62,9 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
 
   return (
     <div className="relative min-h-dvh bg-white flex flex-col items-start p-0">
-      <HpSubpageNav />
+      <HpSubpageNav backHref="/hp#usecases" />
+
+      <main className="w-full">
 
       {/* Hero: the image box is 964x800 at 1440px, runs 170px off the right edge, and is cropped by the 637px hero */}
       <section className="relative w-full bg-[#E8F3FF] overflow-hidden lg:h-[637.39px] flex items-center">
@@ -54,7 +73,7 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
           style={{ clipPath: "polygon(51.73% 0, 100% 0, 100% 100%, 0 100%)" }}
         >
           <div className="absolute inset-x-0 top-0 h-[637.39px]">
-            <Image src={usecase.heroImage} alt="" fill sizes="67vw" priority className="object-cover object-center" />
+            <HpHeroImage src={usecase.heroImage} alt="" sizes="67vw" media="(min-width: 1025px)" className="object-cover object-top" />
           </div>
         </div>
 
@@ -73,17 +92,17 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
           </div>
 
           <div className="block lg:hidden w-full mt-8 relative h-65 sm:h-95 overflow-hidden rounded-xl border border-[#E2E8F0] shadow-sm">
-            <Image src={usecase.image} alt="" fill sizes="(max-width: 1024px) 100vw, 680px" priority className="object-cover" />
+            <HpHeroImage src={usecase.image} alt="" sizes="100vw" media="(max-width: 1024.98px)" className="object-cover" />
           </div>
         </div>
       </section>
 
       {content && (
         <>
-          {/* Industry Specific Usecases */}
+          {/* Industry Specific Use Cases */}
           <section className="relative w-full bg-white py-10 sm:py-14 lg:py-20 overflow-hidden">
             <div className={SECTION_INNER}>
-              <h2 className={SECTION_HEADING}>Industry Specific Usecases</h2>
+              <h2 className={SECTION_HEADING}>Industry Specific Use Cases</h2>
               <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
                 {content.usecases.map((item, index) => (
                   <article key={item.title} className="flex flex-col items-start gap-8 lg:gap-10 bg-white border border-[#E2E5EA] rounded-lg p-6">
@@ -131,15 +150,16 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
             </div>
           </section>
 
-          {/* Softwares Developed using CodeMate */}
+          {/* Software Built with CodeMate */}
           <section className="w-full bg-white py-10 sm:py-14 lg:py-20 overflow-hidden">
             <div className={SECTION_INNER}>
-              <h2 className={SECTION_HEADING}>Softwares Developed using CodeMate</h2>
+              <h2 className={SECTION_HEADING}>Software Built with CodeMate</h2>
               <SoftwareCarousel softwares={content.softwares} />
             </div>
           </section>
         </>
       )}
+      </main>
 
       <HpSubpageFooter />
     </div>

@@ -80,7 +80,7 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
       },
       {
         tag: "Support System",
-        name: "Support - HUB",
+        name: "SupportHub",
         description:
           "A ticket-management platform for reporting, assigning and tracking issues. These workflows are relevant to equipment maintenance requests and repair coordination.",
         linkLabel: "Visit SupportHub",
@@ -154,7 +154,7 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
       },
       {
         tag: "ERP Platform",
-        name: "CoreSync - Intelligent ERP",
+        name: "CoreSync - ERP",
         description:
           "An integrated business platform for managing inventory, sales, finance and operations, with workflows relevant to retail stock and operational management.",
         linkLabel: "Visit CoreSync",

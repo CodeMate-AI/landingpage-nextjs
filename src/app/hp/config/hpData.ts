@@ -20,6 +20,7 @@ export interface UsecaseItem {
   name: string;
   image: string;
   heroImage: string;
+  ogImage: string;
 }
 
 export const hpMetadata = {
@@ -36,7 +37,7 @@ export const hpMetadata = {
     "AI Pair Programmer",
     "Codebase Intelligence",
   ],
-  ogImage: "/hp/hero-cozy-workspace.png",
+  ogImage: "/hp/og-hp.jpg",
 } as const;
 
 export const hpDemos: readonly DemoItem[] = [
@@ -61,7 +62,7 @@ export const hpDemos: readonly DemoItem[] = [
   {
     id: 3,
     videoId: "7vTEW_eNZC8",
-    name: "CodeMate C0",
+    name: "CodeMate Work",
     title: "Research Agent | Local On-Device AI Intelligence & Assistance",
     description:
       "In this demo, we explore how CodeMate Work combines knowledge base and rulebooks to generate more accurate and structured outputs.",
@@ -118,12 +119,12 @@ export const hpResources: readonly ResourceItem[] = [
 ] as const;
 
 export const hpUsecases: readonly UsecaseItem[] = [
-  { slug: "manufacturing", name: "Manufacturing", image: "/hp/usecases/manufacturing.webp", heroImage: "/hp/usecases/hero-manufacturing.webp" },
-  { slug: "retail", name: "Retail", image: "/hp/usecases/retail.webp", heroImage: "/hp/usecases/hero-retail.webp" },
-  { slug: "healthcare", name: "Healthcare", image: "/hp/usecases/healthcare.webp", heroImage: "/hp/usecases/hero-healthcare.webp" },
-  { slug: "automotive-robotics", name: "Automotive & Robotics", image: "/hp/usecases/automotive-robotics.webp", heroImage: "/hp/usecases/hero-automotive-robotics.webp" },
-  { slug: "smart-cities", name: "Smart Cities", image: "/hp/usecases/smart-cities.webp", heroImage: "/hp/usecases/hero-smart-cities.webp" },
-  { slug: "energy-utilities", name: "Energy & Utilities", image: "/hp/usecases/energy-utilities.webp", heroImage: "/hp/usecases/hero-energy-utilities.webp" },
+  { slug: "manufacturing", name: "Manufacturing", image: "/hp/usecases/manufacturing.webp", heroImage: "/hp/usecases/hero-manufacturing.webp", ogImage: "/hp/usecases/og-manufacturing.jpg" },
+  { slug: "retail", name: "Retail", image: "/hp/usecases/retail.webp", heroImage: "/hp/usecases/hero-retail.webp", ogImage: "/hp/usecases/og-retail.jpg" },
+  { slug: "healthcare", name: "Healthcare", image: "/hp/usecases/healthcare.webp", heroImage: "/hp/usecases/hero-healthcare.webp", ogImage: "/hp/usecases/og-healthcare.jpg" },
+  { slug: "automotive-robotics", name: "Automotive & Robotics", image: "/hp/usecases/automotive-robotics.webp", heroImage: "/hp/usecases/hero-automotive-robotics.webp", ogImage: "/hp/usecases/og-automotive-robotics.jpg" },
+  { slug: "smart-cities", name: "Smart Cities", image: "/hp/usecases/smart-cities.webp", heroImage: "/hp/usecases/hero-smart-cities.webp", ogImage: "/hp/usecases/og-smart-cities.jpg" },
+  { slug: "energy-utilities", name: "Energy & Utilities", image: "/hp/usecases/energy-utilities.webp", heroImage: "/hp/usecases/hero-energy-utilities.webp", ogImage: "/hp/usecases/og-energy-utilities.jpg" },
 ] as const;
 
 export const hpContact = {

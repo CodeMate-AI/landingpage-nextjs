@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getDatabase } from "@/lib/mongodb";
+import { hpUsecases } from "@/app/hp/config/hpData";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://codemate.ai";
@@ -18,6 +19,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.9,
     },
+    ...hpUsecases.map(({ slug }) => ({
+      url: `${baseUrl}/hp/usecases/${slug}`,
+      lastModified,
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    })),
     {
       url: `${baseUrl}/pricing`,
       lastModified,
