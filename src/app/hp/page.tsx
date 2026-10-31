@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent } from "react";
-import { hpDemos, hpResources, hpContact } from "./config/hpData";
+import { hpDemos, hpResources, hpUsecases, hpContact } from "./config/hpData";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -153,13 +153,21 @@ export default function Home() {
             />
           </Link>
           <div className="flex items-center gap-4">
-            <ul className="hidden md:flex items-center gap-10 list-none m-0 p-0">
+            <ul className="hidden md:flex items-center gap-6 lg:gap-10 list-none m-0 p-0">
               <li>
                 <a
                   href="#resources"
                   className="font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
                 >
                   Resources
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#usecases"
+                  className="font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
+                >
+                  Usecases
                 </a>
               </li>
               <li>
@@ -261,6 +269,15 @@ export default function Home() {
               </li>
               <li>
                 <a
+                  href="#usecases"
+                  onClick={(e) => handleMobileNavClick(e, "#usecases")}
+                  className="block font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
+                >
+                  Usecases
+                </a>
+              </li>
+              <li>
+                <a
                   href="#demos"
                   onClick={(e) => handleMobileNavClick(e, "#demos")}
                   className="block font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
@@ -292,7 +309,7 @@ export default function Home() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative w-full bg-white border-b border-divider/60 overflow-hidden min-h-120 lg:h-130 flex items-center scroll-mt-18 sm:scroll-mt-22" id="hero">
+      <section className="relative w-full bg-white border-b border-divider/60 overflow-hidden min-h-120 lg:h-130 flex items-center scroll-mt-18 md:scroll-mt-22" id="hero">
         {/* Full Bleed Right Slanted Image for Desktop (Official HP 20° Stripe Angle) */}
         <div
           className="hidden lg:block absolute top-0 right-0 h-full w-[54%] z-0 overflow-hidden pointer-events-none"
@@ -345,7 +362,7 @@ export default function Home() {
       </section>
 
       {/* Resources Section */}
-      <section className="bg-[#EBF3FF] py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 sm:scroll-mt-22" id="resources">
+      <section className="bg-[#EBF3FF] py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 md:scroll-mt-22" id="resources">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 flex flex-col items-center gap-4 sm:gap-5">
           <h2 className="font-heading font-normal text-[32px] sm:text-[36px] lg:text-[38px] leading-tight text-black tracking-[1px] text-center m-0">
             Resources
@@ -380,8 +397,44 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Usecases Section */}
+      <section className="bg-white py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 md:scroll-mt-22" id="usecases">
+        <div className="max-w-340 mx-auto w-full px-6 sm:px-10 flex flex-col items-center gap-4 sm:gap-5">
+          <h2 className="font-heading font-normal text-[32px] sm:text-[36px] lg:text-[38px] leading-tight text-black tracking-[1px] text-center m-0">
+            Usecases
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
+            {hpUsecases.map((usecase, index) => (
+              <Link
+                key={usecase.slug}
+                href={`/hp/usecases/${usecase.slug}`}
+                className="group flex flex-col bg-white border border-[#E2E8F0] rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-accent-blue/40 transition-all duration-200"
+              >
+                <div className="relative w-full aspect-[398/210] overflow-hidden">
+                  <Image
+                    src={usecase.image}
+                    alt=""
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="flex items-center gap-3 p-4">
+                  <span className="flex items-center justify-center w-11 h-11 rounded-lg bg-[#EBF3FF] font-heading text-[17px] text-accent-blue shrink-0">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <span className="font-heading font-normal text-[20px] leading-tight text-black group-hover:text-accent-blue transition-colors duration-200">
+                    {usecase.name}
+                  </span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Demos Section */}
-      <section className="bg-white py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 sm:scroll-mt-22" id="demos">
+      <section className="bg-[#EBF3FF] py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 md:scroll-mt-22" id="demos">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 flex flex-col items-center gap-4 sm:gap-5">
           <h2 className="font-heading font-normal text-[32px] sm:text-[36px] lg:text-[38px] leading-tight text-black tracking-[1px] text-center m-0">
             Demos
@@ -468,7 +521,7 @@ export default function Home() {
       )}
 
       {/* Download Section */}
-      <section className="bg-[#EBF3FF] py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 sm:scroll-mt-22" id="download">
+      <section className="bg-white py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 md:scroll-mt-22" id="download">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 flex flex-col items-center gap-4 sm:gap-5">
           <h2 className="font-heading font-normal text-[32px] sm:text-[36px] lg:text-[38px] leading-tight text-black tracking-[1px] text-center m-0">
             Download CodeMate Toolbox
@@ -495,7 +548,7 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section className="bg-white py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 sm:scroll-mt-22" id="contact">
+      <section className="bg-[#EBF3FF] py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 md:scroll-mt-22" id="contact">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 flex flex-col items-center gap-4 sm:gap-5">
           <h2 className="font-heading font-normal text-[32px] sm:text-[36px] lg:text-[38px] leading-tight text-black tracking-[1px] text-center m-0">
             Contact Us

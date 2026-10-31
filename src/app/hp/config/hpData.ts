@@ -15,6 +15,12 @@ export interface ResourceItem {
   url: string;
 }
 
+export interface UsecaseItem {
+  slug: string;
+  name: string;
+  image: string;
+}
+
 export const hpMetadata = {
   title: "HP x CodeMate AI",
   description:
@@ -108,6 +114,15 @@ export const hpResources: readonly ResourceItem[] = [
     tagline: "Security Architecture & Safeguards",
     url: "https://backend.codemate.ai/uploaded/images/5d4ba684-9234-47f5-a97f-c2231670abb3",
   },
+] as const;
+
+export const hpUsecases: readonly UsecaseItem[] = [
+  { slug: "manufacturing", name: "Manufacturing", image: "/hp/usecases/manufacturing.webp" },
+  { slug: "retail", name: "Retail", image: "/hp/usecases/retail.webp" },
+  { slug: "healthcare", name: "Healthcare", image: "/hp/usecases/healthcare.webp" },
+  { slug: "automotive-robotics", name: "Automotive & Robotics", image: "/hp/usecases/automotive-robotics.webp" },
+  { slug: "smart-cities", name: "Smart Cities", image: "/hp/usecases/smart-cities.webp" },
+  { slug: "energy-utilities", name: "Energy & Utilities", image: "/hp/usecases/energy-utilities.webp" },
 ] as const;
 
 export const hpContact = {
