@@ -24,9 +24,9 @@ export interface UsecaseItem {
 }
 
 export const hpMetadata = {
-  title: "HP x CodeMate AI",
+  title: "HP x CodeMate AI: AI-Native Development on HP AI PCs",
   description:
-    "CodeMate is an AI-native SDLC agent that accelerates the entire software development lifecycle. Run CodeMate seamlessly on HP's Next Gen AI PCs with codebase security.",
+    "CodeMate AI accelerates the entire software development lifecycle with deep codebase intelligence on HP's Next Gen AI PCs.",
   canonical: "https://codemate.ai/hp",
   keywords: [
     "HP",

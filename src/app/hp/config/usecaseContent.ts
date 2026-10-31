@@ -15,6 +15,8 @@ export interface UsecaseSoftware {
 }
 
 export interface UsecaseContent {
+  /** Search result and link preview text. Keep to 155 characters so it isn't cut off. */
+  metaDescription: string;
   description: string;
   usecases: readonly UsecaseDetail[];
   benefits: readonly string[];
@@ -23,6 +25,8 @@ export interface UsecaseContent {
 
 export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
   manufacturing: {
+    metaDescription:
+      "Build manufacturing software with CodeMate AI on HP AI PCs to manage equipment, maintain product quality and coordinate production.",
     description:
       "Manufacturers need efficient ways to manage equipment, maintain product quality and coordinate production. Purpose-built software can streamline these operations, improve visibility and help teams make informed decisions.",
     usecases: [
@@ -89,6 +93,8 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
     ],
   },
   retail: {
+    metaDescription:
+      "Build retail software with CodeMate AI on HP AI PCs to manage stock, verify supplier invoices and organise sales and marketing.",
     description:
       "Retail operations involve managing stock, processing supplier transactions and keeping sales and marketing activities organised. Efficient software can help retailers maintain product availability, track performance and streamline daily operations.",
     usecases: [
@@ -163,6 +169,8 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
     ],
   },
   healthcare: {
+    metaDescription:
+      "Build healthcare software with CodeMate AI on HP AI PCs to manage patient information, administrative tasks and hospital resources.",
     description:
       "Healthcare providers aim to deliver timely, reliable care while managing patient information, administrative tasks and hospital resources. Efficient systems can simplify these processes, reduce administrative workload and help healthcare teams focus more on patient care.",
     usecases: [
@@ -212,10 +220,10 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
     softwares: [
       {
         tag: "Verification Portal",
-        name: "Employee Verification Portal",
+        name: "Ex-Employee Verification Portal",
         description:
-          "Manages employee verification requests and work history checks, relevant to healthcare staff onboarding and credential verification.",
-        linkLabel: "Visit Employee Verification Portal",
+          "Manages ex-employee verification requests and work history checks, relevant to healthcare staff onboarding and credential verification.",
+        linkLabel: "Visit Ex-Employee Verification Portal",
         url: "https://ex-employee-verification-portal.codemate.build/",
       },
       {
@@ -229,6 +237,8 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
     ],
   },
   "automotive-robotics": {
+    metaDescription:
+      "Build automotive and robotics software with CodeMate AI on HP AI PCs to troubleshoot issues, access service documents and manage maintenance.",
     description:
       "Automotive and robotics teams need efficient ways to troubleshoot technical issues, access service documentation and manage equipment maintenance. Software applications can simplify these processes, improve access to relevant information and streamline maintenance workflows.",
     usecases: [
@@ -295,6 +305,8 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
     ],
   },
   "smart-cities": {
+    metaDescription:
+      "Build smart city software with CodeMate AI on HP AI PCs to track civic complaints, coordinate departments and monitor public services.",
     description:
       "From resolving civic complaints to maintaining roads, streetlights and waste collection services, city authorities manage a wide range of public services. Software applications can bring these activities together, making it easier to track issues, coordinate departments and monitor progress.",
     usecases: [
@@ -344,7 +356,7 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
     softwares: [
       {
         tag: "HR Platform",
-        name: "HRMS: Department & Workforce Management",
+        name: "HRMS",
         description:
           "A centralised platform for managing employee records, attendance, leave requests, payroll and staff operations. It helps municipal departments organise workforce information, streamline administrative processes and coordinate employee-related activities.",
         linkLabel: "Visit HRMS",
@@ -361,6 +373,8 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
     ],
   },
   "energy-utilities": {
+    metaDescription:
+      "Build energy and utility software with CodeMate AI on HP AI PCs to manage operations, monitor infrastructure and maintain reliable services.",
     description:
       "Energy providers rely on software to manage utility operations, monitor infrastructure and maintain reliable services. Well-developed applications can simplify operational workflows, improve system maintenance and help engineering teams manage software updates more effectively.",
     usecases: [
@@ -418,7 +432,7 @@ export const hpUsecaseContent: Readonly<Record<string, UsecaseContent>> = {
       },
       {
         tag: "Billing Platform",
-        name: "GridPay: Utility Billing & Consumer Management",
+        name: "GridPay",
         description:
           "A platform for managing consumer accounts, recording meter readings, generating electricity bills and tracking payments. It provides a centralised dashboard for monitoring revenue, outstanding dues and billing operations.",
         linkLabel: "Visit GridPay",

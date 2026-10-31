@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: UsecasePageProps): Promise<Me
   if (!usecase) return {};
 
   const title = `${usecase.name} Use Cases | HP x CodeMate AI`;
-  const description = hpUsecaseContent[slug]?.description;
+  const description = hpUsecaseContent[slug]?.metaDescription;
   const canonical = `${hpMetadata.canonical}/usecases/${slug}`;
 
   return {
@@ -42,10 +42,12 @@ export async function generateMetadata({ params }: UsecasePageProps): Promise<Me
       url: canonical,
       type: "website",
       siteName: "CodeMate AI",
+      locale: "en_US",
       images: [{ url: usecase.ogImage, width: 1200, height: 630, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
+      site: "@codemateai",
       title,
       description,
       images: [usecase.ogImage],
@@ -59,9 +61,19 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
   if (!usecase) notFound();
 
   const content = hpUsecaseContent[slug];
+  const breadcrumbs = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "HP x CodeMate AI", item: hpMetadata.canonical },
+      { "@type": "ListItem", position: 2, name: "Use Cases", item: `${hpMetadata.canonical}#usecases` },
+      { "@type": "ListItem", position: 3, name: usecase.name, item: `${hpMetadata.canonical}/usecases/${slug}` },
+    ],
+  };
 
   return (
     <div className="relative min-h-dvh bg-white flex flex-col items-start p-0">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }} />
       <HpSubpageNav backHref="/hp#usecases" />
 
       <main className="w-full">
