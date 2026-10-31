@@ -1,6 +1,7 @@
 import { generateHTML } from "@tiptap/html";
 import DOMPurify from "isomorphic-dompurify";
 import { extensions } from "@/lib/tiptap-extensions";
+import { decodeJsonAttr, decodeJsonAttrValue } from "@/lib/tiptap-json-attr";
 
 function determineHighestHeadingLevel(content: any): number {
   if (!content || !content.content) return 2;
@@ -16,11 +17,35 @@ function determineHighestHeadingLevel(content: any): number {
   return minLevel === 99 ? 2 : minLevel;
 }
 
-export function extractSectionsFromTiptapJson(content: any): { id: string; title: string }[] {
+function hasIllustrationContent(item: any): boolean {
+  const mediaUrl = typeof item?.mediaUrl === "string" ? item.mediaUrl.trim() : "";
+  const hasText = [item?.title, item?.description].some((text) => typeof text === "string" && text.trim());
+  return hasText || Boolean(mediaUrl && isSafeUrl(mediaUrl));
+}
+
+// An illustration list's section title compiles as a real heading placed before the list, at the
+// document's section level, so it gets an anchor and a table of contents entry like any other heading.
+// Lists that render nothing get no heading, which would otherwise be left orphaned on the page.
+function expandIllustrationListHeadings(content: any): any {
+  if (!content || !Array.isArray(content.content)) return content;
+  const level = determineHighestHeadingLevel(content);
+  return {
+    ...content,
+    content: content.content.flatMap((node: any) => {
+      const title = typeof node?.attrs?.sectionTitle === "string" ? node.attrs.sectionTitle.trim() : "";
+      const items = Array.isArray(node?.attrs?.items) ? node.attrs.items : [];
+      if (node?.type !== "illustrationList" || !title || !items.some(hasIllustrationContent)) return [node];
+      return [{ type: "heading", attrs: { level }, content: [{ type: "text", text: title }] }, node];
+    }),
+  };
+}
+
+export function extractSectionsFromTiptapJson(rawContent: any): { id: string; title: string }[] {
   const sections: { id: string; title: string }[] = [];
   const idCounts: Record<string, number> = {};
 
-  if (!content || !content.content) return sections;
+  if (!rawContent || !rawContent.content) return sections;
+  const content = expandIllustrationListHeadings(rawContent);
   const targetLevel = determineHighestHeadingLevel(content);
 
   for (const node of content.content) {
@@ -452,6 +477,43 @@ function extractPlainTextFromNode(node: any): string {
   return "";
 }
 
+function nodeToPlainText(node: any): string {
+  if (!node) return "";
+  if (typeof node.text === "string") return node.text;
+  if (node.type === "hardBreak") return "\n";
+
+  const attrs = node.attrs || {};
+  const toLines = (values: unknown[]) =>
+    values.filter((value) => typeof value === "string" && value.trim()).join("\n");
+  const list = (value: unknown): any[] => (Array.isArray(value) ? value : []);
+
+  // These nodes keep the author's text in attributes rather than child text nodes
+  switch (node.type) {
+    case "image":
+    case "video":
+      return toLines([attrs.caption, attrs.src]);
+    case "bentoGrid":
+      return toLines(list(attrs.cards).flatMap((card) => [card?.caption, card?.mediaUrl]));
+    case "illustrationList":
+      return toLines([
+        attrs.sectionTitle,
+        ...list(attrs.items).flatMap((item) => [item?.title, item?.description, item?.mediaUrl]),
+      ]);
+    case "referenceBlogs":
+      return toLines([attrs.heading, ...list(attrs.blogs).map((blog) => blog?.title)]);
+  }
+
+  const children = list(node.content);
+  const isInline = children.every((child) => typeof child?.text === "string" || child?.type === "hardBreak");
+  return children.map(nodeToPlainText).filter(Boolean).join(isInline ? "" : "\n");
+}
+
+// Flattens a whole Tiptap document to plain text, so an author can keep their work during a conflict
+export function tiptapDocToPlainText(content: any): string {
+  if (!content || !Array.isArray(content.content)) return "";
+  return content.content.map(nodeToPlainText).filter(Boolean).join("\n\n");
+}
+
 export function stripDuplicateSubheadingNode(content: any, subheading?: string): any {
   if (!subheading || !subheading.trim() || !content || !Array.isArray(content.content) || content.content.length === 0) {
     return content;
@@ -491,34 +553,30 @@ function escapeHtmlText(str: string): string {
     .replace(/>/g, "&gt;");
 }
 
+// Later passes rewrite "[video: ...]" style shortcodes anywhere in the finished HTML, so "[" in
+// author text is encoded to keep it literal. Apply after escaping, or the "&" would be escaped too.
+function protectShortcodes(escapedText: string): string {
+  return escapedText.replace(/\[/g, "&#91;");
+}
+
 function formatReferenceBlogs(html: string): string {
-  return html.replace(/<div\b([^>]*data-type=["']reference-blogs["'][^>]*)>(?:[\s\S]*?<\/div>)?/gi, (match, attrs) => {
-    const headingMatch = attrs.match(/data-heading=["']([^"']*)["']/i);
-    const showBottomMatch = attrs.match(/data-show-bottom=["']([^"']*)["']/i);
-    const bottomTextMatch = attrs.match(/data-bottom-text=["']([^"']*)["']/i);
-    const bottomUrlMatch = attrs.match(/data-bottom-url=["']([^"']*)["']/i);
+  // Attribute-aware tag match, as in formatBentoGrids, so quoted values are skipped as a whole
+  const referenceTagRegex =
+    /<div\b((?:[^>"']|"[^"]*"|'[^']*')*?data-type=["']reference-blogs["'](?:[^>"']|"[^"]*"|'[^']*')*)>(?:[\s\S]*?<\/div>)?/gi;
+  return html.replace(referenceTagRegex, (match, attrs) => {
+    const settingsMatch = attrs.match(/data-settings=(?:"([^"]*)"|'([^']*)')/i);
     const blogsMatch = attrs.match(/data-blogs=(?:"([^"]*)"|'([^']*)')/i);
+    const settings = decodeJsonAttrValue(settingsMatch ? settingsMatch[1] || settingsMatch[2] : "") || {};
 
-    const heading = headingMatch ? headingMatch[1].trim() : "Writing";
-    const showBottom = showBottomMatch ? showBottomMatch[1] !== "false" : true;
-    const bottomText = bottomTextMatch ? bottomTextMatch[1].trim() : "Read the blog";
-    const bottomUrl = bottomUrlMatch ? bottomUrlMatch[1].trim() : "/blog";
+    const readText = (value: unknown, fallback: string) => (typeof value === "string" ? value.trim() : fallback);
+    const heading = readText(settings.heading, "Writing");
+    const showBottom = settings.showBottomLink !== false;
+    const bottomText = readText(settings.bottomLinkText, "Read the blog");
+    const bottomUrl = readText(settings.bottomLinkUrl, "/blog");
 
-    let rawBlogsJson = blogsMatch ? (blogsMatch[1] || blogsMatch[2] || "[]") : "[]";
-    rawBlogsJson = rawBlogsJson
-      .replace(/&quot;/g, '"')
-      .replace(/&#34;/g, '"')
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>');
-
-    let blogs: { id?: string; slug?: string; title?: string; category?: string }[] = [];
-    try {
-      blogs = JSON.parse(rawBlogsJson);
-      if (!Array.isArray(blogs)) blogs = [];
-    } catch {
-      blogs = [];
-    }
+    const blogs: { id?: string; slug?: string; title?: string; category?: string }[] = decodeJsonAttr(
+      blogsMatch ? blogsMatch[1] || blogsMatch[2] : ""
+    );
 
     if (blogs.length === 0) {
       return "";
@@ -529,7 +587,7 @@ function formatReferenceBlogs(html: string): string {
         const num = String(idx + 1).padStart(2, "0");
         const slug = (blog.slug || "").trim();
         const href = slug ? (slug.startsWith("/") ? slug : `/blog/${slug}`) : "#";
-        const title = escapeHtmlText(blog.title || "Untitled Article");
+        const title = protectShortcodes(escapeHtmlText(blog.title || "Untitled Article"));
 
         return `
           <a href="${escapeHtmlAttr(href)}" class="ref-blog-card" role="listitem">
@@ -550,8 +608,8 @@ function formatReferenceBlogs(html: string): string {
       const cleanBottomUrl = bottomUrl.startsWith("http") || bottomUrl.startsWith("/") ? bottomUrl : `/${bottomUrl}`;
       bottomLinkHtml = `
         <div class="ref-blogs-bottom">
-          <a href="${escapeHtmlAttr(cleanBottomUrl)}" class="ref-blogs-footer-link">
-            <span>${escapeHtmlText(bottomText)}</span>
+          <a href="${protectShortcodes(escapeHtmlAttr(cleanBottomUrl))}" class="ref-blogs-footer-link">
+            <span>${protectShortcodes(escapeHtmlText(bottomText))}</span>
             <svg class="ref-blogs-bottom-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M7 17L17 7M17 7H7M17 7V17"></path>
             </svg>
@@ -561,8 +619,8 @@ function formatReferenceBlogs(html: string): string {
     }
 
     return `
-      <section class="ref-blogs-section my-8" aria-label="${escapeHtmlAttr(heading)}">
-        <h3 class="ref-blogs-heading">${escapeHtmlText(heading)}</h3>
+      <section class="ref-blogs-section my-8" aria-label="${protectShortcodes(escapeHtmlAttr(heading))}">
+        <h3 class="ref-blogs-heading">${protectShortcodes(escapeHtmlText(heading))}</h3>
         <div class="ref-blogs-list" role="list">
           ${cardsHtml}
         </div>
@@ -587,21 +645,7 @@ function formatBentoGrids(html: string): string {
     const rawGap = gapMatch ? gapMatch[1].trim() : "md";
     const gap = rawGap === "sm" || rawGap === "lg" ? rawGap : "md";
 
-    let rawCardsJson = cardsMatch ? (cardsMatch[1] || cardsMatch[2] || "[]") : "[]";
-    rawCardsJson = rawCardsJson
-      .replace(/&quot;/g, '"')
-      .replace(/&#34;/g, '"')
-      .replace(/&amp;/g, '&')
-      .replace(/&lt;/g, '<')
-      .replace(/&gt;/g, '>');
-
-    let cards: any[] = [];
-    try {
-      cards = JSON.parse(rawCardsJson);
-      if (!Array.isArray(cards)) cards = [];
-    } catch {
-      cards = [];
-    }
+    const cards = decodeJsonAttr(cardsMatch ? cardsMatch[1] || cardsMatch[2] : "");
 
     if (cards.length === 0) {
       return "";
@@ -614,8 +658,8 @@ function formatBentoGrids(html: string): string {
         const safeMediaUrl = rawMediaUrl && isSafeUrl(rawMediaUrl) ? escapeHtml(rawMediaUrl) : "";
         // Cards show media plus an optional caption; legacy title/linkUrl values are intentionally ignored
         const rawCaption = typeof card.caption === "string" ? card.caption.trim() : "";
-        const caption = escapeHtmlText(rawCaption);
-        const altText = escapeHtmlAttr(card.altText || rawCaption || `Bento visual ${idx + 1}`);
+        const caption = protectShortcodes(escapeHtmlText(rawCaption));
+        const altText = protectShortcodes(escapeHtmlAttr(card.altText || rawCaption || `Bento visual ${idx + 1}`));
 
         // Never span wider than the grid, e.g. a "Full" card left over after switching 3 -> 2 columns
         const spanCols = Math.min(card.spanCols === 3 ? 3 : card.spanCols === 2 ? 2 : 1, columns);
@@ -630,7 +674,7 @@ function formatBentoGrids(html: string): string {
             // Detect embeds on the raw URL; the escaped form turns "&" into "&amp;" and breaks "?a=b&v=ID" matching
             const youTubeId = getYouTubeId(rawMediaUrl);
             const vimeoId = youTubeId ? null : getVimeoId(rawMediaUrl);
-            const iframeTitle = escapeHtmlAttr(rawCaption || "Video player");
+            const iframeTitle = protectShortcodes(escapeHtmlAttr(rawCaption || "Video player"));
             if (youTubeId) {
               mediaHtml = `
                 <div class="bento-media-wrap bento-embed-wrap">
@@ -683,6 +727,45 @@ function formatBentoGrids(html: string): string {
   });
 }
 
+function formatIllustrationLists(html: string): string {
+  // Attribute-aware tag match, as in formatBentoGrids, so quoted values are skipped as a whole
+  const listTagRegex =
+    /<div\b((?:[^>"']|"[^"]*"|'[^']*')*?data-type=["']illustration-list["'](?:[^>"']|"[^"]*"|'[^']*')*)>(?:[\s\S]*?<\/div>)?/gi;
+  // This output is not re-sanitized, so author text is escaped as well as protected from shortcodes
+  const escapeItemText = (text: string) => protectShortcodes(escapeHtmlText(text));
+
+  return html.replace(listTagRegex, (match, attrs) => {
+    const itemsMatch = attrs.match(/data-items=(?:"([^"]*)"|'([^']*)')/i);
+    const items = decodeJsonAttr(itemsMatch ? itemsMatch[1] || itemsMatch[2] : "");
+
+    const rowsHtml = items
+      .map((item) => {
+        const rawMediaUrl = typeof item?.mediaUrl === "string" ? item.mediaUrl.trim() : "";
+        const safeMediaUrl = rawMediaUrl && isSafeUrl(rawMediaUrl) ? escapeHtml(rawMediaUrl) : "";
+        const title = typeof item?.title === "string" ? item.title.trim() : "";
+        const description = typeof item?.description === "string" ? item.description.trim() : "";
+
+        if (!hasIllustrationContent(item)) return "";
+
+        // The title sits beside the illustration, so the image is decorative for screen readers
+        const mediaHtml = safeMediaUrl
+          ? `<div class="illustration-showcase-media-box"><img src="${safeMediaUrl}" alt="" loading="lazy" decoding="async" class="illustration-showcase-img" /></div>`
+          : "";
+        const titleHtml = title ? `<p class="illustration-showcase-title">${escapeItemText(title)}</p>` : "";
+        const descriptionHtml = description ? `<p class="illustration-showcase-desc">${escapeItemText(description)}</p>` : "";
+        const contentHtml = titleHtml || descriptionHtml
+          ? `<div class="illustration-showcase-content">${titleHtml}${descriptionHtml}</div>`
+          : "";
+
+        return `<div class="illustration-showcase-item" role="listitem">${mediaHtml}${contentHtml}</div>`;
+      })
+      .filter(Boolean)
+      .join("\n");
+
+    return rowsHtml ? `<div class="illustration-showcase-list" role="list">${rowsHtml}</div>` : "";
+  });
+}
+
 export function compileTiptapToHtml(
   content: any,
   customSections?: { id: string; title: string }[],
@@ -693,7 +776,7 @@ export function compileTiptapToHtml(
   }
 
   const sanitizedContent = stripDuplicateSubheadingNode(content, subheading);
-  const rawHtml = generateHTML(sanitizedContent, extensions);
+  const rawHtml = generateHTML(expandIllustrationListHeadings(sanitizedContent), extensions);
   const cleanHtml = DOMPurify.sanitize(rawHtml, {
     ALLOWED_TAGS: [
       "h1", "h2", "h3", "h4", "h5", "h6",
@@ -708,7 +791,7 @@ export function compileTiptapToHtml(
       "controls", "muted", "autoplay", "loop", "playsinline", "type",
       "style", "checked", "disabled", "colspan", "rowspan", "colwidth",
       "width", "height", "name", "data-type", "data-checked",
-      "data-heading", "data-show-bottom", "data-bottom-text", "data-bottom-url", "data-blogs", "data-caption", "data-columns", "data-gap", "data-cards",
+      "data-settings", "data-blogs", "data-caption", "data-columns", "data-gap", "data-cards", "data-items",
       "viewbox", "viewBox", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin",
       "d", "aria-hidden", "aria-label", "role"
     ],
@@ -717,7 +800,7 @@ export function compileTiptapToHtml(
   const sections = customSections && customSections.length > 0 ? customSections : extractSectionsFromTiptapJson(sanitizedContent);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
   const finalHtml = formatLinks(
-    formatLogos(formatVideos(formatFaqSection(formatReferenceBlogs(formatBentoGrids(formatTableCells(headingHtml))))))
+    formatLogos(formatVideos(formatFaqSection(formatReferenceBlogs(formatIllustrationLists(formatBentoGrids(formatTableCells(headingHtml)))))))
   );
 
   return { html: finalHtml, sections };
@@ -729,6 +812,15 @@ export function calculateWordCount(node: any): number {
   let count = 0;
   if (node.text && typeof node.text === "string") {
     count += node.text.trim().split(/\s+/).filter(Boolean).length;
+  }
+  // Illustration list text lives in node attributes rather than child text nodes
+  if (node.type === "illustrationList" && Array.isArray(node.attrs?.items)) {
+    const sectionTitle = typeof node.attrs.sectionTitle === "string" ? node.attrs.sectionTitle : "";
+    count += sectionTitle.trim().split(/\s+/).filter(Boolean).length;
+    for (const item of node.attrs.items) {
+      const itemText = `${item?.title || ""} ${item?.description || ""}`;
+      count += itemText.trim().split(/\s+/).filter(Boolean).length;
+    }
   }
   if (node.content && Array.isArray(node.content)) {
     for (const child of node.content) {

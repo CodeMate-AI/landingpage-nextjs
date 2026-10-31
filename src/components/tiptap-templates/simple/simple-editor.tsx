@@ -179,6 +179,9 @@ import { VideoUploadNode } from "@/components/tiptap-node/video-node/video-uploa
 import { ReferenceBlogsNode } from "@/components/tiptap-node/reference-blogs-node/reference-blogs-node-extension"
 import { BentoGridNode } from "@/components/tiptap-node/bento-grid-node"
 import { BentoGridIcon } from "@/components/tiptap-icons/bento-grid-icon"
+import { IllustrationListNode, createIllustrationItem } from "@/components/tiptap-node/illustration-list-node"
+import { IllustrationListIcon } from "@/components/tiptap-icons/illustration-list-icon"
+import { CardDragGuard } from "@/components/tiptap-node/card-drag-guard"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss"
@@ -398,6 +401,23 @@ const MainToolbarContent = ({
         >
           <BentoGridIcon className="tiptap-button-icon" />
           <span className="tiptap-button-text">Bento Grid</span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={() => {
+            editor?.chain().focus().insertContent({
+              type: "illustrationList",
+              attrs: {
+                items: [createIllustrationItem(), createIllustrationItem()],
+              },
+            }).run()
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+          title="Insert Illustration List"
+        >
+          <IllustrationListIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">List</span>
         </Button>
       </ToolbarGroup>
 
@@ -648,6 +668,8 @@ export function SimpleEditor({
       VideoUploadNode,
       ReferenceBlogsNode,
       BentoGridNode,
+      IllustrationListNode,
+      CardDragGuard,
       CustomLink,
       CustomHeading,
       HorizontalRule,

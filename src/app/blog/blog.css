@@ -3572,3 +3572,86 @@ ul[data-type="taskList"] li > div,
     max-height: 280px;
   }
 }
+
+/* ==========================================================================
+   Illustration List Section (Reader View)
+   ========================================================================== */
+.article-content .illustration-showcase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  margin: 2.5rem 0;
+  box-sizing: border-box;
+}
+
+/* Keep a section heading visually attached to its list */
+.article-content :is(h2, h3, h4) + .illustration-showcase-list {
+  margin-top: 1.5rem;
+}
+
+.article-content .illustration-showcase-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.article-content .illustration-showcase-media-box {
+  flex-shrink: 0;
+  width: 76px;
+  height: 76px;
+  overflow: hidden;
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.article-content .illustration-showcase-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-content .illustration-showcase-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.article-content .illustration-showcase-title {
+  margin: 0 0 0.25rem;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.article-content .illustration-showcase-desc {
+  margin: 0;
+  line-height: 1.6;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+/* Compact side-by-side rows on small screens (< 640px) */
+@media (max-width: 639px) {
+  .article-content .illustration-showcase-list {
+    gap: 1.5rem;
+  }
+
+  .article-content .illustration-showcase-item {
+    gap: 0.875rem;
+  }
+
+  .article-content .illustration-showcase-media-box {
+    width: 56px;
+    height: 56px;
+  }
+
+  .article-content .illustration-showcase-title,
+  .article-content .illustration-showcase-desc {
+    font-size: 16px;
+  }
+}

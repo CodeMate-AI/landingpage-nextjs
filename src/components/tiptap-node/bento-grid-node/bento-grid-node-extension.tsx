@@ -2,18 +2,14 @@
 
 import React, { useState, useRef, useCallback } from "react";
 import { NodeViewWrapper, ReactNodeViewRenderer, NodeViewProps } from "@tiptap/react";
-import { Extension, Node } from "@tiptap/core";
-import { Plugin, PluginKey } from "@tiptap/pm/state";
+import { Node } from "@tiptap/core";
 import { adminFetch } from "@/lib/admin-api-client";
+import { encodeJsonAttr } from "@/lib/tiptap-json-attr";
+import { BENTO_CARD_MIME, isPrivateCardDrag } from "../card-drag-guard";
 import "./bento-grid-node.scss";
 
-// Private drag payload type: ProseMirror only pastes text/plain or text/html, so a card dropped
-// anywhere outside its grid inserts nothing into the document
-const BENTO_CARD_MIME = "application/x-bento-card";
-
 function isBentoCardDrag(event: Event): boolean {
-  const types = (event as DragEvent).dataTransfer?.types;
-  return Boolean(types && Array.from(types).includes(BENTO_CARD_MIME));
+  return isPrivateCardDrag(event, BENTO_CARD_MIME);
 }
 
 export interface BentoCardItem {
@@ -44,14 +40,18 @@ export const BentoGridNodeView: React.FC<NodeViewProps> = ({
   const [uploadError, setUploadError] = useState<{ cardId: string; message: string } | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const currentUploadCardIdRef = useRef<string | null>(null);
+  // Always the latest cards, so an upload finishing late cannot overwrite edits made while it ran
+  const cardsRef = useRef(cards);
+  cardsRef.current = cards;
 
   // Updates a single card attribute by ID
   const updateCard = useCallback(
     (id: string, updates: Partial<BentoCardItem>) => {
-      const nextCards = cards.map((c) => (c.id === id ? { ...c, ...updates } : c));
+      const nextCards = cardsRef.current.map((c) => (c.id === id ? { ...c, ...updates } : c));
+      cardsRef.current = nextCards;
       updateAttributes({ cards: nextCards });
     },
-    [cards, updateAttributes]
+    [updateAttributes]
   );
 
   // Removes a card by ID
@@ -504,6 +504,10 @@ export const BentoGridNodeView: React.FC<NodeViewProps> = ({
                       placeholder="Caption (optional)"
                       value={card.caption || ""}
                       onChange={(e) => updateCard(card.id, { caption: e.target.value })}
+                      onKeyDown={(e) => {
+                        // The editor sits inside the article form, where Enter would save and leave the page
+                        if (e.key === "Enter") e.preventDefault();
+                      }}
                     />
                   </div>
 
@@ -528,54 +532,12 @@ export const BentoGridNodeView: React.FC<NodeViewProps> = ({
   );
 };
 
-/**
- * Keeps ProseMirror out of in-grid card reordering. Tiptap's default NodeView.stopEvent forwards
- * dragover/drop from inside node views to ProseMirror, which would otherwise insert the drag
- * payload as text and draw its drop cursor over the grid.
- */
-const BentoCardDragGuard = Extension.create({
-  name: "bentoCardDragGuard",
-  priority: 1000,
-
-  // prosemirror-dropcursor listens on the editor DOM directly, so it is suppressed per node spec
-  extendNodeSchema() {
-    return {
-      disableDropCursor: (_view: unknown, _pos: unknown, event: DragEvent) => isBentoCardDrag(event),
-    };
-  },
-
-  addProseMirrorPlugins() {
-    const claimCardDrag = (_view: unknown, event: Event) => {
-      if (!isBentoCardDrag(event)) return false;
-      if (event.type === "drop") event.preventDefault();
-      return true;
-    };
-
-    return [
-      new Plugin({
-        key: new PluginKey("bentoCardDragGuard"),
-        props: {
-          handleDOMEvents: {
-            dragenter: claimCardDrag,
-            dragover: claimCardDrag,
-            drop: claimCardDrag,
-          },
-        },
-      }),
-    ];
-  },
-});
-
 // TipTap Node Extension for Client Editor
 export const BentoGridNode = Node.create({
   name: "bentoGrid",
   group: "block",
   atom: true,
   draggable: true,
-
-  addExtensions() {
-    return [BentoCardDragGuard];
-  },
 
   addAttributes() {
     return {
@@ -632,7 +594,7 @@ export const BentoGridNode = Node.create({
         "data-type": "bento-grid",
         "data-columns": String(columns),
         "data-gap": gap,
-        "data-cards": JSON.stringify(cards),
+        "data-cards": encodeJsonAttr(cards),
       },
     ];
   },

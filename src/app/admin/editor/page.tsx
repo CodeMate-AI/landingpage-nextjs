@@ -5,7 +5,7 @@ import { adminFetch } from "@/lib/admin-api-client";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { DatePicker } from "@/components/ui/date-picker";
 import BlogPreviewModal from "./BlogPreviewModal";
-import { compileTiptapToHtml } from "@/lib/blog-compiler";
+import { compileTiptapToHtml, extractSectionsFromTiptapJson, tiptapDocToPlainText } from "@/lib/blog-compiler";
 import slugify from "@/utils/slugify";
 import type { BlogDetailPost } from "@/types/blog";
 
@@ -982,11 +982,7 @@ function EditorContent() {
               <button
                 type="button"
                 onClick={() => {
-                  const plainContent = contentJson?.content
-                    ? contentJson.content
-                        .map((n: any) => n.text || (n.content ? n.content.map((c: any) => c.text || "").join("") : ""))
-                        .join("\n\n")
-                    : "";
+                  const plainContent = tiptapDocToPlainText(contentJson);
                   const exportText = `Title: ${title}\nSubheading: ${subheading}\n\n${plainContent}`;
                   void navigator.clipboard.writeText(exportText);
                   setIsCopied(true);
@@ -1616,47 +1612,7 @@ function EditorContent() {
                 {/* Auto-generates TOC anchors by parsing H2-H4 heading nodes from the Tiptap AST */}
                 <button
                   type="button"
-                  onClick={() => {
-                    if (!contentJson || !contentJson.content) return;
-                    
-                    // Determine highest heading level.
-                    // We start tracking from level 2 (h2) because level 2 (h2) is mapped
-                    // visually to "Heading 1" in the CMS editor toolbar dropdown UI.
-                    let minLevel = 99;
-                    for (const node of contentJson.content) {
-                      if (node.type === "heading" && node.attrs?.level) {
-                        const lvl = node.attrs.level;
-                        if (lvl >= 2 && lvl <= 4 && lvl < minLevel) {
-                          minLevel = lvl;
-                        }
-                      }
-                    }
-                    const targetLevel = minLevel === 99 ? 2 : minLevel;
-
-                    const generated: { id: string; title: string }[] = [];
-                    const idCounts: Record<string, number> = {};
-                    for (const node of contentJson.content) {
-                      if (node.type === "heading" && node.attrs?.level === targetLevel) {
-                        let titleText = "";
-                        if (node.content) {
-                          titleText = node.content.map((c: any) => c.text || "").join("");
-                        }
-                        if (titleText) {
-                          const baseId = titleText.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-                          const finalBaseId = baseId || "section";
-                          let id = finalBaseId;
-                          if (idCounts[finalBaseId] !== undefined) {
-                            idCounts[finalBaseId]++;
-                            id = `${finalBaseId}-${idCounts[finalBaseId]}`;
-                          } else {
-                            idCounts[finalBaseId] = 0;
-                          }
-                          generated.push({ id, title: titleText });
-                        }
-                      }
-                    }
-                    setSections(generated);
-                  }}
+                  onClick={() => setSections(extractSectionsFromTiptapJson(contentJson))}
                   suppressHydrationWarning
                   className="inline-flex items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 px-3.5 py-2 text-xs font-semibold text-blue-400 hover:bg-blue-600 hover:text-white transition"
                 >

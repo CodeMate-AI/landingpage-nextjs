@@ -14,6 +14,7 @@ import { TextAlign } from "@tiptap/extension-text-align";
 import { Typography } from "@tiptap/extension-typography";
 import { MarkdownRulesExtension } from "./tiptap-markdown-rules";
 import { TextStyleMark, FontFamilyExtension } from "./tiptap-font-family";
+import { encodeJsonAttr } from "./tiptap-json-attr";
 
 /**
  * Server-safe video node — no ReactNodeViewRenderer.
@@ -217,11 +218,20 @@ const ReferenceBlogsNodeServer = Node.create({
               blogs = [];
             }
           }
+          let settings: any = {};
+          const rawSettings = element.getAttribute("data-settings");
+          if (rawSettings) {
+            try {
+              settings = JSON.parse(rawSettings) || {};
+            } catch {
+              settings = {};
+            }
+          }
           return {
-            heading: element.getAttribute("data-heading") || "Writing",
-            showBottomLink: element.getAttribute("data-show-bottom") !== "false",
-            bottomLinkText: element.getAttribute("data-bottom-text") || "Read the blog",
-            bottomLinkUrl: element.getAttribute("data-bottom-url") || "/blog",
+            heading: settings.heading || "Writing",
+            showBottomLink: settings.showBottomLink !== false,
+            bottomLinkText: settings.bottomLinkText || "Read the blog",
+            bottomLinkUrl: settings.bottomLinkUrl || "/blog",
             blogs,
           };
         },
@@ -231,7 +241,7 @@ const ReferenceBlogsNodeServer = Node.create({
 
   renderHTML({ node }) {
     const heading = (node.attrs.heading as string) || "Writing";
-    const showBottomLink = String(node.attrs.showBottomLink ?? true);
+    const showBottomLink = node.attrs.showBottomLink !== false;
     const bottomLinkText = (node.attrs.bottomLinkText as string) || "Read the blog";
     const bottomLinkUrl = (node.attrs.bottomLinkUrl as string) || "/blog";
     const blogs = Array.isArray(node.attrs.blogs) ? node.attrs.blogs : [];
@@ -240,11 +250,8 @@ const ReferenceBlogsNodeServer = Node.create({
       "div",
       {
         "data-type": "reference-blogs",
-        "data-heading": heading,
-        "data-show-bottom": showBottomLink,
-        "data-bottom-text": bottomLinkText,
-        "data-bottom-url": bottomLinkUrl,
-        "data-blogs": JSON.stringify(blogs),
+        "data-settings": encodeJsonAttr({ heading, showBottomLink, bottomLinkText, bottomLinkUrl }),
+        "data-blogs": encodeJsonAttr(blogs),
       },
     ];
   },
@@ -304,7 +311,69 @@ const BentoGridNodeServer = Node.create({
         "data-type": "bento-grid",
         "data-columns": String(columns),
         "data-gap": gap,
-        "data-cards": JSON.stringify(cards),
+        "data-cards": encodeJsonAttr(cards),
+      },
+    ];
+  },
+});
+
+/**
+ * Server-safe illustrationList node for headless generateHTML compilation.
+ * Outputs a div container with data attributes, which formatIllustrationLists() in
+ * blog-compiler.ts post-processes into the reader's side-by-side feature rows.
+ */
+const IllustrationListNodeServer = Node.create({
+  name: "illustrationList",
+  group: "block",
+  atom: true,
+
+  addAttributes() {
+    return {
+      sectionTitle: { default: "" },
+      items: { default: [] },
+    };
+  },
+
+  parseHTML() {
+    return [
+      {
+        tag: "div[data-type='illustration-list']",
+        getAttrs: (element) => {
+          if (!(element instanceof HTMLElement)) return false;
+          let items: any[] = [];
+          const rawItems = element.getAttribute("data-items");
+          if (rawItems) {
+            try {
+              items = JSON.parse(rawItems);
+            } catch {
+              items = [];
+            }
+          }
+          let settings: any = {};
+          const rawSettings = element.getAttribute("data-settings");
+          if (rawSettings) {
+            try {
+              settings = JSON.parse(rawSettings) || {};
+            } catch {
+              settings = {};
+            }
+          }
+          return { sectionTitle: settings.sectionTitle || "", items };
+        },
+      },
+    ];
+  },
+
+  // The section title is compiled separately as a real heading by blog-compiler.ts
+  renderHTML({ node }) {
+    const items = Array.isArray(node.attrs.items) ? node.attrs.items : [];
+
+    return [
+      "div",
+      {
+        "data-type": "illustration-list",
+        "data-settings": encodeJsonAttr({ sectionTitle: node.attrs.sectionTitle || "" }),
+        "data-items": encodeJsonAttr(items),
       },
     ];
   },
@@ -410,4 +479,5 @@ export const extensions = [
   GifUploadNodeServer,
   ReferenceBlogsNodeServer,
   BentoGridNodeServer,
+  IllustrationListNodeServer,
 ];

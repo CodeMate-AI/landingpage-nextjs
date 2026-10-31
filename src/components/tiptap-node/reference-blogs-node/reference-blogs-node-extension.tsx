@@ -4,6 +4,7 @@ import React, { useState, useEffect, useMemo, useCallback } from "react"
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react"
 import { Node } from "@tiptap/core"
 import { adminFetch } from "@/lib/admin-api-client"
+import { encodeJsonAttr } from "@/lib/tiptap-json-attr"
 import { CurrentPostContext } from "@/components/tiptap-templates/simple/simple-editor"
 import "./reference-blogs-node.scss"
 
@@ -572,10 +573,25 @@ export const ReferenceBlogsNode = Node.create({
         tag: "div[data-type='reference-blogs']",
         getAttrs: (element) => {
           if (!(element instanceof HTMLElement)) return false
-          const heading = element.getAttribute("data-heading") || "Writing"
-          const showBottomLink = element.getAttribute("data-show-bottom") !== "false"
-          const bottomLinkText = element.getAttribute("data-bottom-text") || "Read the blog"
-          const bottomLinkUrl = element.getAttribute("data-bottom-url") || "/blog"
+          let settings: {
+            heading?: string
+            showBottomLink?: boolean
+            bottomLinkText?: string
+            bottomLinkUrl?: string
+          } = {}
+          const rawSettings = element.getAttribute("data-settings")
+          if (rawSettings) {
+            try {
+              settings = JSON.parse(rawSettings) || {}
+            } catch (err) {
+              console.error("Failed to parse data-settings in ReferenceBlogsNode:", err)
+              settings = {}
+            }
+          }
+          const heading = settings.heading || "Writing"
+          const showBottomLink = settings.showBottomLink !== false
+          const bottomLinkText = settings.bottomLinkText || "Read the blog"
+          const bottomLinkUrl = settings.bottomLinkUrl || "/blog"
 
           let blogs: ReferenceBlogItem[] = []
           const rawBlogs = element.getAttribute("data-blogs")
@@ -602,7 +618,7 @@ export const ReferenceBlogsNode = Node.create({
 
   renderHTML({ node }) {
     const heading = node.attrs.heading || "Writing"
-    const showBottomLink = String(node.attrs.showBottomLink ?? true)
+    const showBottomLink = node.attrs.showBottomLink !== false
     const bottomLinkText = node.attrs.bottomLinkText || "Read the blog"
     const bottomLinkUrl = node.attrs.bottomLinkUrl || "/blog"
     const blogs = Array.isArray(node.attrs.blogs) ? node.attrs.blogs : []
@@ -611,11 +627,8 @@ export const ReferenceBlogsNode = Node.create({
       "div",
       {
         "data-type": "reference-blogs",
-        "data-heading": heading,
-        "data-show-bottom": showBottomLink,
-        "data-bottom-text": bottomLinkText,
-        "data-bottom-url": bottomLinkUrl,
-        "data-blogs": JSON.stringify(blogs),
+        "data-settings": encodeJsonAttr({ heading, showBottomLink, bottomLinkText, bottomLinkUrl }),
+        "data-blogs": encodeJsonAttr(blogs),
       },
     ]
   },
