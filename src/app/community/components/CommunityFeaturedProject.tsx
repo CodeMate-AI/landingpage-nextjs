@@ -144,7 +144,7 @@ export default function CommunityFeaturedProject() {
         {/* Centered Action Buttons (Horizontal across Mobile, iPad, and Desktop) */}
         <div className="flex w-full flex-row items-center justify-center gap-2.5 pt-2 sm:gap-4 sm:pt-0">
           <motion.a
-            href="https://orbit-crm-og.codemate.build/"
+            href="https://crmly.codemate.build/"
             target="_blank"
             rel="noreferrer"
             whileHover={{ scale: 1.02 }}

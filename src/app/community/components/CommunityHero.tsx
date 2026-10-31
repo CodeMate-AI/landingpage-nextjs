@@ -11,7 +11,7 @@ const tickerProjects = [
     category: "Enterprise CRMs",
     highlight: "Autonomous Full-Stack Sales Pipeline & Client Workspace",
     tag: "Flagship Showcase",
-    demoUrl: "https://orbit-crm-og.codemate.build/",
+    demoUrl: "https://crmly.codemate.build/",
   },
   ...projects.map((p) => ({
     id: p.id,
