@@ -121,12 +121,7 @@ export default function SoftwareCarousel({ softwares }: { softwares: readonly Us
                 {software.linkLabel}
                 <VisitArrow />
               </a>
-            ) : (
-              <span className={`${linkClass} mt-auto`}>
-                {software.linkLabel}
-                <VisitArrow />
-              </span>
-            )}
+            ) : null}
           </article>
         ))}
       </div>

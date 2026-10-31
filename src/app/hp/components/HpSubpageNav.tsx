@@ -20,10 +20,12 @@ export default function HpSubpageNav() {
         </Link>
         <Link
           href="/hp"
-          className="inline-flex items-center gap-2 font-heading text-[15px] tracking-[0.4px] text-black transition-colors hover:text-accent-blue"
+          aria-label="Back to HP x CodeMate"
+          className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap font-heading text-[15px] tracking-[0.4px] text-black transition-colors hover:text-accent-blue"
         >
           <IconArrowLeft size={17} stroke={1.8} aria-hidden="true" />
-          Back to HP x CodeMate
+          <span className="sm:hidden">Back</span>
+          <span className="hidden sm:inline">Back to HP x CodeMate</span>
         </Link>
       </div>
     </nav>
