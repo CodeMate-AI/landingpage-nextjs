@@ -1,38 +1,58 @@
 import { NextResponse } from "next/server";
+import { TRIAL_FIELD_LIMITS, isValidTrialPhone } from "@/app/hp/config/trialForm";
+import { checkTrialRateLimit } from "@/lib/trialRateLimit";
 
 export async function POST(request: Request) {
   try {
-    const { organizationName, hpPartnerId, mobileNumber, city, website } = await request.json();
+    const payload: unknown = await request.json().catch(() => null);
+    if (!payload || typeof payload !== "object") {
+      return NextResponse.json({ error: "Invalid request." }, { status: 400 });
+    }
+    const { organizationName, hpPartnerId, mobileNumber, city, website } = payload as Record<string, unknown>;
 
     // Honeypot spam defense: if hidden website field is populated, silently accept and drop
     if (website && String(website).trim().length > 0) {
       return NextResponse.json({ success: true });
     }
 
-    if (!organizationName || !hpPartnerId || !mobileNumber || !city) {
+    const org = typeof organizationName === "string" ? organizationName.trim() : "";
+    const partnerId = typeof hpPartnerId === "string" ? hpPartnerId.trim() : "";
+    const phone = typeof mobileNumber === "string" ? mobileNumber.trim() : "";
+    const userCity = typeof city === "string" ? city.trim() : "";
+
+    if (!org || !partnerId || !phone || !userCity) {
       return NextResponse.json(
         { error: "All fields are required." },
         { status: 400 }
       );
     }
 
-    const org = String(organizationName).trim();
-    const partnerId = String(hpPartnerId).trim();
-    const phone = String(mobileNumber).trim();
-    const userCity = String(city).trim();
-
-    if (org.length > 120 || partnerId.length > 80 || userCity.length > 100 || phone.length > 25) {
+    if (
+      org.length > TRIAL_FIELD_LIMITS.organizationName ||
+      partnerId.length > TRIAL_FIELD_LIMITS.hpPartnerId ||
+      phone.length > TRIAL_FIELD_LIMITS.mobileNumber ||
+      userCity.length > TRIAL_FIELD_LIMITS.city
+    ) {
       return NextResponse.json(
         { error: "Input exceeds maximum character limits." },
         { status: 400 }
       );
     }
 
-    const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/;
-    if (!phoneRegex.test(phone)) {
+    if (!isValidTrialPhone(phone)) {
       return NextResponse.json(
         { error: "Invalid mobile number format." },
         { status: 400 }
+      );
+    }
+
+    const forwardedFor = request.headers.get("x-forwarded-for");
+    const ip = forwardedFor?.split(",")[0]?.trim() || request.headers.get("x-real-ip");
+    const { isLimited, retryAfter } = await checkTrialRateLimit(ip);
+    if (isLimited) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429, headers: { "Retry-After": retryAfter.toString() } }
       );
     }
 
