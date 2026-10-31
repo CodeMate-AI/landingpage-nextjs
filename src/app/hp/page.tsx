@@ -1,11 +1,15 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useCallback, useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent } from "react";
 import { hpDemos, hpResources, hpUsecases, hpContact } from "./config/hpData";
+import { TRIAL_FIELD_LIMITS, isValidTrialPhone } from "./config/trialForm";
 import HpFooter from "./components/HpFooter";
+import HpHeroImage from "./components/HpHeroImage";
+import { useFocusTrap } from "./hooks/useFocusTrap";
+import { trackHpEvent } from "./lib/analytics";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -20,39 +24,54 @@ export default function Home() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formError, setFormError] = useState("");
   const firstInputRef = useRef<HTMLInputElement>(null);
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const drawerCloseRef = useRef<HTMLButtonElement>(null);
+  const videoModalRef = useRef<HTMLDivElement>(null);
+  const trialModalRef = useRef<HTMLDivElement>(null);
 
-  // Close modals on Escape key press
+  useFocusTrap(drawerRef, isMenuOpen, drawerCloseRef);
+  useFocusTrap(videoModalRef, activeModalVideo !== null);
+  useFocusTrap(trialModalRef, isTrialModalOpen, firstInputRef);
+
+  // A request in flight keeps the trial modal open so its result is never lost
+  const closeTrialModal = useCallback(() => {
+    if (!isSubmitting) setIsTrialModalOpen(false);
+  }, [isSubmitting]);
+
+  // Close the menu and modals on Escape key press
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        setIsMenuOpen(false);
         setActiveModalVideo(null);
-        setIsTrialModalOpen(false);
+        closeTrialModal();
       }
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [closeTrialModal]);
 
-  // Lock body scroll whenever a modal is open
+  // The drawer only exists below the md breakpoint, so close it if the window grows past that
   useEffect(() => {
-    if (isTrialModalOpen || activeModalVideo) {
+    if (!isMenuOpen) return;
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const handleChange = (e: MediaQueryListEvent) => {
+      if (e.matches) setIsMenuOpen(false);
+    };
+    desktop.addEventListener("change", handleChange);
+    return () => desktop.removeEventListener("change", handleChange);
+  }, [isMenuOpen]);
+
+  // Lock body scroll whenever the menu or a modal is open
+  useEffect(() => {
+    if (isMenuOpen || isTrialModalOpen || activeModalVideo) {
       const originalOverflow = document.body.style.overflow;
       document.body.style.overflow = "hidden";
       return () => {
         document.body.style.overflow = originalOverflow;
       };
     }
-  }, [isTrialModalOpen, activeModalVideo]);
-
-  // Auto-focus first input when trial modal opens
-  useEffect(() => {
-    if (isTrialModalOpen) {
-      const timer = setTimeout(() => {
-        firstInputRef.current?.focus();
-      }, 50);
-      return () => clearTimeout(timer);
-    }
-  }, [isTrialModalOpen]);
+  }, [isMenuOpen, isTrialModalOpen, activeModalVideo]);
 
   const handleMobileNavClick = (e: MouseEvent<HTMLAnchorElement>, id: string) => {
     e.preventDefault();
@@ -75,6 +94,7 @@ export default function Home() {
     setIsSubmitting(false);
     setFormError("");
     setIsTrialModalOpen(true);
+    trackHpEvent({ name: "hp_trial_opened" });
   };
 
   const handleTrialSubmit = async (e: React.FormEvent) => {
@@ -92,8 +112,7 @@ export default function Home() {
       setFormError("Mobile Number is required.");
       return;
     }
-    const phoneRegex = /^\+?[0-9\s\-()]{7,15}$/;
-    if (!phoneRegex.test(mobileNumber.trim())) {
+    if (!isValidTrialPhone(mobileNumber.trim())) {
       setFormError("Please enter a valid mobile number.");
       return;
     }
@@ -120,8 +139,8 @@ export default function Home() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        setFormError(data.error || "Failed to submit request. Please try again.");
+        const data = await res.json().catch(() => null);
+        setFormError(data?.error || "Failed to submit request. Please try again.");
         setIsSubmitting(false);
         return;
       }
@@ -135,6 +154,7 @@ export default function Home() {
 
     setIsSubmitting(false);
     setIsSubmitted(true);
+    trackHpEvent({ name: "hp_trial_submitted" });
   };
 
   return (
@@ -168,7 +188,7 @@ export default function Home() {
                   href="#usecases"
                   className="font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
                 >
-                  Usecases
+                  Use Cases
                 </a>
               </li>
               <li>
@@ -200,9 +220,10 @@ export default function Home() {
             {/* Custom Mobile Menu Button */}
             <button
               onClick={() => setIsMenuOpen(true)}
-              className="relative w-8 h-6.5 flex flex-col justify-between p-1 bg-transparent border-0 cursor-pointer md:hidden focus:outline-none"
+              className="relative w-8 h-6.5 flex flex-col justify-between p-1 bg-transparent border-0 cursor-pointer md:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue"
               aria-label="Menu"
               aria-expanded={isMenuOpen}
+              aria-controls="hp-mobile-menu"
             >
               <span className="block w-6 h-0.5 bg-black" />
               <span className="block w-6 h-0.5 bg-black" />
@@ -221,8 +242,13 @@ export default function Home() {
 
         {/* Side Drawer Modal */}
         <div
-          className={`fixed top-0 right-0 h-full w-full max-w-97.5 bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-in-out md:hidden ${
-            isMenuOpen ? "translate-x-0" : "translate-x-full"
+          ref={drawerRef}
+          id="hp-mobile-menu"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Menu"
+          className={`fixed top-0 right-0 h-full w-full max-w-97.5 bg-white shadow-2xl z-50 transform transition-[transform,visibility] duration-300 ease-in-out md:hidden ${
+            isMenuOpen ? "translate-x-0 visible" : "translate-x-full invisible"
           }`}
         >
           {/* Drawer Header */}
@@ -240,8 +266,9 @@ export default function Home() {
             </Link>
             {/* Close button */}
             <button
+              ref={drawerCloseRef}
               onClick={() => setIsMenuOpen(false)}
-              className="w-8 h-8 flex items-center justify-center bg-transparent border-0 cursor-pointer focus:outline-none"
+              className="w-8 h-8 flex items-center justify-center bg-transparent border-0 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue"
               aria-label="Close menu"
             >
               <svg
@@ -274,7 +301,7 @@ export default function Home() {
                   onClick={(e) => handleMobileNavClick(e, "#usecases")}
                   className="block font-heading text-[18px] font-normal text-black hover:text-accent-blue transition-colors duration-200"
                 >
-                  Usecases
+                  Use Cases
                 </a>
               </li>
               <li>
@@ -309,6 +336,7 @@ export default function Home() {
         </div>
       </nav>
 
+      <main className="w-full">
       {/* Hero Section */}
       <section className="relative w-full bg-white border-b border-divider/60 overflow-hidden min-h-120 lg:h-130 flex items-center scroll-mt-18 md:scroll-mt-22" id="hero">
         {/* Full Bleed Right Slanted Image for Desktop (Official HP 20° Stripe Angle) */}
@@ -318,12 +346,11 @@ export default function Home() {
             clipPath: "polygon(190px 0, 100% 0, 100% 100%, 0 100%)",
           }}
         >
-          <Image
+          <HpHeroImage
             src={hpContact.heroImageUrl}
             alt="Professional using CodeMate on HP laptop"
-            fill
             sizes="55vw"
-            priority
+            media="(min-width: 1025px)"
             unoptimized
             className="object-cover object-center"
           />
@@ -351,12 +378,11 @@ export default function Home() {
 
           {/* Mobile/Tablet Image */}
           <div className="block lg:hidden w-full mt-8 relative h-65 sm:h-95 overflow-hidden rounded-xl border border-[#E2E8F0] shadow-sm">
-            <Image
+            <HpHeroImage
               src={hpContact.heroImageUrl}
               alt="Professional using CodeMate on HP laptop"
-              fill
-              sizes="(max-width: 1024px) 100vw, 680px"
-              priority
+              sizes="100vw"
+              media="(max-width: 1024.98px)"
               unoptimized
               className="object-cover"
             />
@@ -377,6 +403,7 @@ export default function Home() {
                 href={`/api/pdf?url=${encodeURIComponent(resource.url)}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackHpEvent({ name: "hp_resource_opened", resource: resource.name })}
                 className="flex items-center gap-4 p-3.5 rounded-xl bg-white border border-[#E2E8F0] shadow-sm hover:shadow-md hover:border-accent-blue/40 transition-all duration-200 group"
               >
                 {/* Blue Icon Box */}
@@ -390,7 +417,7 @@ export default function Home() {
                   <span className="font-heading font-normal text-[17px] leading-tight text-black group-hover:text-accent-blue transition-colors duration-200">
                     {resource.name}
                   </span>
-                  <span className="font-sans text-[12px] font-normal text-[#919191] mt-1.5 leading-none">
+                  <span className="font-sans text-[12px] font-normal text-[#6B7280] mt-1.5 leading-none">
                     {resource.tagline}
                   </span>
                 </div>
@@ -404,7 +431,7 @@ export default function Home() {
       <section className="bg-white py-5 sm:py-6 lg:py-8 w-full border-b border-divider/60 scroll-mt-18 md:scroll-mt-22" id="usecases">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 flex flex-col items-center gap-4 sm:gap-5">
           <h2 className="font-heading font-normal text-[32px] sm:text-[36px] lg:text-[38px] leading-tight text-black tracking-[1px] text-center m-0">
-            Usecases
+            Use Cases
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
             {hpUsecases.map((usecase, index) => (
@@ -470,7 +497,10 @@ export default function Home() {
                   <div>
                     <button
                       type="button"
-                      onClick={() => setActiveModalVideo({ id: demo.videoId, name: demo.name })}
+                      onClick={() => {
+                        setActiveModalVideo({ id: demo.videoId, name: demo.name });
+                        trackHpEvent({ name: "hp_demo_played", demo: demo.name });
+                      }}
                       className="inline-flex items-center justify-center bg-black hover:bg-zinc-800 text-white font-heading text-[15px] font-normal tracking-[0.5px] px-5 py-2.5 transition-colors cursor-pointer border-0"
                     >
                       Watch video
@@ -486,6 +516,7 @@ export default function Home() {
       {/* Video Modal Pop-up */}
       {activeModalVideo && (
         <div
+          ref={videoModalRef}
           role="dialog"
           aria-modal="true"
           aria-label={activeModalVideo.name}
@@ -529,7 +560,7 @@ export default function Home() {
           <h2 className="font-heading font-normal text-[32px] sm:text-[36px] lg:text-[38px] leading-tight text-black tracking-[1px] text-center m-0">
             Download CodeMate Toolbox
           </h2>
-          <div className="w-full bg-white border border-[#E2E8F0] shadow-sm rounded-2xl p-8 sm:p-12 min-h-75.5 flex flex-col justify-center items-center gap-6">
+          <div className="w-full bg-[#F5F9FF] border border-[#D6E4FA] rounded-2xl p-8 sm:p-10 flex flex-col justify-center items-center gap-6">
             <p className="font-sans text-base lg:text-[18px] leading-relaxed text-[#525252] max-w-2xl m-0 text-center">
               Get the official CodeMate Toolbox developer package to enable deep codebase intelligence, optimized performance, and offline-capable models on your HP Next Gen AI PC.
             </p>
@@ -589,21 +620,24 @@ export default function Home() {
           </div>
         </div>
       </section>
+      </main>
 
       <HpFooter />
 
       {isTrialModalOpen && (
         <div className="fixed inset-0 z-100 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300" onClick={() => setIsTrialModalOpen(false)} />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300" onClick={closeTrialModal} />
           <div
+            ref={trialModalRef}
             role="dialog"
             aria-modal="true"
-            aria-labelledby="trial-modal-title"
+            aria-labelledby={isSubmitted ? "trial-modal-success-title" : "trial-modal-title"}
             className="relative z-10 flex max-h-[90vh] w-full max-w-lg transform flex-col gap-6 overflow-hidden overflow-y-auto rounded-2xl border border-divider/60 bg-white p-6 shadow-2xl transition-all duration-200 animate-in fade-in zoom-in-95 sm:p-8"
           >
             <button
-              onClick={() => setIsTrialModalOpen(false)}
-              className="absolute right-4 top-4 border-0 bg-transparent text-menu-text transition-colors duration-200 hover:text-navy cursor-pointer"
+              onClick={closeTrialModal}
+              disabled={isSubmitting}
+              className="absolute right-4 top-4 border-0 bg-transparent text-menu-text transition-colors duration-200 hover:text-navy cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Close modal"
               type="button"
             >
@@ -647,6 +681,7 @@ export default function Home() {
                     id="org-name"
                     type="text"
                     required
+                    maxLength={TRIAL_FIELD_LIMITS.organizationName}
                     value={organizationName}
                     onChange={(e) => setOrganizationName(e.target.value)}
                     placeholder="e.g. Acme Corporation"
@@ -662,6 +697,7 @@ export default function Home() {
                     id="partner-id"
                     type="text"
                     required
+                    maxLength={TRIAL_FIELD_LIMITS.hpPartnerId}
                     value={hpPartnerId}
                     onChange={(e) => setHpPartnerId(e.target.value)}
                     placeholder="e.g. HP-12345"
@@ -677,6 +713,7 @@ export default function Home() {
                     id="mobile"
                     type="tel"
                     required
+                    maxLength={TRIAL_FIELD_LIMITS.mobileNumber}
                     value={mobileNumber}
                     onChange={(e) => setMobileNumber(e.target.value.replace(/[^0-9+\s\-()]/g, ""))}
                     placeholder="e.g. +91 98765 43210"
@@ -691,9 +728,10 @@ export default function Home() {
                     id="city"
                     type="text"
                     required
+                    maxLength={TRIAL_FIELD_LIMITS.city}
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    placeholder="e.g. San Francisco"
+                    placeholder="e.g. Bengaluru"
                     className="h-11 w-full rounded-lg border border-divider-light px-4 font-sans text-navy transition-colors duration-200 focus:border-accent-blue focus:outline-none focus:ring-1 focus:ring-accent-blue"
                   />
                 </div>
@@ -735,7 +773,7 @@ export default function Home() {
                     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
                 </div>
-                <h3 className="m-0 font-heading text-2xl tracking-[0.5px] text-navy sm:text-3xl">Thank you!</h3>
+                <h3 id="trial-modal-success-title" className="m-0 font-heading text-2xl tracking-[0.5px] text-navy sm:text-3xl">Thank you!</h3>
                 <p className="m-0 max-w-sm font-sans text-sm text-gray-text sm:text-base">
                   Your trial request has been submitted successfully. Our team will contact you shortly.
                 </p>

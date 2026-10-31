@@ -3,7 +3,7 @@ import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
 
 // Nav for pages under /hp, shared by /hp/promo and /hp/usecases/[slug].
-export default function HpSubpageNav() {
+export default function HpSubpageNav({ backHref = "/hp" }: { backHref?: string }) {
   return (
     <nav className="sticky top-0 z-20 w-full border-b border-divider/60 bg-white">
       <div className="mx-auto flex h-18 w-full max-w-340 items-center justify-between gap-5 px-6 sm:px-10">
@@ -19,7 +19,7 @@ export default function HpSubpageNav() {
           />
         </Link>
         <Link
-          href="/hp"
+          href={backHref}
           aria-label="Back to HP x CodeMate"
           className="inline-flex shrink-0 items-center gap-2 whitespace-nowrap font-heading text-[15px] tracking-[0.4px] text-black transition-colors hover:text-accent-blue"
         >
