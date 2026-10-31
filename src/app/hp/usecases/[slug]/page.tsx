@@ -2,11 +2,21 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import HpSubpageFooter from "../../components/HpSubpageFooter";
+import HpSubpageNav from "../../components/HpSubpageNav";
 import { hpUsecases } from "../../config/hpData";
+import { hpUsecaseContent } from "../../config/usecaseContent";
+import SoftwareCarousel from "./SoftwareCarousel";
 
 type UsecasePageProps = {
   params: Promise<{ slug: string }>;
 };
+
+// Sizes and spacing follow the Figma layer spec at 1440px and scale down below it.
+const PAGE_CONTAINER = "max-w-[1440px] mx-auto w-full px-6 sm:px-10 xl:px-[100px]";
+const SECTION_INNER = `${PAGE_CONTAINER} flex flex-col gap-6 sm:gap-8 lg:gap-10`;
+const SECTION_HEADING =
+  "font-heading font-medium text-[32px] sm:text-[36px] lg:text-[40px] leading-[1.025] tracking-[0.02em] text-[#0F1724] m-0";
 
 export function generateStaticParams() {
   return hpUsecases.map(({ slug }) => ({ slug }));
@@ -21,7 +31,8 @@ export async function generateMetadata({ params }: UsecasePageProps): Promise<Me
 
   return {
     title: `${usecase.name} Usecases | HP x CodeMate AI`,
-    // These pages only have a hero until their content is added.
+    description: hpUsecaseContent[slug]?.description,
+    // Hidden from search until the pages are ready to launch.
     robots: { index: false, follow: true },
   };
 }
@@ -31,46 +42,42 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
   const usecase = hpUsecases.find((item) => item.slug === slug);
   if (!usecase) notFound();
 
+  const content = hpUsecaseContent[slug];
+
   return (
     <div className="relative min-h-dvh bg-white flex flex-col items-start p-0">
-      <nav className="sticky top-0 z-50 w-full bg-white border-b border-divider/60 h-18 md:h-22 flex flex-col justify-center">
-        <div className="max-w-340 mx-auto w-full px-6 sm:px-10 h-17 md:h-20 flex items-center">
-          <Link href="/hp" className="shrink-0 flex items-center transition-opacity hover:opacity-90">
-            <Image
-              src="/HPxCodeMateAI_LOGO_NAV.png"
-              alt="HP x CodeMate AI"
-              width={210}
-              height={70}
-              priority
-              unoptimized
-              className="w-43 h-14.5 md:w-52.5 md:h-17.5 object-contain"
-            />
-          </Link>
-        </div>
-      </nav>
+      <HpSubpageNav />
 
-      <section className="relative w-full bg-[#EBF3FF] border-b border-divider/60 overflow-hidden min-h-120 lg:h-130 flex items-center">
+      {/* Hero: the image box is 964x800 at 1440px, runs 170px off the right edge, and is cropped by the 637px hero */}
+      <section className="relative w-full bg-[#E8F3FF] overflow-hidden lg:h-[637.39px] flex items-center">
         <div
-          className="hidden lg:block absolute top-0 right-0 h-full w-[54%] z-0 overflow-hidden pointer-events-none"
-          style={{ clipPath: "polygon(190px 0, 100% 0, 100% 100%, 0 100%)" }}
+          className="hidden lg:block absolute top-0 right-[-11.806%] w-[66.944%] aspect-[964/800] min-h-full z-0 pointer-events-none"
+          style={{ clipPath: "polygon(51.73% 0, 100% 0, 100% 100%, 0 100%)" }}
         >
-          <Image src={usecase.image} alt="" fill sizes="55vw" priority className="object-cover object-center" />
+          <Image src={usecase.image} alt="" fill sizes="67vw" priority className="object-cover object-center" />
         </div>
 
-        <div className="max-w-340 mx-auto w-full px-6 sm:px-10 py-10 lg:py-0 z-10 flex flex-col">
-          <div className="w-full lg:w-[48%] max-w-2xl flex flex-col items-start text-left gap-6">
+        <div className={`${PAGE_CONTAINER} py-10 lg:py-0 z-10 flex flex-col`}>
+          <div className="w-full lg:w-[42vw] xl:w-[45vw] min-[1440px]:w-[700px] flex flex-col items-start text-left gap-8 lg:gap-10 min-[1440px]:gap-[60px]">
             <Link
               href="/hp#usecases"
               aria-label="Back to usecases"
-              className="flex items-center justify-center w-10 h-10 -ml-2 text-black hover:text-accent-blue transition-colors duration-200"
+              className="flex items-center justify-center w-10 h-10 -m-2 text-black hover:text-accent-blue transition-colors duration-200"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 12H5m0 0 6-6m-6 6 6 6" />
+              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23 1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2z" />
               </svg>
             </Link>
-            <h1 className="font-heading font-normal text-[38px] leading-10.5 sm:text-[44px] sm:leading-12.5 lg:text-[48px] lg:leading-13 text-black m-0 tracking-[1px]">
-              Software Applications for {usecase.name}
-            </h1>
+            <div className="flex flex-col gap-5 min-[1440px]:gap-[27px] w-full">
+              <h1 className="font-heading font-normal text-[38px] leading-[42px] tracking-[1px] sm:text-[44px] sm:leading-[50px] sm:tracking-[2px] xl:text-[56px] xl:leading-[62px] min-[1440px]:text-[64px] min-[1440px]:leading-[70px] min-[1440px]:tracking-[3px] text-black m-0">
+                Software Applications for {usecase.name}
+              </h1>
+              {content && (
+                <p className="font-heading font-normal text-base leading-[26px] xl:text-[18px] xl:leading-7 tracking-[0.03em] text-[#575E6A] m-0">
+                  {content.description}
+                </p>
+              )}
+            </div>
           </div>
 
           <div className="block lg:hidden w-full mt-8 relative h-65 sm:h-95 overflow-hidden rounded-xl border border-[#E2E8F0] shadow-sm">
@@ -78,6 +85,71 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
           </div>
         </div>
       </section>
+
+      {content && (
+        <>
+          {/* Industry Specific Usecases */}
+          <section className="relative w-full bg-white py-10 sm:py-14 lg:py-20 overflow-hidden">
+            <div className={SECTION_INNER}>
+              <h2 className={SECTION_HEADING}>Industry Specific Usecases</h2>
+              <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 w-full">
+                {content.usecases.map((item, index) => (
+                  <article key={item.title} className="flex flex-col items-start gap-8 lg:gap-10 bg-white border border-[#E2E5EA] rounded-lg p-6">
+                    <span className="inline-flex items-center justify-center min-w-11 h-11 p-3 rounded bg-[#E8F3FF] font-heading font-medium text-[20px] leading-none tracking-[1.2px] uppercase text-[#005DE7]">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <div className="flex flex-col gap-3 w-full">
+                      <h3 className="font-heading font-medium text-[20px] leading-7 tracking-[0.02em] text-[#0F1724] m-0">
+                        {item.title}
+                      </h3>
+                      <p className="font-heading font-normal text-[14px] leading-[22px] tracking-[0.02em] text-[#5A6578] m-0">
+                        {item.description}
+                      </p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+            {/* Brand stripes fill the empty grid cells beside the seventh card */}
+            <div className="hidden lg:block absolute bottom-0 left-1/2 w-full max-w-[1440px] -translate-x-1/2 pointer-events-none">
+              <svg
+                className="absolute bottom-0 right-5 w-[28%] xl:right-[80.25px] xl:w-[365.75px] h-auto"
+                viewBox="1094 1629 365.75 288.5"
+                fill="#004CE0"
+                aria-hidden="true"
+              >
+                <path d="M1307.5 1629H1201L1094 1917.5H1205L1307.5 1629Z" />
+                <path d="M1297.5 1917.5H1408.5L1459.75 1773.25H1351L1297.5 1917.5Z" />
+              </svg>
+            </div>
+          </section>
+
+          {/* Benefits */}
+          <section className="w-full bg-[#F7F8FA] py-10 sm:py-14 lg:py-[60px]">
+            <div className={SECTION_INNER}>
+              <h2 className={SECTION_HEADING}>Benefits</h2>
+              <ul className="w-full max-w-[1200px] bg-white border border-[#E2E5EA] rounded-lg divide-y divide-[#E2E5EA] list-none m-0 p-0">
+                {content.benefits.map((benefit) => (
+                  <li key={benefit} className="flex items-start sm:items-center gap-4 sm:gap-5 px-5 sm:px-8 py-6">
+                    <span className="w-2 h-2 rounded-full bg-[#0096D6] shrink-0 mt-2 sm:mt-0" aria-hidden="true" />
+                    <span className="font-heading font-normal text-[16px] leading-[23px] tracking-[0.01em] text-[#0F1724]">{benefit}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          {/* Softwares Developed using CodeMate */}
+          <section className="w-full bg-white py-10 sm:py-14 lg:py-20 overflow-hidden">
+            <div className={SECTION_INNER}>
+              <h2 className={SECTION_HEADING}>Softwares Developed using CodeMate</h2>
+              <SoftwareCarousel softwares={content.softwares} />
+            </div>
+          </section>
+        </>
+      )}
+
+      <HpSubpageFooter />
     </div>
   );
 }
