@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import HpSubpageFooter from "../../components/HpSubpageFooter";
 import HpSubpageNav from "../../components/HpSubpageNav";
@@ -54,20 +53,13 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
           className="hidden lg:block absolute top-0 right-[-11.806%] w-[66.944%] aspect-[964/800] min-h-full z-0 pointer-events-none"
           style={{ clipPath: "polygon(51.73% 0, 100% 0, 100% 100%, 0 100%)" }}
         >
-          <Image src={usecase.image} alt="" fill sizes="67vw" priority className="object-cover object-center" />
+          <div className="absolute inset-x-0 top-0 h-[637.39px]">
+            <Image src={usecase.heroImage} alt="" fill sizes="67vw" priority className="object-cover object-center" />
+          </div>
         </div>
 
         <div className={`${PAGE_CONTAINER} py-10 lg:py-0 z-10 flex flex-col`}>
-          <div className="w-full lg:w-[42vw] xl:w-[45vw] min-[1440px]:w-[700px] flex flex-col items-start text-left gap-8 lg:gap-10 min-[1440px]:gap-[60px]">
-            <Link
-              href="/hp#usecases"
-              aria-label="Back to usecases"
-              className="flex items-center justify-center w-10 h-10 -m-2 text-black hover:text-accent-blue transition-colors duration-200"
-            >
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M19 11H7.14l3.63-4.36a1 1 0 1 0-1.54-1.28l-5 6a1.19 1.19 0 0 0-.09.15c0 .05 0 .08-.07.13A1 1 0 0 0 4 12a1 1 0 0 0 .07.36c0 .05 0 .08.07.13a1.19 1.19 0 0 0 .09.15l5 6A1 1 0 0 0 10 19a1 1 0 0 0 .64-.23 1 1 0 0 0 .13-1.41L7.14 13H19a1 1 0 0 0 0-2z" />
-              </svg>
-            </Link>
+          <div className="w-full lg:w-[42vw] xl:w-[45vw] min-[1440px]:w-[700px] flex flex-col items-start text-left">
             <div className="flex flex-col gap-5 min-[1440px]:gap-[27px] w-full">
               <h1 className="font-heading font-normal text-[38px] leading-[42px] tracking-[1px] sm:text-[44px] sm:leading-[50px] sm:tracking-[2px] xl:text-[56px] xl:leading-[62px] min-[1440px]:text-[64px] min-[1440px]:leading-[70px] min-[1440px]:tracking-[3px] text-black m-0">
                 Software Applications for {usecase.name}

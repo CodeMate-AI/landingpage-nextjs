@@ -19,6 +19,7 @@ export interface UsecaseItem {
   slug: string;
   name: string;
   image: string;
+  heroImage: string;
 }
 
 export const hpMetadata = {
@@ -117,12 +118,12 @@ export const hpResources: readonly ResourceItem[] = [
 ] as const;
 
 export const hpUsecases: readonly UsecaseItem[] = [
-  { slug: "manufacturing", name: "Manufacturing", image: "/hp/usecases/manufacturing.webp" },
-  { slug: "retail", name: "Retail", image: "/hp/usecases/retail.webp" },
-  { slug: "healthcare", name: "Healthcare", image: "/hp/usecases/healthcare.webp" },
-  { slug: "automotive-robotics", name: "Automotive & Robotics", image: "/hp/usecases/automotive-robotics.webp" },
-  { slug: "smart-cities", name: "Smart Cities", image: "/hp/usecases/smart-cities.webp" },
-  { slug: "energy-utilities", name: "Energy & Utilities", image: "/hp/usecases/energy-utilities.webp" },
+  { slug: "manufacturing", name: "Manufacturing", image: "/hp/usecases/manufacturing.webp", heroImage: "/hp/usecases/hero-manufacturing.webp" },
+  { slug: "retail", name: "Retail", image: "/hp/usecases/retail.webp", heroImage: "/hp/usecases/hero-retail.webp" },
+  { slug: "healthcare", name: "Healthcare", image: "/hp/usecases/healthcare.webp", heroImage: "/hp/usecases/hero-healthcare.webp" },
+  { slug: "automotive-robotics", name: "Automotive & Robotics", image: "/hp/usecases/automotive-robotics.webp", heroImage: "/hp/usecases/hero-automotive-robotics.webp" },
+  { slug: "smart-cities", name: "Smart Cities", image: "/hp/usecases/smart-cities.webp", heroImage: "/hp/usecases/hero-smart-cities.webp" },
+  { slug: "energy-utilities", name: "Energy & Utilities", image: "/hp/usecases/energy-utilities.webp", heroImage: "/hp/usecases/hero-energy-utilities.webp" },
 ] as const;
 
 export const hpContact = {
