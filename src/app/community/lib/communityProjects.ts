@@ -15,7 +15,22 @@ export interface Project {
   videoUrl?: string;
   docsPdfUrl?: string;
   demoUrl?: string;
+  githubUrl?: string;
 }
+
+export const orbitCrmProject = {
+  id: "0",
+  name: "Orbit CRM",
+  title: "Flagship Showcase",
+  description:
+    "Orbit CRM showcases CodeMate AI in action, with BUILD and CORA generating, reviewing, and refining code from idea to production.",
+  category: "Enterprise CRMs" as const,
+  demoUrl: "https://crmly.codemate.build/",
+  docsPdfUrl: "https://backend.codemate.ai/uploaded/images/460b768e-f805-41ef-862b-22f19f38431c",
+  videoUrl: "https://backend.codemate.ai/uploaded/images/c2ca939c-5f2a-4281-b8a9-fddcd67f3b64",
+  previewImage: "https://backend.codemate.ai/uploaded/images/cdc78778-4f75-409d-b3d1-2c6486c9d810",
+  githubUrl: "https://github.com/CodeMate-AI/Orbit-CRM/tree/refactor/mongo-backend",
+};
 
 export const projects: Project[] = [
   {
@@ -28,6 +43,7 @@ export const projects: Project[] = [
     videoUrl: "https://backend.codemate.ai/uploaded/images/cdd93f97-7801-48a8-8d74-8d5c509bb512",
     docsPdfUrl: "https://backend.codemate.ai/uploaded/images/61e25584-8364-43ee-b0c8-37cbc754053e",
     demoUrl: "https://supporthub.codemate.build/",
+    githubUrl: "https://github.com/CodeMate-AI/SupportHub",
     previewImage: "https://backend.codemate.ai/uploaded/images/722034c2-9c5a-439a-9804-f5c11bb51218",
   },
   {
@@ -40,6 +56,7 @@ export const projects: Project[] = [
     videoUrl: "https://backend.codemate.ai/uploaded/images/b826c0be-828f-4d4a-a48b-dcd38163f9d0",
     docsPdfUrl: "https://backend.codemate.ai/uploaded/images/82462e5b-dcc6-4da9-ba60-6bf9935b91ea",
     demoUrl: "https://smartbook.codemate.build/",
+    githubUrl: "https://github.com/CodeMate-AI/SmartBook",
     previewImage: "https://backend.codemate.ai/uploaded/images/b74fd5ee-08a8-4997-a46e-f5259815b46a",
   },
   {
@@ -52,6 +69,7 @@ export const projects: Project[] = [
     videoUrl: "https://backend.codemate.ai/uploaded/images/ac2337b2-e7e3-41e5-bf6d-7d0ab6983daf",
     docsPdfUrl: "https://backend.codemate.ai/uploaded/images/4ddbfd07-8d89-46e1-b7e4-2f289768baaa",
     demoUrl: "https://hrms-community.codemate.build/",
+    githubUrl: "https://github.com/CodeMate-AI/hrms",
     previewImage: "https://backend.codemate.ai/uploaded/images/5a42d01f-d107-4ce7-ae8d-7ee99a891b54",
   },
   {
@@ -64,6 +82,7 @@ export const projects: Project[] = [
     videoUrl: "https://backend.codemate.ai/uploaded/images/d3a4520c-1b5e-4a5e-91bb-56b82e04bc7e",
     docsPdfUrl: "https://backend.codemate.ai/uploaded/images/276c5d47-cc29-49e4-b2bf-cf75e7c17b27",
     demoUrl: "https://erpsphere.codemate.build/",
+    githubUrl: "https://github.com/CodeMate-AI/erp",
     previewImage: "https://backend.codemate.ai/uploaded/images/9419ba1d-048b-4926-998e-41ae596a65a0",
   },
   {
@@ -76,6 +95,7 @@ export const projects: Project[] = [
     videoUrl: "https://backend.codemate.ai/uploaded/images/495650d8-f22a-477c-922c-d595a3fd1330",
     docsPdfUrl: "https://backend.codemate.ai/uploaded/images/094f1e54-5f8c-4eec-8af2-c8cdcf8ea635",
     demoUrl: "https://growthcloud.codemate.build/",
+    githubUrl: "https://github.com/CodeMate-AI/marketing-automation",
     previewImage: "https://backend.codemate.ai/uploaded/images/c92f7c39-3dd5-41b4-b8a0-f90831437c24",
   },
   {
@@ -88,11 +108,12 @@ export const projects: Project[] = [
     videoUrl: "https://backend.codemate.ai/uploaded/images/ab5fe989-7041-4d71-abe6-53bb36547c29",
     docsPdfUrl: "https://backend.codemate.ai/uploaded/images/7a19d67c-0717-40c0-aa34-9944e429dd3a",
     demoUrl: "https://signflow.codemate.build/",
+    githubUrl: "https://github.com/CodeMate-AI/Sign-flow",
     previewImage: "https://backend.codemate.ai/uploaded/images/f5069488-7c43-4826-be37-dd7fe20b3250",
   },
   {
     id: "7",
-    name: "CodeMate Meet",
+    name: "Connect Meet",
     title: "Video Conferencing Platform",
     description:
       "A real-time video conferencing web application built with WebRTC, supporting HD group calls, screen sharing, and collaborative chat.",
@@ -112,6 +133,7 @@ export const projects: Project[] = [
     videoUrl: "https://backend.codemate.ai/uploaded/images/2b36dbef-4d90-448f-9750-51ae3066aab2",
     docsPdfUrl: "https://backend.codemate.ai/uploaded/images/0937cc07-e84f-4a7a-829d-135ddadcfc93",
     demoUrl: "https://ex-employee-verification-portal.codemate.build/",
+    githubUrl: "https://github.com/CodeMate-AI/ex-employee-verification-portal",
     previewImage: "https://backend.codemate.ai/uploaded/images/cae48d95-a1b6-43a7-92d5-e68bb08e04f0",
   },
 ];
