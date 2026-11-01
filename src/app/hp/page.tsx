@@ -10,6 +10,7 @@ import HpFooter from "./components/HpFooter";
 import HpHeroImage from "./components/HpHeroImage";
 import { useFocusTrap } from "./hooks/useFocusTrap";
 import { trackHpEvent } from "./lib/analytics";
+import { buildPdfProxyUrl } from "@/lib/pdfProxy";
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -400,7 +401,7 @@ export default function Home() {
             {hpResources.map((resource) => (
               <a
                 key={resource.name}
-                href={`/api/pdf?url=${encodeURIComponent(resource.url)}`}
+                href={buildPdfProxyUrl(resource.url, resource.name) ?? resource.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => trackHpEvent({ name: "hp_resource_opened", resource: resource.name })}
