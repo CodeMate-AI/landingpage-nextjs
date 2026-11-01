@@ -66,3 +66,4 @@ public/_next-video
 skills-lock.json
 /agent/
 /.agents/
+.playwright-mcp
