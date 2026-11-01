@@ -3,9 +3,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from 'framer-motion';
+import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useScroll } from 'framer-motion';
 import Lenis from 'lenis';
-import Image from 'next/image';
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
@@ -26,13 +25,16 @@ function Page() {
   const footerRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
-  const [lastScroll, setLastScroll] = useState(0);
+  // A ref, not state: this changes on every scrolled frame and must not re-render the page
+  const lastScrollRef = useRef(0);
   const [isArrowV, setIsArrowV] = useState(false);
   const [isArrow, setIsArrow] = useState(false);
 
   // Lenis smooth scroll initialization
   useEffect(() => {
-    const lenis = new Lenis({ duration: 2 });
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const lenis = new Lenis({ duration: 1.1 });
     (window as any).__lenis = lenis;
     let rafId: number;
 
@@ -60,8 +62,8 @@ function Page() {
     setIsArrowV(latest >= 0.05);
 
     // 2. Scroll direction tracking (arrow orientation)
-    setIsArrow(latest >= lastScroll);
-    setLastScroll(latest);
+    setIsArrow(latest >= lastScrollRef.current);
+    lastScrollRef.current = latest;
   });
 
   const handleArrow = () => {
@@ -73,9 +75,10 @@ function Page() {
   };
 
   return (
+    <MotionConfig reducedMotion="user">
     <div
       style={{
-        cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 16 16, auto`,
+        cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 2 1, auto`,
       }}
       ref={mainRef}
       className="relative bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]"
@@ -145,19 +148,14 @@ function Page() {
             ref={heroRef}
             className="relative h-auto lg:h-screen lg:max-h-[740px] lg:min-h-[580px] w-full z-50 overflow-hidden cursor-default flex flex-col justify-start pt-14 sm:pt-16 lg:pt-10 xl:pt-12 pb-8 lg:pb-10"
           >
-            <motion.div className="absolute inset-0 opacity-5 z-0 pointer-events-none">
-              <Image
-                src="/ui/bg-noise.png"
-                alt=""
-                fill
-                priority
-                className="object-cover"
-                aria-hidden="true"
-              />
-            </motion.div>
+            {/* Same grain and scale as the full image (one tile is a quarter of its 1024px width) */}
+            <div
+              aria-hidden="true"
+              className="absolute inset-0 opacity-5 z-0 pointer-events-none bg-[url('/ui/bg-noise-tile.png')] bg-repeat bg-[length:25%_auto]"
+            />
 
             <div className="relative z-50 w-full px-5 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start">
-              <h1 className="text-[clamp(1.65rem,6.8vw,2.25rem)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5">
+              <h1 className="text-[length:min(clamp(1.65rem,6.8vw,2.25rem),7.3vw)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5">
                 <span className="xxlHero z-50 block whitespace-nowrap">
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
@@ -311,6 +309,7 @@ function Page() {
         <Footer />
       </div>
     </div>
+    </MotionConfig>
   );
 }
 

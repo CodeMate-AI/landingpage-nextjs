@@ -155,10 +155,10 @@ function Footer() {
           </div>
 
           {/* Right Columns (Spans 7 cols - grid split into 3 sub-columns) */}
-          <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-10 pt-4 md:pt-12">
+          <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-6 lg:gap-10 pt-4 md:pt-12">
             {/* Community */}
             <div>
-              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">COMMUNITY</h4>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base whitespace-nowrap">COMMUNITY</h4>
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><a href="https://www.instagram.com/codemateai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Instagram</a></li>
                 <li><a href="https://www.linkedin.com/company/codemateai/" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Linkedin</a></li>
@@ -169,7 +169,7 @@ function Footer() {
 
             {/* Others */}
             <div>
-              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">OTHERS</h4>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base whitespace-nowrap">OTHERS</h4>
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><Link href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Contact Us</Link></li>
                 <li><a href="https://docs.codemate.ai" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Docs</a></li>
@@ -180,7 +180,7 @@ function Footer() {
 
             {/* Legal */}
             <div>
-              <h4 className="font-semibold mb-4 text-white text-sm md:text-base">LEGAL</h4>
+              <h4 className="font-semibold mb-4 text-white text-sm md:text-base whitespace-nowrap">LEGAL</h4>
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
                 <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Terms of Service</a></li>

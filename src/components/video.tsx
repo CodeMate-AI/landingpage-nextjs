@@ -40,11 +40,13 @@ export default function VideoEmbed({
   videoId = DEFAULT_VIDEO_ID,
   shouldPlay = false,
 }: VideoEmbedProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayerInstance | null>(null);
   const shouldPlayRef = useRef(shouldPlay);
   const isWarmedUpRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [isNearViewport, setIsNearViewport] = useState(false);
 
   // Synchronize shouldPlay state with player playback
   useEffect(() => {
@@ -58,8 +60,28 @@ export default function VideoEmbed({
     }
   }, [shouldPlay]);
 
-  // Preload YouTube API and initialize player immediately on component mount
+  // Hold back the YouTube player's scripts until the section is one screen away
   useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsNearViewport(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '100% 0px' }
+    );
+    observer.observe(wrapper);
+    return () => observer.disconnect();
+  }, []);
+
+  // Load the YouTube API and initialize the player once the section is close
+  useEffect(() => {
+    if (!isNearViewport) return;
+
     let isMounted = true;
 
     const disableCaptions = (target: {
@@ -100,6 +122,8 @@ export default function VideoEmbed({
             playerRef.current = event.target;
             event.target.mute();
             disableCaptions(event.target);
+            // The player has no visible controls, so keyboard focus must not enter it
+            wrapperRef.current?.querySelector('iframe')?.setAttribute('tabindex', '-1');
 
             // If the user already scrolled into position, play immediately; otherwise warm up buffer
             if (shouldPlayRef.current) {
@@ -159,7 +183,6 @@ export default function VideoEmbed({
       };
     };
 
-    // Eagerly initialize on mount for zero-latency readiness
     initYouTube();
 
     return () => {
@@ -167,12 +190,12 @@ export default function VideoEmbed({
       playerRef.current?.destroy();
       playerRef.current = null;
     };
-  }, [videoId]);
+  }, [videoId, isNearViewport]);
 
   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-black pointer-events-none">
+    <div ref={wrapperRef} className="relative h-full w-full overflow-hidden bg-black pointer-events-none">
       {/* Preloaded YouTube player iframe */}
       <div
         ref={containerRef}
@@ -189,7 +212,6 @@ export default function VideoEmbed({
           src={thumbnailUrl}
           alt="CodeMate Video Preview"
           fill
-          priority
           sizes="(max-width: 1024px) 100vw, 960px"
           className="object-cover"
         />

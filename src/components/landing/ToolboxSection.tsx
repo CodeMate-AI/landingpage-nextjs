@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { FaGithub, FaBitbucket, FaGitlab } from 'react-icons/fa6';
 import { VscAzureDevops } from 'react-icons/vsc';
+import { scrollCarouselByCard } from '@/lib/carousel';
 import { TOOLBOX_DATA, ToolboxProduct } from '@/data/landingData';
 
 // Normalized optical scales for toolbox card logos to ensure uniform visual mass
@@ -53,20 +54,7 @@ export default function ToolboxSection() {
   }, []);
 
   const handleScroll = (direction: 'left' | 'right') => {
-    if (!scrollContainerRef.current) return;
-    const el = scrollContainerRef.current;
-    const isMobile = el.clientWidth < 640;
-    const isTablet = el.clientWidth >= 640 && el.clientWidth < 1024;
-    const isLaptop = el.clientWidth >= 1024 && el.clientWidth < 1280;
-    const cardStep = isMobile
-      ? el.clientWidth + 16
-      : isTablet
-      ? (el.clientWidth - 20) / 2 + 20
-      : isLaptop
-      ? (el.clientWidth - 32) / 3 + 16
-      : (el.clientWidth - 48) / 4 + 12;
-    const scrollAmount = direction === 'left' ? -cardStep : cardStep;
-    el.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    if (scrollContainerRef.current) scrollCarouselByCard(scrollContainerRef.current, direction);
   };
 
   return (
@@ -151,8 +139,11 @@ export default function ToolboxSection() {
                 href={product.link}
                 target={product.isExternal ? '_blank' : undefined}
                 rel={product.isExternal ? 'noopener noreferrer' : undefined}
-                onMouseEnter={() => setHoveredIndex(idx)}
-                onClick={() => setHoveredIndex(idx)}
+                data-carousel-card
+                // Mouse only: a touch tap must not leave the card stuck in its hover state
+                onPointerEnter={(event) => {
+                  if (event.pointerType === 'mouse') setHoveredIndex(idx);
+                }}
                 animate={{
                   backgroundColor: isHovered
                     ? 'rgba(255, 255, 255, 0.08)'
@@ -162,7 +153,7 @@ export default function ToolboxSection() {
                 style={{
                   padding: '24px 0px 24px 20px',
                 }}
-                className={`group relative flex h-[450px] sm:h-[510px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] md:w-[calc((100%-20px)/2)] lg:w-[calc((100%-32px)/3)] xl:w-[calc((100%-36px)/4)] 2xl:w-[calc((100%-48px)/5)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border transition-colors duration-300 snap-start ${
+                className={`group relative flex h-[450px] sm:h-[510px] lg:h-[540px] w-full min-w-full sm:min-w-0 sm:w-[calc((100%-16px)/2)] md:w-[calc((100%-20px)/2)] lg:w-[calc((100%-40px)/3)] xl:w-[calc((100%-36px)/4)] 2xl:w-[calc((100%-48px)/5)] shrink-0 flex-col justify-between overflow-hidden rounded-[8px] border [transition:border-color_300ms,box-shadow_300ms] snap-start ${
                   isHovered
                     ? 'border-white/15 shadow-[0_12px_40px_rgba(0,191,255,0.08)]'
                     : 'border-white/5 shadow-none'
@@ -307,7 +298,7 @@ export default function ToolboxSection() {
               type="button"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] bg-white font-semibold text-black transition-all duration-200 hover:bg-neutral-200 cursor-pointer"
+              className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] bg-white font-semibold text-black transition-colors duration-200 hover:bg-neutral-200 cursor-pointer"
               style={{
                 fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)',
                 fontSize: '14px',

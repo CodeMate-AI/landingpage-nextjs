@@ -14,8 +14,25 @@ body {
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.gradients-container[data-paused="true"] > * {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradients-container > *,
+  .animate-marquee {
+    animation: none !important;
+  }
+
+  .scroll-smooth {
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer base {

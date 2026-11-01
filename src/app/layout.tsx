@@ -120,11 +120,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        <link rel="preconnect" href="https://www.youtube.com" />
-        <link rel="preconnect" href="https://i.ytimg.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
+        {/* Scroll reveals start hidden through inline styles, which need JavaScript to clear */}
+        <noscript>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: '[style*="opacity:0"]{opacity:1!important;transform:none!important;filter:none!important}',
+            }}
+          />
+        </noscript>
       </head>
       <body
         className={`${montserrat.variable} ${inter.variable} ${montserrat.className} antialiased bg-zinc-950 text-white dark`}

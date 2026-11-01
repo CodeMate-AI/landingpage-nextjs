@@ -82,7 +82,7 @@ export default function EnterpriseArchitectureSection() {
                   <h4 className="text-white font-semibold text-base sm:text-lg lg:text-[15px] xl:text-[17px] 2xl:text-[19px] lg:leading-[22px] xl:leading-[24px] 2xl:leading-[26px] tracking-tight group-hover:text-white transition-colors whitespace-nowrap">
                     {item.title}
                   </h4>
-                  <p className="text-white/70 font-normal text-xs sm:text-sm lg:text-[11px] xl:text-[11.5px] 2xl:text-[13px] lg:leading-[16px] xl:leading-[18px] 2xl:leading-[20px] tracking-tight whitespace-nowrap group-hover:text-white/85 transition-colors">
+                  <p className="text-white/70 font-normal text-xs sm:text-sm lg:text-[11px] xl:text-[11.5px] 2xl:text-[13px] lg:leading-[16px] xl:leading-[18px] 2xl:leading-[20px] tracking-tight lg:whitespace-nowrap group-hover:text-white/85 transition-colors">
                     {item.subtitle}
                   </p>
                 </div>

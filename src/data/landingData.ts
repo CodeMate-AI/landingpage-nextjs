@@ -512,9 +512,9 @@ export const SOCIAL_PROOF_DATA: SocialProofSectionData = {
       className: 'object-contain w-[65vw] lg:w-[20vw] mb-[2vw] opacity-100 brightness-150 lg:mt-9 shrink-0',
     },
     {
-      id: 'paytm',
+      id: 'paypal',
       name: 'PayPal',
-      logo: '/logos/partners/paytm.svg',
+      logo: '/logos/partners/paypal.svg',
       className: 'object-contain w-[40vw] lg:w-[18vw] opacity-100 brightness-150 shrink-0',
     },
     {
