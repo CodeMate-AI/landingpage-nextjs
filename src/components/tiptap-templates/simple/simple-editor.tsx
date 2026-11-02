@@ -218,6 +218,7 @@ import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 import { ImageUploadIcon } from "@/components/tiptap-icons/image-upload-icon"
 import { VideoUploadIcon } from "@/components/tiptap-icons/video-upload-icon"
 import { GifUploadIcon } from "@/components/tiptap-icons/gif-upload-icon"
+import { TableIcon } from "@/components/tiptap-icons/table-icon"
 
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
@@ -332,7 +333,8 @@ const MainToolbarContent = ({
           onMouseDown={(e) => e.preventDefault()}
           title="Insert Table"
         >
-          Table
+          <TableIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">Table</span>
         </Button>
         <Button
           type="button"
