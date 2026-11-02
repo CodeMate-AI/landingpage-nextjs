@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
+import { buildPdfProxyUrl } from "@/lib/pdfProxy";
 
 interface CommunityPdfModalProps {
   isOpen: boolean;
@@ -22,7 +23,7 @@ export default function CommunityPdfModal({
   const [isFullscreen, setIsFullscreen] = useState(false);
   const resolvedPdfUrl = pdfUrl
     ? pdfUrl.startsWith("http")
-      ? `/api/pdf?url=${encodeURIComponent(pdfUrl)}`
+      ? (buildPdfProxyUrl(pdfUrl, `${title} Documentation`) ?? "")
       : pdfUrl
     : "";
 
