@@ -250,6 +250,7 @@ const MainToolbarContent = ({
   onBaseFontChange?: (fontKey: string) => void
 }) => {
   const { editor } = useTiptapEditor()
+  const isInsideTable = Boolean(editor?.isActive("table"))
 
   return (
     <>
@@ -330,9 +331,15 @@ const MainToolbarContent = ({
         <Button
           type="button"
           variant="ghost"
-          onClick={() => editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+          }}
           onMouseDown={(e) => e.preventDefault()}
-          title="Insert Table"
+          title={isInsideTable ? "Table already active (nested tables disabled)" : "Insert Table"}
+          tooltip={isInsideTable ? "Table already active" : "Insert Table"}
         >
           <TableIcon className="tiptap-button-icon" />
           <span className="tiptap-button-text">Table</span>
