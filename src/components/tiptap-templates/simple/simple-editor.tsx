@@ -307,12 +307,23 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton text="IMG" icon={ImageUploadIcon} />
+        <ImageUploadButton
+          text="IMG"
+          icon={ImageUploadIcon}
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+        />
         <Button
           type="button"
           variant="ghost"
-          onClick={onVideoClick}
-          tooltip="Add video"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            onVideoClick()
+          }}
+          tooltip={isInsideTable ? "Cannot insert video inside table" : "Add video"}
+          title={isInsideTable ? "Cannot insert video inside table" : "Add video"}
           onMouseDown={(e) => e.preventDefault()}
         >
           <VideoUploadIcon className="tiptap-button-icon" />
@@ -321,8 +332,14 @@ const MainToolbarContent = ({
         <Button
           type="button"
           variant="ghost"
-          onClick={() => editor?.chain().focus().insertContent({ type: "gifUpload" }).run()}
-          tooltip="Add GIF"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            editor?.chain().focus().insertContent({ type: "gifUpload" }).run()
+          }}
+          tooltip={isInsideTable ? "Cannot insert GIF inside table" : "Add GIF"}
+          title={isInsideTable ? "Cannot insert GIF inside table" : "Add GIF"}
           onMouseDown={(e) => e.preventDefault()}
         >
           <GifUploadIcon className="tiptap-button-icon" />
@@ -347,7 +364,10 @@ const MainToolbarContent = ({
         <Button
           type="button"
           variant="ghost"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
           onClick={() => {
+            if (isInsideTable) return
             editor?.chain().focus().insertContent({
               type: "referenceBlogs",
               attrs: {
@@ -360,7 +380,8 @@ const MainToolbarContent = ({
             }).run()
           }}
           onMouseDown={(e) => e.preventDefault()}
-          title="Add Reference Blogs"
+          title={isInsideTable ? "Cannot insert reference blogs inside table" : "Add Reference Blogs"}
+          tooltip={isInsideTable ? "Cannot insert reference blogs inside table" : "Add Reference Blogs"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -377,7 +398,10 @@ const MainToolbarContent = ({
         <Button
           type="button"
           variant="ghost"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
           onClick={() => {
+            if (isInsideTable) return
             editor?.chain().focus().insertContent({
               type: "bentoGrid",
               attrs: {
@@ -407,7 +431,8 @@ const MainToolbarContent = ({
             }).run()
           }}
           onMouseDown={(e) => e.preventDefault()}
-          title="Insert Bento Grid"
+          title={isInsideTable ? "Cannot insert Bento Grid inside table" : "Insert Bento Grid"}
+          tooltip={isInsideTable ? "Cannot insert Bento Grid inside table" : "Insert Bento Grid"}
         >
           <BentoGridIcon className="tiptap-button-icon" />
           <span className="tiptap-button-text">Bento Grid</span>
@@ -415,7 +440,10 @@ const MainToolbarContent = ({
         <Button
           type="button"
           variant="ghost"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
           onClick={() => {
+            if (isInsideTable) return
             editor?.chain().focus().insertContent({
               type: "illustrationList",
               attrs: {
@@ -424,7 +452,8 @@ const MainToolbarContent = ({
             }).run()
           }}
           onMouseDown={(e) => e.preventDefault()}
-          title="Insert Illustration List"
+          title={isInsideTable ? "Cannot insert Illustration List inside table" : "Insert Illustration List"}
+          tooltip={isInsideTable ? "Cannot insert Illustration List inside table" : "Insert Illustration List"}
         >
           <IllustrationListIcon className="tiptap-button-icon" />
           <span className="tiptap-button-text">List</span>
@@ -481,6 +510,16 @@ interface SimpleEditorProps {
   onBaseFontChange?: (fontKey: string) => void
 }
 
+const isPosInsideTable = ($pos: any) => {
+  for (let d = $pos.depth; d > 0; d--) {
+    const name = $pos.node(d).type.name
+    if (name === "table" || name === "tableCell" || name === "tableHeader") {
+      return true
+    }
+  }
+  return false
+}
+
 export function SimpleEditor({
   content,
   onChange,
@@ -515,6 +554,15 @@ export function SimpleEditor({
 
         const file = event.dataTransfer?.files?.[0]
         if (!file) return false
+
+        const dropCoords = view.posAtCoords({ left: event.clientX, top: event.clientY })
+        const dropTargetPos = dropCoords ? dropCoords.pos : view.state.selection.from
+        if (isPosInsideTable(view.state.doc.resolve(dropTargetPos))) {
+          if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+            alert("Media cannot be dropped inside table cells.")
+            return true
+          }
+        }
 
         if (file.type.startsWith("image/")) {
           const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif")
@@ -559,6 +607,13 @@ export function SimpleEditor({
       },
       handlePaste: (view, event, slice) => {
         const file = event.clipboardData?.files?.[0]
+        if (file && (file.type.startsWith("image/") || file.type.startsWith("video/"))) {
+          if (isPosInsideTable(view.state.selection.$from)) {
+            alert("Media cannot be pasted inside table cells.")
+            return true
+          }
+        }
+
         if (file && file.type.startsWith("image/")) {
           const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif")
           if (isGif) {
@@ -688,7 +743,10 @@ export function SimpleEditor({
                 onBaseFontChange={onBaseFontChange}
                 onHighlighterClick={() => setMobileView("highlighter")}
                 onLinkClick={() => setMobileView("link")}
-                onVideoClick={() => editor?.chain().focus().insertContent({ type: "videoUpload" }).run()}
+                onVideoClick={() => {
+                if (editor?.isActive("table")) return
+                editor?.chain().focus().insertContent({ type: "videoUpload" }).run()
+              }}
               />
             ) : (
               <MobileToolbarContent

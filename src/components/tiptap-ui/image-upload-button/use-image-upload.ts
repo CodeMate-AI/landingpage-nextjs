@@ -41,6 +41,8 @@ export interface UseImageUploadConfig {
 export function canInsertImage(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
   if (!isExtensionAvailable(editor, "imageUpload")) return false
+  // Disable image upload when cursor is inside a table
+  if (editor.isActive("table")) return false
 
   return editor.can().insertContent({ type: "imageUpload" })
 }
@@ -58,6 +60,8 @@ export function isImageActive(editor: Editor | null): boolean {
  */
 export function insertImage(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
+  // Prevent inserting images inside tables
+  if (editor.isActive("table")) return false
   if (!canInsertImage(editor)) return false
 
   try {
@@ -190,7 +194,7 @@ export function useImageUpload(config?: UseImageUploadConfig) {
     isActive,
     handleImage,
     canInsert,
-    label: "Add image",
+    label: editor?.isActive("table") ? "Cannot insert image inside table" : "Add image",
     shortcutKeys: IMAGE_UPLOAD_SHORTCUT_KEY,
     Icon: ImageUploadIcon,
   }
