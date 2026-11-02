@@ -49,7 +49,7 @@ export default {
         '100': '100',
       },
       fontFamily: {
-        heading: ['"Forma DJR Display"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
+        heading: ['var(--font-forma-djr)', '"Forma DJR Display"', '"Helvetica Neue"', 'Helvetica', 'Arial', 'sans-serif'],
       },
       transformStyle: {
         'preserve-3d': 'preserve-3d',

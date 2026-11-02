@@ -1,21 +1,19 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import {
-  IconArrowLeft,
   IconArrowRight,
   IconCheck,
   IconCircleCheck,
   IconKey,
   IconLoader2,
   IconLock,
-  IconMail,
-  IconPhone,
   IconShieldCheck,
 } from "@tabler/icons-react";
+import HpSubpageFooter from "../components/HpSubpageFooter";
+import HpSubpageNav from "../components/HpSubpageNav";
 
 type RedeemState = "idle" | "submitting" | "complete";
 
@@ -132,28 +130,7 @@ function PromotionPageContent() {
 
   return (
     <div className="custom-cursor flex min-h-dvh flex-col bg-white text-black">
-      <nav className="sticky top-0 z-20 w-full border-b border-divider/60 bg-white">
-        <div className="mx-auto flex h-18 w-full max-w-340 items-center justify-between gap-5 px-6 sm:px-10">
-          <Link href="/hp" className="flex shrink-0 items-center transition-opacity hover:opacity-80" aria-label="Back to HP x CodeMate AI">
-            <Image
-              src="/HPxCodeMateAI_LOGO_NAV.png"
-              alt="HP x CodeMate AI"
-              width={210}
-              height={70}
-              priority
-              unoptimized
-              className="h-14.5 w-43 object-contain sm:h-17.5 sm:w-52.5"
-            />
-          </Link>
-          <Link
-            href="/hp"
-            className="inline-flex items-center gap-2 font-heading text-[15px] tracking-[0.4px] text-black transition-colors hover:text-accent-blue"
-          >
-            <IconArrowLeft size={17} stroke={1.8} aria-hidden="true" />
-            Back to HP x CodeMate
-          </Link>
-        </div>
-      </nav>
+      <HpSubpageNav />
 
       <main className="relative flex flex-1 overflow-hidden border-b border-divider/60 bg-[#EBF3FF]">
         <div className="pointer-events-none absolute inset-y-0 right-0 hidden w-[47%] overflow-hidden lg:block" style={{ clipPath: "polygon(130px 0, 100% 0, 100% 100%, 0 100%)" }}>
@@ -282,34 +259,7 @@ function PromotionPageContent() {
         </div>
       </main>
 
-      <footer className="w-full bg-black py-10 text-white sm:py-12">
-        <div className="mx-auto flex w-full max-w-340 flex-col items-center justify-between gap-8 px-6 sm:px-10 lg:flex-row">
-          <Link href="/hp" className="flex shrink-0 items-center" aria-label="HP x CodeMate AI home">
-            <Image
-              src="/HPxCodeMateAI_LOGO_NAV.png"
-              alt="HP x CodeMate"
-              width={210}
-              height={70}
-              unoptimized
-              className="h-14.5 w-43 object-contain"
-              style={{ filter: "brightness(0) invert(1)" }}
-            />
-          </Link>
-          <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 font-heading text-[13px] uppercase tracking-[0.13em] text-white/75">
-            <a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Privacy</a>
-            <a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Terms</a>
-            <a href="mailto:contact@codemate.ai" className="transition-colors hover:text-white">Support</a>
-          </div>
-          <div className="flex items-center gap-3">
-            <a href="tel:+918766330253" aria-label="Call CodeMate" className="flex h-10 w-10 items-center justify-center border border-white/20 text-white transition-colors hover:border-white hover:bg-white/10">
-              <IconPhone size={18} stroke={1.8} aria-hidden="true" />
-            </a>
-            <a href="mailto:contact@codemate.ai" aria-label="Email CodeMate" className="flex h-10 w-10 items-center justify-center border border-white/20 text-white transition-colors hover:border-white hover:bg-white/10">
-              <IconMail size={18} stroke={1.8} aria-hidden="true" />
-            </a>
-          </div>
-        </div>
-      </footer>
+      <HpSubpageFooter />
     </div>
   );
 }
