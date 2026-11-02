@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IconArrowLeft } from "@tabler/icons-react";
+import { hpContact } from "../config/hpData";
 
 // Nav for pages under /hp, shared by /hp/promo and /hp/usecases/[slug].
 export default function HpSubpageNav({ backHref = "/hp" }: { backHref?: string }) {
@@ -9,7 +10,7 @@ export default function HpSubpageNav({ backHref = "/hp" }: { backHref?: string }
       <div className="mx-auto flex h-18 w-full max-w-340 items-center justify-between gap-5 px-6 sm:px-10">
         <Link href="/hp" className="flex shrink-0 items-center transition-opacity hover:opacity-80" aria-label="Back to HP x CodeMate AI">
           <Image
-            src="/HPxCodeMateAI_LOGO_NAV.png"
+            src={hpContact.navLogoUrl}
             alt="HP x CodeMate AI"
             width={210}
             height={70}

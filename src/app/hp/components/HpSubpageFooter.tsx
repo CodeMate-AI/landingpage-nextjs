@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IconMail, IconPhone } from "@tabler/icons-react";
+import { hpContact } from "../config/hpData";
 
 // Footer for pages under /hp, shared by /hp/promo and /hp/usecases/[slug].
 export default function HpSubpageFooter() {
@@ -9,7 +10,7 @@ export default function HpSubpageFooter() {
       <div className="mx-auto flex w-full max-w-340 flex-col items-center justify-between gap-8 px-6 sm:px-10 lg:flex-row">
         <Link href="/hp" className="flex shrink-0 items-center" aria-label="HP x CodeMate AI home">
           <Image
-            src="/HPxCodeMateAI_LOGO_NAV.png"
+            src={hpContact.navLogoUrl}
             alt="HP x CodeMate"
             width={210}
             height={70}
