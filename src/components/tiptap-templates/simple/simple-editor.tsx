@@ -219,6 +219,7 @@ import { ImageUploadIcon } from "@/components/tiptap-icons/image-upload-icon"
 import { VideoUploadIcon } from "@/components/tiptap-icons/video-upload-icon"
 import { GifUploadIcon } from "@/components/tiptap-icons/gif-upload-icon"
 import { TableIcon } from "@/components/tiptap-icons/table-icon"
+import { TableFloatingBar } from "@/components/tiptap-ui/table-floating-bar"
 
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
@@ -422,63 +423,6 @@ const MainToolbarContent = ({
           <span className="tiptap-button-text">List</span>
         </Button>
       </ToolbarGroup>
-
-      <ToolbarSeparator />
-
-      <ToolbarGroup>
-        {editor?.isActive("table") && (
-          <>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().addRowAfter().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              title="Add Row Below"
-            >
-              + Row
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().deleteRow().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              className="text-red-400 hover:text-red-500"
-              title="Delete Row"
-            >
-              - Row
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().addColumnAfter().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              title="Add Column Right"
-            >
-              + Col
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().deleteColumn().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              className="text-red-400 hover:text-red-500"
-              title="Delete Column"
-            >
-              - Col
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().deleteTable().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              className="text-red-500 font-bold hover:text-red-600"
-              title="Delete Table"
-            >
-              Del Table
-            </Button>
-          </>
-        )}
-      </ToolbarGroup>
     </>
   )
 }
@@ -545,6 +489,7 @@ export function SimpleEditor({
     "main"
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const isInitializedRef = useRef(false)
   const videoInputRef = useRef<HTMLInputElement>(null)
   let editor: ReturnType<typeof useEditor> | null = null
@@ -746,14 +691,16 @@ export function SimpleEditor({
             )}
           </Toolbar>
           <div
+            ref={contentRef}
             className="simple-editor-content"
+            style={{ position: "relative", cursor: "text" }}
             onClick={(e) => {
               if (e.target === e.currentTarget) {
                 editor?.commands.focus()
               }
             }}
-            style={{ cursor: "text" }}
           >
+            <TableFloatingBar editor={editor} containerRef={contentRef} />
             <EditorContent editor={editor} />
           </div>
         </div>
