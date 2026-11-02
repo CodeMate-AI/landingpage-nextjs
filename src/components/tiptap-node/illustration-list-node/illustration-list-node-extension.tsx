@@ -183,6 +183,10 @@ export const IllustrationListNodeView: React.FC<NodeViewProps> = ({
   };
 
   const handleFileUpload = async (file: File, id: string) => {
+    if (file.type.startsWith("video/")) {
+      setMediaError(id, "Video files are not supported in illustration lists. Please select an image or GIF.");
+      return;
+    }
     setUploading(id, true);
     setMediaError(id, null);
     try {
@@ -306,7 +310,7 @@ export const IllustrationListNodeView: React.FC<NodeViewProps> = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/jpeg,image/png,image/webp,image/gif"
+          accept="image/jpeg,image/png,image/webp,image/gif,.jpg,.jpeg,.png,.webp,.gif"
           style={{ display: "none" }}
           onChange={(e) => {
             const file = e.target.files?.[0];

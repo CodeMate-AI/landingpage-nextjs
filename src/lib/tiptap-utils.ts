@@ -17,6 +17,7 @@ import { getAdminToken } from "@/lib/admin-api-client"
 
 export const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
 export const MAX_GIF_SIZE = 15 * 1024 * 1024 // 15MB
+export const MAX_VIDEO_SIZE = 50 * 1024 * 1024 // 50MB
 
 export const MAC_SYMBOLS: Record<string, string> = {
   mod: "⌘",
@@ -437,7 +438,6 @@ export const handleImageUpload = async (
   })
 }
 
-export const MAX_VIDEO_SIZE = 50 * 1024 * 1024 // 50MB
 
 export const handleVideoUpload = async (
   file: File,

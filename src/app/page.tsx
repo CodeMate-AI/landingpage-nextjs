@@ -5,7 +5,6 @@ import { FaXTwitter, FaLinkedin, FaInstagram, FaDiscord, FaYoutube, FaGithub, Fa
 import { VscAzureDevops } from "react-icons/vsc";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform, MotionValue } from 'framer-motion'
 import Lenis from 'lenis'
-import { Montserrat } from 'next/font/google';
 import Image from 'next/image';
 import SeamlessCarousel from '@/components/SeamlessCarousel';
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
@@ -20,13 +19,6 @@ import MediaPresence from '@/components/media-presence';
 import EventOffer from './pricing/components/EventOffer';
 import { cn } from './utils/cn';
 import Navbar from '@/components/navbar';
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-montserrat',
-  display: 'swap',
-});
 
 interface UnlockItem {
   id: string;
@@ -128,7 +120,7 @@ function UnlockCard({
         <div className="flex flex-col gap-2 h-[40px] md:h-[60px] lg:h-auto items-center justify-center lg:items-start lg:justify-start">
           <motion.h3
             style={{ color: titleColor }}
-            className={`${montserrat.className} text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug`}
+            className={`font-[family-name:var(--font-montserrat)] text-[22px] md:text-[28px] lg:text-[26px] font-bold leading-snug`}
           >
             {item.title}
           </motion.h3>
@@ -528,7 +520,7 @@ function Page() {
       {/* enter section */}
       {/* <div
    ref={exploreRef} 
-   className={`${montserrat2.className} flex justify-center items-center h-[100vh] w-full bg-zinc-950`}>
+   className={`font-[family-name:var(--font-montserrat)] flex justify-center items-center h-[100vh] w-full bg-zinc-950`}>
     <motion.span 
     initial={{opacity:0,filter:'blur(20px)'}}
     whileInView={{opacity:1,filter:'blur(0px)'}}

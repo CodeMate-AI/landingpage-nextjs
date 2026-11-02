@@ -141,8 +141,38 @@ export const BentoGridNodeView: React.FC<NodeViewProps> = ({
     setDropTargetIdx(null);
   };
 
+
+const BENTO_MEDIA_ACCEPTS: Record<BentoCardItem["mediaType"], string> = {
+  image: "image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif",
+  gif: "image/gif,.gif",
+  video: "video/mp4,video/webm,video/ogg,video/quicktime,.mp4,.webm,.ogg,.mov,.m4v",
+};
+
   // Upload file handler
   const handleFileUpload = async (file: File, cardId: string) => {
+    const targetCard = cards.find((c) => c.id === cardId);
+    const expectedType = targetCard?.mediaType || "image";
+
+    if (expectedType === "image") {
+      const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif");
+      const isVideo = file.type.startsWith("video/");
+      if (isGif || isVideo) {
+        setUploadError({ cardId, message: "Please select a static image (JPG, PNG, WebP). Use the GIF tab for animated GIFs." });
+        return;
+      }
+    } else if (expectedType === "gif") {
+      const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif");
+      if (!isGif) {
+        setUploadError({ cardId, message: "Please select a GIF file (.gif)." });
+        return;
+      }
+    } else if (expectedType === "video") {
+      if (!file.type.startsWith("video/")) {
+        setUploadError({ cardId, message: "Please select a video file (MP4, WebM, OGG, MOV)." });
+        return;
+      }
+    }
+
     setUploadingCardId(cardId);
     setUploadError(null);
     try {
@@ -236,7 +266,7 @@ export const BentoGridNodeView: React.FC<NodeViewProps> = ({
         <input
           ref={fileInputRef}
           type="file"
-          accept="image/*,video/*,.gif"
+          accept="image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif"
           className="hidden"
           style={{ display: "none" }}
           onChange={(e) => {
@@ -409,12 +439,15 @@ export const BentoGridNodeView: React.FC<NodeViewProps> = ({
                         className="bento-upload-dropzone"
                         onClick={() => {
                           currentUploadCardIdRef.current = card.id;
-                          fileInputRef.current?.click();
+                          if (fileInputRef.current) {
+                            fileInputRef.current.accept = BENTO_MEDIA_ACCEPTS[card.mediaType] || BENTO_MEDIA_ACCEPTS.image;
+                            fileInputRef.current.click();
+                          }
                         }}
                       >
                         {uploadingCardId === card.id
                           ? "Uploading media..."
-                          : `Click to upload ${card.mediaType === "video" ? "Video" : "Image / GIF"}`}
+                          : `Click to upload ${card.mediaType === "video" ? "Video" : card.mediaType === "gif" ? "GIF" : "Image"}`}
                       </div>
                       {uploadError?.cardId === card.id && (
                         <p className="bento-upload-error" role="alert">

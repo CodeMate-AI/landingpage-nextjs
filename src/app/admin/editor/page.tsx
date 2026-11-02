@@ -781,6 +781,11 @@ function EditorContent() {
 
   // Uploads cover image through the /api/admin/upload route and sets coverImage URL
   const handleImageUpload = async (file: File) => {
+    const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif");
+    if (isGif) {
+      alert("GIF files cannot be uploaded as a cover image. Please select a JPG, PNG, or WebP image.");
+      return;
+    }
     setUploading(true);
     try {
       const formData = new FormData();
@@ -808,6 +813,11 @@ function EditorContent() {
 
   // Uploads author avatar image through the /api/admin/upload route and sets authorImage URL
   const handleAuthorImageUpload = async (file: File) => {
+    const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif");
+    if (isGif) {
+      alert("GIF files cannot be uploaded as an author avatar. Please select a JPG, PNG, or WebP image.");
+      return;
+    }
     setAuthorUploading(true);
     try {
       const formData = new FormData();
@@ -1069,7 +1079,7 @@ function EditorContent() {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif"
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
@@ -1492,7 +1502,7 @@ function EditorContent() {
                   <input
                     ref={authorFileInputRef}
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif"
                     className="hidden"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
