@@ -2,14 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@font-face {
-  font-family: "Forma DJR Display";
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
-  src: url("/fonts/formadjrdisplay-regular-webfont.otf") format("opentype");
-}
-
 body {
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
