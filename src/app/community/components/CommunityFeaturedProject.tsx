@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 import CommunityPdfModal from "./CommunityPdfModal";
+import { ORBIT_CRM_DEMO_URL } from "../lib/communityProjects";
 
 /**
  * CommunityFeaturedProject showcases the flagship Orbit CRM demo with a mock browser
@@ -144,7 +145,7 @@ export default function CommunityFeaturedProject() {
         {/* Centered Action Buttons (Horizontal across Mobile, iPad, and Desktop) */}
         <div className="flex w-full flex-row items-center justify-center gap-2.5 pt-2 sm:gap-4 sm:pt-0">
           <motion.a
-            href="https://orbit-crm-og.codemate.build/"
+            href={ORBIT_CRM_DEMO_URL}
             target="_blank"
             rel="noreferrer"
             whileHover={{ scale: 1.02 }}
