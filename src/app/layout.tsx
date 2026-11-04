@@ -13,8 +13,14 @@ export const viewport: Viewport = {
   themeColor: "#09090b",
 };
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.DEPLOY_PRIME_URL ||
+  process.env.URL ||
+  'https://codemate.ai';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://codemate.ai'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "CodeMate AI | Sovereign AI Pair Programmer & Code Assistant",
     template: "%s | CodeMate AI",
