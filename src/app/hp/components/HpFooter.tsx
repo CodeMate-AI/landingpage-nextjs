@@ -33,7 +33,7 @@ export default function HpFooter() {
 
         <Link href="/" className="shrink-0 flex items-center">
           <Image
-            src="/HPxCodeMateAI_LOGO_NAV.png"
+            src={hpContact.navLogoUrl}
             alt="HP x CodeMate"
             width={280}
             height={94}

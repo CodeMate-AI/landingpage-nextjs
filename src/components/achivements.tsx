@@ -19,7 +19,7 @@ function Achivements() {
   const isInView = useInView(carouselRef, { once: false, amount: 0.3 });
   const cards = [
     {
-      image: "/Computex.jpg",
+      image: "/achievements/computex-2026.jpg",
       alt: "CodeMate AI at Computex 2026",
       title: "Computex 2026 - CodeMate AI Goes Live on Snapdragon X at Qualcomm Booth",
       description: "We showcased our offline on-device coding agent on Snapdragon X series chipsets at Computex 2026, Taipei : bringing AI-powered coding fully to the edge.",
@@ -27,14 +27,14 @@ function Achivements() {
       imagePosition: "bottom"
     },
     {
-      image: "/ViennaUP.jpg",
+      image: "/achievements/viennaup-embassy-austria.jpg",
       alt: "ViennaUP",
       title: "CodeMate AI at the Embassy of India, Vienna",
       description: "We had the privilege of meeting H.E. Mr. Shambhu Kumaran and innovation leaders driving India–Austria entrepreneurial ties : proud to represent India's growing AI and DeepTech ecosystem on the global stage.",
       link: "https://www.linkedin.com/posts/viennaup-codemateai-viennaup-ugcPost-7469691112304099328-dSWN/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAD68Ph8Bq1JfQl_QR-MaxiB4RI0Fy-Oiv8g"
     },
     {
-      image: "/GLA_MOU.jpg",
+      image: "/achievements/gla-university-mou.jpg",
       alt: "GLA MOU",
       title: "CodeMate AI Signs MoU with GLA University",
       description: "We're partnering with GLA University to empower the next generation of AI-enabled developers : creating industry-relevant learning pathways for students and professionals shaping the future of technology.",
@@ -42,7 +42,7 @@ function Achivements() {
       imagePosition: "top"
     },
     {
-      image: "/AI_Summit.png",
+      image: "/achievements/india-ai-summit-2026.png",
       alt: "India AI Summit 2026",
       title: "India AI Summit 2026 - Hosted Global AI Leaders at CodeMate Booth",
       description: "CodeMate AI engaged with Yann LeCun, Defence Minister Rajnath Singh, CM Chandrababu Naidu, and other top global leaders - showcasing India's first full-stack, self-hosted enterprise AI coding agent.",
@@ -50,28 +50,28 @@ function Achivements() {
       imagePosition: "top"
     },
     {
-      image: "/IMC_2025.jpg",
+      image: "/achievements/qualcomm-imc-2025.jpg",
       alt: "Qualcomm × CodeMate AI Partnership at IMC 2025",
       title: "Qualcomm × CodeMate AI Partnership at IMC 2025",
       description: "CodeMate AI announced a strategic collaboration with Qualcomm at India Mobile Congress 2025, which is one of Asia's largest tech event to empower developers, students, and institutions in AI and Edge Computing.",
       link: "https://www.linkedin.com/posts/shama-ahlawat-b40a72134_technology-event-partnership-activity-7387477019929997313-0mhe?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
     },
     {
-      image: "/UIPT_2025.jpg",
+      image: "/achievements/upits-trade-show-2025.jpg",
       alt: "UPITS 2025 - UP International Trade Show",
       title: "UPITS 2025 - UP International Trade Show, Greater Noida",
       description: "CodeMate AI showcased its full developer ecosystem such as VS Code Extension, Web App, AI PR Review Agent, and Academy Platform to thousands of industry leaders and innovators at India Expo Centre.",
       link: "https://www.linkedin.com/posts/theayushsinghal_codemate-upits2025-ai-activity-7389356209650450432-mG2X?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
     },
     {
-      image: "/Pravartan.png",
+      image: "/achievements/meity-tide-pravartan-2025.png",
       alt: "MeitY TIDE 2.0 - Pravartan 2025",
       title: "MeitY TIDE 2.0 - Pravartan 2025, Featured Startup",
       description: "CodeMate AI was presented to Union Minister \"Jitin Prasada\" and Senior MeitY officials among the top TIDE-funded startups in India, showcasing : How AI automates the end-to-end Software Development Lifecycle.",
       link: "https://www.linkedin.com/posts/shama-ahlawat-b40a72134_meity-startupindia-deeptech-activity-7428403894055092224-PAw6?utm_source=share&utm_medium=member_desktop&rcm=ACoAACDnwuABThwzgF3nSZOORjzzzewV9QHCVJU"
     },
     {
-      image: "/RAISE 2025.jpg",
+      image: "/achievements/lt-finance-raise-2025.jpg",
       alt: "Selected in Top 5 AI Startups - RAISE 2025 by L&T Finance",
       title: "Selected in Top 5 AI Startups - RAISE 2025 by L&T Finance",
       description: "CodeMate AI was recognized among the Top 5 from 100+ startups at L&T Finance's flagship BFSI AI competition, presenting to a jury including Rajan Anandan (Peak XV) and top enterprise leaders.",

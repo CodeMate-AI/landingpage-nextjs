@@ -1,33 +1,86 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+
+interface YTPlayerInstance {
+  mute: () => void;
+  playVideo: () => void;
+  pauseVideo: () => void;
+  seekTo: (seconds: number, allowSeekAhead: boolean) => void;
+  unloadModule?: (moduleName: string) => void;
+  setOption?: (module: string, option: string, value: unknown) => void;
+  destroy: () => void;
+}
 
 declare global {
   interface Window {
     YT?: {
-      Player: new (element: HTMLElement, options: any) => {
-        mute: () => void;
-        playVideo: () => void;
-        unloadModule?: (moduleName: string) => void;
-        setOption?: (module: string, option: string, value: unknown) => void;
-        destroy: () => void;
+      Player: new (element: HTMLElement, options: any) => YTPlayerInstance;
+      PlayerState?: {
+        ENDED: number;
+        PLAYING: number;
+        PAUSED: number;
+        BUFFERING: number;
+        CUED: number;
       };
     };
     onYouTubeIframeAPIReady?: () => void;
   }
 }
 
-const VIDEO_ID = 'ux5jJgNkslE';
+interface VideoEmbedProps {
+  videoId?: string;
+  shouldPlay?: boolean;
+}
 
-export default function VideoEmbed() {
+const DEFAULT_VIDEO_ID = 'ux5jJgNkslE';
+
+export default function VideoEmbed({
+  videoId = DEFAULT_VIDEO_ID,
+  shouldPlay = false,
+}: VideoEmbedProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<YTPlayerInstance | null>(null);
+  const shouldPlayRef = useRef(shouldPlay);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isNearViewport, setIsNearViewport] = useState(false);
 
+  // Synchronize shouldPlay state with player playback
   useEffect(() => {
-    let player:
-      | {
-          destroy: () => void;
+    shouldPlayRef.current = shouldPlay;
+    if (!playerRef.current) return;
+
+    if (shouldPlay) {
+      playerRef.current.playVideo();
+    } else {
+      playerRef.current.pauseVideo();
+    }
+  }, [shouldPlay]);
+
+  // Hold back the YouTube player's scripts until the section is one screen away
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsNearViewport(true);
+          observer.disconnect();
         }
-      | null = null;
+      },
+      { rootMargin: '250px 0px' }
+    );
+    observer.observe(wrapper);
+    return () => observer.disconnect();
+  }, []);
+
+  // Load the YouTube API and initialize the player once the section is close
+  useEffect(() => {
+    if (!isNearViewport) return;
+
     let isMounted = true;
 
     const disableCaptions = (target: {
@@ -45,13 +98,13 @@ export default function VideoEmbed() {
         return;
       }
 
-      player = new window.YT.Player(containerRef.current, {
-        videoId: VIDEO_ID,
+      new window.YT.Player(containerRef.current, {
+        videoId,
         playerVars: {
-          autoplay: 1,
+          autoplay: 0,
           mute: 1,
           loop: 1,
-          playlist: VIDEO_ID,
+          playlist: videoId,
           controls: 0,
           showinfo: 0,
           rel: 0,
@@ -63,27 +116,39 @@ export default function VideoEmbed() {
           playsinline: 1,
         },
         events: {
-          onReady: (event: {
-            target: {
-              mute: () => void;
-              playVideo: () => void;
-              unloadModule?: (moduleName: string) => void;
-              setOption?: (module: string, option: string, value: unknown) => void;
-            };
-          }) => {
+          onReady: (event: { target: YTPlayerInstance }) => {
+            if (!isMounted) return;
+            playerRef.current = event.target;
             event.target.mute();
-            event.target.playVideo();
             disableCaptions(event.target);
+            // The player has no visible controls, so keyboard focus must not enter it
+            wrapperRef.current?.querySelector('iframe')?.setAttribute('tabindex', '-1');
+
+            // If the user already scrolled into position, play immediately
+            if (shouldPlayRef.current) {
+              event.target.playVideo();
+            }
           },
-          onStateChange: (event: {
-            data: number;
-            target: {
-              unloadModule?: (moduleName: string) => void;
-              setOption?: (module: string, option: string, value: unknown) => void;
-            };
-          }) => {
+          onStateChange: (event: { data: number; target: YTPlayerInstance }) => {
+            if (!isMounted) return;
+
+            // State 1: PLAYING
             if (event.data === 1) {
               disableCaptions(event.target);
+
+              if (shouldPlayRef.current) {
+                setIsPlaying(true);
+              } else {
+                event.target.pauseVideo();
+              }
+            }
+
+            // State 0: ENDED (Seamless loop fail-safe)
+            if (event.data === 0) {
+              event.target.seekTo(0, true);
+              if (shouldPlayRef.current) {
+                event.target.playVideo();
+              }
             }
           },
         },
@@ -97,7 +162,7 @@ export default function VideoEmbed() {
       }
 
       const existingScript = document.querySelector<HTMLScriptElement>(
-        'script[src="https://www.youtube.com/iframe_api"]',
+        'script[src="https://www.youtube.com/iframe_api"]'
       );
 
       if (!existingScript) {
@@ -114,37 +179,39 @@ export default function VideoEmbed() {
       };
     };
 
-    if ('IntersectionObserver' in window && containerRef.current) {
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (entries[0]?.isIntersecting) {
-            initYouTube();
-            observer.disconnect();
-          }
-        },
-        { rootMargin: '300px' }
-      );
-      observer.observe(containerRef.current);
-      return () => {
-        isMounted = false;
-        observer.disconnect();
-        player?.destroy();
-      };
-    } else {
-      initYouTube();
-      return () => {
-        isMounted = false;
-        player?.destroy();
-      };
-    }
-  }, []);
+    initYouTube();
+
+    return () => {
+      isMounted = false;
+      playerRef.current?.destroy();
+      playerRef.current = null;
+    };
+  }, [videoId, isNearViewport]);
+
+  const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
 
   return (
-    <div className="relative h-full w-full overflow-hidden bg-black pointer-events-none">
+    <div ref={wrapperRef} className="relative h-full w-full overflow-hidden bg-black pointer-events-none">
+      {/* Preloaded YouTube player iframe */}
       <div
         ref={containerRef}
         className="h-full w-full [&>iframe]:h-full [&>iframe]:w-full [&>iframe]:pointer-events-none"
       />
+
+      {/* High-resolution preview poster eliminates blank screens and fades when playback begins */}
+      <div
+        className={`absolute inset-0 w-full h-full transition-opacity duration-500 pointer-events-none ${
+          isPlaying ? 'opacity-0' : 'opacity-100'
+        }`}
+      >
+        <Image
+          src={thumbnailUrl}
+          alt="CodeMate Video Preview"
+          fill
+          sizes="(max-width: 1024px) 100vw, 960px"
+          className="object-cover"
+        />
+      </div>
     </div>
   );
 }

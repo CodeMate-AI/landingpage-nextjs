@@ -64,5 +64,8 @@ public/_next-video
 # AI agent & skill caches
 .claude/
 agent/
+/agent/
+/.agents/
 skills-lock.json
 .playwright-mcp/
+.playwright-mcp

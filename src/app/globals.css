@@ -3,11 +3,28 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
 }
 
-html {
-  scroll-behavior: smooth;
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.gradients-container[data-paused="true"] > * {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gradients-container > *,
+  .animate-marquee {
+    animation: none !important;
+  }
+
+  .scroll-smooth {
+    scroll-behavior: auto !important;
+  }
 }
 
 @layer base {
@@ -156,7 +173,7 @@ body {
 }
 
 .custom-cursor {
-  cursor: url("/cursor.svg") 16 16, auto;
+  cursor: url("/ui/cursor.svg") 16 16, auto;
 }
 
 @media (min-width: 768px) {

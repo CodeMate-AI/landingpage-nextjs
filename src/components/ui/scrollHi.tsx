@@ -41,7 +41,7 @@ export function ScrollHighlightText({
   const totalWords = words.length
 
   return (
-    <div ref={containerRef} className={`${containerHeight} flex items-center justify-center px-8 ${className}`}>
+    <div ref={containerRef} className={`relative ${containerHeight} flex items-center justify-center px-8 ${className}`}>
       <div className="max-w-4xl">
         {title && (
           <motion.h2
