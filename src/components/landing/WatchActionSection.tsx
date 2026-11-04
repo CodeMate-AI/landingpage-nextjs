@@ -28,11 +28,8 @@ export default function WatchActionSection() {
 
   // Smooth expansion: starts as a compact small box (0.65) and expands to full size (1.0)
   const scale = useTransform(smoothProgress, [0, 1], [0.65, 1]);
-  // Border radius smoothly morphs from compact rounded box (28px) to crisp frame (14px)
-  const borderRadius = useTransform(smoothProgress, [0, 1], [28, 14]);
   // Ambient cyan-blue glow dynamically blooms with container expansion
   const glowOpacity = useTransform(smoothProgress, [0, 1], [0.15, 0.65]);
-  const glowScale = useTransform(smoothProgress, [0, 1], [0.65, 1.05]);
 
   return (
     <section
@@ -67,14 +64,14 @@ export default function WatchActionSection() {
       <div ref={videoWrapperRef} className="relative w-full flex items-center justify-center my-1 sm:my-2 2xl:my-0">
         {/* Subtle ambient cyan/blue back-glow expanding organically with the box */}
         <motion.div
-          style={{ scale: glowScale, opacity: glowOpacity }}
-          className="absolute -inset-4 sm:-inset-10 bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.22),rgba(30,144,255,0.06),transparent_70%)] blur-2xl pointer-events-none"
+          style={{ opacity: glowOpacity }}
+          className="absolute -inset-4 sm:-inset-10 bg-[radial-gradient(ellipse_at_center,rgba(0,191,255,0.22),rgba(30,144,255,0.06),transparent_70%)] blur-2xl pointer-events-none transform-gpu will-change-[opacity]"
         />
 
         {/* Video Player Card */}
         <motion.div
-          style={{ scale, borderRadius }}
-          className="relative w-full max-w-[880px] lg:max-w-[960px] aspect-video overflow-hidden border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.85)] bg-zinc-950 will-change-transform transform-gpu z-10"
+          style={{ scale }}
+          className="relative w-full max-w-[880px] lg:max-w-[960px] aspect-video rounded-2xl overflow-hidden border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.85)] bg-zinc-950 will-change-transform transform-gpu z-10"
         >
           <div className="absolute inset-0 w-full h-full pointer-events-none">
             <VideoEmbed shouldPlay={isInView} />

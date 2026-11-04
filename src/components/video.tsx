@@ -44,7 +44,6 @@ export default function VideoEmbed({
   const containerRef = useRef<HTMLDivElement>(null);
   const playerRef = useRef<YTPlayerInstance | null>(null);
   const shouldPlayRef = useRef(shouldPlay);
-  const isWarmedUpRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isNearViewport, setIsNearViewport] = useState(false);
 
@@ -72,7 +71,7 @@ export default function VideoEmbed({
           observer.disconnect();
         }
       },
-      { rootMargin: '100% 0px' }
+      { rootMargin: '250px 0px' }
     );
     observer.observe(wrapper);
     return () => observer.disconnect();
@@ -125,10 +124,8 @@ export default function VideoEmbed({
             // The player has no visible controls, so keyboard focus must not enter it
             wrapperRef.current?.querySelector('iframe')?.setAttribute('tabindex', '-1');
 
-            // If the user already scrolled into position, play immediately; otherwise warm up buffer
+            // If the user already scrolled into position, play immediately
             if (shouldPlayRef.current) {
-              event.target.playVideo();
-            } else {
               event.target.playVideo();
             }
           },
@@ -139,20 +136,19 @@ export default function VideoEmbed({
             if (event.data === 1) {
               disableCaptions(event.target);
 
-              // If pre-buffering while out of viewport, pause and hold at beginning
-              if (!shouldPlayRef.current && !isWarmedUpRef.current) {
-                isWarmedUpRef.current = true;
-                event.target.pauseVideo();
-                event.target.seekTo(0, true);
-              } else if (shouldPlayRef.current) {
+              if (shouldPlayRef.current) {
                 setIsPlaying(true);
+              } else {
+                event.target.pauseVideo();
               }
             }
 
             // State 0: ENDED (Seamless loop fail-safe)
             if (event.data === 0) {
               event.target.seekTo(0, true);
-              event.target.playVideo();
+              if (shouldPlayRef.current) {
+                event.target.playVideo();
+              }
             }
           },
         },
