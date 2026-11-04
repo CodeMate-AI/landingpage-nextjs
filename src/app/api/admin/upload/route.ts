@@ -4,6 +4,7 @@ import { fileTypeFromBuffer } from "file-type";
 
 // Maximum allowed payload sizes: 5MB for images and 50MB for video assets
 const IMAGE_MAX_SIZE = 5 * 1024 * 1024;
+const GIF_MAX_SIZE = 15 * 1024 * 1024;
 const VIDEO_MAX_SIZE = 50 * 1024 * 1024;
 
 // Permitted image and video MIME types
@@ -47,10 +48,12 @@ async function uploadHandler(req: NextRequest) {
     }
 
     // 3. Enforce separate size ceilings for video vs image files
-    const maxSize = file.type.startsWith("video/") ? VIDEO_MAX_SIZE : IMAGE_MAX_SIZE;
+    const isGif = file.type === "image/gif";
+    const isVideo = file.type.startsWith("video/");
+    const maxSize = isVideo ? VIDEO_MAX_SIZE : isGif ? GIF_MAX_SIZE : IMAGE_MAX_SIZE;
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: file.type.startsWith("video/") ? "Video exceeds 50MB size limit" : "File exceeds 5MB size limit" },
+        { error: isVideo ? "Video exceeds 50MB size limit" : isGif ? "GIF exceeds 15MB size limit" : "File exceeds 5MB size limit" },
         { status: 400 }
       );
     }

@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { BlogDetailPost, Tag } from "@/types/blog";
+import { getFontCssValue } from "@/lib/fonts-config";
 
 interface Props {
   post: BlogDetailPost;
@@ -10,8 +11,15 @@ interface Props {
   isPreview?: boolean;
 }
 
-const StaticArticle = React.memo(({ htmlContent }: { htmlContent: string }) => {
-  return <article className="article-content" dangerouslySetInnerHTML={{ __html: htmlContent }} />;
+const StaticArticle = React.memo(({ htmlContent, baseFont }: { htmlContent: string; baseFont?: string }) => {
+  const baseFontCss = getFontCssValue(baseFont);
+  return (
+    <article
+      className="article-content"
+      style={baseFontCss ? ({ "--article-base-font": baseFontCss } as React.CSSProperties) : undefined}
+      dangerouslySetInnerHTML={{ __html: htmlContent }}
+    />
+  );
 });
 StaticArticle.displayName = "StaticArticle";
 
@@ -259,7 +267,7 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
         </aside>
 
         <div className="article-content-wrap">
-          <StaticArticle htmlContent={post.htmlContent ?? ""} />
+          <StaticArticle htmlContent={post.htmlContent ?? ""} baseFont={post.baseFont} />
         </div>
 
         <aside className="utility-rail">

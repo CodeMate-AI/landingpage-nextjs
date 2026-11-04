@@ -5,7 +5,7 @@ import { adminFetch } from "@/lib/admin-api-client";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { DatePicker } from "@/components/ui/date-picker";
 import BlogPreviewModal from "./BlogPreviewModal";
-import { compileTiptapToHtml } from "@/lib/blog-compiler";
+import { compileTiptapToHtml, extractSectionsFromTiptapJson, tiptapDocToPlainText } from "@/lib/blog-compiler";
 import slugify from "@/utils/slugify";
 import type { BlogDetailPost } from "@/types/blog";
 
@@ -97,6 +97,8 @@ function EditorContent() {
   const [authorImage, setAuthorImage] = useState("");
   const [readTime, setReadTime] = useState("");
   const [publishedAtCustom, setPublishedAtCustom] = useState("");
+  // Document base typography font family
+  const [baseFont, setBaseFont] = useState<string>("Montserrat");
   // Table of Contents anchor list
   const [sections, setSections] = useState<{ id: string; title: string }[]>([]);
   // Form submission and network status flags
@@ -123,6 +125,23 @@ function EditorContent() {
   const lastSavedSnapshotRef = useRef<string>("");
   const initialLoadedRef = useRef(false);
   const currentPostIdRef = useRef<string | null>(postId);
+  // Unique per-tab client session identifier for optimistic concurrency coordination
+  const clientSessionIdRef = useRef<string>("");
+  if (!clientSessionIdRef.current && typeof window !== "undefined") {
+    clientSessionIdRef.current =
+      typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : "sess_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
+  }
+
+  // Tracks active in-flight network save promise to prevent concurrent dispatch collisions
+  const activeSavePromiseRef = useRef<Promise<any> | null>(null);
+  // Auto-save debounce timer ref so manual saves can cleanly cancel pending timers
+  const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
+  // Prevents redundant re-loading when postId is set following initial auto-save of a new article
+  const justCreatedPostIdRef = useRef<string | null>(null);
+  // Signals that handleSave succeeded and editor is navigating away to suppress unload keepalive flush
+  const isNavigatingAwayRef = useRef<boolean>(false);
 
   useEffect(() => {
     currentPostIdRef.current = postId;
@@ -134,7 +153,9 @@ function EditorContent() {
       try {
         sessionStorage.removeItem("admin_blog_preview");
         localStorage.removeItem("admin_blog_preview");
-      } catch {}
+      } catch (err) {
+        console.warn("Failed to clear preview storage on unmount:", err);
+      }
     };
   }, []);
 
@@ -206,6 +227,7 @@ function EditorContent() {
         setAuthorImage(resolvedAuthorImage);
         setReadTime(resolvedReadTime);
         setPublishedAtCustom(resolvedDate);
+        setBaseFont(post.baseFont || "Montserrat");
         setSections(post.sections || []);
 
         const parsedTags: { label: string; tone: "slate" }[] = uniqueLabels.map((l) => ({
@@ -236,6 +258,7 @@ function EditorContent() {
           authorImage: resolvedAuthorImage,
           readTime: resolvedReadTime,
           publishedAtCustom: resolvedDate,
+          baseFont: post.baseFont || "Montserrat",
           sections: post.sections && post.sections.length > 0 ? post.sections : undefined,
         });
         initialLoadedRef.current = true;
@@ -258,6 +281,10 @@ function EditorContent() {
   // Trigger post loading when postId query parameter changes or restore local draft
   useEffect(() => {
     if (postId) {
+      if (justCreatedPostIdRef.current === postId) {
+        justCreatedPostIdRef.current = null;
+        return;
+      }
       void loadPost();
     } else {
       // Check for local draft backup for a new post
@@ -310,64 +337,74 @@ function EditorContent() {
       console.warn("Failed to persist offline draft to localStorage:", err);
     }
 
-    try {
-      const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
-      const method = targetId ? "PUT" : "POST";
-      // Inject latest live version counter into payload at dispatch time
-      const outboundPayload = targetId
-        ? { ...payload, version: docVersionRef.current }
-        : payload;
+    const saveRoutine = async () => {
+      try {
+        const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
+        const method = targetId ? "PUT" : "POST";
+        // Inject latest live version counter and clientSessionId into payload at dispatch time
+        const outboundPayload = {
+          ...payload,
+          clientSessionId: clientSessionIdRef.current,
+          ...(targetId ? { version: docVersionRef.current } : {}),
+        };
 
-      const res = await adminFetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(outboundPayload),
-      });
+        const res = await adminFetch(url, {
+          method,
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(outboundPayload),
+        });
 
-      if (res.ok) {
-        const data = await res.json().catch(() => null);
-        if (data?.version) {
-          docVersionRef.current = data.version;
-        }
-        setConflictData(null);
-        if (data?.slug) {
-          setSlug(data.slug);
-        }
-        if (!targetId) {
-          if (data && data.id) {
-            const newId = data.id.toString();
-            currentPostIdRef.current = newId;
-            setPostId(newId);
-            lastSavedSnapshotRef.current = serialized;
-            window.history.replaceState(null, "", `/admin/editor?id=${newId}`);
-            try {
-              localStorage.removeItem("codemate_editor_draft_new");
-              localStorage.setItem(`codemate_editor_draft_${newId}`, JSON.stringify({ ...payload, updatedAt: Date.now() }));
-            } catch (err) {
-              console.warn("Failed to update post draft in localStorage:", err);
-            }
+        if (res.ok) {
+          const data = await res.json().catch(() => null);
+          if (data?.version) {
+            docVersionRef.current = data.version;
           }
-        } else {
-          lastSavedSnapshotRef.current = serialized;
+          setConflictData(null);
+          if (data?.slug) {
+            setSlug(data.slug);
+          }
+          if (!targetId) {
+            if (data && data.id) {
+              const newId = data.id.toString();
+              justCreatedPostIdRef.current = newId;
+              currentPostIdRef.current = newId;
+              setPostId(newId);
+              lastSavedSnapshotRef.current = serialized;
+              window.history.replaceState(null, "", `/admin/editor?id=${newId}`);
+              try {
+                localStorage.removeItem("codemate_editor_draft_new");
+                localStorage.setItem(`codemate_editor_draft_${newId}`, JSON.stringify({ ...payload, updatedAt: Date.now() }));
+              } catch (err) {
+                console.warn("Failed to update post draft in localStorage:", err);
+              }
+            }
+          } else {
+            lastSavedSnapshotRef.current = serialized;
+          }
+        } else if (res.status === 409) {
+          // Handle concurrent edit conflict: pause auto-save and activate in-UI resolution banner
+          const errData = await res.json().catch(() => ({}));
+          isAutosavingRef.current = false;
+          pendingSavePayloadRef.current = null;
+          setConflictData(errData.lastModifiedBy || { email: "another admin", at: new Date().toISOString() });
+          return;
         }
-      } else if (res.status === 409) {
-        // Handle concurrent edit conflict: pause auto-save and activate in-UI resolution banner
-        const errData = await res.json().catch(() => ({}));
+      } catch (err) {
+        console.error("Auto-save failed:", err);
+      } finally {
+        activeSavePromiseRef.current = null;
         isAutosavingRef.current = false;
-        pendingSavePayloadRef.current = null;
-        setConflictData(errData.lastModifiedBy || { email: "another admin", at: new Date().toISOString() });
-        return;
+        if (pendingSavePayloadRef.current) {
+          const nextPayload = pendingSavePayloadRef.current;
+          pendingSavePayloadRef.current = null;
+          void executeAutoSave(nextPayload);
+        }
       }
-    } catch (err) {
-      console.error("Auto-save failed:", err);
-    } finally {
-      isAutosavingRef.current = false;
-      if (pendingSavePayloadRef.current) {
-        const nextPayload = pendingSavePayloadRef.current;
-        pendingSavePayloadRef.current = null;
-        void executeAutoSave(nextPayload);
-      }
-    }
+    };
+
+    const savePromise = saveRoutine();
+    activeSavePromiseRef.current = savePromise;
+    await savePromise;
   }, []);
 
   // Builds sanitized article payload for saving, deduplicating tags and preserving custom inputs
@@ -414,7 +451,9 @@ function EditorContent() {
         authorImage: authorImage || "",
         readTime,
         publishedAtCustom: resolvedDate,
+        baseFont: baseFont || "Montserrat",
         sections: sections.length > 0 ? sections : undefined,
+        clientSessionId: clientSessionIdRef.current,
       };
     },
     [
@@ -431,6 +470,7 @@ function EditorContent() {
       readTime,
       publishedAtCustom,
       sections,
+      baseFont,
     ]
   );
 
@@ -438,7 +478,6 @@ function EditorContent() {
   useEffect(() => {
     if (!initialLoadedRef.current) return;
     if (conflictData) return;
-    isDirtyRef.current = true;
 
     const hasContent =
       title.trim() !== "" ||
@@ -462,11 +501,23 @@ function EditorContent() {
       return;
     }
 
-    const timer = setTimeout(() => {
+    isDirtyRef.current = true;
+
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+    }
+
+    autoSaveTimerRef.current = setTimeout(() => {
+      autoSaveTimerRef.current = null;
       void executeAutoSave(payload);
     }, 1500);
 
-    return () => clearTimeout(timer);
+    return () => {
+      if (autoSaveTimerRef.current) {
+        clearTimeout(autoSaveTimerRef.current);
+        autoSaveTimerRef.current = null;
+      }
+    };
   }, [
     title,
     subheading,
@@ -481,6 +532,7 @@ function EditorContent() {
     readTime,
     publishedAtCustom,
     sections,
+    baseFont,
     published,
     executeAutoSave,
   ]);
@@ -488,7 +540,7 @@ function EditorContent() {
   // Keepalive flush on page unload
   useEffect(() => {
     const handleUnloadFlush = () => {
-      if (!initialLoadedRef.current) return;
+      if (!initialLoadedRef.current || isNavigatingAwayRef.current) return;
 
       const hasContent =
         title.trim() !== "" ||
@@ -525,7 +577,7 @@ function EditorContent() {
         void adminFetch(url, {
           method,
           headers: { "Content-Type": "application/json" },
-          body: targetId ? JSON.stringify({ ...payload, version: docVersionRef.current }) : serialized,
+          body: targetId ? JSON.stringify({ ...payload, version: docVersionRef.current, clientSessionId: clientSessionIdRef.current }) : JSON.stringify({ ...payload, clientSessionId: clientSessionIdRef.current }),
           keepalive: true,
         });
       } catch (err) {
@@ -553,6 +605,7 @@ function EditorContent() {
     readTime,
     publishedAtCustom,
     sections,
+    baseFont,
     published,
   ]);
 
@@ -569,7 +622,9 @@ function EditorContent() {
               void loadPost();
             }
           }
-        } catch {}
+        } catch (err) {
+          console.warn("Failed to check server freshness on tab focus:", err);
+        }
       }
     };
 
@@ -642,24 +697,41 @@ function EditorContent() {
     setLoading(true);
     setSavingMode(saveModeRef.current);
 
+    // Clear any pending debounced auto-save timer to prevent save collision
+    if (autoSaveTimerRef.current) {
+      clearTimeout(autoSaveTimerRef.current);
+      autoSaveTimerRef.current = null;
+    }
+
+    // Await any active in-flight auto-save request so versions advance monotonically
+    if (activeSavePromiseRef.current) {
+      try {
+        await activeSavePromiseRef.current;
+      } catch (err) {
+        console.warn("In-flight auto-save settled with error before manual save:", err);
+      }
+    }
+
+    const targetId = postId || currentPostIdRef.current;
+
     // If saving as draft for an existing published post, maintain published flag
     const resolvedPublished =
       saveModeRef.current === "publish"
         ? true
-        : postId
+        : targetId
         ? published
         : false;
 
     // Construct full article payload via shared builder
     const basePayload = buildSavePayload(saveModeRef.current, resolvedPublished, false);
-    const payload = postId
-      ? { ...basePayload, version: docVersionRef.current, forceOverwrite }
-      : basePayload;
+    const payload = targetId
+      ? { ...basePayload, version: docVersionRef.current, forceOverwrite, clientSessionId: clientSessionIdRef.current }
+      : { ...basePayload, clientSessionId: clientSessionIdRef.current };
 
     try {
       // Use PUT for updating existing post or POST for creating a new post
-      const url = postId ? `/api/admin/posts/${postId}` : "/api/admin/posts";
-      const method = postId ? "PUT" : "POST";
+      const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
+      const method = targetId ? "PUT" : "POST";
 
       const res = await adminFetch(url, {
         method,
@@ -678,12 +750,13 @@ function EditorContent() {
         }
         lastSavedSnapshotRef.current = JSON.stringify(basePayload);
         try {
-          const storageKey = postId ? `codemate_editor_draft_${postId}` : "codemate_editor_draft_new";
+          const storageKey = targetId ? `codemate_editor_draft_${targetId}` : "codemate_editor_draft_new";
           localStorage.removeItem(storageKey);
           localStorage.removeItem("codemate_editor_draft_new");
         } catch (err) {
           console.warn("Failed to clear local draft from localStorage after save:", err);
         }
+        isNavigatingAwayRef.current = true;
         router.push("/admin/dashboard");
       } else if (res.status === 409) {
         const data = await res.json().catch(() => ({}));
@@ -708,6 +781,11 @@ function EditorContent() {
 
   // Uploads cover image through the /api/admin/upload route and sets coverImage URL
   const handleImageUpload = async (file: File) => {
+    const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif");
+    if (isGif) {
+      alert("GIF files cannot be uploaded as a cover image. Please select a JPG, PNG, or WebP image.");
+      return;
+    }
     setUploading(true);
     try {
       const formData = new FormData();
@@ -735,6 +813,11 @@ function EditorContent() {
 
   // Uploads author avatar image through the /api/admin/upload route and sets authorImage URL
   const handleAuthorImageUpload = async (file: File) => {
+    const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif");
+    if (isGif) {
+      alert("GIF files cannot be uploaded as an author avatar. Please select a JPG, PNG, or WebP image.");
+      return;
+    }
     setAuthorUploading(true);
     try {
       const formData = new FormData();
@@ -802,10 +885,11 @@ function EditorContent() {
       authorRole: authorRole || "",
       authorImage: authorImage || "",
       coverImage: coverImage || "",
+      baseFont: baseFont || "Montserrat",
     };
 
     return postObj;
-  }, [author, authorRole, authorImage, category, contentJson, coverImage, postId, publishedAtCustom, readTime, sections, slug, subheading, tagsInput, title]);
+  }, [author, authorRole, authorImage, baseFont, category, contentJson, coverImage, postId, publishedAtCustom, readTime, sections, slug, subheading, tagsInput, title]);
 
   const handleOpenPreview = () => {
     const postObj = buildPreviewPost();
@@ -908,11 +992,7 @@ function EditorContent() {
               <button
                 type="button"
                 onClick={() => {
-                  const plainContent = contentJson?.content
-                    ? contentJson.content
-                        .map((n: any) => n.text || (n.content ? n.content.map((c: any) => c.text || "").join("") : ""))
-                        .join("\n\n")
-                    : "";
+                  const plainContent = tiptapDocToPlainText(contentJson);
                   const exportText = `Title: ${title}\nSubheading: ${subheading}\n\n${plainContent}`;
                   void navigator.clipboard.writeText(exportText);
                   setIsCopied(true);
@@ -999,7 +1079,7 @@ function EditorContent() {
                 <input
                   ref={fileInputRef}
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif"
                   className="hidden"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
@@ -1422,7 +1502,7 @@ function EditorContent() {
                   <input
                     ref={authorFileInputRef}
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif"
                     className="hidden"
                     onChange={(e) => {
                       const file = e.target.files?.[0];
@@ -1517,7 +1597,15 @@ function EditorContent() {
                 <span>Loading post content...</span>
               </div>
             ) : (
-              <SimpleEditor content={contentJson} onChange={setContentJson} />
+              <SimpleEditor
+                content={contentJson}
+                onChange={setContentJson}
+                currentPostId={postId}
+                currentSlug={slug}
+                currentTitle={title}
+                baseFont={baseFont}
+                onBaseFontChange={setBaseFont}
+              />
             )}
           </div>
 
@@ -1534,47 +1622,7 @@ function EditorContent() {
                 {/* Auto-generates TOC anchors by parsing H2-H4 heading nodes from the Tiptap AST */}
                 <button
                   type="button"
-                  onClick={() => {
-                    if (!contentJson || !contentJson.content) return;
-                    
-                    // Determine highest heading level.
-                    // We start tracking from level 2 (h2) because level 2 (h2) is mapped
-                    // visually to "Heading 1" in the CMS editor toolbar dropdown UI.
-                    let minLevel = 99;
-                    for (const node of contentJson.content) {
-                      if (node.type === "heading" && node.attrs?.level) {
-                        const lvl = node.attrs.level;
-                        if (lvl >= 2 && lvl <= 4 && lvl < minLevel) {
-                          minLevel = lvl;
-                        }
-                      }
-                    }
-                    const targetLevel = minLevel === 99 ? 2 : minLevel;
-
-                    const generated: { id: string; title: string }[] = [];
-                    const idCounts: Record<string, number> = {};
-                    for (const node of contentJson.content) {
-                      if (node.type === "heading" && node.attrs?.level === targetLevel) {
-                        let titleText = "";
-                        if (node.content) {
-                          titleText = node.content.map((c: any) => c.text || "").join("");
-                        }
-                        if (titleText) {
-                          const baseId = titleText.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-                          const finalBaseId = baseId || "section";
-                          let id = finalBaseId;
-                          if (idCounts[finalBaseId] !== undefined) {
-                            idCounts[finalBaseId]++;
-                            id = `${finalBaseId}-${idCounts[finalBaseId]}`;
-                          } else {
-                            idCounts[finalBaseId] = 0;
-                          }
-                          generated.push({ id, title: titleText });
-                        }
-                      }
-                    }
-                    setSections(generated);
-                  }}
+                  onClick={() => setSections(extractSectionsFromTiptapJson(contentJson))}
                   suppressHydrationWarning
                   className="inline-flex items-center justify-center rounded-lg border border-blue-500/20 bg-blue-500/10 px-3.5 py-2 text-xs font-semibold text-blue-400 hover:bg-blue-600 hover:text-white transition"
                 >

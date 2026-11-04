@@ -66,12 +66,14 @@ export const BlogPostSchema = z.object({
   author: z.string().default(""),
   authorRole: z.string().default(""),
   authorImage: z.string().optional().default(""),
+  baseFont: z.string().max(50, "Font name exceeds maximum length").optional().default(""),
   readTime: z.string().optional().default(""),
   publishedAtCustom: z.string().optional().default(""),
   filterLabels: z.array(z.string()).optional(),
   // Concurrency tracking fields
   version: z.number().int().nonnegative().optional(),
   forceOverwrite: z.boolean().optional().default(false),
+  clientSessionId: z.string().max(100).optional(),
   // Enforces that all table-of-contents anchor IDs within an article are unique
   sections: z.array(SectionSchema).optional().refine(
     (items) => {

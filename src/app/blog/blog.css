@@ -1369,6 +1369,7 @@
 
 /* Article Content */
 .article-content {
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 17px;
   line-height: 1.7;
   color: var(--text-secondary);
@@ -1413,7 +1414,7 @@
 
 
 .article-content h1 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 32px;
   font-weight: 800;
   color: var(--text-primary);
@@ -1424,7 +1425,7 @@
 }
 
 .article-content h2 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 26px;
   font-weight: 700;
   color: var(--text-primary);
@@ -1435,7 +1436,7 @@
 }
 
 .article-content h3 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 22px;
   font-weight: 600;
   color: var(--text-primary);
@@ -1445,7 +1446,7 @@
 }
 
 .article-content h4 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 18px;
   font-weight: 600;
   color: var(--text-primary);
@@ -1456,7 +1457,7 @@
 
 .article-content h5,
 .article-content h6 {
-  font-family: var(--font-montserrat), sans-serif;
+  font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
   font-size: 16px;
   font-weight: 600;
   color: var(--text-primary);
@@ -2555,7 +2556,7 @@ ul[data-type="taskList"] li > div,
   .article-title {
     font-size: 32px;
   }
- 
+
   .hero-dek {
     font-size: 15px;
     line-height: 1.5;
@@ -3104,4 +3105,553 @@ ul[data-type="taskList"] li > div,
   font-size: 0.75rem;
   line-height: 1.5;
 }
-
+
+/* ==========================================================================
+   Curated Reference Blogs Section
+   ========================================================================== */
+.ref-blogs-section {
+  width: 100%;
+  margin: 2.5rem 0;
+  box-sizing: border-box;
+}
+
+.ref-blogs-heading {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #f4f4f5;
+  margin: 0 0 1rem 0;
+  letter-spacing: -0.01em;
+}
+
+.ref-blogs-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  width: 100%;
+}
+
+/* Individual Card Row */
+.article-content a.ref-blog-card,
+.article-content .ref-blogs-section a.ref-blog-card,
+.ref-blog-card {
+  display: flex !important;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 0.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+  min-height: 48px;
+  box-sizing: border-box;
+  width: 100%;
+  cursor: pointer;
+}
+
+.article-content a.ref-blog-card:hover,
+.article-content .ref-blogs-section a.ref-blog-card:hover,
+.ref-blog-card:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.ref-blog-card:last-child {
+  border-bottom: none;
+}
+
+/* Explicitly remove underlines from all children */
+.article-content a.ref-blog-card *,
+.article-content .ref-blogs-section a.ref-blog-card *,
+.ref-blog-card * {
+  text-decoration: none !important;
+}
+
+.ref-blog-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  flex-shrink: 0;
+  color: #a1a1aa;
+  transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.ref-blog-card:hover .ref-blog-icon-wrap {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.35);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.ref-blog-arrow {
+  width: 1rem;
+  height: 1rem;
+  stroke-width: 2;
+}
+
+.article-content a.ref-blog-card .ref-blog-num,
+.article-content .ref-blogs-section .ref-blog-num,
+.ref-blog-num {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #71717a !important;
+  flex-shrink: 0;
+  min-width: 1.75rem;
+  font-variant-numeric: tabular-nums;
+  text-decoration: none !important;
+  transition: color 0.15s ease;
+}
+
+.article-content a.ref-blog-card:hover .ref-blog-num,
+.ref-blog-card:hover .ref-blog-num {
+  color: #a1a1aa !important;
+  text-decoration: none !important;
+}
+
+.article-content a.ref-blog-card .ref-blog-title,
+.article-content .ref-blogs-section .ref-blog-title,
+.ref-blog-title {
+  font-size: 0.9375rem;
+  color: #e4e4e7 !important;
+  font-weight: 400;
+  line-height: 1.45;
+  flex-grow: 1;
+  word-break: break-word;
+  text-decoration: none !important;
+  transition: color 0.15s ease;
+}
+
+.article-content a.ref-blog-card:hover .ref-blog-title,
+.ref-blog-card:hover .ref-blog-title {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.ref-blogs-bottom {
+  margin-top: 1rem;
+}
+
+.article-content a.ref-blogs-footer-link,
+.article-content .ref-blogs-section a.ref-blogs-footer-link,
+.ref-blogs-footer-link {
+  font-size: 0.875rem;
+  color: #a1a1aa !important;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  transition: color 0.15s ease;
+}
+
+.article-content a.ref-blogs-footer-link:hover,
+.article-content .ref-blogs-section a.ref-blogs-footer-link:hover,
+.ref-blogs-footer-link:hover {
+  color: #ffffff !important;
+  text-decoration: none !important;
+}
+
+.ref-blogs-bottom-arrow {
+  width: 0.875rem;
+  height: 0.875rem;
+  stroke-width: 2;
+}
+
+/* Mobile & Small Device Adaptation (< 640px) */
+@media (max-width: 639px) {
+  .ref-blogs-section {
+    margin: 1.75rem 0;
+  }
+
+  .ref-blogs-heading {
+    font-size: 1.125rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .ref-blog-card {
+    gap: 0.75rem;
+    padding: 0.75rem 0.25rem;
+    min-height: 48px;
+  }
+
+  .ref-blog-icon-wrap {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  .ref-blog-arrow {
+    width: 0.875rem;
+    height: 0.875rem;
+  }
+
+  .ref-blog-num {
+    font-size: 0.8125rem;
+    min-width: 1.5rem;
+  }
+
+  .ref-blog-title {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .ref-blogs-footer-link {
+    font-size: 0.8125rem;
+  }
+}
+
+/* iPad / Tablet Adaptation (640px to 1024px) */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .ref-blog-card {
+    padding: 0.875rem 0.75rem;
+    gap: 1.25rem;
+  }
+
+  .ref-blog-title {
+    font-size: 0.9375rem;
+  }
+}
+
+
+
+/* ==========================================================================
+   Media Captions (Images, GIFs, and Videos)
+   ========================================================================== */
+.blog-media-figure {
+  display: flex;
+  flex-direction: column;
+  width: -moz-fit-content;
+  width: fit-content;
+  max-width: 100%;
+  margin: 2rem auto;
+  box-sizing: border-box;
+}
+
+.blog-media-figure .blog-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  display: block;
+  margin: 0 !important;
+}
+
+.blog-media-figure.blog-video-figure {
+  display: block;
+  width: 100%;
+  margin: 2rem 0;
+}
+
+.blog-media-figure.blog-video-figure .video-embed-container {
+  margin: 0;
+  width: 100%;
+}
+
+.blog-media-caption {
+  width: 100%;
+  margin-top: 0.75rem;
+  margin-bottom: 0;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  font-style: italic;
+  font-weight: 400;
+  color: #a1a1aa;
+  text-align: left;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-sizing: border-box;
+}
+
+/* Mobile & Small Device Adaptation (< 640px) */
+@media (max-width: 639px) {
+  .blog-media-figure {
+    margin: 1.5rem auto;
+  }
+
+  .blog-media-caption {
+    font-size: 0.8125rem;
+    margin-top: 0.5rem;
+    line-height: 1.45;
+  }
+}
+
+/* iPad / Tablet Adaptation (640px to 1024px) */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .blog-media-figure {
+    margin: 1.75rem auto;
+  }
+
+  .blog-media-caption {
+    font-size: 0.84rem;
+  }
+}
+
+/* ==========================================================================
+   Bento Grid Section (Reader View)
+   ========================================================================== */
+.bento-grid-wrapper {
+  display: grid;
+  width: 100%;
+  margin: 2.5rem 0;
+  box-sizing: border-box;
+  grid-auto-flow: dense;
+}
+
+.bento-grid-wrapper.bento-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.bento-grid-wrapper.bento-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.bento-grid-wrapper.bento-gap-sm {
+  gap: 0.75rem;
+}
+
+.bento-grid-wrapper.bento-gap-md {
+  gap: 1.25rem;
+}
+
+.bento-grid-wrapper.bento-gap-lg {
+  gap: 1.75rem;
+}
+
+/* Individual Bento Card */
+.article-content .bento-grid-wrapper .bento-card,
+.bento-card {
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.article-content .bento-grid-wrapper .bento-card:hover,
+.bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  text-decoration: none !important;
+}
+
+.bento-card.bento-col-1 {
+  grid-column: span 1;
+}
+
+.bento-card.bento-col-2 {
+  grid-column: span 2;
+}
+
+.bento-card.bento-col-3 {
+  grid-column: span 3;
+}
+
+.bento-card.bento-row-1 {
+  grid-row: span 1;
+}
+
+.bento-card.bento-row-2 {
+  grid-row: span 2;
+  min-height: 360px;
+}
+
+.bento-card.bento-row-3 {
+  grid-row: span 3;
+  min-height: 540px;
+}
+
+/* Media in Bento Card */
+.bento-media-wrap {
+  width: 100%;
+  position: relative;
+  background: #09090b;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bento-media-img {
+  width: 100%;
+  height: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.bento-media-video {
+  width: 100%;
+  height: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Tall cards: media fills every spanned row; iframe embeds keep their own 16:9 wrapper */
+.bento-card.bento-row-2 .bento-media-wrap:not(.bento-embed-wrap),
+.bento-card.bento-row-3 .bento-media-wrap:not(.bento-embed-wrap) {
+  flex: 1;
+  min-height: 0;
+}
+
+.bento-card.bento-row-2 .bento-media-img,
+.bento-card.bento-row-2 .bento-media-video,
+.bento-card.bento-row-3 .bento-media-img,
+.bento-card.bento-row-3 .bento-media-video {
+  position: absolute;
+  inset: 0;
+  max-height: none;
+}
+
+.bento-embed-wrap {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+.bento-embed-wrap iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Optional caption below the media */
+.bento-card-info {
+  padding: 0.85rem 1.25rem 1rem;
+}
+
+.article-content .bento-card-caption,
+.bento-card-caption {
+  margin: 0 !important;
+  font-size: 0.825rem;
+  color: #a1a1aa;
+  line-height: 1.5;
+}
+
+/* Mobile Responsive Stacking (< 768px) per User Choice A4 */
+@media (max-width: 768px) {
+  .bento-grid-wrapper.bento-cols-2,
+  .bento-grid-wrapper.bento-cols-3,
+  .bento-grid-wrapper {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .bento-card.bento-col-1,
+  .bento-card.bento-col-2,
+  .bento-card.bento-col-3 {
+    grid-column: span 1 !important;
+  }
+
+  .bento-card.bento-row-1,
+  .bento-card.bento-row-2,
+  .bento-card.bento-row-3 {
+    grid-row: span 1 !important;
+    min-height: unset !important;
+  }
+
+  /* Stacked tall cards return to normal-height media instead of filling 360/540px */
+  .bento-card.bento-row-2 .bento-media-img,
+  .bento-card.bento-row-2 .bento-media-video,
+  .bento-card.bento-row-3 .bento-media-img,
+  .bento-card.bento-row-3 .bento-media-video {
+    position: static;
+    max-height: 280px;
+  }
+}
+
+/* ==========================================================================
+   Illustration List Section (Reader View)
+   ========================================================================== */
+.article-content .illustration-showcase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+  margin: 2.5rem 0;
+  box-sizing: border-box;
+}
+
+/* Keep a section heading visually attached to its list */
+.article-content :is(h2, h3, h4) + .illustration-showcase-list {
+  margin-top: 1.5rem;
+}
+
+.article-content .illustration-showcase-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.article-content .illustration-showcase-media-box {
+  flex-shrink: 0;
+  width: 76px;
+  height: 76px;
+  overflow: hidden;
+  background: #121214;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+
+.article-content .illustration-showcase-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.article-content .illustration-showcase-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.article-content .illustration-showcase-title {
+  margin: 0 0 0.25rem;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--text-primary);
+  overflow-wrap: anywhere;
+}
+
+.article-content .illustration-showcase-desc {
+  margin: 0;
+  line-height: 1.6;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+/* Compact side-by-side rows on small screens (< 640px) */
+@media (max-width: 639px) {
+  .article-content .illustration-showcase-list {
+    gap: 1.5rem;
+  }
+
+  .article-content .illustration-showcase-item {
+    gap: 0.875rem;
+  }
+
+  .article-content .illustration-showcase-media-box {
+    width: 56px;
+    height: 56px;
+  }
+
+  .article-content .illustration-showcase-title,
+  .article-content .illustration-showcase-desc {
+    font-size: 16px;
+  }
+}

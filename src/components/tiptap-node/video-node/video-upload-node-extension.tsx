@@ -212,7 +212,7 @@ const VideoUploadNodeView: React.FC<NodeViewProps> = (props) => {
       <input
         ref={inputRef}
         type="file"
-        accept="video/mp4,video/webm,video/ogg,video/quicktime"
+        accept="video/mp4,video/webm,video/ogg,video/quicktime,.mp4,.webm,.ogg,.mov,.m4v"
         style={{ display: "none" }}
         onChange={handleChange}
         onClick={(e: React.MouseEvent<HTMLInputElement>) => e.stopPropagation()}

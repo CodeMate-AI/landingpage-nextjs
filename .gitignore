@@ -59,9 +59,8 @@ public/_next-video
 # local scripts
 /scripts/
 
-.cora-cli
-
 # AI agent & skill caches
+.cora-cli
 .claude/
 agent/
 /agent/

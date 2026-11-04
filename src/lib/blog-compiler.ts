@@ -1,6 +1,7 @@
 import { generateHTML } from "@tiptap/html";
 import DOMPurify from "isomorphic-dompurify";
 import { extensions } from "@/lib/tiptap-extensions";
+import { decodeJsonAttr, decodeJsonAttrValue } from "@/lib/tiptap-json-attr";
 
 function determineHighestHeadingLevel(content: any): number {
   if (!content || !content.content) return 2;
@@ -16,11 +17,35 @@ function determineHighestHeadingLevel(content: any): number {
   return minLevel === 99 ? 2 : minLevel;
 }
 
-export function extractSectionsFromTiptapJson(content: any): { id: string; title: string }[] {
+function hasIllustrationContent(item: any): boolean {
+  const mediaUrl = typeof item?.mediaUrl === "string" ? item.mediaUrl.trim() : "";
+  const hasText = [item?.title, item?.description].some((text) => typeof text === "string" && text.trim());
+  return hasText || Boolean(mediaUrl && isSafeUrl(mediaUrl));
+}
+
+// An illustration list's section title compiles as a real heading placed before the list, at the
+// document's section level, so it gets an anchor and a table of contents entry like any other heading.
+// Lists that render nothing get no heading, which would otherwise be left orphaned on the page.
+function expandIllustrationListHeadings(content: any): any {
+  if (!content || !Array.isArray(content.content)) return content;
+  const level = determineHighestHeadingLevel(content);
+  return {
+    ...content,
+    content: content.content.flatMap((node: any) => {
+      const title = typeof node?.attrs?.sectionTitle === "string" ? node.attrs.sectionTitle.trim() : "";
+      const items = Array.isArray(node?.attrs?.items) ? node.attrs.items : [];
+      if (node?.type !== "illustrationList" || !title || !items.some(hasIllustrationContent)) return [node];
+      return [{ type: "heading", attrs: { level }, content: [{ type: "text", text: title }] }, node];
+    }),
+  };
+}
+
+export function extractSectionsFromTiptapJson(rawContent: any): { id: string; title: string }[] {
   const sections: { id: string; title: string }[] = [];
   const idCounts: Record<string, number> = {};
 
-  if (!content || !content.content) return sections;
+  if (!rawContent || !rawContent.content) return sections;
+  const content = expandIllustrationListHeadings(rawContent);
   const targetLevel = determineHighestHeadingLevel(content);
 
   for (const node of content.content) {
@@ -357,9 +382,28 @@ function formatFaqSection(html: string): string {
   return beforeHeading + match[0] + faqContainerHtml + remainingContent;
 }
 
+// Extracts the 11-character YouTube video ID from watch, embed, shorts, or youtu.be URLs
+function getYouTubeId(url: string): string | null {
+  const match = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
+  return match && match[1] ? match[1] : null;
+}
+
+// Extracts the numeric Vimeo video ID from standard, channel, group, or album URLs
+function getVimeoId(url: string): string | null {
+  const match = url.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/i);
+  return match && match[3] ? match[3] : null;
+}
+
 function formatVideos(html: string): string {
   const videoRegex = /(?:<p>\s*)?\[video:\s*([\s\S]*?)\](?:\s*<\/p>)?/gi;
-  return html.replace(videoRegex, (match, rawUrl) => {
+  return html.replace(videoRegex, (match, rawPayload) => {
+    let rawUrl = rawPayload;
+    let caption = "";
+    const capMatch = rawPayload.match(/^([\s\S]*?)\s*\|\s*caption:[ ]?([\s\S]*)$/i);
+    if (capMatch) {
+      rawUrl = capMatch[1];
+      caption = capMatch[2].replace(/<[^>]*>/g, "").replace(/&lt;[^&]*?&gt;/gi, "");
+    }
     // Strip any inner anchor or span HTML tags from TipTap auto-linking or entity escaped tags
     const cleanUrl = rawUrl
       .replace(/<[^>]*>/g, "")
@@ -374,17 +418,18 @@ function formatVideos(html: string): string {
     const safeUrl = escapeHtml(cleanUrl);
 
     // 1. YouTube Embed Detection
-    const ytMatch = cleanUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i);
-    if (ytMatch && ytMatch[1]) {
-      const videoId = ytMatch[1];
-      return `<div class="video-embed-container my-6" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
+    let embedHtml = "";
+    const youTubeId = getYouTubeId(cleanUrl);
+    if (youTubeId) {
+      const videoId = youTubeId;
+      embedHtml = `<div class="video-embed-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); width: 100%;"><iframe src="https://www.youtube-nocookie.com/embed/${videoId}" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
     }
 
     // 2. Vimeo Embed Detection
-    const vimeoMatch = cleanUrl.match(/vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/i);
-    if (vimeoMatch && vimeoMatch[3]) {
-      const videoId = vimeoMatch[3];
-      return `<div class="video-embed-container my-6" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08);"><iframe src="https://player.vimeo.com/video/${videoId}" title="Vimeo video player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
+    const vimeoId = getVimeoId(cleanUrl);
+    if (vimeoId) {
+      const videoId = vimeoId;
+      embedHtml = `<div class="video-embed-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 8px; border: 1px solid rgba(255,255,255,0.08); width: 100%;"><iframe src="https://player.vimeo.com/video/${videoId}" title="Vimeo video player" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe></div>`;
     }
 
     // 3. Direct Playable Video Files (.mp4, .webm, .ogg, .mov, etc.), blob URLs, or CodeMate backend media uploads
@@ -393,11 +438,22 @@ function formatVideos(html: string): string {
       cleanUrl.startsWith("blob:") ||
       /\/uploaded\/images\/[a-f0-9-]+/i.test(cleanUrl);
     if (isDirectVideo) {
-      return `<div class="video-embed-container my-6"><video src="${safeUrl}" controls muted playsinline preload="metadata" class="blog-video" style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); display: block;"></video></div>`;
+      embedHtml = `<div class="video-embed-container" style="width: 100%;"><video src="${safeUrl}" controls muted playsinline preload="metadata" class="blog-video" style="width: 100%; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.08); display: block;"></video></div>`;
+    }
+
+    if (embedHtml) {
+      if (caption && caption.trim().length > 0) {
+        return `<figure class="blog-media-figure blog-video-figure my-6" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;">${embedHtml}<figcaption class="blog-media-caption">${escapeHtmlText(caption)}</figcaption></figure>`;
+      }
+      return `<div class="video-embed-container my-6" style="width: 100%;">${embedHtml}</div>`;
     }
 
     // 4. Fallback for non-embeddable pages
-    return `<div class="video-embed-warning p-3 my-4 rounded-lg border border-amber-800/80 bg-amber-950/30 text-amber-300 text-xs"><span class="font-semibold uppercase">Video Notice:</span> URL is not a direct video file or supported embed: <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="underline text-blue-400 font-mono">${safeUrl}</a></div>`;
+    const warningHtml = `<div class="video-embed-warning p-3 my-4 rounded-lg border border-amber-800/80 bg-amber-950/30 text-amber-300 text-xs w-full"><span class="font-semibold uppercase">Video Notice:</span> URL is not a direct video file or supported embed: <a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="underline text-blue-400 font-mono">${safeUrl}</a></div>`;
+    if (caption && caption.trim().length > 0) {
+      return `<figure class="blog-media-figure blog-video-figure my-6" style="width: 100%; display: flex; flex-direction: column; align-items: flex-start;">${warningHtml}<figcaption class="blog-media-caption">${escapeHtmlText(caption)}</figcaption></figure>`;
+    }
+    return warningHtml;
   });
 }
 
@@ -419,6 +475,43 @@ function extractPlainTextFromNode(node: any): string {
     return node.content.map(extractPlainTextFromNode).join("");
   }
   return "";
+}
+
+function nodeToPlainText(node: any): string {
+  if (!node) return "";
+  if (typeof node.text === "string") return node.text;
+  if (node.type === "hardBreak") return "\n";
+
+  const attrs = node.attrs || {};
+  const toLines = (values: unknown[]) =>
+    values.filter((value) => typeof value === "string" && value.trim()).join("\n");
+  const list = (value: unknown): any[] => (Array.isArray(value) ? value : []);
+
+  // These nodes keep the author's text in attributes rather than child text nodes
+  switch (node.type) {
+    case "image":
+    case "video":
+      return toLines([attrs.caption, attrs.src]);
+    case "bentoGrid":
+      return toLines(list(attrs.cards).flatMap((card) => [card?.caption, card?.mediaUrl]));
+    case "illustrationList":
+      return toLines([
+        attrs.sectionTitle,
+        ...list(attrs.items).flatMap((item) => [item?.title, item?.description, item?.mediaUrl]),
+      ]);
+    case "referenceBlogs":
+      return toLines([attrs.heading, ...list(attrs.blogs).map((blog) => blog?.title)]);
+  }
+
+  const children = list(node.content);
+  const isInline = children.every((child) => typeof child?.text === "string" || child?.type === "hardBreak");
+  return children.map(nodeToPlainText).filter(Boolean).join(isInline ? "" : "\n");
+}
+
+// Flattens a whole Tiptap document to plain text, so an author can keep their work during a conflict
+export function tiptapDocToPlainText(content: any): string {
+  if (!content || !Array.isArray(content.content)) return "";
+  return content.content.map(nodeToPlainText).filter(Boolean).join("\n\n");
 }
 
 export function stripDuplicateSubheadingNode(content: any, subheading?: string): any {
@@ -444,6 +537,235 @@ export function stripDuplicateSubheadingNode(content: any, subheading?: string):
   return content;
 }
 
+function escapeHtmlAttr(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function escapeHtmlText(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// Later passes rewrite "[video: ...]" style shortcodes anywhere in the finished HTML, so "[" in
+// author text is encoded to keep it literal. Apply after escaping, or the "&" would be escaped too.
+function protectShortcodes(escapedText: string): string {
+  return escapedText.replace(/\[/g, "&#91;");
+}
+
+function formatReferenceBlogs(html: string): string {
+  // Attribute-aware tag match, as in formatBentoGrids, so quoted values are skipped as a whole
+  const referenceTagRegex =
+    /<div\b((?:[^>"']|"[^"]*"|'[^']*')*?data-type=["']reference-blogs["'](?:[^>"']|"[^"]*"|'[^']*')*)>(?:[\s\S]*?<\/div>)?/gi;
+  return html.replace(referenceTagRegex, (match, attrs) => {
+    const settingsMatch = attrs.match(/data-settings=(?:"([^"]*)"|'([^']*)')/i);
+    const blogsMatch = attrs.match(/data-blogs=(?:"([^"]*)"|'([^']*)')/i);
+    const settings = decodeJsonAttrValue(settingsMatch ? settingsMatch[1] || settingsMatch[2] : "") || {};
+
+    const readText = (value: unknown, fallback: string) => (typeof value === "string" ? value.trim() : fallback);
+    const heading = readText(settings.heading, "Writing");
+    const showBottom = settings.showBottomLink !== false;
+    const bottomText = readText(settings.bottomLinkText, "Read the blog");
+    const bottomUrl = readText(settings.bottomLinkUrl, "/blog");
+
+    const blogs: { id?: string; slug?: string; title?: string; category?: string }[] = decodeJsonAttr(
+      blogsMatch ? blogsMatch[1] || blogsMatch[2] : ""
+    );
+
+    if (blogs.length === 0) {
+      return "";
+    }
+
+    const cardsHtml = blogs
+      .map((blog, idx) => {
+        const num = String(idx + 1).padStart(2, "0");
+        const slug = (blog.slug || "").trim();
+        const href = slug ? (slug.startsWith("/") ? slug : `/blog/${slug}`) : "#";
+        const title = protectShortcodes(escapeHtmlText(blog.title || "Untitled Article"));
+
+        return `
+          <a href="${escapeHtmlAttr(href)}" class="ref-blog-card" role="listitem">
+            <span class="ref-blog-icon-wrap" aria-hidden="true">
+              <svg class="ref-blog-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7M17 7H7M17 7V17"></path>
+              </svg>
+            </span>
+            <span class="ref-blog-num">${num}</span>
+            <span class="ref-blog-title">${title}</span>
+          </a>
+        `.trim();
+      })
+      .join("\n");
+
+    let bottomLinkHtml = "";
+    if (showBottom) {
+      const cleanBottomUrl = bottomUrl.startsWith("http") || bottomUrl.startsWith("/") ? bottomUrl : `/${bottomUrl}`;
+      bottomLinkHtml = `
+        <div class="ref-blogs-bottom">
+          <a href="${protectShortcodes(escapeHtmlAttr(cleanBottomUrl))}" class="ref-blogs-footer-link">
+            <span>${protectShortcodes(escapeHtmlText(bottomText))}</span>
+            <svg class="ref-blogs-bottom-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M7 17L17 7M17 7H7M17 7V17"></path>
+            </svg>
+          </a>
+        </div>
+      `.trim();
+    }
+
+    return `
+      <section class="ref-blogs-section my-8" aria-label="${protectShortcodes(escapeHtmlAttr(heading))}">
+        <h3 class="ref-blogs-heading">${protectShortcodes(escapeHtmlText(heading))}</h3>
+        <div class="ref-blogs-list" role="list">
+          ${cardsHtml}
+        </div>
+        ${bottomLinkHtml}
+      </section>
+    `.trim();
+  });
+}
+
+function formatBentoGrids(html: string): string {
+  // Attribute-aware tag match: serialized attribute values keep raw "<" / ">" (e.g. a caption "<b>"),
+  // so quoted values must be skipped as a whole rather than stopping at the first ">"
+  const bentoTagRegex =
+    /<div\b((?:[^>"']|"[^"]*"|'[^']*')*?data-type=["']bento-grid["'](?:[^>"']|"[^"]*"|'[^']*')*)>(?:[\s\S]*?<\/div>)?/gi;
+  return html.replace(bentoTagRegex, (match, attrs) => {
+    const colsMatch = attrs.match(/data-columns=["']([^"']*)["']/i);
+    const gapMatch = attrs.match(/data-gap=["']([^"']*)["']/i);
+    const cardsMatch = attrs.match(/data-cards=(?:"([^"]*)"|'([^']*)')/i);
+
+    // Clamp to supported layouts so stale or tampered attributes cannot produce unknown classes
+    const columns = colsMatch && parseInt(colsMatch[1], 10) === 3 ? 3 : 2;
+    const rawGap = gapMatch ? gapMatch[1].trim() : "md";
+    const gap = rawGap === "sm" || rawGap === "lg" ? rawGap : "md";
+
+    const cards = decodeJsonAttr(cardsMatch ? cardsMatch[1] || cardsMatch[2] : "");
+
+    if (cards.length === 0) {
+      return "";
+    }
+
+    const cardsHtml = cards
+      .map((card, idx) => {
+        const mediaType = card.mediaType || "image";
+        const rawMediaUrl = (card.mediaUrl || "").trim();
+        const safeMediaUrl = rawMediaUrl && isSafeUrl(rawMediaUrl) ? escapeHtml(rawMediaUrl) : "";
+        // Cards show media plus an optional caption; legacy title/linkUrl values are intentionally ignored
+        const rawCaption = typeof card.caption === "string" ? card.caption.trim() : "";
+        const caption = protectShortcodes(escapeHtmlText(rawCaption));
+        const altText = protectShortcodes(escapeHtmlAttr(card.altText || rawCaption || `Bento visual ${idx + 1}`));
+
+        // Never span wider than the grid, e.g. a "Full" card left over after switching 3 -> 2 columns
+        const spanCols = Math.min(card.spanCols === 3 ? 3 : card.spanCols === 2 ? 2 : 1, columns);
+        const spanRows = card.spanRows === 3 ? 3 : card.spanRows === 2 ? 2 : 1;
+
+        const colClass = `bento-col-${spanCols}`;
+        const rowClass = `bento-row-${spanRows}`;
+
+        let mediaHtml = "";
+        if (safeMediaUrl) {
+          if (mediaType === "video") {
+            // Detect embeds on the raw URL; the escaped form turns "&" into "&amp;" and breaks "?a=b&v=ID" matching
+            const youTubeId = getYouTubeId(rawMediaUrl);
+            const vimeoId = youTubeId ? null : getVimeoId(rawMediaUrl);
+            const iframeTitle = protectShortcodes(escapeHtmlAttr(rawCaption || "Video player"));
+            if (youTubeId) {
+              mediaHtml = `
+                <div class="bento-media-wrap bento-embed-wrap">
+                  <iframe src="https://www.youtube-nocookie.com/embed/${youTubeId}" title="${iframeTitle}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                </div>
+              `;
+            } else if (vimeoId) {
+              mediaHtml = `
+                <div class="bento-media-wrap bento-embed-wrap">
+                  <iframe src="https://player.vimeo.com/video/${vimeoId}" title="${iframeTitle}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen loading="lazy"></iframe>
+                </div>
+              `;
+            } else {
+              mediaHtml = `
+                <div class="bento-media-wrap">
+                  <video src="${safeMediaUrl}" autoplay loop muted playsinline preload="metadata" class="bento-media-video"></video>
+                </div>
+              `;
+            }
+          } else {
+            mediaHtml = `
+              <div class="bento-media-wrap">
+                <img src="${safeMediaUrl}" alt="${altText}" loading="lazy" decoding="async" class="bento-media-img" />
+              </div>
+            `;
+          }
+        }
+
+        const captionHtml = caption
+          ? `
+            <div class="bento-card-info">
+              <p class="bento-card-caption">${caption}</p>
+            </div>
+          `
+          : "";
+
+        return `
+          <div class="bento-card ${colClass} ${rowClass}">
+            ${mediaHtml}${captionHtml}
+          </div>
+        `.trim();
+      })
+      .join("\n");
+
+    return `
+      <section class="bento-grid-wrapper bento-cols-${columns} bento-gap-${gap} my-8" role="region" aria-label="Bento Grid">
+        ${cardsHtml}
+      </section>
+    `.trim();
+  });
+}
+
+function formatIllustrationLists(html: string): string {
+  // Attribute-aware tag match, as in formatBentoGrids, so quoted values are skipped as a whole
+  const listTagRegex =
+    /<div\b((?:[^>"']|"[^"]*"|'[^']*')*?data-type=["']illustration-list["'](?:[^>"']|"[^"]*"|'[^']*')*)>(?:[\s\S]*?<\/div>)?/gi;
+  // This output is not re-sanitized, so author text is escaped as well as protected from shortcodes
+  const escapeItemText = (text: string) => protectShortcodes(escapeHtmlText(text));
+
+  return html.replace(listTagRegex, (match, attrs) => {
+    const itemsMatch = attrs.match(/data-items=(?:"([^"]*)"|'([^']*)')/i);
+    const items = decodeJsonAttr(itemsMatch ? itemsMatch[1] || itemsMatch[2] : "");
+
+    const rowsHtml = items
+      .map((item) => {
+        const rawMediaUrl = typeof item?.mediaUrl === "string" ? item.mediaUrl.trim() : "";
+        const safeMediaUrl = rawMediaUrl && isSafeUrl(rawMediaUrl) ? escapeHtml(rawMediaUrl) : "";
+        const title = typeof item?.title === "string" ? item.title.trim() : "";
+        const description = typeof item?.description === "string" ? item.description.trim() : "";
+
+        if (!hasIllustrationContent(item)) return "";
+
+        // The title sits beside the illustration, so the image is decorative for screen readers
+        const mediaHtml = safeMediaUrl
+          ? `<div class="illustration-showcase-media-box"><img src="${safeMediaUrl}" alt="" loading="lazy" decoding="async" class="illustration-showcase-img" /></div>`
+          : "";
+        const titleHtml = title ? `<p class="illustration-showcase-title">${escapeItemText(title)}</p>` : "";
+        const descriptionHtml = description ? `<p class="illustration-showcase-desc">${escapeItemText(description)}</p>` : "";
+        const contentHtml = titleHtml || descriptionHtml
+          ? `<div class="illustration-showcase-content">${titleHtml}${descriptionHtml}</div>`
+          : "";
+
+        return `<div class="illustration-showcase-item" role="listitem">${mediaHtml}${contentHtml}</div>`;
+      })
+      .filter(Boolean)
+      .join("\n");
+
+    return rowsHtml ? `<div class="illustration-showcase-list" role="list">${rowsHtml}</div>` : "";
+  });
+}
+
 export function compileTiptapToHtml(
   content: any,
   customSections?: { id: string; title: string }[],
@@ -454,7 +776,7 @@ export function compileTiptapToHtml(
   }
 
   const sanitizedContent = stripDuplicateSubheadingNode(content, subheading);
-  const rawHtml = generateHTML(sanitizedContent, extensions);
+  const rawHtml = generateHTML(expandIllustrationListHeadings(sanitizedContent), extensions);
   const cleanHtml = DOMPurify.sanitize(rawHtml, {
     ALLOWED_TAGS: [
       "h1", "h2", "h3", "h4", "h5", "h6",
@@ -462,19 +784,24 @@ export function compileTiptapToHtml(
       "table", "thead", "tbody", "tr", "th", "td", "colgroup", "col",
       "span", "div", "video", "s", "del", "strike", "u", "sub", "sup", "mark",
       "input", "label", "blockquote", "hr", "br", "figure", "figcaption", "cite",
-      "b", "i", "summary", "details"
+      "b", "i", "summary", "details", "section", "svg", "path"
     ],
     ALLOWED_ATTR: [
       "href", "src", "alt", "class", "target", "rel", "id", "title",
       "controls", "muted", "autoplay", "loop", "playsinline", "type",
       "style", "checked", "disabled", "colspan", "rowspan", "colwidth",
-      "width", "height", "name", "data-type", "data-checked"
+      "width", "height", "name", "data-type", "data-checked",
+      "data-settings", "data-blogs", "data-caption", "data-columns", "data-gap", "data-cards", "data-items",
+      "viewbox", "viewBox", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin",
+      "d", "aria-hidden", "aria-label", "role"
     ],
   });
 
   const sections = customSections && customSections.length > 0 ? customSections : extractSectionsFromTiptapJson(sanitizedContent);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
-  const finalHtml = formatLinks(formatLogos(formatVideos(formatFaqSection(formatTableCells(headingHtml)))));
+  const finalHtml = formatLinks(
+    formatLogos(formatVideos(formatFaqSection(formatReferenceBlogs(formatIllustrationLists(formatBentoGrids(formatTableCells(headingHtml)))))))
+  );
 
   return { html: finalHtml, sections };
 }
@@ -485,6 +812,15 @@ export function calculateWordCount(node: any): number {
   let count = 0;
   if (node.text && typeof node.text === "string") {
     count += node.text.trim().split(/\s+/).filter(Boolean).length;
+  }
+  // Illustration list text lives in node attributes rather than child text nodes
+  if (node.type === "illustrationList" && Array.isArray(node.attrs?.items)) {
+    const sectionTitle = typeof node.attrs.sectionTitle === "string" ? node.attrs.sectionTitle : "";
+    count += sectionTitle.trim().split(/\s+/).filter(Boolean).length;
+    for (const item of node.attrs.items) {
+      const itemText = `${item?.title || ""} ${item?.description || ""}`;
+      count += itemText.trim().split(/\s+/).filter(Boolean).length;
+    }
   }
   if (node.content && Array.isArray(node.content)) {
     for (const child of node.content) {
@@ -520,6 +856,7 @@ export function hasActualDraftChanges(currentDraft: any, publishedVersion: any):
   if (compareStr(currentDraft.authorImage, publishedVersion.authorImage)) return true;
   if (compareStr(currentDraft.readTime, publishedVersion.readTime)) return true;
   if (compareStr(currentDraft.publishedAtCustom, publishedVersion.publishedAtCustom)) return true;
+  if (compareStr(currentDraft.baseFont, publishedVersion.baseFont)) return true;
 
   const normalizeTags = (tags: any[]) =>
     Array.isArray(tags)

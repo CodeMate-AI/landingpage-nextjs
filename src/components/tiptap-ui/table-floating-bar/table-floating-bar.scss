@@ -1,0 +1,66 @@
+.table-floating-bar {
+  position: absolute;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 6px;
+  background: #18181b;
+  border: 1px solid #27272a;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  user-select: none;
+  animation: tableBarFadeIn 0.12s ease-out;
+
+  .table-bar-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #d4d4d8;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: #27272a;
+      color: #ffffff;
+    }
+
+    &.is-danger {
+      color: #f87171;
+
+      &:hover {
+        background-color: rgba(239, 68, 68, 0.15);
+        color: #ef4444;
+      }
+    }
+
+    &.is-delete-table {
+      font-weight: 700;
+    }
+  }
+
+  .table-bar-separator {
+    width: 1px;
+    height: 14px;
+    background-color: #3f3f46;
+    margin: 0 3px;
+  }
+}
+
+@keyframes tableBarFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
