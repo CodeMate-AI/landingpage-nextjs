@@ -66,6 +66,9 @@ export default function Counter({
   const isInView = useInView(ref, { margin: "0px", once: true });
 
   useEffect(() => {
+    // No count animation for reduced motion: the server-rendered final value stays
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     if (!isInView) {
       if (ref.current) {
         ref.current.textContent = format(startValue);
@@ -113,7 +116,8 @@ export default function Counter({
       translate="no"
       className={cn("tabular-nums inline-block font-variant-numeric font-bold text-foreground", className)}
     >
-      {format(startValue)}
+      {/* The real value is server-rendered, so it is there before and without JavaScript */}
+      {format(endValue)}
     </span>
   );
 }

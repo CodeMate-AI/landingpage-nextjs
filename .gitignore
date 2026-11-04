@@ -63,5 +63,8 @@ public/_next-video
 .cora-cli
 .claude/
 agent/
+/agent/
+/.agents/
 skills-lock.json
 .playwright-mcp/
+.playwright-mcp

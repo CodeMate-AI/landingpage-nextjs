@@ -138,6 +138,7 @@ export const hpContact = {
   termsUrl: "https://docs.codemate.ai/faqs/terms-of-service",
   downloadUrl: "https://codemate.ai/download",
   contactUrl: "https://codemate.ai/contact",
+  navLogoUrl: "/logos/brand/hp-codemate-nav-logo.png",
   heroImageUrl: "/hp/hero-cozy-workspace.png",
   contactImageUrl: "https://backend.codemate.ai/uploaded/images/bf6916fd-580d-412c-8bbe-54b4ef8ee0b8",
 } as const;

@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { projects } from "../lib/communityProjects";
+import { projects, ORBIT_CRM_DEMO_URL } from "../lib/communityProjects";
 
 const tickerProjects = [
   {
@@ -11,7 +11,7 @@ const tickerProjects = [
     category: "Enterprise CRMs",
     highlight: "Autonomous Full-Stack Sales Pipeline & Client Workspace",
     tag: "Flagship Showcase",
-    demoUrl: "https://orbit-crm-og.codemate.build/",
+    demoUrl: ORBIT_CRM_DEMO_URL,
   },
   ...projects.map((p) => ({
     id: p.id,
