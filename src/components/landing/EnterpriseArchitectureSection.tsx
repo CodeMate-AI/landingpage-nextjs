@@ -30,14 +30,17 @@ export default function EnterpriseArchitectureSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.55 }}
-        className="z-10 flex flex-col items-center text-center max-w-[1362px] px-2 sm:px-4"
+        className="z-10 w-full max-w-[1740px] flex flex-col items-start lg:items-center text-left lg:text-center"
       >
-        <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[76px] font-medium text-white tracking-tight text-center">
-          <span>{ENTERPRISE_ARCHITECTURE_DATA.titlePrefix}</span>
-          <br className="hidden sm:inline" />
-          <span className="mt-1 inline-block">
-            <span translate="no">CodeMate AI</span> Accelerates{' '}
-            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold">
+        <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[76px] font-medium text-white tracking-tight text-left lg:text-center max-w-[1362px]">
+          <span className="block lg:inline">{ENTERPRISE_ARCHITECTURE_DATA.titlePrefixPart1}</span>{' '}
+          <span className="block lg:inline">{ENTERPRISE_ARCHITECTURE_DATA.titlePrefixPart2}</span>
+          <br className="hidden lg:inline" />
+          <span className="mt-1 lg:mt-0 block lg:inline-block">
+            <span className="block lg:inline">
+              <span translate="no">CodeMate AI</span> Accelerates
+            </span>{' '}
+            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold block lg:inline">
               {ENTERPRISE_ARCHITECTURE_DATA.titleHighlight}
             </span>
           </span>
@@ -48,48 +51,59 @@ export default function EnterpriseArchitectureSection() {
       {/* Architecture Glassmorphism Rows                                           */}
       {/* ========================================================================= */}
       <div className="w-full max-w-[1740px] flex flex-col gap-6 sm:gap-7 lg:gap-[24px] z-10">
-        {ENTERPRISE_ARCHITECTURE_DATA.groups.map((group, groupIdx) => (
-          <motion.div
-            key={group.id}
-            initial={{ opacity: 0, y: 18 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.5, delay: 0.1 * groupIdx }}
-            className="w-full flex flex-col items-start gap-2.5 sm:gap-3 lg:gap-[16px]"
-          >
-            {/* Category Header */}
-            <h3
-              className="font-[family-name:var(--font-inter)] text-white/75 font-normal text-sm sm:text-base lg:text-[18px] lg:leading-[18px] tracking-normal"
-            >
-              {group.category}
-            </h3>
+        {ENTERPRISE_ARCHITECTURE_DATA.groups.map((group, groupIdx) => {
+          const gridColsClass =
+            group.columns === 3
+              ? 'sm:grid-cols-3'
+              : 'sm:grid-cols-2';
 
-            {/* Glassmorphic Row Container */}
-            <div
-              className={`w-full border-[0.5px] border-white/20 rounded-[4px] overflow-hidden flex flex-col lg:flex-row bg-[rgba(20,20,22,0.4)] shadow-[0_4px_30px_rgba(0,0,0,0.5)] ${
-                group.columns === 5
-                  ? 'backdrop-blur-[10.5px]'
-                  : group.columns === 3
-                  ? 'backdrop-blur-[17px]'
-                  : 'backdrop-blur-[12px]'
-              }`}
+          const blurClass =
+            group.columns === 5
+              ? 'lg:backdrop-blur-[10.5px]'
+              : group.columns === 3
+              ? 'lg:backdrop-blur-[17px]'
+              : 'lg:backdrop-blur-[12px]';
+
+          return (
+            <motion.div
+              key={group.id}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.1 * groupIdx }}
+              className="w-full flex flex-col items-start gap-2.5 sm:gap-3 lg:gap-[16px]"
             >
-              {group.items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex-1 lg:flex-auto min-w-0 flex flex-col justify-start items-start p-3 sm:p-3.5 lg:px-3.5 xl:px-4 2xl:px-5 lg:pt-3.5 xl:pt-4 2xl:pt-4.5 lg:pb-3 min-h-[85px] sm:min-h-[95px] lg:h-[135px] xl:h-[145px] gap-1.5 sm:gap-2 border-b lg:border-b-0 lg:border-r border-white/20 last:border-b-0 lg:last:border-r-0 transition-all duration-300 hover:bg-white/[0.06] group"
-                >
-                  <h4 className="text-white font-semibold text-base sm:text-lg lg:text-[15px] xl:text-[17px] 2xl:text-[19px] lg:leading-[22px] xl:leading-[24px] 2xl:leading-[26px] tracking-tight group-hover:text-white transition-colors whitespace-nowrap">
-                    {item.title}
-                  </h4>
-                  <p className="text-white/70 font-normal text-xs sm:text-sm lg:text-[11px] xl:text-[11.5px] 2xl:text-[13px] lg:leading-[16px] xl:leading-[18px] 2xl:leading-[20px] tracking-tight lg:whitespace-nowrap group-hover:text-white/85 transition-colors">
-                    {item.subtitle}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        ))}
+              {/* Category Header */}
+              <div className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#00BFFF] shadow-[0_0_8px_rgba(0,191,255,0.8)]" />
+                <h3 className="font-[family-name:var(--font-inter)] text-white/80 font-medium text-sm sm:text-base lg:text-[18px] lg:leading-[18px] tracking-normal">
+                  {group.category}
+                </h3>
+              </div>
+
+              {/* Glassmorphic Container (Cards on mobile/tablet, row on desktop) */}
+              <div
+                className={`w-full grid grid-cols-1 ${gridColsClass} lg:flex lg:flex-row gap-2.5 sm:gap-3 lg:gap-0 lg:border-[0.5px] lg:border-white/20 lg:rounded-[4px] lg:overflow-hidden lg:bg-[rgba(20,20,22,0.4)] lg:shadow-[0_4px_30px_rgba(0,0,0,0.5)] ${blurClass}`}
+              >
+                {group.items.map((item) => (
+                  <div
+                    key={item.id}
+                    className={`flex flex-col justify-start items-start p-4 sm:p-4.5 lg:px-3.5 xl:px-4 2xl:px-5 lg:pt-3.5 xl:pt-4 2xl:pt-4.5 lg:pb-3 min-h-[82px] sm:min-h-[92px] lg:h-[135px] xl:h-[145px] gap-1.5 sm:gap-2 rounded-xl lg:rounded-none border border-white/10 lg:border-0 lg:border-r lg:border-white/20 lg:last:border-r-0 bg-[rgba(20,20,22,0.55)] lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none shadow-[0_4px_20px_rgba(0,0,0,0.35)] lg:shadow-none transition-all duration-300 hover:border-cyan-500/30 lg:hover:border-r-white/20 hover:bg-white/[0.06] group flex-1 lg:flex-auto min-w-0 ${
+                      group.columns === 5 ? 'last:sm:col-span-2 last:lg:col-span-1' : ''
+                    }`}
+                  >
+                    <h4 className="text-white font-semibold text-base sm:text-lg lg:text-[15px] xl:text-[17px] 2xl:text-[19px] lg:leading-[22px] xl:leading-[24px] 2xl:leading-[26px] tracking-tight group-hover:text-white transition-colors lg:whitespace-nowrap">
+                      {item.title}
+                    </h4>
+                    <p className="text-white/70 font-normal text-xs sm:text-sm lg:text-[11px] xl:text-[11.5px] 2xl:text-[13px] leading-relaxed lg:leading-[16px] xl:leading-[18px] 2xl:leading-[20px] tracking-tight lg:whitespace-nowrap group-hover:text-white/85 transition-colors">
+                      {item.subtitle}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          );
+        })}
       </div>
     </section>
   );
