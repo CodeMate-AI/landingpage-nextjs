@@ -90,8 +90,12 @@ export default function ShowcaseGrid({ cards }: { cards: ShowcaseCardData[] }) {
             <li
               key={card.key}
               data-card
-              style={{ transitionDelay: `${(idx % COLUMNS) * 70}ms` }}
-              className="flex translate-y-6 opacity-0 transition-[opacity,transform] duration-[650ms] ease-[cubic-bezier(0.22,1,0.36,1)] will-change-[opacity,transform] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none"
+              style={{
+                transitionDelay: `${(idx % COLUMNS) * 70}ms`,
+                transitionDuration: '650ms',
+                transitionTimingFunction: 'cubic-bezier(0.22, 1, 0.36, 1)',
+              }}
+              className="flex translate-y-6 opacity-0 transition-[opacity,transform] will-change-[opacity,transform] data-[visible=true]:translate-y-0 data-[visible=true]:opacity-100 motion-reduce:translate-y-0 motion-reduce:opacity-100 motion-reduce:transition-none"
             >
               <article className="flex w-full flex-col overflow-hidden rounded-lg bg-[#121214]">
                 <div
