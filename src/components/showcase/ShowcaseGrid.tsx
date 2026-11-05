@@ -119,8 +119,7 @@ export default function ShowcaseGrid({ cards }: { cards: ShowcaseCardData[] }) {
 
                 <div className="flex flex-1 flex-col gap-3 px-5 pb-5 pt-5">
                   <h2
-                    title={card.title}
-                    className="line-clamp-2 text-base font-medium leading-snug text-white sm:text-lg"
+                    className="break-words text-base font-medium leading-snug text-white sm:text-lg"
                     style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
                   >
                     {card.title}
