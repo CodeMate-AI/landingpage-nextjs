@@ -565,6 +565,8 @@ export interface EnterpriseArchitectureGroup {
 
 export interface EnterpriseArchitectureSectionData {
   titlePrefix: string;
+  titlePrefixPart1: string;
+  titlePrefixPart2: string;
   titleAccent: string;
   titleHighlight: string;
   backgroundImage: string;
@@ -573,6 +575,8 @@ export interface EnterpriseArchitectureSectionData {
 
 export const ENTERPRISE_ARCHITECTURE_DATA: EnterpriseArchitectureSectionData = {
   titlePrefix: 'From Legacy Systems to Next-Gen Apps',
+  titlePrefixPart1: 'From Legacy Systems to',
+  titlePrefixPart2: 'Next-Gen Apps :',
   titleAccent: 'CodeMate AI Accelerates',
   titleHighlight: 'Your Enterprise Journey.',
   backgroundImage: '/enterprise-architecture/enterprise-architecture-bg.png',
