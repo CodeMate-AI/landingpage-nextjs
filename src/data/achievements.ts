@@ -211,11 +211,12 @@ export const ACHIEVEMENTS_DATA = {
     "alt": "MEITY",
     "image": "https://drive.codemate.ai/jicaward.jpeg"
   },
-  {
-    "title": "National Finalist in Entrepreneurship World Cup",
-    "alt": "EWC'22",
-    "image": "https://drive.codemate.ai/EWC'22.png"
-  },
+  // Commented out: image https://drive.codemate.ai/EWC'22.png returns 404
+  // {
+  //   "title": "National Finalist in Entrepreneurship World Cup",
+  //   "alt": "EWC'22",
+  //   "image": "https://drive.codemate.ai/EWC'22.png"
+  // },
   {
     "title": "Featured in Dainik Jaagran",
     "alt": "Dainik Jaagran",

@@ -665,39 +665,8 @@ export default function Navbar() {
               />
             </div>
 
-            {/* Right side: Pricing, Sign Up, and Hamburger icon */}
+            {/* Right side: Hamburger icon only (mobile and tablet) */}
             <div className="flex items-center gap-2 xs:gap-3 sm:gap-4 shrink-0 text-right">
-              {/* Pricing link when unscrolled */}
-              {!isMenu && (
-                <motion.span
-                  onClick={() => { router.push('/pricing?product=cora'); }}
-                  whileHover={{ opacity: 1 }}
-                  whileTap={{ scale: 0.96 }}
-                  className="hidden sm:inline-block text-xs sm:text-sm font-medium text-neutral-200 hover:text-white cursor-pointer transition-all duration-200 select-none opacity-75"
-                >
-                  Pricing
-                </motion.span>
-              )}
-
-              {/* Sign Up button when unscrolled */}
-              {!isMenu && (
-                <a
-                  href="https://app.codemate.ai"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:inline-flex transition-all duration-200 select-none"
-                >
-                  <motion.button
-                    type="button"
-                    whileHover={{ scale: 1.04 }}
-                    whileTap={{ scale: 0.96 }}
-                    className="px-2.5 py-1 sm:px-3 sm:py-1.5 bg-white text-black text-xs sm:text-sm rounded-sm font-semibold hover:bg-neutral-200 transition-colors whitespace-nowrap"
-                  >
-                    Sign Up
-                  </motion.button>
-                </a>
-              )}
-
               {/* Hamburger / Close icon (right-most) */}
               <motion.div
                 onClick={() => { setMenu(state => !state); }}
