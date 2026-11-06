@@ -236,7 +236,8 @@ export const ACHIEVEMENTS_DATA = {
     "title": "How CodeMate Aspires To Become The Grammarly Of Coding",
     "alt": "Inc42 Article",
     "image": "https://drive.codemate.ai/inc42grammarlyarticle.jpeg",
-    "link": "https://inc42.com/startups/how-codemate-aspires-to-become-the-grammarly-of-coding/"
+    "link": "https://inc42.com/startups/how-codemate-aspires-to-become-the-grammarly-of-coding/",
+    "imagePosition": "top"
   },
   {
     "title": "Nasscom 10000 Startups",

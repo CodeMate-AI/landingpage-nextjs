@@ -23,13 +23,14 @@ export const metadata: Metadata = {
 export default function MediaPage() {
   const { titlePrefix, titleHighlight, titleSuffix, subtitle, items } = MEDIA_DATA;
 
+  // Cards with a Read More link first, cards without one stacked at the end (original order kept in each group)
   return (
     <ShowcasePage
       titlePrefix={titlePrefix}
       titleHighlight={titleHighlight}
       titleSuffix={titleSuffix}
       subtitle={subtitle}
-      cards={items.map((item, idx) => ({
+      cards={[...items.filter((item) => item.link), ...items.filter((item) => !item.link)].map((item, idx) => ({
         key: `${idx}-${item.outlet}`,
         title: item.headline,
         alt: item.outlet,
