@@ -14,6 +14,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/partnerships`,
+      lastModified,
+      changeFrequency: "weekly",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/partnerships/hp`,
       lastModified,
       changeFrequency: "weekly",
@@ -26,7 +32,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     })),
     ...['hpe', 'qualcomm'].map((slug) => ({
-      url: `${baseUrl}/${slug}`,
+      url: `${baseUrl}/partnerships/${slug}`,
       lastModified,
       changeFrequency: "weekly" as const,
       priority: 0.8,
