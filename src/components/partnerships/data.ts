@@ -57,9 +57,9 @@ export const hpePartnership: Partnership = {
       ],
       items: [
         { label: 'Work', text: 'An AI-powered workspace for interacting with codebases, exploring technical questions, understanding projects and getting development assistance.' },
-        { label: 'Build', text: 'Helps turn ideas and requirements into functional application prototypes and software solutions through AI assisted development.' },
+        { label: 'Build', text: 'Helps turn ideas and requirements into functional application prototypes and software solutions through AI-assisted development.' },
         { label: 'CORA', text: 'An autonomous IDE agent that works within the development environment to understand code, implement changes and assist with development tasks.' },
-        { label: 'CORA CLI', text: 'An agentic coding tool that runs directly in the terminal, allowing developers to interact with AI to understand, modify, debug, and build entire codebases.' },
+        { label: 'CORA CLI', text: 'An agentic coding tool that runs directly in the terminal, allowing developers to interact with AI to understand, modify, debug and work across entire codebases.' },
         { label: 'PR Review Agent', text: 'Helps review pull requests, identify potential issues and improve code quality before changes are merged.' },
       ],
       closing: [
@@ -89,7 +89,7 @@ export const hpePartnership: Partnership = {
       ],
       items: [
         { label: 'Business Process Automation', text: 'Applications that digitize repetitive tasks, manage approvals and streamline internal workflows.' },
-        { label: 'Enterprise Resource Management', text: 'Customized systems for managing business operations, resources, records and organizational activities.' },
+        { label: 'Enterprise Resource Planning', text: 'Customized systems for managing business operations, resources, records and organizational activities.' },
         { label: 'Data and Reporting Applications', text: 'Solutions that bring business data together, generate reports and help teams access relevant information.' },
         { label: 'AI-Powered Business Applications', text: 'Software that uses AI to process information, assist users and support decision-making.' },
         { label: 'Legacy System Modernization', text: 'Updating existing applications, improving their functionality and extending their capabilities to meet changing requirements.' },
@@ -111,20 +111,20 @@ export const qualcommPartnership: Partnership = {
   partner: 'Qualcomm',
   title: 'CodeMate AI × Qualcomm: Transforming the Developer Experience with On-Device Intelligence',
   subtitle:
-    "Qualcomm's expertise in advanced computing and AI processing, combined with CodeMate AI's capabilities in intelligent software development, brings AI powered coding assistance closer to developers.",
+    "Qualcomm's expertise in advanced computing and AI processing, combined with CodeMate AI's capabilities in intelligent software development, brings AI-powered coding assistance closer to developers.",
   cover: '/partners/qualcomm-cover.png',
   coverAlt: 'CodeMate AI and Qualcomm logos',
   lead:
-    'Through this collaboration, we have optimized CodeMate for Windows on Snapdragon, enabling context aware AI assistance and local processing on Snapdragon powered devices while delivering a more responsive development experience.',
+    'Through this collaboration, we have optimized CodeMate for Windows on Snapdragon, enabling context-aware AI assistance and local processing on Snapdragon-powered devices while delivering a more responsive development experience.',
   metaDescription:
-    'CodeMate AI is optimized for Windows on Snapdragon, bringing context aware, on-device AI coding assistance to developers on Snapdragon powered devices.',
+    'CodeMate AI is optimized for Windows on Snapdragon, bringing context-aware, on-device AI coding assistance to developers on Snapdragon-powered devices.',
   sections: [
     {
       heading: 'Bringing AI Closer to Software Developers',
       paragraphs: [
-        'AI is changing how developers write, understand and maintain software. From generating code and debugging errors to working with complex codebases, AI powered coding assistants are becoming an important part of modern development workflows.',
+        'AI is changing how developers write, understand and maintain software. From generating code and debugging errors to working with complex codebases, AI-powered coding assistants are becoming an important part of modern development workflows.',
         'However, many of these tools depend on cloud infrastructure to process developer requests. This can create concerns around data privacy, network dependency and the handling of sensitive source code.',
-        'On-device AI offers another approach by bringing model inference closer to the developer. With CodeMate optimized for Windows on Snapdragon, developers can access AI powered coding assistance directly on their devices, with support for local processing and greater control over their development data.',
+        'On-device AI offers another approach by bringing model inference closer to the developer. With CodeMate optimized for Windows on Snapdragon, developers can access AI-powered coding assistance directly on their devices, with support for local processing and greater control over their development data.',
       ],
     },
     {
@@ -138,19 +138,19 @@ export const qualcommPartnership: Partnership = {
       heading: 'Engineering AI for On-Device Development',
       paragraphs: [
         'Getting an AI coding assistant to run efficiently on a local device requires optimizing both the software architecture and the way AI models use available hardware. To support CodeMate on Windows on Snapdragon, our engineering team developed a separate middleware layer that manages model requests, task priorities and project context directly on the device.',
-        "We also optimized our in house language models for Snapdragon X Series processors and used Qualcomm's AI development tools to run key operations, such as token generation and embeddings search, on the NPU.",
+        "We also optimized our in-house language models for Snapdragon X Series processors and used Qualcomm's AI development tools to run key operations, such as token generation and embeddings search, on the NPU.",
         "CodeMate can dynamically distribute AI workloads across the CPU, GPU and NPU depending on the task and the device's power and thermal conditions. For example, smaller tasks like code autocompletion can prioritize NPU processing, delivering responses in under 50 milliseconds, while larger context processing tasks can use a combination of CPU and NPU resources to handle more information efficiently.",
       ],
     },
     {
-      heading: 'A More Context Aware Development Experience',
+      heading: 'A More Context-Aware Development Experience',
       paragraphs: [
         'CodeMate goes beyond basic code suggestions by helping developers work with the context of their entire projects. Instead of relying only on the information available within an AI model, it can use project files, documentation and organizational knowledge to provide more relevant assistance.',
         'Its VS Code extension on Snapdragon offers several development capabilities:',
       ],
       items: [
         { label: 'Codebase Search and Understanding', text: 'Search entire codebases and understand complex projects through natural language conversations.' },
-        { label: 'Context Aware Code Generation', text: 'Generate code using information from files, folders, terminals, errors, Git commits, pull requests and API documentation.' },
+        { label: 'Context-Aware Code Generation', text: 'Generate code using information from files, folders, terminals, errors, Git commits, pull requests and API documentation.' },
         { label: 'Code Modification and Debugging', text: 'Make changes to existing codebases and identify issues with AI assistance.' },
         { label: 'Automated Testing and Documentation', text: 'Generate test cases, review code and create technical documentation.' },
         { label: 'Knowledge Base Integration', text: 'Connect personal and organizational knowledge bases containing documentation, Git repositories, codebases and Swagger specifications.' },
@@ -160,15 +160,15 @@ export const qualcommPartnership: Partnership = {
       heading: 'Privacy and Productivity Through Local AI',
       paragraphs: [
         "One of the key advantages of running AI locally is that developers can work with sensitive project information without having to send every request to cloud-based services. With CodeMate's supported on-device workflows, source code, documentation and organizational knowledge can be processed locally, giving organizations greater control over their development data.",
-        'CodeMate supports both on-device and hybrid AI execution, allowing workloads to be handled using local processing resources according to their requirements. This helps balance response times, processing needs and power consumption while reducing dependence on cloud infrastructure.',
-        'By reducing dependence on cloud connectivity for supported workloads, this approach also allows developers to access AI assistance in offline or low-connectivity environments. For organizations handling confidential code and business information, local processing can help reduce exposure to cloud based security risks and support data privacy requirements.',
+        'CodeMate supports both on-device and hybrid AI execution, allowing workloads to be handled locally or in the cloud according to their requirements. This helps balance response times, processing needs and power consumption.',
+        'By reducing dependence on cloud connectivity for supported workloads, this approach also allows developers to access AI assistance in offline or low-connectivity environments. For organizations handling confidential code and business information, local processing can help reduce exposure to cloud-based security risks and support data privacy requirements.',
       ],
     },
     {
       heading: 'Advancing the Future of AI Powered Software Development',
       paragraphs: [
-        'Qualcomm brings the computing technologies and hardware expertise needed to run AI workloads efficiently on devices, while CodeMate brings the software intelligence that helps developers understand codebases, write code and manage complex development tasks. Together, these capabilities create opportunities to take AI powered software development beyond traditional cloud-based tools.',
-        'Looking ahead, this collaboration can open new possibilities for bringing more advanced AI development capabilities to Snapdragon powered devices. From working with larger codebases to supporting more development tasks locally, the focus is on making AI assistance a more natural part of how developers build software.',
+        'Qualcomm brings the computing technologies and hardware expertise needed to run AI workloads efficiently on devices, while CodeMate brings the software intelligence that helps developers understand codebases, write code and manage complex development tasks. Together, these capabilities create opportunities to take AI-powered software development beyond traditional cloud-based tools.',
+        'Looking ahead, this collaboration can open new possibilities for bringing more advanced AI development capabilities to Snapdragon-powered devices. From working with larger codebases to supporting more development tasks locally, the focus is on making AI assistance a more natural part of how developers build software.',
         'As computing and AI continue to evolve, Qualcomm and CodeMate AI aim to contribute to a future where developers have more powerful, flexible and intelligent tools right at their fingertips.',
       ],
     },

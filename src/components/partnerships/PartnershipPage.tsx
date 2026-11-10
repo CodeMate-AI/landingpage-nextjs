@@ -115,8 +115,8 @@ export default function PartnershipPage({ data }: { data: Partnership }) {
             className="relative mx-auto mt-24 sm:mt-32 mb-20 sm:mb-28 max-w-6xl overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-zinc-900 to-cyan-950/60 px-6 py-14 sm:py-20 text-center"
           >
             <h2 className="text-2xl sm:text-4xl font-semibold leading-tight text-white">
-              Experience CodeMate
-              <span className="block mt-1 text-neutral-300 font-normal">AI for the entire software development lifecycle.</span>
+              Experience CodeMate AI
+              <span className="block mt-1 text-neutral-300 font-normal">Sovereign AI for software development</span>
             </h2>
             <div className="mt-8 flex flex-col sm:flex-row justify-center items-center gap-3 sm:gap-4 text-sm md:text-base">
               <Link href="/download" className="w-full sm:w-auto">
