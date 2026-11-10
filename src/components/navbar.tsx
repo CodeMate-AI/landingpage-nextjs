@@ -66,7 +66,7 @@ export default function Navbar() {
   const [isProducts, setIsProducts] = useState(false);
   const [isResources, setIsResources] = useState(false);
   const [isOS, setIsOS] = useState(false);
-  const [isPartners, setIsPartners] = useState(false);
+  const [isPartnerships, setIsPartnerships] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
   const [isCompact, setIsCompact] = useState(false);
   const [announcementHeight, setAnnouncementHeight] = useState(0);
@@ -128,7 +128,7 @@ export default function Navbar() {
       setIsProducts(false);
       setIsOS(false);
       setIsResources(false);
-      setIsPartners(false);
+      setIsPartnerships(false);
     } else if (latest < 30) {
       setIsCompact(false);
       setHasScrolled(false);
@@ -260,7 +260,7 @@ export default function Navbar() {
               {/* Full Un-scrolled Navigation */}
               <div
                 className="relative flex flex-col gap-3 text-md justify-center items-center cursor-pointer text-right z-50"
-                onKeyDown={(e) => { if (e.key === 'Escape') { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); } }}
+                onKeyDown={(e) => { if (e.key === 'Escape') { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartnerships(false); } }}
               >
                 <div
                   className="flex gap-5 justify-center items-center z-50"
@@ -269,8 +269,8 @@ export default function Navbar() {
                     type="button"
                     aria-haspopup="true"
                     aria-expanded={isProducts}
-                    onClick={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartners(false); }}
-                    onMouseEnter={() => { setIsProducts(true); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center z-50 ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
+                    onClick={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartnerships(false); }}
+                    onMouseEnter={() => { setIsProducts(true); setIsOS(false); setIsResources(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center z-50 ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isProducts ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -284,8 +284,8 @@ export default function Navbar() {
                     type="button"
                     aria-haspopup="true"
                     aria-expanded={isOS}
-                    onClick={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartners(false); }}
-                    onMouseEnter={() => { setIsOS(true); setIsProducts(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
+                    onClick={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartnerships(false); }}
+                    onMouseEnter={() => { setIsOS(true); setIsProducts(false); setIsResources(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isOS ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -298,8 +298,8 @@ export default function Navbar() {
                     type="button"
                     aria-haspopup="true"
                     aria-expanded={isResources}
-                    onClick={() => { setIsResources(state => !state); setIsProducts(false); setIsOS(false); setIsPartners(false); }}
-                    onMouseEnter={() => { setIsResources(true); setIsProducts(false); setIsOS(false); setIsPartners(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
+                    onClick={() => { setIsResources(state => !state); setIsProducts(false); setIsOS(false); setIsPartnerships(false); }}
+                    onMouseEnter={() => { setIsResources(true); setIsProducts(false); setIsOS(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isResources ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -309,29 +309,29 @@ export default function Navbar() {
                       />
                     </motion.span></motion.button>
 
-                  <motion.button type="button" onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65 cursor-pointer'>Features</motion.button>
-                  <Link href="/pricing?product=cora" onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} className='opacity-65 hover:opacity-100 transition-opacity'>Pricing</Link>
+                  <motion.button type="button" onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartnerships(false); }} onClick={handleFeaturesClick} whileHover={{ opacity: 1 }} className='opacity-65 cursor-pointer'>Features</motion.button>
+                  <Link href="/pricing?product=cora" onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartnerships(false); }} className='opacity-65 hover:opacity-100 transition-opacity'>Pricing</Link>
 
                   <motion.button
                     type="button"
                     aria-haspopup="true"
-                    aria-expanded={isPartners}
-                    onClick={() => { setIsPartners(state => !state); setIsProducts(false); setIsOS(false); setIsResources(false); }}
-                    onMouseEnter={() => { setIsPartners(true); setIsProducts(false); setIsOS(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isPartners ? '' : 'opacity-65'}`}>Partners<motion.span
+                    aria-expanded={isPartnerships}
+                    onClick={() => { setIsPartnerships(state => !state); setIsProducts(false); setIsOS(false); setIsResources(false); }}
+                    onMouseEnter={() => { setIsPartnerships(true); setIsProducts(false); setIsOS(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isPartnerships ? '' : 'opacity-65'}`}>Partnerships<motion.span
                       initial={{ rotate: 180 }}
-                      animate={{ rotate: !isPartners ? 180 : 0 }}
+                      animate={{ rotate: !isPartnerships ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
                     >
                       <ChevronUp
                         className="h-4 w-4 shrink-0 grow-0 text-zinc-950 transition-transform duration-200 group-data-expanded:-rotate-180 dark:text-zinc-50"
                       />
                     </motion.span></motion.button>
-                  <a href='https://edu.codemate.ai/' target='_blank' rel='noopener noreferrer' onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} className='opacity-65 hover:opacity-100 transition-opacity'>
+                  <a href='https://edu.codemate.ai/' target='_blank' rel='noopener noreferrer' onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartnerships(false); }} className='opacity-65 hover:opacity-100 transition-opacity'>
                     <span translate="no">Academy</span>
                   </a>
 
                   <Link href="/contact">
-                    <motion.button onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartners(false); }} whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1 bg-[#FFFFFF] text-black rounded-sm font-semibold opacity-85 text-nowrap">Contact Us</motion.button>
+                    <motion.button onMouseEnter={() => { setIsProducts(false); setIsOS(false); setIsResources(false); setIsPartnerships(false); }} whileHover={{ opacity: 1, scale: 1.05 }} className="px-2 py-1 bg-[#FFFFFF] text-black rounded-sm font-semibold opacity-85 text-nowrap">Contact Us</motion.button>
                   </Link>
                 </div>
 
@@ -518,7 +518,7 @@ export default function Navbar() {
                   </div>
                 }
 
-                {isPartners && !isCompact &&
+                {isPartnerships && !isCompact &&
                   <div className='absolute  h-[20rem] w-[11rem] mt-[22rem] left-[33.2rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -530,7 +530,7 @@ export default function Navbar() {
                         WebkitBackdropFilter: 'blur(50px)'
                       }} className=' h-auto w-full left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl overflow-hidden'>
                       <div className="py-3 px-2 flex flex-col gap-0">
-                        <Link href='/hp' className='w-full'>
+                        <Link href='/partnerships/hp' className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div>HP</div>
                             <div className="size-[1.48rem] shrink-0 ml-3 bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -570,8 +570,8 @@ export default function Navbar() {
               {isResources &&
                 <div onMouseEnter={() => setIsResources(false)} className='fixed h-screen w-full z-40' />
               }
-              {isPartners &&
-                <div onMouseEnter={() => setIsPartners(false)} className='fixed h-screen w-full z-40' />
+              {isPartnerships &&
+                <div onMouseEnter={() => setIsPartnerships(false)} className='fixed h-screen w-full z-40' />
               }
             </div>
           </div>
@@ -981,13 +981,13 @@ export default function Navbar() {
                     <motion.div onClick={() => { setMenu(false); router.push('/pricing?product=cora') }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><div className='MenuText'>PRICING</div><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>06</p></motion.div>
 
                     <motion.div className='flex flex-col gap-2 cursor-pointer'>
-                      <motion.div onClick={() => { setIsPartners(state => !state); }} whileHover={{ opacity: 0.6 }} className='flex justify-between items-center'>
+                      <motion.div onClick={() => { setIsPartnerships(state => !state); }} whileHover={{ opacity: 0.6 }} className='flex justify-between items-center'>
                         <div className='flex gap-2'>
-                          <div className='MenuText'>PARTNERS</div><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>07</p>
+                          <div className='MenuText'>PARTNERSHIPS</div><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>07</p>
                         </div>
                         <motion.span
                           initial={{ rotate: 180 }}
-                          animate={{ rotate: !isPartners ? 180 : 0 }}
+                          animate={{ rotate: !isPartnerships ? 180 : 0 }}
                           className='mr-3'
                         >
                           <ChevronUp
@@ -996,10 +996,10 @@ export default function Navbar() {
                         </motion.span>
                       </motion.div>
 
-                      {isPartners &&
+                      {isPartnerships &&
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0'>
-                            <Link href="/hp" onClick={() => setMenu(false)}>
+                            <Link href="/partnerships/hp" onClick={() => setMenu(false)}>
                               <motion.div className='z-20 opacity-90'>HP</motion.div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full top-0'>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>

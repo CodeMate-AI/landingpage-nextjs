@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { TRIAL_FIELD_LIMITS, isValidTrialPhone } from "@/app/hp/config/trialForm";
+import { TRIAL_FIELD_LIMITS, isValidTrialPhone } from "@/app/partnerships/hp/config/trialForm";
 import { checkTrialRateLimit } from "@/lib/trialRateLimit";
 
 export async function POST(request: Request) {
