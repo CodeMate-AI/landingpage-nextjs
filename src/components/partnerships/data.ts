@@ -7,22 +7,81 @@ export type PartnershipSection = {
   closing?: string[];
 };
 
+export type StackDiagram = {
+  type: 'stack';
+  title: string;
+  description: string;
+  /** Top to bottom: what gets built sits on top, infrastructure at the base */
+  layers: { owner: string; role: string; items: string[]; highlight?: boolean }[];
+};
+
+export type WorkloadDiagram = {
+  type: 'workload';
+  title: string;
+  description: string;
+  engines: string[];
+  rows: { task: string; uses: string[]; note?: string }[];
+  caption?: string;
+};
+
+export type PartnershipDiagram = StackDiagram | WorkloadDiagram;
+
 export type Partnership = {
   slug: string;
   partner: string;
+  /** Full title, used for metadata */
   title: string;
+  /** Small line above the h1, e.g. "CodeMate AI × HPE" */
+  partnerLine: string;
+  /** The h1 */
+  headline: string;
   subtitle: string;
   cover: string;
   coverAlt: string;
   lead: string;
   sections: PartnershipSection[];
   metaDescription: string;
+  diagram?: PartnershipDiagram;
+  /** Index of the section the diagram follows; omit to place it right after the lead */
+  diagramAfter?: number;
 };
 
 export const hpePartnership: Partnership = {
   slug: 'hpe',
   partner: 'HPE',
   title: 'CodeMate AI × HPE: Powering Enterprise Software Innovation',
+  partnerLine: 'CodeMate AI × HPE',
+  headline: 'Powering enterprise software innovation',
+  diagram: {
+    type: 'stack',
+    title: 'How the stack fits together',
+    description:
+      'HPE provides the computing foundation, CodeMate AI helps teams build on it, and the result is software shaped around each business.',
+    layers: [
+      {
+        owner: 'Your business',
+        role: 'What gets built',
+        items: [
+          'Business process automation',
+          'Enterprise resource planning',
+          'Data and reporting',
+          'AI-powered applications',
+          'Legacy modernization',
+        ],
+      },
+      {
+        owner: 'CodeMate AI',
+        role: 'How it gets built',
+        items: ['Work', 'Build', 'CORA', 'CORA CLI', 'PR Review Agent'],
+        highlight: true,
+      },
+      {
+        owner: 'HPE',
+        role: 'Where it runs',
+        items: ['Compute', 'GPU-accelerated computing', 'Storage', 'Networking', 'Private cloud'],
+      },
+    ],
+  },
   subtitle:
     'As businesses adopt AI and modernize their operations, they need technology that can support both their infrastructure requirements and software development needs. Building effective digital solutions requires a reliable computing foundation, along with the tools and expertise to turn business ideas into working applications.',
   cover: '/partners/hpe-cover.png',
@@ -33,24 +92,24 @@ export const hpePartnership: Partnership = {
     'HPE and CodeMate AI bring enterprise infrastructure and AI-powered software development together to help organizations build solutions around their business requirements.',
   sections: [
     {
-      heading: 'HPE: The Infrastructure Behind Enterprise Solutions',
+      heading: 'HPE: The infrastructure behind enterprise solutions',
       paragraphs: [
         'Modern applications require reliable computing resources to process data, run services and support demanding workloads. As organizations adopt AI, these requirements can also include GPU-powered processing and scalable infrastructure.',
         'HPE offers enterprise technology across several areas:',
       ],
       items: [
         { label: 'Compute', text: 'Servers and computing systems that provide the processing power required to run applications and workloads.' },
-        { label: 'GPU-Accelerated Computing', text: 'Infrastructure designed to handle demanding AI and data-intensive workloads.' },
-        { label: 'Storage and Data Management', text: 'Solutions for storing, accessing and managing business data.' },
+        { label: 'GPU-accelerated computing', text: 'Infrastructure designed to handle demanding AI and data-intensive workloads.' },
+        { label: 'Storage and data management', text: 'Solutions for storing, accessing and managing business data.' },
         { label: 'Networking', text: 'Infrastructure that connects applications, systems and enterprise environments.' },
-        { label: 'Private Cloud', text: 'Environments that give organizations greater control over how their applications and workloads are hosted and managed.' },
+        { label: 'Private cloud', text: 'Environments that give organizations greater control over how their applications and workloads are hosted and managed.' },
       ],
       closing: [
         'These capabilities provide the underlying technology foundation that organizations can use to support their software and AI initiatives.',
       ],
     },
     {
-      heading: 'CodeMate AI: From Development Assistance to Complete Software Solutions',
+      heading: 'CodeMate AI: From development assistance to complete software solutions',
       paragraphs: [
         'CodeMate AI brings AI-powered capabilities into the software development lifecycle (SDLC), helping developers move from understanding requirements and existing codebases to building, testing and improving applications.',
         'Its product ecosystem supports different parts of this process:',
@@ -67,7 +126,7 @@ export const hpePartnership: Partnership = {
       ],
     },
     {
-      heading: 'Bringing Infrastructure and Software Development Together',
+      heading: 'Bringing infrastructure and software development together',
       paragraphs: [
         'The collaboration connects two important parts of enterprise technology: the infrastructure required to run applications and the software development capabilities needed to create them.',
         "For example, consider an organization looking to develop an AI-powered application to improve an internal business process. HPE's infrastructure can provide the computing environment required to support the solution, while CodeMate can help development teams build the application according to the organization's workflows and technical requirements.",
@@ -75,28 +134,28 @@ export const hpePartnership: Partnership = {
       ],
     },
     {
-      heading: 'From Business Challenges to Practical Solutions',
+      heading: 'From business challenges to practical solutions',
       paragraphs: [
         'Every business has processes that can be improved through technology, but the requirements are rarely the same. Some organizations need better ways to manage internal operations, while others may want to automate existing workflows or develop applications around their business processes.',
         "With HPE's infrastructure capabilities and CodeMate's AI-powered development tools, these requirements can be approached through solutions designed around each organization's needs. From developing internal business applications to modernizing existing systems, the focus is on addressing practical challenges rather than offering one solution for every business.",
       ],
     },
     {
-      heading: 'Applications Across Enterprise Workflows',
+      heading: 'Applications across enterprise workflows',
       paragraphs: [
         'Different organizations have different operational challenges. The combination of enterprise infrastructure and AI-powered software development can support the creation of solutions across a range of business areas.',
         'Some potential applications include:',
       ],
       items: [
-        { label: 'Business Process Automation', text: 'Applications that digitize repetitive tasks, manage approvals and streamline internal workflows.' },
-        { label: 'Enterprise Resource Planning', text: 'Customized systems for managing business operations, resources, records and organizational activities.' },
-        { label: 'Data and Reporting Applications', text: 'Solutions that bring business data together, generate reports and help teams access relevant information.' },
-        { label: 'AI-Powered Business Applications', text: 'Software that uses AI to process information, assist users and support decision-making.' },
-        { label: 'Legacy System Modernization', text: 'Updating existing applications, improving their functionality and extending their capabilities to meet changing requirements.' },
+        { label: 'Business process automation', text: 'Applications that digitize repetitive tasks, manage approvals and streamline internal workflows.' },
+        { label: 'Enterprise resource planning', text: 'Customized systems for managing business operations, resources, records and organizational activities.' },
+        { label: 'Data and reporting applications', text: 'Solutions that bring business data together, generate reports and help teams access relevant information.' },
+        { label: 'AI-powered business applications', text: 'Software that uses AI to process information, assist users and support decision-making.' },
+        { label: 'Legacy system modernization', text: 'Updating existing applications, improving their functionality and extending their capabilities to meet changing requirements.' },
       ],
     },
     {
-      heading: 'Enabling the Next Phase of Enterprise Software Development',
+      heading: 'Enabling the next phase of enterprise software development',
       paragraphs: [
         'The collaboration between HPE and CodeMate AI brings together enterprise infrastructure and AI-powered software development to address the changing technology needs of businesses.',
         'With HPE providing the computing foundation and CodeMate enabling development teams to create customized software, organizations can explore new ways to develop and implement solutions that support their operations.',
@@ -110,6 +169,22 @@ export const qualcommPartnership: Partnership = {
   slug: 'qualcomm',
   partner: 'Qualcomm',
   title: 'CodeMate AI × Qualcomm: Transforming the Developer Experience with On-Device Intelligence',
+  partnerLine: 'CodeMate AI × Qualcomm',
+  headline: 'Transforming the developer experience with on-device intelligence',
+  diagramAfter: 2,
+  diagram: {
+    type: 'workload',
+    title: 'Where each task runs',
+    description: 'On Snapdragon X Series devices, CodeMate routes each AI task to the hardware best suited to it.',
+    engines: ['CPU', 'GPU', 'NPU'],
+    rows: [
+      { task: 'Code autocompletion', uses: ['NPU'], note: 'Under 50 ms' },
+      { task: 'Token generation and embeddings search', uses: ['NPU'] },
+      { task: 'Larger context processing', uses: ['CPU', 'NPU'] },
+    ],
+    caption:
+      "Workloads are distributed across the CPU, GPU and NPU depending on the task and the device's power and thermal conditions.",
+  },
   subtitle:
     "Qualcomm's expertise in advanced computing and AI processing, combined with CodeMate AI's capabilities in intelligent software development, brings AI-powered coding assistance closer to developers.",
   cover: '/partners/qualcomm-cover.png',
@@ -120,7 +195,7 @@ export const qualcommPartnership: Partnership = {
     'CodeMate AI is optimized for Windows on Snapdragon, bringing context-aware, on-device AI coding assistance to developers on Snapdragon-powered devices.',
   sections: [
     {
-      heading: 'Bringing AI Closer to Software Developers',
+      heading: 'Bringing AI closer to software developers',
       paragraphs: [
         'AI is changing how developers write, understand and maintain software. From generating code and debugging errors to working with complex codebases, AI-powered coding assistants are becoming an important part of modern development workflows.',
         'However, many of these tools depend on cloud infrastructure to process developer requests. This can create concerns around data privacy, network dependency and the handling of sensitive source code.',
@@ -128,14 +203,14 @@ export const qualcommPartnership: Partnership = {
       ],
     },
     {
-      heading: "Combining Snapdragon Technology with CodeMate's AI Capabilities",
+      heading: "Combining Snapdragon technology with CodeMate's AI capabilities",
       paragraphs: [
         "CodeMate uses Qualcomm's AI technologies to make better use of the computing resources available on Snapdragon X Series devices. Its AI workloads can run across the CPU, GPU and NPU, depending on the processing requirements.",
         'This allows different development tasks to use the hardware best suited to them, helping CodeMate deliver AI assistance while balancing performance and power efficiency.',
       ],
     },
     {
-      heading: 'Engineering AI for On-Device Development',
+      heading: 'Engineering AI for on-device development',
       paragraphs: [
         'Getting an AI coding assistant to run efficiently on a local device requires optimizing both the software architecture and the way AI models use available hardware. To support CodeMate on Windows on Snapdragon, our engineering team developed a separate middleware layer that manages model requests, task priorities and project context directly on the device.',
         "We also optimized our in-house language models for Snapdragon X Series processors and used Qualcomm's AI development tools to run key operations, such as token generation and embeddings search, on the NPU.",
@@ -143,21 +218,21 @@ export const qualcommPartnership: Partnership = {
       ],
     },
     {
-      heading: 'A More Context-Aware Development Experience',
+      heading: 'A more context-aware development experience',
       paragraphs: [
         'CodeMate goes beyond basic code suggestions by helping developers work with the context of their entire projects. Instead of relying only on the information available within an AI model, it can use project files, documentation and organizational knowledge to provide more relevant assistance.',
         'Its VS Code extension on Snapdragon offers several development capabilities:',
       ],
       items: [
-        { label: 'Codebase Search and Understanding', text: 'Search entire codebases and understand complex projects through natural language conversations.' },
-        { label: 'Context-Aware Code Generation', text: 'Generate code using information from files, folders, terminals, errors, Git commits, pull requests and API documentation.' },
-        { label: 'Code Modification and Debugging', text: 'Make changes to existing codebases and identify issues with AI assistance.' },
-        { label: 'Automated Testing and Documentation', text: 'Generate test cases, review code and create technical documentation.' },
-        { label: 'Knowledge Base Integration', text: 'Connect personal and organizational knowledge bases containing documentation, Git repositories, codebases and Swagger specifications.' },
+        { label: 'Codebase search and understanding', text: 'Search entire codebases and understand complex projects through natural language conversations.' },
+        { label: 'Context-aware code generation', text: 'Generate code using information from files, folders, terminals, errors, Git commits, pull requests and API documentation.' },
+        { label: 'Code modification and debugging', text: 'Make changes to existing codebases and identify issues with AI assistance.' },
+        { label: 'Automated testing and documentation', text: 'Generate test cases, review code and create technical documentation.' },
+        { label: 'Knowledge base integration', text: 'Connect personal and organizational knowledge bases containing documentation, Git repositories, codebases and Swagger specifications.' },
       ],
     },
     {
-      heading: 'Privacy and Productivity Through Local AI',
+      heading: 'Privacy and productivity through local AI',
       paragraphs: [
         "One of the key advantages of running AI locally is that developers can work with sensitive project information without having to send every request to cloud-based services. With CodeMate's supported on-device workflows, source code, documentation and organizational knowledge can be processed locally, giving organizations greater control over their development data.",
         'CodeMate supports both on-device and hybrid AI execution, allowing workloads to be handled locally or in the cloud according to their requirements. This helps balance response times, processing needs and power consumption.',
@@ -165,7 +240,7 @@ export const qualcommPartnership: Partnership = {
       ],
     },
     {
-      heading: 'Advancing the Future of AI Powered Software Development',
+      heading: 'Advancing the future of AI-powered software development',
       paragraphs: [
         'Qualcomm brings the computing technologies and hardware expertise needed to run AI workloads efficiently on devices, while CodeMate brings the software intelligence that helps developers understand codebases, write code and manage complex development tasks. Together, these capabilities create opportunities to take AI-powered software development beyond traditional cloud-based tools.',
         'Looking ahead, this collaboration can open new possibilities for bringing more advanced AI development capabilities to Snapdragon-powered devices. From working with larger codebases to supporting more development tasks locally, the focus is on making AI assistance a more natural part of how developers build software.',
