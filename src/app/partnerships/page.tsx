@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
+import { IconArrowLeft } from '@tabler/icons-react';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import { partnershipCards } from '@/components/partnerships/data';
@@ -40,6 +41,16 @@ export default function PartnershipsPage() {
       <Navbar />
 
       <main className="px-4 sm:px-8">
+        <div className="mx-auto max-w-6xl pt-2">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 rounded text-sm sm:text-[15px] text-neutral-400 transition-colors hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+          >
+            <IconArrowLeft size={17} stroke={1.8} aria-hidden="true" />
+            Back to home
+          </Link>
+        </div>
+
         <header className="mx-auto max-w-3xl text-center pt-6 sm:pt-10">
           <p className="mb-3 sm:mb-4 text-sm sm:text-base font-medium text-neutral-400">PARTNERSHIPS</p>
           <h1 className="font-heading text-[clamp(2.25rem,5.5vw,4rem)] leading-[1.15] pb-[0.08em] bg-gradient-to-b from-white to-gray-300/70 bg-clip-text text-transparent">
