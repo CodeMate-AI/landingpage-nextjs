@@ -41,6 +41,11 @@ export type Partnership = {
   lead: string;
   sections: PartnershipSection[];
   metaDescription: string;
+  /** Search result title, 60 characters or fewer */
+  seoTitle: string;
+  keywords: string[];
+  /** Partner's official site, used as sameAs in structured data */
+  partnerUrl: string;
   diagram?: PartnershipDiagram;
   /** Index of the section the diagram follows; omit to place it right after the lead */
   diagramAfter?: number;
@@ -51,6 +56,19 @@ export const hpePartnership: Partnership = {
   partner: 'HPE',
   title: 'CodeMate AI × HPE: Powering Enterprise Software Innovation',
   partnerLine: 'CodeMate AI × HPE',
+  seoTitle: 'CodeMate AI × HPE: Enterprise AI Software Development',
+  keywords: [
+    'HPE',
+    'Hewlett Packard Enterprise',
+    'CodeMate AI',
+    'HPE partnership',
+    'enterprise AI software development',
+    'AI-powered software development',
+    'GPU-accelerated computing',
+    'private cloud',
+    'legacy system modernization',
+  ],
+  partnerUrl: 'https://www.hpe.com',
   headline: 'Powering enterprise software innovation',
   diagram: {
     type: 'stack',
@@ -170,6 +188,19 @@ export const qualcommPartnership: Partnership = {
   partner: 'Qualcomm',
   title: 'CodeMate AI × Qualcomm: Transforming the Developer Experience with On-Device Intelligence',
   partnerLine: 'CodeMate AI × Qualcomm',
+  seoTitle: 'CodeMate AI × Qualcomm: On-Device AI Coding on Snapdragon',
+  keywords: [
+    'Qualcomm',
+    'Snapdragon',
+    'Snapdragon X Series',
+    'Windows on Snapdragon',
+    'CodeMate AI',
+    'Qualcomm partnership',
+    'on-device AI',
+    'NPU',
+    'local AI coding assistant',
+  ],
+  partnerUrl: 'https://www.qualcomm.com',
   headline: 'Transforming the developer experience with on-device intelligence',
   diagramAfter: 2,
   diagram: {
