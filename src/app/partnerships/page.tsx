@@ -6,16 +6,54 @@ import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import { partnershipCards } from '@/components/partnerships/data';
 import PartnerContactSection from '@/components/partnerships/PartnerContactSection';
+import { HUB_URL, JsonLd, SITE_URL, breadcrumbJsonLd } from '@/components/partnerships/seo';
 
-const url = 'https://codemate.ai/partnerships';
-const title = 'Partnerships | CodeMate AI';
+const url = HUB_URL;
+const title = 'Partnerships: HP, HPE and Qualcomm | CodeMate AI';
 const description =
   'How CodeMate AI works with HP, HPE and Qualcomm to bring AI-powered software development to more developers, devices and enterprises.';
 const ogImage = '/partners/hp-cover.png';
 
+const hubJsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${url}#webpage`,
+    url,
+    name: title,
+    description,
+    inLanguage: 'en-US',
+    isPartOf: { '@id': `${SITE_URL}/#website` },
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    mainEntity: {
+      '@type': 'ItemList',
+      itemListElement: partnershipCards.map((card, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        name: card.title,
+        url: `${SITE_URL}${card.href}`,
+      })),
+    },
+  },
+  breadcrumbJsonLd([
+    { name: 'Home', url: SITE_URL },
+    { name: 'Partnerships', url },
+  ]),
+];
+
 export const metadata: Metadata = {
   title: { absolute: title },
   description,
+  keywords: [
+    'CodeMate AI partnerships',
+    'CodeMate AI HP',
+    'CodeMate AI HPE',
+    'CodeMate AI Qualcomm',
+    'HP AI PC',
+    'Hewlett Packard Enterprise',
+    'Snapdragon',
+    'AI-powered software development',
+  ],
   alternates: { canonical: url },
   openGraph: {
     title,
@@ -38,6 +76,7 @@ export const metadata: Metadata = {
 export default function PartnershipsPage() {
   return (
     <div className="custom-cursor relative bg-zinc-950 text-white min-h-screen pt-[92px] sm:pt-[104px] lg:pt-[110px] overflow-x-hidden">
+      <JsonLd data={hubJsonLd} />
       <Navbar />
 
       <main className="px-4 sm:px-8">

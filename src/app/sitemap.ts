@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { getDatabase } from "@/lib/mongodb";
 import { hpUsecases } from "@/app/partnerships/hp/config/hpData";
+import { hpePartnership, qualcommPartnership } from "@/components/partnerships/data";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://codemate.ai";
@@ -24,6 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified,
       changeFrequency: "weekly",
       priority: 0.9,
+      images: [`${baseUrl}/partners/hp-cover.png`],
     },
     ...hpUsecases.map(({ slug }) => ({
       url: `${baseUrl}/partnerships/hp/usecases/${slug}`,
@@ -31,11 +33,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    ...['hpe', 'qualcomm'].map((slug) => ({
-      url: `${baseUrl}/partnerships/${slug}`,
+    ...[hpePartnership, qualcommPartnership].map((p) => ({
+      url: `${baseUrl}/partnerships/${p.slug}`,
       lastModified,
       changeFrequency: "weekly" as const,
       priority: 0.8,
+      images: [`${baseUrl}${p.cover}`],
     })),
     {
       url: `${baseUrl}/pricing`,
