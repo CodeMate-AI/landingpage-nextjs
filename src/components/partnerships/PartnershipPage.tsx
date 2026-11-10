@@ -7,6 +7,7 @@ import { MotionConfig, motion } from 'framer-motion';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import type { Partnership } from './data';
+import BackButton from './BackButton';
 
 const fadeUp = {
   initial: { opacity: 0, y: 16 },
@@ -24,6 +25,10 @@ export default function PartnershipPage({ data }: { data: Partnership }) {
         <Navbar />
 
         <main className="px-4 sm:px-8">
+          <div className="mx-auto max-w-6xl pt-2">
+            <BackButton className="text-neutral-400 hover:text-white focus-visible:outline-white" />
+          </div>
+
           {/* Hero */}
           <motion.header
             initial={{ opacity: 0, filter: 'blur(10px)' }}

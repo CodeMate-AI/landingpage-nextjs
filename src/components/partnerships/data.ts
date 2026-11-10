@@ -174,3 +174,32 @@ export const qualcommPartnership: Partnership = {
     },
   ],
 };
+
+export type PartnershipCard = {
+  href: string;
+  cover: string;
+  alt: string;
+  title: string;
+};
+
+// Cards shown on the /partnerships hub, in display order
+export const partnershipCards: PartnershipCard[] = [
+  {
+    href: '/partnerships/hp',
+    cover: '/partners/hp-cover.png',
+    alt: 'CodeMate AI and HP logos',
+    title: 'HP and CodeMate AI bring AI-powered coding to HP partners and their customers',
+  },
+  {
+    href: '/partnerships/hpe',
+    cover: hpePartnership.cover,
+    alt: hpePartnership.coverAlt,
+    title: 'CodeMate AI and HPE power enterprise software innovation',
+  },
+  {
+    href: '/partnerships/qualcomm',
+    cover: qualcommPartnership.cover,
+    alt: qualcommPartnership.coverAlt,
+    title: 'CodeMate AI and Qualcomm bring on-device intelligence to developers',
+  },
+];
