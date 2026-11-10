@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import { qualcommPartnership as p } from '@/components/partnerships/data';
+import { hpePartnership as p } from '@/components/partnerships/data';
 
-const url = `https://codemate.ai/${p.slug}`;
+const url = `https://codemate.ai/partnerships/${p.slug}`;
 
 export const metadata: Metadata = {
   title: { absolute: p.title },
