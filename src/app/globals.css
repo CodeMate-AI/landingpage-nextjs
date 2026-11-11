@@ -184,6 +184,52 @@ body {
   /* bold */
 }
 
+/* ------------------------------------------------------------------ */
+/* Google Translate (custom language menu in the navbar)               */
+/* The widget itself is hidden - the navbar menu is the only control.  */
+/* ------------------------------------------------------------------ */
+
+#google_translate_element {
+  position: absolute !important;
+  top: 0 !important;
+  left: -9999px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Hide Google's banner, picker, tooltip and "original text" popups.
+   Google ships several class generations for the same UI, so cover the
+   legacy names plus the current material ones (VIpgJd-*). */
+.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+#goog-gt-tt,
+.goog-te-balloon-frame,
+.goog-tooltip,
+.goog-tooltip:hover,
+iframe.skiptranslate,
+div.skiptranslate:has(> iframe.skiptranslate),
+[class*="VIpgJd-ZVi9od-ORHb"],
+[class*="VIpgJd-ZVi9od-xl07Ob"],
+[class*="VIpgJd-yAWNEb-L7lbkb"] {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+}
+
+/* Google pushes <body> down to make room for its banner - neutralise it */
+body {
+  top: 0 !important;
+}
+
+/* No yellow highlight boxes around machine-translated text */
+.goog-text-highlight {
+  background: none !important;
+  box-shadow: none !important;
+}
+
 @media (min-width: 1400px) and (min-height: 900px) {
   .xxlHerotext {
     font-size: 8rem;

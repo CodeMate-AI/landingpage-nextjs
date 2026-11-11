@@ -207,6 +207,8 @@ const DownloadPage = () => {
                                     <DownloadRow link="https://storage.devdash.codemate.ai/uploads/adc0ea7f-42fe-47d0-aaf6-d27957eefaa8/download" label="Linux (x86)" />
                                     <DownloadRow link="https://storage.devdash.codemate.ai/uploads/893fc28e-6b0d-444b-9f2c-f369389d07ff/download" label="Linux (AppImage)" />
                                     <DownloadRow link="https://storage.devdash.codemate.ai/uploads/6b99ace3-8658-4fb1-9543-8abc8c3aa133/download" label="Linux (Arch)" />
+                                    <DownloadRow link="https://storage.devdash.codemate.ai/uploads/eac705eb-6d0e-4ca9-ac20-1114a728390a/download?env=prod" label="Linux (DGX ARM64)" />
+                                    <DownloadRow link="https://storage.devdash.codemate.ai/uploads/75a7a504-1508-4887-a251-c71fda71edf1/download?env=prod" label="Linux (ZGX ARM64)" />
                                     {/* <DownloadRow isComingSoon={true} label="Linux .deb (ARM64)" /> */}
                                     {/* <DownloadRow isComingSoon={true} label="Linux .deb (x64)" /> */}
                                     {/* <DownloadRow isComingSoon={true} label="Linux RPM (x64)" /> */}
