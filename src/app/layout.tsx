@@ -4,15 +4,9 @@ import "../styles/_keyframe-animations.scss";
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import Analytics from "@/components/Analytics";
+import { GOOGLE_FONTS_STYLESHEET_URL } from "@/lib/fonts-config";
 
-import { Montserrat } from "next/font/google";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-montserrat",
-  display: "swap",
-});
+import { montserrat, inter } from "@/lib/fonts";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -20,8 +14,14 @@ export const viewport: Viewport = {
   themeColor: "#09090b",
 };
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  process.env.DEPLOY_PRIME_URL ||
+  process.env.URL ||
+  'https://codemate.ai';
+
 export const metadata: Metadata = {
-  metadataBase: new URL('https://codemate.ai'),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "CodeMate AI | Sovereign AI Pair Programmer & Code Assistant",
     template: "%s | CodeMate AI",
@@ -127,12 +127,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Scroll reveals start hidden through inline styles, which need JavaScript to clear */}
+        <noscript>
+          <style
+            dangerouslySetInnerHTML={{
+              __html: '[style*="opacity:0"]{opacity:1!important;transform:none!important;filter:none!important}',
+            }}
+          />
+        </noscript>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link href="https://fonts.googleapis.com/css2?family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet" />
+        <link href={GOOGLE_FONTS_STYLESHEET_URL} rel="stylesheet" />
       </head>
       <body
-        className={`${montserrat.variable} ${montserrat.className} antialiased bg-zinc-950 text-white dark`}
+        className={`${montserrat.variable} ${inter.variable} ${montserrat.className} antialiased bg-zinc-950 text-white dark`}
         suppressHydrationWarning
       >
         {children}

@@ -11,7 +11,7 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 - **Announcement Banner**: Sticky banner highlighting the SWE-bench SOTA achievement and limited offers.
 - **Dynamic Frosted-Glass Navbars**: Custom mega-menu support for Products, Open-Source, and Resources (**HP** -> **Docs** -> **Blogs** -> **Community**).
 - **Achievements Carousel**: Auto-sliding carousel housing major milestones and summit achievements with slide controls.
-- **HP x CodeMate AI Landing Page (`/hp`)**: Dedicated partnership page featuring product guides, interactive video demonstrations, and an exclusive trial registration form.
+- **HP x CodeMate AI Landing Page (`/partnerships/hp`)**: Dedicated partnership page featuring product guides, interactive video demonstrations, and an exclusive trial registration form.
 - **Community Showcase (`/community`)**: Live gallery of production-grade platforms shipped autonomously using CodeMate AI. Includes responsive video modal previews with touch shielding, PDF documentation viewer, and category filtering.
 - **Dynamic Pricing Engine (`/pricing`)**: Interactive plan cards, custom credit builders, trial banners, and product matrix comparisons.
 - **Technical Blog (`/blog` & `/blog/[slug]`)**: Dynamic blog feed with search, tag filtering, category grouping, reading time estimation, and deep-linkable table-of-contents navigation.
@@ -108,10 +108,10 @@ The application connects to MongoDB using the official Node.js driver (`mongodb`
 ## SEO and Discoverability
 
 The website automatically enforces modern technical SEO standards across all routes:
-1. **Dynamic Sitemap Indexing (`/sitemap.xml`)**: Generated dynamically via `src/app/sitemap.ts` covering all primary static routes (`/`, `/hp`, `/pricing`, `/download`, `/contact`, `/blog`, `/community`) and dynamic blog post slugs (`/blog/[slug]`).
+1. **Dynamic Sitemap Indexing (`/sitemap.xml`)**: Generated dynamically via `src/app/sitemap.ts` covering all primary static routes (`/`, `/partnerships/hp`, `/pricing`, `/download`, `/contact`, `/blog`, `/community`) and dynamic blog post slugs (`/blog/[slug]`).
 2. **Crawl Directives (`robots.txt`)**: Located at `public/robots.txt` allowing indexing and pointing search engines directly to `https://codemate.ai/sitemap.xml`.
 3. **Structured Data (JSON-LD)**: Injected via root layout (`src/app/layout.tsx`) using Schema.org `SoftwareApplication` definitions for rich search snippets.
-4. **OpenGraph and Twitter Card Metadata**: Dedicated server layout definitions across root, `/hp`, `/community`, and `/blog`.
+4. **OpenGraph and Twitter Card Metadata**: Dedicated server layout definitions across root, `/partnerships/hp`, `/community`, and `/blog`.
 5. **Canonical URL Protection**: Explicit canonical tags on every route to prevent duplicate content indexing.
 
 ---
@@ -245,4 +245,3 @@ npm run lint
 # Build production bundle
 npm run build
 ```
-

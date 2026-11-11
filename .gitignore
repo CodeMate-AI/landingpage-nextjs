@@ -59,4 +59,12 @@ public/_next-video
 # local scripts
 /scripts/
 
+# AI agent & skill caches
 .cora-cli
+.claude/
+agent/
+/agent/
+/.agents/
+skills-lock.json
+.playwright-mcp/
+.playwright-mcp

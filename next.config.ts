@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["mongodb", "bcryptjs"],
 
   images: {
+    qualities: [75, 90, 95, 100],
     remotePatterns: [
       { protocol: "https", hostname: "assets.aceternity.com" },
       { protocol: "https", hostname: "api.microlink.io" },
@@ -64,6 +65,26 @@ const nextConfig: NextConfig = {
       {
         source: "/blog/cora-sota-swe-bench",
         destination: "/blog/cora-hits-sota-76-on-swe-bench-verified",
+        permanent: true,
+      },
+      {
+        source: "/hp",
+        destination: "/partnerships/hp",
+        permanent: true,
+      },
+      {
+        source: "/hp/promo",
+        destination: "/partnerships/hp/promo",
+        permanent: true,
+      },
+      {
+        source: "/hp/usecases",
+        destination: "/partnerships/hp#usecases",
+        permanent: true,
+      },
+      {
+        source: "/hp/usecases/:slug(manufacturing|retail|healthcare|automotive-robotics|smart-cities|energy-utilities)",
+        destination: "/partnerships/hp/usecases/:slug",
         permanent: true,
       },
     ];

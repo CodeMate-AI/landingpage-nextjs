@@ -164,7 +164,7 @@ useEffect(() => {
         transition={{duration:0.7,repeat:Infinity,
         repeatDelay:0.7,
         repeatType:'mirror'}}
-        src="blinkin.png" className='ml-2 h-3 xs:h-3.5 sm:h-4 md:h-5 lg:h-7 absolute object-cover invert' alt="" />
+        src="/ui/blinkin.png" className='ml-2 h-3 xs:h-3.5 sm:h-4 md:h-5 lg:h-7 absolute object-cover invert' alt="" />
      </div>
       :
     <div key={idx} className="relative flex">
@@ -180,7 +180,7 @@ useEffect(() => {
           <motion.img 
             animate={{opacity:[0,1]}}
             transition={{duration:0.7,repeat:Infinity, repeatDelay:0.7, repeatType:'mirror'}}
-            src="blinkin.png" 
+            src="/ui/blinkin.png" 
             className='ml-2 h-3 xs:h-3.5 sm:h-4 md:h-5 lg:h-7 absolute object-cover invert' 
             alt="" 
           />

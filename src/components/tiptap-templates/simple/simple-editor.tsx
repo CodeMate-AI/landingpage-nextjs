@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import React, { useEffect, useRef, useState, createContext } from "react"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import { Plugin } from "@tiptap/pm/state"
 
@@ -10,7 +10,8 @@ import { InputRule, textblockTypeInputRule, wrappingInputRule } from "@tiptap/co
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
 import { Link as BaseLink } from "@tiptap/extension-link"
-import { Image } from "@tiptap/extension-image"
+import { CustomImageNode } from "@/components/tiptap-node/image-node/image-node-extension"
+import { GifUploadNode } from "@/components/tiptap-node/gif-upload-node/gif-upload-node-extension"
 import { TaskItem, TaskList } from "@tiptap/extension-list"
 import { TextAlign } from "@tiptap/extension-text-align"
 import { Typography } from "@tiptap/extension-typography"
@@ -175,6 +176,12 @@ import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node/imag
 import { HorizontalRule } from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { VideoNode } from "@/components/tiptap-node/video-node/video-node-extension"
 import { VideoUploadNode } from "@/components/tiptap-node/video-node/video-upload-node-extension"
+import { ReferenceBlogsNode } from "@/components/tiptap-node/reference-blogs-node/reference-blogs-node-extension"
+import { BentoGridNode } from "@/components/tiptap-node/bento-grid-node"
+import { BentoGridIcon } from "@/components/tiptap-icons/bento-grid-icon"
+import { IllustrationListNode, createIllustrationItem } from "@/components/tiptap-node/illustration-list-node"
+import { IllustrationListIcon } from "@/components/tiptap-icons/illustration-list-icon"
+import { CardDragGuard } from "@/components/tiptap-node/card-drag-guard"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.scss"
@@ -185,6 +192,7 @@ import "@/components/tiptap-node/paragraph-node/paragraph-node.scss"
 
 // --- Tiptap UI ---
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu"
+import { FontDropdownMenu } from "@/components/tiptap-ui/font-dropdown-menu"
 import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
 import { ListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu"
 import { BlockquoteButton } from "@/components/tiptap-ui/blockquote-button"
@@ -207,6 +215,11 @@ import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button"
 import { ArrowLeftIcon } from "@/components/tiptap-icons/arrow-left-icon"
 import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
 import { LinkIcon } from "@/components/tiptap-icons/link-icon"
+import { ImageUploadIcon } from "@/components/tiptap-icons/image-upload-icon"
+import { VideoUploadIcon } from "@/components/tiptap-icons/video-upload-icon"
+import { GifUploadIcon } from "@/components/tiptap-icons/gif-upload-icon"
+import { TableIcon } from "@/components/tiptap-icons/table-icon"
+import { TableFloatingBar } from "@/components/tiptap-ui/table-floating-bar"
 
 // --- Hooks ---
 import { useIsBreakpoint } from "@/hooks/use-is-breakpoint"
@@ -215,6 +228,8 @@ import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 
 // --- Lib ---
 import { handleImageUpload, handleVideoUpload, MAX_FILE_SIZE, MAX_VIDEO_SIZE } from "@/lib/tiptap-utils"
+import { TextStyleMark, FontFamilyExtension } from "@/lib/tiptap-font-family"
+import { getFontCssValue } from "@/lib/fonts-config"
 
 // --- Styles ---
 import "@/components/tiptap-templates/simple/simple-editor.scss"
@@ -224,13 +239,18 @@ const MainToolbarContent = ({
   onLinkClick,
   onVideoClick,
   isMobile,
+  baseFont,
+  onBaseFontChange,
 }: {
   onHighlighterClick: () => void
   onLinkClick: () => void
   onVideoClick: () => void
   isMobile: boolean
+  baseFont?: string | null
+  onBaseFontChange?: (fontKey: string) => void
 }) => {
   const { editor } = useTiptapEditor()
+  const isInsideTable = Boolean(editor?.isActive("table"))
 
   return (
     <>
@@ -243,6 +263,7 @@ const MainToolbarContent = ({
 
       <ToolbarGroup>
         <HeadingDropdownMenu modal={false} levels={[2, 3, 4]} />
+        <FontDropdownMenu modal={false} baseFont={baseFont} onBaseFontChange={onBaseFontChange} />
         <ListDropdownMenu
           modal={false}
           types={["bulletList", "orderedList", "taskList"]}
@@ -286,13 +307,81 @@ const MainToolbarContent = ({
       <ToolbarSeparator />
 
       <ToolbarGroup>
-        <ImageUploadButton text="Add" />
+        <ImageUploadButton
+          text="IMG"
+          icon={ImageUploadIcon}
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+        />
         <Button
           type="button"
           variant="ghost"
-          onClick={onVideoClick}
-          tooltip="Add video"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            onVideoClick()
+          }}
+          tooltip={isInsideTable ? "Cannot insert video inside table" : "Add video"}
+          title={isInsideTable ? "Cannot insert video inside table" : "Add video"}
           onMouseDown={(e) => e.preventDefault()}
+        >
+          <VideoUploadIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">VID</span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            editor?.chain().focus().insertContent({ type: "gifUpload" }).run()
+          }}
+          tooltip={isInsideTable ? "Cannot insert GIF inside table" : "Add GIF"}
+          title={isInsideTable ? "Cannot insert GIF inside table" : "Add GIF"}
+          onMouseDown={(e) => e.preventDefault()}
+        >
+          <GifUploadIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">GIF</span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+          title={isInsideTable ? "Table already active (nested tables disabled)" : "Insert Table"}
+          tooltip={isInsideTable ? "Table already active" : "Insert Table"}
+        >
+          <TableIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">Table</span>
+        </Button>
+        <Button
+          type="button"
+          variant="ghost"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            editor?.chain().focus().insertContent({
+              type: "referenceBlogs",
+              attrs: {
+                heading: "Writing",
+                showBottomLink: true,
+                bottomLinkText: "Read the blog",
+                bottomLinkUrl: "/blog",
+                blogs: [],
+              },
+            }).run()
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+          title={isInsideTable ? "Cannot insert reference blogs inside table" : "Add Reference Blogs"}
+          tooltip={isInsideTable ? "Cannot insert reference blogs inside table" : "Add Reference Blogs"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -302,76 +391,73 @@ const MainToolbarContent = ({
             stroke="currentColor"
             className="tiptap-button-icon"
           >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
           </svg>
-          <span className="tiptap-button-text">Add</span>
+          <span className="tiptap-button-text">Ref Blogs</span>
         </Button>
         <Button
           type="button"
           variant="ghost"
-          onClick={() => editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()}
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            editor?.chain().focus().insertContent({
+              type: "bentoGrid",
+              attrs: {
+                columns: 2,
+                gap: "md",
+                cards: [
+                  {
+                    id: "bento-" + Date.now() + "-1",
+                    mediaType: "image",
+                    mediaUrl: "",
+                    caption: "",
+                    spanCols: 1,
+                    spanRows: 1,
+                    aspectRatio: "auto",
+                  },
+                  {
+                    id: "bento-" + Date.now() + "-2",
+                    mediaType: "image",
+                    mediaUrl: "",
+                    caption: "",
+                    spanCols: 1,
+                    spanRows: 1,
+                    aspectRatio: "auto",
+                  },
+                ],
+              },
+            }).run()
+          }}
           onMouseDown={(e) => e.preventDefault()}
-          title="Insert Table"
+          title={isInsideTable ? "Cannot insert Bento Grid inside table" : "Insert Bento Grid"}
+          tooltip={isInsideTable ? "Cannot insert Bento Grid inside table" : "Insert Bento Grid"}
         >
-          Table
+          <BentoGridIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">Bento Grid</span>
         </Button>
-      </ToolbarGroup>
-
-      <ToolbarSeparator />
-
-      <ToolbarGroup>
-        {editor?.isActive("table") && (
-          <>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().addRowAfter().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              title="Add Row Below"
-            >
-              + Row
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().deleteRow().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              className="text-red-400 hover:text-red-500"
-              title="Delete Row"
-            >
-              - Row
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().addColumnAfter().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              title="Add Column Right"
-            >
-              + Col
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().deleteColumn().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              className="text-red-400 hover:text-red-500"
-              title="Delete Column"
-            >
-              - Col
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => editor?.chain().focus().deleteTable().run()}
-              onMouseDown={(e) => e.preventDefault()}
-              className="text-red-500 font-bold hover:text-red-600"
-              title="Delete Table"
-            >
-              Del Table
-            </Button>
-          </>
-        )}
+        <Button
+          type="button"
+          variant="ghost"
+          disabled={isInsideTable}
+          data-disabled={isInsideTable}
+          onClick={() => {
+            if (isInsideTable) return
+            editor?.chain().focus().insertContent({
+              type: "illustrationList",
+              attrs: {
+                items: [createIllustrationItem(), createIllustrationItem()],
+              },
+            }).run()
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+          title={isInsideTable ? "Cannot insert Illustration List inside table" : "Insert Illustration List"}
+          tooltip={isInsideTable ? "Cannot insert Illustration List inside table" : "Insert Illustration List"}
+        >
+          <IllustrationListIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">List</span>
+        </Button>
       </ToolbarGroup>
     </>
   )
@@ -406,18 +492,50 @@ const MobileToolbarContent = ({
   </>
 )
 
+export interface CurrentPostContextType {
+  postId?: string | null
+  slug?: string | null
+  title?: string | null
+}
+
+export const CurrentPostContext = React.createContext<CurrentPostContextType>({})
+
 interface SimpleEditorProps {
   content: any
   onChange: (json: any) => void
+  currentPostId?: string | null
+  currentSlug?: string | null
+  currentTitle?: string | null
+  baseFont?: string | null
+  onBaseFontChange?: (fontKey: string) => void
 }
 
-export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
+const isPosInsideTable = ($pos: any) => {
+  for (let d = $pos.depth; d > 0; d--) {
+    const name = $pos.node(d).type.name
+    if (name === "table" || name === "tableCell" || name === "tableHeader") {
+      return true
+    }
+  }
+  return false
+}
+
+export function SimpleEditor({
+  content,
+  onChange,
+  currentPostId,
+  currentSlug,
+  currentTitle,
+  baseFont,
+  onBaseFontChange,
+}: SimpleEditorProps) {
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
   const [mobileView, setMobileView] = useState<"main" | "highlighter" | "link">(
     "main"
   )
   const toolbarRef = useRef<HTMLDivElement>(null)
+  const contentRef = useRef<HTMLDivElement>(null)
   const isInitializedRef = useRef(false)
   const videoInputRef = useRef<HTMLInputElement>(null)
   let editor: ReturnType<typeof useEditor> | null = null
@@ -437,12 +555,30 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
         const file = event.dataTransfer?.files?.[0]
         if (!file) return false
 
+        const dropCoords = view.posAtCoords({ left: event.clientX, top: event.clientY })
+        const dropTargetPos = dropCoords ? dropCoords.pos : view.state.selection.from
+        if (isPosInsideTable(view.state.doc.resolve(dropTargetPos))) {
+          if (file.type.startsWith("image/") || file.type.startsWith("video/")) {
+            alert("Media cannot be dropped inside table cells.")
+            return true
+          }
+        }
+
         if (file.type.startsWith("image/")) {
+          const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif")
+          if (isGif) {
+            alert("GIF files cannot be uploaded as regular images. Please use the dedicated GIF tool in the toolbar.")
+            return true
+          }
+          if (file.size > MAX_FILE_SIZE) {
+            alert(`File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`)
+            return true
+          }
           handleImageUpload(file)
             .then((url) => {
               const coordinates = view.posAtCoords({ left: event.clientX, top: event.clientY })
               const pos = coordinates ? coordinates.pos : view.state.selection.from
-              const node = view.state.schema.nodes.image.create({ src: url })
+              const node = view.state.schema.nodes.image.create({ src: url, caption: "" })
               const transaction = view.state.tr.insert(pos, node)
               view.dispatch(transaction)
             })
@@ -471,14 +607,26 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       },
       handlePaste: (view, event, slice) => {
         const file = event.clipboardData?.files?.[0]
+        if (file && (file.type.startsWith("image/") || file.type.startsWith("video/"))) {
+          if (isPosInsideTable(view.state.selection.$from)) {
+            alert("Media cannot be pasted inside table cells.")
+            return true
+          }
+        }
+
         if (file && file.type.startsWith("image/")) {
+          const isGif = file.type === "image/gif" || file.name.toLowerCase().endsWith(".gif")
+          if (isGif) {
+            alert("GIF files cannot be uploaded as regular images. Please use the dedicated GIF tool in the toolbar.")
+            return true
+          }
           if (file.size > MAX_FILE_SIZE) {
             alert(`File size exceeds maximum allowed (${MAX_FILE_SIZE / (1024 * 1024)}MB)`)
             return true
           }
           handleImageUpload(file)
             .then((url) => {
-              const node = view.state.schema.nodes.image.create({ src: url })
+              const node = view.state.schema.nodes.image.create({ src: url, caption: "" })
               const transaction = view.state.tr.replaceSelectionWith(node)
               view.dispatch(transaction)
             })
@@ -523,8 +671,14 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       MarkdownRulesExtension,
       CustomTaskList,
       CustomTaskItem,
+      TextStyleMark,
+      FontFamilyExtension,
       VideoNode,
       VideoUploadNode,
+      ReferenceBlogsNode,
+      BentoGridNode,
+      IllustrationListNode,
+      CardDragGuard,
       CustomLink,
       CustomHeading,
       HorizontalRule,
@@ -534,9 +688,10 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
       }),
       Subscript,
       Superscript,
-      Image,
+      CustomImageNode,
+      GifUploadNode,
       ImageUploadNode.configure({
-        accept: "image/*",
+        accept: "image/jpeg,image/png,image/webp,image/avif,.jpg,.jpeg,.png,.webp,.avif",
         maxSize: MAX_FILE_SIZE,
         limit: 3,
         upload: handleImageUpload,
@@ -574,36 +729,48 @@ export function SimpleEditor({ content, onChange }: SimpleEditorProps) {
   }, [isMobile])
 
   return (
-    <EditorContext.Provider value={{ editor }}>
-      <div className="simple-editor-wrapper">
-        <Toolbar ref={toolbarRef}>
-          {mobileView === "main" ? (
-            <MainToolbarContent
-              isMobile={isMobile}
-              onHighlighterClick={() => setMobileView("highlighter")}
-              onLinkClick={() => setMobileView("link")}
-              onVideoClick={() => editor?.chain().focus().insertContent({ type: "videoUpload" }).run()}
-            />
-          ) : (
-            <MobileToolbarContent
-              type={mobileView}
-              onBack={() => setMobileView("main")}
-            />
-          )}
-        </Toolbar>
+    <CurrentPostContext.Provider value={{ postId: currentPostId, slug: currentSlug, title: currentTitle }}>
+      <EditorContext.Provider value={{ editor }}>
         <div
-          className="simple-editor-content"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) {
-              editor?.commands.focus()
-            }
-          }}
-          style={{ cursor: "text" }}
+          className="simple-editor-wrapper"
+          style={{ "--article-base-font": getFontCssValue(baseFont) } as React.CSSProperties}
         >
-          <EditorContent editor={editor} />
+          <Toolbar ref={toolbarRef}>
+            {mobileView === "main" ? (
+              <MainToolbarContent
+                isMobile={isMobile}
+                baseFont={baseFont}
+                onBaseFontChange={onBaseFontChange}
+                onHighlighterClick={() => setMobileView("highlighter")}
+                onLinkClick={() => setMobileView("link")}
+                onVideoClick={() => {
+                if (editor?.isActive("table")) return
+                editor?.chain().focus().insertContent({ type: "videoUpload" }).run()
+              }}
+              />
+            ) : (
+              <MobileToolbarContent
+                type={mobileView}
+                onBack={() => setMobileView("main")}
+              />
+            )}
+          </Toolbar>
+          <div
+            ref={contentRef}
+            className="simple-editor-content"
+            style={{ position: "relative", cursor: "text" }}
+            onClick={(e) => {
+              if (e.target === e.currentTarget) {
+                editor?.commands.focus()
+              }
+            }}
+          >
+            <TableFloatingBar editor={editor} containerRef={contentRef} />
+            <EditorContent editor={editor} />
+          </div>
         </div>
-      </div>
-    </EditorContext.Provider>
+      </EditorContext.Provider>
+    </CurrentPostContext.Provider>
   )
 }
 

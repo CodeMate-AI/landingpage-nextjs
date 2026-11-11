@@ -58,6 +58,8 @@ const getRelatedAndNavPosts = React.cache(async () => {
         authorRole: 1,
         authorImage: 1,
         publishedAtCustom: 1,
+        baseFont: 1,
+        "publishedVersion.baseFont": 1,
         "publishedVersion.title": 1,
         "publishedVersion.category": 1,
         "publishedVersion.tags": 1,
@@ -160,6 +162,7 @@ export default async function BlogPostPage({ params }: Props) {
     author: source.author || "",
     authorRole: source.authorRole || "",
     authorImage: source.authorImage || "",
+    baseFont: source.baseFont || "",
   };
 
   const rawAllPosts = await getRelatedAndNavPosts();

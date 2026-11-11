@@ -17,6 +17,8 @@ export interface Project {
   demoUrl?: string;
 }
 
+export const ORBIT_CRM_DEMO_URL = "https://crmly.codemate.build/";
+
 export const projects: Project[] = [
   {
     id: "1",
