@@ -92,8 +92,8 @@ export default function PartnershipsPage() {
 
         <header className="mx-auto max-w-3xl text-center pt-6 sm:pt-10">
           <p className="mb-3 sm:mb-4 text-sm sm:text-base font-medium text-neutral-400">PARTNERSHIPS</p>
-          <h1 className="font-heading text-[clamp(2.25rem,5.5vw,4rem)] leading-[1.15] pb-[0.08em] bg-gradient-to-b from-white to-gray-300/70 bg-clip-text text-transparent">
-            Built together
+          <h1 className="whitespace-nowrap font-semibold tracking-tight text-[clamp(1.5rem,6.5vw,3.75rem)] leading-[1.08] pb-[0.08em] bg-gradient-to-b from-white to-gray-300/70 bg-clip-text text-transparent">
+            Partners in sovereign AI
           </h1>
           <p className="mt-5 mx-auto max-w-xl text-sm sm:text-base md:text-lg leading-relaxed text-neutral-400">
             Partnerships that bring CodeMate AI to more developers, devices and enterprises.
