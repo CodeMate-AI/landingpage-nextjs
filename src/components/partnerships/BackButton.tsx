@@ -1,34 +1,25 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { IconArrowLeft } from '@tabler/icons-react';
 
 /**
- * Returns to whatever page the visitor came from. When there is no history
- * (link opened in a new tab, typed URL), falls back to the partnerships hub.
+ * Always returns to the partnerships hub. A fixed link rather than history.back(),
+ * which could land on an in-page anchor (the HP nav adds #section entries) or
+ * on another site.
  */
 export default function BackButton({
-  fallbackHref = '/partnerships',
+  href = '/partnerships',
   className = '',
 }: {
-  fallbackHref?: string;
+  href?: string;
   className?: string;
 }) {
-  const router = useRouter();
-
-  const handleClick = () => {
-    if (window.history.length > 1) router.back();
-    else router.push(fallbackHref);
-  };
-
   return (
-    <button
-      type="button"
-      onClick={handleClick}
+    <Link
+      href={href}
       className={`inline-flex items-center gap-2 text-sm sm:text-[15px] transition-colors cursor-pointer focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 rounded ${className}`}
     >
       <IconArrowLeft size={17} stroke={1.8} aria-hidden="true" />
       Back
-    </button>
+    </Link>
   );
 }
