@@ -606,7 +606,7 @@ export default function Navbar() {
               backdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
               WebkitBackdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
             }}
-            className="w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5 pointer-events-auto transition-all duration-300 ease-out transform-gpu flex justify-between items-center"
+            className={cn("w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5 transition-all duration-300 ease-out transform-gpu flex justify-between items-center", isCompact && !isMenu ? "pointer-events-none" : "pointer-events-auto")}
           >
             {/* Left side: CodeMate logo */}
             <div
