@@ -69,3 +69,4 @@ agent/
 skills-lock.json
 .playwright-mcp/
 .playwright-mcp
+.baseline/
