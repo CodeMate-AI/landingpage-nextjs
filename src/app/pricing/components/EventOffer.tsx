@@ -32,7 +32,7 @@ export default function EventOffer({
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="fixed inset-0 z-[999999999] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+                    className="fixed inset-0 z-999999999 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
                     onClick={onClose}
                 >
                     <motion.div
@@ -41,7 +41,7 @@ export default function EventOffer({
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
                         transition={{ duration: 0.4, ease: "easeOut" }}
                         onClick={(e) => e.stopPropagation()}
-                        className="relative w-full max-w-4xl bg-gradient-to-br from-zinc-900/95 via-zinc-900 to-zinc-950 rounded-3xl border border-zinc-800/60 shadow-2xl overflow-hidden"
+                        className="relative w-full max-w-4xl bg-linear-to-br from-zinc-900/95 via-zinc-900 to-zinc-950 rounded-3xl border border-zinc-800/60 shadow-2xl overflow-hidden"
                     >
                         {/* Close Button */}
                         <button
@@ -55,7 +55,7 @@ export default function EventOffer({
                             {/* Optional Image Section */}
                             {imageSrc && (
                                 <div className="hidden lg:block lg:w-2/5 relative h-48 lg:h-auto min-h-[200px]">
-                                    <div className="absolute inset-0 bg-gradient-to-t from-zinc-900/50 lg:bg-gradient-to-r lg:from-transparent lg:to-zinc-900/50 z-10" />
+                                    <div className="absolute inset-0 bg-linear-to-t from-zinc-900/50 lg:bg-linear-to-r lg:from-transparent lg:to-zinc-900/50 z-10" />
                                     <img
                                         src={imageSrc}
                                         alt="Event Special"
@@ -74,9 +74,9 @@ export default function EventOffer({
                                 </div>
 
                                 <div className="text-center lg:text-left">
-                                    <h2 className="text-2xl lg:text-3xl font-bold text-white mb-2 leading-tight">
+                                    <h2 className="text-2xl lg:text-3xl font-bold text-white mb-2 leading-tight lg:leading-[2.25rem]">
                                         Go From Idea to Deployed App.<br />
-                                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-emerald-400">Faster Than Ever.</span>
+                                        <span className="text-transparent bg-clip-text bg-linear-to-r from-blue-400 to-emerald-400">Faster Than Ever.</span>
                                     </h2>
 
                                     <p className="text-zinc-400 mb-6 text-sm lg:text-lg">
@@ -93,7 +93,7 @@ export default function EventOffer({
                                             <span className="font-semibold text-white">C <span className='font-[monospace] text-lg -ml-1'>0</span></span>
                                         </div>
 
-                                        <div className="px-5 py-2 bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/40 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.2)]">
+                                        <div className="px-5 py-2 bg-linear-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/40 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.2)]">
                                             <span className="text-emerald-400 font-bold tracking-wide">
                                                 {offerText}
                                             </span>

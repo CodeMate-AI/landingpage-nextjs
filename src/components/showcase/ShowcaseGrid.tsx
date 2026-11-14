@@ -99,7 +99,7 @@ export default function ShowcaseGrid({ cards }: { cards: ShowcaseCardData[] }) {
             >
               <article className="flex w-full flex-col overflow-hidden rounded-lg bg-[#121214]">
                 <div
-                  className={`relative aspect-[5/3] w-full overflow-hidden ${
+                  className={`relative aspect-5/3 w-full overflow-hidden ${
                     card.plate ? 'flex items-center justify-center bg-white p-5' : 'bg-zinc-900'
                   }`}
                 >
@@ -124,7 +124,7 @@ export default function ShowcaseGrid({ cards }: { cards: ShowcaseCardData[] }) {
                 <div className="flex flex-1 flex-col gap-3 px-5 pb-5 pt-5">
                   <h2
                     title={card.title}
-                    className="line-clamp-2 break-words text-base font-medium leading-snug text-white sm:text-lg"
+                    className="line-clamp-2 wrap-break-word text-base font-medium leading-snug text-white sm:text-lg sm:leading-[1.75rem]"
                     style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
                   >
                     {card.title}

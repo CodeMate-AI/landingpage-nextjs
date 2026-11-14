@@ -94,7 +94,7 @@ export default function ProductTabsSection() {
     <section
       id="features"
       aria-label="CodeMate Product Details"
-      className="relative w-full bg-[#0C0C0E] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[140px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[80px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28"
+      className="relative w-full bg-[#0C0C0E] text-white flex flex-col items-center box-border overflow-hidden py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[140px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[80px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28"
     >
       {/* ========================================================================= */}
       {/* Product Header (Responsive Left / Right layout with Navigation Controls)  */}
@@ -121,7 +121,7 @@ export default function ProductTabsSection() {
                 <span translate="no" className="text-white/60 text-sm sm:text-base lg:text-[22px] lg:leading-[28px] font-normal tracking-wide">
                   {currentTab.productLabel}
                 </span>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[36px] xl:text-[42px] 2xl:text-[46px] lg:leading-[54px] font-semibold bg-gradient-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent min-h-[34px] sm:min-h-[44px] lg:min-h-0 lg:whitespace-nowrap">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-[36px] xl:text-[42px] 2xl:text-[46px] lg:leading-[54px] font-semibold bg-linear-to-b from-white via-white/90 to-[#9CA3AF] bg-clip-text text-transparent min-h-[34px] sm:min-h-[44px] lg:min-h-0 lg:whitespace-nowrap">
                   {currentTab.headline}
                 </h2>
               </motion.div>
@@ -160,7 +160,7 @@ export default function ProductTabsSection() {
                 aria-label="Previous cards"
                 className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${canScrollLeft
                     ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
-                    : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
+                    : 'border-white/5 bg-white/2 text-white/20 cursor-not-allowed'
                   }`}
               >
                 <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -172,7 +172,7 @@ export default function ProductTabsSection() {
                 aria-label="Next cards"
                 className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${canScrollRight
                     ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
-                    : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
+                    : 'border-white/5 bg-white/2 text-white/20 cursor-not-allowed'
                   }`}
               >
                 <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -192,7 +192,7 @@ export default function ProductTabsSection() {
             aria-labelledby={tabButtonId(currentTab.id)}
             tabIndex={0}
             onScroll={checkScrollBoundaries}
-            className="w-full flex flex-row items-stretch gap-5 sm:gap-6 lg:gap-8 overflow-x-auto scroll-smooth py-1 2xl:py-0 px-0 sm:px-1 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
+            className="w-full flex flex-row items-stretch gap-5 sm:gap-6 lg:gap-8 overflow-x-auto scroll-smooth py-1 2xl:py-0 px-0 sm:px-1 scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
           >
             <AnimatePresence mode="wait">
               <motion.div
@@ -207,10 +207,10 @@ export default function ProductTabsSection() {
                   <article
                     key={card.id || `card-${idx}`}
                     data-carousel-card
-                    className="group flex flex-col items-start gap-2.5 sm:gap-4 w-full min-w-full sm:min-w-0 sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-64px)/3)] flex-shrink-0 transition-transform duration-300 snap-start"
+                    className="group flex flex-col items-start gap-2.5 sm:gap-4 w-full min-w-full sm:min-w-0 sm:w-[calc((100%-24px)/2)] lg:w-[calc((100%-64px)/3)] shrink-0 transition-transform duration-300 snap-start"
                   >
                     {/* Media Container: Background+Border+Shadow */}
-                    <div className="relative w-full aspect-video bg-[#121216] border border-white/[0.06] rounded-[12px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.35)] overflow-hidden transition-all duration-300 group-hover:border-white/15">
+                    <div className="relative w-full aspect-video bg-[#121216] border border-white/6 rounded-[12px] shadow-[0px_25px_50px_-12px_rgba(0,0,0,0.35)] overflow-hidden transition-all duration-300 group-hover:border-white/15">
                       {/*
                         Animated SVGs (HairlineFigure) commented out in favor of product images:
                         card.figure ? (
@@ -268,7 +268,7 @@ export default function ProductTabsSection() {
             ref={tabListRef}
             role="tablist"
             aria-label="CodeMate Products Navigation"
-            className="relative inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"
+            className="relative inline-flex shrink-0 items-center gap-1.5 rounded-full border border-white/10 bg-zinc-900/70 p-1.5 shadow-xl backdrop-blur-xl max-w-full overflow-x-auto scrollbar-none [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden [touch-action:pan-x_pan-y]"
           >
             {TABS.map((tab, tabIndex) => {
               const isActive = tab.id === activeTabId;

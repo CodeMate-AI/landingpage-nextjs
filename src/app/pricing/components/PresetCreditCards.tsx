@@ -15,13 +15,13 @@ const PresetCard = ({ price, credits, isPopular = false }: PresetCardProps) => {
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.05, y: -5 }}
             transition={{ duration: 0.3 }}
-            className={`relative bg-gradient-to-br from-zinc-800/50 to-zinc-900/50 rounded-2xl p-6 border ${isPopular ? 'border-blue-500/50' : 'border-zinc-700/50'
+            className={`relative bg-linear-to-br from-zinc-800/50 to-zinc-900/50 rounded-2xl p-6 border ${isPopular ? 'border-blue-500/50' : 'border-zinc-700/50'
                 } hover:border-zinc-600 transition-all cursor-pointer`}
         >
             {/* Popular Badge */}
             {isPopular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <div className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                    <div className="bg-linear-to-r from-blue-500 to-blue-600 text-white px-3 py-1 rounded-full text-xs font-bold">
                         Popular
                     </div>
                 </div>

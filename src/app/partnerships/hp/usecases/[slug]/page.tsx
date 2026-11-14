@@ -81,7 +81,7 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
       {/* Hero: the image box is 964x800 at 1440px, runs 170px off the right edge, and is cropped by the 637px hero */}
       <section className="relative w-full bg-[#E8F3FF] overflow-hidden lg:h-[637.39px] flex items-center">
         <div
-          className="hidden lg:block absolute top-0 right-[-11.806%] w-[66.944%] aspect-[964/800] min-h-full z-0 pointer-events-none"
+          className="hidden lg:block absolute top-0 right-[-11.806%] w-[66.944%] aspect-964/800 min-h-full z-0 pointer-events-none"
           style={{ clipPath: "polygon(51.73% 0, 100% 0, 100% 100%, 0 100%)" }}
         >
           <div className="absolute inset-x-0 top-0 h-[637.39px]">

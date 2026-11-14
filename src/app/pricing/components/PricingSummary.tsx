@@ -13,7 +13,7 @@ const PricingSummary = ({ pricing, onBillingPeriodChange }: PricingSummaryProps)
     const [showBreakdown, setShowBreakdown] = useState(false)
 
     return (
-        <div className="bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl p-6 border border-zinc-800 sticky top-4">
+        <div className="bg-linear-to-br from-zinc-900 to-zinc-950 rounded-2xl p-6 border border-zinc-800 sticky top-4">
             {/* Billing Period Toggle */}
             <div className="flex items-center justify-center gap-2 mb-6">
                 <button

@@ -1,11 +1,8 @@
-import { withNextVideo } from "next-video/process";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  agentRules: false,
   serverExternalPackages: ["mongodb", "bcryptjs"],
 
   images: {
@@ -91,4 +88,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextVideo(nextConfig, { folder: "video" });
+export default nextConfig;

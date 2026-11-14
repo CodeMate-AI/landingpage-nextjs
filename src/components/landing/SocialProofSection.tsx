@@ -10,7 +10,7 @@ export default function SocialProofSection() {
   return (
     <section
       aria-label="Social Proof and Enterprise Trust"
-      className="relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 2xl:pt-[90px] 2xl:pb-[50px] px-4 sm:px-8 2xl:px-[90px] gap-6 sm:gap-8 2xl:gap-[40px]"
+      className="relative w-full bg-[rgba(255,255,255,0.02)] text-white flex flex-col items-center box-border overflow-hidden pt-8 sm:pt-12 lg:pt-14 pb-8 sm:pb-12 lg:pb-14 2xl:pt-[90px] 2xl:pb-[50px] px-4 sm:px-8 2xl:px-[90px] gap-6 sm:gap-8 2xl:gap-[40px]"
     >
       {/* ========================================================================= */}
       {/* Top Header and Statistics Metrics Row                                     */}
@@ -26,14 +26,14 @@ export default function SocialProofSection() {
               transition={{ duration: 0.5 }}
               className="flex flex-row flex-wrap items-center gap-2.5 sm:gap-3"
             >
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[72px] font-semibold bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[72px] font-semibold bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
                 {SOCIAL_PROOF_DATA.titleHighlight}
               </h2>
-              <span className="inline-flex items-baseline text-3xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[72px] font-semibold bg-gradient-to-b from-white to-[#9CA3AF] bg-clip-text text-transparent">
+              <span className="inline-flex items-baseline text-3xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[72px] font-semibold bg-linear-to-b from-white to-[#9CA3AF] bg-clip-text text-transparent">
                 {SOCIAL_PROOF_DATA.titlePrefix}&nbsp;
                 <Counter
                   targetValue={SOCIAL_PROOF_DATA.userCountValue}
-                  className="tabular-nums font-semibold bg-gradient-to-b from-white to-[#9CA3AF] bg-clip-text text-transparent"
+                  className="tabular-nums font-semibold bg-linear-to-b from-white to-[#9CA3AF] bg-clip-text text-transparent"
                 />
                 {SOCIAL_PROOF_DATA.userCountSuffix}
               </span>
@@ -51,7 +51,7 @@ export default function SocialProofSection() {
           </div>
 
           {/* Vertical Divider Line between header and metrics */}
-          <div className="hidden xl:block w-[1px] h-[104px] bg-white/20 shrink-0" />
+          <div className="hidden xl:block w-px h-[104px] bg-white/20 shrink-0" />
 
           {/* Right Block (Statistics Metrics: Proper left, center, right distribution for mobile & iPad) */}
           <div className="w-full xl:w-auto grid grid-cols-3 gap-2 sm:gap-4 md:gap-6 xl:flex xl:flex-row xl:items-start xl:gap-[48px] 2xl:gap-[64px]">
@@ -93,7 +93,7 @@ export default function SocialProofSection() {
       {/* ========================================================================= */}
       {/* Container: Flowing Partner Logos Marquee (Full Bleed Edge to Edge)        */}
       {/* ========================================================================= */}
-      <div className="relative w-full 2xl:w-[calc(100%+180px)] 2xl:max-w-none 2xl:-mx-[90px] overflow-hidden flex justify-center items-center mt-6 sm:mt-8 lg:mt-10 2xl:mt-0 [mask-image:linear-gradient(to_right,transparent_0%,black_3%,black_97%,transparent_100%)]">
+      <div className="relative w-full 2xl:w-[calc(100%+180px)] 2xl:max-w-none 2xl:mx-[-90px] overflow-hidden flex justify-center items-center mt-6 sm:mt-8 lg:mt-10 2xl:mt-0 mask-[linear-gradient(to_right,transparent_0%,black_3%,black_97%,transparent_100%)]">
         <Marquee pauseOnHover className="[--duration:20s] flex justify-center items-center">
           {SOCIAL_PROOF_DATA.partners.map((partner) => (
             <img

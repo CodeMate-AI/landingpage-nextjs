@@ -58,7 +58,7 @@ export default function ToolboxSection() {
   };
 
   return (
-    <section className="relative w-full bg-[#0C0C0E] flex flex-col items-center [box-sizing:border-box] py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[120px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[60px] overflow-hidden">
+    <section className="relative w-full bg-[#0C0C0E] flex flex-col items-center box-border py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[120px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[60px] overflow-hidden">
       {/* Section Header: Left-aligned with Right-aligned Navigation Controls */}
       <div className="w-full max-w-[1740px] flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2.5 sm:gap-6 lg:gap-8 pb-1 xl:pb-0">
           <div className="flex flex-col items-start text-left max-w-[956px]">
@@ -80,13 +80,13 @@ export default function ToolboxSection() {
               className="mt-2 sm:mt-3 text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-[60px] lg:leading-[60px] text-left"
               style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
             >
-              <span className="bg-gradient-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
+              <span className="bg-linear-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
                 {TOOLBOX_DATA.titlePrefix}
               </span>
-              <span className="bg-gradient-to-r from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+              <span className="bg-linear-to-r from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
                 {TOOLBOX_DATA.titleHighlight}
               </span>
-              <span className="bg-gradient-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
+              <span className="bg-linear-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
                 {TOOLBOX_DATA.titleSuffix}
               </span>
             </motion.h2>
@@ -102,7 +102,7 @@ export default function ToolboxSection() {
               className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
                 canScrollLeft
                   ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
-                  : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
+                  : 'border-white/5 bg-white/2 text-white/20 cursor-not-allowed'
               }`}
             >
               <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -115,7 +115,7 @@ export default function ToolboxSection() {
               className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border transition-all duration-200 ${
                 canScrollRight
                   ? 'border-white/20 bg-[#141A21] text-white hover:bg-white/10 hover:border-white/40 cursor-pointer active:scale-95'
-                  : 'border-white/5 bg-white/[0.02] text-white/20 cursor-not-allowed'
+                  : 'border-white/5 bg-white/2 text-white/20 cursor-not-allowed'
               }`}
             >
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -127,7 +127,7 @@ export default function ToolboxSection() {
         <div
           ref={scrollContainerRef}
           onMouseLeave={() => setHoveredIndex(null)}
-          className="flex w-full max-w-[1740px] flex-nowrap items-stretch gap-3 sm:gap-4 md:gap-5 xl:gap-[12px] overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] scroll-smooth pb-2 pt-0 sm:pt-0.5 xl:pb-0 xl:pt-0 select-none [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
+          className="flex w-full max-w-[1740px] flex-nowrap items-stretch gap-3 sm:gap-4 md:gap-5 xl:gap-[12px] overflow-x-auto scrollbar-none [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none scroll-smooth pb-2 pt-0 sm:pt-0.5 xl:pb-0 xl:pt-0 select-none [touch-action:pan-x_pan-y] overscroll-x-contain snap-x snap-mandatory"
         >
           {TOOLBOX_DATA.products.map((product: ToolboxProduct, idx: number) => {
             const isHovered = hoveredIndex === idx;
@@ -239,7 +239,7 @@ export default function ToolboxSection() {
                       height={258}
                       quality={95}
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 916px"
-                      className="h-full w-full object-cover object-left-top rounded-tl-[6px]"
+                      className="h-full w-full object-cover object-top-left rounded-tl-[6px]"
                     />
                   </motion.div>
                 </div>

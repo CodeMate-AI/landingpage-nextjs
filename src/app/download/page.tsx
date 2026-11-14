@@ -147,9 +147,9 @@ const DownloadPage = () => {
                             initial={{ opacity: 0, scale: 0.8, x: -20 }}
                             animate={{ opacity: 1, scale: 1, x: 0 }}
                             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                            className="flex-shrink-0 relative group"
+                            className="shrink-0 relative group"
                         >
-                            <div className="w-20 h-20 bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] rounded-[22px] border border-white/10 shadow-2xl flex items-center justify-center relative overflow-hidden backdrop-blur-md">
+                            <div className="w-20 h-20 bg-linear-to-br from-[#2A2A2A] to-[#1A1A1A] rounded-[22px] border border-white/10 shadow-2xl flex items-center justify-center relative overflow-hidden backdrop-blur-md">
                                 <Image src="/logos/brand/codemate-toolbox-icon.png" alt="ToolBox Icon" width={80} height={80} />
                             </div>
                         </motion.div>
@@ -179,7 +179,7 @@ const DownloadPage = () => {
                                     disabled={downloadState !== 'idle'}
                                     className="group relative inline-flex items-center justify-center gap-2.5 px-6 py-2.5 bg-foreground hover:bg-foreground/90 text-background rounded-full font-medium text-sm overflow-hidden transition-transform duration-300"
                                 >
-                                    {/* <div className="absolute inset-0 bg-gradient-to-r from-emerald-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div> */}
+                                    {/* <div className="absolute inset-0 bg-linear-to-r from-emerald-100 to-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div> */}
                                     {/* <AnimatePresence mode="wait"> */}
                                     {/* {downloadState === 'idle' && ( */}
                                     <motion.div key="idle" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} className="relative z-10 flex items-center gap-2">
@@ -321,7 +321,7 @@ const DownloadPage = () => {
 const DownloadRow = ({ label, link, isComingSoon = false }: { label: string, link?: string, isComingSoon?: boolean }) => {
     if (isComingSoon || !link) {
         return (
-            <div className="group flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-white/[0.04] cursor-pointer transition-all duration-200">
+            <div className="group flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-white/4 cursor-pointer transition-all duration-200">
                 <span className="text-[14px] text-foreground transition-colors">{label}</span>
             </div>
         );
@@ -331,7 +331,7 @@ const DownloadRow = ({ label, link, isComingSoon = false }: { label: string, lin
             href={link}
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-white/[0.04] cursor-pointer transition-all duration-200"
+            className="group flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-white/4 cursor-pointer transition-all duration-200"
         >
             <span className="text-[14px] text-foreground transition-colors">{label}</span>
             <Download className="w-3.5 h-3.5 text-foreground opacity-0 group-hover:opacity-100 transition-all transform group-hover:translate-y-0.5" />

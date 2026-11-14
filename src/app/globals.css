@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../../tailwind.config.ts";
+@custom-variant dark (&:is(.dark *));
 
 body {
   font-family: var(--font-montserrat), Arial, Helvetica, sans-serif;
@@ -124,7 +124,8 @@ body {
     }
   }
 }
-
+/* Plain CSS below sits in a low layer so Tailwind utilities override it, as they did on Tailwind 3. */
+@layer components {
 ::-webkit-scrollbar {
   width: 4px;
 }
@@ -490,4 +491,5 @@ body {
   background-color: #18181b;
   font-weight: 700;
   color: #ffffff;
+}
 }

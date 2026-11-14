@@ -44,18 +44,18 @@ export default function ShowcasePage({
 
       <main className="relative z-10 w-full px-4 pb-20 sm:px-8 sm:pb-24 lg:px-12 lg:pb-32">
         <header className="mx-auto flex max-w-[880px] flex-col items-center pt-10 text-center sm:pt-14 lg:pt-20">
-          <h1 className="text-[clamp(2rem,8vw,3rem)] font-semibold leading-[1.1] sm:text-5xl lg:text-6xl">
-            <span className="bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
+          <h1 className="text-[clamp(2rem,8vw,3rem)] font-semibold leading-[1.1] sm:text-5xl lg:text-6xl sm:leading-[1] lg:leading-[1]">
+            <span className="bg-linear-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
               {titlePrefix}
             </span>
-            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+            <span className="bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
               {titleHighlight}
             </span>
-            <span className="bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
+            <span className="bg-linear-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
               {titleSuffix}
             </span>
           </h1>
-          <p className="mt-3 max-w-[640px] text-sm leading-relaxed text-zinc-500 sm:text-base lg:text-lg">
+          <p className="mt-3 max-w-[640px] text-sm leading-relaxed text-zinc-500 sm:text-base lg:text-lg sm:leading-[1.5rem] lg:leading-[1.75rem]">
             {subtitle}
           </p>
         </header>

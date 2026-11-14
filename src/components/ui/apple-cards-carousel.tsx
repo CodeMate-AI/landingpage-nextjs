@@ -94,13 +94,13 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
     >
       <div className="relative w-full">
         <div
-          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 [scrollbar-width:none] md:py-20"
+          className="flex w-full overflow-x-scroll overscroll-x-auto scroll-smooth py-10 scrollbar-none md:py-20"
           ref={carouselRef}
           onScroll={checkScrollability}
         >
           <div
             className={cn(
-              "absolute right-0 z-[1000] h-auto w-[5%] overflow-hidden bg-gradient-to-l",
+              "absolute right-0 z-1000 h-auto w-[5%] overflow-hidden bg-linear-to-l",
             )}
           ></div>
 
@@ -166,7 +166,7 @@ export const Card = ({
         alt={card.title}
         className="h-full w-full object-cover"
       />
-      <div className={`absolute bottom-0 left-0 right-0 z-[1] w-full p-6 flex items-center justify-between gap-4 bg-[rgb(30,30,30)]/40 backdrop-blur-sm border-t rounded-2xl border-[#a7e8e8]/20
+      <div className={`absolute bottom-0 left-0 right-0 z-1 w-full p-6 flex items-center justify-between gap-4 bg-[rgb(30,30,30)]/40 backdrop-blur-sm border-t rounded-2xl border-[#a7e8e8]/20
         ${isHovered ? 'md:hidden' : ''}
         peer-[.pixel-transition-active]:hidden
       `}>
@@ -174,12 +174,12 @@ export const Card = ({
           <p className="text-left font-sans text-sm font-medium md:text-base text-white">
             {card.category}
           </p>
-          <p className="mt-2 text-left font-sans text-xl font-semibold [text-wrap:balance] md:text-3xl text-white">
+          <p className="mt-2 text-left font-sans text-xl font-semibold text-balance md:text-3xl text-white">
             {card.title}
           </p>
         </div>
         {card.companyLogo && (
-          <div className="flex-shrink-0">
+          <div className="shrink-0">
             <img
               src={card.companyLogo}
               alt={`${card.companyName || 'Company'} Logo`}
@@ -243,7 +243,7 @@ export const Card = ({
       gridSize={15}
       pixelColor="#ffffff"
       animationStepDuration={0.3}
-      className="h-80 md:h-[33rem] w-56 md:w-96"
+      className="h-80 md:h-132 w-56 md:w-96"
       style={{
         border: "none",
         backgroundColor: "transparent",

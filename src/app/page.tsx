@@ -91,7 +91,7 @@ function Page() {
             animate={{ opacity: 1, filter: 'blur(0px)' }}
             exit={{ opacity: 0, filter: 'blur(20px)' }}
             transition={{ duration: 0.5 }}
-            className="fixed bottom-7 right-7 z-[9999999999]"
+            className="fixed bottom-7 right-7 z-9999999999"
           >
             <motion.div
               onClick={handleArrow}
@@ -151,17 +151,17 @@ function Page() {
             {/* Same grain and scale as the full image (one tile is a quarter of its 1024px width) */}
             <div
               aria-hidden="true"
-              className="absolute inset-0 opacity-5 z-0 pointer-events-none bg-[url('/ui/bg-noise-tile.png')] bg-repeat bg-[length:25%_auto]"
+              className="absolute inset-0 opacity-5 z-0 pointer-events-none bg-[url('/ui/bg-noise-tile.png')] bg-repeat bg-size-[25%_auto]"
             />
 
             <div className="relative z-50 w-full px-5 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start">
-              <h1 className="text-[length:min(clamp(1.65rem,6.8vw,2.25rem),7.3vw)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5">
+              <h1 className="text-[min(clamp(1.65rem,6.8vw,2.25rem),7.3vw)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5">
                 <span className="xxlHero z-50 block whitespace-nowrap">
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     transition={{ duration: 0.3 }}
-                    className="bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]"
+                    className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     Sovereign
                   </motion.span>{' '}
@@ -169,7 +169,7 @@ function Page() {
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     transition={{ duration: 0.3, delay: 0.25 }}
-                    className="bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]"
+                    className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     AI
                   </motion.span>{' '}
@@ -177,7 +177,7 @@ function Page() {
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     transition={{ duration: 0.2, delay: 0.5 }}
-                    className="bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]"
+                    className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     for
                   </motion.span>
@@ -187,7 +187,7 @@ function Page() {
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     transition={{ duration: 0.3, delay: 0.7 }}
-                    className="bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]"
+                    className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     Software
                   </motion.span>{' '}
@@ -195,7 +195,7 @@ function Page() {
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
                     transition={{ duration: 0.3, delay: 0.9 }}
-                    className="bg-gradient-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] -mb-[0.2em]"
+                    className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     Development
                   </motion.span>
@@ -206,7 +206,7 @@ function Page() {
                 initial={{ opacity: 0, filter: 'blur(10px)' }}
                 animate={{ opacity: 1, filter: 'blur(0px)' }}
                 transition={{ duration: 0.4, delay: 1.15 }}
-                className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl"
+                className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl sm:leading-[1.5rem] md:leading-[1.75rem] lg:leading-[1.75rem]"
               >
                 <p>
                   Build and ship faster with AI that works where your data lives, keeping your data, code, intelligence, and AI under your control.
@@ -223,10 +223,10 @@ function Page() {
                 <a
                   href={SWE_BENCH_BLOG_URL}
                   aria-label="Read announcement: Cora is now State-of-the-Art"
-                  className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group"
+                  className="relative p-px rounded-md bg-linear-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group"
                 >
                   <div className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-black px-3.5 py-2 sm:px-4 sm:py-2.5 text-white">
-                    <p className="text-xs sm:text-sm font-medium leading-snug text-neutral-300">
+                    <p className="text-xs sm:text-sm font-medium leading-snug text-neutral-300 sm:leading-[1.25rem]">
                       <span translate="no">Cora</span> is now <span className="text-white font-semibold">State-of-the-Art</span>
                     </p>
                     <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />

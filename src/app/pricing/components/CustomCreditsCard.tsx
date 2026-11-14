@@ -54,7 +54,7 @@ const CustomCreditsCard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="relative w-full max-w-3xl mx-auto bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-3xl p-8 shadow-xl border border-zinc-800"
+                className="relative w-full max-w-3xl mx-auto bg-linear-to-br from-zinc-900 to-zinc-950 rounded-3xl p-8 shadow-xl border border-zinc-800"
             >
                 {/* Price Display */}
                 <div className="text-center mb-8">

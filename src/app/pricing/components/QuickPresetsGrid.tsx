@@ -13,7 +13,7 @@ const QuickPreset = ({ price, credits, isPopular = false }: QuickPresetProps) =>
         <motion.div
             whileHover={{ scale: 1.03 }}
             transition={{ duration: 0.2 }}
-            className={`bg-gradient-to-br from-zinc-800/40 to-zinc-900/40 rounded-xl p-4 border ${isPopular ? 'border-blue-500/50' : 'border-zinc-700/50'
+            className={`bg-linear-to-br from-zinc-800/40 to-zinc-900/40 rounded-xl p-4 border ${isPopular ? 'border-blue-500/50' : 'border-zinc-700/50'
                 } hover:border-zinc-600 transition-all cursor-pointer relative`}
         >
             {isPopular && (

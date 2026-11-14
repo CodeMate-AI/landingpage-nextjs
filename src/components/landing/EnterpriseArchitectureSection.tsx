@@ -8,7 +8,7 @@ export default function EnterpriseArchitectureSection() {
   return (
     <section
       aria-label="Enterprise Architecture and Acceleration Showcase"
-      className="relative w-full bg-[#000000] text-white flex flex-col items-center [box-sizing:border-box] overflow-hidden pt-10 sm:pt-14 lg:pt-20 2xl:pt-[140px] pb-10 sm:pb-14 lg:pb-20 2xl:pb-[140px] px-4 sm:px-6 lg:px-6 xl:px-8 2xl:px-[90px] gap-8 sm:gap-10 lg:gap-[48px] 2xl:gap-[60px] isolate"
+      className="relative w-full bg-[#000000] text-white flex flex-col items-center box-border overflow-hidden pt-10 sm:pt-14 lg:pt-20 2xl:pt-[140px] pb-10 sm:pb-14 lg:pb-20 2xl:pb-[140px] px-4 sm:px-6 lg:px-6 xl:px-8 2xl:px-[90px] gap-8 sm:gap-10 lg:gap-[48px] 2xl:gap-[60px] isolate"
     >
       {/* ========================================================================= */}
       {/* Background: Half Glowing Portal Orb Dome (Desktop only, hidden on mobile/iPad) */}
@@ -40,7 +40,7 @@ export default function EnterpriseArchitectureSection() {
             <span className="block lg:inline">
               <span translate="no">CodeMate AI</span> Accelerates
             </span>{' '}
-            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold block lg:inline">
+            <span className="bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent font-semibold block lg:inline">
               {ENTERPRISE_ARCHITECTURE_DATA.titleHighlight}
             </span>
           </span>
@@ -62,7 +62,7 @@ export default function EnterpriseArchitectureSection() {
               ? 'lg:backdrop-blur-[10.5px]'
               : group.columns === 3
               ? 'lg:backdrop-blur-[17px]'
-              : 'lg:backdrop-blur-[12px]';
+              : 'lg:backdrop-blur-md';
 
           return (
             <motion.div
@@ -76,7 +76,7 @@ export default function EnterpriseArchitectureSection() {
               {/* Category Header */}
               <div className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#00BFFF] shadow-[0_0_8px_rgba(0,191,255,0.8)]" />
-                <h3 className="font-[family-name:var(--font-inter)] text-white/80 font-medium text-sm sm:text-base lg:text-[18px] lg:leading-[18px] tracking-normal">
+                <h3 className="font-(family-name:--font-inter) text-white/80 font-medium text-sm sm:text-base lg:text-[18px] lg:leading-[18px] tracking-normal">
                   {group.category}
                 </h3>
               </div>
@@ -88,7 +88,7 @@ export default function EnterpriseArchitectureSection() {
                 {group.items.map((item) => (
                   <div
                     key={item.id}
-                    className={`flex flex-col justify-start items-start p-4 sm:p-4.5 lg:px-3.5 xl:px-4 2xl:px-5 lg:pt-3.5 xl:pt-4 2xl:pt-4.5 lg:pb-3 min-h-[82px] sm:min-h-[92px] lg:h-[135px] xl:h-[145px] gap-1.5 sm:gap-2 rounded-xl lg:rounded-none border border-white/10 lg:border-0 lg:border-r lg:border-white/20 lg:last:border-r-0 bg-[rgba(20,20,22,0.55)] lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none shadow-[0_4px_20px_rgba(0,0,0,0.35)] lg:shadow-none transition-all duration-300 hover:border-cyan-500/30 lg:hover:border-r-white/20 hover:bg-white/[0.06] group flex-1 lg:flex-auto min-w-0 ${
+                    className={`flex flex-col justify-start items-start p-4 sm:p-4.5 lg:px-3.5 xl:px-4 2xl:px-5 lg:pt-3.5 xl:pt-4 2xl:pt-4.5 lg:pb-3 min-h-[82px] sm:min-h-[92px] lg:h-[135px] xl:h-[145px] gap-1.5 sm:gap-2 rounded-xl lg:rounded-none border border-white/10 lg:border-0 lg:border-r lg:border-white/20 lg:last:border-r-0 bg-[rgba(20,20,22,0.55)] lg:bg-transparent backdrop-blur-md lg:backdrop-blur-none shadow-[0_4px_20px_rgba(0,0,0,0.35)] lg:shadow-none transition-all duration-300 hover:border-cyan-500/30 lg:hover:border-r-white/20 hover:bg-white/6 group flex-1 lg:flex-auto min-w-0 ${
                       group.columns === 5 ? 'last:sm:col-span-2 last:lg:col-span-1' : ''
                     }`}
                   >

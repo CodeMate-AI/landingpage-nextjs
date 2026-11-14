@@ -31,7 +31,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
         </p>
         <h2 className="text-2xl lg:text-3xl font-semibold text-white tracking-tight">
           One plan for{' '}
-          <span className="bg-gradient-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-blue-400 to-blue-600 bg-clip-text text-transparent">
             all
           </span>
         </h2>
@@ -44,7 +44,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
         viewport={{ once: true }}
         transition={{ duration: 0.5 }}
         className="relative flex flex-col lg:flex-row items-center justify-between w-full max-w-[1200px]
-                   bg-gradient-to-br from-zinc-900 to-zinc-950
+                   bg-linear-to-br from-zinc-900 to-zinc-950
                    rounded-3xl p-8 lg:p-12 shadow-2xl border border-zinc-800/50 overflow-hidden"
       >
         {/* Background glow */}
@@ -132,7 +132,7 @@ const MaxPlanCard = ({ planInfo }: MaxPlanCardProps) => {
             </div>
           </div>
 
-          <a href={currentCtaLink} className="flex-shrink-0 w-fit lg:w-[200px] mx-auto lg:mx-0">
+          <a href={currentCtaLink} className="shrink-0 w-fit lg:w-[200px] mx-auto lg:mx-0">
             <motion.button
               whileHover={{ scale: 1.02, backgroundColor: '#f4f4f5' }}
               whileTap={{ scale: 0.95 }}

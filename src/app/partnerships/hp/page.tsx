@@ -441,7 +441,7 @@ export default function Home() {
                 href={`/partnerships/hp/usecases/${usecase.slug}`}
                 className="group flex flex-col bg-white border border-[#E2E8F0] rounded-xl overflow-hidden shadow-sm hover:shadow-md hover:border-accent-blue/40 transition-all duration-200"
               >
-                <div className="relative w-full aspect-[398/210] overflow-hidden">
+                <div className="relative w-full aspect-398/210 overflow-hidden">
                   <Image
                     src={usecase.image}
                     alt=""
@@ -600,7 +600,7 @@ export default function Home() {
               />
             </div>
             {/* Right Column: Blue Card */}
-            <div className="w-full lg:w-1/2 bg-gradient-to-br from-[#0B45A6] via-[#0A5BDF] to-[#1E90FF] p-8 sm:p-10 lg:p-12 flex flex-col justify-center items-center lg:items-start text-center lg:text-left text-white">
+            <div className="w-full lg:w-1/2 bg-linear-to-br from-[#0B45A6] via-[#0A5BDF] to-[#1E90FF] p-8 sm:p-10 lg:p-12 flex flex-col justify-center items-center lg:items-start text-center lg:text-left text-white">
               <h3 className="font-heading mb-3 text-[38px] leading-9.5 lg:text-[40px] lg:leading-10 font-normal tracking-[1px] m-0">
                 Get in touch
               </h3>

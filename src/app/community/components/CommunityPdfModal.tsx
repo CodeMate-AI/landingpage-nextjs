@@ -67,7 +67,7 @@ export default function CommunityPdfModal({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-black/85 p-2 backdrop-blur-xl sm:p-4 md:p-6"
+          className="fixed inset-0 z-999999999999 flex items-center justify-center bg-black/85 p-2 backdrop-blur-xl sm:p-4 md:p-6"
           onClick={onClose}
         >
           <motion.div

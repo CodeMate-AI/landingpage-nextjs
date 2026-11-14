@@ -41,7 +41,7 @@ export default function CommunityHero() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-5 max-w-[840px] text-4xl font-bold leading-[1.08] tracking-[-0.03em] text-white sm:text-5xl lg:text-[58px]"
+          className="mb-5 max-w-[840px] text-4xl font-bold leading-[1.08] tracking-[-0.03em] text-white sm:text-5xl lg:text-[58px] sm:leading-[1]"
         >
           Where engineering teams <br className="hidden sm:inline" />
           ship idea to production
@@ -51,7 +51,7 @@ export default function CommunityHero() {
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-[640px] text-base leading-relaxed text-zinc-400 sm:text-lg lg:text-[20px]"
+          className="max-w-[640px] text-base leading-relaxed text-zinc-400 sm:text-lg lg:text-[20px] sm:leading-[1.75rem]"
         >
           Explore production-grade platforms, developer tools, and internal utilities built autonomously with CodeMate's AI-native development pipeline.
         </motion.p>
@@ -63,10 +63,10 @@ export default function CommunityHero() {
         transition={{ duration: 0.6, delay: 0.38, ease: [0.16, 1, 0.3, 1] }}
         className="group relative w-full overflow-hidden border-y border-zinc-800 bg-zinc-950/60 transform-gpu"
       >
-        <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-20 bg-gradient-to-r from-zinc-950 to-transparent sm:w-36" />
-        <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-20 bg-gradient-to-l from-zinc-950 to-transparent sm:w-36" />
+        <div className="pointer-events-none absolute left-0 top-0 bottom-0 z-10 w-20 bg-linear-to-r from-zinc-950 to-transparent sm:w-36" />
+        <div className="pointer-events-none absolute right-0 top-0 bottom-0 z-10 w-20 bg-linear-to-l from-zinc-950 to-transparent sm:w-36" />
 
-        <div className="flex w-max animate-ticker hover:[animation-play-state:paused]">
+        <div className="flex w-max animate-ticker hover:paused">
           {[1, 2].map((setIndex) => (
             <div key={setIndex} className="flex shrink-0">
               {tickerProjects.map((item, idx) => (

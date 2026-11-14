@@ -36,7 +36,7 @@ const CoraCreditsCard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="relative w-[90%] max-w-[600px] bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-3xl p-8 shadow-xl"
+                className="relative w-[90%] max-w-[600px] bg-linear-to-br from-zinc-900 to-zinc-950 rounded-3xl p-8 shadow-xl"
             >
                 {/* Header */}
                 <div className="mb-6">

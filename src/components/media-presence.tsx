@@ -254,12 +254,12 @@ export default function MediaPresence() {
   return (
     <div className='relative flex flex-col justify-center items-center mb-12 pt-0'>
       <div className='relative flex flex-col items-center w-full pt-8 lg:pt-12'>
-        <h2 className='leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent text-center'>Our <span className='bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Media</span> Presence</h2>
+        <h2 className='leading-none text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-linear-to-b from-white to-gray-300/80 bg-clip-text text-transparent text-center md:leading-[1] lg:leading-[1]'>Our <span className='bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent'>Media</span> Presence</h2>
       </div>
       <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-4 text-center text-zinc-500'>We are recognized by some of the most recognised news and media platforms around the globe.</p>
 
       {/* Carousel & Desktop Arrows Wrapper */}
-      <div className="relative flex justify-center mt-16 w-[20rem] md:w-[44rem] lg:w-[69rem]">
+      <div className="relative flex justify-center mt-16 w-[20rem] md:w-176 lg:w-276">
         {/* Desktop Left Arrow */}
         <motion.div onClick={() => handleArrow('left')} whileHover={{ opacity: 1 }} className='absolute hidden lg:flex items-center justify-center size-16 -left-20 xl:-left-24 top-1/2 -translate-y-1/2 rounded-full cursor-pointer text-white opacity-70 z-10'>
           <svg xmlns="http://www.w3.org/2000/svg" width={60} height={60} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-arrow-left-to-arc"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M21 12h-12" /><path d="M13 16l-4 -4l4 -4" /><path d="M12 3a9 9 0 1 0 0 18" /></svg>
@@ -303,9 +303,9 @@ export default function MediaPresence() {
 
 function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, link, fill, scale }: { logoText: string, logoBg: string, logoColor: string, fontFamily: string, headline: string, image?: string, link?: string, fill?: boolean, scale?: number }) {
   return (
-    <motion.div className='relative h-[24rem] md:h-[32rem] lg:h-[24rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0 flex flex-col p-5 md:p-10 hover:border-white/20 transition-all'>
+    <motion.div className='relative h-96 md:h-128 lg:h-96 w-[20rem] md:w-176 lg:w-88 bg-zinc-900/50 border border-white/10 rounded-3xl overflow-hidden shadow-2xl shrink-0 flex flex-col p-5 md:p-10 hover:border-white/20 transition-all'>
       {/* Logo Area */}
-      <div className={`h-[10rem] md:h-[15rem] lg:h-[10rem] w-full ${fill ? 'bg-zinc-800' : 'bg-white p-6'} rounded-2xl flex items-center justify-center shadow-inner overflow-hidden`}>
+      <div className={`h-40 md:h-60 lg:h-40 w-full ${fill ? 'bg-zinc-800' : 'bg-white p-6'} rounded-2xl flex items-center justify-center shadow-inner overflow-hidden`}>
         {image ? (
           <img src={image} alt={logoText} className={`${fill ? 'object-cover' : 'object-contain'} h-full w-full transition-transform`} style={scale ? { transform: `scale(${scale})` } : undefined} />
         ) : (
@@ -314,16 +314,16 @@ function MediaCard({ logoText, logoBg, logoColor, fontFamily, headline, image, l
       </div>
 
       {/* Divider */}
-      <div className="w-full h-[1px] bg-white/5 my-6 md:my-8"></div>
+      <div className="w-full h-px bg-white/5 my-6 md:my-8"></div>
 
       {/* Headline */}
       <div className='px-1 md:px-2'>
         {link ? (
           <a href={link} target="_blank" rel="noopener noreferrer" className="group">
-            <p className='text-zinc-400 group-hover:text-white text-sm md:text-[1.4rem] lg:text-sm font-medium leading-relaxed md:leading-relaxed transition-colors line-clamp-4'>{headline}</p>
+            <p className='text-zinc-400 group-hover:text-white text-sm md:text-[1.4rem] lg:text-sm font-medium leading-relaxed md:leading-relaxed transition-colors line-clamp-4 lg:leading-[1.25rem]'>{headline}</p>
           </a>
         ) : (
-          <p className='text-zinc-400 text-sm md:text-[1.4rem] lg:text-sm font-medium leading-relaxed md:leading-relaxed line-clamp-4'>{headline}</p>
+          <p className='text-zinc-400 text-sm md:text-[1.4rem] lg:text-sm font-medium leading-relaxed md:leading-relaxed line-clamp-4 lg:leading-[1.25rem]'>{headline}</p>
         )}
       </div>
     </motion.div>

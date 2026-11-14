@@ -20,7 +20,7 @@ export default function FreeTrialBanner() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
-                className="relative bg-gradient-to-br from-zinc-900/95 via-zinc-900 to-zinc-950 backdrop-blur-sm rounded-3xl border border-zinc-800/60 p-6 lg:p-8 shadow-2xl shadow-black/40"
+                className="relative bg-linear-to-br from-zinc-900/95 via-zinc-900 to-zinc-950 backdrop-blur-sm rounded-3xl border border-zinc-800/60 p-6 lg:p-8 shadow-2xl shadow-black/40"
             >
 
                 {/* Minimalist Hero Section */}
@@ -31,7 +31,7 @@ export default function FreeTrialBanner() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="text-xl lg:text-3xl font-semibold text-white mb-1 leading-tight text-gradient-gray"
+                        className="text-xl lg:text-3xl font-semibold text-white mb-1 leading-tight text-gradient-gray lg:leading-[2.25rem]"
                     >
                         Go From Idea to Deployed App — Faster Than Ever.
                     </motion.h2>
@@ -78,7 +78,7 @@ export default function FreeTrialBanner() {
                         <div className="hidden lg:block w-px h-6 bg-zinc-700/50"></div>
 
                         {/* Free Trial Badge - More Prominent */}
-                        <div className="px-5 py-2 bg-gradient-to-r from-emerald-500/15 to-green-500/15 border border-emerald-500/30 rounded-full">
+                        <div className="px-5 py-2 bg-linear-to-r from-emerald-500/15 to-green-500/15 border border-emerald-500/30 rounded-full">
                             <span className="text-sm lg:text-base font-bold text-emerald-400">
                                 14-Day Free Trial • Worth $500
                             </span>
@@ -98,7 +98,7 @@ export default function FreeTrialBanner() {
                         <motion.button
                             whileHover={{ scale: 1.02 }}
                             whileTap={{ scale: 0.98 }}
-                            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-base px-8 py-3 rounded-full  transition-all duration-300"
+                            className="bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold text-base px-8 py-3 rounded-full  transition-all duration-300"
                         >
                             Claim Now →
                         </motion.button>
@@ -164,19 +164,19 @@ export default function FreeTrialBanner() {
                                     </div>
                                     <ul className="space-y-3 text-sm text-zinc-300">
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Full Pro Plan access</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Unlimited AI agents</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Advanced code review</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Priority support</span>
                                         </li>
                                     </ul>
@@ -198,19 +198,19 @@ export default function FreeTrialBanner() {
                                     </div>
                                     <ul className="space-y-3 text-sm text-zinc-300">
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>30 AI credits</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Context-aware suggestions</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Multi-language support</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Code generation</span>
                                         </li>
                                     </ul>
@@ -232,19 +232,19 @@ export default function FreeTrialBanner() {
                                     </div>
                                     <ul className="space-y-3 text-sm text-zinc-300">
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Code completion</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Smart suggestions</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Real-time analysis</span>
                                         </li>
                                         <li className="flex items-start gap-2">
-                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 flex-shrink-0" />
+                                            <CheckCircle2 className="w-4 h-4 text-green-400 mt-0.5 shrink-0" />
                                             <span>Performance optimization</span>
                                         </li>
                                     </ul>

@@ -533,7 +533,7 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProdu
       <div className="hidden lg:flex pb-10 w-full flex-col items-center">
         <div className="w-full flex justify-between border-b border-gray-500/35 h-32 px-10 py-10">
           <h1 className="text-5xl font-semibold">
-            <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Compare</span> Plans
+            <span className="bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Compare</span> Plans
           </h1>
           <div className="flex gap-[5.7rem] text-2xl">
             {allPlans.map((plan: any, i) => (
@@ -569,7 +569,7 @@ function ComparePlans({ plans, selectedProduct }: { plans: Plan[]; selectedProdu
       {/* Mobile */}
       <div className="pb-10 mt-12 w-full lg:hidden flex flex-col items-center">
         <h1 className="text-3xl lg:text-5xl font-semibold text-center w-full mb-4 lg:mb-8">
-          <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Compare</span> Plans
+          <span className="bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Compare</span> Plans
         </h1>
         <Accordion className="flex w-[90%] flex-col gap-3" transition={{ duration: 0.2, ease: 'easeInOut' }}>
           {features.map((key) => {
@@ -636,7 +636,7 @@ function FAQ() {
     <div className="pb-10 w-full flex flex-col items-center mt-32 mb-10">
       <h1 id="faq" className="scroll-mt-32 text-3xl lg:text-5xl font-semibold text-center mb-8 px-10">
         Frequently
-        <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent"> Asked</span> Questions
+        <span className="bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent"> Asked</span> Questions
       </h1>
       <Accordion className="flex w-[90%] lg:w-[50%] flex-col gap-3" transition={{ duration: 0.2, ease: 'easeInOut' }}>
         {FAQ_ITEMS.map((item) => (
