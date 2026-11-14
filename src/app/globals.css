@@ -173,7 +173,7 @@ body {
 }
 
 .custom-cursor {
-  cursor: url("/ui/cursor.svg") 16 16, auto;
+  cursor: url("/ui/cursor.svg") 2 1, auto;
 }
 
 @media (min-width: 768px) {

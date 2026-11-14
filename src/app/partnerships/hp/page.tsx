@@ -4,13 +4,33 @@ import { useCallback, useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { MouseEvent } from "react";
-import { hpDemos, hpResources, hpUsecases, hpContact } from "./config/hpData";
+import { hpDemos, hpResources, hpUsecases, hpContact, hpMetadata } from "./config/hpData";
 import { TRIAL_FIELD_LIMITS, isValidTrialPhone } from "./config/trialForm";
 import HpFooter from "./components/HpFooter";
 import HpHeroImage from "./components/HpHeroImage";
 import { useFocusTrap } from "./hooks/useFocusTrap";
 import { trackHpEvent } from "./lib/analytics";
 import { buildPdfProxyUrl } from "@/lib/pdfProxy";
+import BackButton from "@/components/partnerships/BackButton";
+import {
+  JsonLd,
+  breadcrumbJsonLd,
+  partnershipCrumbs,
+  partnershipPageJsonLd,
+} from "@/components/partnerships/seo";
+
+// Structured data for this page only (the layout also wraps the use case pages)
+const hpJsonLd = [
+  partnershipPageJsonLd({
+    url: hpMetadata.canonical,
+    name: hpMetadata.title,
+    description: hpMetadata.description,
+    image: hpMetadata.ogImage,
+    partnerName: "HP",
+    partnerUrl: "https://www.hp.com",
+  }),
+  breadcrumbJsonLd(partnershipCrumbs("HP", hpMetadata.canonical)),
+];
 
 export default function Home() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -160,6 +180,7 @@ export default function Home() {
 
   return (
     <div className="relative min-h-dvh bg-white flex flex-col items-start p-0 custom-cursor">
+      <JsonLd data={hpJsonLd} />
       {/* Navbar */}
       <nav className="sticky top-0 z-50 w-full bg-white border-b border-divider/60 h-18 md:h-22 flex flex-col justify-center">
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 h-17 md:h-20 flex items-center justify-between gap-4">
@@ -361,6 +382,7 @@ export default function Home() {
         <div className="max-w-340 mx-auto w-full px-6 sm:px-10 py-10 lg:py-0 z-10 flex flex-col lg:flex-row items-center justify-between">
           {/* Left Column: Text & CTA */}
           <div className="w-full lg:w-[48%] max-w-2xl flex flex-col items-start text-left gap-[14.9px]">
+            <BackButton className="font-heading tracking-[0.4px] text-black hover:text-accent-blue focus-visible:outline-accent-blue" />
             <h1 className="font-heading font-normal text-[38px] leading-10.5 sm:text-[44px] sm:leading-12.5 lg:text-[48px] lg:leading-13 text-black m-0 tracking-[1px]">
               HP x CodeMate AI : The future of AI-native development
             </h1>

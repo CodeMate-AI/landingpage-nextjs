@@ -73,6 +73,16 @@ const nextConfig: NextConfig = {
         permanent: true,
       },
       {
+        source: "/hpe",
+        destination: "/partnerships/hpe",
+        permanent: true,
+      },
+      {
+        source: "/qualcomm",
+        destination: "/partnerships/qualcomm",
+        permanent: true,
+      },
+      {
         source: "/hp/promo",
         destination: "/partnerships/hp/promo",
         permanent: true,

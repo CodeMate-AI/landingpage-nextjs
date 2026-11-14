@@ -65,9 +65,11 @@ export default async function UsecasePage({ params }: UsecasePageProps) {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
     itemListElement: [
-      { "@type": "ListItem", position: 1, name: "HP x CodeMate AI", item: hpMetadata.canonical },
-      { "@type": "ListItem", position: 2, name: "Use Cases", item: `${hpMetadata.canonical}#usecases` },
-      { "@type": "ListItem", position: 3, name: usecase.name, item: `${hpMetadata.canonical}/usecases/${slug}` },
+      { "@type": "ListItem", position: 1, name: "Home", item: "https://codemate.ai" },
+      { "@type": "ListItem", position: 2, name: "Partnerships", item: "https://codemate.ai/partnerships" },
+      { "@type": "ListItem", position: 3, name: "HP x CodeMate AI", item: hpMetadata.canonical },
+      { "@type": "ListItem", position: 4, name: "Use Cases", item: `${hpMetadata.canonical}#usecases` },
+      { "@type": "ListItem", position: 5, name: usecase.name, item: `${hpMetadata.canonical}/usecases/${slug}` },
     ],
   };
 
