@@ -74,6 +74,7 @@
   },
   "devDependencies": {
     "@base-ui/react": "^1.6.0",
+    "@next/env": "^16.4.6",
     "@types/bcryptjs": "^2.4.6",
     "@types/lodash.throttle": "^4.1.9",
     "@types/node": "^20",
@@ -86,6 +87,7 @@
     "postcss": "^8",
     "sass": "^1.102.0",
     "tailwindcss": "^4.3.5",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

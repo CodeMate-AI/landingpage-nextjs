@@ -7,7 +7,7 @@ export const LoginSchema = z.object({
 });
 
 // Recursive schema validating the hierarchical AST node structure of the Tiptap editor
-const TiptapNodeSchema: z.ZodType<any> = z.lazy(() =>
+export const TiptapNodeSchema: z.ZodType<any> = z.lazy(() =>
   z.object({
     type: z.string(),
     attrs: z.record(z.any()).optional(),

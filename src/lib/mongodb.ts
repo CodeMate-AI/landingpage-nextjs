@@ -76,4 +76,9 @@ export async function getDatabase(dbName?: string) {
   return client.db(dbName || getDbName());
 }
 
+// Docs live in a separate database on the same cluster and client
+export function getDocsDatabase() {
+  return getDatabase(process.env.MONGODB_DOCS_DB_NAME || "codemate_docs");
+}
+
 export default clientPromise;
