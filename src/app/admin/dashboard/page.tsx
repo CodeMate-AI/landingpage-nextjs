@@ -190,6 +190,9 @@ export default function AdminDashboard() {
             <Link href="/admin/editor" className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-blue-500">
               Create New Post
             </Link>
+            <Link href="/admin" className="inline-flex items-center justify-center rounded-lg border border-[#27272a] px-4 py-2.5 text-sm transition-colors hover:bg-[#18181b]">
+              Switch
+            </Link>
             <button onClick={handleLogout} className="inline-flex items-center justify-center rounded-lg border border-[#27272a] px-4 py-2.5 text-sm transition-colors hover:bg-[#18181b] cursor-pointer">
               Log Out
             </button>

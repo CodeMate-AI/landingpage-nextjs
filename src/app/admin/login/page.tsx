@@ -69,7 +69,7 @@ export default function AdminLogin() {
         if (data.token) {
           setAdminToken(data.token);
         }
-        router.push("/admin/dashboard");
+        router.push("/admin");
       } else {
         if (res.status === 429) {
           setIsLocked(true);
