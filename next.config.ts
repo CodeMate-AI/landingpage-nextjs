@@ -57,6 +57,11 @@ const nextConfig: NextConfig = {
     ];
   },
 
+  // /docs/<slug>.md serves the page as Markdown (Copy Markdown, AI tools)
+  async rewrites() {
+    return [{ source: "/docs/:slug.md", destination: "/api/docs/md/:slug" }];
+  },
+
   async redirects() {
     return [
       {

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import { compileTiptapToHtml } from "@/lib/blog-compiler";
 import { DocsEnhance } from "../DocsEnhance";
+import { ViewOptions } from "../ViewOptions";
 import { getPublishedPage } from "@/lib/docs-data";
 import { highlightCodeBlocks } from "@/lib/docs-highlight";
 
@@ -36,6 +37,7 @@ export default async function DocPage({ params }: Props) {
     <DocsPage toc={toc}>
       <DocsTitle>{page.title}</DocsTitle>
       {page.description && <DocsDescription>{page.description}</DocsDescription>}
+      <ViewOptions slug={slug} pageUrl={`https://codemate.ai/docs/${slug}`} />
       <DocsBody>
         <div data-docs-content dangerouslySetInnerHTML={{ __html: html }} />
         <DocsEnhance />
