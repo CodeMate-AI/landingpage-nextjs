@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { TiptapNodeSchema } from "@/lib/validation";
 import { extractSectionsFromTiptapJson } from "@/lib/blog-compiler";
+import { buildSearchData } from "@/lib/docs-search-text";
 
 export const DocPageSchema = z.object({
   slug: z
@@ -37,12 +38,14 @@ export const NavSchema = z.object({
 
 // The fields that get frozen when a page is published
 export function buildSnapshot(d: DocPageInput) {
+  const sections = extractSectionsFromTiptapJson(d.content);
   return {
     slug: d.slug,
     title: d.title,
     description: d.description,
     content: d.content,
-    sections: extractSectionsFromTiptapJson(d.content),
+    sections,
+    search: buildSearchData(d.content, sections),
   };
 }
 

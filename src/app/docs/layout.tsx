@@ -11,7 +11,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   const [nav, pages] = await Promise.all([getPublishedNav(), getPublishedIndex()]);
 
   return (
-    <RootProvider search={{ enabled: false }}>
+    <RootProvider search={{ options: { api: "/api/search" } }}>
       <DocsThemeSync />
       <DocsLayout tree={buildPageTree(nav, pages)} nav={{ title: "CodeMate Docs", url: "/docs" }}>
         {children}

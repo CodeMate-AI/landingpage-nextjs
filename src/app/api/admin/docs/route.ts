@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { invalidateDocs } from "@/lib/docs-data";
 import { withAuth } from "@/lib/authWrapper";
 import { getDocsDatabase } from "@/lib/mongodb";
 import { DocPageSchema, buildSnapshot } from "@/lib/docs-validation";
@@ -41,7 +41,7 @@ async function createDoc(req: NextRequest, session: any) {
     const db = await getDocsDatabase();
     try {
       const result = await db.collection("pages").insertOne(doc);
-      if (published) revalidatePath("/docs", "layout");
+      if (published) invalidateDocs();
       return NextResponse.json({ success: true, id: result.insertedId, slug: draft.slug }, { status: 201 });
     } catch (err: any) {
       if (err.code === 11000) {

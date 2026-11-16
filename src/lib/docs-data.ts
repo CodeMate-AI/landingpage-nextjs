@@ -1,4 +1,7 @@
 import React from "react";
+import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
+import type { AdvancedIndex } from "fumadocs-core/search/server";
+import { buildSearchData } from "@/lib/docs-search-text";
 import type * as PageTree from "fumadocs-core/page-tree";
 import { getDocsDatabase } from "@/lib/mongodb";
 import type { NavItem } from "@/lib/docs-validation";
@@ -44,7 +47,42 @@ export const getPublishedPage = React.cache(async (slug: string): Promise<Publis
   }
 });
 
-export const getPublishedNav = React.cache(async (): Promise<NavItem[]> => {
+// Search index for all published pages. Reads only slug, title, description and the search data
+// stored at publish time (never page content), except for pages published before that field
+// existed: those are built from content.
+export async function loadSearchIndexes(): Promise<AdvancedIndex[]> {
+  const db = await getDocsDatabase();
+  const col = db.collection("pages");
+  const rows = await col
+    .find({ published: true, publishedVersion: { $ne: null } })
+    .project({ _id: 0, "publishedVersion.slug": 1, "publishedVersion.title": 1, "publishedVersion.description": 1, "publishedVersion.sections": 1, "publishedVersion.search": 1 })
+    .toArray();
+
+  return Promise.all(
+    rows.map(async (r: any) => {
+      const p = r.publishedVersion;
+      let search = p.search;
+      if (!search) {
+        const full = await col.findOne({ "publishedVersion.slug": p.slug }, { projection: { _id: 0, "publishedVersion.content": 1 } });
+        search = buildSearchData(full?.publishedVersion?.content, p.sections ?? []);
+      }
+      return { id: p.slug, title: p.title, description: p.description || undefined, url: `/docs/${p.slug}`, structuredData: search };
+    })
+  );
+}
+
+// Tiny cached token. Publish, rename and delete call revalidateTag(SEARCH_TAG), which changes the
+// token; the search route then rebuilds its in-memory index. The hourly fallback is a safety net.
+export const SEARCH_TAG = "docs-search";
+// Call after any publish, rename or delete so pages, sidebar and search all refresh
+export function invalidateDocs() {
+  revalidatePath("/docs", "layout");
+  revalidateTag(SEARCH_TAG, { expire: 0 });
+}
+
+export const getSearchVersion = unstable_cache(async () => Date.now(), ["docs-search-version"], { tags: [SEARCH_TAG], revalidate: 3600 });
+
+export const getPublishedNav =React.cache(async (): Promise<NavItem[]> => {
   try {
     const db = await getDocsDatabase();
     const nav = await db.collection("nav").findOne({ _id: "main" as any });

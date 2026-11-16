@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { revalidatePath } from "next/cache";
+import { invalidateDocs } from "@/lib/docs-data";
 import { ObjectId } from "mongodb";
 import { withAuth } from "@/lib/authWrapper";
 import { getDocsDatabase } from "@/lib/mongodb";
@@ -80,7 +80,7 @@ async function updateDoc(req: NextRequest, session: any, { params }: Ctx) {
       }
     }
 
-    if (publish) revalidatePath("/docs", "layout");
+    if (publish) invalidateDocs();
     return NextResponse.json({ success: true, slug: draft.slug });
   } catch (error) {
     console.error("Update doc error:", error);
@@ -108,7 +108,7 @@ async function deleteDoc(_req: NextRequest, _session: any, { params }: Ctx) {
     await db.collection("nav").updateOne({ _id: "main" as any }, { $set: { draft, published } });
   }
 
-  revalidatePath("/docs", "layout");
+  invalidateDocs();
   return NextResponse.json({ success: true });
 }
 
