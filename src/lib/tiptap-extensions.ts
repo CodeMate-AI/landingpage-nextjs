@@ -1,4 +1,5 @@
 import { StarterKit } from "@tiptap/starter-kit";
+import { CalloutNode } from "@/lib/docs-blocks";
 import { Link } from "@tiptap/extension-link";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { Table } from "@tiptap/extension-table";
@@ -480,4 +481,5 @@ export const extensions = [
   ReferenceBlogsNodeServer,
   BentoGridNodeServer,
   IllustrationListNodeServer,
+  CalloutNode,
 ];

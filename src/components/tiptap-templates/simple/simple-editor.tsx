@@ -178,6 +178,8 @@ import { VideoNode } from "@/components/tiptap-node/video-node/video-node-extens
 import { VideoUploadNode } from "@/components/tiptap-node/video-node/video-upload-node-extension"
 import { ReferenceBlogsNode } from "@/components/tiptap-node/reference-blogs-node/reference-blogs-node-extension"
 import { BentoGridNode } from "@/components/tiptap-node/bento-grid-node"
+import { CalloutNodeClient } from "@/components/tiptap-node/docs-blocks/callout-node"
+import { DocsBlocksToolbar } from "@/components/tiptap-node/docs-blocks/docs-blocks-toolbar"
 import { BentoGridIcon } from "@/components/tiptap-icons/bento-grid-icon"
 import { IllustrationListNode, createIllustrationItem } from "@/components/tiptap-node/illustration-list-node"
 import { IllustrationListIcon } from "@/components/tiptap-icons/illustration-list-icon"
@@ -241,7 +243,9 @@ const MainToolbarContent = ({
   isMobile,
   baseFont,
   onBaseFontChange,
+  docsBlocks,
 }: {
+  docsBlocks?: boolean
   onHighlighterClick: () => void
   onLinkClick: () => void
   onVideoClick: () => void
@@ -459,6 +463,7 @@ const MainToolbarContent = ({
           <span className="tiptap-button-text">List</span>
         </Button>
       </ToolbarGroup>
+      {docsBlocks && <DocsBlocksToolbar />}
     </>
   )
 }
@@ -508,6 +513,8 @@ interface SimpleEditorProps {
   currentTitle?: string | null
   baseFont?: string | null
   onBaseFontChange?: (fontKey: string) => void
+  /** Docs editor only: enables callouts and the other docs blocks. The blog editor leaves this off. */
+  docsBlocks?: boolean
 }
 
 const isPosInsideTable = ($pos: any) => {
@@ -528,6 +535,7 @@ export function SimpleEditor({
   currentTitle,
   baseFont,
   onBaseFontChange,
+  docsBlocks,
 }: SimpleEditorProps) {
   const isMobile = useIsBreakpoint()
   const { height } = useWindowSize()
@@ -701,6 +709,7 @@ export function SimpleEditor({
       TableHeader,
       TableCell,
       Typography,
+      ...(docsBlocks ? [CalloutNodeClient] : []),
     ],
     content,
     onUpdate({ editor }) {
@@ -741,6 +750,7 @@ export function SimpleEditor({
                 isMobile={isMobile}
                 baseFont={baseFont}
                 onBaseFontChange={onBaseFontChange}
+                docsBlocks={docsBlocks}
                 onHighlighterClick={() => setMobileView("highlighter")}
                 onLinkClick={() => setMobileView("link")}
                 onVideoClick={() => {

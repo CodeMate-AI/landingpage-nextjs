@@ -146,7 +146,7 @@ function DocsEditor() {
           ) : loading ? (
             <p className="text-sm text-neutral-400">Loading page...</p>
           ) : (
-            <SimpleEditor content={content} onChange={edit(setContent)} currentPostId={id} currentSlug={slug} currentTitle={title} />
+            <SimpleEditor docsBlocks content={content} onChange={edit(setContent)} currentPostId={id} currentSlug={slug} currentTitle={title} />
           )}
         </div>
       </div>
