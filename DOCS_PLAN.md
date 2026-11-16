@@ -35,10 +35,20 @@ New database `codemate_docs` on the existing cluster. Env: `MONGODB_DOCS_DB_NAME
 2. DB layer: `getDocsDatabase()`, schemas, `/api/admin/docs/*` (done)
 3. Docs admin: dashboard, tree editor, docs editor and new blocks (done)
 4. Public `/docs` on Fumadocs, then re-run screenshot check on existing pages (done)
-5. Search (done), Copy Markdown / Open in (done), Ask AI (blocked, see below)
+5. Search (done), Copy Markdown / Open in (done), Ask AI (built, see below)
 6. Import GitBook content (done, 70 pages), then switch navbar and footer Docs links (done)
 
-## Ask AI (needs team input)
+## Ask AI as built
+
+Modelled on fosrl/docs: the model calls two tools itself (`search_docs`, `read_page`) up to 6 steps, using the AI SDK (`ai`, `@ai-sdk/openai-compatible`).
+
+- Endpoint, model `bodh-b0` and auth taken from the CodeMate Academy backend (shared key, usage is billed together). Env: `DOCS_AI_BASE_URL`, `DOCS_AI_TOKEN`, `DOCS_AI_API_KEY`, `DOCS_AI_MODEL`, `DOCS_AI_RATE_LIMIT_PER_MINUTE` (names in `.env.example`; set the real values on the server too)
+- `POST /api/ask` (streams text), `POST /api/ask/feedback` (thumbs). Code in `src/lib/docs-ai/`, UI in `src/app/docs/AskAI.tsx` (button in the sidebar header, panel; full screen on phones)
+- Rate limit per IP in MongoDB (10 per minute, 100 per day). Questions and answers are stored in `chat_events` for 90 days (TTL index), with ratings
+- The model rejects off-topic questions and says when the docs do not cover something
+- Not done: admin view of questions, streaming sources list, conversation reset button
+
+## Ask AI original notes (needs team input)
 
 Behavior we will build:
 
@@ -76,7 +86,7 @@ Done on branch `bump_version/new_docs`. Everything after commit `a38fe82` is sti
 3. Add docs pages to `src/app/sitemap.ts`
 4. Re-upload the 35 GitBook-hosted images to our storage (`CUSTOM_UPLOAD_ENDPOINT`) before GitBook is switched off, otherwise they break
 5. Other links still on GitBook: footer Refund Policy, Privacy Policy, Terms of Service (Privacy and Terms use old `/faqs/...` paths; new pages are `/docs/policies-privacy-policy`, `/docs/policies-terms-of-service`, `/docs/policies-refund-policy`), HP partnership footer and `hpData.ts`, Download page Toolbox link
-6. Ask AI: waiting on the 5 team answers above
+6. Ask AI: built (see "Ask AI as built"). Still to confirm with the team: context window, rate and cost limits, whether a dedicated key is wanted, who approves the privacy note
 7. Checks not done yet: imported pages in light mode and at 375px, real media upload (only pasted links tested), Mac shortcut badge, search behaviour with several server processes in production
 
 ## Known gaps
