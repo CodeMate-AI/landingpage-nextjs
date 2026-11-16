@@ -792,7 +792,7 @@ export function compileTiptapToHtml(
       "href", "src", "alt", "class", "target", "rel", "id", "title",
       "controls", "muted", "autoplay", "loop", "playsinline", "type",
       "style", "checked", "disabled", "colspan", "rowspan", "colwidth",
-      "width", "height", "name", "data-type", "data-checked",
+      "width", "height", "name", "start", "data-type", "data-checked",
       "open", "loading", "data-icon", "data-settings", "data-blogs", "data-caption", "data-columns", "data-gap", "data-cards", "data-items", "data-kind", "data-title",
       "viewbox", "viewBox", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin",
       "d", "aria-hidden", "aria-label", "role"

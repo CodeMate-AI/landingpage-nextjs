@@ -6,6 +6,7 @@ import { DocsEnhance } from "../DocsEnhance";
 import { ViewOptions } from "../ViewOptions";
 import { getPublishedPage } from "@/lib/docs-data";
 import { highlightCodeBlocks } from "@/lib/docs-highlight";
+import { addHeadingIds } from "@/lib/docs-toc";
 
 export const revalidate = 60;
 
@@ -30,8 +31,7 @@ export default async function DocPage({ params }: Props) {
   if (!page) notFound();
 
   const compiled = compileTiptapToHtml(page.content, page.sections, undefined, { skipFaq: true });
-  const html = await highlightCodeBlocks(compiled.html);
-  const toc = page.sections.map((s) => ({ title: s.title, url: `#${s.id}`, depth: 2 }));
+  const { html, toc } = addHeadingIds(await highlightCodeBlocks(compiled.html));
 
   return (
     <DocsPage toc={toc}>

@@ -149,6 +149,16 @@
   }
 }
 
+/* Phones: long lines run under the floating button, so reserve a strip for it above the code.
+   In the utilities layer because the `.docs-code > pre` padding rule lives there. */
+@layer utilities {
+  @media (max-width: 40rem) {
+    .docs-code:has(> .docs-code-copy-float) > pre {
+      padding-top: 2.5rem;
+    }
+  }
+}
+
 /* Tabs: public tab bar is built by DocsEnhance; the editor shows every tab stacked with a title field */
 @layer components {
   .docs-tabs {

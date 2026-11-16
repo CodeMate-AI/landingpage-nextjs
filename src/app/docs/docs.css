@@ -4,6 +4,31 @@
 @import "../../components/tiptap-node/docs-blocks/docs-blocks.css";
 @import "../../components/tiptap-node/docs-blocks/docs-icons.css";
 
+/* Previous/next footer: Fumadocs stacks the two cards full width below 32rem, which leaves big empty
+   cards on phones. Keep them side by side, compact, with Next pinned to the right column. */
+@layer utilities {
+  article > div[class~="@container"] > a {
+    grid-column: auto;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+  article > div[class~="@container"] > a.text-end {
+    grid-column: 2;
+  }
+  @media (max-width: 40rem) {
+    article > div[class~="@container"] {
+      gap: 0.5rem;
+    }
+    article > div[class~="@container"] > a {
+      padding: 0.75rem;
+      gap: 0.25rem;
+    }
+    article > div[class~="@container"] > a > p {
+      font-size: 0.75rem;
+    }
+  }
+}
+
 /* Shiki output: one color variable per theme; the .dark class (set by Fumadocs) picks the dark one */
 @layer utilities {
   pre.shiki span {
