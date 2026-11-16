@@ -18,7 +18,7 @@
   }
 
   /* Icon: info circle / lightbulb / alert triangle, painted in the accent color */
-  .docs-callout::before {
+  .docs-callout::after {
     content: "";
     position: absolute;
     left: 1rem;
@@ -30,11 +30,11 @@
     mask: var(--icon) center / contain no-repeat;
     --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 16v-4M12 8h.01'/%3E%3C/svg%3E");
   }
-  .docs-callout[data-kind="tip"]::before {
+  .docs-callout[data-kind="tip"]::after {
     --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5M9 18h6M10 22h4'/%3E%3C/svg%3E");
   }
-  .docs-callout[data-kind="warning"]::before {
-    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m21.7 18-8-14a2 2 0 0 0-3.4 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.7-3zM12 9v4M12 17h.01'/%3E%3C/svg%3E");
+  .docs-callout[data-kind="warning"]::after {
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='M12 8v4M12 16h.01'/%3E%3C/svg%3E");
   }
 
   /* Editor only: three-button type switch sitting on the top edge, shown on hover or when the
@@ -82,6 +82,180 @@
   }
 }
 
+/* Code block with optional title and copy button (public: built by DocsEnhance; editor: node view) */
+@layer components {
+  .docs-code {
+    position: relative;
+    margin: 1.25rem 0;
+    border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .docs-code-title,
+  .docs-code-title-input {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 5rem 0.5rem 1rem;
+    border: 0;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    background: color-mix(in srgb, currentColor 6%, transparent);
+    color: inherit;
+    font: inherit;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    outline: none;
+  }
+  .docs-code-title-input::placeholder {
+    color: inherit;
+    opacity: 0.4;
+  }
+  .docs-code-title-input:focus-visible {
+    box-shadow: inset 0 0 0 2px color-mix(in srgb, #3b82f6 70%, transparent);
+  }
+  /* Public title row: label left, Copy button right, both vertically centered */
+  div.docs-code-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4rem 0.5rem 0.4rem 1rem;
+    line-height: 1.4;
+  }
+  .docs-code-copy {
+    flex: none;
+    margin: 0;
+    padding: 0.2rem 0.6rem;
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-radius: 0.4rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.72rem;
+    line-height: 1.2;
+    cursor: pointer;
+    opacity: 0.75;
+    transition: opacity 0.15s, background-color 0.15s;
+  }
+  .docs-code-copy:hover,
+  .docs-code-copy:focus-visible {
+    opacity: 1;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+  }
+  /* No title: float over the code's top-right corner */
+  .docs-code-copy-float {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+}
+
+/* Tabs: public tab bar is built by DocsEnhance; the editor shows every tab stacked with a title field */
+@layer components {
+  .docs-tabs {
+    margin: 1.25rem 0;
+    border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .docs-tabs-bar {
+    display: flex;
+    gap: 0.25rem;
+    padding: 0.35rem 0.6rem 0;
+    overflow-x: auto;
+    border-bottom: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    background: color-mix(in srgb, currentColor 5%, transparent);
+  }
+  .docs-tabs-bar button {
+    flex: none;
+    margin: 0;
+    padding: 0.5rem 0.85rem;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: inherit;
+    font: inherit;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    white-space: nowrap;
+    cursor: pointer;
+    opacity: 0.65;
+    transition: opacity 0.15s;
+  }
+  .docs-tabs-bar button:hover {
+    opacity: 0.9;
+  }
+  .docs-tabs-bar button[aria-selected="true"] {
+    opacity: 1;
+    border-bottom-color: #3b82f6;
+  }
+  .docs-tabs-bar button:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: -2px;
+  }
+  .docs-tab {
+    padding: 0.9rem 1rem;
+  }
+  /* Without JS the panels stack, so label each one */
+  .docs-tabs:not([data-enhanced]) > .docs-tab[data-title]::before {
+    content: attr(data-title);
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+  .docs-tabs:not([data-enhanced]) > .docs-tab + .docs-tab {
+    border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  }
+
+  /* Editor only */
+  .docs-tab-edit + .docs-tab-edit,
+  .docs-tabs-body > .docs-tab-edit + .docs-tab-edit {
+    border-top: 1px dashed color-mix(in srgb, currentColor 22%, transparent);
+  }
+  .docs-tab-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .docs-tab-title-input {
+    flex: 1;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+    border-radius: 0.4rem;
+    background: color-mix(in srgb, currentColor 5%, transparent);
+    color: inherit;
+    font: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.3;
+    outline: none;
+  }
+  .docs-tab-title-input:focus-visible {
+    border-color: #3b82f6;
+  }
+  .docs-tab-remove,
+  .docs-tabs-add {
+    padding: 0.2rem 0.6rem;
+    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    border-radius: 0.4rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    cursor: pointer;
+    opacity: 0.75;
+  }
+  .docs-tab-remove:hover,
+  .docs-tabs-add:hover {
+    opacity: 1;
+    background: color-mix(in srgb, currentColor 10%, transparent);
+  }
+  .docs-tabs-add {
+    margin: 0 1rem 0.75rem;
+  }
+}
+
 /* Utilities layer so these beat the docs prose margins (v4: later layer wins) */
 @layer utilities {
   .docs-callout > :first-child,
@@ -91,5 +265,596 @@
   .docs-callout > :last-child,
   .docs-callout .docs-callout-body > :last-child {
     margin-bottom: 0;
+  }
+  .docs-tab > :first-child,
+  .docs-tab .docs-tab-body > :first-child {
+    margin-top: 0;
+  }
+  .docs-tab > :last-child,
+  .docs-tab .docs-tab-body > :last-child {
+    margin-bottom: 0;
+  }
+  /* The wrapper owns the border and spacing; the inner pre must not add its own */
+  .docs-code > pre {
+    margin: 0;
+    padding: 0.9rem 1rem;
+    border: 0;
+    border-radius: 0;
+    background: color-mix(in srgb, currentColor 3%, transparent);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    overflow-x: auto;
+  }
+  /* Prose styles inline code (chip look); inside a block it must read as plain text */
+  .docs-code > pre code {
+    display: block;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    font-size: inherit;
+  }
+}
+
+/* Steps, cards, accordion */
+@layer components {
+  .docs-steps,
+  .docs-steps-wrap {
+    counter-reset: docs-step;
+    margin: 1.5rem 0;
+  }
+  .docs-step {
+    counter-increment: docs-step;
+    position: relative;
+    padding: 0 0 1.5rem 2.75rem;
+  }
+  .docs-step:not(:last-child) {
+    background: linear-gradient(color-mix(in srgb, currentColor 18%, transparent), color-mix(in srgb, currentColor 18%, transparent)) 0.875rem 2.2rem / 1px calc(100% - 2.4rem) no-repeat;
+  }
+  .docs-step::after {
+    content: counter(docs-step);
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, #3b82f6 16%, transparent);
+    color: #3b82f6;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .docs-step:not(.docs-item-edit)::before {
+    content: attr(data-title);
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    font-size: 1.05rem;
+    line-height: 1.75rem;
+  }
+
+  /* NodeViewContent wraps the items in an extra [data-node-view-content-react] div; that is the grid */
+  .docs-cards,
+  .docs-cards-body > [data-node-view-content-react] {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+  .docs-cards-body {
+    margin: 0 0 0.5rem;
+  }
+  .docs-cards-body > [data-node-view-content-react] {
+    margin: 0;
+  }
+  .docs-cards-wrap {
+    margin: 1.5rem 0;
+  }
+  .docs-card {
+    position: relative;
+    display: block;
+    padding: 1rem;
+    border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    border-radius: 0.75rem;
+    color: inherit;
+    font-size: 0.9rem;
+    transition: border-color 0.15s;
+  }
+  .docs-card:has(.docs-card-link):hover {
+    border-color: #3b82f6;
+  }
+  .docs-card-icon {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.6rem;
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, #3b82f6 14%, transparent);
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+  .docs-card-link,
+  .docs-card-title {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+    color: inherit;
+  }
+  /* Stretch the title link over the whole card; links in the body sit above it */
+  .docs-card-link::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .docs-card-body a {
+    position: relative;
+    z-index: 1;
+  }
+
+  .docs-accordion {
+    margin: 1rem 0;
+    border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .docs-accordion > summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+  .docs-accordion > summary::-webkit-details-marker {
+    display: none;
+  }
+  .docs-accordion > summary::after {
+    content: "+";
+    font-weight: 400;
+    opacity: 0.6;
+  }
+  .docs-accordion[open] > summary::after {
+    content: "\2212";
+  }
+  .docs-accordion > summary:hover {
+    background: color-mix(in srgb, currentColor 5%, transparent);
+  }
+  .docs-accordion-body {
+    padding: 0.25rem 1rem 1rem;
+  }
+  .docs-item-edit > .docs-tab-head {
+    margin-bottom: 0.4rem;
+  }
+  .docs-accordion.docs-item-edit {
+    padding: 0.6rem 1rem 0;
+  }
+}
+
+@layer utilities {
+  a.docs-card-link {
+    text-decoration: none;
+  }
+  .docs-step > :last-child,
+  .docs-step-body > :last-child,
+  .docs-card > :last-child,
+  .docs-card-body > :last-child,
+  .docs-accordion-body > :last-child {
+    margin-bottom: 0;
+  }
+  .docs-step-body > :first-child,
+  .docs-card-body > :first-child,
+  .docs-accordion-body > :first-child {
+    margin-top: 0;
+  }
+  .docs-card p {
+    margin: 0.25rem 0 0;
+    opacity: 0.8;
+  }
+}
+
+/* Callout types and optional title (icons are Lucide paths, like docs.pangolin.net) */
+@layer components {
+  .docs-callout[data-kind="info"] {
+    --accent: #0ea5e9;
+  }
+  .docs-callout[data-kind="check"] {
+    --accent: #14b8a6;
+  }
+  .docs-callout[data-kind="danger"] {
+    --accent: #ef4444;
+  }
+  .docs-callout[data-kind="note"]::after {
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8Z'/%3E%3Cpath d='M15 3v4a2 2 0 0 0 2 2h4'/%3E%3C/svg%3E");
+  }
+  .docs-callout[data-kind="check"]::after {
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath d='m9 12 2 2 4-4'/%3E%3C/svg%3E");
+  }
+  .docs-callout[data-kind="danger"]::after {
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 16h.01M12 8v4'/%3E%3Cpath d='M15.3 2a2 2 0 0 1 1.4.6l4.7 4.7a2 2 0 0 1 .6 1.4v6.6a2 2 0 0 1-.6 1.4l-4.7 4.7a2 2 0 0 1-1.4.6H8.7a2 2 0 0 1-1.4-.6L2.6 16.7A2 2 0 0 1 2 15.3V8.7a2 2 0 0 1 .6-1.4L7.3 2.6A2 2 0 0 1 8.7 2z'/%3E%3C/svg%3E");
+  }
+  /* Optional title line: drawn from data-title so the node content stays a plain hole */
+  .docs-callout[data-title]:not([data-title=""])::before {
+    content: attr(data-title);
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+  .docs-callout-title-input {
+    width: 8.5rem;
+    padding: 0.15rem 0.45rem;
+    border: 0;
+    border-radius: 0.375rem;
+    background: color-mix(in srgb, currentColor 8%, transparent);
+    color: inherit;
+    font: inherit;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    outline: none;
+  }
+  .docs-callout-title-input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 1px;
+  }
+}
+
+/* Pangolin-style cards, steps and accordions (reference: github.com/fosrl/docs). Later in the same
+   layer, so these override the first version above. Colors stay currentColor based for light and dark. */
+@layer components {
+  .docs-step::after {
+    background: color-mix(in srgb, currentColor 10%, transparent);
+    color: inherit;
+  }
+
+  .docs-cards[data-columns="3"],
+  .docs-cards-body[data-columns="3"] {
+    --docs-cols: 3;
+  }
+  .docs-cards[data-columns="4"],
+  .docs-cards-body[data-columns="4"] {
+    --docs-cols: 4;
+  }
+  .docs-cards[data-columns="2"],
+  .docs-cards-body[data-columns="2"] {
+    --docs-cols: 2;
+  }
+  .docs-cards[data-columns],
+  .docs-cards-body[data-columns] > [data-node-view-content-react] {
+    grid-template-columns: repeat(min(var(--docs-cols, 2), 2), minmax(0, 1fr));
+  }
+  @media (min-width: 64rem) {
+    .docs-cards[data-columns],
+    .docs-cards-body[data-columns] > [data-node-view-content-react] {
+      grid-template-columns: repeat(var(--docs-cols, 2), minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 36rem) {
+    .docs-cards[data-columns],
+    .docs-cards-body[data-columns] > [data-node-view-content-react] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .docs-card {
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    background: color-mix(in srgb, currentColor 5%, transparent);
+    transition: background-color 0.15s;
+  }
+  .docs-card:has(.docs-card-link):hover {
+    background: color-mix(in srgb, currentColor 9%, transparent);
+  }
+  .docs-card-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 1.25rem;
+  }
+  /* Horizontal = image on the left, text on the right. The icon always stays above the title. */
+  .docs-card-horizontal:has(.docs-card-img) {
+    display: flex;
+    align-items: stretch;
+  }
+  .docs-card-horizontal .docs-card-img {
+    flex: 0 0 38%;
+    width: 38%;
+    max-height: none;
+    height: auto;
+  }
+  .docs-card-horizontal .docs-card-inner {
+    flex: 1;
+    min-width: 0;
+  }
+  @media (max-width: 36rem) {
+    .docs-card-horizontal:has(.docs-card-img) {
+      display: block;
+    }
+    .docs-card-horizontal .docs-card-img {
+      width: 100%;
+      max-height: 12rem;
+    }
+  }
+  .docs-card-main {
+    min-width: 0;
+    flex: 1;
+  }
+  .docs-card-icon {
+    display: inline-flex;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+    border-radius: 0;
+    background: none;
+  }
+  .docs-card-icon[data-icon]::after {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .docs-card-link,
+  .docs-card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.95rem;
+  }
+  .docs-card-arrow {
+    font-size: 0.8rem;
+    opacity: 0.55;
+  }
+  .docs-card-img {
+    display: block;
+    width: 100%;
+    max-height: 12rem;
+    object-fit: cover;
+  }
+  .docs-card-cta {
+    margin: 0.75rem 0 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  .docs-item-edit.docs-card {
+    padding: 0.9rem 1rem;
+    overflow: visible; /* the icon picker popover hangs outside the card */
+  }
+
+  /* Accordion: chevron on the left that turns when open, body indented under the title */
+  .docs-accordion > summary,
+  .docs-expandable > summary {
+    justify-content: flex-start;
+    gap: 0.6rem;
+    user-select: none;
+  }
+  .docs-accordion > summary::after,
+  .docs-accordion[open] > summary::after {
+    content: none;
+  }
+  .docs-accordion > summary::before,
+  .docs-expandable > summary::after {
+    content: "";
+    flex: none;
+    width: 1rem;
+    height: 1rem;
+    background: currentColor;
+    opacity: 0.55;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition: transform 0.15s;
+  }
+  .docs-accordion[open] > summary::before,
+  .docs-expandable[open] > summary::after {
+    transform: rotate(90deg);
+  }
+  .docs-accordion-body {
+    padding: 0 1rem 1rem 2.6rem;
+  }
+  .docs-accordion.docs-item-edit {
+    padding: 0.6rem 1rem 0.2rem;
+  }
+  .docs-accordion.docs-item-edit .docs-accordion-body {
+    padding: 0 0 0.6rem;
+  }
+
+  /* Expandable: quiet "Show X / Hide X" toggle */
+  .docs-expandable {
+    margin: 1rem 0;
+    border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .docs-expandable > summary {
+    display: flex;
+    align-items: center;
+    padding: 0.55rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    list-style: none;
+  }
+  .docs-expandable > summary::-webkit-details-marker {
+    display: none;
+  }
+  .docs-expandable > summary::before {
+    content: "Show ";
+    margin-right: -0.35rem;
+  }
+  .docs-expandable[open] > summary::before {
+    content: "Hide ";
+  }
+  .docs-expandable > summary:hover {
+    background: color-mix(in srgb, currentColor 5%, transparent);
+  }
+  .docs-expandable > .docs-accordion-body {
+    padding: 0.25rem 1rem 1rem;
+  }
+}
+
+/* Editor only: icon picker popover and the small option rows on cards and accordions */
+@layer components {
+  .docs-icon-picker {
+    position: relative;
+    flex: none;
+  }
+  .docs-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.85rem;
+  }
+  .docs-icon-btn .docs-card-icon[data-icon]::after {
+    width: 1rem;
+    height: 1rem;
+  }
+  .docs-icon-pop {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 0.25rem);
+    left: 0;
+    width: 17.5rem;
+    padding: 0.5rem;
+    border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+    border-radius: 0.6rem;
+    background: var(--tt-popover-bg-color, #18181b);
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.35);
+  }
+  .docs-icon-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+    max-height: 11rem;
+    margin-top: 0.4rem;
+    overflow-y: auto;
+  }
+  .docs-icon-grid button {
+    display: grid;
+    place-items: center;
+    height: 2rem;
+    border: 0;
+    border-radius: 0.4rem;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+  .docs-icon-grid button:hover,
+  .docs-icon-grid button[aria-selected="true"] {
+    background: color-mix(in srgb, #3b82f6 25%, transparent);
+  }
+  .docs-icon-pop .docs-card-icon {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .docs-icon-pop .docs-card-icon[data-icon]::after {
+    width: 1.1rem;
+    height: 1.1rem;
+  }
+  .docs-opt-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.9rem;
+    margin-bottom: 0.4rem;
+    font-size: 0.75rem;
+  }
+  .docs-opt-row label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    cursor: pointer;
+  }
+  .docs-opt-row .docs-tab-title-input {
+    flex: 1 1 8rem;
+    min-width: 0;
+  }
+  /* Narrow editor cards: inputs shrink, rows wrap instead of spilling out of the tile */
+  .docs-item-edit {
+    min-width: 0;
+  }
+  .docs-tab-head {
+    flex-wrap: wrap;
+  }
+  .docs-tab-head .docs-tab-title-input {
+    flex: 1 1 7rem;
+    min-width: 0;
+  }
+  .docs-tab-head .docs-tab-remove {
+    flex: none;
+  }
+  .docs-opt-seg {
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, currentColor 8%, transparent);
+  }
+  .docs-opt-seg button {
+    padding: 0.15rem 0.55rem;
+    border: 0;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 0.72rem;
+    cursor: pointer;
+  }
+  .docs-opt-seg button[aria-pressed="true"] {
+    background: #3b82f6;
+    color: #fff;
+  }
+}
+
+/* Frame: image or video with an optional caption */
+@layer components {
+  .docs-frame {
+    margin: 1.5rem 0;
+  }
+  .docs-frame-inner {
+    padding: 0.5rem;
+    border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    border-radius: 0.9rem;
+    background: color-mix(in srgb, currentColor 4%, transparent);
+  }
+  .docs-frame-inner img,
+  .docs-frame-inner video {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.55rem;
+  }
+  .docs-frame figcaption {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+  .docs-frame-empty {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.6rem;
+    padding: 1.5rem 1rem;
+    font-size: 0.8rem;
+    opacity: 0.9;
+  }
+  .docs-frame-empty .docs-tab-title-input {
+    flex: 1 1 12rem;
+    min-width: 0;
+  }
+  .docs-frame-error {
+    margin: 0.3rem 0 0;
+    color: #ef4444;
+    font-size: 0.75rem;
+  }
+}
+@layer utilities {
+  .docs-frame img,
+  .docs-frame video {
+    margin: 0;
   }
 }

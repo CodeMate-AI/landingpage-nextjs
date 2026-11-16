@@ -4,13 +4,20 @@ import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer, type NodeViewP
 import { CALLOUT_KINDS, CalloutNode, type CalloutKind } from "@/lib/docs-blocks"
 import "./docs-blocks.css"
 
-const LABELS: Record<CalloutKind, string> = { note: "Note", tip: "Tip", warning: "Warning" }
+const LABELS: Record<CalloutKind, string> = { note: "Note", info: "Info", tip: "Tip", warning: "Warning", check: "Check", danger: "Danger" }
 
 function CalloutView({ node, updateAttributes }: NodeViewProps) {
   const kind = node.attrs.kind as CalloutKind
   return (
-    <NodeViewWrapper className="docs-callout" data-type="callout" data-kind={kind}>
+    <NodeViewWrapper className="docs-callout" data-type="callout" data-kind={kind} data-title={node.attrs.title ?? ""}>
       <div className="docs-callout-kind" contentEditable={false} role="group" aria-label="Callout type">
+        <input
+          className="docs-callout-title-input"
+          value={node.attrs.title ?? ""}
+          placeholder="Title (optional)"
+          aria-label="Callout title"
+          onChange={(e) => updateAttributes({ title: e.target.value || null })}
+        />
         {CALLOUT_KINDS.map((k) => (
           <button
             key={k}

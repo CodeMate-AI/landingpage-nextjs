@@ -70,6 +70,7 @@
     "react-icons": "^5.5.0",
     "react-scroll": "^1.9.3",
     "react-syntax-highlighter": "^15.6.6",
+    "shiki": "^4.6.0",
     "simplex-noise": "^4.0.3",
     "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",

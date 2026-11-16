@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import { compileTiptapToHtml } from "@/lib/blog-compiler";
+import { DocsEnhance } from "../DocsEnhance";
 import { getPublishedPage } from "@/lib/docs-data";
+import { highlightCodeBlocks } from "@/lib/docs-highlight";
 
 export const revalidate = 60;
 
@@ -26,7 +28,8 @@ export default async function DocPage({ params }: Props) {
   const page = await getPublishedPage(slug);
   if (!page) notFound();
 
-  const { html } = compileTiptapToHtml(page.content, page.sections);
+  const compiled = compileTiptapToHtml(page.content, page.sections, undefined, { skipFaq: true });
+  const html = await highlightCodeBlocks(compiled.html);
   const toc = page.sections.map((s) => ({ title: s.title, url: `#${s.id}`, depth: 2 }));
 
   return (
@@ -34,7 +37,8 @@ export default async function DocPage({ params }: Props) {
       <DocsTitle>{page.title}</DocsTitle>
       {page.description && <DocsDescription>{page.description}</DocsDescription>}
       <DocsBody>
-        <div dangerouslySetInnerHTML={{ __html: html }} />
+        <div data-docs-content dangerouslySetInnerHTML={{ __html: html }} />
+        <DocsEnhance />
       </DocsBody>
     </DocsPage>
   );

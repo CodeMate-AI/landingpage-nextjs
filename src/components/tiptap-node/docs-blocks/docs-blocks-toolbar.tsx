@@ -3,7 +3,20 @@
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { ToolbarGroup } from "@/components/tiptap-ui-primitive/toolbar"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import type { CalloutKind } from "@/lib/docs-blocks"
+import { CALLOUT_KINDS, type CalloutKind } from "@/lib/docs-blocks"
+
+const group = (type: string, item: string, label: string, extra = {}) => ({
+  type,
+  content: [1, 2].map((n) => ({ type: item, attrs: { title: `${label} ${n}`, ...extra }, content: [{ type: "paragraph" }] })),
+})
+
+const INSERTS: [string, object][] = [
+  ["Tabs", group("tabs", "tab", "Tab")],
+  ["Steps", group("steps", "step", "Step")],
+  ["Cards", group("cards", "card", "Card", { href: null })],
+  ["Media", { type: "frame" }],
+  ["Accordion", { type: "accordion", attrs: { title: "Question" }, content: [{ type: "paragraph" }] }],
+]
 
 // Docs-only toolbar row. Rendered by SimpleEditor only when `docsBlocks` is set.
 export function DocsBlocksToolbar() {
@@ -20,7 +33,7 @@ export function DocsBlocksToolbar() {
 
   return (
     <ToolbarGroup>
-      {(["note", "tip", "warning"] as const).map((kind) => (
+      {CALLOUT_KINDS.map((kind) => (
         <Button
           key={kind}
           type="button"
@@ -32,6 +45,19 @@ export function DocsBlocksToolbar() {
           tooltip={`Callout: ${kind}`}
         >
           <span className="tiptap-button-text">{kind[0].toUpperCase() + kind.slice(1)}</span>
+        </Button>
+      ))}
+      {INSERTS.map(([label, content]) => (
+        <Button
+          key={label}
+          type="button"
+          variant="ghost"
+          onClick={() => editor?.chain().focus().insertContent(content).run()}
+          onMouseDown={(e) => e.preventDefault()}
+          title={`Insert ${label.toLowerCase()}`}
+          tooltip={`Insert ${label.toLowerCase()}`}
+        >
+          <span className="tiptap-button-text">{label}</span>
         </Button>
       ))}
     </ToolbarGroup>

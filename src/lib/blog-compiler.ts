@@ -769,7 +769,9 @@ function formatIllustrationLists(html: string): string {
 export function compileTiptapToHtml(
   content: any,
   customSections?: { id: string; title: string }[],
-  subheading?: string
+  subheading?: string,
+  // Docs use real accordion blocks, so the blog's FAQ-heading heuristic must not rewrite them
+  options?: { skipFaq?: boolean }
 ): { html: string; sections: { id: string; title: string }[] } {
   if (!content || typeof content !== "object" || content.type !== "doc") {
     return { html: "", sections: [] };
@@ -791,7 +793,7 @@ export function compileTiptapToHtml(
       "controls", "muted", "autoplay", "loop", "playsinline", "type",
       "style", "checked", "disabled", "colspan", "rowspan", "colwidth",
       "width", "height", "name", "data-type", "data-checked",
-      "data-settings", "data-blogs", "data-caption", "data-columns", "data-gap", "data-cards", "data-items", "data-kind", "data-title",
+      "open", "loading", "data-icon", "data-settings", "data-blogs", "data-caption", "data-columns", "data-gap", "data-cards", "data-items", "data-kind", "data-title",
       "viewbox", "viewBox", "fill", "stroke", "stroke-width", "stroke-linecap", "stroke-linejoin",
       "d", "aria-hidden", "aria-label", "role"
     ],
@@ -800,7 +802,7 @@ export function compileTiptapToHtml(
   const sections = customSections && customSections.length > 0 ? customSections : extractSectionsFromTiptapJson(sanitizedContent);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
   const finalHtml = formatLinks(
-    formatLogos(formatVideos(formatFaqSection(formatReferenceBlogs(formatIllustrationLists(formatBentoGrids(formatTableCells(headingHtml)))))))
+    formatLogos(formatVideos((options?.skipFaq ? (h: string) => h : formatFaqSection)(formatReferenceBlogs(formatIllustrationLists(formatBentoGrids(formatTableCells(headingHtml)))))))
   );
 
   return { html: finalHtml, sections };

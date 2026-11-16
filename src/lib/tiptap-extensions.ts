@@ -1,5 +1,5 @@
 import { StarterKit } from "@tiptap/starter-kit";
-import { CalloutNode } from "@/lib/docs-blocks";
+import { AccordionNode, CalloutNode, CardNode, CardsNode, CodeTitle, FrameNode, StepNode, StepsNode, TabNode, TabsNode } from "@/lib/docs-blocks";
 import { Link } from "@tiptap/extension-link";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { Table } from "@tiptap/extension-table";
@@ -482,4 +482,13 @@ export const extensions = [
   BentoGridNodeServer,
   IllustrationListNodeServer,
   CalloutNode,
+  CodeTitle,
+  TabsNode,
+  TabNode,
+  StepsNode,
+  StepNode,
+  CardsNode,
+  CardNode,
+  AccordionNode,
+  FrameNode,
 ];
