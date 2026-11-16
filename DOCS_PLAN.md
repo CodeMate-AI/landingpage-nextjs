@@ -31,12 +31,12 @@ New database `codemate_docs` on the existing cluster. Env: `MONGODB_DOCS_DB_NAME
 
 ## Build order
 
-1. `/admin` chooser and login redirect
-2. DB layer: `getDocsDatabase()`, schemas, `/api/admin/docs/*`
-3. Docs admin: dashboard, tree editor, docs editor and new blocks
-4. Public `/docs` on Fumadocs, then re-run screenshot check on existing pages
-5. Search, Copy Markdown / Open in, Ask AI
-6. Import GitBook content (under 50 pages), then switch navbar and footer Docs links
+1. `/admin` chooser and login redirect (done)
+2. DB layer: `getDocsDatabase()`, schemas, `/api/admin/docs/*` (done)
+3. Docs admin: dashboard, tree editor, docs editor and new blocks (done)
+4. Public `/docs` on Fumadocs, then re-run screenshot check on existing pages (done)
+5. Search (done), Copy Markdown / Open in (done), Ask AI (blocked, see below)
+6. Import GitBook content (done, 70 pages), then switch navbar and footer Docs links (done)
 
 ## Ask AI (needs team input)
 
@@ -58,3 +58,31 @@ Behavior we will build:
 | 3 | Context window size | Sets how many doc pages fit in one question | |
 | 4 | Rate and cost limits, monthly budget | Sets our per-IP rate limit and caps spend | |
 | 5 | OK to store visitor questions in our database (retention, default 90 days)? Who approves the privacy note? | Needed before `chat_events` is enabled | |
+
+## Progress (last updated 2026-11-16)
+
+Done on branch `bump_version/new_docs`. Everything after commit `a38fe82` is still UNCOMMITTED, commit it first.
+
+- Editor blocks: 6 callout types, code title and Copy, tabs with sync, steps, cards (Lucide icons, columns, horizontal with image), accordion and Expandable, Frame (image or video), Shiki highlighting
+- Copy Markdown and Open in ChatGPT, Claude, Gemini; `/docs/<slug>.md`; `/llms.txt` (`src/lib/docs-markdown.ts`, `src/app/docs/ViewOptions.tsx`)
+- Search: Ctrl+K on Windows and Linux, Cmd+K on Mac (Fumadocs picks it). Index text is built at publish into `publishedVersion.search`, route `/api/search`, cache refreshed by `invalidateDocs()` in `src/lib/docs-data.ts`
+- GitBook import: `scripts/import-gitbook.ts` (dry run by default, `--write` creates drafts, never overwrites). 70 pages imported, then published with the sidebar. Images still load from GitBook-hosted URLs
+- Navbar (desktop and mobile) and footer Docs links now point to `/docs`
+
+## Next steps
+
+1. Commit the work (message draft: blocks, Copy Markdown, search, GitBook import script, link switch, `shiki` and `marked` in package.json)
+2. ~~Redirects from old GitBook URLs~~ DONE in `next.config.ts` (list in `src/data/gitbook-redirects.ts`, 308, `.md` variants, `/` to `/docs`). They only fire for Host `docs.codemate.ai`, so still TODO at launch: point DNS / nginx for `docs.codemate.ai` at this app (or proxy it) and make sure nginx passes the Host header
+3. Add docs pages to `src/app/sitemap.ts`
+4. Re-upload the 35 GitBook-hosted images to our storage (`CUSTOM_UPLOAD_ENDPOINT`) before GitBook is switched off, otherwise they break
+5. Other links still on GitBook: footer Refund Policy, Privacy Policy, Terms of Service (Privacy and Terms use old `/faqs/...` paths; new pages are `/docs/policies-privacy-policy`, `/docs/policies-terms-of-service`, `/docs/policies-refund-policy`), HP partnership footer and `hpData.ts`, Download page Toolbox link
+6. Ask AI: waiting on the 5 team answers above
+7. Checks not done yet: imported pages in light mode and at 375px, real media upload (only pasted links tested), Mac shortcut badge, search behaviour with several server processes in production
+
+## Known gaps
+
+- The big codemate.ai logo above the Overview title on GitBook is not in the page Markdown, so it did not import
+- 5 steps in CORA-CLI Quick Start have no heading and show the title "Step"
+- Sidebar groups repeat the page name as their first item (group "Essentials" contains page "Essentials")
+- One inline icon in a changelog heading was dropped (no inline images in the editor)
+- `/docs/[slug]` is dynamic, so `revalidate = 60` does not apply

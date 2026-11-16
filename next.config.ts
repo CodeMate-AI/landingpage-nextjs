@@ -1,4 +1,20 @@
 import type { NextConfig } from "next";
+import { GITBOOK_REDIRECTS } from "./src/data/gitbook-redirects";
+
+// Old GitBook URLs only exist on this host, so these never touch routes on codemate.ai
+const gitbookHost = [{ type: "host" as const, value: "docs.codemate.ai" }];
+const gitbookRedirects = [
+  { source: "/", destination: "/docs", has: gitbookHost, permanent: true },
+  // the .md variant is its own rule: an unmatched optional `:ext` breaks the destination
+  ...GITBOOK_REDIRECTS.flatMap(([path, slug]) =>
+    ["", ".md"].map((ext) => ({
+      source: `/${path}${ext}`,
+      destination: `/docs/${slug}${ext}`,
+      has: gitbookHost,
+      permanent: true,
+    }))
+  ),
+];
 
 const nextConfig: NextConfig = {
   devIndicators: false,
@@ -64,6 +80,7 @@ const nextConfig: NextConfig = {
 
   async redirects() {
     return [
+      ...gitbookRedirects,
       {
         source: "/blog/cora-sota-swe-bench",
         destination: "/blog/cora-hits-sota-76-on-swe-bench-verified",

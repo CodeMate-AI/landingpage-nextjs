@@ -472,7 +472,7 @@ export default function Navbar() {
                         WebkitBackdropFilter: 'blur(50px)'
                       }} className=' h-auto w-full left-0 rounded-2xl -z-10 bg-zinc-900 drop-shadow-2xl shadow-2xl overflow-hidden'>
                       <div className="py-4 px-2 flex flex-col gap-0">
-                        <a href="https://docs.codemate.ai/" target="_blank" className='w-full'>
+                        <a href="/docs" target="_blank" className='w-full'>
                           <motion.div whileHover={{ opacity: 1 }} className="flex justify-between items-center opacity-80 w-full group hover:bg-white/10 rounded-lg px-3 py-2 transition-all duration-200">
                             <div>Docs</div>
                             <div className="size-[1.48rem] bg-white/25 rounded-full bg-opacity-90 flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
@@ -908,7 +908,7 @@ export default function Navbar() {
                       {isResources &&
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} transition={{ duration: 0.3 }} className='flex flex-col text-xl gap-2 text-center opacity-70 mt-4 mr-5'>
                           <div className='relative text-base md:text-[1.15rem] lg:text-base text-left overflow-hidden py-0.5 md:py-2 lg:py-0 '>
-                            <a href="https://docs.codemate.ai/" target='_blank'>
+                            <a href="/docs" target='_blank'>
                               <motion.div className='z-20 opacity-90'>Docs</motion.div>
                               <motion.div whileHover={{ y: -50 }} transition={{ duration: 0.8 }} className='absolute h-full w-full  top-0 '>
                                 <motion.div initial={{ y: 50 }} className='h-full w-full rounded-t-md bg-cyan-600'>
