@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getDatabase } from "@/lib/mongodb";
+import { getPublishedIndex } from "@/lib/docs-data";
 import { hpUsecases } from "@/app/partnerships/hp/config/hpData";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -111,5 +112,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }));
   }
 
-  return [...staticRoutes, ...blogRoutes];
+  const docsRoutes: MetadataRoute.Sitemap = (await getPublishedIndex()).map(({ slug }) => ({
+    url: `${baseUrl}/docs/${slug}`,
+    lastModified,
+    changeFrequency: "weekly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...blogRoutes, ...docsRoutes];
 }

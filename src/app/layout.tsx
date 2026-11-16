@@ -125,7 +125,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         {/* Scroll reveals start hidden through inline styles, which need JavaScript to clear */}
         <noscript>

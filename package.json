@@ -51,6 +51,8 @@
     "clsx": "^2.1.1",
     "file-type": "^19.0.0",
     "framer-motion": "^14.14.0",
+    "fumadocs-core": "^16.19.3",
+    "fumadocs-ui": "^16.19.3",
     "gsap": "^3.13.0",
     "happy-dom": "^20.11.1",
     "isomorphic-dompurify": "^2.12.0",
