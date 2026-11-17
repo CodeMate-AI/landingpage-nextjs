@@ -174,7 +174,7 @@ function Footer() {
                 <li><Link href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Contact Us</Link></li>
                 <li><a href="/docs" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Docs</a></li>
                 <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Hugging Face</a></li>
-                <li><a href="https://docs.codemate.ai/policies/refund-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Refund Policy</a></li>
+                <li><a href="/docs/policies-refund-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Refund Policy</a></li>
               </ul>
             </div>
 
@@ -182,8 +182,8 @@ function Footer() {
             <div>
               <h4 className="font-semibold mb-4 text-white text-sm md:text-base whitespace-nowrap">LEGAL</h4>
               <ul className="space-y-3 text-xs md:text-sm">
-                <li><a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
-                <li><a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Terms of Service</a></li>
+                <li><a href="/docs/policies-privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
+                <li><a href="/docs/policies-terms-of-service" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Terms of Service</a></li>
                 <li><img src="https://drive.codemate.ai/iso.png" alt="ISO 27001 Certification Badge" className="object-fit size-24 mt-5 invert brightness-0 opacity-80" /></li>
               </ul>
             </div>

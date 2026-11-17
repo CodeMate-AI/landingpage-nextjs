@@ -20,8 +20,8 @@ export default function HpSubpageFooter() {
           />
         </Link>
         <div className="flex flex-wrap items-center justify-center gap-x-7 gap-y-3 font-heading text-[13px] uppercase tracking-[0.13em] text-white/75">
-          <a href="https://docs.codemate.ai/faqs/privacy-policy" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Privacy</a>
-          <a href="https://docs.codemate.ai/faqs/terms-of-service" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Terms</a>
+          <a href="/docs/policies-privacy-policy" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Privacy</a>
+          <a href="/docs/policies-terms-of-service" target="_blank" rel="noopener noreferrer" className="transition-colors hover:text-white">Terms</a>
           <a href="mailto:contact@codemate.ai" className="transition-colors hover:text-white">Support</a>
         </div>
         <div className="flex items-center gap-3">

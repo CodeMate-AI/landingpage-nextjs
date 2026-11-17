@@ -87,5 +87,5 @@ Voice needs HTTPS or `localhost`. Real microphone behaviour must be checked by h
 - Docked side column, admin analytics for chat events and votes.
 - Tablet width pass of the v2 panel. Real voice dictation needs a manual check in Chrome or Edge.
 - The AI gateway sometimes returns 502; retries and the "busy" message soften it but cannot remove it. Assistant turns sent by the browser are not verified, so a client can forge them; fixing that means keeping history on the server by thread id.
-- GitBook images (35) not re-uploaded, a few remaining GitBook links, DNS and nginx for `docs.codemate.ai`.
+- GitBook images (35) not re-uploaded, DNS and nginx for `docs.codemate.ai`.
 - The model's answer to competitor comparisons is left as the model gives it.

@@ -43,10 +43,10 @@ New database `codemate_docs` on the existing cluster. Env: `MONGODB_DOCS_DB_NAME
 Modelled on fosrl/docs: the model calls two tools itself (`search_docs`, `read_page`) up to 6 steps, using the AI SDK (`ai`, `@ai-sdk/openai-compatible`).
 
 - Endpoint, model `bodh-b0` and auth taken from the CodeMate Academy backend (shared key, usage is billed together). Env: `DOCS_AI_BASE_URL`, `DOCS_AI_TOKEN`, `DOCS_AI_API_KEY`, `DOCS_AI_MODEL`, `DOCS_AI_RATE_LIMIT_PER_MINUTE` (names in `.env.example`; set the real values on the server too)
-- `POST /api/ask` (streams text), `POST /api/ask/feedback` (thumbs). Code in `src/lib/docs-ai/`, UI in `src/app/docs/AskAI.tsx` (button in the sidebar header, panel; full screen on phones)
-- Rate limit per IP in MongoDB (10 per minute, 100 per day). Questions and answers are stored in `chat_events` for 90 days (TTL index), with ratings
+- `POST /api/ask` (streams text), `POST /api/ask/feedback` (thumbs). Code in `src/lib/docs-ai/`, UI in `src/app/docs/ask-ai/` (header button, ask bar, panel; floating card on phones)
+- Rate limit per IP in MongoDB (10 per minute, 100 per day) plus a global cap of 60 per minute. Questions and answers are stored in `chat_events` for 90 days (TTL index), with ratings
 - The model rejects off-topic questions and says when the docs do not cover something
-- Not done: admin view of questions, streaming sources list, conversation reset button
+- Not done: admin view of questions and votes. Conversation reset (New chat) and streaming search steps are done
 
 ## Ask AI original notes (needs team input)
 
@@ -71,7 +71,7 @@ Behavior we will build:
 
 ## Progress (last updated 2026-11-16)
 
-Done on branch `bump_version/new_docs`. Everything after commit `a38fe82` is still UNCOMMITTED, commit it first.
+Done and committed on branch `bump_version/new_docs`.
 
 - Editor blocks: 6 callout types, code title and Copy, tabs with sync, steps, cards (Lucide icons, columns, horizontal with image), accordion and Expandable, Frame (image or video), Shiki highlighting
 - Copy Markdown and Open in ChatGPT, Claude, Gemini; `/docs/<slug>.md`; `/llms.txt` (`src/lib/docs-markdown.ts`, `src/app/docs/ViewOptions.tsx`)
@@ -81,11 +81,11 @@ Done on branch `bump_version/new_docs`. Everything after commit `a38fe82` is sti
 
 ## Next steps
 
-1. Commit the work (message draft: blocks, Copy Markdown, search, GitBook import script, link switch, `shiki` and `marked` in package.json)
+1. ~~Commit the work~~ DONE
 2. ~~Redirects from old GitBook URLs~~ DONE in `next.config.ts` (list in `src/data/gitbook-redirects.ts`, 308, `.md` variants, `/` to `/docs`). They only fire for Host `docs.codemate.ai`, so still TODO at launch: point DNS / nginx for `docs.codemate.ai` at this app (or proxy it) and make sure nginx passes the Host header
-3. Add docs pages to `src/app/sitemap.ts`
+3. ~~Add docs pages to `src/app/sitemap.ts`~~ DONE
 4. Re-upload the 35 GitBook-hosted images to our storage (`CUSTOM_UPLOAD_ENDPOINT`) before GitBook is switched off, otherwise they break
-5. Other links still on GitBook: footer Refund Policy, Privacy Policy, Terms of Service (Privacy and Terms use old `/faqs/...` paths; new pages are `/docs/policies-privacy-policy`, `/docs/policies-terms-of-service`, `/docs/policies-refund-policy`), HP partnership footer and `hpData.ts`, Download page Toolbox link
+5. ~~Other links still on GitBook~~ DONE: footer Refund, Privacy and Terms, HP footer and `hpData.ts`, and the Download Toolbox link now point to `/docs/...`
 6. Ask AI: built (see "Ask AI as built"). Still to confirm with the team: context window, rate and cost limits, whether a dedicated key is wanted, who approves the privacy note
 7. Checks not done yet: imported pages in light mode and at 375px, real media upload (only pasted links tested), Mac shortcut badge, search behaviour with several server processes in production
 
