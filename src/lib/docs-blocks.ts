@@ -1,4 +1,6 @@
 import { Extension, Node, mergeAttributes } from "@tiptap/core";
+import type { Node as PMNode } from "@tiptap/pm/model";
+import { Plugin } from "@tiptap/pm/state";
 
 // Optional title (file name) on code blocks. Null by default and only rendered when set, so
 // existing blog code blocks serialize exactly as before.
@@ -18,6 +20,31 @@ export const CodeTitle = Extension.create({
       },
     ];
   },
+});
+
+// Docs features that must not be placed inside one another (a callout in a card, tabs in a step, ...)
+export const DOCS_CONTAINERS = ["tabs", "steps", "cards", "accordion", "frame", "callout"];
+
+// How many docs blocks sit inside another docs block
+function nestedCount(doc: PMNode) {
+  let n = 0;
+  const walk = (node: PMNode, inside: boolean) =>
+    node.forEach((child) => {
+      const isBlock = DOCS_CONTAINERS.includes(child.type.name);
+      if (isBlock && inside) n++;
+      walk(child, inside || isBlock);
+    });
+  walk(doc, false);
+  return n;
+}
+
+// Rejects any change that adds a docs block inside another one. It compares with the old document, so
+// pages that already nest blocks (such as imported ones) stay editable.
+export const NoNestedDocsBlocks = Extension.create({
+  name: "noNestedDocsBlocks",
+  addProseMirrorPlugins: () => [
+    new Plugin({ filterTransaction: (tr) => !tr.docChanged || nestedCount(tr.doc) <= nestedCount(tr.before) }),
+  ],
 });
 
 // Server-safe docs block definitions (no React). Used by generateHTML on the public page and,

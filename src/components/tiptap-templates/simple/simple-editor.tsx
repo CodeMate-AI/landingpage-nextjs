@@ -178,6 +178,7 @@ import { VideoNode } from "@/components/tiptap-node/video-node/video-node-extens
 import { VideoUploadNode } from "@/components/tiptap-node/video-node/video-upload-node-extension"
 import { ReferenceBlogsNode } from "@/components/tiptap-node/reference-blogs-node/reference-blogs-node-extension"
 import { BentoGridNode } from "@/components/tiptap-node/bento-grid-node"
+import { NoNestedDocsBlocks } from "@/lib/docs-blocks"
 import { CalloutNodeClient } from "@/components/tiptap-node/docs-blocks/callout-node"
 import { TabNodeClient, TabsNodeClient } from "@/components/tiptap-node/docs-blocks/tabs-node"
 import { AccordionNodeClient, CardNodeClient, CardsNodeClient, StepNodeClient, StepsNodeClient } from "@/components/tiptap-node/docs-blocks/list-nodes"
@@ -713,7 +714,7 @@ export function SimpleEditor({
       TableHeader,
       TableCell,
       Typography,
-      ...(docsBlocks ? [CalloutNodeClient, CodeTitleClient, TabsNodeClient, TabNodeClient, StepsNodeClient, StepNodeClient, CardsNodeClient, CardNodeClient, AccordionNodeClient, FrameNodeClient] : []),
+      ...(docsBlocks ? [NoNestedDocsBlocks, CalloutNodeClient, CodeTitleClient, TabsNodeClient, TabNodeClient, StepsNodeClient, StepNodeClient, CardsNodeClient, CardNodeClient, AccordionNodeClient, FrameNodeClient] : []),
     ],
     content,
     onUpdate({ editor }) {
