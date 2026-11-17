@@ -42,6 +42,11 @@
     }
   }
 
+  // Video players are sized by their parent, so they need the full width (fit-content shrinks them to a thumbnail)
+  .tiptap-video-node {
+    width: 100%;
+  }
+
   // Media caption input wrapper
   .tiptap-caption-wrapper {
     width: 100%;

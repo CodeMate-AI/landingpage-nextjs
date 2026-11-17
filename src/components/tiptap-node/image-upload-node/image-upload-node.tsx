@@ -1,5 +1,6 @@
 "use client"
 
+import { PasteLink } from "./paste-link"
 import { useRef, useState } from "react"
 import type { NodeViewProps } from "@tiptap/react"
 import { NodeViewWrapper } from "@tiptap/react"
@@ -500,6 +501,18 @@ export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
     }
   }
 
+  const handleLink = (url: string) => {
+    const pos = props.getPos()
+    if (!isValidPosition(pos)) return
+    props.editor
+      .chain()
+      .focus()
+      .deleteRange({ from: pos, to: pos + props.node.nodeSize })
+      .insertContentAt(pos, { type: extension.options.type, attrs: { ...extension.options, src: url, alt: "", title: "" } })
+      .run()
+    focusNextNode(props.editor)
+  }
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files
     if (!files || files.length === 0) {
@@ -529,6 +542,7 @@ export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
           <DropZoneContent maxSize={maxSize} limit={limit} />
         </ImageUploadDragArea>
       )}
+      {!hasFiles && <PasteLink placeholder="Or paste an image link" onSubmit={handleLink} />}
 
       {hasFiles && (
         <div className="tiptap-image-upload-previews">

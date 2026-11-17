@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react"
 import type { NodeViewProps } from "@tiptap/react"
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react"
 import { Node } from "@tiptap/core"
+import { PasteLink } from "@/components/tiptap-node/image-upload-node/paste-link"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { CloseIcon } from "@/components/tiptap-icons/close-icon"
 import { GifUploadIcon } from "@/components/tiptap-icons/gif-upload-icon"
@@ -28,8 +29,6 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
   const [filesize, setFilesize] = useState(0)
   const [error, setError] = useState<string | null>(null)
   const [isDragActive, setIsDragActive] = useState(false)
-  const [urlMode, setUrlMode] = useState(false)
-  const [gifUrl, setGifUrl] = useState("")
 
   const insertGifNode = (url: string, name?: string) => {
     const pos = props.getPos()
@@ -117,23 +116,6 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
     }
   }
 
-  const handleUrlSubmit = (e?: React.SyntheticEvent) => {
-    if (e) {
-      e.preventDefault()
-      e.stopPropagation()
-    }
-    const trimmed = gifUrl.trim()
-    if (!trimmed) {
-      setError("Please enter a valid URL")
-      return
-    }
-    if (!/^https?:\/\/\S+/i.test(trimmed)) {
-      setError("Please enter a valid HTTP or HTTPS URL")
-      return
-    }
-    insertGifNode(trimmed, "GIF animation")
-  }
-
   return (
     <NodeViewWrapper as="div" className="tiptap-image-upload my-4">
       <div
@@ -183,42 +165,6 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
               </div>
             </div>
           </div>
-        ) : urlMode ? (
-          <div className="flex flex-col items-center justify-center p-6 gap-3 w-full" style={{ minHeight: "140px" }}>
-            <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-md">
-              <input
-                type="url"
-                value={gifUrl}
-                onChange={(e) => setGifUrl(e.target.value)}
-                onKeyDown={(e) => {
-                  e.stopPropagation()
-                  if (e.key === "Enter") {
-                    e.preventDefault()
-                    handleUrlSubmit(e)
-                  }
-                }}
-                placeholder="https://media.giphy.com/... or direct .gif URL"
-                className="flex-1 px-3 py-2 text-sm rounded-lg bg-neutral-900 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-indigo-500"
-                autoFocus
-              />
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={handleUrlSubmit}
-                  className="px-4 py-2 text-xs font-semibold rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-colors"
-                >
-                  Insert GIF
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setUrlMode(false)}
-                  className="px-3 py-2 text-xs rounded-lg bg-neutral-800 hover:bg-neutral-700 text-neutral-300 transition-colors"
-                >
-                  Back
-                </button>
-              </div>
-            </div>
-          </div>
         ) : (
           <div
             onClick={handleClick}
@@ -234,15 +180,6 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
               </span>
               <p className="text-xs text-neutral-400 mt-1">Animated GIF (.gif) up to 15MB</p>
             </div>
-            <div className="flex items-center gap-2 mt-2" onClick={(e) => e.stopPropagation()}>
-              <button
-                type="button"
-                onClick={() => setUrlMode(true)}
-                className="text-xs text-neutral-400 hover:text-indigo-400 underline underline-offset-2 transition-colors"
-              >
-                Or paste GIF URL
-              </button>
-            </div>
           </div>
         )}
 
@@ -256,6 +193,8 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
           <CloseIcon className="w-4 h-4" />
         </button>
       </div>
+
+      {!uploading && <PasteLink placeholder="Or paste a GIF link" onSubmit={(url) => insertGifNode(url, "GIF animation")} />}
 
       {error && (
         <div className="mt-2 text-xs text-red-400 bg-red-950/40 border border-red-800/50 rounded px-3 py-1.5 flex items-center justify-between">

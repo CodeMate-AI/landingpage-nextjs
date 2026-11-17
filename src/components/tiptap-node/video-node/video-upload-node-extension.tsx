@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react"
 import type { NodeViewProps } from "@tiptap/react"
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react"
 import { Node } from "@tiptap/core"
+import { PasteLink } from "@/components/tiptap-node/image-upload-node/paste-link"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { CloseIcon } from "@/components/tiptap-icons/close-icon"
 import { handleVideoUpload, MAX_VIDEO_SIZE } from "@/lib/tiptap-utils"
@@ -110,6 +111,12 @@ const VideoUploadNodeView: React.FC<NodeViewProps> = (props) => {
     }
   }
 
+  const handleLink = (url: string) => {
+    const pos = props.getPos()
+    if (typeof pos !== "number") return
+    props.editor.chain().focus().deleteRange({ from: pos, to: pos + props.node.nodeSize }).insertContentAt(pos, { type: "video", attrs: { src: url } }).run()
+  }
+
   const handleFiles = (files: File[]) => {
     const file = files[0]
     if (file) uploadFile(file)
@@ -178,6 +185,7 @@ const VideoUploadNodeView: React.FC<NodeViewProps> = (props) => {
           </div>
         </div>
       )}
+      {!uploading && <PasteLink placeholder="Or paste a video link" onSubmit={handleLink} />}
 
       {/* ── Progress (uploading) ── */}
       {uploading && (
