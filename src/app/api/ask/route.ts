@@ -1,33 +1,37 @@
 import { NextResponse } from "next/server";
 import { streamText, stepCountIs } from "ai";
-import { z } from "zod";
 import { AIConfigError, getModel } from "@/lib/docs-ai/model";
 import { getSystemPrompt } from "@/lib/docs-ai/prompt";
-import { docsTools } from "@/lib/docs-ai/tools";
+import { createDocsTools } from "@/lib/docs-ai/tools";
+import type { ObjectId } from "mongodb";
+import { MAX_BODY_BYTES, parseAskRequest } from "@/lib/docs-ai/messages";
+import { once } from "@/lib/docs-ai/once";
 import { checkRate, clientIp } from "@/lib/docs-ai/rate-limit";
 import { getDocsDatabase } from "@/lib/mongodb";
 
 export const maxDuration = 60;
 
-const BodySchema = z.object({
-  messages: z
-    .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().trim().min(1).max(4000) }))
-    .min(1)
-    .max(12),
-  page: z.string().max(120).regex(/^[a-z0-9-]*$/).optional(),
-});
-
-let eventsIndexReady: Promise<unknown> | undefined;
-
 // Questions are kept for 90 days (TTL index), then deleted by MongoDB
+const ensureIndex = once(async () => (await getDocsDatabase()).collection("chat_events").createIndex({ createdAt: 1 }, { expireAfterSeconds: 90 * 86400 }));
+
 async function eventsCollection() {
-  const col = (await getDocsDatabase()).collection("chat_events");
-  eventsIndexReady ??= col.createIndex({ createdAt: 1 }, { expireAfterSeconds: 90 * 86400 }).catch((e) => {
-    eventsIndexReady = undefined;
-    throw e;
-  });
-  await eventsIndexReady;
-  return col;
+  await ensureIndex();
+  return (await getDocsDatabase()).collection("chat_events");
+}
+
+// Errors reach the browser as a short message, never the raw provider error
+function friendlyError(error: unknown) {
+  const text = error instanceof Error ? `${error.message} ${JSON.stringify((error as { responseBody?: unknown }).responseBody ?? "")}` : "";
+  if (/content management policy|content_filter|filtered/i.test(text)) {
+    return "I can't help with that request. Please ask a question about the CodeMate AI docs.";
+  }
+  // The AI gateway itself was down or overloaded (the SDK already retried); nothing is wrong with the question
+  const failure = error as { statusCode?: number; lastError?: { statusCode?: number } };
+  const upstream = failure.lastError?.statusCode ?? failure.statusCode;
+  if (upstream && (upstream === 429 || upstream >= 500)) {
+    return "The AI service is busy right now. Please try again in a moment.";
+  }
+  return "Something went wrong while answering. Please try again.";
 }
 
 export async function POST(req: Request) {
@@ -47,19 +51,26 @@ export async function POST(req: Request) {
     throw error;
   }
 
-  const parsed = BodySchema.safeParse(await req.json().catch(() => null));
-  if (!parsed.success || parsed.data.messages.at(-1)?.role !== "user") {
-    return NextResponse.json({ error: "Invalid or too long question." }, { status: 400 });
-  }
-  const { messages, page } = parsed.data;
+  // Reject oversized bodies before parsing them
+  const raw = Number(req.headers.get("content-length") ?? 0) > MAX_BODY_BYTES ? "" : await req.text();
+  if (raw.length > MAX_BODY_BYTES) return NextResponse.json({ error: "That message could not be sent. It may be too long. Please shorten it, or start a new chat." }, { status: 400 });
+  let body: unknown = null;
+  try {
+    body = JSON.parse(raw);
+  } catch {}
+  const ask = parseAskRequest(body);
+  if (!ask) return NextResponse.json({ error: "That message could not be sent. It may be too long. Please shorten it, or start a new chat." }, { status: 400 });
+  const { messages, page, threadId, visitorId } = ask;
   const question = messages[messages.length - 1].content;
 
   // Logging must never break the chat
   let eventId = "";
   let events: Awaited<ReturnType<typeof eventsCollection>> | null = null;
+  let eventKey: ObjectId | null = null;
   try {
     events = await eventsCollection();
-    eventId = String((await events.insertOne({ question, page: page || null, createdAt: new Date() })).insertedId);
+    eventKey = (await events.insertOne({ question, page: page || null, threadId: threadId ?? null, visitorId: visitorId ?? null, createdAt: new Date() })).insertedId;
+    eventId = String(eventKey);
   } catch (error) {
     console.error("Ask AI could not log the question:", error);
   }
@@ -68,44 +79,23 @@ export async function POST(req: Request) {
     model,
     system: await getSystemPrompt(page),
     messages,
-    tools: docsTools,
+    tools: createDocsTools(),
     stopWhen: stepCountIs(6),
+    maxRetries: 4, // the gateway returns an occasional 502; the default of 2 retries showed errors to visitors
     temperature: 0.2,
     maxOutputTokens: 900,
     abortSignal: req.signal,
     onFinish: async ({ text }) => {
-      if (!events || !eventId) return;
-      const { ObjectId } = await import("mongodb");
-      await events.updateOne({ _id: new ObjectId(eventId) }, { $set: { answer: text.slice(0, 4000) } }).catch(() => {});
+      if (!events || !eventKey) return;
+      await events.updateOne({ _id: eventKey },{ $set: { answer: text.slice(0, 4000) } }).catch(() => {});
     },
     onError: ({ error }) => console.error("Ask AI stream error:", error),
   });
 
-  // Plain text stream. If the model call fails before any text (for example the gateway's content
-  // filter rejects the prompt) the client would get an empty 200, so send a short message instead.
-  const encoder = new TextEncoder();
-  const body = new ReadableStream<Uint8Array>({
-    async start(controller) {
-      let sent = false;
-      try {
-        for await (const part of result.fullStream) {
-          if (part.type === "text-delta" && part.text) {
-            sent = true;
-            controller.enqueue(encoder.encode(part.text));
-          } else if (part.type === "error") {
-            console.error("Ask AI model error:", part.error);
-          }
-        }
-      } catch (error) {
-        console.error("Ask AI stream failed:", error);
-      }
-      if (!sent) controller.enqueue(encoder.encode("I can't help with that request. Please ask a question about the CodeMate docs."));
-      controller.close();
-    },
-    cancel: () => undefined,
-  });
-
-  return new Response(body, {
-    headers: { "Content-Type": "text/plain; charset=utf-8", "x-docs-event": eventId, "Cache-Control": "no-store", "X-Accel-Buffering": "no" },
+  return result.toUIMessageStreamResponse({
+    headers: { "Cache-Control": "no-store", "X-Accel-Buffering": "no" },
+    // The browser needs the event id to attach a thumbs vote to this answer
+    messageMetadata: ({ part }) => (part.type === "start" ? { eventId } : undefined),
+    onError: friendlyError,
   });
 }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { PageFeedback } from "../PageFeedback";
 import { DocsBody, DocsDescription, DocsPage, DocsTitle } from "fumadocs-ui/layouts/docs/page";
 import { compileTiptapToHtml } from "@/lib/blog-compiler";
 import { DocsEnhance } from "../DocsEnhance";
@@ -41,6 +42,7 @@ export default async function DocPage({ params }: Props) {
       <DocsBody>
         <div data-docs-content dangerouslySetInnerHTML={{ __html: html }} />
         <DocsEnhance />
+        <PageFeedback slug={slug} />
       </DocsBody>
     </DocsPage>
   );

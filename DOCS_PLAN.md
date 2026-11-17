@@ -96,3 +96,9 @@ Done on branch `bump_version/new_docs`. Everything after commit `a38fe82` is sti
 - Sidebar groups repeat the page name as their first item (group "Essentials" contains page "Essentials")
 - One inline icon in a changelog heading was dropped (no inline images in the editor)
 - `/docs/[slug]` is dynamic, so `revalidate = 60` does not apply
+
+## Ask AI v2 (2026-11-16)
+Rebuilt on the AI SDK chat protocol with live search steps, Stop generating, Retry, Clear chat, voice input, an ask bar with Cmd/Ctrl+I, and a per-page "Was this page helpful?" vote. Details in `ASK_AI_IMPLEMENTATION.md`.
+
+## Ask AI updates (2026-11-17)
+Chat history is a sliding window of the newest 30 messages, so long chats no longer fail. Clearer error messages with Retry and New chat, 4 gateway retries, the assistant says "CodeMate AI", request body size cap, in-memory rate-limit fallback. Details in `ASK_AI_IMPLEMENTATION.md`.

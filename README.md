@@ -1,6 +1,6 @@
 # CodeMate AI Landing Page & CMS Portal
 
-A modern, high-performance web application built with **Next.js 15 (App Router)** and **TypeScript**. This repository hosts the public-facing CodeMate AI landing page, HP partnership showcase, community project gallery, and blog directory for [CodeMate AI](https://codemate.ai), alongside the **CodeMate CMS Portal**, an administrative content management system for composing, managing, and publishing rich-text technical articles.
+A modern, high-performance web application built with **Next.js 16 (App Router)** and **TypeScript**. This repository hosts the public-facing CodeMate AI landing page, HP partnership showcase, community project gallery, and blog directory for [CodeMate AI](https://codemate.ai), alongside the **CodeMate CMS Portal**, an administrative content management system for composing, managing, and publishing rich-text technical articles.
 
 ---
 
@@ -16,8 +16,14 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 - **Dynamic Pricing Engine (`/pricing`)**: Interactive plan cards, custom credit builders, trial banners, and product matrix comparisons.
 - **Technical Blog (`/blog` & `/blog/[slug]`)**: Dynamic blog feed with search, tag filtering, category grouping, reading time estimation, and deep-linkable table-of-contents navigation.
 
+### Documentation Site (`/docs`)
+- **First-party docs**: Fumadocs UI with sidebar, table of contents, full-text search, light/dark toggle, and legacy GitBook redirects. Pages are written in the admin panel (`/admin/docs`) with the Tiptap editor, with a draft then publish flow and a drag-and-drop sidebar tree.
+- **Ask AI**: an assistant panel (header button, bottom ask bar, or Cmd/Ctrl+I). It searches and reads the published docs itself through tool calling, streams a grounded answer with links, and says "This is not covered in the docs." otherwise. It keeps the newest 30 messages of the conversation (older turns drop off), supports Stop, Retry, New chat, thumbs votes and browser voice input. Details in [`ASK_AI_IMPLEMENTATION.md`](ASK_AI_IMPLEMENTATION.md).
+- **Page feedback**: a "Was this page helpful?" vote per page.
+- Plan and status: [`DOCS_PLAN.md`](DOCS_PLAN.md).
+
 ### CodeMate CMS Admin Portal
-- **Role and Route Protection**: Strict tab-isolated session architecture with client-side `AdminLayout` route guards and Edge Middleware protecting `/api/admin/*` routes via stateless `Authorization: Bearer <token>` JWT authentication (`sessionStorage`).
+- **Role and Route Protection**: Strict tab-isolated session architecture with client-side `AdminLayout` route guards and the Next.js proxy (`src/proxy.ts`, formerly middleware) protecting `/api/admin/*` routes via stateless `Authorization: Bearer <token>` JWT authentication (`sessionStorage`).
 - **Dual-Key Brute-Force Rate Limiting**: MongoDB-backed sliding-window rate limiter (5-attempt ceiling per 15 min) providing dual protection at both the client IP level (`key: "ip:<ip>"`) and target account level (`key: "email:<email>"`).
 - **Tiptap Rich-Text Editor**: Headless WYSIWYG editor supporting custom code blocks, inline video players, tables, blockquotes, typography, and image uploads.
 - **Dual Versioning (Draft vs. Live Publish)**: Edit articles in draft mode without mutating live public snapshots (`publishedVersion`) until explicitly republished.
@@ -33,11 +39,12 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 
 | Layer | Technologies |
 |---|---|
-| **Framework** | Next.js 15 (App Router), React 18, TypeScript 5 |
-| **Styling** | Tailwind CSS 3.4, Vanilla SCSS, Radix UI Primitives |
-| **Animations** | Framer Motion 11, GSAP 3, Lenis 1.2.1 Smooth Scroll |
+| **Framework** | Next.js 16 (App Router, Turbopack), React 19, TypeScript 5 |
+| **Styling** | Tailwind CSS 4 (theme in `tailwind.config.ts` via `@config`), Vanilla SCSS, Radix UI Primitives |
+| **Animations** | Framer Motion 14, GSAP 3, Lenis 1.3 Smooth Scroll |
 | **CMS & Editor** | Tiptap v3 Headless Rich-Text Engine |
 | **Database** | MongoDB (Native Node.js Driver) |
+| **Docs & Ask AI** | Fumadocs 16, Vercel AI SDK (`ai`, `@ai-sdk/react`, `@ai-sdk/openai-compatible`) |
 | **Media Storage** | CodeMate Custom Upload Service (`https://backend.codemate.ai/upload/image`) |
 | **Auth & Security** | Jose (Stateless JWT HS256 Bearer Tokens in `sessionStorage`), BcryptJS, Dual-Key Rate Limiter |
 | **Validation** | Zod |
@@ -48,6 +55,8 @@ A modern, high-performance web application built with **Next.js 15 (App Router)*
 ## Database Architecture and Schema
 
 The application connects to MongoDB using the official Node.js driver (`mongodb`) via a cached singleton connection pool ([`src/lib/mongodb.ts`](src/lib/mongodb.ts)). Runtime validation is enforced through Zod schemas ([`src/lib/validation.ts`](src/lib/validation.ts)).
+
+The blog, admin users and login rate limits live in `codemate_blog`. The docs site and Ask AI use a second database, `codemate_docs` (see below).
 
 ### Database: `codemate_blog`
 
@@ -108,7 +117,7 @@ The application connects to MongoDB using the official Node.js driver (`mongodb`
 ## SEO and Discoverability
 
 The website automatically enforces modern technical SEO standards across all routes:
-1. **Dynamic Sitemap Indexing (`/sitemap.xml`)**: Generated dynamically via `src/app/sitemap.ts` covering all primary static routes (`/`, `/partnerships/hp`, `/pricing`, `/download`, `/contact`, `/blog`, `/community`) and dynamic blog post slugs (`/blog/[slug]`).
+1. **Dynamic Sitemap Indexing (`/sitemap.xml`)**: Generated dynamically via `src/app/sitemap.ts` covering all primary static routes (`/`, `/partnerships/hp` and its use-case pages, `/pricing`, `/download`, `/contact`, `/blog`, `/community`) dynamic blog post slugs (`/blog/[slug]`) and published docs pages (`/docs/[slug]`).
 2. **Crawl Directives (`robots.txt`)**: Located at `public/robots.txt` allowing indexing and pointing search engines directly to `https://codemate.ai/sitemap.xml`.
 3. **Structured Data (JSON-LD)**: Injected via root layout (`src/app/layout.tsx`) using Schema.org `SoftwareApplication` definitions for rich search snippets.
 4. **OpenGraph and Twitter Card Metadata**: Dedicated server layout definitions across root, `/partnerships/hp`, `/community`, and `/blog`.
@@ -129,11 +138,13 @@ landingpage-nextjs/
 │   ├── app/                 # Next.js App Router
 │   │   ├── admin/           # Admin pages (login, dashboard, editor)
 │   │   ├── api/             # Backend API routes (/api/admin/*, /api/posts, etc.)
+│   │   ├── achievements/    # Achievements page
 │   │   ├── blog/            # Public blog feed and [slug] reader views
 │   │   ├── community/       # Community showcase page
+│   │   ├── docs/            # Docs site (Fumadocs) and the Ask AI panel (docs/ask-ai/)
 │   │   ├── contact/         # Contact page
 │   │   ├── download/        # Download page
-│   │   ├── hp/              # HP x CodeMate AI partnership landing page
+│   │   ├── partnerships/    # Partnership pages: hub, hp (bespoke subsite), hpe, qualcomm
 │   │   ├── pricing/         # Pricing tiers and checkout components
 │   │   ├── page.tsx         # Main Landing Page client component
 │   │   ├── layout.tsx       # Root layout with SEO metadata & Analytics
@@ -144,15 +155,28 @@ landingpage-nextjs/
 │   │   ├── tiptap-node/     # Custom nodes (VideoNode, ImageNode, CodeBlock)
 │   │   └── ui/              # Buttons, modals, carousels, cards
 │   ├── hooks/               # Custom hooks (window size, breakpoints, editor)
-│   ├── lib/                 # Server utilities (auth, mongodb, rateLimit, validation, blog-compiler)
+│   ├── lib/                 # Server utilities (auth, mongodb, rateLimit, validation, blog-compiler, docs-*)
+│   │   └── docs-ai/         # Ask AI server code (model, prompt, tools, messages, rate-limit)
 │   ├── styles/              # Global styles, variables, and typography
 │   ├── types/               # TypeScript interfaces (BlogDetailPost, Tag, etc.)
 │   ├── utils/               # Helper utilities (slugify, cn)
-│   └── middleware.ts        # Next.js Edge route guard middleware
+│   └── proxy.ts             # Next.js proxy (renamed middleware): admin route guard
 ├── .env.example             # Environment variable template
 ├── package.json
 └── tsconfig.json
 ```
+
+### Database: `codemate_docs`
+
+| Collection | Holds | Retention |
+|---|---|---|
+| **`pages`** | Docs pages: slug (unique), title, Tiptap content, published snapshot, draft flag | |
+| **`nav`** | Sidebar tree, draft and published copies | |
+| **`chat_events`** | Ask AI question, page, thread and visitor id, answer, thumbs rating | 90 days (TTL) |
+| **`page_feedback`** | "Was this page helpful?" vote per visitor and page | 90 days (TTL) |
+| **`ask_rate`** | Hashed-IP counters for Ask AI rate limits | 1 day (TTL) |
+
+Create the docs indexes with `npx tsx scripts/setup-docs-db.ts`. The Ask AI collections also create their own indexes on first use.
 
 ---
 
@@ -174,13 +198,21 @@ cp .env.example .env.local
 | `ADMIN_PASSWORD` | **Yes** | Administrator account password used by `seed-admin.ts` to initialize/update MongoDB credentials. |
 | `CUSTOM_UPLOAD_ENDPOINT` | **Yes** | Custom backend endpoint for media asset and image uploads in the CMS editor. |
 | `NEXT_PUBLIC_CONTACT_API_URL` | **Yes** | External API endpoint for public contact form submissions. |
+| `MONGODB_DB_NAME` / `MONGODB_DOCS_DB_NAME` | No | Database names (default `codemate_blog` and `codemate_docs`). |
+| `DOCS_AI_BASE_URL` | For Ask AI | OpenAI-compatible gateway base URL (the SDK appends `/chat/completions`). Server only. |
+| `DOCS_AI_TOKEN` | For Ask AI | Sent as the `authorization` header, include the `Bearer ` prefix. Server only. |
+| `DOCS_AI_API_KEY` | For Ask AI | Sent as the `api-key` header; must be non-empty. Server only. |
+| `DOCS_AI_MODEL` | No | Model name, default `bodh-b0`. Server only. |
+| `DOCS_AI_RATE_LIMIT_PER_MINUTE` / `DOCS_AI_GLOBAL_PER_MINUTE` | No | Per-IP (default 10) and all-visitors (default 60) question limits. |
+
+The `DOCS_AI_*` values are read only in server code and never reach the browser. Without them the Ask AI endpoint answers 503 and the rest of the site is unaffected.
 
 ---
 
 ## Getting Started
 
 ### 1. Prerequisites
-- **Node.js**: `v18.17+` or `v20+`
+- **Node.js**: `v20.9+` (required by Next.js 16)
 - **Package Manager**: `npm` or `bun`
 - **Database**: Active MongoDB cluster (local or MongoDB Atlas)
 

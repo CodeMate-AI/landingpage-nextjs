@@ -36,7 +36,11 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1:3000", "localhost:3000"],
 
   async headers() {
+    // The microphone is blocked site wide except under /docs, where Ask AI offers voice input
+    const policy = (microphone: string) => ({ key: "Permissions-Policy", value: `camera=(), microphone=${microphone}` });
     return [
+      { source: "/docs/:path*", headers: [policy("(self)")] },
+      { source: "/((?!docs(?:/|$)).*)", headers: [policy("()")] },
       {
         source: "/(.*)",
         headers: [
@@ -55,10 +59,6 @@ const nextConfig: NextConfig = {
           {
             key: "Strict-Transport-Security",
             value: "max-age=31536000; includeSubDomains; preload",
-          },
-          {
-            key: "Permissions-Policy",
-            value: "camera=(), microphone=()",
           },
           {
             key: "X-DNS-Prefetch-Control",
