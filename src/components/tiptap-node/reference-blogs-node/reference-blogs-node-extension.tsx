@@ -21,6 +21,7 @@ interface PostApiResponseItem {
   slug: string
   category?: string
   published?: boolean
+  publishedVersion?: { slug?: string } | null
   publishedAt?: string
   createdAt?: string
 }
@@ -43,6 +44,8 @@ interface ReferenceBlogsModalProps {
   currentPostId?: string | null
   currentSlug?: string | null
   currentTitle?: string | null
+  // "docs" lists published docs pages (links to /docs/<slug>) instead of blog posts
+  source?: "blog" | "docs"
 }
 
 export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
@@ -57,7 +60,10 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
   currentPostId,
   currentSlug,
   currentTitle,
+  source = "blog",
 }) => {
+  const isDocs = source === "docs"
+  const itemSlug = (p: PostApiResponseItem) => (isDocs ? `/docs/${p.publishedVersion?.slug || p.slug}` : p.slug)
   const [heading, setHeading] = useState(initialHeading || "Writing")
   const [showBottomLink, setShowBottomLink] = useState(initialShowBottomLink ?? true)
   const [bottomLinkText, setBottomLinkText] = useState(initialBottomLinkText || "Read the blog")
@@ -86,12 +92,12 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
     setIsLoading(true)
     setFetchError(null)
     try {
-      const res = await adminFetch("/api/admin/posts?limit=100")
+      const res = await adminFetch(isDocs ? "/api/admin/docs" : "/api/admin/posts?limit=100")
       if (!res.ok) {
         throw new Error(`Failed to fetch articles (${res.status})`)
       }
       const data = await res.json()
-      const rawPosts: PostApiResponseItem[] = Array.isArray(data.posts) ? data.posts : []
+      const rawPosts: PostApiResponseItem[] = Array.isArray(isDocs ? data.pages : data.posts) ? (isDocs ? data.pages : data.posts) : []
 
       const activeId = currentPostId || (typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("id") : null)
       const activeSlug = (currentSlug || "").trim().toLowerCase()
@@ -113,7 +119,7 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
     } finally {
       setIsLoading(false)
     }
-  }, [currentPostId, currentSlug, currentTitle])
+  }, [currentPostId, currentSlug, currentTitle, isDocs])
 
   useEffect(() => {
     if (isOpen) {
@@ -135,15 +141,15 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
 
   // Toggle selection
   const handleTogglePost = (post: PostApiResponseItem) => {
-    const isSelected = selectedBlogs.some((b) => b.id === post._id || b.slug === post.slug)
+    const isSelected = selectedBlogs.some((b) => b.id === post._id || b.slug === itemSlug(post))
     if (isSelected) {
-      setSelectedBlogs((prev) => prev.filter((b) => b.id !== post._id && b.slug !== post.slug))
+      setSelectedBlogs((prev) => prev.filter((b) => b.id !== post._id && b.slug !== itemSlug(post)))
     } else {
       setSelectedBlogs((prev) => [
         ...prev,
         {
           id: post._id,
-          slug: post.slug,
+          slug: itemSlug(post),
           title: post.title,
           category: post.category,
         },
@@ -197,7 +203,7 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
     <div className="ref-modal-backdrop" onClick={onClose}>
       <div className="ref-modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="ref-modal-header">
-          <h3>Configure Reference Blogs</h3>
+          <h3>{isDocs ? "Configure Related Docs" : "Configure Reference Blogs"}</h3>
           <button type="button" className="ref-modal-close" onClick={onClose} aria-label="Close dialog">
             &times;
           </button>
@@ -255,7 +261,7 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
 
           {/* Search bar */}
           <div className="ref-field-group">
-            <label>Select Live Blogs from Portal</label>
+            <label>{isDocs ? "Select Published Docs Pages" : "Select Live Blogs from Portal"}</label>
             <div className="ref-search-bar">
               <span className="ref-search-icon" aria-hidden="true">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -267,7 +273,7 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by article title or category..."
+                placeholder={isDocs ? "Search by page title or slug..." : "Search by article title or category..."}
               />
             </div>
           </div>
@@ -309,7 +315,7 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
             {!isLoading &&
               !fetchError &&
               filteredPosts.map((post) => {
-                const selectedIndex = selectedBlogs.findIndex((b) => b.id === post._id || b.slug === post.slug)
+                const selectedIndex = selectedBlogs.findIndex((b) => b.id === post._id || b.slug === itemSlug(post))
                 const isSelected = selectedIndex !== -1
 
                 return (
@@ -333,7 +339,7 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
                       <div className="ref-item-title">{post.title}</div>
                       <div className="ref-item-meta">
                         {post.category ? `${post.category} • ` : ""}
-                        {post.slug ? `/blog/${post.slug}` : ""}
+                        {post.slug ? (isDocs ? itemSlug(post) : `/blog/${post.slug}`) : ""}
                       </div>
                     </div>
                   </div>
@@ -414,6 +420,7 @@ const ReferenceBlogsNodeView = ({
       bottomLinkText?: string
       bottomLinkUrl?: string
       blogs?: ReferenceBlogItem[]
+      source?: "blog" | "docs"
     }
   }
   updateAttributes: (attrs: Record<string, any>) => void
@@ -421,6 +428,7 @@ const ReferenceBlogsNodeView = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const currentPost = React.useContext(CurrentPostContext)
+  const isDocs = node.attrs.source === "docs"
 
   const heading = node.attrs.heading || "Writing"
   const showBottomLink = node.attrs.showBottomLink ?? true
@@ -462,7 +470,7 @@ const ReferenceBlogsNodeView = ({
               <path d="M6 6h10" />
               <path d="M6 10h10" />
             </svg>
-            Reference Blogs Section
+            {isDocs ? "Related Docs Section" : "Reference Blogs Section"}
           </span>
           <div className="ref-blogs-actions">
             <button
@@ -470,7 +478,7 @@ const ReferenceBlogsNodeView = ({
               className="ref-blogs-btn-edit"
               onClick={() => setIsModalOpen(true)}
             >
-              Configure Checklist
+              {isDocs ? "Configure Related Docs" : "Configure Checklist"}
             </button>
             <button
               type="button"
@@ -488,10 +496,10 @@ const ReferenceBlogsNodeView = ({
         {/* Blog rows or empty notice */}
         {blogs.length === 0 ? (
           <div className="ref-blogs-empty-notice">
-            No reference blogs selected yet.
+            {isDocs ? "No docs pages selected yet." : "No reference blogs selected yet."}
             <br />
             <button type="button" onClick={() => setIsModalOpen(true)}>
-              Choose from live portal articles
+              {isDocs ? "Choose from docs pages" : "Choose from live portal articles"}
             </button>
           </div>
         ) : (
@@ -535,6 +543,7 @@ const ReferenceBlogsNodeView = ({
         currentPostId={currentPost?.postId || (typeof window !== "undefined" ? new URLSearchParams(window.location.search).get("id") : null)}
         currentSlug={currentPost?.slug}
         currentTitle={currentPost?.title}
+        source={node.attrs.source}
       />
     </NodeViewWrapper>
   )
@@ -557,6 +566,9 @@ export const ReferenceBlogsNode = Node.create({
       },
       bottomLinkText: {
         default: "Read the blog",
+      },
+      source: {
+        default: "blog",
       },
       bottomLinkUrl: {
         default: "/blog",

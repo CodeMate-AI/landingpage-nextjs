@@ -178,7 +178,7 @@ import { VideoNode } from "@/components/tiptap-node/video-node/video-node-extens
 import { VideoUploadNode } from "@/components/tiptap-node/video-node/video-upload-node-extension"
 import { ReferenceBlogsNode } from "@/components/tiptap-node/reference-blogs-node/reference-blogs-node-extension"
 import { BentoGridNode } from "@/components/tiptap-node/bento-grid-node"
-import { NoNestedDocsBlocks } from "@/lib/docs-blocks"
+import { DOCS_CONTAINERS, NoNestedDocsBlocks } from "@/lib/docs-blocks"
 import { CalloutNodeClient } from "@/components/tiptap-node/docs-blocks/callout-node"
 import { TabNodeClient, TabsNodeClient } from "@/components/tiptap-node/docs-blocks/tabs-node"
 import { AccordionNodeClient, CardNodeClient, CardsNodeClient, StepNodeClient, StepsNodeClient } from "@/components/tiptap-node/docs-blocks/list-nodes"
@@ -260,6 +260,9 @@ const MainToolbarContent = ({
 }) => {
   const { editor } = useTiptapEditor()
   const isInsideTable = Boolean(editor?.isActive("table"))
+  // Related Docs is a docs block: not allowed inside another one
+  const $from = editor?.state.selection.$from
+  const inDocsBlock = Boolean(docsBlocks && $from && Array.from({ length: $from.depth }, (_, i) => $from.node(i + 1).type.name).some((n) => DOCS_CONTAINERS.includes(n)))
 
   return (
     <>
@@ -373,24 +376,20 @@ const MainToolbarContent = ({
         <Button
           type="button"
           variant="ghost"
-          disabled={isInsideTable}
+          disabled={isInsideTable || inDocsBlock}
           data-disabled={isInsideTable}
           onClick={() => {
-            if (isInsideTable) return
+            if (isInsideTable || inDocsBlock) return
             editor?.chain().focus().insertContent({
               type: "referenceBlogs",
-              attrs: {
-                heading: "Writing",
-                showBottomLink: true,
-                bottomLinkText: "Read the blog",
-                bottomLinkUrl: "/blog",
-                blogs: [],
-              },
+              attrs: docsBlocks
+                ? { heading: "Related", showBottomLink: true, bottomLinkText: "Browse all docs", bottomLinkUrl: "/docs", blogs: [], source: "docs" }
+                : { heading: "Writing", showBottomLink: true, bottomLinkText: "Read the blog", bottomLinkUrl: "/blog", blogs: [] },
             }).run()
           }}
           onMouseDown={(e) => e.preventDefault()}
-          title={isInsideTable ? "Cannot insert reference blogs inside table" : "Add Reference Blogs"}
-          tooltip={isInsideTable ? "Cannot insert reference blogs inside table" : "Add Reference Blogs"}
+          title={isInsideTable ? "Cannot insert reference blogs inside table" : docsBlocks ? "Add Related Docs" : "Add Reference Blogs"}
+          tooltip={isInsideTable ? "Cannot insert reference blogs inside table" : docsBlocks ? "Add Related Docs" : "Add Reference Blogs"}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -402,7 +401,7 @@ const MainToolbarContent = ({
           >
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
           </svg>
-          <span className="tiptap-button-text">Ref Blogs</span>
+          <span className="tiptap-button-text">{docsBlocks ? "Related Docs" : "Ref Blogs"}</span>
         </Button>
         <Button
           type="button"
@@ -747,6 +746,7 @@ export function SimpleEditor({
       <EditorContext.Provider value={{ editor }}>
         <div
           className="simple-editor-wrapper"
+          data-docs-blocks={docsBlocks ? "" : undefined}
           style={{ "--article-base-font": getFontCssValue(baseFont) } as React.CSSProperties}
         >
           <Toolbar ref={toolbarRef}>

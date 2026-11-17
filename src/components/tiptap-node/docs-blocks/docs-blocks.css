@@ -868,3 +868,123 @@
     margin: 0;
   }
 }
+
+/* Images, GIFs and videos get the soft frame in docs only (public page and docs editor); blogs stay plain.
+   An outline plus a box-shadow ring draws the frame without changing the element's size. Old Media blocks
+   (.docs-frame) already have their own frame, so they are skipped. */
+@layer components {
+  [data-docs-content] figure.blog-media-figure:not(.docs-frame *) img.blog-image,
+  [data-docs-content] .video-embed-container:not(.docs-frame *, :has(.video-embed-container)),
+  .simple-editor-wrapper[data-docs-blocks] .tiptap-media-figure:not(.docs-frame *) img.blog-image,
+  .simple-editor-wrapper[data-docs-blocks] .tiptap-video-node > :first-child {
+    margin: 0.5rem;
+    max-width: calc(100% - 1rem);
+    border: 0 !important;
+    border-radius: 0.55rem !important;
+    box-shadow: 0 0 0 0.5rem color-mix(in srgb, currentColor 4%, transparent);
+    outline: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+    outline-offset: 0.5rem;
+  }
+  [data-docs-content] .video-embed-container video {
+    border: 0 !important;
+    border-radius: 0.55rem !important;
+  }
+}
+
+/* Docs media fills the card: images stretch to the content width like the Media block did, and embedded
+   players keep a true 16:9 box (the old padding-bottom trick is a % of the parent, so it letterboxes once
+   the frame margin narrows the player). */
+@layer components {
+  [data-docs-content] figure.blog-media-figure:not(.docs-frame *) img.blog-image {
+    width: calc(100% - 1rem);
+    height: auto;
+  }
+  [data-docs-content] .video-embed-container:has(> iframe),
+  .simple-editor-wrapper[data-docs-blocks] .tiptap-video-node > :first-child:has(> iframe) {
+    height: auto !important;
+    padding-bottom: 0 !important;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+/* Editor only, unlayered on purpose: the editor's own image styles are unlayered and would beat a layered width */
+.simple-editor-wrapper[data-docs-blocks] .tiptap-media-figure:not(.docs-frame *) img.blog-image {
+  width: calc(100% - 1rem);
+  height: auto;
+}
+.simple-editor-wrapper[data-docs-blocks] figure.tiptap-media-figure {
+  width: 100%;
+}
+
+/* Related Docs (the reference-links block) on the public docs page. The blog styles for it are dark-only,
+   so this uses currentColor to follow the docs light and dark themes. */
+@layer utilities { /* utilities layer on purpose: Tailwind prose link underline lives there and would beat components */
+[data-docs-content] .ref-blogs-section {
+  margin: 2rem 0;
+}
+[data-docs-content] .ref-blogs-heading {
+  margin: 0 0 0.5rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+[data-docs-content] .ref-blogs-list {
+  border-top: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+}
+[data-docs-content] a.ref-blog-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 0.25rem;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.15s ease;
+}
+[data-docs-content] a.ref-blog-card:hover {
+  background: color-mix(in srgb, currentColor 5%, transparent);
+}
+[data-docs-content] .ref-blog-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 4px;
+  opacity: 0.7;
+}
+[data-docs-content] .ref-blog-arrow {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+[data-docs-content] .ref-blog-num {
+  min-width: 1.5rem;
+  font-size: 0.8rem;
+  opacity: 0.5;
+  font-variant-numeric: tabular-nums;
+}
+[data-docs-content] .ref-blog-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+[data-docs-content] .ref-blogs-bottom {
+  margin-top: 0.75rem;
+}
+[data-docs-content] a.ref-blogs-footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: inherit;
+  font-size: 0.85rem;
+  text-decoration: none;
+  opacity: 0.7;
+}
+[data-docs-content] a.ref-blogs-footer-link:hover {
+  opacity: 1;
+}
+[data-docs-content] .ref-blogs-bottom-arrow {
+  width: 0.8rem;
+  height: 0.8rem;
+}
+}

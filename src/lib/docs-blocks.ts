@@ -23,7 +23,7 @@ export const CodeTitle = Extension.create({
 });
 
 // Docs features that must not be placed inside one another (a callout in a card, tabs in a step, ...)
-export const DOCS_CONTAINERS = ["tabs", "steps", "cards", "accordion", "frame", "callout"];
+export const DOCS_CONTAINERS = ["tabs", "steps", "cards", "accordion", "frame", "callout", "referenceBlogs"];
 
 // How many docs blocks sit inside another docs block
 function nestedCount(doc: PMNode) {

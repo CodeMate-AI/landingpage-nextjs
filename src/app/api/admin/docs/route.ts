@@ -9,7 +9,7 @@ async function listDocs() {
   const db = await getDocsDatabase();
   const pages = await db
     .collection("pages")
-    .find({}, { projection: { slug: 1, title: 1, published: 1, hasDraftChanges: 1, updatedAt: 1 } })
+    .find({}, { projection: { slug: 1, "publishedVersion.slug": 1, title: 1, published: 1, hasDraftChanges: 1, updatedAt: 1 } })
     .sort({ updatedAt: -1 })
     .toArray();
   return NextResponse.json({ pages });

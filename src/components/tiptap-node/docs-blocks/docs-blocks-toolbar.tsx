@@ -1,13 +1,13 @@
 "use client"
 
-import { ChevronsUpDown, CircleCheck, Image as ImageIcon, Info, Lightbulb, LayoutGrid, ListOrdered, OctagonAlert, PanelTop, StickyNote, TriangleAlert, type LucideIcon } from "lucide-react"
+import { ChevronsUpDown, CircleCheck, Info, Lightbulb, LayoutGrid, ListOrdered, OctagonAlert, PanelTop, StickyNote, TriangleAlert, type LucideIcon } from "lucide-react"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { ToolbarGroup } from "@/components/tiptap-ui-primitive/toolbar"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { CALLOUT_KINDS, DOCS_CONTAINERS, type CalloutKind } from "@/lib/docs-blocks"
 
 const KIND_ICONS: Record<string, LucideIcon> = { note: StickyNote, info: Info, tip: Lightbulb, warning: TriangleAlert, check: CircleCheck, danger: OctagonAlert }
-const INSERT_ICONS: Record<string, LucideIcon> = { Tabs: PanelTop, Steps: ListOrdered, Cards: LayoutGrid, Media: ImageIcon, Accordion: ChevronsUpDown }
+const INSERT_ICONS: Record<string, LucideIcon> = { Tabs: PanelTop, Steps: ListOrdered, Cards: LayoutGrid, Accordion: ChevronsUpDown }
 
 const group = (type: string, item: string, label: string, extra = {}) => ({
   type,
@@ -18,7 +18,6 @@ const INSERTS: [string, object][] = [
   ["Tabs", group("tabs", "tab", "Tab")],
   ["Steps", group("steps", "step", "Step")],
   ["Cards", group("cards", "card", "Card", { href: null })],
-  ["Media", { type: "frame" }],
   ["Accordion", { type: "accordion", attrs: { title: "Question" }, content: [{ type: "paragraph" }] }],
 ]
 
@@ -44,7 +43,9 @@ export function DocsBlocksToolbar() {
 
   return (
     <ToolbarGroup>
-      {CALLOUT_KINDS.map((kind) => (
+      {CALLOUT_KINDS.map((kind) => {
+        const Icon = KIND_ICONS[kind]
+        return (
         <Button
           key={kind}
           type="button"
@@ -56,14 +57,14 @@ export function DocsBlocksToolbar() {
           title={`Callout: ${kind}`}
           tooltip={`Callout: ${kind}`}
         >
-          {(() => {
-            const Icon = KIND_ICONS[kind]
-            return Icon && <Icon className="tiptap-button-icon" size={16} />
-          })()}
+          <Icon className="tiptap-button-icon" size={16} />
           <span className="tiptap-button-text">{kind[0].toUpperCase() + kind.slice(1)}</span>
         </Button>
-      ))}
-      {INSERTS.map(([label, content]) => (
+        )
+      })}
+      {INSERTS.map(([label, content]) => {
+        const Icon = INSERT_ICONS[label]
+        return (
         <Button
           key={label}
           type="button"
@@ -74,13 +75,11 @@ export function DocsBlocksToolbar() {
           title={`Insert ${label.toLowerCase()}`}
           tooltip={`Insert ${label.toLowerCase()}`}
         >
-          {(() => {
-            const Icon = INSERT_ICONS[label]
-            return Icon && <Icon className="tiptap-button-icon" size={16} />
-          })()}
+          <Icon className="tiptap-button-icon" size={16} />
           <span className="tiptap-button-text">{label}</span>
         </Button>
-      ))}
+        )
+      })}
     </ToolbarGroup>
   )
 }
