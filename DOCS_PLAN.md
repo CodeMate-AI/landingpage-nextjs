@@ -100,5 +100,14 @@ Done and committed on branch `bump_version/new_docs`.
 ## Ask AI v2 (2026-11-16)
 Rebuilt on the AI SDK chat protocol with live search steps, Stop generating, Retry, Clear chat, voice input, an ask bar with Cmd/Ctrl+I, and a per-page "Was this page helpful?" vote. Details in `ASK_AI_IMPLEMENTATION.md`.
 
+## Editor updates (2026-11-17)
+- Docs toolbar uses Lucide icons; block buttons are disabled while the cursor is inside a docs block, and docs blocks cannot be nested (`NoNestedDocsBlocks` in `src/lib/docs-blocks.ts`, also blocks paste)
+- Related Docs: the Ref Blogs node has a `source` attribute ("blog" or "docs"). In the docs editor it lists published pages from `/api/admin/docs` and links `/docs/<publishedVersion.slug || slug>`; the blog editor still says "Ref Blogs"
+- Paste a link for images, videos and GIFs (`image-upload-node/paste-link.tsx`, http(s) validated, shared by all three nodes)
+- Docs-only frame for images, GIFs and videos; images full width, iframes 16:9 (`docs-blocks.css`)
+- Fixed the Related Docs modal overflow on phones (`.ref-two-col` columns in `reference-blogs-node.scss`)
+- Tested: toolbar and nesting, link validation and inserts, Related Docs picker, public rendering (temporary route, since removed), no horizontal scroll at 320, 375, 768 and desktop, blog editor regression
+- Not verified: real Ctrl+V into the link field (only paste isolation checked), a published page containing Related Docs, light mode and tablet outside the pages already checked. The video placeholder no longer lists MP4, YouTube, Vimeo
+
 ## Ask AI updates (2026-11-17)
 Chat history is a sliding window of the newest 30 messages, so long chats no longer fail. Clearer error messages with Retry and New chat, 4 gateway retries, the assistant says "CodeMate AI", request body size cap, in-memory rate-limit fallback. Details in `ASK_AI_IMPLEMENTATION.md`.
