@@ -126,3 +126,21 @@ Own layout modelled on docs.pangolin.net (similar, not exact; our colours, no or
 
 ## Ask AI updates (2026-11-17)
 Chat history is a sliding window of the newest 30 messages, so long chats no longer fail. Clearer error messages with Retry and New chat, 4 gateway retries, the assistant says "CodeMate AI", request body size cap, in-memory rate-limit fallback. Details in `ASK_AI_IMPLEMENTATION.md`.
+
+## Rate Limiting & `ask_rate` Schema (2026-11-18)
+The MongoDB `ask_rate` collection (`src/lib/docs-ai/rate-limit.ts`) tracks request counts per IP and globally to enforce rate limits. Records automatically expire and clean themselves up after 24 hours via a MongoDB TTL index on `createdAt`.
+
+### `_id` Key Formats & Prefixes
+
+| Key Pattern | Scope | Window | Purpose | Limit Config |
+| :--- | :--- | :--- | :--- | :--- |
+| `g:<minute>` | `g` (Global) | 1 minute | Total requests across all users/IPs to cap peak LLM API spend | `DOCS_AI_GLOBAL_PER_MINUTE` (default: 60) |
+| `ask:m:<hash>:<minute>` | `ask` (Ask AI) | 1 minute | Per-IP rate limit for chat questions (`/api/ask`) | `DOCS_AI_RATE_LIMIT_PER_MINUTE` (default: 10) |
+| `d:<hash>:<day>` | `d` (Day) | 24 hours | Daily cap per user/IP for Ask AI questions | 100 requests/day |
+| `fb:m:<hash>:<minute>` | `fb` (Feedback) | 1 minute | Per-IP rate limit for page helpfulness ratings (`/api/feedback/page`) | 30 requests/minute |
+
+- `<hash>`: Anonymized 32-character SHA-256 hash of the client IP (protects privacy; raw IPs are never stored).
+- `<minute>`: Unix minute timestamp (`Math.floor(Date.now() / 60000)`).
+- `<day>`: Unix day timestamp (`Math.floor(Date.now() / 86400000)`).
+- `n`: Request counter for that window, incremented via `$inc: { n: 1 }`.
+

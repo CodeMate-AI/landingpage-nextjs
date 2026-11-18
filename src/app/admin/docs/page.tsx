@@ -13,6 +13,12 @@ interface DocRow {
   updatedAt: string;
 }
 
+type NavNode = { type: "page"; slug: string } | { type: "group"; children: NavNode[] };
+
+function flattenSlugs(tree: NavNode[]): string[] {
+  return tree.flatMap((node) => (node.type === "group" ? flattenSlugs(node.children) : [node.slug]));
+}
+
 function StatusBadge({ doc }: { doc: DocRow }) {
   if (!doc.published) {
     return (
@@ -46,8 +52,31 @@ export default function AdminDocsDashboard() {
   const load = async () => {
     setLoading(true);
     try {
-      const res = await adminFetch("/api/admin/docs");
-      if (res.ok) setDocs((await res.json()).pages || []);
+      const [res, navRes] = await Promise.all([
+        adminFetch("/api/admin/docs"),
+        adminFetch("/api/admin/docs/nav"),
+      ]);
+
+      if (res.ok) {
+        const pages: DocRow[] = (await res.json()).pages || [];
+        const rank = new Map<string, number>();
+
+        if (navRes.ok) {
+          const navData = await navRes.json();
+          const slugs = flattenSlugs(navData.draft || []);
+          slugs.forEach((slug) => {
+            if (!rank.has(slug)) rank.set(slug, rank.size);
+          });
+        }
+
+        // Sort by sidebar order; unlisted pages appear at the end, newest first
+        const at = (d: DocRow) => rank.get(d.slug) ?? Infinity;
+        const sorted = [...pages].sort(
+          (a, b) => at(a) - at(b) || +new Date(b.updatedAt) - +new Date(a.updatedAt)
+        );
+
+        setDocs(sorted);
+      }
     } catch (err) {
       console.error("Docs list load error:", err);
     } finally {
