@@ -127,20 +127,145 @@ Own layout modelled on docs.pangolin.net (similar, not exact; our colours, no or
 ## Ask AI updates (2026-11-17)
 Chat history is a sliding window of the newest 30 messages, so long chats no longer fail. Clearer error messages with Retry and New chat, 4 gateway retries, the assistant says "CodeMate AI", request body size cap, in-memory rate-limit fallback. Details in `ASK_AI_IMPLEMENTATION.md`.
 
-## Rate Limiting & `ask_rate` Schema (2026-11-18)
-The MongoDB `ask_rate` collection (`src/lib/docs-ai/rate-limit.ts`) tracks request counts per IP and globally to enforce rate limits. Records automatically expire and clean themselves up after 24 hours via a MongoDB TTL index on `createdAt`.
+## MongoDB Database & Collections Architecture (`codemate_docs`)
 
-### `_id` Key Formats & Prefixes
+The documentation platform uses a dedicated MongoDB database (`codemate_docs`, configurable via `MONGODB_DOCS_DB_NAME`), completely isolated from the marketing/blog database (`rough-work`).
 
-| Key Pattern | Scope | Window | Purpose | Limit Config |
+### Collections Overview
+
+| Collection | Purpose | Document `_id` | Key Indexes | Data Retention |
 | :--- | :--- | :--- | :--- | :--- |
-| `g:<minute>` | `g` (Global) | 1 minute | Total requests across all users/IPs to cap peak LLM API spend | `DOCS_AI_GLOBAL_PER_MINUTE` (default: 60) |
-| `ask:m:<hash>:<minute>` | `ask` (Ask AI) | 1 minute | Per-IP rate limit for chat questions (`/api/ask`) | `DOCS_AI_RATE_LIMIT_PER_MINUTE` (default: 10) |
-| `d:<hash>:<day>` | `d` (Day) | 24 hours | Daily cap per user/IP for Ask AI questions | 100 requests/day |
-| `fb:m:<hash>:<minute>` | `fb` (Feedback) | 1 minute | Per-IP rate limit for page helpfulness ratings (`/api/feedback/page`) | 30 requests/minute |
+| **`pages`** | Documentation pages with dual draft & published versions | `ObjectId` | `{ slug: 1 }` (unique)<br>`{ published: 1 }`<br>`{ "publishedVersion.slug": 1 }` | Persistent |
+| **`nav`** | Sidebar tree hierarchy (up to 3 levels deep) | String singleton (`"main"`) | None (single document) | Persistent |
+| **`chat_events`** | Ask AI questions, streaming answers, and user votes | `ObjectId` | `{ createdAt: 1 }` (TTL: 90 days) | Auto-expires after 90 days |
+| **`page_feedback`** | "Was this page helpful?" votes (1 / -1) | `ObjectId` | `{ page: 1, visitorId: 1 }` (unique)<br>`{ createdAt: 1 }` (TTL: 90 days) | Auto-expires after 90 days |
+| **`ask_rate`** | High-performance sliding-window rate limit counters | Composite string (e.g. `ask:m:...`) | `{ createdAt: 1 }` (TTL: 24 hours) | Auto-expires after 24 hours |
 
-- `<hash>`: Anonymized 32-character SHA-256 hash of the client IP (protects privacy; raw IPs are never stored).
-- `<minute>`: Unix minute timestamp (`Math.floor(Date.now() / 60000)`).
-- `<day>`: Unix day timestamp (`Math.floor(Date.now() / 86400000)`).
-- `n`: Request counter for that window, incremented via `$inc: { n: 1 }`.
+---
+
+### 1. `pages` Collection
+Stores all documentation articles. Employs a **dual-state snapshot model**: draft edits live at the root of the document, while live readers see the immutable `publishedVersion` snapshot.
+
+```typescript
+{
+  _id: ObjectId("..."),
+  slug: "getting-started",          // URL slug (regex: ^[a-z0-9]+(-[a-z0-9]+)*$)
+  title: "Getting Started",          // Page title
+  description: "Learn the basics",  // Subtitle / SEO description
+  content: {                         // Tiptap JSON document tree
+    type: "doc",
+    content: [ ... ]
+  },
+  sections: [                        // Heading outlines [{ id, title, level }]
+    { id: "installation", title: "Installation", level: 2 }
+  ],
+  published: true,                   // Whether a live version exists
+  publishedAt: ISODate("..."),       // Timestamp of first or latest publish
+  hasDraftChanges: false,            // True if root draft differs from publishedVersion
+  publishedVersion: {                // Frozen snapshot served to public readers
+    slug: "getting-started",
+    title: "Getting Started",
+    description: "Learn the basics",
+    content: { type: "doc", content: [ ... ] },
+    sections: [ ... ],
+    search: {                        // Pre-computed full-text search text
+      title: "Getting Started",
+      headings: "Installation Usage",
+      body: "..."
+    }
+  },
+  lastModifiedBy: {
+    email: "admin@codemate.ai",
+    at: ISODate("...")
+  },
+  createdAt: ISODate("..."),
+  updatedAt: ISODate("...")
+}
+```
+
+---
+
+### 2. `nav` Collection
+Stores the sidebar hierarchy tree edited via `/admin/docs/sidebar`. A single document with `_id: "main"` holds both the staging draft and live published trees.
+
+```typescript
+{
+  _id: "main",
+  draft: [                           // Staged sidebar tree (NavItem[])
+    { type: "page", slug: "overview" },
+    {
+      type: "group",
+      title: "Getting Started",
+      children: [
+        { type: "page", slug: "quickstart" },
+        { type: "page", slug: "installation" }
+      ]
+    }
+  ],
+  published: [ ... ],                // Live public sidebar tree
+  updatedAt: ISODate("...")
+}
+```
+* **Nesting Constraint**: Validated by `NavSchema` up to 3 levels deep (`page`, `group` containing pages, or `group` containing groups).
+
+---
+
+### 3. `chat_events` Collection
+Logs queries submitted to the Ask AI streaming assistant (`/api/ask`). Updated asynchronously on stream completion and when a user clicks thumbs up/down.
+
+```typescript
+{
+  _id: ObjectId("..."),              // Returned to client in start metadata for vote pairing
+  question: "How do I install CLI?",// User prompt
+  page: "installation",              // Slug of the page where the question was asked (or null)
+  threadId: "t-1794839...",          // Conversation thread identifier
+  visitorId: "v-1794839...",         // Anonymized browser visitor ID
+  answer: "To install the CLI...",   // AI response (truncated to 4,000 chars)
+  rating: 1,                         // 1 (helpful), -1 (unhelpful), or unset (unvoted)
+  createdAt: ISODate("...")          // Auto-expires after 90 days via TTL index
+}
+```
+
+---
+
+### 4. `page_feedback` Collection
+Stores votes from the "Was this page helpful?" widget at the bottom of public docs pages ([`PageFeedback.tsx`](file:///c:/Users/biswa/Desktop/CMLanding/landingpage-nextjs/src/app/docs/PageFeedback.tsx)).
+
+```typescript
+{
+  _id: ObjectId("..."),
+  page: "overview",                  // Target page slug
+  visitorId: "v-1794839...",         // Anonymized visitor UUID
+  vote: 1,                           // 1 (helpful) or -1 (unhelpful); vote 0 deletes document
+  createdAt: ISODate("...")          // Auto-expires after 90 days via TTL index
+}
+```
+* **Compound Unique Index**: `{ page: 1, visitorId: 1 }` prevents ballot stuffing by restricting each visitor to one active vote per page.
+
+---
+
+### 5. `ask_rate` Collection
+High-performance atomic counters used by the rate limiter ([`src/lib/docs-ai/rate-limit.ts`](file:///c:/Users/biswa/Desktop/CMLanding/landingpage-nextjs/src/lib/docs-ai/rate-limit.ts)). Records automatically expire after 24 hours.
+
+```typescript
+{
+  _id: "ask:m:eff8e7ca506627fe...:29915640", // Structured compound key
+  n: 1,                                       // Request counter incremented via $inc
+  createdAt: ISODate("...")                   // Auto-expires after 24 hours via TTL index
+}
+```
+
+#### Key Formats & Prefixes:
+
+| Pattern | Scope | Window | Purpose | Limit Config |
+| :--- | :--- | :--- | :--- | :--- |
+| `g:<minute>` | `g` (Global) | 1 minute | Total requests across all IPs to cap LLM bill | `DOCS_AI_GLOBAL_PER_MINUTE` (default: 60) |
+| `ask:m:<hash>:<minute>` | `ask` (Ask AI) | 1 minute | Per-IP rate limit for chat questions | `DOCS_AI_RATE_LIMIT_PER_MINUTE` (default: 10) |
+| `d:<hash>:<day>` | `d` (Day) | 24 hours | Daily cap per user/IP for Ask AI questions | 100 requests/day |
+| `fb:m:<hash>:<minute>` | `fb` (Feedback) | 1 minute | Per-IP limit for page feedback votes | 30 requests/minute |
+
+* `<hash>`: 32-character SHA-256 hash of client IP (raw IPs are never persisted).
+* `<minute>`: Unix minute timestamp (`Math.floor(Date.now() / 60000)`).
+* `<day>`: Unix day timestamp (`Math.floor(Date.now() / 86400000)`).
+
 

@@ -69,3 +69,14 @@ html { scroll-padding-top: calc(var(--docs-header-height) + 5rem); }
 [data-docs-content] pre,
 [data-docs-content] .docs-code,
 [data-docs-content] [role="region"] { scrollbar-width: thin; scrollbar-color: var(--color-fd-border) transparent; }
+
+/* Search dialog entrance (kept in a layer so utilities still win) */
+@layer components {
+  .docs-search-fade { animation: docs-search-fade 120ms ease-out; }
+  .docs-search-pop { animation: docs-search-pop 140ms ease-out; }
+}
+@keyframes docs-search-fade { from { opacity: 0; } }
+@keyframes docs-search-pop { from { opacity: 0; transform: translate(-50%, -6px) scale(0.98); } }
+@media (prefers-reduced-motion: reduce) {
+  .docs-search-fade, .docs-search-pop { animation: none; }
+}

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowUpRight, Search } from "lucide-react";
-import { useSearchContext } from "fumadocs-ui/contexts/search";
+import { useSiteSearch } from "./SiteSearch";
 import { ThemeToggle } from "./ThemeToggle";
 import { useModKey } from "./useMac";
 
@@ -15,7 +15,7 @@ const GET_STARTED = "https://app.codemate.ai/download";
 
 // Same container and columns as the page below, so the search lines up with the content column
 export function DocsHeader() {
-  const { setOpenSearch } = useSearchContext();
+  const { open: openSearch } = useSiteSearch();
   const mod = useModKey();
 
   return (
@@ -34,7 +34,7 @@ export function DocsHeader() {
           <div className="hidden min-w-0 flex-1 items-center md:flex">
             <button
               type="button"
-              onClick={() => setOpenSearch(true)}
+              onClick={openSearch}
               className="mx-auto flex h-10 w-full max-w-xl cursor-pointer items-center gap-2 rounded-lg border border-fd-border bg-fd-secondary/50 px-3 text-sm text-fd-muted-foreground transition hover:bg-fd-accent"
             >
               <Search className="size-4 shrink-0" aria-hidden />
@@ -62,7 +62,7 @@ export function DocsHeader() {
             <button
               type="button"
               aria-label="Search"
-              onClick={() => setOpenSearch(true)}
+              onClick={openSearch}
               className="inline-flex size-11 cursor-pointer items-center justify-center rounded-md text-fd-muted-foreground transition hover:text-fd-foreground md:hidden"
             >
               <Search className="size-5" aria-hidden />
