@@ -12,6 +12,10 @@ interface PaginationMeta {
   hasMore: boolean;
 }
 
+// DD/MM/YY; older posts without an updatedAt show a dash
+const formatUpdated = (value?: string) =>
+  value ? new Date(value).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" }) : "-";
+
 // Administrative dashboard providing blog post management, status tracking, deletion, and numbered pagination
 export default function AdminDashboard() {
   // State variables for article list, pagination metadata, and data loading indicator
@@ -228,6 +232,7 @@ export default function AdminDashboard() {
                     <div className="flex flex-wrap items-center gap-2">
                       <span className="inline-flex items-center rounded-full bg-[#27272a] px-3 py-1 text-xs font-medium text-neutral-300">{post.category}</span>
                       {renderStatus(post)}
+                      <span className="text-xs text-neutral-400">Updated {formatUpdated(post.updatedAt)}</span>
                     </div>
 
                     <div className="flex flex-wrap gap-3">
@@ -258,6 +263,7 @@ export default function AdminDashboard() {
                     <th className="p-4">Title</th>
                     <th className="p-4">Category</th>
                     <th className="p-4">Status</th>
+                    <th className="p-4">Updated</th>
                     <th className="p-4 text-center">Actions</th>
                   </tr>
                 </thead>
@@ -267,6 +273,7 @@ export default function AdminDashboard() {
                       <td className="p-4 font-semibold text-white">{post.title}</td>
                       <td className="p-4 text-neutral-300">{post.category}</td>
                       <td className="p-4">{renderStatus(post)}</td>
+                      <td className="p-4 text-neutral-400">{formatUpdated(post.updatedAt)}</td>
                       <td className="p-4 text-center">
                         <div className="flex justify-center gap-3">
                           <Link
