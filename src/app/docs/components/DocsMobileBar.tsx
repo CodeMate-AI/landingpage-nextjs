@@ -88,7 +88,10 @@ export function DocsMobileBar({ tree, toc }: { tree: PageTree.Root; toc: TableOf
                   <X className="size-5" aria-hidden />
                 </button>
               </div>
-              <SidebarTree tree={tree} />
+              {/* Next keeps the old scroll here (the drawer locks the body), so a page link jumps to the top of the new page */}
+              <div onClick={(e) => (e.target as HTMLElement).closest("a") && window.scrollTo({ top: 0, behavior: "instant" })}>
+                <SidebarTree tree={tree} />
+              </div>
             </div>
           </div>,
           document.body,

@@ -46,8 +46,8 @@ export default async function DocPage({ params }: Props) {
   return (
     <>
       <DocsMobileBar tree={buildPageTree(nav, pages)} toc={toc} />
-      <div className="grid xl:grid-cols-[minmax(0,1fr)_220px] xl:gap-12">
-        <article className="min-w-0 pb-24 pt-8">
+      <div className="docs-page-grid grid xl:grid-cols-[minmax(0,1fr)_220px] xl:gap-12">
+        <article className="min-w-0 pb-12 pt-8 xl:pb-24">
           {/* Group label left, Copy right on one row (a long title can then wrap freely under them) */}
           <div className="mb-3 flex items-center justify-between gap-4">
             <p className="min-w-0 truncate text-sm text-fd-muted-foreground">{label}</p>
@@ -63,7 +63,7 @@ export default async function DocPage({ params }: Props) {
           <PageNav prev={at > 0 ? order[at - 1] : undefined} next={at >= 0 ? order[at + 1] : undefined} />
         </article>
         {/* pb-24 matches the article: a sticky child stops above the padding, so the TOC never touches the footer */}
-        <div className="pb-24 pt-8">
+        <div className="docs-toc hidden pb-24 pt-8 xl:block">
           <Toc toc={toc} />
         </div>
       </div>

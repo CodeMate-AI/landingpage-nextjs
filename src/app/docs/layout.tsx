@@ -19,6 +19,12 @@ export default async function Layout({ children }: { children: ReactNode }) {
 
   return (
     <RootProvider search={{ options: { api: "/api/search" } }}>
+      {/* Runs before first paint: strips the body's dark classes for light mode so a full page load doesn't flash dark. DocsThemeSync keeps them in step afterwards */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `try{var t=localStorage.getItem("theme");if(t==="light"||((!t||t==="system")&&matchMedia("(prefers-color-scheme: light)").matches))document.body.classList.remove("dark","bg-zinc-950","text-white")}catch(e){}`,
+        }}
+      />
       <DocsThemeSync />
       <AskProvider>
         <div className="docs-shell relative flex min-h-screen w-full flex-col overflow-x-clip bg-fd-background text-fd-foreground">

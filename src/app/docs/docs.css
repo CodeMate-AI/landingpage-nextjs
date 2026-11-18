@@ -53,6 +53,13 @@ html { scroll-padding-top: calc(var(--docs-header-height) + 5rem); }
   /* the header gets narrower with the panel open: drop the text links so search and buttons keep their room */
   @layer utilities { html[data-ai-open] .docs-header-links { display: none; } }
 }
+/* with the panel open the article would drop under ~500px on small laptops: hide the table of contents there */
+@media (min-width: 1280px) and (max-width: 1599px) {
+  @layer utilities {
+    html[data-ai-open] .docs-page-grid { grid-template-columns: minmax(0, 1fr); }
+    html[data-ai-open] .docs-toc { display: none; }
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .docs-shell { transition: none; }
 }

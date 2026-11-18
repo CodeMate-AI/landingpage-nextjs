@@ -24,7 +24,7 @@ export function PageFeedback({ slug }: { slug: string }) {
             onClick={() => choose(v)}
             aria-pressed={vote === v}
             aria-label={v === 1 ? "Yes, helpful" : "No, not helpful"}
-            className={`rounded-full border border-fd-border p-2 hover:bg-fd-accent ${vote === v ? "bg-fd-accent text-fd-foreground" : ""}`}
+            className={`inline-flex size-11 items-center justify-center rounded-full border border-fd-border hover:bg-fd-accent sm:size-auto sm:p-2${vote === v ? "bg-fd-accent text-fd-foreground" : ""}`}
           >
             <Icon className={`size-4 ${vote === v ? "fill-current" : ""}`} />
           </button>

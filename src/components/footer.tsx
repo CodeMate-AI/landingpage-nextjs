@@ -156,7 +156,7 @@ function Footer({ inDocs = false }: { inDocs?: boolean }) {
           </div>
 
           {/* Right Columns (Spans 7 cols - grid split into 3 sub-columns) */}
-          <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-6 lg:gap-10 pt-4 md:pt-12">
+          <div className="md:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8 md:gap-6 lg:gap-10 pt-4 md:pt-12">
             {/* Community */}
             <div>
               <h4 className="font-semibold mb-4 text-white text-sm md:text-base whitespace-nowrap">COMMUNITY</h4>
@@ -180,7 +180,7 @@ function Footer({ inDocs = false }: { inDocs?: boolean }) {
             </div>
 
             {/* Legal */}
-            <div>
+            <div className="col-span-2 sm:col-span-1">
               <h4 className="font-semibold mb-4 text-white text-sm md:text-base whitespace-nowrap">LEGAL</h4>
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><a href="/docs/policies-privacy-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Privacy Policy</a></li>
