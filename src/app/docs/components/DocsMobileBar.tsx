@@ -14,7 +14,7 @@ import { SidebarTree } from "./DocsSidebar";
 const bar = "inline-flex min-h-11 cursor-pointer items-center gap-2 text-sm font-medium text-fd-muted-foreground transition hover:text-fd-foreground";
 
 // Below lg: a "Menu" drawer and an "On this page" list under the header
-export function DocsMobileBar({ tree, toc }: { tree: PageTree.Root; toc: TableOfContents }) {
+export function DocsMobileBar({ tree, toc, activeUrl }: { tree: PageTree.Root; toc: TableOfContents; activeUrl?: string }) {
   const pathname = usePathname();
   // Open state is tied to the route it was opened on, so navigating closes both without an effect
   const [menuAt, setMenuAt] = useState<string | null>(null);
@@ -90,7 +90,7 @@ export function DocsMobileBar({ tree, toc }: { tree: PageTree.Root; toc: TableOf
               </div>
               {/* Next keeps the old scroll here (the drawer locks the body), so a page link jumps to the top of the new page */}
               <div onClick={(e) => (e.target as HTMLElement).closest("a") && window.scrollTo({ top: 0, behavior: "instant" })}>
-                <SidebarTree tree={tree} />
+                <SidebarTree tree={tree} activeUrl={activeUrl} />
               </div>
             </div>
           </div>,

@@ -44,8 +44,10 @@
 }
 
 /* Own layout (header, sidebar, page, footer). Pangolin-style: the page makes room for the Ask AI panel. */
-:root { --docs-header-height: 64px; }
-html { scroll-padding-top: calc(var(--docs-header-height) + 5rem); }
+/* Scoped to pages that have the docs shell: the admin preview imports this file too, and bare :root / html rules would leak into admin pages */
+/* Every user of the variable sits inside .docs-shell, so it needs no :has(); only the scroll padding does (it must sit on html) */
+.docs-shell { --docs-header-height: 64px; }
+html:has(.docs-shell) { scroll-padding-top: calc(var(--docs-header-height, 64px) + 5rem); }
 
 .docs-shell { transition: padding-right 0.2s ease-out; }
 @media (min-width: 1024px) {

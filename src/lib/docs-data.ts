@@ -95,6 +95,18 @@ export const getPublishedNav =React.cache(async (): Promise<NavItem[]> => {
   }
 });
 
+// The unpublished sidebar tree, for the admin preview (what the sidebar will look like after the next publish)
+export async function getDraftNav(): Promise<NavItem[]> {
+  try {
+    const db = await getDocsDatabase();
+    const nav = await db.collection<{ _id: string; draft?: NavItem[] }>("nav").findOne({ _id: "main" });
+    return nav?.draft ?? [];
+  } catch (error) {
+    console.error("Failed to load draft docs nav:", error);
+    return [];
+  }
+}
+
 // Converts the published nav into a Fumadocs page tree, skipping unpublished slugs and empty groups
 export function buildPageTree(nav: NavItem[], pages: PublishedIndexItem[]): PageTree.Root {
   const titles = new Map(pages.map((p) => [p.slug, p.title]));

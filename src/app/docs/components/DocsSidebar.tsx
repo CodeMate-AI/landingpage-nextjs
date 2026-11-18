@@ -59,8 +59,10 @@ function Item({ node, url }: { node: PageTree.Node; url: string }) {
   );
 }
 
-export function SidebarTree({ tree }: { tree: PageTree.Root }) {
-  const pathname = norm(usePathname());
+// activeUrl overrides the route (the admin preview is not served at /docs/<slug>)
+export function SidebarTree({ tree, activeUrl }: { tree: PageTree.Root; activeUrl?: string }) {
+  const route = usePathname();
+  const pathname = norm(activeUrl ?? route);
   const ref = useRef<HTMLUListElement>(null);
   // Bring the current page into view when the sidebar first shows
   useEffect(() => {
@@ -76,7 +78,7 @@ export function SidebarTree({ tree }: { tree: PageTree.Root }) {
 }
 
 // Desktop: sticky column with its own scroll, no collapse button
-export function DocsSidebar({ tree }: { tree: PageTree.Root }) {
+export function DocsSidebar({ tree, activeUrl }: { tree: PageTree.Root; activeUrl?: string }) {
   return (
     // The wrapper's bottom padding keeps the sticky sidebar from touching the footer at the end of the page
     <div className="hidden pb-12 lg:block">
@@ -84,7 +86,7 @@ export function DocsSidebar({ tree }: { tree: PageTree.Root }) {
         aria-label="Docs navigation"
         className="docs-scroll sticky top-[var(--docs-header-height)] h-[calc(100dvh-var(--docs-header-height))] overflow-y-auto pb-6 pe-2 pt-4"
       >
-        <SidebarTree tree={tree} />
+        <SidebarTree tree={tree} activeUrl={activeUrl} />
       </aside>
     </div>
   );

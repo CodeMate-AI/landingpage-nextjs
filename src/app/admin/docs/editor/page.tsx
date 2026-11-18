@@ -1,10 +1,12 @@
 "use client";
-import React, { Suspense, useEffect, useState } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { adminFetch } from "@/lib/admin-api-client";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import slugify from "@/utils/slugify";
+import DocsPreviewModal from "../DocsPreviewModal";
+import { DOCS_PREVIEW_CHANNEL, DOCS_PREVIEW_LAST } from "../previewChannel";
 
 const EMPTY_DOC = { type: "doc", content: [] };
 // Same field styles as the blog editor (/admin/editor) so both editors look alike
@@ -49,6 +51,68 @@ function DocsEditor() {
       }
     })();
   }, [params]);
+
+  // Preview: the preview page (modal iframe or new tab) says "hello" on a channel. From then on this page
+  // renders the current form through the admin API (it holds the login) and sends the result, again on every edit.
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const previewInput = useRef({ title, slug, description, content });
+  const pushPreview = useRef<() => void>(() => {});
+  // Number of open previews (modal and/or tab) of this editor; nothing is rendered while it is 0
+  const previews = useRef(0);
+  // Previews belong to one editor tab: they carry this id, and other editors' messages are ignored
+  const [editorId] = useState(() => crypto.randomUUID());
+
+  useEffect(() => {
+    previewInput.current = { title, slug, description, content };
+    pushPreview.current();
+  }, [title, slug, description, content]);
+
+  useEffect(() => {
+    const channel = new BroadcastChannel(DOCS_PREVIEW_CHANNEL);
+    let ctrl: AbortController | null = null;
+    let timer = 0;
+    const send = async () => {
+      window.clearTimeout(timer);
+      ctrl?.abort();
+      const mine = new AbortController();
+      ctrl = mine;
+      try {
+        const res = await adminFetch("/api/admin/docs/preview", { method: "POST", body: JSON.stringify(previewInput.current), signal: mine.signal });
+        const data = res.ok ? await res.json() : null;
+        // a newer edit took over, or the last preview closed while this was running
+        if (mine.signal.aborted || previews.current === 0) return;
+        channel.postMessage(data ? { type: "render", editor: editorId, data } : { type: "error", editor: editorId, status: res.status });
+        // last render, so a preview opened while this tab is gone (or replaced) still has something to show
+        if (data) {
+          try {
+            localStorage.setItem(DOCS_PREVIEW_LAST, JSON.stringify({ editor: editorId, data }));
+          } catch {}
+        }
+      } catch {
+        // aborted by a newer edit, or offline: the next edit sends again
+      }
+    };
+    pushPreview.current = () => {
+      if (previews.current === 0) return;
+      window.clearTimeout(timer);
+      timer = window.setTimeout(send, 500);
+    };
+    channel.onmessage = (e) => {
+      if (e.data?.editor !== editorId) return;
+      if (e.data.type === "hello") {
+        previews.current++;
+        send();
+      } else if (e.data.type === "bye") {
+        previews.current = Math.max(0, previews.current - 1);
+      }
+    };
+    return () => {
+      window.clearTimeout(timer);
+      ctrl?.abort();
+      channel.close();
+      previews.current = 0;
+    };
+  }, [editorId]);
 
   // Warn before leaving with unsaved edits
   useEffect(() => {
@@ -104,9 +168,18 @@ function DocsEditor() {
               {dirty ? "Unsaved changes" : id ? "All changes saved" : "Nothing to save yet"}
             </p>
           </div>
-          <Link href="/admin/docs" className="text-sm text-neutral-400 transition-colors hover:text-neutral-200">
-            Cancel
-          </Link>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setPreviewOpen(true)}
+              className="cursor-pointer rounded-lg border border-[#27272a] bg-[#18181b] px-4 py-2 text-sm font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white"
+            >
+              Preview
+            </button>
+            <Link href="/admin/docs" className="text-sm text-neutral-400 transition-colors hover:text-neutral-200">
+              Cancel
+            </Link>
+          </div>
         </header>
 
         {message && (
@@ -190,6 +263,8 @@ function DocsEditor() {
             </button>
           </div>
         </form>
+
+        <DocsPreviewModal isOpen={previewOpen} onClose={() => setPreviewOpen(false)} slug={slug || "untitled"} editorId={editorId} />
       </div>
     </main>
   );
