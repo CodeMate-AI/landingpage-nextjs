@@ -159,7 +159,7 @@ export default function AdminDocsDashboard() {
                     <td className="px-4 py-3 font-medium text-white">{d.title || "Untitled"}</td>
                     <td className="px-4 py-3 text-neutral-400">/docs/{d.slug}</td>
                     <td className="px-4 py-3"><StatusBadge doc={d} /></td>
-                    <td className="px-4 py-3 text-neutral-400">{new Date(d.updatedAt).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-neutral-400">{new Date(d.updatedAt).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "2-digit" })}</td>
                     <td className="px-4 py-3">
                       <div className="flex justify-end gap-2">
                         <Link href={`/admin/docs/editor?id=${d._id}`} className="rounded-md border border-[#27272a] px-3 py-1.5 text-xs hover:bg-[#27272a]">
