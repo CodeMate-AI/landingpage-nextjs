@@ -7,13 +7,14 @@ import { Node } from "@tiptap/core"
 import { PasteLink } from "@/components/tiptap-node/image-upload-node/paste-link"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { CloseIcon } from "@/components/tiptap-icons/close-icon"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import { handleVideoUpload, MAX_VIDEO_SIZE } from "@/lib/tiptap-utils"
 // Reuse existing image-upload-node styles for identical appearance
 import "@/components/tiptap-node/image-upload-node/image-upload-node.scss"
 
 // ── Icons ────────────────────────────────────────────────────────────────────
 
-const FileIcon: React.FC = () => (
+export const FileIcon: React.FC = () => (
   <svg width="43" height="57" viewBox="0 0 43 57" fill="currentColor"
     className="tiptap-image-upload-dropzone-rect-primary"
     xmlns="http://www.w3.org/2000/svg">
@@ -22,7 +23,7 @@ const FileIcon: React.FC = () => (
   </svg>
 )
 
-const FileCornerIcon: React.FC = () => (
+export const FileCornerIcon: React.FC = () => (
   <svg width="10" height="10" className="tiptap-image-upload-dropzone-rect-secondary"
     viewBox="0 0 10 10" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path d="M0 0.75H0.343146C1.40401 0.75 2.42143 1.17143 3.17157 1.92157L8.82843 7.57843C9.57857 8.32857 10 9.34599 10 10.4069V10.75H4C1.79086 10.75 0 8.95914 0 6.75V0.75Z"
@@ -152,7 +153,14 @@ const VideoUploadNodeView: React.FC<NodeViewProps> = (props) => {
   }
 
   return (
-    <NodeViewWrapper className="tiptap-image-upload" tabIndex={0} onClick={!uploading ? handleClick : undefined}>
+    <NodeViewWrapper className="tiptap-image-upload tiptap-node-closable" tabIndex={0} onClick={!uploading ? handleClick : undefined}>
+      <NodeCloseButton
+        label="Remove video upload"
+        onClick={() => {
+          abortRef.current?.abort()
+          props.deleteNode()
+        }}
+      />
 
       {/* ── Dropzone (idle) ── */}
       {!uploading && (

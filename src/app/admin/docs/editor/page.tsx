@@ -7,7 +7,10 @@ import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor
 import slugify from "@/utils/slugify";
 
 const EMPTY_DOC = { type: "doc", content: [] };
-const input = "w-full rounded-lg border border-[#27272a] bg-[#09090b] px-3 py-2 text-sm text-white outline-none focus:border-blue-500";
+// Same field styles as the blog editor (/admin/editor) so both editors look alike
+const input = "w-full rounded-lg border border-[#27272a] bg-[#18181b] p-3 text-white focus:outline-none";
+const labelCls = "mb-1.5 block text-sm font-medium text-neutral-400";
+const hintCls = "mt-1.5 text-xs text-neutral-400";
 
 function DocsEditor() {
   const router = useRouter();
@@ -21,6 +24,7 @@ function DocsEditor() {
   const [loading, setLoading] = useState(Boolean(params.get("id")));
   const [loadError, setLoadError] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [savingMode, setSavingMode] = useState<"draft" | "publish">("draft");
   const [dirty, setDirty] = useState(false);
   const [message, setMessage] = useState<{ type: "ok" | "err"; text: string } | null>(null);
 
@@ -61,6 +65,7 @@ function DocsEditor() {
 
   const save = async (saveMode: "draft" | "publish") => {
     setSaving(true);
+    setSavingMode(saveMode);
     setMessage(null);
     try {
       const res = await adminFetch(id ? `/api/admin/docs/${id}` : "/api/admin/docs", {
@@ -86,69 +91,105 @@ function DocsEditor() {
   };
 
   const canSave = !saving && title.trim() !== "" && slug !== "";
+  const saveHint = canSave ? undefined : saving ? "Saving..." : "Add a title and URL slug to save";
 
   return (
     <main className="min-h-screen bg-[#09090b] p-4 font-sans text-neutral-100 sm:p-6 lg:p-8">
-      <div className="mx-auto max-w-5xl space-y-6">
-        <header className="flex flex-col gap-4 border-b border-[#27272a] pb-6 sm:flex-row sm:items-center sm:justify-between">
-          <h1 className="text-2xl font-bold text-white">{id ? "Edit docs page" : "New docs page"}</h1>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/admin/docs" className="rounded-lg border border-[#27272a] px-4 py-2.5 text-sm hover:bg-[#18181b]">
-              Back
-            </Link>
-            <button disabled={!canSave} onClick={() => save("draft")} className="cursor-pointer rounded-lg border border-[#27272a] px-4 py-2.5 text-sm hover:bg-[#18181b] disabled:opacity-50">
-              Save Draft
-            </button>
-            <button disabled={!canSave} onClick={() => save("publish")} className="cursor-pointer rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-500 disabled:opacity-50">
-              Save &amp; Publish
-            </button>
+      <div className="mx-auto max-w-4xl">
+        <header className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#27272a] pb-6">
+          <div>
+            <h1 className="text-2xl font-bold text-white sm:text-3xl">{id ? "Modify Docs Page" : "Compose Docs Page"}</h1>
+            <p role="status" className="mt-1.5 flex items-center gap-2 text-xs text-neutral-400">
+              <span aria-hidden="true" className={`size-2 rounded-full ${dirty ? "bg-amber-400" : id ? "bg-emerald-500" : "bg-neutral-600"}`} />
+              {dirty ? "Unsaved changes" : id ? "All changes saved" : "Nothing to save yet"}
+            </p>
           </div>
+          <Link href="/admin/docs" className="text-sm text-neutral-400 transition-colors hover:text-neutral-200">
+            Cancel
+          </Link>
         </header>
 
         {message && (
-          <p className={`rounded-lg border p-3 text-sm ${message.type === "ok" ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-400" : "border-red-500/20 bg-red-500/5 text-red-400"}`}>
+          <p className={`mb-6 rounded-lg border p-3 text-sm ${message.type === "ok" ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-400" : "border-red-500/20 bg-red-500/5 text-red-400"}`}>
             {message.text}
           </p>
         )}
 
-        <div className="grid gap-4 rounded-xl border border-[#27272a] bg-[#18181b] p-4 sm:grid-cols-2 sm:p-6">
-          <label className="space-y-1 text-xs text-neutral-400">
-            Title
+        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <div>
+            <label htmlFor="doc-title" className={labelCls}>Title</label>
             <input
+              id="doc-title"
               className={input}
+              required
               value={title}
               onChange={(e) => {
                 edit(setTitle)(e.target.value);
                 if (!slugTouched) setSlug(slugify(e.target.value));
               }}
             />
-          </label>
-          <label className="space-y-1 text-xs text-neutral-400">
-            Slug (/docs/{slug || "..."})
-            <input
-              className={input}
-              value={slug}
-              onChange={(e) => {
-                setSlugTouched(true);
-                edit(setSlug)(slugify(e.target.value));
-              }}
-            />
-          </label>
-          <label className="space-y-1 text-xs text-neutral-400 sm:col-span-2">
-            Description
-            <input className={input} value={description} onChange={(e) => edit(setDescription)(e.target.value)} />
-          </label>
-        </div>
+          </div>
 
-        <div className="rounded-xl border border-[#27272a] bg-[#18181b] p-4 sm:p-6">
-          {loadError ? (
-            <p className="text-sm text-red-400">Failed to load the page. Go back and try again.</p>
-          ) : loading ? (
-            <p className="text-sm text-neutral-400">Loading page...</p>
-          ) : (
-            <SimpleEditor docsBlocks content={content} onChange={edit(setContent)} currentPostId={id} currentSlug={slug} currentTitle={title} />
-          )}
-        </div>
+          <div>
+            <label htmlFor="doc-slug" className={labelCls}>Page URL</label>
+            <div className="flex items-stretch overflow-hidden rounded-lg border border-[#27272a] bg-[#18181b]">
+              <span className="flex select-none items-center border-r border-[#27272a] px-3 text-sm text-neutral-500">/docs/</span>
+              <input
+                id="doc-slug"
+                className="min-w-0 flex-1 bg-transparent p-3 text-white focus:outline-none"
+                value={slug}
+                onChange={(e) => {
+                  setSlugTouched(true);
+                  edit(setSlug)(slugify(e.target.value));
+                }}
+              />
+            </div>
+            <p className={hintCls}>{slugTouched ? "Custom URL. Changing it breaks links to the old one." : "Follows the title until you edit it."}</p>
+          </div>
+
+          <div>
+            <label htmlFor="doc-desc" className={labelCls}>Description</label>
+            <textarea id="doc-desc" rows={2} className={input} value={description} onChange={(e) => edit(setDescription)(e.target.value)} />
+            <p className={hintCls}>Optional. Shown in search results and link previews.</p>
+          </div>
+
+          <div>
+            <label className={labelCls}>Content Editor</label>
+            {loadError ? (
+              <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-400">
+                Failed to load the page. Please refresh, or go back to the docs list.
+              </div>
+            ) : loading ? (
+              <div className="flex items-center justify-center gap-3 rounded-lg border border-[#27272a] bg-[#18181b] p-8 text-sm text-neutral-400">
+                <div className="h-4 w-4 animate-spin rounded-full border-2 border-neutral-500 border-t-white" />
+                <span>Loading page content...</span>
+              </div>
+            ) : (
+              <SimpleEditor docsBlocks content={content} onChange={edit(setContent)} currentPostId={id} currentSlug={slug} currentTitle={title} />
+            )}
+          </div>
+
+          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
+            <button
+              type="button"
+              disabled={!canSave}
+              title={saveHint}
+              onClick={() => save("draft")}
+              className="w-full rounded-lg border border-[#27272a] bg-[#18181b] px-6 py-3 text-center font-semibold text-neutral-300 transition hover:bg-[#232329] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+            >
+              {saving && savingMode === "draft" ? "Saving..." : "Save as Draft"}
+            </button>
+            <button
+              type="button"
+              disabled={!canSave}
+              title={saveHint}
+              onClick={() => save("publish")}
+              className="w-full rounded-lg bg-blue-600 px-6 py-3 text-center font-semibold text-white transition hover:bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+            >
+              {saving && savingMode === "publish" ? "Saving..." : "Save & Publish"}
+            </button>
+          </div>
+        </form>
       </div>
     </main>
   );

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import type { NodeViewProps } from "@tiptap/react"
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react"
 import { Node, mergeAttributes } from "@tiptap/core"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import "@/components/tiptap-node/image-node/image-node.scss"
 
 export interface ImageNodeOptions {
@@ -43,7 +44,8 @@ const ImageNodeView: React.FC<NodeViewProps> = (props) => {
   }
 
   return (
-    <NodeViewWrapper as="figure" className="tiptap-media-figure my-4" data-type="image">
+    <NodeViewWrapper as="figure" className="tiptap-media-figure tiptap-node-closable my-4" data-type="image">
+      <NodeCloseButton label="Remove image" onClick={props.deleteNode} />
       {src && (
         <img
           src={src}

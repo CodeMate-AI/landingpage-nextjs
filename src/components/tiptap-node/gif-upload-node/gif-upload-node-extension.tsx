@@ -7,6 +7,8 @@ import { Node } from "@tiptap/core"
 import { PasteLink } from "@/components/tiptap-node/image-upload-node/paste-link"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { CloseIcon } from "@/components/tiptap-icons/close-icon"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
+import { FileIcon, FileCornerIcon } from "@/components/tiptap-node/video-node/video-upload-node-extension"
 import { GifUploadIcon } from "@/components/tiptap-icons/gif-upload-icon"
 import { handleImageUpload, MAX_GIF_SIZE } from "@/lib/tiptap-utils"
 import "@/components/tiptap-node/image-upload-node/image-upload-node.scss"
@@ -117,7 +119,8 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
   }
 
   return (
-    <NodeViewWrapper as="div" className="tiptap-image-upload my-4">
+    <NodeViewWrapper as="div" className="tiptap-image-upload tiptap-node-closable my-4">
+      <NodeCloseButton label="Remove GIF upload" onClick={handleRemove} />
       <div
         className={`tiptap-image-upload-drag-area ${isDragActive ? "drag-active" : ""}`}
         onDragEnter={(e) => {
@@ -171,27 +174,22 @@ const GifUploadNodeView: React.FC<NodeViewProps> = (props) => {
             className="flex flex-col items-center justify-center p-6 cursor-pointer gap-2 select-none w-full"
             style={{ minHeight: "140px" }}
           >
-            <div className="flex items-center justify-center w-12 h-12 rounded-full bg-neutral-800/80 border border-neutral-700/60 mb-1">
-              <GifUploadIcon width="28" height="28" className="tiptap-image-upload-icon text-indigo-400" />
+            <div className="tiptap-image-upload-dropzone">
+              <FileIcon />
+              <FileCornerIcon />
+              <div className="tiptap-image-upload-icon-container">
+                <GifUploadIcon className="tiptap-image-upload-icon" />
+              </div>
             </div>
-            <div className="text-center">
-              <span className="text-sm font-medium text-neutral-200">
-                <em className="text-indigo-400 font-semibold not-italic">Click to upload GIF</em> or drag and drop
+            <div className="tiptap-image-upload-content">
+              <span className="tiptap-image-upload-text">
+                <em>Click to upload</em> or drag and drop
               </span>
-              <p className="text-xs text-neutral-400 mt-1">Animated GIF (.gif) up to 15MB</p>
+              <span className="tiptap-image-upload-subtext">Maximum 1 file, 15MB. GIF only.</span>
             </div>
           </div>
         )}
 
-        {/* Remove / close button */}
-        <button
-          type="button"
-          onClick={handleRemove}
-          title="Remove GIF upload block"
-          className="absolute top-2 right-2 p-1 text-neutral-400 hover:text-white rounded hover:bg-neutral-800/60 transition-colors"
-        >
-          <CloseIcon className="w-4 h-4" />
-        </button>
       </div>
 
       {!uploading && <PasteLink placeholder="Or paste a GIF link" onSubmit={(url) => insertGifNode(url, "GIF animation")} />}

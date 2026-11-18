@@ -6,6 +6,7 @@ import type { NodeViewProps } from "@tiptap/react"
 import { NodeViewWrapper } from "@tiptap/react"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { CloseIcon } from "@/components/tiptap-icons/close-icon"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import "@/components/tiptap-node/image-upload-node/image-upload-node.scss"
 import { focusNextNode, isValidPosition } from "@/lib/tiptap-utils"
 
@@ -533,10 +534,11 @@ export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
 
   return (
     <NodeViewWrapper
-      className="tiptap-image-upload"
+      className="tiptap-image-upload tiptap-node-closable"
       tabIndex={0}
       onClick={handleClick}
     >
+      <NodeCloseButton label="Remove image upload" onClick={props.deleteNode} />
       {!hasFiles && (
         <ImageUploadDragArea onFile={handleUpload}>
           <DropZoneContent maxSize={maxSize} limit={limit} />

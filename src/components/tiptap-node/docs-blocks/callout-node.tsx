@@ -6,7 +6,7 @@ import "./docs-blocks.css"
 
 const LABELS: Record<CalloutKind, string> = { note: "Note", info: "Info", tip: "Tip", warning: "Warning", check: "Check", danger: "Danger" }
 
-function CalloutView({ node, updateAttributes }: NodeViewProps) {
+function CalloutView({ node, updateAttributes, deleteNode }: NodeViewProps) {
   const kind = node.attrs.kind as CalloutKind
   return (
     <NodeViewWrapper className="docs-callout" data-type="callout" data-kind={kind} data-title={node.attrs.title ?? ""}>
@@ -29,6 +29,9 @@ function CalloutView({ node, updateAttributes }: NodeViewProps) {
             {LABELS[k]}
           </button>
         ))}
+        <button type="button" aria-label="Remove callout" onMouseDown={(e) => e.preventDefault()} onClick={deleteNode}>
+          ✕
+        </button>
       </div>
       <NodeViewContent className="docs-callout-body" />
     </NodeViewWrapper>

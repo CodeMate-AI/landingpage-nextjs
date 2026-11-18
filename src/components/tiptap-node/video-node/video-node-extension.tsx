@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import type { NodeViewProps } from "@tiptap/react"
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react"
 import { Node, nodeInputRule, nodePasteRule } from "@tiptap/core"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 
 export const videoInputRegex = /^\[video:\s*(https?:\/\/[^\s\]]+)\]$/
 export const videoPasteRegex = /\[video:\s*(https?:\/\/[^\s\]]+)\]/g
@@ -72,7 +73,8 @@ const VideoNodeView = (props: NodeViewProps) => {
   }
 
   return (
-    <NodeViewWrapper as="figure" className="tiptap-media-figure tiptap-video-node my-4" data-type="video">
+    <NodeViewWrapper as="figure" className="tiptap-media-figure tiptap-video-node tiptap-node-closable my-4" data-type="video">
+      <NodeCloseButton label="Remove video" onClick={props.deleteNode} />
       <div style={{ width: "100%" }}>
         {renderVideoPlayer()}
       </div>

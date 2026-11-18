@@ -6,6 +6,8 @@
     position: relative;
     margin: 1.25rem 0;
     padding: 0.85rem 1rem 0.85rem 2.9rem;
+    /* icon is absolutely placed (top 1rem + 1.15rem tall), so an empty callout must still be tall enough to hold it */
+    min-height: 3.3rem;
     border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
     border-radius: 0.75rem;
     background: color-mix(in srgb, var(--accent) 10%, transparent);
@@ -41,9 +43,13 @@
      cursor is inside, so it never covers the text (no native dropdown) */
   .docs-callout-kind {
     position: absolute;
-    top: -1.35rem;
+    bottom: calc(100% + 0.15rem); /* grows upward when it wraps, so it never covers the callout text */
     right: 0.5rem;
+    z-index: 1;
     display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    max-width: calc(100% - 1rem); /* keeps the bar inside the callout on phones */
     gap: 2px;
     padding: 2px;
     border-radius: 0.5rem;
@@ -51,6 +57,12 @@
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.15s;
+  }
+  /* Phones: the bar wraps to two rows, so leave room for it above the callout (editor only) */
+  @media (max-width: 640px) {
+    .docs-callout:has(> .docs-callout-kind) {
+      margin-top: 3.25rem;
+    }
   }
   .docs-callout:hover .docs-callout-kind,
   .docs-callout:focus-within .docs-callout-kind {

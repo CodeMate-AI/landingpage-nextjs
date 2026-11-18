@@ -1,0 +1,35 @@
+@layer components {
+  .tiptap-node-closable {
+    position: relative;
+  }
+  .tiptap-node-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.65);
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .tiptap-node-close:hover {
+    background: #dc2626;
+    border-color: #dc2626;
+  }
+  .tiptap-node-close:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+  .tiptap-node-close-icon {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+}
