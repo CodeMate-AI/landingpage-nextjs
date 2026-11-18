@@ -150,7 +150,7 @@ const DownloadPage = () => {
                             className="shrink-0 relative group"
                         >
                             <div className="w-20 h-20 bg-linear-to-br from-[#2A2A2A] to-[#1A1A1A] rounded-[22px] border border-white/10 shadow-2xl flex items-center justify-center relative overflow-hidden backdrop-blur-md">
-                                <Image src="/logos/brand/codemate-toolbox-icon.png" alt="ToolBox Icon" width={80} height={80} />
+                                <Image src="/logos/brand/codemate-toolbox-icon.png" alt="ToolBox Icon" width={80} height={80} priority />
                             </div>
                         </motion.div>
                         {/* Text and Button Sequence */}

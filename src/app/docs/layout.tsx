@@ -2,7 +2,7 @@ import "./docs.css";
 import type { ReactNode } from "react";
 import { RootProvider } from "fumadocs-ui/provider/next";
 import Footer from "@/components/footer";
-import { DocsThemeSync } from "./DocsThemeSync";
+import { DocsThemeInit, DocsThemeSync } from "./DocsThemeSync";
 import { AskProvider } from "./ask-ai/context";
 import { AskPanel } from "./ask-ai/Panel";
 import { AskFloating } from "./ask-ai/Trigger";
@@ -12,19 +12,13 @@ import { buildPageTree, getPublishedNav, getPublishedIndex } from "@/lib/docs-da
 
 export const revalidate = 60;
 
-// Own layout (modelled on docs.pangolin.net): header on top, sidebar and page in two columns, footer below.
-// `docs-shell` makes room for the Ask AI side panel on desktop (docs.css).
+// Custom docs layout with header, sidebar, and footer
 export default async function Layout({ children }: { children: ReactNode }) {
   const [nav, pages] = await Promise.all([getPublishedNav(), getPublishedIndex()]);
 
   return (
     <RootProvider search={{ options: { api: "/api/search" } }}>
-      {/* Runs before first paint: strips the body's dark classes for light mode so a full page load doesn't flash dark. DocsThemeSync keeps them in step afterwards */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `try{var t=localStorage.getItem("theme");if(t==="light"||((!t||t==="system")&&matchMedia("(prefers-color-scheme: light)").matches))document.body.classList.remove("dark","bg-zinc-950","text-white")}catch(e){}`,
-        }}
-      />
+      <DocsThemeInit />
       <DocsThemeSync />
       <AskProvider>
         <div className="docs-shell relative flex min-h-screen w-full flex-col overflow-x-clip bg-fd-background text-fd-foreground">
@@ -35,7 +29,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
               <main className="min-w-0">{children}</main>
             </div>
           </div>
-          {/* The landing footer sets z-index 999999; its own stacking context keeps it under the header and the Ask AI button */}
+          {/* Keeps footer stacking context below header and floating triggers */}
           <div className="relative z-0">
             <Footer inDocs />
           </div>
