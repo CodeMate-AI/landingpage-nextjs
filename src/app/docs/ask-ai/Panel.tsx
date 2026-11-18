@@ -18,6 +18,13 @@ export function AskPanel() {
   const [mounted, setMounted] = useState(false);
   if (open && !mounted) setMounted(true);
 
+  // docs.css pushes the page aside while the panel is open (desktop)
+  useEffect(() => {
+    const root = document.documentElement;
+    root.toggleAttribute("data-ai-open", open);
+    return () => root.removeAttribute("data-ai-open");
+  }, [open]);
+
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -38,7 +45,7 @@ export function AskPanel() {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[60] md:left-auto md:w-[26rem]"
+      className="fixed inset-0 z-[60] md:left-auto md:top-0 md:w-[26rem]"
       data-state={open ? "open" : "closed"}
       onAnimationEnd={(e) => {
         if (!open && (e.target as HTMLElement).classList.contains("docs-ask-panel")) setMounted(false);
@@ -47,12 +54,12 @@ export function AskPanel() {
       <button type="button" aria-label="Close" onClick={() => setOpen(false)} className="docs-ask-backdrop absolute inset-0 bg-black/40 md:hidden" />
       <section
         role="dialog"
-        aria-label="Ask AI"
+        aria-label="CodeMate AI"
         className="docs-ask-panel absolute inset-x-3 bottom-3 top-14 flex flex-col overflow-hidden rounded-2xl border border-fd-border bg-fd-popover text-fd-popover-foreground shadow-2xl md:inset-x-0 md:bottom-0 md:top-0 md:rounded-none md:border-y-0 md:border-r-0"
       >
         <header className="flex items-center gap-2 border-b border-fd-border px-3 py-2.5">
           <Bot className="size-4 text-fd-primary" aria-hidden />
-          <h2 className="flex-1 text-sm font-semibold">Ask AI</h2>
+          <h2 className="flex-1 text-sm font-semibold" translate="no">CodeMate AI</h2>
           <button
             type="button"
             onClick={clear}

@@ -6,11 +6,13 @@ import type * as PageTree from "fumadocs-core/page-tree";
 import { getDocsDatabase } from "@/lib/mongodb";
 import type { NavItem } from "@/lib/docs-validation";
 
+type PageRow = { publishedVersion: null | PublishedDoc & { search?: AdvancedIndex["structuredData"] } };
+
 export interface PublishedDoc {
   slug: string;
   title: string;
   description: string;
-  content: any;
+  content: unknown;
   sections: { id: string; title: string }[];
 }
 
@@ -21,11 +23,11 @@ export const getPublishedIndex = React.cache(async (): Promise<PublishedIndexIte
   try {
     const db = await getDocsDatabase();
     const rows = await db
-      .collection("pages")
+      .collection<PageRow>("pages")
       .find({ published: true, publishedVersion: { $ne: null } })
-      .project({ _id: 0, "publishedVersion.slug": 1, "publishedVersion.title": 1 })
+      .project<PageRow>({ _id: 0, "publishedVersion.slug": 1, "publishedVersion.title": 1 })
       .toArray();
-    return rows.map((r: any) => r.publishedVersion as PublishedIndexItem);
+    return rows.map((r) => r.publishedVersion as PublishedIndexItem);
   } catch (error) {
     console.error("Failed to load published docs index:", error);
     return [];
@@ -52,15 +54,15 @@ export const getPublishedPage = React.cache(async (slug: string): Promise<Publis
 // existed: those are built from content.
 export async function loadSearchIndexes(): Promise<AdvancedIndex[]> {
   const db = await getDocsDatabase();
-  const col = db.collection("pages");
+  const col = db.collection<PageRow>("pages");
   const rows = await col
     .find({ published: true, publishedVersion: { $ne: null } })
-    .project({ _id: 0, "publishedVersion.slug": 1, "publishedVersion.title": 1, "publishedVersion.description": 1, "publishedVersion.sections": 1, "publishedVersion.search": 1 })
+    .project<PageRow>({ _id: 0, "publishedVersion.slug": 1, "publishedVersion.title": 1, "publishedVersion.description": 1, "publishedVersion.sections": 1, "publishedVersion.search": 1 })
     .toArray();
 
   return Promise.all(
-    rows.map(async (r: any) => {
-      const p = r.publishedVersion;
+    rows.map(async (r) => {
+      const p = r.publishedVersion!; // query excludes null
       let search = p.search;
       if (!search) {
         const full = await col.findOne({ "publishedVersion.slug": p.slug }, { projection: { _id: 0, "publishedVersion.content": 1 } });
@@ -85,8 +87,8 @@ export const getSearchVersion = unstable_cache(async () => Date.now(), ["docs-se
 export const getPublishedNav =React.cache(async (): Promise<NavItem[]> => {
   try {
     const db = await getDocsDatabase();
-    const nav = await db.collection("nav").findOne({ _id: "main" as any });
-    return (nav?.published as NavItem[]) ?? [];
+    const nav = await db.collection<{ _id: string; published?: NavItem[] }>("nav").findOne({ _id: "main" });
+    return nav?.published ?? [];
   } catch (error) {
     console.error("Failed to load docs nav:", error);
     return [];
@@ -108,6 +110,16 @@ export function buildPageTree(nav: NavItem[], pages: PublishedIndexItem[]): Page
     });
 
   return { name: "docs", children: convert(nav) };
+}
+
+// Published pages in sidebar order with the title of their nearest group, for previous/next links and the page label
+export function flattenNav(nav: NavItem[], pages: PublishedIndexItem[], group?: string): { slug: string; title: string; group?: string }[] {
+  const titles = new Map(pages.map((p) => [p.slug, p.title]));
+  return nav.flatMap((n) => {
+    if (n.type === "group") return flattenNav(n.children, pages, n.title);
+    const title = titles.get(n.slug);
+    return title === undefined ? [] : [{ slug: n.slug, title, group }];
+  });
 }
 
 // First page in sidebar order, used by the /docs redirect

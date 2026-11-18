@@ -63,7 +63,8 @@ function GeminiIcon() {
   );
 }
 
-function Footer() {
+// inDocs: the Docs link stays in the same tab (landing page keeps opening a new tab)
+function Footer({ inDocs = false }: { inDocs?: boolean }) {
   return (
     <motion.footer className="relative text-gray-200 pb-0 pt-16 overflow-hidden bg-[#121214] border-t border-zinc-800/80 rounded-t-[3rem] z-999999 lg:z-9999999999">
       <motion.div className="w-full max-w-7xl px-6 md:px-10 mx-auto">
@@ -172,7 +173,7 @@ function Footer() {
               <h4 className="font-semibold mb-4 text-white text-sm md:text-base whitespace-nowrap">OTHERS</h4>
               <ul className="space-y-3 text-xs md:text-sm">
                 <li><Link href="/contact" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Contact Us</Link></li>
-                <li><a href="/docs" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Docs</a></li>
+                <li><Link href="/docs" {...(inDocs ? {} : { target: "_blank", rel: "noopener noreferrer" })} className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Docs</Link></li>
                 <li><a href="https://huggingface.co/codemateai/CodeMate-v0.1" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Hugging Face</a></li>
                 <li><a href="/docs/policies-refund-policy" target="_blank" rel="noopener noreferrer" className="text-zinc-400 hover:text-white transition-colors duration-200 hover:underline">Refund Policy</a></li>
               </ul>

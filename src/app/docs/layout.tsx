@@ -1,16 +1,19 @@
 import "./docs.css";
 import type { ReactNode } from "react";
 import { RootProvider } from "fumadocs-ui/provider/next";
-import { DocsLayout } from "fumadocs-ui/layouts/docs";
-import { Globe, Linkedin, Twitter, Youtube } from "lucide-react";
+import Footer from "@/components/footer";
 import { DocsThemeSync } from "./DocsThemeSync";
 import { AskProvider } from "./ask-ai/context";
 import { AskPanel } from "./ask-ai/Panel";
-import { AskBar, AskTrigger } from "./ask-ai/Trigger";
+import { AskFloating } from "./ask-ai/Trigger";
+import { DocsHeader } from "./components/DocsHeader";
+import { DocsSidebar } from "./components/DocsSidebar";
 import { buildPageTree, getPublishedNav, getPublishedIndex } from "@/lib/docs-data";
 
 export const revalidate = 60;
 
+// Own layout (modelled on docs.pangolin.net): header on top, sidebar and page in two columns, footer below.
+// `docs-shell` makes room for the Ask AI side panel on desktop (docs.css).
 export default async function Layout({ children }: { children: ReactNode }) {
   const [nav, pages] = await Promise.all([getPublishedNav(), getPublishedIndex()]);
 
@@ -18,21 +21,21 @@ export default async function Layout({ children }: { children: ReactNode }) {
     <RootProvider search={{ options: { api: "/api/search" } }}>
       <DocsThemeSync />
       <AskProvider>
-        <DocsLayout
-          tree={buildPageTree(nav, pages)}
-          nav={{ title: "CodeMate Docs", url: "/docs", children: <AskTrigger /> }}
-          // Fills the left of the sidebar footer bar next to the theme switch
-          links={[
-            { type: "icon", text: "CodeMate website", label: "CodeMate website", url: "https://codemate.ai", external: true, icon: <Globe /> },
-            { type: "icon", text: "LinkedIn", label: "LinkedIn", url: "https://www.linkedin.com/company/codemateai/", external: true, icon: <Linkedin /> },
-            { type: "icon", text: "X", label: "X", url: "https://twitter.com/codemateai", external: true, icon: <Twitter /> },
-            { type: "icon", text: "YouTube", label: "YouTube", url: "https://www.youtube.com/@codemateai", external: true, icon: <Youtube /> },
-          ]}
-        >
-          {children}
-        </DocsLayout>
+        <div className="docs-shell relative flex min-h-screen w-full flex-col overflow-x-clip bg-fd-background text-fd-foreground">
+          <DocsHeader />
+          <div className="mx-auto w-full max-w-[1440px] flex-1 px-5 sm:px-8">
+            <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-10 xl:gap-14">
+              <DocsSidebar tree={buildPageTree(nav, pages)} />
+              <main className="min-w-0">{children}</main>
+            </div>
+          </div>
+          {/* The landing footer sets z-index 999999; its own stacking context keeps it under the header and the Ask AI button */}
+          <div className="relative z-0">
+            <Footer inDocs />
+          </div>
+        </div>
         <AskPanel />
-        <AskBar />
+        <AskFloating />
       </AskProvider>
     </RootProvider>
   );

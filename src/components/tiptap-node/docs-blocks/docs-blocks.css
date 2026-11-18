@@ -123,17 +123,19 @@
   }
   .docs-code-copy {
     flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
     margin: 0;
-    padding: 0.2rem 0.6rem;
-    border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+    padding: 0;
+    border: 0;
     border-radius: 0.4rem;
     background: transparent;
     color: inherit;
-    font: inherit;
-    font-size: 0.72rem;
-    line-height: 1.2;
     cursor: pointer;
-    opacity: 0.75;
+    opacity: 0.6;
     transition: opacity 0.15s, background-color 0.15s;
   }
   .docs-code-copy:hover,
@@ -144,8 +146,8 @@
   /* No title: float over the code's top-right corner */
   .docs-code-copy-float {
     position: absolute;
-    top: 0.5rem;
-    right: 0.5rem;
+    top: 0.4rem;
+    right: 0.4rem;
   }
 }
 
@@ -154,7 +156,16 @@
 @layer utilities {
   @media (max-width: 40rem) {
     .docs-code:has(> .docs-code-copy-float) > pre {
-      padding-top: 2.5rem;
+      padding-top: 2.75rem;
+    }
+    /* 44px tap target on touch screens */
+    .docs-code-copy {
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+    .docs-code-copy-float {
+      top: 0;
+      right: 0;
     }
   }
 }

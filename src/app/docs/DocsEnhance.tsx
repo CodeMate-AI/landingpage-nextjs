@@ -3,6 +3,13 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
+const svg = (body: string) =>
+  `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${body}</svg>`;
+// lucide "clipboard" and "check"
+const CLIPBOARD = svg('<rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>');
+const CHECK = svg('<path d="M20 6 9 17l-5-5"/>');
+const CROSS = svg('<path d="M18 6 6 18"/><path d="m6 6 12 12"/>');
+
 // Progressive enhancement for published docs HTML (rendered with dangerouslySetInnerHTML):
 // wraps each code block, shows its title and adds a Copy button. Without JS the plain block still reads fine.
 export function DocsEnhance() {
@@ -33,17 +40,22 @@ export function DocsEnhance() {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "docs-code-copy";
-      btn.textContent = "Copy";
-      btn.setAttribute("aria-label", "Copy code");
+      // Icon-only button (clipboard, then a check for 2s); the label is for screen readers and the tooltip
+      const show = (icon: string, label: string) => {
+        btn.innerHTML = icon;
+        btn.setAttribute("aria-label", label);
+        btn.title = label;
+      };
+      show(CLIPBOARD, "Copy code");
       btn.addEventListener("click", async () => {
         try {
           await navigator.clipboard.writeText(pre.innerText.replace(/\n$/, ""));
-          btn.textContent = "Copied";
+          show(CHECK, "Copied");
         } catch {
-          btn.textContent = "Copy failed";
+          show(CROSS, "Copy failed");
         }
         const t = window.setTimeout(() => {
-          btn.textContent = "Copy";
+          show(CLIPBOARD, "Copy code");
           timers.delete(t);
         }, 2000);
         timers.add(t);

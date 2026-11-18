@@ -185,7 +185,8 @@ function formatTableCells(html: string): string {
           return `<td class="cell-product"><span class="icon-square icon-square-cross" title="Not supported">✕</span></td>`;
         }
         if (text) {
-          return `<td class="cell-product"><span class="badge-text-clean">${text}</span></td>`;
+          const withLinks = content.replace(/<(?!\/?a\b)[^>]*>/gi, "").trim(); // keep links, drop other tags
+          return `<td class="cell-product"><span class="badge-text-clean">${withLinks}</span></td>`;
         }
         return `<td class="cell-product"></td>`;
       })}</tr>`;

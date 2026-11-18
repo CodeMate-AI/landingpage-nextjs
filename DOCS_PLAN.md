@@ -109,5 +109,20 @@ Rebuilt on the AI SDK chat protocol with live search steps, Stop generating, Ret
 - Tested: toolbar and nesting, link validation and inserts, Related Docs picker, public rendering (temporary route, since removed), no horizontal scroll at 320, 375, 768 and desktop, blog editor regression
 - Not verified: real Ctrl+V into the link field (only paste isolation checked), a published page containing Related Docs, light mode and tablet outside the pages already checked. The video placeholder no longer lists MP4, YouTube, Vimeo
 
+## Docs UI refresh (2026-11-17)
+Own layout modelled on docs.pangolin.net (similar, not exact; our colours, no orange). The Fumadocs `DocsLayout` and its CSS overrides are gone. Fumadocs is still used for the search dialog (`RootProvider`), the `prose` content styles and the TOC scroll tracking.
+- Layout: `src/app/docs/layout.tsx` renders `DocsHeader`, a two-column grid (`DocsSidebar` 248px | page) and the landing footer (`inDocs` keeps its Docs link in the same tab). Components are in `src/app/docs/components/`: `DocsHeader` (logo, Docs badge, search, CodeMate AI button, Website and Download links, theme toggle, Get started button), `DocsSidebar` (sticky, own scroll, no collapse button), `DocsMobileBar` (Menu drawer and On this page list below lg, 44px rows), `Toc` (xl and up), `PageNav` (previous and next), `ThemeToggle`
+- Page: `src/app/docs/[slug]/page.tsx` builds its own title, label (group name), description, Copy page / Open / CodeMate AI buttons, content, previous/next and TOC. Order comes from `flattenNav` in `src/lib/docs-data.ts`
+- Change links here: `LINKS` and `GET_STARTED` at the top of `DocsHeader.tsx` (Get started points to https://app.codemate.ai/download)
+- Ask AI is called "CodeMate AI". A floating bar bottom-right on md and up, a round button on phones (`ask-ai/Trigger.tsx`). On lg and up the panel is a right side panel that pushes the page (`data-ai-open` on `<html>`, `.docs-shell` in `docs.css`); below lg it overlays, full-screen on phones
+- Checked in the browser: 1440, 768 and 375 wide, dark and light; no sideways scroll; search lines up with the content column; Menu drawer, On this page, panel and floating button work; touch targets 44px on phones. `tsc` clean. `npm run build` passes (2026-11-18)
+- The footer sits in a `relative z-0` wrapper in `layout.tsx`: the landing footer has `z-index: 999999`, which otherwise covered the floating Ask button and could overlay the sticky header. Light mode rechecked at 768 and 375 (header, Menu drawer rows 44px, button above the footer, no sideways scroll)
+- Header polish: logo text is "CodeMate" (semibold) plus muted "Documentation" (no badge; the word hides below 340px). At lg and up the header is a 3-column grid so the search sits in the middle of the screen; the Ask AI button was removed from the header
+- Ask AI has one entry point per screen: the floating bar (md and up) or round button (phones). The "CodeMate AI" button next to Copy was removed
+- Copy/Open is a GitBook-style split button ("Copy" | chevron) on the right of the title; the menu has Copy page, View as Markdown, Open in ChatGPT / Claude / Gemini, each with a description (`ViewOptions.tsx`). No MCP "Connect" rows because there is no MCP endpoint yet
+- Phone drawer has its own header (logo, CodeMate Documentation, close); sidebar top padding and scroll-into-view fixed so "Overview" starts at the top. Code block scrollbars are thin with a transparent track (`docs.css`)
+- Open: the landing footer is about 1000px tall on a phone; the 35 GitBook images and other items above are unchanged
+
+
 ## Ask AI updates (2026-11-17)
 Chat history is a sliding window of the newest 30 messages, so long chats no longer fail. Clearer error messages with Retry and New chat, 4 gateway retries, the assistant says "CodeMate AI", request body size cap, in-memory rate-limit fallback. Details in `ASK_AI_IMPLEMENTATION.md`.

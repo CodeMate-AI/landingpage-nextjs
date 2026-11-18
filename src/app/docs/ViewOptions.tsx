@@ -3,11 +3,8 @@
 // "Copy Markdown" button and "Open" popover (View as Markdown, Open in ChatGPT / Claude / Gemini).
 // Layout and prompts follow fosrl/docs components/view-options.tsx (MIT), adapted to Radix popover.
 import { useState, type ReactNode } from "react"
-import { buttonVariants } from "fumadocs-ui/components/ui/button"
 import { Popover, PopoverContent, PopoverTrigger } from "fumadocs-ui/components/ui/popover"
-import { Check, ChevronDown, Copy, ExternalLink, Text } from "lucide-react"
-
-const btn = `${buttonVariants({ variant: "secondary", size: "sm" })} gap-2`
+import { ArrowUpRight, Check, ChevronDown, Copy, Text } from "lucide-react"
 
 export function ViewOptions({ slug, pageUrl }: { slug: string; pageUrl: string }) {
   const [copied, setCopied] = useState<"idle" | "done" | "error">("idle")
@@ -26,41 +23,64 @@ export function ViewOptions({ slug, pageUrl }: { slug: string; pageUrl: string }
   }
 
   const prompt = `Read ${pageUrl}, I want to ask questions about it.`
-  const items: { title: string; href: string; icon: ReactNode }[] = [
-    { title: "View as Markdown", href: markdownUrl, icon: <Text /> },
-    { title: "Open in ChatGPT", href: `https://chatgpt.com/?${new URLSearchParams({ prompt, hints: "search" })}`, icon: <OpenAIIcon /> },
-    { title: "Open in Claude", href: `https://claude.ai/new?${new URLSearchParams({ q: prompt })}`, icon: <ClaudeIcon /> },
-    // gemini.google.com ignores prompt params; Google AI Mode is Gemini and reads `q`
-    { title: "Open in Gemini", href: `https://www.google.com/search?${new URLSearchParams({ udm: "50", q: prompt })}`, icon: <GeminiIcon /> },
+  // Rows of the menu, in two groups (GitBook style): title, one-line description, optional external arrow
+  const groups: { title: string; desc: string; href?: string; icon: ReactNode }[][] = [
+    [
+      { title: "Copy page", desc: "Copy page as Markdown for LLMs", icon: <Copy /> },
+      { title: "View as Markdown", desc: "View this page as plain text", href: markdownUrl, icon: <Text /> },
+    ],
+    [
+      { title: "Open in ChatGPT", desc: "Ask ChatGPT about this page", href: `https://chatgpt.com/?${new URLSearchParams({ prompt, hints: "search" })}`, icon: <OpenAIIcon /> },
+      { title: "Open in Claude", desc: "Ask Claude about this page", href: `https://claude.ai/new?${new URLSearchParams({ q: prompt })}`, icon: <ClaudeIcon /> },
+      // gemini.google.com ignores prompt params; Google AI Mode is Gemini and reads `q`
+      { title: "Open in Gemini", desc: "Ask Gemini about this page", href: `https://www.google.com/search?${new URLSearchParams({ udm: "50", q: prompt })}`, icon: <GeminiIcon /> },
+    ],
   ]
+  const row = "flex min-h-11 w-full cursor-pointer items-start gap-3 rounded-lg p-2.5 text-start hover:bg-fd-accent hover:text-fd-accent-foreground [&_svg]:size-4 [&_svg]:shrink-0"
 
   return (
-    <div className="docs-view-options not-prose mb-6 flex flex-wrap items-center gap-2">
-      <button type="button" className={btn} onClick={copy} aria-live="polite">
-        {copied === "done" ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-        {copied === "done" ? "Copied" : copied === "error" ? "Copy failed" : "Copy Markdown"}
-      </button>
-      <Popover>
-        <PopoverTrigger className={btn}>
-          Open
-          <ChevronDown className="size-3.5 text-fd-muted-foreground" />
-        </PopoverTrigger>
-        <PopoverContent className="flex flex-col">
-          {items.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              target="_blank"
-              rel="noreferrer noopener"
-              className="inline-flex items-center gap-2 rounded-lg p-2 text-sm hover:bg-fd-accent hover:text-fd-accent-foreground [&_svg]:size-4"
-            >
-              {item.icon}
-              {item.title}
-              <ExternalLink className="ms-auto size-3.5 text-fd-muted-foreground" />
-            </a>
-          ))}
-        </PopoverContent>
-      </Popover>
+    <div className="docs-view-options not-prose ms-auto flex shrink-0 items-center">
+      {/* Split button: Copy | chevron */}
+      <div className="inline-flex overflow-hidden rounded-lg border border-fd-border bg-fd-secondary/50 text-sm">
+        <button type="button" className="inline-flex min-h-11 cursor-pointer items-center gap-2 px-3 sm:min-h-9 font-medium transition hover:bg-fd-accent" onClick={copy} aria-live="polite">
+          {copied === "done" ? <Check className="size-4" /> : <Copy className="size-4" />}
+          {copied === "done" ? "Copied" : copied === "error" ? "Copy failed" : "Copy"}
+        </button>
+        <Popover>
+          <PopoverTrigger aria-label="More page options" className="group inline-flex min-h-11 cursor-pointer items-center border-s border-fd-border px-2.5 sm:min-h-9 sm:px-2 transition hover:bg-fd-accent">
+            <ChevronDown className="size-4 text-fd-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
+          </PopoverTrigger>
+          <PopoverContent align="end" className="flex w-[min(21rem,calc(100vw-2rem))] flex-col p-2">
+            {groups.map((g, gi) => (
+              <div key={gi} className={gi > 0 ? "mt-1 border-t border-fd-border pt-1" : undefined}>
+                {g.map((item) => {
+                  const body = (
+                    <>
+                      {item.icon}
+                      <span className="flex flex-col">
+                        <span className="flex items-center gap-1.5 text-sm font-semibold">
+                          {item.title}
+                          {item.href && <ArrowUpRight className="size-3.5 text-fd-muted-foreground" aria-hidden />}
+                        </span>
+                        <span className="text-xs text-fd-muted-foreground">{item.desc}</span>
+                      </span>
+                    </>
+                  )
+                  return item.href ? (
+                    <a key={item.title} href={item.href} target="_blank" rel="noreferrer noopener" className={row}>
+                      {body}
+                    </a>
+                  ) : (
+                    <button key={item.title} type="button" onClick={copy} className={row}>
+                      {body}
+                    </button>
+                  )
+                })}
+              </div>
+            ))}
+          </PopoverContent>
+        </Popover>
+      </div>
     </div>
   )
 }
