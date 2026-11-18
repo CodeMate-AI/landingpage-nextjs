@@ -2,6 +2,7 @@
 
 import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer, type NodeViewProps } from "@tiptap/react"
 import { TabNode, TabsNode } from "@/lib/docs-blocks"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import "./docs-blocks.css"
 
 function TabsView({ node, getPos, editor }: NodeViewProps) {
@@ -48,9 +49,7 @@ function TabView({ node, getPos, editor, updateAttributes }: NodeViewProps) {
           aria-label="Tab title"
           onChange={(e) => updateAttributes({ title: e.target.value })}
         />
-        <button type="button" className="docs-tab-remove" onMouseDown={(e) => e.preventDefault()} onClick={removeTab}>
-          Remove
-        </button>
+        <NodeCloseButton inline label="Remove tab" onClick={removeTab} />
       </div>
       <NodeViewContent className="docs-tab-body" />
     </NodeViewWrapper>

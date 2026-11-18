@@ -58,7 +58,11 @@
     pointer-events: none;
     transition: opacity 0.15s;
   }
-  /* Phones: the bar wraps to two rows, so leave room for it above the callout (editor only) */
+  /* Leave room for the bar above the callout (editor only), or it sits on the callout above it */
+  .docs-callout:has(> .docs-callout-kind) {
+    margin-top: 2.5rem;
+  }
+  /* Phones: the bar wraps to two rows, so it needs more */
   @media (max-width: 640px) {
     .docs-callout:has(> .docs-callout-kind) {
       margin-top: 3.25rem;
@@ -69,7 +73,7 @@
     opacity: 1;
     pointer-events: auto;
   }
-  .docs-callout-kind button {
+  .docs-callout-kind button:not(.tiptap-node-close) {
     padding: 0.15rem 0.5rem;
     border: 0;
     border-radius: 0.375rem;
@@ -81,14 +85,14 @@
     cursor: pointer;
     transition: background-color 0.15s;
   }
-  .docs-callout-kind button:hover {
+  .docs-callout-kind button:not(.tiptap-node-close):hover {
     background: color-mix(in srgb, currentColor 12%, transparent);
   }
   .docs-callout-kind button[aria-pressed="true"] {
     background: var(--accent);
     color: #fff;
   }
-  .docs-callout-kind button:focus-visible {
+  .docs-callout-kind button:not(.tiptap-node-close):focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 1px;
   }
@@ -897,9 +901,11 @@
    (.docs-frame) already have their own frame, so they are skipped. */
 @layer components {
   [data-docs-content] figure.blog-media-figure:not(.docs-frame *) img.blog-image,
+  [data-docs-content] img.illustration-showcase-img,
+  [data-docs-content] img.bento-media-img,
   [data-docs-content] .video-embed-container:not(.docs-frame *, :has(.video-embed-container)),
   .simple-editor-wrapper[data-docs-blocks] .tiptap-media-figure:not(.docs-frame *) img.blog-image,
-  .simple-editor-wrapper[data-docs-blocks] .tiptap-video-node > :first-child {
+  .simple-editor-wrapper[data-docs-blocks] .tiptap-video-node > .tiptap-node-close + * {
     margin: 0.5rem;
     max-width: calc(100% - 1rem);
     border: 0 !important;
@@ -918,12 +924,14 @@
    players keep a true 16:9 box (the old padding-bottom trick is a % of the parent, so it letterboxes once
    the frame margin narrows the player). */
 @layer components {
-  [data-docs-content] figure.blog-media-figure:not(.docs-frame *) img.blog-image {
+  [data-docs-content] figure.blog-media-figure:not(.docs-frame *) img.blog-image,
+  [data-docs-content] img.illustration-showcase-img,
+  [data-docs-content] img.bento-media-img {
     width: calc(100% - 1rem);
     height: auto;
   }
   [data-docs-content] .video-embed-container:has(> iframe),
-  .simple-editor-wrapper[data-docs-blocks] .tiptap-video-node > :first-child:has(> iframe) {
+  .simple-editor-wrapper[data-docs-blocks] .tiptap-video-node > .tiptap-node-close + *:has(> iframe) {
     height: auto !important;
     padding-bottom: 0 !important;
     aspect-ratio: 16 / 9;

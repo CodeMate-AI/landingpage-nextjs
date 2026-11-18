@@ -20,6 +20,15 @@
     cursor: pointer;
     transition: background 0.15s, border-color 0.15s;
   }
+  /* In a toolbar row: same look, but part of the row's flow and slightly smaller */
+  .tiptap-node-close.tiptap-node-close--inline {
+    position: static;
+    flex: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin: 0;
+    padding: 0;
+  }
   .tiptap-node-close:hover {
     background: #dc2626;
     border-color: #dc2626;

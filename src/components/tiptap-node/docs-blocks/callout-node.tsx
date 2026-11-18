@@ -2,6 +2,7 @@
 
 import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer, type NodeViewProps } from "@tiptap/react"
 import { CALLOUT_KINDS, CalloutNode, type CalloutKind } from "@/lib/docs-blocks"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import "./docs-blocks.css"
 
 const LABELS: Record<CalloutKind, string> = { note: "Note", info: "Info", tip: "Tip", warning: "Warning", check: "Check", danger: "Danger" }
@@ -29,9 +30,7 @@ function CalloutView({ node, updateAttributes, deleteNode }: NodeViewProps) {
             {LABELS[k]}
           </button>
         ))}
-        <button type="button" aria-label="Remove callout" onMouseDown={(e) => e.preventDefault()} onClick={deleteNode}>
-          ✕
-        </button>
+        <NodeCloseButton inline label="Remove callout" onClick={deleteNode} />
       </div>
       <NodeViewContent className="docs-callout-body" />
     </NodeViewWrapper>

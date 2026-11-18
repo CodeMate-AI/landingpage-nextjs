@@ -92,25 +92,6 @@
         background: #1d4ed8;
       }
     }
-
-    .bento-btn-delete {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.25rem;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: #ef4444;
-      background: rgba(239, 68, 68, 0.1);
-      border: 1px solid rgba(239, 68, 68, 0.25);
-      border-radius: 6px;
-      padding: 0.35rem 0.625rem;
-      cursor: pointer;
-      transition: background-color 0.15s ease;
-
-      &:hover {
-        background: rgba(239, 68, 68, 0.2);
-      }
-    }
   }
 
   /* Grid Canvas */
@@ -290,14 +271,6 @@
       &.active {
         background: #3b82f6;
         color: #ffffff;
-      }
-
-      &.delete-btn {
-        color: #f87171;
-        &:hover {
-          background: rgba(239, 68, 68, 0.2);
-          color: #ef4444;
-        }
       }
     }
   }

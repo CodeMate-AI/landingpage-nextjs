@@ -6,6 +6,7 @@ import { Node } from "@tiptap/core"
 import { adminFetch } from "@/lib/admin-api-client"
 import { encodeJsonAttr } from "@/lib/tiptap-json-attr"
 import { CurrentPostContext } from "@/components/tiptap-templates/simple/simple-editor"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import "./reference-blogs-node.scss"
 
 export interface ReferenceBlogItem {
@@ -204,9 +205,7 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
       <div className="ref-modal-container" onClick={(e) => e.stopPropagation()}>
         <div className="ref-modal-header">
           <h3>{isDocs ? "Configure Related Docs" : "Configure Reference Blogs"}</h3>
-          <button type="button" className="ref-modal-close" onClick={onClose} aria-label="Close dialog">
-            &times;
-          </button>
+          <NodeCloseButton inline label="Close dialog" onClick={onClose} />
         </div>
 
         <div className="ref-modal-body">
@@ -377,15 +376,7 @@ export const ReferenceBlogsModal: React.FC<ReferenceBlogsModalProps> = ({
                       >
                         ▼
                       </button>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveItem(item.id || item.slug)}
-                        title="Remove"
-                        aria-label="Remove"
-                        style={{ color: "#ef4444" }}
-                      >
-                        &times;
-                      </button>
+                      <NodeCloseButton inline label="Remove" onClick={() => handleRemoveItem(item.id || item.slug)} />
                     </div>
                   </div>
                 ))}
@@ -480,13 +471,7 @@ const ReferenceBlogsNodeView = ({
             >
               {isDocs ? "Configure Related Docs" : "Configure Checklist"}
             </button>
-            <button
-              type="button"
-              className="ref-blogs-btn-delete"
-              onClick={deleteNode}
-            >
-              Remove
-            </button>
+            <NodeCloseButton inline label="Remove block" onClick={deleteNode} />
           </div>
         </div>
 

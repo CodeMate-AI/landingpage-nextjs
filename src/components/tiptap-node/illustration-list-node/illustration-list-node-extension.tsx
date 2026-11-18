@@ -7,6 +7,7 @@ import { adminFetch } from "@/lib/admin-api-client";
 import { isSafeUrl } from "@/lib/blog-compiler";
 import { encodeJsonAttr } from "@/lib/tiptap-json-attr";
 import { ILLUSTRATION_CARD_MIME, isPrivateCardDrag } from "../card-drag-guard";
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button";
 import "./illustration-list-node.scss";
 
 export interface IllustrationItem {
@@ -282,9 +283,7 @@ export const IllustrationListNodeView: React.FC<NodeViewProps> = ({
             <button type="button" className="illustration-list-btn-add" onClick={addItem}>
               + Add Card
             </button>
-            <button type="button" className="illustration-list-btn-delete" onClick={deleteNode}>
-              Remove List
-            </button>
+            <NodeCloseButton inline label="Remove list" onClick={deleteNode} />
           </div>
         </div>
 
@@ -381,15 +380,7 @@ export const IllustrationListNodeView: React.FC<NodeViewProps> = ({
                       >
                         ↓
                       </button>
-                      <button
-                        type="button"
-                        className="delete-btn"
-                        onClick={() => removeItem(item.id)}
-                        title="Remove card"
-                        aria-label="Remove card"
-                      >
-                        ✕
-                      </button>
+                      <NodeCloseButton inline label="Remove card" onClick={() => removeItem(item.id)} />
                     </div>
                   </div>
 

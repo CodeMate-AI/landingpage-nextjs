@@ -4,6 +4,7 @@ import { useRef, useState } from "react"
 import { NodeViewWrapper, ReactNodeViewRenderer, type NodeViewProps } from "@tiptap/react"
 import { FrameNode } from "@/lib/docs-blocks"
 import { handleImageUpload, handleVideoUpload } from "@/lib/tiptap-utils"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import "./docs-blocks.css"
 
 const isVideoUrl = (u: string) => /\.(mp4|webm|ogg|mov)(\?|$)/i.test(u)
@@ -71,9 +72,7 @@ function FrameView({ node, updateAttributes, deleteNode }: NodeViewProps) {
             Replace
           </button>
         )}
-        <button type="button" className="docs-tab-remove" onClick={deleteNode}>
-          Remove
-        </button>
+        <NodeCloseButton inline label="Remove media" onClick={deleteNode} />
       </div>
       {error && <p className="docs-frame-error" role="alert" contentEditable={false}>{error}</p>}
     </NodeViewWrapper>

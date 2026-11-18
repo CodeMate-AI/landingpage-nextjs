@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer, type NodeViewProps } from "@tiptap/react"
 import { AccordionNode, CardNode, CardsNode, StepNode, StepsNode } from "@/lib/docs-blocks"
 import { DOCS_ICONS } from "./docs-icons"
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import "./docs-blocks.css"
 import "./docs-icons.css"
 
@@ -117,9 +118,7 @@ function itemView(cls: string, opts: { min: number; kind: "step" | "card" | "acc
       <NodeViewWrapper className={`${cls} docs-item-edit`} data-type={cls.replace("docs-", "")}>
         <div className="docs-tab-head" contentEditable={false}>
           <input className="docs-tab-title-input" value={a.title ?? ""} placeholder="Title" aria-label="Title" onChange={(e) => updateAttributes({ title: e.target.value })} />
-          <button type="button" className="docs-tab-remove" onMouseDown={keepFocus} onClick={remove}>
-            Remove
-          </button>
+          <NodeCloseButton inline label={`Remove ${cls.replace("docs-", "")}`} onClick={remove} />
         </div>
         {opts.kind === "card" && (
           <>

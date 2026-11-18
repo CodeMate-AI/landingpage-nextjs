@@ -6,6 +6,7 @@ import { Node } from "@tiptap/core";
 import { adminFetch } from "@/lib/admin-api-client";
 import { encodeJsonAttr } from "@/lib/tiptap-json-attr";
 import { BENTO_CARD_MIME, isPrivateCardDrag } from "../card-drag-guard";
+import { NodeCloseButton } from "@/components/tiptap-node/node-close-button";
 import "./bento-grid-node.scss";
 
 function isBentoCardDrag(event: Event): boolean {
@@ -256,9 +257,7 @@ const BENTO_MEDIA_ACCEPTS: Record<BentoCardItem["mediaType"], string> = {
               + Add Card
             </button>
 
-            <button type="button" className="bento-btn-delete" onClick={deleteNode} title="Delete Entire Grid">
-              Remove Grid
-            </button>
+            <NodeCloseButton inline label="Remove grid" onClick={deleteNode} />
           </div>
         </div>
 
@@ -395,14 +394,7 @@ const BENTO_MEDIA_ACCEPTS: Record<BentoCardItem["mediaType"], string> = {
                       </span>
 
                       {/* Delete button */}
-                      <button
-                        type="button"
-                        className="bento-control-btn delete-btn"
-                        onClick={() => removeCard(card.id)}
-                        title="Delete Card"
-                      >
-                        ✕
-                      </button>
+                      <NodeCloseButton inline label="Remove card" onClick={() => removeCard(card.id)} />
                     </div>
                   </div>
 

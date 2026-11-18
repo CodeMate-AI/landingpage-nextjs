@@ -585,9 +585,7 @@ export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
       {error && (
         <div className="mt-2 text-xs text-red-400 bg-red-950/40 border border-red-800/50 rounded px-3 py-1.5 flex items-center justify-between" onClick={(e) => e.stopPropagation()}>
           <span>{error}</span>
-          <button type="button" onClick={() => setError(null)} className="ml-2 hover:text-white">
-            ✕
-          </button>
+          <NodeCloseButton inline label="Dismiss error" onClick={() => setError(null)} />
         </div>
       )}
     </NodeViewWrapper>

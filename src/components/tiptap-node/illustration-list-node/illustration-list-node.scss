@@ -77,22 +77,6 @@
     }
   }
 
-  .illustration-list-btn-delete {
-    font-size: 0.75rem;
-    font-weight: 500;
-    color: #ef4444;
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.25);
-    border-radius: 6px;
-    padding: 0.35rem 0.625rem;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-
-    &:hover {
-      background: rgba(239, 68, 68, 0.2);
-    }
-  }
-
   /* Section heading field */
   .illustration-list-section-title {
     margin-bottom: 1rem;
@@ -198,7 +182,7 @@
     align-items: center;
     gap: 0.25rem;
 
-    button {
+    button:not(.tiptap-node-close) {
       min-width: 1.5rem;
       height: 1.5rem;
       font-size: 0.75rem;
@@ -216,10 +200,6 @@
       &:disabled {
         opacity: 0.4;
         cursor: not-allowed;
-      }
-
-      &.delete-btn {
-        color: #ef4444;
       }
     }
   }
