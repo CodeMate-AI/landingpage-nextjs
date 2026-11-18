@@ -5,7 +5,7 @@ import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import { Plugin } from "@tiptap/pm/state"
 
 import { Heading } from "@tiptap/extension-heading"
-import { InputRule, textblockTypeInputRule, wrappingInputRule } from "@tiptap/core"
+import { textblockTypeInputRule } from "@tiptap/core"
 
 // --- Tiptap Core Extensions ---
 import { StarterKit } from "@tiptap/starter-kit"
@@ -80,6 +80,10 @@ const CustomHeading = Heading.extend({
 })
 
 const CustomTaskList = TaskList.extend({
+  // Drop the Mod-Shift-9 shortcut
+  addKeyboardShortcuts() {
+    return {}
+  },
   parseHTML() {
     return [
       {
@@ -132,31 +136,9 @@ const CustomTaskItem = TaskItem.extend({
     ]
   },
 
+  // Task lists are no longer offered: typing "[ ]" does nothing. The node stays so old content loads.
   addInputRules() {
-    return [
-      wrappingInputRule({
-        find: /^\s*(?:[-*+•\u2022]\s+)?\[([ |xX])?\]\s$/,
-        type: this.type,
-        getAttributes: (match) => ({
-          checked: match[1]?.toLowerCase() === "x",
-        }),
-      }),
-      new InputRule({
-        find: /^\s*\[([ |xX])?\]\s$/,
-        handler: ({ state, range, match, chain }) => {
-          const isChecked = match[1]?.toLowerCase() === "x"
-          const { $from } = state.selection
-          const parentName = $from.node(-1)?.type?.name
-          if (parentName === "listItem") {
-            chain()
-              .deleteRange({ from: range.from, to: range.to })
-              .toggleList("taskList", "taskItem")
-              .updateAttributes("taskItem", { checked: isChecked })
-              .run()
-          }
-        },
-      }),
-    ]
+    return []
   },
 }).configure({
   nested: true,
@@ -278,7 +260,7 @@ const MainToolbarContent = ({
         <FontDropdownMenu modal={false} baseFont={baseFont} onBaseFontChange={onBaseFontChange} />
         <ListDropdownMenu
           modal={false}
-          types={["bulletList", "orderedList", "taskList"]}
+          types={["bulletList", "orderedList"]}
         />
         <BlockquoteButton />
         <CodeBlockButton />
