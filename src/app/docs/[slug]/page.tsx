@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DocArticle } from "../DocArticle";
-import { compileTiptapToHtml } from "@/lib/blog-compiler";
+import { compileTiptapToHtml, extractFaqItems } from "@/lib/blog-compiler";
+// FAQPage structured data for pages with an FAQ block
+import { FaqJsonLd } from "@/components/faq-json-ld";
 import { buildPageTree, flattenNav, getPublishedIndex, getPublishedNav, getPublishedPage } from "@/lib/docs-data";
 import { highlightCodeBlocks } from "@/lib/docs-highlight";
 import { addHeadingIds } from "@/lib/docs-toc";
@@ -38,16 +40,20 @@ export default async function DocPage({ params }: Props) {
   const label = order[at]?.group;
 
   return (
-    <DocArticle
-      slug={slug}
-      title={page.title}
-      description={page.description}
-      label={label}
-      html={html}
-      toc={toc}
-      tree={buildPageTree(nav, pages)}
-      prev={at > 0 ? order[at - 1] : undefined}
-      next={at >= 0 ? order[at + 1] : undefined}
-    />
+    <>
+      {/* Emits nothing unless the page has an FAQ block */}
+      <FaqJsonLd items={extractFaqItems(page.content)} />
+      <DocArticle
+        slug={slug}
+        title={page.title}
+        description={page.description}
+        label={label}
+        html={html}
+        toc={toc}
+        tree={buildPageTree(nav, pages)}
+        prev={at > 0 ? order[at - 1] : undefined}
+        next={at >= 0 ? order[at + 1] : undefined}
+      />
+    </>
   );
 }

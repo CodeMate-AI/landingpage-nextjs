@@ -2,7 +2,9 @@ import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getDatabase } from "@/lib/mongodb";
-import { compileTiptapToHtml, calculateReadTime } from "@/lib/blog-compiler";
+import { compileTiptapToHtml, calculateReadTime, extractFaqItems } from "@/lib/blog-compiler";
+// FAQPage structured data for posts with an FAQ block
+import { FaqJsonLd } from "@/components/faq-json-ld";
 import BlogPostClient from "./BlogPostClient";
 
 export const revalidate = 60;
@@ -205,5 +207,11 @@ export default async function BlogPostPage({ params }: Props) {
     };
   });
 
-  return <BlogPostClient post={mappedPost as any} posts={allPosts as any} />;
+  return (
+    <>
+      {/* Emits nothing unless the post has an FAQ block */}
+      <FaqJsonLd items={extractFaqItems(source.content)} />
+      <BlogPostClient post={mappedPost as any} posts={allPosts as any} />
+    </>
+  );
 }
