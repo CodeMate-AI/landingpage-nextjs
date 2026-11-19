@@ -78,12 +78,15 @@ export function DocsMobileBar({ tree, toc, activeUrl }: { tree: PageTree.Root; t
             <button type="button" aria-label="Close menu" className="absolute inset-0 bg-black/50" onClick={() => setMenuAt(null)} />
             <div className="docs-scroll absolute inset-y-0 start-0 flex w-[min(20rem,85vw)] flex-col overflow-y-auto border-e border-fd-border bg-fd-background p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] text-fd-foreground">
               <div className="mb-3 flex items-center justify-between border-b border-fd-border pb-3">
-                <Link href="/docs" className="flex items-center gap-2.5" onClick={() => setMenuAt(null)}>
-                  <img src="/logos/brand/codemate-icon.svg" alt="" className="h-6 w-auto brightness-0 dark:brightness-100" />
-                  <span className="text-sm font-semibold" translate="no">
+                {/* Icon goes to the main site homepage; the title goes to the docs home */}
+                <div className="flex items-center gap-2.5">
+                  <Link href="/" aria-label="CodeMate homepage" className="rounded-md transition-opacity hover:opacity-80" onClick={() => setMenuAt(null)}>
+                    <img src="/logos/brand/codemate-icon.svg" alt="" className="h-6 w-auto brightness-0 dark:brightness-100" />
+                  </Link>
+                  <Link href="/docs" className="text-sm font-semibold" translate="no" onClick={() => setMenuAt(null)}>
                     CodeMate Documentation
-                  </span>
-                </Link>
+                  </Link>
+                </div>
                 <button type="button" aria-label="Close menu" onClick={() => setMenuAt(null)} className="inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-md text-fd-muted-foreground hover:text-fd-foreground">
                   <X className="size-5" aria-hidden />
                 </button>

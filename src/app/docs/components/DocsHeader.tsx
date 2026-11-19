@@ -21,13 +21,16 @@ export function DocsHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-fd-border bg-fd-background">
       <div className="mx-auto flex h-[var(--docs-header-height)] w-full max-w-[1440px] items-center gap-4 px-5 sm:px-8 lg:grid lg:grid-cols-[minmax(max-content,1fr)_minmax(0,34rem)_minmax(max-content,1fr)] lg:gap-6">
-        <Link href="/docs" className="flex shrink-0 items-center gap-2 sm:gap-2.5" aria-label="CodeMate Docs home">
-          {/* White icon: darkened in light mode */}
-          <img src="/logos/brand/codemate-icon.svg" alt="" className="h-7 w-auto brightness-0 dark:brightness-100" />
-          <span className="whitespace-nowrap text-sm font-semibold sm:text-base" translate="no">
+        {/* Icon goes to the main site homepage; the title goes to the docs home */}
+        <div className="flex shrink-0 items-center gap-2 sm:gap-2.5">
+          <Link href="/" aria-label="CodeMate homepage" className="rounded-md transition-opacity hover:opacity-80">
+            {/* White icon: darkened in light mode */}
+            <img src="/logos/brand/codemate-icon.svg" alt="" className="h-7 w-auto brightness-0 dark:brightness-100" />
+          </Link>
+          <Link href="/docs" aria-label="CodeMate Docs home" className="whitespace-nowrap text-sm font-semibold sm:text-base" translate="no">
             CodeMate <span className="max-[339px]:hidden">Documentation</span>
-          </span>
-        </Link>
+          </Link>
+        </div>
 
         {/* lg:contents puts the search and the right group straight into the 3-column grid: search sits in the middle of the screen */}
         <div className="flex min-w-0 flex-1 items-center gap-4 lg:contents">
