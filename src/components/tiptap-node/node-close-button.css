@@ -33,6 +33,18 @@
     background: #dc2626;
     border-color: #dc2626;
   }
+  /* Second step of removing the last item: a red pill asking to remove the whole block */
+  .tiptap-node-close.tiptap-node-close--armed {
+    width: auto;
+    padding: 0 0.6rem;
+    background: #dc2626;
+    border-color: #dc2626;
+  }
+  .tiptap-node-close-text {
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
   .tiptap-node-close:focus-visible {
     outline: 2px solid #fff;
     outline-offset: 2px;

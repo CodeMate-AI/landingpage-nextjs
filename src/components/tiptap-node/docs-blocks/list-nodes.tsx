@@ -5,6 +5,8 @@ import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer, type NodeViewP
 import { AccordionNode, CardNode, CardsNode, StepNode, StepsNode } from "@/lib/docs-blocks"
 import { DOCS_ICONS } from "./docs-icons"
 import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
+// Labelled body area and the remove-or-remove-block helper shared by all blocks
+import { BodyField, removeItem } from "./body-field"
 import "./docs-blocks.css"
 import "./docs-icons.css"
 
@@ -94,16 +96,19 @@ function containerView(cls: string, itemType: string, label: string, attrs: (n: 
 }
 
 // Item view: inline title input, Remove button, per-type options, editable body.
-// `min` = how many siblings must remain (steps and cards need one; an accordion can go).
-function itemView(cls: string, opts: { min: number; kind: "step" | "card" | "accordion" }) {
-  return function ItemView({ node, getPos, editor, updateAttributes }: NodeViewProps) {
+// Steps and cards live in a container (removing the last one removes the block); an accordion stands alone.
+// Per kind: title hint, body label and body hint, so writers know what goes where.
+const COPY = {
+  step: { title: "Step title", body: "Description", hint: "Explain what to do in this step..." },
+  card: { title: "Card title", body: "Description", hint: "Short text shown on the card..." },
+  accordion: { title: "Accordion title", body: "Content", hint: "Text shown when it opens..." },
+}
+function itemView(cls: string, opts: { kind: "step" | "card" | "accordion" }) {
+  return function ItemView({ node, getPos, editor, updateAttributes, deleteNode }: NodeViewProps) {
     const a = node.attrs
-    const remove = () => {
-      const pos = getPos()
-      if (pos == null) return
-      if (opts.min && editor.state.doc.resolve(pos).parent.childCount <= opts.min) return
-      editor.chain().focus().deleteRange({ from: pos, to: pos + node.nodeSize }).run()
-    }
+    const copy = COPY[opts.kind]
+    // The last card or step asks (inline, on the button) before removing the whole block
+    const remove = (confirmed: boolean) => (opts.kind === "accordion" ? deleteNode() : removeItem({ editor, getPos, node }, confirmed))
     const text = (key: string, placeholder: string, label: string) => (
       <input
         className="docs-tab-title-input"
@@ -117,7 +122,7 @@ function itemView(cls: string, opts: { min: number; kind: "step" | "card" | "acc
     return (
       <NodeViewWrapper className={`${cls} docs-item-edit`} data-type={cls.replace("docs-", "")}>
         <div className="docs-tab-head" contentEditable={false}>
-          <input className="docs-tab-title-input" value={a.title ?? ""} placeholder="Title" aria-label="Title" onChange={(e) => updateAttributes({ title: e.target.value })} />
+          <input className="docs-tab-title-input" value={a.title ?? ""} placeholder={copy.title} aria-label={copy.title} onChange={(e) => updateAttributes({ title: e.target.value })} />
           <NodeCloseButton inline label={`Remove ${cls.replace("docs-", "")}`} onClick={remove} />
         </div>
         {opts.kind === "card" && (
@@ -151,7 +156,7 @@ function itemView(cls: string, opts: { min: number; kind: "step" | "card" | "acc
             </label>
           </div>
         )}
-        <NodeViewContent className={`${cls}-body`} />
+        <BodyField label={copy.body} placeholder={copy.hint} className={`${cls}-body`} />
       </NodeViewWrapper>
     )
   }
@@ -161,14 +166,14 @@ export const StepsNodeClient = StepsNode.extend({
   addNodeView: () => ReactNodeViewRenderer(containerView("docs-steps", "step", "step", (n) => ({ title: `Step ${n}` }))),
 })
 export const StepNodeClient = StepNode.extend({
-  addNodeView: () => ReactNodeViewRenderer(itemView("docs-step", { min: 1, kind: "step" })),
+  addNodeView: () => ReactNodeViewRenderer(itemView("docs-step", { kind: "step" })),
 })
 export const CardsNodeClient = CardsNode.extend({
   addNodeView: () => ReactNodeViewRenderer(containerView("docs-cards", "card", "card", (n) => ({ title: `Card ${n}` }))),
 })
 export const CardNodeClient = CardNode.extend({
-  addNodeView: () => ReactNodeViewRenderer(itemView("docs-card", { min: 1, kind: "card" })),
+  addNodeView: () => ReactNodeViewRenderer(itemView("docs-card", { kind: "card" })),
 })
 export const AccordionNodeClient = AccordionNode.extend({
-  addNodeView: () => ReactNodeViewRenderer(itemView("docs-accordion", { min: 0, kind: "accordion" })),
+  addNodeView: () => ReactNodeViewRenderer(itemView("docs-accordion", { kind: "accordion" })),
 })

@@ -4,6 +4,9 @@ import { NodeViewContent, NodeViewWrapper, ReactNodeViewRenderer, type NodeViewP
 import { FaqItemNode, FaqNode } from "@/lib/faq-blocks"
 import { NodeCloseButton } from "@/components/tiptap-node/node-close-button"
 import "./faq-node.css"
+// Labelled body area and the remove-or-remove-block helper shared with the docs blocks
+import { BodyField, removeItem } from "@/components/tiptap-node/docs-blocks/body-field"
+import "@/components/tiptap-node/docs-blocks/docs-blocks.css"
 
 const keepFocus = (e: React.MouseEvent) => e.preventDefault()
 
@@ -38,14 +41,10 @@ function FaqView({ node, getPos, editor, updateAttributes, deleteNode }: NodeVie
   )
 }
 
-// One question: badge, question input, remove (the block keeps at least one), editable answer
+// One question: badge, question input, remove, labelled answer
 function FaqItemView({ node, getPos, editor, updateAttributes }: NodeViewProps) {
-  const remove = () => {
-    const pos = getPos()
-    if (pos == null) return
-    if (editor.state.doc.resolve(pos).parent.childCount <= 1) return
-    editor.chain().focus().deleteRange({ from: pos, to: pos + node.nodeSize }).run()
-  }
+  // The last question asks before removing the whole FAQ block
+  const remove = (confirmed: boolean) => removeItem({ editor, getPos, node }, confirmed)
   return (
     <NodeViewWrapper className="faq-edit-item" data-type="faq-item">
       <div className="faq-edit-head" contentEditable={false}>
@@ -59,7 +58,7 @@ function FaqItemView({ node, getPos, editor, updateAttributes }: NodeViewProps) 
         />
         <NodeCloseButton inline label="Remove question" onClick={remove} />
       </div>
-      <NodeViewContent className="faq-edit-answer" />
+      <BodyField label="Answer" placeholder="Write the answer readers will see..." className="faq-edit-answer" />
     </NodeViewWrapper>
   )
 }

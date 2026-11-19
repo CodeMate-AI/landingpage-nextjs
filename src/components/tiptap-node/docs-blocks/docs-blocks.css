@@ -1086,3 +1086,58 @@
     display: none;
   }
 }
+
+/* Editor only: labelled body field inside every block (cards, steps, tabs, accordion, callouts, FAQ) */
+@layer components {
+  .docs-field {
+    margin-top: 0.6rem;
+  }
+  .docs-field-label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.55;
+    user-select: none;
+  }
+  /* The writing area reads as an input: dashed while idle, solid when typing */
+  .docs-field > [data-node-view-content] {
+    min-height: 2.75rem;
+    padding: 0.55rem 0.7rem;
+    border: 1px dashed color-mix(in srgb, currentColor 22%, transparent);
+    border-radius: 0.5rem;
+    background: color-mix(in srgb, currentColor 3%, transparent);
+    cursor: text;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+  }
+  .docs-field:hover > [data-node-view-content] {
+    border-color: color-mix(in srgb, currentColor 35%, transparent);
+  }
+  .docs-field:focus-within > [data-node-view-content] {
+    border-style: solid;
+    border-color: color-mix(in srgb, #3b82f6 70%, transparent);
+    background: color-mix(in srgb, currentColor 5%, transparent);
+  }
+  /* Hint text while the body is a single empty paragraph */
+  .docs-field [data-node-view-content-react] > p:only-child:has(> br.ProseMirror-trailingBreak:only-child)::before {
+    content: var(--docs-ph);
+    float: left;
+    height: 0;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+  /* Callout title, type and remove controls stay visible (dimmed) so writers can find them without hovering */
+  .docs-callout-kind {
+    opacity: 0.6;
+    pointer-events: auto;
+  }
+  /* FAQ answers keep their indent under the question */
+  .faq-edit-item > .docs-field {
+    margin: 0.25rem 1.25rem 1rem 3.5rem;
+  }
+  .docs-field > .faq-edit-answer {
+    padding: 0.55rem 0.7rem;
+  }
+}
