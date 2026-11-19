@@ -1141,3 +1141,118 @@
     padding: 0.55rem 0.7rem;
   }
 }
+
+/* Editor only: accordion block card (roomier, chevron preview, settings strip, real switch) */
+@layer components {
+  .docs-accordion.docs-item-edit {
+    padding: 1rem 1.25rem 1.1rem;
+    border-radius: 0.9rem;
+    transition: border-color 0.15s ease;
+  }
+  .docs-accordion.docs-item-edit:hover {
+    border-color: color-mix(in srgb, currentColor 26%, transparent);
+  }
+  .docs-accordion.docs-item-edit:focus-within {
+    border-color: color-mix(in srgb, #3b82f6 55%, transparent);
+  }
+  .docs-accordion.docs-item-edit > .docs-tab-head {
+    flex-wrap: nowrap;
+    gap: 0.65rem;
+    margin-bottom: 0.75rem;
+  }
+  .docs-accordion.docs-item-edit > .docs-tab-head .docs-tab-title-input {
+    padding: 0.55rem 0.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  /* Same chevron as the published accordion; turns when it opens by default */
+  .docs-acc-chevron {
+    flex: none;
+    width: 1.1rem;
+    height: 1.1rem;
+    background: currentColor;
+    opacity: 0.55;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 18 6-6-6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition: transform 0.2s ease;
+  }
+  .docs-acc-chevron[data-open="true"] {
+    transform: rotate(90deg);
+  }
+  /* Settings strip, indented to line up with the title text */
+  .docs-acc-opts {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem 1.25rem;
+    margin-left: 1.75rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.6rem;
+    background: color-mix(in srgb, currentColor 4%, transparent);
+    font-size: 0.78rem;
+  }
+  .docs-acc-opt-label {
+    margin-right: -0.6rem;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.55;
+  }
+  .docs-acc-opts .docs-opt-seg button {
+    transition: background-color 0.15s ease, transform 0.1s ease;
+  }
+  .docs-acc-opts .docs-opt-seg button:active {
+    transform: scale(0.96);
+  }
+  .docs-acc-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.2rem 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+  }
+  .docs-acc-track {
+    position: relative;
+    width: 1.9rem;
+    height: 1.05rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, currentColor 22%, transparent);
+    transition: background-color 0.15s ease, transform 0.1s ease;
+  }
+  .docs-acc-knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: calc(1.05rem - 4px);
+    height: calc(1.05rem - 4px);
+    border-radius: 50%;
+    background: #fff;
+    transition: transform 0.15s ease;
+  }
+  .docs-acc-switch[aria-checked="true"] .docs-acc-track {
+    background: #3b82f6;
+  }
+  .docs-acc-switch[aria-checked="true"] .docs-acc-knob {
+    transform: translateX(0.85rem);
+  }
+  .docs-acc-switch:active .docs-acc-track {
+    transform: scale(0.94);
+  }
+  .docs-acc-switch:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 3px;
+    border-radius: 0.4rem;
+  }
+  /* Body lines up under the title; its own padding returns (the older edit rule had set it to 0) */
+  .docs-accordion.docs-item-edit > .docs-field {
+    margin: 0.85rem 0 0 1.75rem;
+  }
+  .docs-accordion.docs-item-edit .docs-field > .docs-accordion-body {
+    padding: 0.55rem 0.7rem;
+  }
+}

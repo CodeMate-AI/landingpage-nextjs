@@ -18,7 +18,7 @@ const INSERTS: [string, object][] = [
   ["Tabs", group("tabs", "tab", "Tab")],
   ["Steps", group("steps", "step", "Step")],
   ["Cards", group("cards", "card", "Card", { href: null })],
-  ["Accordion", { type: "accordion", attrs: { title: "Question" }, content: [{ type: "paragraph" }] }],
+  ["Accordion", { type: "accordion", attrs: { title: "" }, content: [{ type: "paragraph" }] }],
 ]
 
 // Docs-only toolbar row. Rendered by SimpleEditor only when `docsBlocks` is set.

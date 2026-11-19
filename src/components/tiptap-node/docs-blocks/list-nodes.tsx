@@ -122,6 +122,8 @@ function itemView(cls: string, opts: { kind: "step" | "card" | "accordion" }) {
     return (
       <NodeViewWrapper className={`${cls} docs-item-edit`} data-type={cls.replace("docs-", "")}>
         <div className="docs-tab-head" contentEditable={false}>
+          {/* Accordion: a chevron like the published one, turned when "Open by default" is on */}
+          {opts.kind === "accordion" && <span className="docs-acc-chevron" data-open={!!a.open} aria-hidden="true" />}
           <input className="docs-tab-title-input" value={a.title ?? ""} placeholder={copy.title} aria-label={copy.title} onChange={(e) => updateAttributes({ title: e.target.value })} />
           <NodeCloseButton inline label={`Remove ${cls.replace("docs-", "")}`} onClick={remove} />
         </div>
@@ -142,18 +144,29 @@ function itemView(cls: string, opts: { kind: "step" | "card" | "accordion" }) {
           </>
         )}
         {opts.kind === "accordion" && (
-          <div className="docs-opt-row" contentEditable={false}>
+          // Settings strip: a labelled style choice and a real switch instead of a bare checkbox
+          <div className="docs-acc-opts" contentEditable={false}>
+            <span className="docs-acc-opt-label">Style</span>
             <span className="docs-opt-seg" role="group" aria-label="Style">
               {(["accordion", "expandable"] as const).map((v) => (
-                <button key={v} type="button" aria-pressed={a.variant === v} onMouseDown={keepFocus} onClick={() => updateAttributes({ variant: v })}>
+                <button
+                  key={v}
+                  type="button"
+                  aria-pressed={a.variant === v}
+                  title={v === "accordion" ? "Bordered box with a chevron" : "Quiet Show / Hide link"}
+                  onMouseDown={keepFocus}
+                  onClick={() => updateAttributes({ variant: v })}
+                >
                   {v === "accordion" ? "Accordion" : "Show / Hide"}
                 </button>
               ))}
             </span>
-            <label>
-              <input type="checkbox" checked={!!a.open} onChange={(e) => updateAttributes({ open: e.target.checked })} />
+            <button type="button" role="switch" aria-checked={!!a.open} className="docs-acc-switch" onMouseDown={keepFocus} onClick={() => updateAttributes({ open: !a.open })}>
+              <span className="docs-acc-track" aria-hidden="true">
+                <span className="docs-acc-knob" />
+              </span>
               Open by default
-            </label>
+            </button>
           </div>
         )}
         <BodyField label={copy.body} placeholder={copy.hint} className={`${cls}-body`} />
