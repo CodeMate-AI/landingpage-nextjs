@@ -15,6 +15,9 @@ export const DocPageSchema = z.object({
     content: z.array(TiptapNodeSchema).optional().default([]),
   }),
   saveMode: z.enum(["draft", "publish"]).default("draft"),
+  // Edit conflict guard: the version the client loaded, and an explicit "keep mine" override
+  version: z.number().int().nonnegative().optional(),
+  forceOverwrite: z.boolean().optional(),
 });
 
 export type DocPageInput = z.infer<typeof DocPageSchema>;
@@ -34,7 +37,15 @@ const level1 = z.union([page, group(level2)]);
 export const NavSchema = z.object({
   tree: z.array(z.union([page, group(level1)])),
   saveMode: z.enum(["draft", "publish"]).default("draft"),
+  // Edit conflict guard, same meaning as on DocPageSchema
+  version: z.number().int().nonnegative().optional(),
+  forceOverwrite: z.boolean().optional(),
 });
+
+// Mongo filter matching a record at the version the client loaded (records saved before versioning have none)
+export function versionFilter(version: number) {
+  return version === 0 ? { version: { $exists: false } } : { version };
+}
 
 // The fields that get frozen when a page is published
 export function buildSnapshot(d: DocPageInput) {

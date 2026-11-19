@@ -3,7 +3,7 @@ import { invalidateDocs } from "@/lib/docs-data";
 import { ObjectId } from "mongodb";
 import { withAuth } from "@/lib/authWrapper";
 import { getDocsDatabase } from "@/lib/mongodb";
-import { DocPageSchema, buildSnapshot, draftDiffers, removeSlug } from "@/lib/docs-validation";
+import { DocPageSchema, buildSnapshot, draftDiffers, removeSlug, versionFilter } from "@/lib/docs-validation";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -31,7 +31,7 @@ async function updateDoc(req: NextRequest, session: any, { params }: Ctx) {
     const existing = await db.collection("pages").findOne({ _id: new ObjectId(id) });
     if (!existing) return NextResponse.json({ error: "Page not found" }, { status: 404 });
 
-    const { saveMode, ...draft } = parsed.data;
+    const { saveMode, version, forceOverwrite, ...draft } = parsed.data;
     const publish = saveMode === "publish";
     const now = new Date();
     const snapshot = buildSnapshot(parsed.data);
@@ -42,6 +42,9 @@ async function updateDoc(req: NextRequest, session: any, { params }: Ctx) {
       lastModifiedBy: { email: session?.email || "", at: now },
       updatedAt: now,
     };
+    // Edit conflict guard: bump the version on every save
+    const checked = typeof version === "number" && !forceOverwrite;
+    $set.version = (checked ? version : existing.version || 0) + 1;
     if (publish) {
       Object.assign($set, {
         published: true,
@@ -54,7 +57,16 @@ async function updateDoc(req: NextRequest, session: any, { params }: Ctx) {
     }
 
     try {
-      await db.collection("pages").updateOne({ _id: existing._id }, { $set });
+      // Atomic: only writes if nobody saved since the client loaded this version
+      const filter = checked ? { _id: existing._id, ...versionFilter(version) } : { _id: existing._id };
+      const result = await db.collection("pages").updateOne(filter, { $set });
+      if (result.matchedCount === 0) {
+        const latest = await db.collection("pages").findOne({ _id: existing._id }, { projection: { lastModifiedBy: 1 } });
+        return NextResponse.json(
+          { error: "This page was changed in another tab or by another admin.", conflict: true, lastModifiedBy: latest?.lastModifiedBy || null },
+          { status: 409 }
+        );
+      }
     } catch (err: any) {
       if (err.code === 11000) return NextResponse.json({ error: "Slug already in use" }, { status: 409 });
       throw err;
@@ -75,13 +87,14 @@ async function updateDoc(req: NextRequest, session: any, { params }: Ctx) {
           );
         await db.collection("nav").updateOne(
           { _id: "main" as any },
-          { $set: { draft: rename(nav.draft || []), published: rename(nav.published || []) } }
+          // Bump the nav version so an open sidebar editor sees the rename as a newer save
+          { $set: { draft: rename(nav.draft || []), published: rename(nav.published || []) }, $inc: { version: 1 } }
         );
       }
     }
 
     if (publish) invalidateDocs();
-    return NextResponse.json({ success: true, slug: draft.slug });
+    return NextResponse.json({ success: true, slug: draft.slug, version: $set.version });
   } catch (error) {
     console.error("Update doc error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
@@ -105,7 +118,8 @@ async function deleteDoc(_req: NextRequest, _session: any, { params }: Ctx) {
       draft = removeSlug(draft, s);
       published = removeSlug(published, s);
     }
-    await db.collection("nav").updateOne({ _id: "main" as any }, { $set: { draft, published } });
+    // Bump the nav version so an open sidebar editor sees the removal as a newer save
+    await db.collection("nav").updateOne({ _id: "main" as any }, { $set: { draft, published }, $inc: { version: 1 } });
   }
 
   invalidateDocs();

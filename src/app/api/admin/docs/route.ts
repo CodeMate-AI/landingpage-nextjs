@@ -22,7 +22,8 @@ async function createDoc(req: NextRequest, session: any) {
     if (!parsed.success) {
       return NextResponse.json({ error: parsed.error.issues[0].message }, { status: 400 });
     }
-    const { saveMode, ...draft } = parsed.data;
+    // version/forceOverwrite only matter on updates; a new page starts at version 1
+    const { saveMode, version: _version, forceOverwrite: _force, ...draft } = parsed.data;
     const published = saveMode === "publish";
     const now = new Date();
 
@@ -33,6 +34,7 @@ async function createDoc(req: NextRequest, session: any) {
       publishedAt: published ? now : null,
       publishedVersion: published ? buildSnapshot(parsed.data) : null,
       hasDraftChanges: false,
+      version: 1,
       lastModifiedBy: { email: session?.email || "", at: now },
       createdAt: now,
       updatedAt: now,
@@ -42,7 +44,7 @@ async function createDoc(req: NextRequest, session: any) {
     try {
       const result = await db.collection("pages").insertOne(doc);
       if (published) invalidateDocs();
-      return NextResponse.json({ success: true, id: result.insertedId, slug: draft.slug }, { status: 201 });
+      return NextResponse.json({ success: true, id: result.insertedId, slug: draft.slug, version: 1 }, { status: 201 });
     } catch (err: any) {
       if (err.code === 11000) {
         return NextResponse.json({ error: "Slug already in use" }, { status: 409 });
