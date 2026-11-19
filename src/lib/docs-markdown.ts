@@ -94,6 +94,13 @@ function block(n: N): string {
         .join("\n");
     case "accordion":
       return `<details>\n<summary>${a.title ?? "Details"}</summary>\n\n${blocks(n.content)}\n\n</details>`;
+    // FAQ block: optional section title, then each question as a heading over its answer
+    case "faq": {
+      // Blank questions are skipped, like on the page; nothing left means no output
+      const qs = (n.content ?? []).filter((q) => String(q.attrs?.title ?? "").trim());
+      if (!qs.length) return "";
+      return [a.title ? `## ${a.title}` : "", ...qs.map((q) => `### ${q.attrs?.title}\n\n${blocks(q.content)}`)].filter(Boolean).join("\n\n");
+    }
     case "frame": {
       if (!a.src) return "";
       const media = a.kind === "video" ? `[Video](${abs(a.src)})` : `![${a.alt ?? ""}](${abs(a.src)})`;

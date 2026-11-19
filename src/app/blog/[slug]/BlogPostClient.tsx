@@ -141,6 +141,8 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
           card.classList.remove("open");
           answer.style.display = "none";
           badge.textContent = "+";
+          // Keep the FAQ block's real button in sync for screen readers
+          summary.setAttribute("aria-expanded", "false");
         } else {
           // Close any other open FAQ cards
           summaries.forEach((otherSummary) => {
@@ -151,12 +153,14 @@ export default function BlogPostClient({ post, posts, isPreview = false }: Props
               const otherBadge = otherCard.querySelector(".faq-circle-badge");
               if (otherAnswer) otherAnswer.style.display = "none";
               if (otherBadge) otherBadge.textContent = "+";
+              otherSummary.setAttribute("aria-expanded", "false");
             }
           });
 
           card.classList.add("open");
           answer.style.display = "block";
           badge.textContent = "−";
+          summary.setAttribute("aria-expanded", "true");
         }
       };
 

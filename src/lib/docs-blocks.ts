@@ -23,7 +23,8 @@ export const CodeTitle = Extension.create({
 });
 
 // Docs features that must not be placed inside one another (a callout in a card, tabs in a step, ...)
-export const DOCS_CONTAINERS = ["tabs", "steps", "cards", "accordion", "frame", "callout", "referenceBlogs"];
+// "faq" is listed so the FAQ block cannot be nested inside other docs blocks either
+export const DOCS_CONTAINERS = ["tabs", "steps", "cards", "accordion", "frame", "callout", "referenceBlogs", "faq"];
 
 // How many docs blocks sit inside another docs block
 function nestedCount(doc: PMNode) {
@@ -48,7 +49,8 @@ export const NoNestedDocsBlocks = Extension.create({
 });
 
 // Server-safe docs block definitions (no React). Used by generateHTML on the public page and,
-// extended with node views, by the docs editor. Blog documents never contain these nodes.
+// extended with node views, by the docs editor. Blog documents never contain these nodes
+// (the FAQ block, shared with the blog, lives in faq-blocks.ts).
 
 // Tabs: a `tabs` container of `tab` panels. The tab title is an attribute; DocsEnhance builds the
 // tab bar from `data-title` on the public page (without JS the panels simply stack).

@@ -1,0 +1,84 @@
+/* Editor look of the FAQ block, close to the published blog pills (dark cards, round badge) */
+@layer components {
+  .faq-edit {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+    padding: 1rem;
+    border: 1px dashed rgba(148, 163, 184, 0.35);
+    border-radius: 16px;
+  }
+  .faq-edit-title {
+    width: calc(100% - 2.5rem);
+    padding: 0.375rem 0.5rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: inherit;
+    font-size: 1.25rem;
+    font-weight: 700;
+    outline: none;
+  }
+  .faq-edit-title:focus {
+    border-color: rgba(59, 130, 246, 0.5);
+  }
+  .faq-edit-body > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .faq-edit-item {
+    background: #080c14;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    color: #cbd5e1;
+  }
+  .faq-edit-item:focus-within {
+    border-color: rgba(59, 130, 246, 0.4);
+  }
+  .faq-edit-head {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1rem;
+  }
+  .faq-edit-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: #161e2e;
+    color: #94a3b8;
+    font-weight: 700;
+  }
+  .faq-edit-question {
+    flex: 1;
+    min-width: 0;
+    background: transparent;
+    border: 0;
+    color: #f8fafc;
+    font-weight: 600;
+    outline: none;
+  }
+  .faq-edit-answer {
+    padding: 0 1.25rem 1rem 3.5rem;
+  }
+  .faq-edit-add {
+    align-self: flex-start;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 999px;
+    background: transparent;
+    color: inherit;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+  .faq-edit-add:hover {
+    border-color: rgba(59, 130, 246, 0.6);
+  }
+}

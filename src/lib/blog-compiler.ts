@@ -32,6 +32,15 @@ function expandIllustrationListHeadings(content: any): any {
   return {
     ...content,
     content: content.content.flatMap((node: any) => {
+      if (node?.type === "faq") {
+        // Questions left blank in the editor are not published; a block with none left is dropped
+        const items = (Array.isArray(node.content) ? node.content : []).filter((item: { attrs?: { title?: unknown } }) => typeof item?.attrs?.title === "string" && item.attrs.title.trim());
+        if (!items.length) return [];
+        const faq = { ...node, content: items };
+        // A titled block gets the same real heading as illustration lists
+        const faqTitle = typeof node.attrs?.title === "string" ? node.attrs.title.trim() : "";
+        return faqTitle ? [{ type: "heading", attrs: { level }, content: [{ type: "text", text: faqTitle }] }, faq] : [faq];
+      }
       const title = typeof node?.attrs?.sectionTitle === "string" ? node.attrs.sectionTitle.trim() : "";
       const items = Array.isArray(node?.attrs?.items) ? node.attrs.items : [];
       if (node?.type !== "illustrationList" || !title || !items.some(hasIllustrationContent)) return [node];
@@ -272,7 +281,8 @@ function formatLogos(html: string): string {
 }
 
 function formatFaqSection(html: string): string {
-  const faqHeadingRegex = /<h([2-4])[^>]*>([\s\S]*?(?:Frequently Asked Questions|FAQ|FAQs|Questions & Answers)[\s\S]*?)<\/h\1>/i;
+  // Skip a FAQ block's own title heading (it already renders pills); other FAQ headings are still formatted
+  const faqHeadingRegex = /<h([2-4])[^>]*>([\s\S]*?(?:Frequently Asked Questions|FAQ|FAQs|Questions & Answers)[\s\S]*?)<\/h\1>(?!<div data-title="[^"]*" data-type="faq")/i;
   const match = html.match(faqHeadingRegex);
   if (!match || match.index == null) return html;
 
@@ -282,7 +292,8 @@ function formatFaqSection(html: string): string {
   const afterHeading = html.substring(headingIndex + headingLength);
 
   // Find where the FAQ section ends (next heading or end of string)
-  const nextHeadingMatch = afterHeading.match(/<h[1-6][^>]*>/i);
+  // A FAQ block also ends the section, so it is never swallowed into the legacy pills
+  const nextHeadingMatch = afterHeading.match(/<h[1-6][^>]*>|<div[^>]*data-type="faq"/i);
   const faqSectionEndIndex = nextHeadingMatch && nextHeadingMatch.index != null ? nextHeadingMatch.index : afterHeading.length;
 
   const faqRawContent = afterHeading.substring(0, faqSectionEndIndex);
@@ -502,6 +513,10 @@ function nodeToPlainText(node: any): string {
       ]);
     case "referenceBlogs":
       return toLines([attrs.heading, ...list(attrs.blogs).map((blog) => blog?.title)]);
+    // FAQ titles and questions live in attributes, the answers in child nodes
+    case "faq":
+    case "faqItem":
+      return toLines([attrs.title, ...list(node.content).map(nodeToPlainText)]);
   }
 
   const children = list(node.content);
@@ -767,6 +782,33 @@ function formatIllustrationLists(html: string): string {
   });
 }
 
+// Turns the FAQ block's summary div (a div so it survives sanitizing) into a real toggle button.
+// Only the block's own markup matches, so heuristic FAQ sections and old posts are untouched.
+function formatFaqBlocks(html: string): string {
+  return html.replace(
+    /(<div data-type="faq-item" class="faq-pill-card">)<div class="faq-pill-summary" role="button">([\s\S]*?)<\/div>(?=<div class="faq-answer-body">)/g,
+    '$1<button type="button" aria-expanded="false" class="faq-pill-summary">$2</button>'
+  );
+}
+
+// Question and answer pairs of every FAQ block as plain text, for FAQPage structured data
+type FaqJsonNode = { type?: string; attrs?: { title?: unknown }; content?: FaqJsonNode[] };
+export function extractFaqItems(content: unknown): { question: string; answer: string }[] {
+  const items: { question: string; answer: string }[] = [];
+  const walk = (node: FaqJsonNode | undefined) => {
+    if (!node) return;
+    if (node.type === "faqItem") {
+      const question = typeof node.attrs?.title === "string" ? node.attrs.title.trim() : "";
+      const answer = (Array.isArray(node.content) ? node.content : []).map(nodeToPlainText).filter(Boolean).join("\n").trim();
+      if (question && answer) items.push({ question, answer });
+      return;
+    }
+    if (Array.isArray(node.content)) node.content.forEach(walk);
+  };
+  walk(content as FaqJsonNode | undefined);
+  return items;
+}
+
 export function compileTiptapToHtml(
   content: any,
   customSections?: { id: string; title: string }[],
@@ -803,7 +845,7 @@ export function compileTiptapToHtml(
   const sections = customSections && customSections.length > 0 ? customSections : extractSectionsFromTiptapJson(sanitizedContent);
   const headingHtml = injectHeadingIds(cleanHtml, sections);
   const finalHtml = formatLinks(
-    formatLogos(formatVideos((options?.skipFaq ? (h: string) => h : formatFaqSection)(formatReferenceBlogs(formatIllustrationLists(formatBentoGrids(formatTableCells(headingHtml)))))))
+    formatLogos(formatVideos((options?.skipFaq ? (h: string) => h : formatFaqSection)(formatReferenceBlogs(formatFaqBlocks(formatIllustrationLists(formatBentoGrids(formatTableCells(headingHtml))))))))
   );
 
   return { html: finalHtml, sections };
@@ -824,6 +866,10 @@ export function calculateWordCount(node: any): number {
       const itemText = `${item?.title || ""} ${item?.description || ""}`;
       count += itemText.trim().split(/\s+/).filter(Boolean).length;
     }
+  }
+  // FAQ block and question titles are attributes, so count them here (answers are child text nodes)
+  if ((node.type === "faq" || node.type === "faqItem") && typeof node.attrs?.title === "string") {
+    count += node.attrs.title.trim().split(/\s+/).filter(Boolean).length;
   }
   if (node.content && Array.isArray(node.content)) {
     for (const child of node.content) {

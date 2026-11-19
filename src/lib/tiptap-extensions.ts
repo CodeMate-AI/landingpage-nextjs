@@ -1,5 +1,7 @@
 import { StarterKit } from "@tiptap/starter-kit";
 import { AccordionNode, CalloutNode, CardNode, CardsNode, CodeTitle, FrameNode, StepNode, StepsNode, TabNode, TabsNode } from "@/lib/docs-blocks";
+// FAQ block, shared by the blog and docs editors
+import { FaqItemNode, FaqNode } from "@/lib/faq-blocks";
 import { Link } from "@tiptap/extension-link";
 import { Placeholder } from "@tiptap/extension-placeholder";
 import { Table } from "@tiptap/extension-table";
@@ -491,4 +493,7 @@ export const extensions = [
   CardNode,
   AccordionNode,
   FrameNode,
+  // FAQ block nodes so generateHTML can render them
+  FaqNode,
+  FaqItemNode,
 ];

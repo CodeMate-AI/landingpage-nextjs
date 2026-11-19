@@ -1019,3 +1019,70 @@
   height: 0.8rem;
 }
 }
+
+/* FAQ block on docs pages: the blog's pill shape, drawn with currentColor so it follows the light and dark themes */
+@layer components {
+  [data-docs-content] .faq-pill-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1.5rem 0;
+  }
+  [data-docs-content] .faq-pill-card {
+    border: 1px solid color-mix(in oklab, currentColor 14%, transparent);
+    border-radius: 14px;
+    background: color-mix(in oklab, currentColor 3%, transparent);
+    overflow: hidden;
+    transition: border-color 200ms ease, background-color 200ms ease;
+  }
+  [data-docs-content] .faq-pill-card:hover,
+  [data-docs-content] .faq-pill-card.open {
+    border-color: color-mix(in oklab, #3b82f6 45%, transparent);
+  }
+  [data-docs-content] .faq-pill-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    width: 100%;
+    padding: 0.875rem 1.125rem;
+    background: transparent;
+    border: 0;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+  [data-docs-content] .faq-circle-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.625rem;
+    height: 1.625rem;
+    border-radius: 999px;
+    background: color-mix(in oklab, currentColor 10%, transparent);
+    font-weight: 700;
+    line-height: 1;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+  [data-docs-content] .faq-pill-card.open .faq-circle-badge {
+    background: #2563eb;
+    color: #fff;
+  }
+  [data-docs-content] .faq-question-title {
+    font-weight: 600;
+  }
+  [data-docs-content] .faq-answer-body {
+    padding: 0 1.25rem 1rem 3.625rem;
+  }
+  [data-docs-content] .faq-answer-body > :first-child {
+    margin-top: 0;
+  }
+  [data-docs-content] .faq-answer-body > :last-child {
+    margin-bottom: 0;
+  }
+  /* Hidden only after DocsEnhance has wired the toggle */
+  [data-docs-content] .faq-js .faq-pill-card:not(.open) .faq-answer-body {
+    display: none;
+  }
+}

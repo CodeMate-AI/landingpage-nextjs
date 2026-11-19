@@ -140,5 +140,26 @@ export function DocsEnhance() {
     return () => timers.forEach((t) => window.clearTimeout(t));
   }, [pathname]);
 
+  // FAQ block: answers are hidden only once this class is added, so without JS they stay readable
+  useEffect(() => {
+    document.querySelectorAll("[data-docs-content] .faq-pill-container").forEach((el) => el.classList.add("faq-js"));
+    // One delegated listener; opening a question closes the others, like the blog
+    const onClick = (e: MouseEvent) => {
+      const summary = (e.target as Element | null)?.closest?.("[data-docs-content] .faq-pill-summary");
+      const card = summary?.closest(".faq-pill-card");
+      if (!summary || !card) return;
+      const open = !card.classList.contains("open");
+      card.closest(".faq-pill-container")?.querySelectorAll(".faq-pill-card").forEach((c) => {
+        const isThis = c === card && open;
+        c.classList.toggle("open", isThis);
+        c.querySelector(".faq-pill-summary")?.setAttribute("aria-expanded", String(isThis));
+        const badge = c.querySelector(".faq-circle-badge");
+        if (badge) badge.textContent = isThis ? "−" : "+";
+      });
+    };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
+  }, [pathname]);
+
   return null;
 }

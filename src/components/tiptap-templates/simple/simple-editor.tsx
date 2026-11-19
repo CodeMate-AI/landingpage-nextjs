@@ -170,6 +170,9 @@ import { DocsBlocksToolbar } from "@/components/tiptap-node/docs-blocks/docs-blo
 import { BentoGridIcon } from "@/components/tiptap-icons/bento-grid-icon"
 import { IllustrationListNode, createIllustrationItem } from "@/components/tiptap-node/illustration-list-node"
 import { IllustrationListIcon } from "@/components/tiptap-icons/illustration-list-icon"
+// FAQ block, available in both the blog and docs editors
+import { FaqIcon } from "@/components/tiptap-icons/faq-icon"
+import { FaqItemNodeClient, FaqNodeClient } from "@/components/tiptap-node/faq-node"
 import { CardDragGuard } from "@/components/tiptap-node/card-drag-guard"
 import "@/components/tiptap-node/blockquote-node/blockquote-node.scss"
 import "@/components/tiptap-node/code-block-node/code-block-node.scss"
@@ -448,6 +451,27 @@ const MainToolbarContent = ({
           <IllustrationListIcon className="tiptap-button-icon" />
           <span className="tiptap-button-text">List</span>
         </Button>
+        {/* FAQ block with one empty question; not offered inside tables or docs blocks */}
+        <Button
+          type="button"
+          variant="ghost"
+          disabled={isInsideTable || inDocsBlock}
+          data-disabled={isInsideTable || inDocsBlock}
+          onClick={() => {
+            if (isInsideTable || inDocsBlock) return
+            editor?.chain().focus().insertContent({
+              type: "faq",
+              attrs: { title: "" },
+              content: [{ type: "faqItem", attrs: { title: "" }, content: [{ type: "paragraph" }] }],
+            }).run()
+          }}
+          onMouseDown={(e) => e.preventDefault()}
+          title={isInsideTable ? "Cannot insert FAQ inside table" : inDocsBlock ? "Cannot insert FAQ inside another block" : "Insert FAQ"}
+          tooltip={isInsideTable ? "Cannot insert FAQ inside table" : inDocsBlock ? "Cannot insert FAQ inside another block" : "Insert FAQ"}
+        >
+          <FaqIcon className="tiptap-button-icon" />
+          <span className="tiptap-button-text">FAQ</span>
+        </Button>
       </ToolbarGroup>
       {docsBlocks && <DocsBlocksToolbar />}
     </>
@@ -672,6 +696,9 @@ export function SimpleEditor({
       ReferenceBlogsNode,
       BentoGridNode,
       IllustrationListNode,
+      // FAQ block nodes with their editor views
+      FaqNodeClient,
+      FaqItemNodeClient,
       CardDragGuard,
       CustomLink,
       CustomHeading,
