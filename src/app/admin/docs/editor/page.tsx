@@ -5,7 +5,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { adminFetch } from "@/lib/admin-api-client";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import slugify from "@/utils/slugify";
+import type { JSONContent } from "@tiptap/react";
 import DocsPreviewModal from "../DocsPreviewModal";
+import AutoSaveToggle from "@/components/AutoSaveToggle";
+import ConflictBanner from "@/components/ConflictBanner";
+import { useAutoSavePref } from "@/lib/useAutoSavePref";
 import { DOCS_PREVIEW_CHANNEL, DOCS_PREVIEW_LAST } from "../previewChannel";
 
 const EMPTY_DOC = { type: "doc", content: [] };
@@ -22,13 +26,20 @@ function DocsEditor() {
   const [slug, setSlug] = useState("");
   const [slugTouched, setSlugTouched] = useState(false);
   const [description, setDescription] = useState("");
-  const [content, setContent] = useState<any>(EMPTY_DOC);
+  // Tiptap document JSON
+  const [content, setContent] = useState<JSONContent>(EMPTY_DOC);
   const [loading, setLoading] = useState(Boolean(params.get("id")));
   const [loadError, setLoadError] = useState(false);
   const [saving, setSaving] = useState(false);
   const [savingMode, setSavingMode] = useState<"draft" | "publish">("draft");
   const [dirty, setDirty] = useState(false);
   const [message, setMessage] = useState<{ type: "ok" | "err"; text: string } | null>(null);
+
+  // Edit conflict guard: version this tab last loaded or saved, and who saved over it (shows the banner)
+  const versionRef = useRef(0);
+  const [conflict, setConflict] = useState<{ email?: string; at?: string; mode: "draft" | "publish" } | null>(null);
+  // Bumped by "Reload Latest Version" to run the load effect again
+  const [reloadTick, setReloadTick] = useState(0);
 
   // Load the existing page (draft fields) when editing
   useEffect(() => {
@@ -44,13 +55,17 @@ function DocsEditor() {
         setSlugTouched(true);
         setDescription(page.description || "");
         setContent(page.content || EMPTY_DOC);
+        // Pages saved before versioning have none: 0 tells the server so
+        versionRef.current = page.version ?? 0;
+        setConflict(null);
+        setDirty(false);
       } catch {
         setLoadError(true);
       } finally {
         setLoading(false);
       }
     })();
-  }, [params]);
+  }, [params, reloadTick]);
 
   // Preview: the preview page (modal iframe or new tab) says "hello" on a channel. From then on this page
   // renders the current form through the admin API (it holds the login) and sends the result, again on every edit.
@@ -125,36 +140,74 @@ function DocsEditor() {
   const edit = <T,>(set: (v: T) => void) => (v: T) => {
     set(v);
     setDirty(true);
+    // Count edits so a save knows if the form changed while its request was in flight
+    revRef.current += 1;
+    setRev(revRef.current);
   };
 
-  const save = async (saveMode: "draft" | "publish") => {
+  // Auto save state: shared on/off setting, edit counter, and the edit count of the last failed auto save
+  const [autoSave, setAutoSave] = useAutoSavePref();
+  const [rev, setRev] = useState(0);
+  const revRef = useRef(0);
+  const [autoSaving, setAutoSaving] = useState(false);
+  const [failedRev, setFailedRev] = useState(-1);
+
+  const save = async (saveMode: "draft" | "publish", silent = false, forceOverwrite = false) => {
+    const startRev = revRef.current;
     setSaving(true);
     setSavingMode(saveMode);
-    setMessage(null);
+    setAutoSaving(silent);
+    if (!silent) setMessage(null);
     try {
       const res = await adminFetch(id ? `/api/admin/docs/${id}` : "/api/admin/docs", {
         method: id ? "PUT" : "POST",
-        body: JSON.stringify({ slug, title, description, content, saveMode }),
+        body: JSON.stringify({ slug, title, description, content, saveMode, version: versionRef.current, forceOverwrite }),
       });
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        setMessage({ type: "err", text: data.error || "Save failed." });
+      if (res.status === 409 && data.conflict) {
+        // Someone saved since this tab loaded: pause auto save and let the user choose
+        // Remember Save Draft vs Publish so "Keep My Version" repeats what the user clicked
+        setConflict({ ...(data.lastModifiedBy || {}), mode: saveMode });
         return;
       }
-      setDirty(false);
-      setMessage({ type: "ok", text: saveMode === "publish" ? "Published." : "Draft saved." });
+      if (!res.ok) {
+        setMessage({ type: "err", text: data.error || "Save failed." });
+        // Stop auto save retrying the same failing edit; the next edit tries again
+        if (silent) setFailedRev(startRev);
+        return;
+      }
+      if (typeof data.version === "number") versionRef.current = data.version;
+      setConflict(null);
+      // Edits typed during the request stay unsaved so auto save (or the user) saves them next
+      if (revRef.current === startRev) setDirty(false);
+      if (silent) setMessage((m) => (m?.type === "err" ? null : m));
+      else setMessage({ type: "ok", text: saveMode === "publish" ? "Published." : "Draft saved." });
       if (!id && data.id) {
         setId(data.id);
         router.replace(`/admin/docs/editor?id=${data.id}`);
       }
     } catch {
       setMessage({ type: "err", text: "A connection error occurred." });
+      if (silent) setFailedRev(startRev);
     } finally {
       setSaving(false);
+      setAutoSaving(false);
     }
   };
 
   const canSave = !saving && title.trim() !== "" && slug !== "";
+
+  // Auto save: 1.5 s after the last edit, save a draft (never publishes); needs a title and slug first
+  const saveRef = useRef(save);
+  // Keep the latest save (with current form values) for the timer without restarting it on every render
+  useEffect(() => {
+    saveRef.current = save;
+  });
+  useEffect(() => {
+    if (!autoSave || !dirty || !canSave || conflict || rev === failedRev) return;
+    const timer = setTimeout(() => void saveRef.current("draft", true), 1500);
+    return () => clearTimeout(timer);
+  }, [autoSave, dirty, canSave, conflict, rev, failedRev]);
   const saveHint = canSave ? undefined : saving ? "Saving..." : "Add a title and URL slug to save";
 
   return (
@@ -163,10 +216,8 @@ function DocsEditor() {
         <header className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#27272a] pb-6">
           <div>
             <h1 className="text-2xl font-bold text-white sm:text-3xl">{id ? "Modify Docs Page" : "Compose Docs Page"}</h1>
-            <p role="status" className="mt-1.5 flex items-center gap-2 text-xs text-neutral-400">
-              <span aria-hidden="true" className={`size-2 rounded-full ${dirty ? "bg-amber-400" : id ? "bg-emerald-500" : "bg-neutral-600"}`} />
-              {dirty ? "Unsaved changes" : id ? "All changes saved" : "Nothing to save yet"}
-            </p>
+            {/* Save status and the shared Auto save switch sit together under the title */}
+            <AutoSaveToggle status={autoSaving ? "saving" : dirty ? "dirty" : id ? "saved" : "empty"} on={autoSave} onChange={setAutoSave} />
           </div>
           <div className="flex items-center gap-3">
             <button
@@ -181,6 +232,16 @@ function DocsEditor() {
             </Link>
           </div>
         </header>
+
+        {conflict && (
+          <ConflictBanner
+            what="page"
+            by={conflict}
+            busy={saving}
+            onReload={() => setReloadTick((t) => t + 1)}
+            onOverwrite={() => void save(conflict.mode, false, true)}
+          />
+        )}
 
         {message && (
           <p className={`mb-6 rounded-lg border p-3 text-sm ${message.type === "ok" ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-400" : "border-red-500/20 bg-red-500/5 text-red-400"}`}>

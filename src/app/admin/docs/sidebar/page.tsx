@@ -18,6 +18,9 @@ import { CSS } from "@dnd-kit/utilities";
 import { ChevronRight, FileText, Folder, FolderOpen, GripVertical, IndentDecrease, IndentIncrease, Plus, X } from "lucide-react";
 import { adminFetch } from "@/lib/admin-api-client";
 import type { NavItem } from "@/lib/docs-validation";
+import AutoSaveToggle from "@/components/AutoSaveToggle";
+import ConflictBanner from "@/components/ConflictBanner";
+import { useAutoSavePref } from "@/lib/useAutoSavePref";
 
 // The tree is edited as a flat list of rows with a depth; it is rebuilt into a tree on save.
 type Row = { id: string; depth: number; kind: "page" | "group"; slug?: string; title?: string };
@@ -266,6 +269,15 @@ export default function DocsSidebarEditor() {
   const [collapsed, setCollapsed] = useState<Set<string>>(new Set());
   const [drag, setDrag] = useState<{ activeId: string; overId: string; offsetX: number } | null>(null);
   const loaded = useRef(false);
+  // Auto save state: shared on/off setting, edit counter, and the edit count of the last failed auto save
+  const [autoSave, setAutoSave] = useAutoSavePref();
+  const [rev, setRev] = useState(0);
+  const revRef = useRef(0);
+  const [autoSaving, setAutoSaving] = useState(false);
+  const [failedRev, setFailedRev] = useState(-1);
+  // Edit conflict guard: last loaded/saved version, and who saved over it (shows the banner)
+  const versionRef = useRef(0);
+  const [conflict, setConflict] = useState<{ email?: string; at?: string; mode: "draft" | "publish" } | null>(null);
   // Small move threshold so clicking the grip does not start a drag; keyboard drag still works
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
@@ -279,6 +291,9 @@ export default function DocsSidebarEditor() {
         const nav = await navRes.json();
         setRows(flatten(nav.draft || []));
         setHasDraftChanges(nav.hasDraftChanges);
+        // Version this tab loaded, sent back on save so the server can spot edits from elsewhere
+        versionRef.current = nav.version ?? 0;
+        setConflict(null);
       }
       if (pagesRes.ok) setPages((await pagesRes.json()).pages || []);
       setDirty(false);
@@ -303,6 +318,9 @@ export default function DocsSidebarEditor() {
   const change = (next: Row[]) => {
     setRows(normalize(next));
     setDirty(true);
+    // Count edits so a save knows if rows changed while its request was in flight
+    revRef.current += 1;
+    setRev(revRef.current);
   };
 
   const titleOf = new Map(pages.map((p) => [p.slug, p.title]));
@@ -384,31 +402,66 @@ export default function DocsSidebarEditor() {
     change([...rows.slice(0, end), { ...page, depth: rows[gi].depth + 1 }, ...rows.slice(end)]);
   };
 
-  const save = async (saveMode: "draft" | "publish") => {
-    if (rows.some((r) => r.kind === "group" && !r.title?.trim())) {
+  const hasEmptyGroup = rows.some((r) => r.kind === "group" && !r.title?.trim());
+
+  const save = async (saveMode: "draft" | "publish", silent = false, forceOverwrite = false) => {
+    if (hasEmptyGroup) {
       setMessage({ type: "err", text: "Every group needs a title." });
       return;
     }
+    const startRev = revRef.current;
     setSaving(true);
-    setMessage(null);
+    setAutoSaving(silent);
+    if (!silent) setMessage(null);
     try {
       const res = await adminFetch("/api/admin/docs/nav", {
         method: "PUT",
-        body: JSON.stringify({ tree: build(rows), saveMode }),
+        body: JSON.stringify({ tree: build(rows), saveMode, version: versionRef.current, forceOverwrite }),
       });
       const data = await res.json().catch(() => ({}));
+      if (res.status === 409 && data.conflict) {
+        // Someone saved the sidebar since this tab loaded: pause auto save and let the user choose
+        // Remember Save Draft vs Publish so "Keep My Version" repeats what the user clicked
+        setConflict({ ...(data.lastModifiedBy || {}), mode: saveMode });
+        return;
+      }
       if (!res.ok) {
         setMessage({ type: "err", text: data.error || "Save failed." });
+        // Stop auto save retrying the same failing edit; the next edit tries again
+        if (silent) setFailedRev(startRev);
+        return;
+      }
+      if (typeof data.version === "number") versionRef.current = data.version;
+      setConflict(null);
+      if (silent) {
+        // Auto save skips load(): reloading would give rows new ids and reset collapsed groups mid-edit
+        if (revRef.current === startRev) setDirty(false);
+        setHasDraftChanges(true);
+        setMessage((m) => (m?.type === "err" ? null : m));
         return;
       }
       setMessage({ type: "ok", text: saveMode === "publish" ? "Sidebar published." : "Draft saved." });
       await load();
     } catch {
       setMessage({ type: "err", text: "A connection error occurred." });
+      if (silent) setFailedRev(startRev);
     } finally {
       setSaving(false);
+      setAutoSaving(false);
     }
   };
+
+  // Auto save: 1.5 s after the last change, save a draft (never publishes); waits while a row is being dragged
+  const saveRef = useRef(save);
+  useEffect(() => {
+    saveRef.current = save;
+  });
+  const dragging = drag !== null;
+  useEffect(() => {
+    if (!autoSave || !dirty || saving || dragging || hasEmptyGroup || conflict || rev === failedRev) return;
+    const timer = setTimeout(() => void saveRef.current("draft", true), 1500);
+    return () => clearTimeout(timer);
+  }, [autoSave, dirty, saving, dragging, hasEmptyGroup, conflict, rev, failedRev]);
 
   const btn = "cursor-pointer rounded-lg border border-[#27272a] px-4 py-2.5 text-sm hover:bg-[#18181b] disabled:opacity-50";
   const selectCls = "cursor-pointer rounded-lg border border-[#27272a] bg-[#18181b] px-3 py-2 text-sm text-neutral-200 outline-none hover:border-[#3f3f46] focus:border-blue-500";
@@ -417,13 +470,17 @@ export default function DocsSidebarEditor() {
     <main className="min-h-screen bg-[#09090b] p-4 font-sans text-neutral-100 sm:p-6 lg:p-8">
       <div className="mx-auto max-w-3xl space-y-6">
         <header className="flex flex-col gap-4 border-b border-[#27272a] pb-6 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-bold text-white">Docs sidebar</h1>
-            {hasDraftChanges && !dirty && (
-              <span className="rounded-md bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">
-                Draft Pending
-              </span>
-            )}
+          <div>
+            <div className="flex items-center gap-3">
+              <h1 className="text-2xl font-bold text-white">Docs sidebar</h1>
+              {hasDraftChanges && !dirty && (
+                <span className="rounded-md bg-blue-500/10 px-2.5 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-500/20">
+                  Draft Pending
+                </span>
+              )}
+            </div>
+            {/* Save status and the shared Auto save switch sit together under the title */}
+            <AutoSaveToggle status={autoSaving ? "saving" : dirty ? "dirty" : "saved"} on={autoSave} onChange={setAutoSave} />
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/admin/docs" className={btn}>Back</Link>
@@ -433,6 +490,10 @@ export default function DocsSidebarEditor() {
             </button>
           </div>
         </header>
+
+        {conflict && (
+          <ConflictBanner what="sidebar" by={conflict} busy={saving} onReload={() => void load()} onOverwrite={() => void save(conflict.mode, false, true)} />
+        )}
 
         {message && (
           <p className={`rounded-lg border p-3 text-sm ${message.type === "ok" ? "border-emerald-500/20 bg-emerald-500/5 text-emerald-400" : "border-red-500/20 bg-red-500/5 text-red-400"}`}>

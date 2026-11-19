@@ -5,8 +5,11 @@ import { adminFetch } from "@/lib/admin-api-client";
 import { SimpleEditor } from "@/components/tiptap-templates/simple/simple-editor";
 import { DatePicker } from "@/components/ui/date-picker";
 import BlogPreviewModal from "./BlogPreviewModal";
+import AutoSaveToggle, { type SaveStatus } from "@/components/AutoSaveToggle";
+import { useAutoSavePref } from "@/lib/useAutoSavePref";
 import { compileTiptapToHtml, extractSectionsFromTiptapJson, tiptapDocToPlainText } from "@/lib/blog-compiler";
 import slugify from "@/utils/slugify";
+import type { JSONContent } from "@tiptap/react";
 import type { BlogDetailPost } from "@/types/blog";
 
 // Default fallback taxonomy lists for categories, products, and use-case tags
@@ -47,11 +50,12 @@ function EditorContent() {
   const searchParamId = searchParams.get("id");
   const [postId, setPostId] = useState<string | null>(searchParamId);
 
-  useEffect(() => {
-    if (searchParamId) {
-      setPostId(searchParamId);
-    }
-  }, [searchParamId]);
+  // Follow a new ?id= in the URL by adjusting state during render (no effect needed)
+  const [seenParamId, setSeenParamId] = useState(searchParamId);
+  if (searchParamId !== seenParamId) {
+    setSeenParamId(searchParamId);
+    if (searchParamId) setPostId(searchParamId);
+  }
 
   // Core article state hooks
   const [title, setTitle] = useState("");
@@ -90,7 +94,7 @@ function EditorContent() {
   // Tracks existing publication state to preserve live version when updating drafts
   const [published, setPublished] = useState(false);
   // Tiptap rich-text AST document state
-  const [contentJson, setContentJson] = useState<any>({ type: "doc", content: [] });
+  const [contentJson, setContentJson] = useState<JSONContent>({ type: "doc", content: [] });
   // Article author and display metadata overrides
   const [author, setAuthor] = useState("");
   const [authorRole, setAuthorRole] = useState("");
@@ -115,27 +119,34 @@ function EditorContent() {
   // Concurrency tracking and conflict resolution
   const docVersionRef = useRef<number>(1);
   const isDirtyRef = useRef<boolean>(false);
+  // Shared Auto save on/off setting (localStorage, default On)
+  const [autoSave, setAutoSave] = useAutoSavePref();
+  // Save status shown under the title (same wording as the docs editors)
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>(searchParamId ? "saved" : "empty");
   const [conflictData, setConflictData] = useState<{ email: string; at: string } | null>(null);
   const [isCopied, setIsCopied] = useState<boolean>(false);
   const [conflictModalAction, setConflictModalAction] = useState<"reload" | "overwrite" | null>(null);
 
   // Background Auto-Save Tracking
   const isAutosavingRef = useRef(false);
-  const pendingSavePayloadRef = useRef<any>(null);
+  // Save payloads are plain JSON objects built by buildSavePayload
+  const pendingSavePayloadRef = useRef<Record<string, unknown> | null>(null);
   const lastSavedSnapshotRef = useRef<string>("");
   const initialLoadedRef = useRef(false);
   const currentPostIdRef = useRef<string | null>(postId);
   // Unique per-tab client session identifier for optimistic concurrency coordination
   const clientSessionIdRef = useRef<string>("");
-  if (!clientSessionIdRef.current && typeof window !== "undefined") {
+  // Created after mount: random ids must not be generated during render
+  useEffect(() => {
+    if (clientSessionIdRef.current) return;
     clientSessionIdRef.current =
       typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
         ? crypto.randomUUID()
         : "sess_" + Date.now() + "_" + Math.random().toString(36).substring(2, 9);
-  }
+  }, []);
 
   // Tracks active in-flight network save promise to prevent concurrent dispatch collisions
-  const activeSavePromiseRef = useRef<Promise<any> | null>(null);
+  const activeSavePromiseRef = useRef<Promise<unknown> | null>(null);
   // Auto-save debounce timer ref so manual saves can cleanly cancel pending timers
   const autoSaveTimerRef = useRef<NodeJS.Timeout | null>(null);
   // Prevents redundant re-loading when postId is set following initial auto-save of a new article
@@ -278,6 +289,33 @@ function EditorContent() {
     }
   }, [postId, router]);
 
+  // Fills the form from the local backup of an unsaved new article, if there is one
+  function restoreNewDraft() {
+    try {
+      const localDraftStr = localStorage.getItem("codemate_editor_draft_new");
+      if (localDraftStr) {
+        const draft = JSON.parse(localDraftStr);
+        if (draft.title && draft.title !== "Untitled Article") setTitle(draft.title);
+        if (draft.subheading) setSubheading(draft.subheading);
+        if (draft.category) setCategory(draft.category);
+        if (draft.coverImage) setCoverImage(draft.coverImage);
+        if (draft.tags && Array.isArray(draft.tags)) {
+          setTagsInput(draft.tags.map((t: { label: string }) => t.label).join(", "));
+        }
+        if (draft.content) setContentJson(draft.content);
+        if (draft.author) setAuthor(draft.author);
+        if (draft.authorRole) setAuthorRole(draft.authorRole);
+        if (draft.authorImage) setAuthorImage(draft.authorImage);
+        if (draft.readTime) setReadTime(draft.readTime);
+        if (draft.publishedAtCustom) setPublishedAtCustom(draft.publishedAtCustom);
+        if (draft.sections) setSections(draft.sections);
+      }
+    } catch (err) {
+      console.warn("Failed to parse local draft from localStorage:", err);
+    }
+    initialLoadedRef.current = true;
+  }
+
   // Trigger post loading when postId query parameter changes or restore local draft
   useEffect(() => {
     if (postId) {
@@ -287,35 +325,16 @@ function EditorContent() {
       }
       void loadPost();
     } else {
-      // Check for local draft backup for a new post
-      try {
-        const localDraftStr = localStorage.getItem("codemate_editor_draft_new");
-        if (localDraftStr) {
-          const draft = JSON.parse(localDraftStr);
-          if (draft.title && draft.title !== "Untitled Article") setTitle(draft.title);
-          if (draft.subheading) setSubheading(draft.subheading);
-          if (draft.category) setCategory(draft.category);
-          if (draft.coverImage) setCoverImage(draft.coverImage);
-          if (draft.tags && Array.isArray(draft.tags)) {
-            setTagsInput(draft.tags.map((t: any) => t.label).join(", "));
-          }
-          if (draft.content) setContentJson(draft.content);
-          if (draft.author) setAuthor(draft.author);
-          if (draft.authorRole) setAuthorRole(draft.authorRole);
-          if (draft.authorImage) setAuthorImage(draft.authorImage);
-          if (draft.readTime) setReadTime(draft.readTime);
-          if (draft.publishedAtCustom) setPublishedAtCustom(draft.publishedAtCustom);
-          if (draft.sections) setSections(draft.sections);
-        }
-      } catch (err) {
-        console.warn("Failed to parse local draft from localStorage:", err);
-      }
-      initialLoadedRef.current = true;
+      // Restoring the local backup reads browser storage (an external system), so apply it after this effect runs
+      void Promise.resolve().then(restoreNewDraft);
     }
   }, [postId, loadPost]);
 
+  // Latest executeAutoSave, used for the queued follow-up save inside it
+  const executeAutoSaveRef = useRef<(payload: Record<string, unknown>) => Promise<void>>(async () => {});
+
   // Silent background auto-save executor
-  const executeAutoSave = useCallback(async (payload: any) => {
+  const executeAutoSave = useCallback(async (payload: Record<string, unknown>) => {
     const serialized = JSON.stringify(payload);
     if (serialized === lastSavedSnapshotRef.current) {
       return;
@@ -327,6 +346,7 @@ function EditorContent() {
     }
 
     isAutosavingRef.current = true;
+    setSaveStatus("saving");
     const targetId = currentPostIdRef.current;
 
     // Always keep offline snapshot in localStorage
@@ -370,6 +390,7 @@ function EditorContent() {
               currentPostIdRef.current = newId;
               setPostId(newId);
               lastSavedSnapshotRef.current = serialized;
+              setSaveStatus("saved");
               window.history.replaceState(null, "", `/admin/editor?id=${newId}`);
               try {
                 localStorage.removeItem("codemate_editor_draft_new");
@@ -380,6 +401,7 @@ function EditorContent() {
             }
           } else {
             lastSavedSnapshotRef.current = serialized;
+            setSaveStatus("saved");
           }
         } else if (res.status === 409) {
           // Handle concurrent edit conflict: pause auto-save and activate in-UI resolution banner
@@ -394,10 +416,13 @@ function EditorContent() {
       } finally {
         activeSavePromiseRef.current = null;
         isAutosavingRef.current = false;
+        // A failed or conflicting auto save leaves the edits unsaved
+        setSaveStatus((st) => (st === "saving" ? "dirty" : st));
         if (pendingSavePayloadRef.current) {
           const nextPayload = pendingSavePayloadRef.current;
           pendingSavePayloadRef.current = null;
-          void executeAutoSave(nextPayload);
+          // Through a ref: a callback calling itself directly cannot be memoized by the React Compiler
+          void executeAutoSaveRef.current(nextPayload);
         }
       }
     };
@@ -406,6 +431,10 @@ function EditorContent() {
     activeSavePromiseRef.current = savePromise;
     await savePromise;
   }, []);
+
+  useEffect(() => {
+    executeAutoSaveRef.current = executeAutoSave;
+  }, [executeAutoSave]);
 
   // Builds sanitized article payload for saving, deduplicating tags and preserving custom inputs
   const buildSavePayload = useCallback(
@@ -488,7 +517,11 @@ function EditorContent() {
       author.trim() !== "" ||
       sections.length > 0;
 
-    if (!hasContent) return;
+    if (!hasContent) {
+      // A new article cleared back to empty has nothing to save
+      if (!currentPostIdRef.current) queueMicrotask(() => setSaveStatus("empty"));
+      return;
+    }
 
     const payload = buildSavePayload(
       "draft",
@@ -502,6 +535,11 @@ function EditorContent() {
     }
 
     isDirtyRef.current = true;
+    // Deferred so the status updates without a synchronous setState inside this effect
+    queueMicrotask(() => setSaveStatus((st) => (st === "saving" ? st : "dirty")));
+
+    // Auto save switched off: changes stay unsaved until Save as Draft or Save & Publish
+    if (!autoSave) return;
 
     if (autoSaveTimerRef.current) {
       clearTimeout(autoSaveTimerRef.current);
@@ -519,6 +557,7 @@ function EditorContent() {
       }
     };
   }, [
+    autoSave,
     title,
     subheading,
     category,
@@ -539,7 +578,7 @@ function EditorContent() {
 
   // Keepalive flush on page unload
   useEffect(() => {
-    const handleUnloadFlush = () => {
+    const handleUnloadFlush = (e: Event) => {
       if (!initialLoadedRef.current || isNavigatingAwayRef.current) return;
 
       const hasContent =
@@ -561,6 +600,12 @@ function EditorContent() {
 
       const serialized = JSON.stringify(payload);
       if (serialized === lastSavedSnapshotRef.current) return;
+
+      // Auto save off: warn about unsaved changes instead of silently saving them on exit
+      if (!autoSave) {
+        e.preventDefault();
+        return;
+      }
 
       const targetId = currentPostIdRef.current;
       const url = targetId ? `/api/admin/posts/${targetId}` : "/api/admin/posts";
@@ -592,6 +637,7 @@ function EditorContent() {
       window.removeEventListener("pagehide", handleUnloadFlush);
     };
   }, [
+    autoSave,
     title,
     subheading,
     category,
@@ -634,24 +680,22 @@ function EditorContent() {
     };
   }, [loadPost, conflictData]);
 
-  // Fetches dynamic filter options and categories from the database on component mount
-  const loadFilters = useCallback(async () => {
-    try {
-      const res = await adminFetch("/api/admin/filters");
-      if (res.ok) {
-        const data = await res.json();
+  // Load filter options once on mount; state is set in the promise callbacks, not synchronously
+  useEffect(() => {
+    let cancelled = false;
+    adminFetch("/api/admin/filters")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (cancelled || !data) return;
         if (data.categories?.length) setCategories(data.categories);
         if (data.productFilters?.length) setProductFilters(data.productFilters);
         if (data.useCaseFilters?.length) setUseCaseFilters(data.useCaseFilters);
-      }
-    } catch (err) {
-      console.warn("Failed to fetch dynamic filters from server, using default taxonomies:", err);
-    }
+      })
+      .catch((err) => console.warn("Failed to fetch dynamic filters from server, using default taxonomies:", err));
+    return () => {
+      cancelled = true;
+    };
   }, []);
-
-  useEffect(() => {
-    void loadFilters();
-  }, [loadFilters]);
 
   // Handles inline addition and deletion of category and filter taxonomy items
   const handleFilterUpdate = async (
@@ -695,6 +739,7 @@ function EditorContent() {
   const handleSave = async (e?: React.FormEvent, forceOverwrite = false) => {
     if (e) e.preventDefault();
     setLoading(true);
+    setSaveStatus("saving");
     setSavingMode(saveModeRef.current);
 
     // Clear any pending debounced auto-save timer to prevent save collision
@@ -749,6 +794,7 @@ function EditorContent() {
           setSlug(data.slug);
         }
         lastSavedSnapshotRef.current = JSON.stringify(basePayload);
+        setSaveStatus("saved");
         try {
           const storageKey = targetId ? `codemate_editor_draft_${targetId}` : "codemate_editor_draft_new";
           localStorage.removeItem(storageKey);
@@ -776,6 +822,8 @@ function EditorContent() {
     } finally {
       setLoading(false);
       setSavingMode(null);
+      // A failed or conflicting manual save leaves the edits unsaved
+      setSaveStatus((st) => (st === "saving" ? "dirty" : st));
     }
   };
 
@@ -925,7 +973,7 @@ function EditorContent() {
       const normalize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, "");
       const cleanSub = normalize(subheading);
       const cleanFirst = normalize(
-        (firstNode.content || []).map((c: any) => c.text || "").join("")
+        (firstNode.content || []).map((c: JSONContent) => c.text || "").join("")
       );
       return Boolean(cleanFirst && (cleanFirst === cleanSub || cleanSub.startsWith(cleanFirst) || cleanFirst.startsWith(cleanSub)));
     }
@@ -946,9 +994,13 @@ function EditorContent() {
       <div className="mx-auto max-w-4xl">
         {/* Editor page header */}
         <header className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#27272a] pb-6">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">
-            {postId ? "Modify Article" : "Compose Article"}
-          </h1>
+          <div>
+            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+              {postId ? "Modify Article" : "Compose Article"}
+            </h1>
+            {/* Save status and the shared Auto save switch sit together under the title, as in the docs editors */}
+            <AutoSaveToggle status={saveStatus} on={autoSave} onChange={setAutoSave} />
+          </div>
           <div className="flex items-center gap-3">
             <button
               type="button"
