@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 // Edit conflict warning for the docs editors, styled like the blog editor's banner
 export default function ConflictBanner(props: {
@@ -11,6 +11,14 @@ export default function ConflictBanner(props: {
 }) {
   const { what, by, busy, onReload, onOverwrite } = props;
   const when = by?.at ? new Date(by.at) : null;
+  // Two-click confirm on the button itself (8s to read the label and click again); the desktop app's browser blocks window.confirm
+  const [armed, setArmed] = useState<"reload" | "keep" | null>(null);
+  useEffect(() => {
+    if (!armed) return;
+    const t = window.setTimeout(() => setArmed(null), 8000);
+    return () => window.clearTimeout(t);
+  }, [armed]);
+  const ask = (which: "reload" | "keep", act: () => void) => () => (armed === which ? (setArmed(null), act()) : setArmed(which));
 
   return (
     <div role="alert" className="mb-6 space-y-3 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-amber-200 sm:p-5">
@@ -34,19 +42,19 @@ export default function ConflictBanner(props: {
           type="button"
           disabled={busy}
           // Confirm first: reloading drops the edits in this tab
-          onClick={() => window.confirm("Discard your changes in this tab and load the latest saved version?") && onReload()}
+          onClick={ask("reload", onReload)}
           className="cursor-pointer rounded-lg border border-neutral-700 bg-[#18181b] px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-neutral-800 disabled:opacity-50"
         >
-          Reload Latest Version
+          {armed === "reload" ? "Click again to discard your edits" : "Reload Latest Version"}
         </button>
         <button
           type="button"
           disabled={busy}
           // Confirm first: overwriting replaces the other save with this tab's version
-          onClick={() => window.confirm("Replace the other saved version with yours?") && onOverwrite()}
+          onClick={ask("keep", onOverwrite)}
           className="cursor-pointer rounded-lg bg-red-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-red-500 disabled:opacity-50 sm:ml-auto"
         >
-          Keep My Version
+          {armed === "keep" ? "Click again to replace the other version" : "Keep My Version"}
         </button>
       </div>
     </div>

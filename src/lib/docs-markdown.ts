@@ -78,6 +78,8 @@ function block(n: N): string {
       return table(n);
     case "callout": {
       const head = a.title ? `**${a.title}**\n\n` : "";
+      // An empty callout (no title, no text) is left out instead of exporting a bare alert
+      if (!head && !blocks(n.content).trim()) return "";
       return quote(`[!${ALERT[a.kind] ?? "NOTE"}]\n${head}${blocks(n.content)}`);
     }
     case "tabs":

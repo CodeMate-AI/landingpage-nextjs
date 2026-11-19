@@ -1256,3 +1256,93 @@
     padding: 0.55rem 0.7rem;
   }
 }
+
+/* Editor only: image / video frame (tools on the media corner, labelled caption and alt text) */
+@layer components {
+  .docs-frame-edit {
+    position: relative;
+  }
+  .docs-frame-tools {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  /* Glass pill so it reads on light and dark pictures alike */
+  .docs-frame-tool {
+    height: 1.75rem;
+    padding: 0 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 9999px;
+    background: rgba(0, 0, 0, 0.65);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+  }
+  .docs-frame-tool:hover:not(:disabled) {
+    background: rgba(0, 0, 0, 0.85);
+    transform: translateY(-1px);
+  }
+  .docs-frame-tool:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+  .docs-frame-tool:disabled {
+    opacity: 0.6;
+    cursor: progress;
+  }
+  .docs-frame-tool:focus-visible {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  /* Empty state leaves room for the corner tools */
+  .docs-frame-edit .docs-frame-empty {
+    padding: 2.5rem 1rem 1.5rem;
+  }
+  .docs-frame-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  .docs-frame-field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .docs-frame-field .docs-tab-title-input {
+    width: 100%;
+    font-weight: 400;
+  }
+  .docs-frame-rec {
+    margin-left: 0.35rem;
+    padding: 0.05rem 0.4rem;
+    border-radius: 9999px;
+    background: color-mix(in srgb, #f59e0b 18%, transparent);
+    color: #f59e0b;
+    font-style: normal;
+    letter-spacing: 0.02em;
+    text-transform: none;
+  }
+}
+
+/* Docs pages: captions on uploaded (IMG) images match the image block's caption (blog.css is not loaded here) */
+@layer components {
+  [data-docs-content] figure.blog-media-figure > figcaption.blog-media-caption {
+    margin-top: 0.5rem;
+    text-align: center;
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+
+  /* A published callout with no title and only empty paragraphs is hidden, not drawn as an empty box */
+  [data-docs-content] .docs-callout:not([data-title]):not(:has(> :not(p:empty))) {
+    display: none;
+  }
+}

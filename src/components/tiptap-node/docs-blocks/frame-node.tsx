@@ -62,17 +62,29 @@ function FrameView({ node, updateAttributes, deleteNode }: NodeViewProps) {
           </div>
         )}
       </div>
-      <div className="docs-opt-row" contentEditable={false}>
-        <input className="docs-tab-title-input" style={{ fontWeight: 400 }} value={hint ?? ""} placeholder="Caption (optional)" aria-label="Caption" onChange={(e) => updateAttributes({ hint: e.target.value || null })} />
-        {src && kind !== "video" && (
-          <input className="docs-tab-title-input" style={{ fontWeight: 400 }} value={alt ?? ""} placeholder="Alt text" aria-label="Alt text" onChange={(e) => updateAttributes({ alt: e.target.value })} />
-        )}
+      {/* Replace and remove float on the media's top-right corner, where people look for them */}
+      <div className="docs-frame-tools" contentEditable={false}>
         {src && (
-          <button type="button" className="docs-tab-remove" disabled={busy} onClick={() => file.current?.click()}>
-            Replace
+          <button type="button" className="docs-frame-tool" disabled={busy} onMouseDown={(e) => e.preventDefault()} onClick={() => file.current?.click()}>
+            {busy ? "Uploading..." : "Replace"}
           </button>
         )}
         <NodeCloseButton inline label="Remove media" onClick={deleteNode} />
+      </div>
+      {/* Labelled caption and alt text, each saying where it shows up */}
+      <div className="docs-frame-fields" contentEditable={false}>
+        <label className="docs-frame-field">
+          <span className="docs-field-label">Caption</span>
+          <input className="docs-tab-title-input" value={hint ?? ""} placeholder="Shown under the media (optional)" onChange={(e) => updateAttributes({ hint: e.target.value || null })} />
+        </label>
+        {src && kind !== "video" && (
+          <label className="docs-frame-field">
+            <span className="docs-field-label">
+              Alt text {!alt && <em className="docs-frame-rec">Recommended</em>}
+            </span>
+            <input className="docs-tab-title-input" value={alt ?? ""} placeholder="Describe the image for screen readers and search" onChange={(e) => updateAttributes({ alt: e.target.value })} />
+          </label>
+        )}
       </div>
       {error && <p className="docs-frame-error" role="alert" contentEditable={false}>{error}</p>}
     </NodeViewWrapper>
