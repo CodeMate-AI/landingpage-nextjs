@@ -216,8 +216,8 @@ function DocsEditor() {
         <header className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#27272a] pb-6">
           <div>
             <h1 className="text-2xl font-bold text-white sm:text-3xl">{id ? "Modify Docs Page" : "Compose Docs Page"}</h1>
-            {/* Save status and the shared Auto save switch sit together under the title */}
-            <AutoSaveToggle status={autoSaving ? "saving" : dirty ? "dirty" : id ? "saved" : "empty"} on={autoSave} onChange={setAutoSave} />
+            {/* Save status and the shared Auto save switch sit together under the title; "blocked" says why auto save is waiting */}
+            <AutoSaveToggle status={autoSaving ? "saving" : dirty ? (title.trim() && slug ? "dirty" : "blocked") : id ? "saved" : "empty"} on={autoSave} onChange={setAutoSave} />
           </div>
           <div className="flex items-center gap-3">
             <button

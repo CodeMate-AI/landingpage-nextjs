@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 
-export type SaveStatus = "empty" | "dirty" | "saving" | "saved";
+export type SaveStatus = "empty" | "dirty" | "blocked" | "saving" | "saved";
 
 const STATUS: Record<SaveStatus, { dot: string; text: string }> = {
   empty: { dot: "bg-neutral-600", text: "Nothing to save yet" },
   dirty: { dot: "bg-amber-400", text: "Unsaved changes" },
+  // Edited, but auto save cannot run yet (a docs page needs a title and URL first)
+  blocked: { dot: "bg-amber-400", text: "Add a title and URL to save" },
   saving: { dot: "bg-blue-400 animate-pulse", text: "Saving..." },
   saved: { dot: "bg-emerald-500", text: "All changes saved" },
 };
