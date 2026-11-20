@@ -9,7 +9,6 @@ import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 // --- Icons ---
 import { ListIcon } from "@/components/tiptap-icons/list-icon"
 import { ListOrderedIcon } from "@/components/tiptap-icons/list-ordered-icon"
-import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
 
 // --- Lib ---
 import { isNodeInSchema } from "@/lib/tiptap-utils"
@@ -32,7 +31,7 @@ export interface UseListDropdownMenuConfig {
   editor?: Editor | null
   /**
    * The list types to display in the dropdown.
-   * @default ["bulletList", "orderedList", "taskList"]
+   * @default ["bulletList", "orderedList"]
    */
   types?: ListType[]
   /**
@@ -58,11 +57,6 @@ export const listOptions: ListOption[] = [
     label: "Ordered List",
     type: "orderedList",
     icon: ListOrderedIcon,
-  },
-  {
-    label: "Task List",
-    type: "taskList",
-    icon: ListTodoIcon,
   },
 ]
 
@@ -167,7 +161,7 @@ export function getActiveListType(
 export function useListDropdownMenu(config?: UseListDropdownMenuConfig) {
   const {
     editor: providedEditor,
-    types = ["bulletList", "orderedList", "taskList"],
+    types = ["bulletList", "orderedList"],
     hideWhenUnavailable = false,
   } = config || {}
 

@@ -2,6 +2,7 @@
 @import "fumadocs-ui/css/neutral.css";
 @import "fumadocs-ui/css/preset.css";
 @import "../../components/tiptap-node/docs-blocks/docs-blocks.css";
+@import "../../components/tiptap-node/reader-blocks.css";
 @import "../../components/tiptap-node/docs-blocks/docs-icons.css";
 
 /* Shiki output: one color variable per theme; the .dark class (set by Fumadocs) picks the dark one */

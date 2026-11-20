@@ -128,20 +128,23 @@ function itemView(cls: string, opts: { kind: "step" | "card" | "accordion" }) {
           <NodeCloseButton inline label={`Remove ${cls.replace("docs-", "")}`} onClick={remove} />
         </div>
         {opts.kind === "card" && (
-          <>
-            <div className="docs-tab-head" contentEditable={false}>
+          // Labelled fields in an even grid; the link label only shows once there is a link
+          <div className="docs-card-fields" contentEditable={false}>
+            <div className="docs-frame-field">
+              <span className="docs-field-label">Icon</span>
               <IconPicker value={a.icon} onChange={(icon) => updateAttributes({ icon })} />
-              {text("href", "Link (optional)", "Card link")}
             </div>
-            <div className="docs-opt-row" contentEditable={false}>
-              {text("cta", "Link label", "Card link label")}
-              {text("img", "Image URL", "Card image URL")}
-              <label>
-                <input type="checkbox" checked={!!a.horizontal} onChange={(e) => updateAttributes({ horizontal: e.target.checked })} />
-                Horizontal
+            <label className="docs-frame-field">
+              <span className="docs-field-label">Link</span>
+              {text("href", "Optional", "Card link")}
+            </label>
+            {a.href && (
+              <label className="docs-frame-field">
+                <span className="docs-field-label">Link label</span>
+                {text("cta", "e.g. Read the guide", "Card link label")}
               </label>
-            </div>
-          </>
+            )}
+          </div>
         )}
         {opts.kind === "accordion" && (
           // Settings strip: a labelled style choice and a real switch instead of a bare checkbox

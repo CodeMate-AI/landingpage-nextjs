@@ -152,16 +152,11 @@ export function convertMarkdownToHtml(rawText: string): string {
   const lines = normalized.split(/\r?\n/);
 
   let html = "";
-  let inTaskList = false;
   let inBulletList = false;
   let inOrderedList = false;
   let inBlockquote = false;
 
   const closeOpenLists = () => {
-    if (inTaskList) {
-      html += "</ul>";
-      inTaskList = false;
-    }
     if (inBulletList) {
       html += "</ul>";
       inBulletList = false;
@@ -254,19 +249,17 @@ export function convertMarkdownToHtml(rawText: string): string {
       }
     }
 
-    // 1. Task Item / Checklist (- [x], - [ ], * [x], • [x], [x], [ ])
+    // 1. Checklist lines (- [x], - [ ], * [x], • [x], [x], [ ]): task lists are retired, so they paste as plain bullets
     const taskMatch = line.match(/^\s*(?:[-*+•\u2022]\s+)?\[([ xX])\]\s*(.*)$/);
     if (taskMatch) {
-      if (inBulletList || inOrderedList || inBlockquote) {
+      if (inOrderedList || inBlockquote) {
         closeOpenLists();
       }
-      if (!inTaskList) {
-        html += '<ul data-type="taskList">';
-        inTaskList = true;
+      if (!inBulletList) {
+        html += "<ul>";
+        inBulletList = true;
       }
-      const isChecked = taskMatch[1].toLowerCase() === "x";
-      const itemContent = formatInlineMarkdown(taskMatch[2].trim());
-      html += `<li data-type="taskItem" data-checked="${isChecked}"><p>${itemContent}</p></li>`;
+      html += `<li><p>${formatInlineMarkdown(taskMatch[2].trim())}</p></li>`;
       continue;
     }
 
@@ -284,7 +277,7 @@ export function convertMarkdownToHtml(rawText: string): string {
     // 3. Blockquotes (> Quote)
     const quoteMatch = line.match(/^>\s*(.*)$/);
     if (quoteMatch) {
-      if (inTaskList || inBulletList || inOrderedList) {
+      if (inBulletList || inOrderedList) {
         closeOpenLists();
       }
       if (!inBlockquote) {
@@ -299,7 +292,7 @@ export function convertMarkdownToHtml(rawText: string): string {
     // 4. Bullet lists (- Item or * Item)
     const bulletMatch = line.match(/^\s*[-*+]\s+(.*)$/);
     if (bulletMatch) {
-      if (inTaskList || inOrderedList || inBlockquote) {
+      if (inOrderedList || inBlockquote) {
         closeOpenLists();
       }
       if (!inBulletList) {
@@ -314,7 +307,7 @@ export function convertMarkdownToHtml(rawText: string): string {
     // 5. Ordered lists (1. Item)
     const orderedMatch = line.match(/^\s*\d+\.\s+(.*)$/);
     if (orderedMatch) {
-      if (inTaskList || inBulletList || inBlockquote) {
+      if (inBulletList || inBlockquote) {
         closeOpenLists();
       }
       if (!inOrderedList) {
@@ -350,21 +343,19 @@ export function convertMarkdownToHtml(rawText: string): string {
 }
 
 /**
- * Normalizes task lists from rich HTML paste (e.g. GFM task items, checkboxes, bracket items).
+ * Turns checklists from rich HTML paste (GFM task items, checkboxes, bracket items) into plain list items, as task lists are retired.
  */
-export function normalizeTaskListsInHtml(html: string): string {
+export function stripTaskListsInHtml(html: string): string {
   if (!html) return html;
 
-  let processed = html.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (match, attrs, content) => {
-    const hasCheckedInput = /<input[^>]+type=["']checkbox["'][^>]*checked[^>]*>/i.test(content);
-    const hasUncheckedInput = /<input[^>]+type=["']checkbox["'][^>]*>/i.test(content);
-    const hasCheckedBracket = /^\s*(?:<p>)?\s*(?:[-*+•\u2022]\s+)?\[[xX]\]/i.test(content);
-    const hasUncheckedBracket = /^\s*(?:<p>)?\s*(?:[-*+•\u2022]\s+)?\[\s*\]/i.test(content);
+  const processed = html.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (match, attrs, content) => {
+    const hasCheckbox = /<input[^>]+type=["']checkbox["'][^>]*>/i.test(content);
+    const hasBracket = /^\s*(?:<p>)?\s*(?:[-*+•]\s+)?\[(?:\s*|[xX])\]/i.test(content);
 
-    if (hasCheckedInput || hasUncheckedInput || hasCheckedBracket || hasUncheckedBracket || /class=["'][^"']*task-list-item/i.test(attrs)) {
-      const isChecked = hasCheckedInput || hasCheckedBracket;
+    if (hasCheckbox || hasBracket || /class=["'][^"']*task-list-item/i.test(attrs)) {
       let cleanContent = content
         .replace(/<input[^>]+type=["']checkbox["'][^>]*>/gi, "")
+        .replace(/<label\b[^>]*>\s*(?:<span[^>]*>\s*<\/span>)?\s*<\/label>/gi, "")
         .replace(/^\s*(?:<p>)?\s*(?:[-*+•\u2022]\s+)?\[[ xX]\]\s*/i, (m: string) => (m.startsWith("<p>") ? "<p>" : ""))
         .trim();
 
@@ -372,21 +363,20 @@ export function normalizeTaskListsInHtml(html: string): string {
         cleanContent = `<p>${cleanContent}</p>`;
       }
 
-      return `<li data-type="taskItem" data-checked="${isChecked}">${cleanContent}</li>`;
+      return `<li>${cleanContent}</li>`;
     }
     return match;
   });
 
-  processed = processed.replace(/<ul\b([^>]*)>([\s\S]*?)<\/ul>/gi, (match, attrs, inner) => {
-    if (inner.includes('data-type="taskItem"')) {
-      const cleanAttrs = attrs.replace(/data-type=["'][^"']*["']/gi, "").trim();
-      const attrStr = cleanAttrs ? ` ${cleanAttrs}` : "";
-      return `<ul${attrStr} data-type="taskList">${inner}</ul>`;
-    }
-    return match;
+  // Drop task list markers on the list itself, or the still-loaded TaskList extension would parse it back into one
+  return processed.replace(/<ul\b([^>]*)>/gi, (_match, attrs: string) => {
+    const cleanAttrs = attrs
+      .replace(/data-type=["']taskList["']/gi, "")
+      .replace(/\b(contains-task-list|task-list)\b/gi, "")
+      .replace(/class=["']\s*["']/gi, "")
+      .trim();
+    return cleanAttrs ? `<ul ${cleanAttrs}>` : "<ul>";
   });
-
-  return processed;
 }
 
 /**
@@ -480,8 +470,8 @@ export const MarkdownRulesExtension = Extension.create({
           },
 
           transformPastedHTML(html) {
-            // Normalize any shortcodes and task lists in rich HTML paste
-            return normalizeTaskListsInHtml(normalizeShortcodesPaste(html));
+            // Normalize shortcodes and flatten checklists in rich HTML paste
+            return stripTaskListsInHtml(normalizeShortcodesPaste(html));
           },
         },
       }),

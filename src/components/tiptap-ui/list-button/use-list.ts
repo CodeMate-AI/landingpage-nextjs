@@ -10,7 +10,6 @@ import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 // --- Icons ---
 import { ListIcon } from "@/components/tiptap-icons/list-icon"
 import { ListOrderedIcon } from "@/components/tiptap-icons/list-ordered-icon"
-import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
 
 // --- Lib ---
 import {
@@ -22,7 +21,7 @@ import {
   selectionWithinConvertibleTypes,
 } from "@/lib/tiptap-utils"
 
-export type ListType = "bulletList" | "orderedList" | "taskList"
+export type ListType = "bulletList" | "orderedList"
 
 /**
  * Configuration for the list functionality
@@ -50,19 +49,16 @@ export interface UseListConfig {
 export const listIcons = {
   bulletList: ListIcon,
   orderedList: ListOrderedIcon,
-  taskList: ListTodoIcon,
 }
 
 export const listLabels: Record<ListType, string> = {
   bulletList: "Bullet List",
   orderedList: "Ordered List",
-  taskList: "Task List",
 }
 
 export const LIST_SHORTCUT_KEYS: Record<ListType, string> = {
   bulletList: "mod+shift+8",
   orderedList: "mod+shift+7",
-  taskList: "mod+shift+9",
 }
 
 /**
@@ -83,8 +79,6 @@ export function canToggleList(
         return editor.can().toggleBulletList()
       case "orderedList":
         return editor.can().toggleOrderedList()
-      case "taskList":
-        return editor.can().toggleList("taskList", "taskItem")
       default:
         return false
     }
@@ -111,11 +105,6 @@ export function canToggleList(
       return editor.can().toggleBulletList() || editor.can().clearNodes()
     case "orderedList":
       return editor.can().toggleOrderedList() || editor.can().clearNodes()
-    case "taskList":
-      return (
-        editor.can().toggleList("taskList", "taskItem") ||
-        editor.can().clearNodes()
-      )
     default:
       return false
   }
@@ -132,8 +121,6 @@ export function isListActive(editor: Editor | null, type: ListType): boolean {
       return editor.isActive("bulletList")
     case "orderedList":
       return editor.isActive("orderedList")
-    case "taskList":
-      return editor.isActive("taskList")
     default:
       return false
   }
@@ -221,7 +208,6 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
       const toggleMap: Record<ListType, () => typeof chain> = {
         bulletList: () => chain.toggleBulletList(),
         orderedList: () => chain.toggleOrderedList(),
-        taskList: () => chain.toggleList("taskList", "taskItem"),
       }
 
       const toggle = toggleMap[type]

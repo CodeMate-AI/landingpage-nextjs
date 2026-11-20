@@ -1120,11 +1120,18 @@
     border-color: color-mix(in srgb, #3b82f6 70%, transparent);
     background: color-mix(in srgb, currentColor 5%, transparent);
   }
+  .docs-field [data-node-view-content-react] > p:only-child:has(> br.ProseMirror-trailingBreak:only-child) {
+    position: relative;
+  }
   /* Hint text while the body is a single empty paragraph */
   .docs-field [data-node-view-content-react] > p:only-child:has(> br.ProseMirror-trailingBreak:only-child)::before {
     content: var(--docs-ph);
-    float: left;
-    height: 0;
+    /* Out of flow so the caret stays at the start; one line with an ellipsis so narrow cards never spill it out of the box */
+    position: absolute;
+    inset: 0 0 auto 0;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     opacity: 0.45;
     pointer-events: none;
   }
@@ -1344,5 +1351,32 @@
   /* A published callout with no title and only empty paragraphs is hidden, not drawn as an empty box */
   [data-docs-content] .docs-callout:not([data-title]):not(:has(> :not(p:empty))) {
     display: none;
+  }
+}
+
+/* Docs pages: article images get a 32px 8px margin and a calc(100% - 16px) cap, which knock bento and illustration images out of their boxes */
+@layer utilities {
+  article :is(.illustration-showcase-img, .bento-media-img, .video-embed-container, .blog-video) {
+    margin: 0;
+    max-width: 100%;
+  }
+}
+
+/* Editor only: card settings as a labelled grid that stacks when a card is narrow; card columns match the live page */
+@layer components {
+  .docs-card-fields {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+    gap: 0.6rem 0.75rem;
+    margin-top: 0.25rem;
+  }
+  .docs-card-fields .docs-icon-btn {
+    width: 100%;
+    font-weight: 400;
+  }
+  /* Cards in one row share a height, as on the live page */
+  .docs-cards-body .node-card > .docs-item-edit {
+    box-sizing: border-box;
+    height: 100%;
   }
 }
