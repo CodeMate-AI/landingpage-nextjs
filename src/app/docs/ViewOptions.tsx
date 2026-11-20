@@ -10,11 +10,43 @@ export function ViewOptions({ slug, pageUrl }: { slug: string; pageUrl: string }
   const [copied, setCopied] = useState<"idle" | "done" | "error">("idle")
   const markdownUrl = `/docs/${slug}.md`
 
-  const copy = async () => {
+  // Main button copies the rendered page as plain text; the menu row copies Markdown for LLMs
+  const copy = async (as: "text" | "md", el?: HTMLElement) => {
     try {
-      const res = await fetch(markdownUrl)
-      if (!res.ok) throw new Error()
-      await navigator.clipboard.writeText(await res.text())
+      let text: string
+      if (as === "text") {
+        const article = el?.closest("article")
+        const body = article?.querySelector<HTMLElement>(".prose")
+        if (!body) throw new Error()
+        const title = article?.querySelector("h1")?.innerText.trim()
+        // innerText skips list markers, so add them for the read and remove them in the same tick (no repaint)
+        const marks = [...body.querySelectorAll("li")].map((li) => {
+          const ol = li.parentElement?.tagName === "OL"
+          const mark = document.createTextNode(ol ? `${[...li.parentElement!.children].indexOf(li) + 1}. ` : "• ")
+          // Tiptap wraps item text in <p>; put the marker inside it so it stays on the same line
+          const first = li.firstElementChild
+          ;(first?.tagName === "P" ? first : li).prepend(mark)
+          return mark
+        })
+        // Same trick for links: write the URL after the link text; same-page #anchors are skipped
+        body.querySelectorAll<HTMLAnchorElement>("a[href]").forEach((a) => {
+          const href = a.getAttribute("href")!
+          const label = a.innerText.trim()
+          if (href.startsWith("#") || !label || label === a.href || `mailto:${label}` === href) return
+          // Keep spacing right when the link text itself ends with a space ("Workflows, ")
+          const mark = document.createTextNode(/\s$/.test(a.innerText) ? `(${a.href}) ` : ` (${a.href})`)
+          a.append(mark)
+          marks.push(mark)
+        })
+        const plain = body.innerText
+        marks.forEach((m) => m.remove())
+        text = (title ? `${title}\n\n` : "") + plain.replace(/\n{3,}/g, "\n\n").trim()
+      } else {
+        const res = await fetch(markdownUrl)
+        if (!res.ok) throw new Error()
+        text = await res.text()
+      }
+      await navigator.clipboard.writeText(text)
       setCopied("done")
     } catch {
       setCopied("error")
@@ -42,7 +74,7 @@ export function ViewOptions({ slug, pageUrl }: { slug: string; pageUrl: string }
     <div className="docs-view-options not-prose ms-auto flex shrink-0 items-center">
       {/* Split button: Copy | chevron */}
       <div className="inline-flex overflow-hidden rounded-lg border border-fd-border bg-fd-secondary/50 text-sm">
-        <button type="button" className="inline-flex min-h-11 cursor-pointer items-center gap-2 px-3 sm:min-h-9 font-medium transition hover:bg-fd-accent" onClick={copy} aria-live="polite">
+        <button type="button" className="inline-flex min-h-11 cursor-pointer items-center gap-2 px-3 sm:min-h-9 font-medium transition hover:bg-fd-accent" onClick={(e) => copy("text", e.currentTarget)} aria-live="polite">
           {copied === "done" ? <Check className="size-4" /> : <Copy className="size-4" />}
           {copied === "done" ? "Copied" : copied === "error" ? "Copy failed" : "Copy"}
         </button>
@@ -50,7 +82,7 @@ export function ViewOptions({ slug, pageUrl }: { slug: string; pageUrl: string }
           <PopoverTrigger aria-label="More page options" className="group inline-flex min-h-11 cursor-pointer items-center border-s border-fd-border px-2.5 sm:min-h-9 sm:px-2 transition hover:bg-fd-accent">
             <ChevronDown className="size-4 text-fd-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
           </PopoverTrigger>
-          <PopoverContent align="end" className="flex w-[min(21rem,calc(100vw-2rem))] flex-col p-2">
+          <PopoverContent align="end" className="flex w-max min-w-0 max-w-[calc(100vw-2rem)] flex-col p-1.5">
             {groups.map((g, gi) => (
               <div key={gi} className={gi > 0 ? "mt-1 border-t border-fd-border pt-1" : undefined}>
                 {g.map((item) => {
@@ -71,7 +103,7 @@ export function ViewOptions({ slug, pageUrl }: { slug: string; pageUrl: string }
                       {body}
                     </a>
                   ) : (
-                    <button key={item.title} type="button" onClick={copy} className={row}>
+                    <button key={item.title} type="button" onClick={() => copy("md")} className={row}>
                       {body}
                     </button>
                   )
