@@ -942,6 +942,12 @@
 .simple-editor-wrapper[data-docs-blocks] .tiptap-media-figure:not(.docs-frame *) img.blog-image {
   width: calc(100% - 1rem);
   height: auto;
+  margin: 0.5rem !important; /* Inset the image inside its frame like the video; the editor's image style forces margin 0 */
+}
+/* The frame insets image and video by 0.5rem, so the remove button moves 0.5rem further in to sit inside the media's top-right corner */
+.simple-editor-wrapper[data-docs-blocks] .tiptap-media-figure:not(.docs-frame *) > .tiptap-node-close {
+  top: 1rem;
+  right: 1rem;
 }
 .simple-editor-wrapper[data-docs-blocks] figure.tiptap-media-figure {
   width: 100%;
