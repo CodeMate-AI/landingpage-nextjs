@@ -81,6 +81,8 @@ export async function POST(req: Request) {
     messages,
     tools: createDocsTools(),
     stopWhen: stepCountIs(6),
+    // Force a docs search before any text, so no reply can skip grounding
+    prepareStep: ({ stepNumber }) => (stepNumber === 0 ? { toolChoice: { type: "tool", toolName: "search_docs" } } : undefined),
     maxRetries: 4, // the gateway returns an occasional 502; the default of 2 retries showed errors to visitors
     temperature: 0.2,
     maxOutputTokens: 900,
