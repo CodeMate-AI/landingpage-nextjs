@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { DocArticle } from "../DocArticle";
 import { compileTiptapToHtml, extractFaqItems } from "@/lib/blog-compiler";
 // FAQPage structured data for pages with an FAQ block
 import { FaqJsonLd } from "@/components/faq-json-ld";
-import { buildPageTree, flattenNav, getPublishedIndex, getPublishedNav, getPublishedPage } from "@/lib/docs-data";
+import { buildPageTree, flattenNav, getPublishedIndex, getPublishedNav, getPublishedPage, getRenamedSlug } from "@/lib/docs-data";
 import { highlightCodeBlocks } from "@/lib/docs-highlight";
 import { addHeadingIds } from "@/lib/docs-toc";
 
@@ -28,7 +28,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function DocPage({ params }: Props) {
   const { slug } = await params;
   const page = await getPublishedPage(slug);
-  if (!page) notFound();
+  if (!page) {
+    // An old URL of a renamed page moves to its current one instead of 404ing
+    const renamed = await getRenamedSlug(slug);
+    if (renamed) permanentRedirect(`/docs/${renamed}`);
+    notFound();
+  }
 
   const compiled = compileTiptapToHtml(page.content, page.sections, undefined, { skipFaq: true });
   const { html, toc } = addHeadingIds(await highlightCodeBlocks(compiled.html));

@@ -1,5 +1,5 @@
 import { getPublishedIndex } from "@/lib/docs-data";
-import { REFUSAL } from "@/lib/docs-ai/messages";
+import { REFUSAL } from "@/lib/docs-ai/refusal";
 
 // Page map for the model; refreshed at most once a minute so publishes show up quickly
 let cache: { at: number; text: string } | null = null;

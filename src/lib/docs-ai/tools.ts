@@ -8,7 +8,8 @@ const MAX_PAGE_CHARS = 60_000;
 
 // Accepts "/docs/foo", "https://codemate.ai/docs/foo.md", "foo" and returns "foo"
 function toSlug(input: string) {
-  return input.trim().replace(/^https?:\/\/[^/]+/, "").replace(/^\/?docs\//, "").replace(/^\//, "").replace(/\.mdx?$/, "").replace(/[?#].*$/, "");
+  // Query and hash go first, so "foo.md#install" still loses its .md
+  return input.trim().replace(/[?#].*$/, "").replace(/^https?:\/\/[^/]+/, "").replace(/^\/?docs\//, "").replace(/^\//, "").replace(/\.mdx?$/, "");
 }
 
 // One set of tools per request. The tool results are streamed to the browser (it shows each step),

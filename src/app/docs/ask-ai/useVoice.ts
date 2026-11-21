@@ -101,16 +101,22 @@ export function useVoice(onText: (text: string) => void) {
   useEffect(() => {
     if (error !== BLOCKED || !navigator.permissions) return;
     let status: PermissionStatus | undefined;
+    // Set by cleanup: a query that resolves after unmount must not attach a listener nobody removes
+    let cancelled = false;
     const onChange = () => status?.state !== "denied" && setError("");
     navigator.permissions
       .query({ name: "microphone" as PermissionName })
       .then((s) => {
+        if (cancelled) return;
         status = s;
         s.addEventListener("change", onChange);
         onChange();
       })
       .catch(() => {});
-    return () => status?.removeEventListener("change", onChange);
+    return () => {
+      cancelled = true;
+      status?.removeEventListener("change", onChange);
+    };
   }, [error]);
 
   // Never leave the microphone open when the panel unmounts

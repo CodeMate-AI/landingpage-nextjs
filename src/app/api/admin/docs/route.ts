@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { invalidateDocs } from "@/lib/docs-data";
+import { invalidateDocs, publishedSlugTaken } from "@/lib/docs-data";
 import { withAuth } from "@/lib/authWrapper";
 import { getDocsDatabase } from "@/lib/mongodb";
 import { DocPageSchema, buildSnapshot } from "@/lib/docs-validation";
@@ -39,6 +39,11 @@ async function createDoc(req: NextRequest, session: any) {
       createdAt: now,
       updatedAt: now,
     };
+
+    // The unique index only covers draft slugs; a renamed page can still be live at this URL
+    if (published && (await publishedSlugTaken(draft.slug))) {
+      return NextResponse.json({ error: "Another published page already uses this URL" }, { status: 409 });
+    }
 
     const db = await getDocsDatabase();
     try {

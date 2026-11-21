@@ -3,8 +3,6 @@ import { z } from "zod";
 // Only the newest MAX_MESSAGES are sent to the model; older turns drop off (sliding window)
 export const MAX_MESSAGES = 30;
 export const MAX_MESSAGE_CHARS = 4000;
-// Fixed reply for anything the docs do not cover; lives here so the chat UI can recognise it without importing server code
-export const REFUSAL = "I can only answer questions about the CodeMate AI docs, and I could not find this there. Try asking about installing CodeMate AI, CORA, CORA-CLI, Build or Toolbox.";
 
 
 export const ID = z.string().regex(/^[A-Za-z0-9_-]{8,64}$/);

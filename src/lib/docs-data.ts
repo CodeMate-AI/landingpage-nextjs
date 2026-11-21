@@ -3,6 +3,7 @@ import { revalidatePath, revalidateTag, unstable_cache } from "next/cache";
 import type { AdvancedIndex } from "fumadocs-core/search/server";
 import { buildSearchData } from "@/lib/docs-search-text";
 import type * as PageTree from "fumadocs-core/page-tree";
+import type { ObjectId } from "mongodb";
 import { getDocsDatabase } from "@/lib/mongodb";
 import type { NavItem } from "@/lib/docs-validation";
 
@@ -48,6 +49,27 @@ export const getPublishedPage = React.cache(async (slug: string): Promise<Publis
     return null;
   }
 });
+
+// Where an old URL now lives: a page published under a new slug keeps its earlier slugs in oldSlugs
+export async function getRenamedSlug(slug: string): Promise<string | null> {
+  try {
+    const db = await getDocsDatabase();
+    const row = await db.collection("pages").findOne({ published: true, oldSlugs: slug }, { projection: { _id: 0, "publishedVersion.slug": 1 } });
+    return row?.publishedVersion?.slug ?? null;
+  } catch (error) {
+    console.error("Failed to look up renamed docs page:", error);
+    return null;
+  }
+}
+
+// True when another page is already live at this URL (the unique index covers draft slugs only).
+// shortcut: check-then-write, so two publishes in the same instant could still collide; a unique partial index on publishedVersion.slug would close that.
+export async function publishedSlugTaken(slug: string, exceptId?: ObjectId): Promise<boolean> {
+  const db = await getDocsDatabase();
+  const filter: Record<string, unknown> = { published: true, "publishedVersion.slug": slug };
+  if (exceptId) filter._id = { $ne: exceptId };
+  return Boolean(await db.collection("pages").findOne(filter, { projection: { _id: 1 } }));
+}
 
 // Search index for all published pages. Reads only slug, title, description and the search data
 // stored at publish time (never page content), except for pages published before that field

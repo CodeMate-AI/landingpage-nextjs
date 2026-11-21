@@ -1105,8 +1105,8 @@ function EditorContent() {
 
           <div>
             <label className="mb-1.5 block text-sm font-medium text-neutral-400">Subheading</label>
+            {/* Optional, like the API (subheading defaults to ""), so a draft can be saved without one */}
             <textarea
-              required
               rows={2}
               value={subheading}
               onChange={(e) => setSubheading(e.target.value)}

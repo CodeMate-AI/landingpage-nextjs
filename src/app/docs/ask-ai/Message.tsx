@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { Check, ChevronRight, FileText, Loader2, Search, ThumbsDown, ThumbsUp, TriangleAlert } from "lucide-react";
 import { AnswerMarkdown } from "./Markdown";
 import { useAsk, type AskMessage } from "./context";
-import { REFUSAL } from "@/lib/docs-ai/messages";
+// From its own module, so zod (in messages.ts) stays out of the browser bundle
+import { REFUSAL } from "@/lib/docs-ai/refusal";
 
 interface ToolPart {
   type: string;

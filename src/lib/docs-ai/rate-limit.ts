@@ -9,13 +9,18 @@ const DAY_LIMIT = 100;
 
 const memory = new Map<string, number>();
 
+// A blank env value means "use the default"; only an explicit 0 (or a negative) turns a limit off
+const envNumber = (value: string | undefined, fallback: number) => (value?.trim() ? Number(value) : fallback);
+
 // The first X-Forwarded-For entry is whatever the client sent, so it can be faked to dodge the limit.
 // Prefer headers the proxy sets itself (Netlify, nginx), then the LAST forwarded entry, which the
 // nearest proxy appended. shortcut: if a CDN sits in front of nginx, use its client-IP header instead.
 export function clientIp(req: Request) {
   const h = req.headers;
   const forwarded = h.get("x-forwarded-for")?.split(",").map((s) => s.trim()).filter(Boolean);
-  return h.get("x-nf-client-connection-ip") || h.get("x-real-ip") || forwarded?.at(-1) || "anonymous";
+  // Only trust the header the current host's proxy sets: Netlify's on Netlify, nginx's X-Real-IP elsewhere (a client could send either)
+  const proxyIp = process.env.NETLIFY ? h.get("x-nf-client-connection-ip") : h.get("x-real-ip");
+  return proxyIp || forwarded?.at(-1) || "anonymous";
 }
 
 // Counts requests per IP per minute and per day in MongoDB, so every server process shares the count.
@@ -23,7 +28,7 @@ export function clientIp(req: Request) {
 // Fails open on a database error: a broken limiter should not take Ask AI down.
 // `scope` keeps counters apart (questions vs feedback); only the "ask" scope has the overall cap.
 export async function checkRate(ip: string, scope: "ask" | "fb" = "ask"): Promise<{ limited: boolean; retryAfter: number }> {
-  const perMinute = scope === "fb" ? 30 : Number(process.env.DOCS_AI_RATE_LIMIT_PER_MINUTE ?? 10);
+  const perMinute = scope === "fb" ? 30 : envNumber(process.env.DOCS_AI_RATE_LIMIT_PER_MINUTE, 10);
   if (!Number.isFinite(perMinute) || perMinute <= 0) return { limited: false, retryAfter: 0 };
   try {
     const col = (await getDocsDatabase()).collection<{ _id: string; n: number; createdAt: Date }>(COLLECTION);
@@ -48,7 +53,7 @@ export async function checkRate(ip: string, scope: "ask" | "fb" = "ask"): Promis
 
     // Backstop against many IPs together running up the model bill. Counted after the per-IP checks,
     // so one IP spamming past its own limit cannot use up everyone else's share.
-    const globalPerMinute = Number(process.env.DOCS_AI_GLOBAL_PER_MINUTE ?? 60);
+    const globalPerMinute = envNumber(process.env.DOCS_AI_GLOBAL_PER_MINUTE, 60);
     if (Number.isFinite(globalPerMinute) && globalPerMinute > 0 && (await bump(`g:${Math.floor(now / 60_000)}`)) > globalPerMinute) {
       return { limited: true, retryAfter: minuteLeft };
     }

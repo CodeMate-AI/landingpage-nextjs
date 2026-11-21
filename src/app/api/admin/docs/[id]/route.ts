@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { invalidateDocs } from "@/lib/docs-data";
+import { invalidateDocs, publishedSlugTaken } from "@/lib/docs-data";
 import { ObjectId } from "mongodb";
 import { withAuth } from "@/lib/authWrapper";
 import { getDocsDatabase } from "@/lib/mongodb";
@@ -46,6 +46,15 @@ async function updateDoc(req: NextRequest, session: any, { params }: Ctx) {
     const checked = typeof version === "number" && !forceOverwrite;
     $set.version = (checked ? version : existing.version || 0) + 1;
     if (publish) {
+      // Another page may still be live at this URL even though no draft uses it any more
+      if (await publishedSlugTaken(draft.slug, existing._id)) {
+        return NextResponse.json({ error: "Another published page already uses this URL" }, { status: 409 });
+      }
+      // A renamed live page keeps its old URLs so they redirect (see getRenamedSlug); its new slug is never one of them
+      const oldSlug = existing.publishedVersion?.slug;
+      const oldSlugs = new Set<string>([...(existing.oldSlugs ?? []), ...(oldSlug && oldSlug !== draft.slug ? [oldSlug] : [])]);
+      oldSlugs.delete(draft.slug);
+      $set.oldSlugs = [...oldSlugs];
       Object.assign($set, {
         published: true,
         publishedAt: existing.publishedAt || now,
@@ -105,25 +114,34 @@ async function deleteDoc(_req: NextRequest, _session: any, { params }: Ctx) {
   const { id } = await params;
   if (!ObjectId.isValid(id)) return NextResponse.json({ error: "Invalid page ID" }, { status: 400 });
 
-  const db = await getDocsDatabase();
-  const page = await db.collection("pages").findOneAndDelete({ _id: new ObjectId(id) });
-  if (!page) return NextResponse.json({ error: "Page not found" }, { status: 404 });
+  try {
+    const db = await getDocsDatabase();
+    const page = await db.collection("pages").findOneAndDelete({ _id: new ObjectId(id) });
+    if (!page) return NextResponse.json({ error: "Page not found" }, { status: 404 });
 
-  const nav = await db.collection("nav").findOne({ _id: "main" as any });
-  if (nav) {
-    const slugs = new Set([page.slug, page.publishedVersion?.slug].filter(Boolean));
-    let draft = nav.draft || [];
-    let published = nav.published || [];
-    for (const s of slugs) {
-      draft = removeSlug(draft, s);
-      published = removeSlug(published, s);
+    try {
+      const nav = await db.collection("nav").findOne({ _id: "main" as any });
+      if (nav) {
+        const slugs = new Set([page.slug, page.publishedVersion?.slug].filter(Boolean));
+        let draft = nav.draft || [];
+        let published = nav.published || [];
+        for (const s of slugs) {
+          draft = removeSlug(draft, s);
+          published = removeSlug(published, s);
+        }
+        // Bump the nav version so an open sidebar editor sees the removal as a newer save
+        await db.collection("nav").updateOne({ _id: "main" as any }, { $set: { draft, published }, $inc: { version: 1 } });
+      }
+    } finally {
+      // The page is already gone, so caches must drop it even if the nav cleanup failed
+      invalidateDocs();
     }
-    // Bump the nav version so an open sidebar editor sees the removal as a newer save
-    await db.collection("nav").updateOne({ _id: "main" as any }, { $set: { draft, published }, $inc: { version: 1 } });
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    // A leftover nav entry is harmless: the sidebar skips slugs with no published page
+    console.error("Delete doc error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
-
-  invalidateDocs();
-  return NextResponse.json({ success: true });
 }
 
 export const GET = withAuth(getDoc);
