@@ -60,18 +60,8 @@
   }
 }
 
-/* Docs editor: body in Manrope and headings in Instrument Serif, like the published docs page.
-   The font picker still works: it wraps text in a span with an inline font, which wins over these.
-   Headings inside a block's own panel (contenteditable=false, like the Related Docs settings) are left alone. */
+/* Docs editor: everything in Manrope (headings included), like the published docs page.
+   The font picker still works: it wraps text in a span with an inline font, which wins over this. */
 .simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror {
   font-family: var(--docs-font-body), sans-serif;
 }
-.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror :is(h1, h2, h3):not([contenteditable="false"] *) {
-  font-family: var(--docs-font-heading), serif;
-  font-weight: 400;
-  letter-spacing: 0;
-  line-height: 1.15;
-}
-.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror h1:not([contenteditable="false"] *) { font-size: 2.6rem; }
-.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror h2:not([contenteditable="false"] *) { font-size: 2rem; }
-.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror h3:not([contenteditable="false"] *) { font-size: 1.5rem; }

@@ -36,7 +36,12 @@ export interface FontDropdownMenuProps extends Omit<ButtonProps, "type"> {
   modal?: boolean;
   // Label for the default option when the page sets its own default fonts (the docs editor)
   defaultName?: string;
+  // The page's own default font (docs: Manrope). Shown in the default label and swapped out of the list for Montserrat
+  defaultFont?: string;
 }
+
+// Montserrat as an ordinary pick: applies a Montserrat span instead of clearing back to the default
+const MONTSERRAT_PICK: FontOption = { ...DEFAULT_FONT, id: "montserrat-pick", name: "Montserrat", isDefault: false };
 
 export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuProps>(
   (
@@ -47,6 +52,7 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
       onOpenChange,
       modal = false,
       defaultName,
+      defaultFont,
       children,
       ...buttonProps
     },
@@ -58,7 +64,7 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
     const {
       activeFontKey,
       activeFontOption,
-      fonts,
+      fonts: pickerFonts,
       canToggle,
       applyFontToSelection,
       clearFontFromSelection,
@@ -74,8 +80,17 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
     );
 
     const currentBaseOption = getFontOption(baseFont);
-    // The default option keeps its behaviour (removes picked fonts) but can carry the page's own name
-    const nameOf = (font: FontOption) => (font.isDefault && defaultName ? defaultName : font.name);
+    // The default option keeps its behaviour (removes picked fonts) but can carry the page's own name, e.g. "Docs default (Manrope)"
+    const nameOf = (font: FontOption) =>
+      font.isDefault && defaultName ? (defaultFont ? `${defaultName} (${defaultFont})` : defaultName) : font.name;
+    // With a page default font, the default row already is that font, so its own row becomes a real Montserrat pick instead
+    const fonts = defaultFont
+      ? pickerFonts.map((f) => (getFontOption(f.fontKey).fontKey === getFontOption(defaultFont).fontKey ? MONTSERRAT_PICK : f))
+      : pickerFonts;
+    // Montserrat text matches the default option in fontKey, so in that mode it ticks the Montserrat row, not the default one
+    const selectedId = defaultFont && activeFontKey && activeFontOption.isDefault ? MONTSERRAT_PICK.id : activeFontOption.id;
+    // The default row previews in the page's default font, not Montserrat
+    const familyOf = (font: FontOption) => (font.isDefault && defaultFont ? getFontOption(defaultFont).family : font.family);
 
     // Determine short display label for the toolbar button trigger
     const triggerLabel = activeFontKey
@@ -133,14 +148,15 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
 
         <DropdownMenuContent
           align="start"
-          className="w-64 max-h-[420px] overflow-y-auto p-1.5 bg-[#18181b] border border-[#27272a] shadow-2xl rounded-lg text-neutral-200"
+          // w-72 so "Docs default (Manrope)" and its Base badge fit without cutting off
+          className="w-72 max-h-[420px] overflow-y-auto p-1.5 bg-[#18181b] border border-[#27272a] shadow-2xl rounded-lg text-neutral-200"
         >
           {/* Header section with current article base font indicator */}
           <DropdownMenuLabel className="px-2 py-1.5 text-xs">
             <div className="font-semibold text-white">Font Family</div>
             <div className="text-[11px] text-neutral-400 mt-0.5 flex items-center justify-between">
               <span>Article Base:</span>
-              <span className="font-medium text-blue-400 truncate max-w-[120px]">
+              <span className="font-medium text-blue-400 truncate max-w-[170px]">
                 {nameOf(currentBaseOption)}
               </span>
             </div>
@@ -151,7 +167,7 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
           {/* List of 8 Google Fonts with Montserrat (Default) at the top */}
           <DropdownMenuGroup>
             {fonts.map((font) => {
-              const isSelectedTextFont = activeFontOption.id === font.id;
+              const isSelectedTextFont = selectedId === font.id;
               const isCurrentBase = currentBaseOption.id === font.id;
 
               return (
@@ -172,7 +188,7 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
                       <span className="w-4 h-4 shrink-0" />
                     )}
                     <span
-                      style={{ fontFamily: font.family }}
+                      style={{ fontFamily: familyOf(font) }}
                       className="truncate text-[13px]"
                     >
                       {nameOf(font)}
@@ -224,7 +240,8 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
                 onMouseDown={(e) => e.preventDefault()}
                 className="w-full text-left text-xs text-neutral-400 hover:text-neutral-200 hover:bg-[#27272a] px-2 py-1.5 rounded transition"
               >
-                Reset article font to Montserrat (Default)
+                {/* Shows "Docs default" in the docs editor; the blog keeps "Montserrat (Default)" */}
+                Reset article font to {nameOf(DEFAULT_FONT)}
               </button>
             )}
           </div>

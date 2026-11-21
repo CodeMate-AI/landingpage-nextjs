@@ -29,7 +29,7 @@ export const AVAILABLE_FONTS: FontOption[] = [
     family: "'Manrope', sans-serif",
     category: "sans-serif",
   },
-  // Third after the base font and Manrope: the docs heading font
+  // Offered in the picker for anyone who wants a serif; the docs default is Manrope (src/lib/docs-fonts.ts)
   {
     id: "instrument-serif",
     name: "Instrument Serif",

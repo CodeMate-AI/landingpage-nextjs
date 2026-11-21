@@ -1,7 +1,7 @@
 import "./docs.css";
 import type { ReactNode } from "react";
 import { RootProvider } from "fumadocs-ui/provider/next";
-import { docsBodyFont, docsFontVars, docsHeadingFont } from "@/lib/docs-fonts";
+import { docsBodyFont, docsFontVars } from "@/lib/docs-fonts";
 import Footer from "@/components/footer";
 import { DocsThemeInit, DocsThemeSync } from "./DocsThemeSync";
 import { AskProvider } from "./ask-ai/context";
@@ -31,7 +31,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
   // --font-montserrat is pointed at Manrope here on purpose: shared components that use it (footer, menus) match the docs.
   return (
     <RootProvider search={{ enabled: false }}>
-      <style>{`body:has(.docs-shell){--font-montserrat:${docsBodyFont.style.fontFamily};--docs-font-body:${docsBodyFont.style.fontFamily};--docs-font-heading:${docsHeadingFont.style.fontFamily};font-family:var(--docs-font-body)}`}</style>
+      <style>{`body:has(.docs-shell){--font-montserrat:${docsBodyFont.style.fontFamily};--docs-font-body:${docsBodyFont.style.fontFamily};font-family:var(--docs-font-body)}`}</style>
       <DocsThemeInit />
       <DocsThemeSync />
       <AskProvider>

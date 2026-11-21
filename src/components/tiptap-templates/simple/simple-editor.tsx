@@ -260,8 +260,8 @@ const MainToolbarContent = ({
 
       <ToolbarGroup>
         <HeadingDropdownMenu modal={false} levels={[2, 3, 4]} />
-        {/* Docs set their own default fonts (src/lib/docs-fonts.ts), so the default option says so */}
-        <FontDropdownMenu modal={false} baseFont={baseFont} onBaseFontChange={onBaseFontChange} defaultName={docsBlocks ? "Docs default" : undefined} />
+        {/* Docs set their own default font (Manrope, src/lib/docs-fonts.ts), so the default option names it and Montserrat stays pickable */}
+        <FontDropdownMenu modal={false} baseFont={baseFont} onBaseFontChange={onBaseFontChange} defaultName={docsBlocks ? "Docs default" : undefined} defaultFont={docsBlocks ? "Manrope" : undefined} />
         <ListDropdownMenu
           modal={false}
           types={["bulletList", "orderedList"]}
