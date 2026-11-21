@@ -9,6 +9,8 @@ export interface FontOption {
   family: string;
   category: "sans-serif" | "serif" | "display";
   isDefault?: boolean;
+  // Kept so content that already uses it still renders, but no longer offered in the font picker
+  hidden?: boolean;
 }
 
 export const AVAILABLE_FONTS: FontOption[] = [
@@ -26,6 +28,14 @@ export const AVAILABLE_FONTS: FontOption[] = [
     fontKey: "Manrope",
     family: "'Manrope', sans-serif",
     category: "sans-serif",
+  },
+  // Third after the base font and Manrope: the docs heading font
+  {
+    id: "instrument-serif",
+    name: "Instrument Serif",
+    fontKey: "Instrument Serif",
+    family: "'Instrument Serif', serif",
+    category: "serif",
   },
   {
     id: "lexend",
@@ -49,13 +59,6 @@ export const AVAILABLE_FONTS: FontOption[] = [
     category: "sans-serif",
   },
   {
-    id: "source-serif-4",
-    name: "Source Serif 4",
-    fontKey: "Source Serif 4",
-    family: "'Source Serif 4', serif",
-    category: "serif",
-  },
-  {
     id: "dm-sans",
     name: "DM Sans",
     fontKey: "DM Sans",
@@ -69,12 +72,23 @@ export const AVAILABLE_FONTS: FontOption[] = [
     family: "'Space Grotesk', sans-serif",
     category: "display",
   },
+  {
+    id: "source-serif-4",
+    name: "Source Serif 4",
+    fontKey: "Source Serif 4",
+    family: "'Source Serif 4', serif",
+    category: "serif",
+    hidden: true,
+  },
 ];
+
+// What the font picker lists, in order
+export const PICKER_FONTS = AVAILABLE_FONTS.filter((f) => !f.hidden);
 
 export const DEFAULT_FONT: FontOption = AVAILABLE_FONTS[0];
 
 export const GOOGLE_FONTS_STYLESHEET_URL =
-  "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Inter:wght@400..700&family=Lexend:wght@400..700&family=Manrope:wght@400..700&family=Montserrat:ital,wght@0,400..800;1,400..800&family=Poppins:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Space+Grotesk:wght@400..700&display=swap";
+  "https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400..700&family=Lexend:wght@400..700&family=Manrope:wght@400..700&family=Montserrat:ital,wght@0,400..800;1,400..800&family=Poppins:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Space+Grotesk:wght@400..700&display=swap";
 
 /**
  * Resolves a fontKey, id, or display name to its canonical FontOption.

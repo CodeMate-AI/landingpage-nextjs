@@ -260,7 +260,8 @@ const MainToolbarContent = ({
 
       <ToolbarGroup>
         <HeadingDropdownMenu modal={false} levels={[2, 3, 4]} />
-        <FontDropdownMenu modal={false} baseFont={baseFont} onBaseFontChange={onBaseFontChange} />
+        {/* Docs set their own default fonts (src/lib/docs-fonts.ts), so the default option says so */}
+        <FontDropdownMenu modal={false} baseFont={baseFont} onBaseFontChange={onBaseFontChange} defaultName={docsBlocks ? "Docs default" : undefined} />
         <ListDropdownMenu
           modal={false}
           types={["bulletList", "orderedList"]}

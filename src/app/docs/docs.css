@@ -83,3 +83,14 @@ html:has(.docs-shell) { scroll-padding-top: calc(var(--docs-header-height, 64px)
 @media (prefers-reduced-motion: reduce) {
   .docs-search-fade, .docs-search-pop { animation: none; }
 }
+
+/* Docs fonts (from src/lib/docs-fonts.ts): Manrope text, Instrument Serif headings set larger because its letters run small.
+   In the utilities layer so it beats the title's text-* classes; a font picked in the editor is an inline span and still wins.
+   h2/h3 only when they have no class: writer headings are plain, while block headings (like Related Docs) carry a class and keep their own style. */
+@layer utilities {
+  .docs-shell { font-family: var(--docs-font-body), sans-serif; }
+  .docs-shell main :is(h1, h2:not([class]), h3:not([class])) { font-family: var(--docs-font-heading), serif; font-weight: 400; letter-spacing: 0; line-height: 1.15; }
+  .docs-shell main h1 { font-size: 2.6rem; }
+  .docs-shell main h2:not([class]) { font-size: 2rem; }
+  .docs-shell main h3:not([class]) { font-size: 1.5rem; }
+}

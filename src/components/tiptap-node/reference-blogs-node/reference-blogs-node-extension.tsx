@@ -552,8 +552,10 @@ export const ReferenceBlogsNode = Node.create({
       bottomLinkText: {
         default: "Read the blog",
       },
+      // Kept in the HTML so a copied Related Docs block stays a docs block (and keeps its docs labels) when pasted
       source: {
         default: "blog",
+        parseHTML: (el: HTMLElement) => (el.getAttribute("data-source") === "docs" ? "docs" : "blog"),
       },
       bottomLinkUrl: {
         default: "/blog",
@@ -626,6 +628,8 @@ export const ReferenceBlogsNode = Node.create({
         "data-type": "reference-blogs",
         "data-settings": encodeJsonAttr({ heading, showBottomLink, bottomLinkText, bottomLinkUrl }),
         "data-blogs": encodeJsonAttr(blogs),
+        // Only docs blocks carry it, so blog HTML stays exactly as before
+        ...(node.attrs.source === "docs" ? { "data-source": "docs" } : {}),
       },
     ]
   },

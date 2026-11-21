@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import type { Editor } from "@tiptap/react";
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor";
 import { getActiveFontFamily } from "@/lib/tiptap-font-family";
-import { AVAILABLE_FONTS, DEFAULT_FONT, getFontOption, FontOption } from "@/lib/fonts-config";
+import { PICKER_FONTS, DEFAULT_FONT, getFontOption, FontOption } from "@/lib/fonts-config";
 
 export interface UseFontDropdownMenuConfig {
   editor?: Editor | null;
@@ -69,7 +69,7 @@ export function useFontDropdownMenu(config?: UseFontDropdownMenuConfig) {
     editor,
     activeFontKey,
     activeFontOption,
-    fonts: AVAILABLE_FONTS,
+    fonts: PICKER_FONTS, // hidden fonts still render in old content but are not offered
     canToggle: Boolean(editor && editor.isEditable),
     applyFontToSelection,
     clearFontFromSelection,

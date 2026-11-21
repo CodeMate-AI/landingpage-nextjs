@@ -9,6 +9,8 @@ import type { JSONContent } from "@tiptap/react";
 import DocsPreviewModal from "../DocsPreviewModal";
 import AutoSaveToggle from "@/components/AutoSaveToggle";
 import ConflictBanner from "@/components/ConflictBanner";
+// Same typefaces as the published docs, so the editor shows what readers will see
+import { docsFontVars } from "@/lib/docs-fonts";
 import { useAutoSavePref } from "@/lib/useAutoSavePref";
 import { DOCS_PREVIEW_CHANNEL, DOCS_PREVIEW_LAST } from "../previewChannel";
 
@@ -211,7 +213,7 @@ function DocsEditor() {
   const saveHint = canSave ? undefined : saving ? "Saving..." : "Add a title and URL slug to save";
 
   return (
-    <main className="min-h-screen bg-[#09090b] p-4 font-sans text-neutral-100 sm:p-6 lg:p-8">
+    <main className={`${docsFontVars} min-h-screen bg-[#09090b] p-4 font-sans text-neutral-100 sm:p-6 lg:p-8`}>
       <div className="mx-auto max-w-4xl">
         <header className="mb-8 flex flex-wrap items-center justify-between gap-4 border-b border-[#27272a] pb-6">
           <div>

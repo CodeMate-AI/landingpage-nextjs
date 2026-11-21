@@ -34,6 +34,8 @@ export interface FontDropdownMenuProps extends Omit<ButtonProps, "type"> {
   onBaseFontChange?: (fontKey: string) => void;
   onOpenChange?: (isOpen: boolean) => void;
   modal?: boolean;
+  // Label for the default option when the page sets its own default fonts (the docs editor)
+  defaultName?: string;
 }
 
 export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuProps>(
@@ -44,6 +46,7 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
       onBaseFontChange,
       onOpenChange,
       modal = false,
+      defaultName,
       children,
       ...buttonProps
     },
@@ -71,6 +74,8 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
     );
 
     const currentBaseOption = getFontOption(baseFont);
+    // The default option keeps its behaviour (removes picked fonts) but can carry the page's own name
+    const nameOf = (font: FontOption) => (font.isDefault && defaultName ? defaultName : font.name);
 
     // Determine short display label for the toolbar button trigger
     const triggerLabel = activeFontKey
@@ -136,7 +141,7 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
             <div className="text-[11px] text-neutral-400 mt-0.5 flex items-center justify-between">
               <span>Article Base:</span>
               <span className="font-medium text-blue-400 truncate max-w-[120px]">
-                {currentBaseOption.name}
+                {nameOf(currentBaseOption)}
               </span>
             </div>
           </DropdownMenuLabel>
@@ -170,7 +175,7 @@ export const FontDropdownMenu = forwardRef<HTMLButtonElement, FontDropdownMenuPr
                       style={{ fontFamily: font.family }}
                       className="truncate text-[13px]"
                     >
-                      {font.name}
+                      {nameOf(font)}
                     </span>
                   </div>
 

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Inter:wght@400..700&family=Lexend:wght@400..700&family=Manrope:wght@400..700&family=Montserrat:ital,wght@0,400..800;1,400..800&family=Poppins:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Space+Grotesk:wght@400..700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=Instrument+Serif:ital@0;1&family=Inter:wght@400..700&family=Lexend:wght@400..700&family=Manrope:wght@400..700&family=Montserrat:ital,wght@0,400..800;1,400..800&family=Poppins:ital,wght@0,400..700;1,400..700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&family=Space+Grotesk:wght@400..700&display=swap");
 
 .tiptap.ProseMirror {
   font-family: var(--article-base-font, var(--font-montserrat), sans-serif);
@@ -59,3 +59,19 @@
     padding: 1rem;
   }
 }
+
+/* Docs editor: body in Manrope and headings in Instrument Serif, like the published docs page.
+   The font picker still works: it wraps text in a span with an inline font, which wins over these.
+   Headings inside a block's own panel (contenteditable=false, like the Related Docs settings) are left alone. */
+.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror {
+  font-family: var(--docs-font-body), sans-serif;
+}
+.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror :is(h1, h2, h3):not([contenteditable="false"] *) {
+  font-family: var(--docs-font-heading), serif;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror h1:not([contenteditable="false"] *) { font-size: 2.6rem; }
+.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror h2:not([contenteditable="false"] *) { font-size: 2rem; }
+.simple-editor-wrapper[data-docs-blocks] .tiptap.ProseMirror h3:not([contenteditable="false"] *) { font-size: 1.5rem; }

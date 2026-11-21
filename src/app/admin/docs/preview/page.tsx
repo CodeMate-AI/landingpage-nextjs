@@ -10,6 +10,8 @@ import type { TableOfContents } from "fumadocs-core/toc";
 import { DocsThemeSync } from "@/app/docs/DocsThemeSync";
 import { DocArticle } from "@/app/docs/DocArticle";
 import { DocsSidebar } from "@/app/docs/components/DocsSidebar";
+// Same typefaces as the published docs
+import { docsFontVars } from "@/lib/docs-fonts";
 import { DOCS_PREVIEW_CHANNEL, DOCS_PREVIEW_LAST, type DocsPreviewData } from "../previewChannel";
 
 type Rendered = DocsPreviewData & { tree: PageTree.Root; toc: TableOfContents };
@@ -131,7 +133,7 @@ function PreviewContent() {
       {error && <p className="border-b border-red-500/20 bg-red-500/5 px-4 py-2 text-center text-xs text-red-400">{error} Showing the last render.</p>}
 
       {/* The public layout has a 64px header above the sidebar; here there is none (or only the slim bar above) */}
-      <div className="docs-shell relative min-h-screen w-full overflow-x-clip bg-fd-background text-fd-foreground" style={{ "--docs-header-height": barHeight } as CSSProperties}>
+      <div className={`docs-shell ${docsFontVars} relative min-h-screen w-full overflow-x-clip bg-fd-background text-fd-foreground`} style={{ "--docs-header-height": barHeight } as CSSProperties}>
         <div className="mx-auto w-full max-w-[1440px] px-5 sm:px-8">
           <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-10 xl:gap-14">
             <DocsSidebar tree={data.tree} activeUrl={`/docs/${data.slug}`} />

@@ -1,6 +1,7 @@
 import "./docs.css";
 import type { ReactNode } from "react";
 import { RootProvider } from "fumadocs-ui/provider/next";
+import { docsBodyFont, docsFontVars, docsHeadingFont } from "@/lib/docs-fonts";
 import Footer from "@/components/footer";
 import { DocsThemeInit, DocsThemeSync } from "./DocsThemeSync";
 import { AskProvider } from "./ask-ai/context";
@@ -26,13 +27,16 @@ export default async function Layout({ children }: { children: ReactNode }) {
     .slice(0, 6)
     .map((s) => ({ title: titles.get(s)!, url: `/docs/${s}` }));
 
+  // Docs fonts on <body> (not just the shell) so menus and search, which portal to <body>, get them too.
+  // --font-montserrat is pointed at Manrope here on purpose: shared components that use it (footer, menus) match the docs.
   return (
     <RootProvider search={{ enabled: false }}>
+      <style>{`body:has(.docs-shell){--font-montserrat:${docsBodyFont.style.fontFamily};--docs-font-body:${docsBodyFont.style.fontFamily};--docs-font-heading:${docsHeadingFont.style.fontFamily};font-family:var(--docs-font-body)}`}</style>
       <DocsThemeInit />
       <DocsThemeSync />
       <AskProvider>
         <SiteSearchProvider quickLinks={quickLinks}>
-        <div className="docs-shell relative flex min-h-screen w-full flex-col overflow-x-clip bg-fd-background text-fd-foreground">
+        <div className={`docs-shell ${docsFontVars} relative flex min-h-screen w-full flex-col overflow-x-clip bg-fd-background text-fd-foreground`}>
           <DocsHeader />
           <div className="mx-auto w-full max-w-[1440px] flex-1 px-5 sm:px-8">
             <div className="grid grid-cols-[minmax(0,1fr)] lg:grid-cols-[248px_minmax(0,1fr)] lg:gap-10 xl:gap-14">
