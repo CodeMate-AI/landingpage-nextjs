@@ -3,6 +3,9 @@ import { z } from "zod";
 // Only the newest MAX_MESSAGES are sent to the model; older turns drop off (sliding window)
 export const MAX_MESSAGES = 30;
 export const MAX_MESSAGE_CHARS = 4000;
+// Fixed reply for anything the docs do not cover; lives here so the chat UI can recognise it without importing server code
+export const REFUSAL = "I can only answer questions about the CodeMate AI docs, and I could not find this there. Try asking about installing CodeMate AI, CORA, CORA-CLI, Build or Toolbox.";
+
 
 export const ID = z.string().regex(/^[A-Za-z0-9_-]{8,64}$/);
 export const Vote = z.union([z.literal(1), z.literal(-1), z.literal(0)]);
@@ -33,7 +36,8 @@ export type AskRequest = {
   visitorId?: string;
 };
 
-export function parseAskRequest(input: unknown): AskRequest | null {
+// "too_long" lets the route tell the visitor to shorten the message; null means the request is malformed
+export function parseAskRequest(input: unknown): AskRequest | "too_long" | null {
   const parsed = BodySchema.safeParse(input);
   if (!parsed.success) return null;
 
@@ -43,7 +47,7 @@ export function parseAskRequest(input: unknown): AskRequest | null {
       .map((p) => (p.type === "text" && typeof p.text === "string" ? p.text : ""))
       .join("")
       .trim();
-    if (content.length > MAX_MESSAGE_CHARS) return null;
+    if (content.length > MAX_MESSAGE_CHARS) return "too_long";
     // An assistant turn that was stopped before any text has nothing to send back
     if (content) messages.push({ role: m.role, content });
   }

@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Check, ChevronRight, FileText, Loader2, Search, ThumbsDown, ThumbsUp, TriangleAlert } from "lucide-react";
 import { AnswerMarkdown } from "./Markdown";
 import { useAsk, type AskMessage } from "./context";
+import { REFUSAL } from "@/lib/docs-ai/messages";
 
 interface ToolPart {
   type: string;
@@ -19,7 +20,7 @@ function toolParts(message: AskMessage): ToolPart[] {
   return message.parts.filter((p) => p.type.startsWith("tool-") && "toolCallId" in p) as unknown as ToolPart[];
 }
 
-function ToolRow({ part }: { part: ToolPart }) {
+function ToolRow({ part, refused }: { part: ToolPart; refused: boolean }) {
   const name = part.type.slice(5);
   const failed = part.state === "output-error" || part.state === "output-denied" || !!part.output?.error;
   const done = part.state === "output-available" && !failed;
@@ -57,7 +58,8 @@ function ToolRow({ part }: { part: ToolPart }) {
         <Loader2 className="size-3.5 shrink-0 animate-spin" aria-hidden />
       )}
       <span className={`truncate ${done || failed ? "" : "docs-ask-shimmer"}`}>{failed ? "That step failed" : label}</span>
-      {done && <Check className="ms-auto size-3.5 shrink-0 text-fd-primary" aria-hidden />}
+      {/* A tick next to a search that found nothing useful reads as success, so refusals drop it */}
+      {done && !refused && <Check className="ms-auto size-3.5 shrink-0 text-fd-primary" aria-hidden />}
     </div>
   );
 }
@@ -114,15 +116,20 @@ export function AssistantMessage({ message, streaming }: { message: AskMessage; 
     const a = (e.target as HTMLElement).closest("a");
     const href = a?.getAttribute("href");
     if (!a || !href) return;
-    e.preventDefault();
     if (href.startsWith("/docs")) {
+      e.preventDefault();
       router.push(href);
       if (window.matchMedia("(max-width: 767px)").matches) setOpen(false);
     } else if (/^https?:\/\//i.test(href)) {
+      e.preventDefault();
       window.open(href, "_blank", "noopener,noreferrer");
     }
+    // Anything else (mailto:, #anchor, other site paths) keeps the browser's default; DOMPurify already removed javascript: links
   };
 
+  // Real answers always cite a docs page; refusals (in any language) never do. The English prefix check covers a refusal that echoes a docs link
+  // Judged only once the answer is complete; mid-stream the citation has not arrived yet
+  const refused = !streaming && !text.includes("](/docs/") || text.trim().startsWith(REFUSAL.split(",")[0]);
   const showSteps = tools.length > 0;
   const collapsed = !streaming && text.length > 0 && showSteps;
   const searches = tools.filter((t) => t.type === "tool-search_docs").length;
@@ -141,14 +148,14 @@ export function AssistantMessage({ message, streaming }: { message: AskMessage; 
             </summary>
             <div className="mt-1 flex flex-col gap-1">
               {tools.map((t) => (
-                <ToolRow key={t.toolCallId} part={t} />
+                <ToolRow key={t.toolCallId} part={t} refused={refused} />
               ))}
             </div>
           </details>
         ) : (
           <div className="mb-2 flex flex-col gap-1">
             {tools.map((t) => (
-              <ToolRow key={t.toolCallId} part={t} />
+              <ToolRow key={t.toolCallId} part={t} refused={refused} />
             ))}
           </div>
         ))}

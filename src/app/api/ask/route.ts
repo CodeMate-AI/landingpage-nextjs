@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { streamText, stepCountIs } from "ai";
 import { AIConfigError, getModel } from "@/lib/docs-ai/model";
 import { getSystemPrompt } from "@/lib/docs-ai/prompt";
+import { brandTransform } from "@/lib/docs-ai/brand";
 import { createDocsTools } from "@/lib/docs-ai/tools";
 import type { ObjectId } from "mongodb";
 import { MAX_BODY_BYTES, parseAskRequest } from "@/lib/docs-ai/messages";
@@ -52,14 +53,19 @@ export async function POST(req: Request) {
   }
 
   // Reject oversized bodies before parsing them
-  const raw = Number(req.headers.get("content-length") ?? 0) > MAX_BODY_BYTES ? "" : await req.text();
-  if (raw.length > MAX_BODY_BYTES) return NextResponse.json({ error: "That message could not be sent. It may be too long. Please shorten it, or start a new chat." }, { status: 400 });
+  // Too long is the visitor's to fix; anything else malformed only comes from a broken or forged client
+  const tooLong = () => NextResponse.json({ error: "That message is too long. Please shorten it, or start a new chat." }, { status: 400 });
+  const invalid = () => NextResponse.json({ error: "That message could not be sent. Please start a new chat and try again." }, { status: 400 });
+  if (Number(req.headers.get("content-length") ?? 0) > MAX_BODY_BYTES) return tooLong();
+  const raw = await req.text();
+  if (raw.length > MAX_BODY_BYTES) return tooLong();
   let body: unknown = null;
   try {
     body = JSON.parse(raw);
   } catch {}
   const ask = parseAskRequest(body);
-  if (!ask) return NextResponse.json({ error: "That message could not be sent. It may be too long. Please shorten it, or start a new chat." }, { status: 400 });
+  if (ask === "too_long") return tooLong();
+  if (!ask) return invalid();
   const { messages, page, threadId, visitorId } = ask;
   const question = messages[messages.length - 1].content;
 
@@ -87,6 +93,8 @@ export async function POST(req: Request) {
     temperature: 0.2,
     maxOutputTokens: 900,
     abortSignal: req.signal,
+    // The model copies plain "CodeMate" from the docs; the stream rewrites it to "CodeMate AI"
+    experimental_transform: brandTransform(),
     onFinish: async ({ text }) => {
       if (!events || !eventKey) return;
       await events.updateOne({ _id: eventKey },{ $set: { answer: text.slice(0, 4000) } }).catch(() => {});
