@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { adminFetch, clearAdminToken } from "@/lib/admin-api-client";
+import { AdminPagination, PAGE_SIZES } from "@/components/admin/AdminPagination";
 
 interface PaginationMeta {
   total: number;
@@ -22,11 +23,11 @@ export default function AdminDashboard() {
   const [posts, setPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(5);
+  const [limit, setLimit] = useState(PAGE_SIZES[0]);
   const [pagination, setPagination] = useState<PaginationMeta>({
     total: 0,
     page: 1,
-    limit: 5,
+    limit: PAGE_SIZES[0],
     totalPages: 1,
     hasMore: false,
   });
@@ -163,23 +164,6 @@ export default function AdminDashboard() {
       </span>
     );
 
-  // Generate an array of page numbers with ellipsis if totalPages is large
-  const getPageNumbers = () => {
-    const totalPages = pagination.totalPages;
-    if (totalPages <= 7) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
-    }
-    if (page <= 4) {
-      return [1, 2, 3, 4, 5, "...", totalPages];
-    }
-    if (page >= totalPages - 3) {
-      return [1, "...", totalPages - 4, totalPages - 3, totalPages - 2, totalPages - 1, totalPages];
-    }
-    return [1, "...", page - 1, page, page + 1, "...", totalPages];
-  };
-
-  const startRecord = pagination.total === 0 ? 0 : (page - 1) * limit + 1;
-  const endRecord = Math.min(page * limit, pagination.total);
 
   return (
     <main className="min-h-screen bg-[#09090b] p-4 font-sans text-neutral-100 sm:p-6 lg:p-8">
@@ -297,71 +281,15 @@ export default function AdminDashboard() {
               </table>
             </div>
 
-            {/* Responsive Numbered Pagination Bar */}
-            <div className="mt-6 flex flex-col items-center justify-between gap-4 rounded-xl border border-[#27272a] bg-[#18181b] px-4 py-3 sm:flex-row sm:px-6">
-              <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-400">
-                <span>
-                  Showing <strong className="text-white">{startRecord}</strong> to{" "}
-                  <strong className="text-white">{endRecord}</strong> of{" "}
-                  <strong className="text-white">{pagination.total}</strong> articles
-                </span>
-                <div className="flex items-center gap-1.5 border-l border-[#27272a] pl-3">
-                  <span>Per page:</span>
-                  <select
-                    value={limit}
-                    onChange={(e) => handleLimitChange(Number(e.target.value))}
-                    className="rounded border border-[#27272a] bg-[#09090b] px-2 py-1 text-xs text-white focus:border-blue-500 focus:outline-none cursor-pointer"
-                  >
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={25}>25</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <button
-                  type="button"
-                  disabled={page <= 1}
-                  onClick={() => setPage((prev) => Math.max(1, prev - 1))}
-                  className="rounded-lg border border-[#27272a] bg-[#09090b] px-3 py-1.5 text-xs font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                >
-                  &larr; Previous
-                </button>
-
-                <div className="flex items-center gap-1">
-                  {getPageNumbers().map((pNum, idx) =>
-                    pNum === "..." ? (
-                      <span key={`ellipsis-${idx}`} className="px-1 text-xs text-neutral-500">
-                        ...
-                      </span>
-                    ) : (
-                      <button
-                        key={`page-${pNum}`}
-                        type="button"
-                        onClick={() => setPage(Number(pNum))}
-                        className={`min-w-[32px] rounded-lg px-2.5 py-1.5 text-xs font-semibold transition cursor-pointer ${
-                          page === pNum
-                            ? "bg-blue-600 text-white shadow-sm"
-                            : "border border-[#27272a] bg-[#09090b] text-neutral-300 hover:bg-[#27272a] hover:text-white"
-                        }`}
-                      >
-                        {pNum}
-                      </button>
-                    )
-                  )}
-                </div>
-
-                <button
-                  type="button"
-                  disabled={page >= pagination.totalPages}
-                  onClick={() => setPage((prev) => Math.min(pagination.totalPages, prev + 1))}
-                  className="rounded-lg border border-[#27272a] bg-[#09090b] px-3 py-1.5 text-xs font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
-                >
-                  Next &rarr;
-                </button>
-              </div>
-            </div>
+            <AdminPagination
+              page={page}
+              totalPages={pagination.totalPages}
+              total={pagination.total}
+              limit={limit}
+              noun="articles"
+              onPageChange={setPage}
+              onLimitChange={handleLimitChange}
+            />
           </>
         )}
       </div>

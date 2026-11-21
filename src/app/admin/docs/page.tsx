@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { adminFetch, clearAdminToken } from "@/lib/admin-api-client";
+import { AdminPagination, PAGE_SIZES } from "@/components/admin/AdminPagination";
 
 interface DocRow {
   _id: string;
@@ -48,6 +49,14 @@ export default function AdminDocsDashboard() {
   const [loading, setLoading] = useState(true);
   const [toDelete, setToDelete] = useState<DocRow | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(PAGE_SIZES[0]);
+
+  // Paged in the browser: the list is sorted by sidebar order, which the API does not know.
+  // shortcut: loads every page at once, fine for hundreds; move paging to the API if docs reach thousands.
+  const totalPages = Math.max(1, Math.ceil(docs.length / limit));
+  const current = Math.min(page, totalPages); // a delete can empty the last page
+  const visible = docs.slice((current - 1) * limit, current * limit);
 
   const load = async () => {
     setLoading(true);
@@ -154,7 +163,7 @@ export default function AdminDocsDashboard() {
                 </tr>
               </thead>
               <tbody>
-                {docs.map((d) => (
+                {visible.map((d) => (
                   <tr key={d._id} className="border-b border-[#27272a] last:border-0">
                     <td className="px-4 py-3 font-medium text-white">{d.title || "Untitled"}</td>
                     <td className="px-4 py-3 text-neutral-400">/docs/{d.slug}</td>
@@ -175,6 +184,21 @@ export default function AdminDocsDashboard() {
               </tbody>
             </table>
           </div>
+        )}
+
+        {!loading && docs.length > 0 && (
+          <AdminPagination
+            page={current}
+            totalPages={totalPages}
+            total={docs.length}
+            limit={limit}
+            noun="pages"
+            onPageChange={setPage}
+            onLimitChange={(n) => {
+              setLimit(n);
+              setPage(1);
+            }}
+          />
         )}
       </div>
 
