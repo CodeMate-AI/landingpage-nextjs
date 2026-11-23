@@ -398,8 +398,16 @@
   .cue {
     margin-top: 1rem;
   }
+}
 
-  /* The exploded stage spreads out: copy bottom left, layer list bottom right */
+@media (min-width: 1280px) {
+  .intro,
+  .copy,
+  .rail {
+    --edge: 90px;
+  }
+
+  /* Copy bottom left, layer list bottom right; only from 1280px, since narrower the list would sit on the box's side panels */
   .copy[data-stack='true'] {
     max-width: none;
     display: flex;
@@ -422,14 +430,6 @@
     background:
       linear-gradient(to right, rgba(5, 5, 5, 0.78) 0%, rgba(5, 5, 5, 0.5) 30%, rgba(5, 5, 5, 0) 52%),
       linear-gradient(to left, rgba(5, 5, 5, 0.72) 0%, rgba(5, 5, 5, 0.4) 22%, rgba(5, 5, 5, 0) 40%);
-  }
-}
-
-@media (min-width: 1280px) {
-  .intro,
-  .copy,
-  .rail {
-    --edge: 90px;
   }
 }
 

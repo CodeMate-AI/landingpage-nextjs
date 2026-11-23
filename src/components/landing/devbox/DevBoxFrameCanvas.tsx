@@ -33,7 +33,7 @@ type CanvasState = {
   progress: number;
   ready: boolean;
   disposed: boolean;
-  onFrameZero: () => void;
+  onFirstPaint: () => void; // Reveals the canvas over the poster once it has drawn a real frame
 };
 
 const ASPECT = 16 / 9;
@@ -262,12 +262,13 @@ async function loadFrame(state: CanvasState, index: number) {
     state.images[index] = image;
     state.loaded[index] = true;
 
-    if (index === 0 && !state.ready) {
-      // Paint before revealing the canvas so the poster can never flash away
-      // to a transparent frame.
-      paint(state);
-      state.ready = true;
-      state.onFrameZero();
+    // Reveal on the first frame that actually paints, not only frame 0: a reload mid-film restores the scroll
+    // position, frame 0 is then outside the loading window, and the closed-box poster would stay up forever
+    if (!state.ready) {
+      if (paint(state)) {
+        state.ready = true;
+        state.onFirstPaint();
+      }
     } else {
       requestPaint(state);
     }
@@ -344,7 +345,8 @@ function ensureWindow(state: CanvasState, center: number) {
   pump(state);
 }
 
-function paint(state: CanvasState) {
+// Returns whether a frame was drawn, so the first reveal can wait for real pixels
+function paint(state: CanvasState): boolean {
   const exact = frameIndexAtProgress(state.progress, state.count);
   const low = Math.floor(exact);
   const high = Math.min(state.count - 1, low + 1);
@@ -377,7 +379,7 @@ function paint(state: CanvasState) {
   // networks and during fast scrolls.
   if (!primary) {
     ensureWindow(state, exact);
-    return;
+    return false; // Nothing drawn yet, so the poster must stay visible
   }
 
   const { ctx, dpr, width, height } = state;
@@ -395,6 +397,7 @@ function paint(state: CanvasState) {
   // Only evict after the composite. Closing an ImageBitmap that is still the
   // source of the current paint raises InvalidStateError in Chromium.
   ensureWindow(state, exact);
+  return true;
 }
 
 function requestPaint(state: CanvasState) {
@@ -481,7 +484,7 @@ export function DevBoxFrameCanvas({
       progress: progress.get(),
       ready: false,
       disposed: false,
-      onFrameZero: () => setReady(true),
+      onFirstPaint: () => setReady(true),
     };
 
     // ready already starts false; setting it again here would trip react-hooks/set-state-in-effect
