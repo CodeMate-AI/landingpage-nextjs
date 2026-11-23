@@ -1,0 +1,480 @@
+/* CodeMate Dev Box scroll film. #050505 matches the studio backdrop baked into the frames and the canvas edge fades. */
+
+.section {
+  position: relative;
+  height: var(--devbox-length, 560vh);
+  background: #050505;
+}
+
+/* The stage that stays pinned while the section scrolls past */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: #050505;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transform-origin: center;
+  transition: translate 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.posterLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.posterBlur {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  object-fit: cover;
+  opacity: 0.55;
+  filter: blur(38px);
+  transform: scale(1.04);
+}
+
+.poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cross-fade from the poster to the canvas once the first frame has painted */
+.canvas[data-ready='true'] {
+  opacity: 1;
+}
+
+.media:has(.canvas[data-ready='true']) .posterLayer {
+  opacity: 0;
+}
+
+/* Darkens the edges so copy stays readable; the top band blends in from the Toolbox ground (#0C0C0E) */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(12, 12, 14, 1) 0%, rgba(12, 12, 14, 0.55) 6%, rgba(5, 5, 5, 0) 20%),
+    linear-gradient(to top, rgba(5, 5, 5, 0.82) 0%, rgba(5, 5, 5, 0.38) 22%, rgba(5, 5, 5, 0) 46%),
+    linear-gradient(to right, rgba(5, 5, 5, 0.6) 0%, rgba(5, 5, 5, 0.2) 24%, rgba(5, 5, 5, 0) 44%);
+}
+
+/* The exploded box is the busiest frame and its chapter the tallest copy, so darken the left side further while it shows */
+.scrim::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(5, 5, 5, 0.78) 0%, rgba(5, 5, 5, 0.5) 30%, rgba(5, 5, 5, 0) 52%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section[data-beat='3'] .scrim::after {
+  opacity: 1;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---------- Copy ---------- */
+
+/* Left edge matches the Toolbox section padding (px-4, sm:px-8, md:px-10, lg:px-12, xl:px-[90px]) */
+.intro,
+.copy,
+.counter {
+  --edge: 1rem;
+}
+
+.intro {
+  position: absolute;
+  top: clamp(7rem, 16vh, 10rem);
+  left: var(--edge);
+  right: var(--edge);
+  z-index: 30;
+  max-width: 44rem;
+  pointer-events: none;
+}
+
+.overline {
+  display: block;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.title {
+  margin-top: 0.75rem;
+  font-family: var(--font-montserrat, Montserrat, sans-serif);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+.titlePlain {
+  background: linear-gradient(to bottom, #ffffff, rgba(209, 213, 219, 0.8));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Same cyan-to-blue gradient as the Toolbox headline highlight */
+.titleHighlight {
+  background: linear-gradient(to right, #00bfff, #1e90ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.support {
+  margin-top: 1.25rem;
+  max-width: 34rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.cue {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.cueLine {
+  position: relative;
+  width: 3rem;
+  height: 1px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* A light runs along the cue line to hint at scrolling */
+.cueLine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  background: #00bfff;
+  animation: devboxCue 2.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
+}
+
+@keyframes devboxCue {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(260%);
+  }
+}
+
+/* Chapter and closing copy sit bottom-left, clear of the box in the centre */
+.copy {
+  position: absolute;
+  bottom: clamp(4.5rem, 10vh, 8rem);
+  left: var(--edge);
+  right: var(--edge);
+  z-index: 30;
+  max-width: 34rem;
+  pointer-events: none;
+  text-shadow:
+    0 2px 26px rgba(0, 0, 0, 0.55),
+    0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.eyebrowNumber {
+  color: #00bfff;
+}
+
+.copyTitle {
+  margin-top: 1rem;
+  color: #f5f5f5;
+  font-family: var(--font-montserrat, Montserrat, sans-serif);
+  font-size: clamp(1.75rem, 3.2vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.copyBody {
+  margin-top: 1rem;
+  max-width: 40ch;
+  color: rgba(245, 245, 245, 0.76);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.stack {
+  margin-top: 1.5rem;
+}
+
+.stackLabel {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.stackList {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  max-width: 32rem;
+}
+
+.stackItem {
+  padding: 0.375rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(12, 12, 14, 0.6);
+  backdrop-filter: blur(6px);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 12px;
+  line-height: 1.4;
+  text-shadow: none;
+}
+
+/* Centred at the bottom so it never meets the page's floating scroll arrow in the bottom right */
+.counter {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  bottom: clamp(1.5rem, 4vh, 2.75rem);
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(200, 200, 200, 0.6);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.counterIndex {
+  color: rgba(245, 245, 245, 0.7);
+}
+
+.counterLine {
+  width: 24px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.18);
+}
+
+/* The closing beat has no stage of its own */
+.section[data-beat='5'] .counter {
+  display: none;
+}
+
+/* ---------- Breakpoints (match Tailwind sm 640, md 768, lg 1024, xl 1280) ---------- */
+
+@media (min-width: 640px) {
+  .intro,
+  .copy,
+  .counter {
+    --edge: 2rem;
+  }
+  .overline {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 768px) {
+  .intro,
+  .copy,
+  .counter {
+    --edge: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .intro,
+  .copy,
+  .counter {
+    --edge: 3rem;
+  }
+
+  /* Headline left, support line right, both in the band above the box */
+  .intro {
+    top: clamp(6.5rem, 13vh, 8.5rem);
+    max-width: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
+  .title {
+    font-size: clamp(2.5rem, 4.2vw, 4.5rem);
+  }
+
+  .introAside {
+    width: min(20rem, 26vw);
+    padding-top: 2.25rem;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+  }
+
+  .support {
+    margin-top: 0;
+    font-size: 14px;
+  }
+
+  .cue {
+    margin-top: 1.25rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .intro,
+  .copy,
+  .counter {
+    --edge: 90px;
+  }
+}
+
+/* Poster framing per aspect ratio, mirroring imageLayout() in the canvas so the swap is seamless */
+@media (min-aspect-ratio: 4/5) and (max-aspect-ratio: 31/20) {
+  .poster {
+    object-fit: contain;
+    object-position: center 55%;
+  }
+}
+
+@media (max-aspect-ratio: 4/5) {
+  .poster {
+    object-fit: contain;
+    object-position: center 62%;
+    transform: scale(1.18);
+  }
+}
+
+@media (min-aspect-ratio: 41/20) {
+  .poster {
+    object-fit: contain;
+  }
+}
+
+/* Phones: copy moves into a darker bottom band under the box */
+@media (max-width: 767px) {
+  .section {
+    height: var(--devbox-length-mobile, 500vh);
+  }
+
+  .scrim {
+    background:
+      linear-gradient(to bottom, rgba(12, 12, 14, 1) 0%, rgba(12, 12, 14, 0.5) 8%, rgba(5, 5, 5, 0) 18%),
+      linear-gradient(to top, rgba(5, 5, 5, 0.95) 0%, rgba(5, 5, 5, 0.72) 24%, rgba(5, 5, 5, 0.24) 44%, rgba(5, 5, 5, 0) 58%);
+  }
+
+  .intro {
+    top: 6.5rem;
+  }
+
+  .support {
+    font-size: 14px;
+  }
+
+  .copy {
+    bottom: clamp(3.75rem, 9vh, 6rem);
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.62);
+  }
+
+  .copyBody {
+    font-size: 14px;
+  }
+
+  .stackItem {
+    padding: 0.3rem 0.625rem;
+    font-size: 11px;
+  }
+
+  .counter {
+    bottom: 1.25rem;
+    gap: 0.5rem;
+  }
+
+  /* The intro and closing beats carry their own headings, so the counter would only crowd them */
+  .section[data-beat='0'] .counter {
+    display: none;
+  }
+}
+
+/* Short laptop screens: pull the copy in so it clears the fixed navbar and the bottom edge */
+@media (max-height: 760px) and (min-width: 1024px) {
+  .intro {
+    top: 6.5rem;
+  }
+  .title {
+    font-size: clamp(2.25rem, 4vw, 3.75rem);
+  }
+  .copy {
+    bottom: clamp(3.5rem, 8vh, 5rem);
+  }
+}
+
+/* ---------- Reduced motion: swap the film for the static story ---------- */
+
+.staticOnly {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motionOnly {
+    display: none;
+  }
+  .staticOnly {
+    display: block;
+  }
+  .cueLine::after {
+    animation: none;
+  }
+}
