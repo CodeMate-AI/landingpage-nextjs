@@ -43,7 +43,10 @@ const PORTRAIT_STORY_ZOOM = 1.07;
 const PORTRAIT_HERO_FOCUS = 0.66;
 // Portrait screens put the chapter copy in the lower half, so the box rides in the upper third (reference used 0.535)
 const PORTRAIT_STORY_FOCUS = 0.34;
-const MAX_CONCURRENCY = 4;
+// Netlify and nginx serve over HTTP/2, so six parallel frame requests share one connection (reference used 4)
+const MAX_CONCURRENCY = 6;
+// Extra low-priority requests that fill the browser cache with the whole film in the background
+const WARM_CONCURRENCY = 3;
 // Bias the loader toward the direction the film is travelling. A symmetric
 // window spends half its bandwidth on frames that have already passed; the
 // extra lead is what keeps fast scrolls from catching the decoder.
@@ -234,6 +237,29 @@ async function decodeFallback(blob: Blob) {
  * createImageBitmap() performs the decode before the frame is marked ready,
  * so scrolling only pays for the composite.
  */
+// Downloads every frame into the HTTP cache once the section is near, so later decodes never wait on the network.
+// The player's own fetch for a frame already in flight here waits on the browser's cache lock instead of downloading twice.
+async function warmCache(state: CanvasState) {
+  // Wait for an idle moment so the warm-up never competes with the hero's own loading (Safari has no requestIdleCallback)
+  await new Promise((resolve) =>
+    "requestIdleCallback" in window ? window.requestIdleCallback(resolve, { timeout: 2000 }) : setTimeout(resolve, 1000),
+  );
+  let next = 1; // Frame 0 is the poster, which the page has already loaded
+  const worker = async () => {
+    while (!state.disposed && next < state.count) {
+      const index = next++;
+      if (state.loaded[index] || state.loading.has(index)) continue;
+      try {
+        const response = await fetch(frameSrc(state.directory, index), { priority: "low" });
+        await response.blob(); // Reading the body is what stores the response in the cache
+      } catch {
+        // Harmless: the player fetches this frame itself when the scroll reaches it
+      }
+    }
+  };
+  await Promise.all(Array.from({ length: WARM_CONCURRENCY }, worker));
+}
+
 async function loadFrame(state: CanvasState, index: number) {
   if (state.disposed || state.loaded[index] || state.loading.has(index)) {
     return;
@@ -491,6 +517,7 @@ export function DevBoxFrameCanvas({
     stateRef.current = state;
 
     measure(state);
+    void warmCache(state); // Fire and forget; it stops by itself when the canvas unmounts
 
     const observer = new ResizeObserver(() => measure(state));
     observer.observe(canvas);

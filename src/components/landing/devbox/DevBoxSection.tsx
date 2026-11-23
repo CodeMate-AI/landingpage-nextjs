@@ -173,8 +173,8 @@ export default function DevBoxSection() {
   // A slight push-in on the closed box at both ends of the film
   const scale = useTransform(scrollYProgress, [0, 0.15, 0.96, 1], [1.018, 1, 1, 1.012]);
 
-  // Frames start downloading about one screen before the section, so they never slow the hero
-  const isNear = useInView(sectionRef, { once: true, margin: '100% 0px 100% 0px' });
+  // Frames start downloading two screens before the section: early enough to be ready, late enough not to slow the hero
+  const isNear = useInView(sectionRef, { once: true, margin: '200% 0px 200% 0px' });
 
   const [beat, setBeat] = useState(0);
   const [stage, setStage] = useState(0);
