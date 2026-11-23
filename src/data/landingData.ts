@@ -1,5 +1,3 @@
-import type { HairlineFigureName } from '@/components/hairline/HairlineFigure';
-
 export interface ToolboxProduct {
   id: string;
   name: string;
@@ -134,8 +132,6 @@ export interface ProductFeatureCard {
   description: string;
   image: string;
   imageFit?: 'contain' | 'cover' | 'fill';
-  // Interactive Hairline figure shown in place of the image when set
-  figure?: HairlineFigureName;
 }
 
 export interface ProductTabItem {
@@ -167,7 +163,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Define instructions, attach files, and reference remote resources to guide how Work handles tasks.',
           image: '/work/work-rules-context.png',
-          figure: 'rulebook',
         },
         {
           id: 'work-2',
@@ -175,7 +170,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Connect external services through MCP to bring relevant information and workflows into Work.',
           image: '/work/work-connected-tools.png',
-          figure: 'connectors',
         },
         {
           id: 'work-3',
@@ -183,7 +177,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Investigate ideas, explore possibilities, and gather the context you need before making decisions.',
           image: '/work/work-research-explore.png',
-          figure: 'lens',
         },
         {
           id: 'work-4',
@@ -191,7 +184,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Organize files, documents, and project resources in one searchable workspace.',
           image: '/work/work-resources-knowledge.png',
-          figure: 'library',
         },
         {
           id: 'work-5',
@@ -199,7 +191,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Structure requirements into clear scopes, deliverables, and actionable next steps.',
           image: '/work/work-requirements-to-plans.png',
-          figure: 'plan',
         },
       ],
     },
@@ -217,7 +208,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Describe what you want to build and turn your idea into a functional application.',
           image: '/build/build-prompt-to-app.png',
-          figure: 'prompt-to-app',
         },
         {
           id: 'build-2',
@@ -225,7 +215,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Translate visual designs into working interfaces and code.',
           image: '/build/build-figma-to-code.png',
-          figure: 'design-to-code',
         },
         {
           id: 'build-3',
@@ -233,7 +222,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Explore and refine interface ideas while shaping the experience you want to build.',
           image: '/build/build-design-mode.png',
-          figure: 'design-mode',
         },
         {
           id: 'build-4',
@@ -242,7 +230,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
             'Generate animated explainers, diagrams, and interactive presentations effortlessly from a single prompt.',
           image: '/build/build-artifact-mode.png',
           imageFit: 'fill',
-          figure: 'artifact-mode',
         },
       ],
     },
@@ -260,7 +247,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Work with code in context, using relationships between files and your existing project knowledge.',
           image: '/cora/cora-codebase-understanding.png',
-          figure: 'depgraph',
         },
         {
           id: 'cora-2',
@@ -268,7 +254,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Delegate coding tasks to an AI agent that can help implement changes across your project.',
           image: '/cora/cora-agentic-coding.png',
-          figure: 'agent',
         },
         {
           id: 'cora-3',
@@ -276,7 +261,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Identify syntax, logical, and runtime issues, understand their causes, and work toward targeted fixes.',
           image: '/cora/cora-debug-fix.png',
-          figure: 'debug',
         },
         {
           id: 'cora-4',
@@ -284,7 +268,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Improve code quality, readability, and efficiency with context-aware suggestions.',
           image: '/cora/cora-refactor-optimize.png',
-          figure: 'refactor',
         },
         {
           id: 'cora-5',
@@ -292,7 +275,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Generate unit tests for your code and inspect results to validate implementation behavior.',
           image: '/cora/cora-test-generation.png',
-          figure: 'tests',
         },
         {
           id: 'cora-6',
@@ -300,7 +282,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Generate a commit message with the Cora extension.',
           image: '/cora/cora-commit-prompt-generation.png',
-          figure: 'commit',
         },
       ],
     },
@@ -318,7 +299,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Describe what you want to do and get executable terminal commands without memorizing syntax.',
           image: '/cora-cli/cora-cli-natural-language-commands.png',
-          figure: 'nlcmd',
         },
         {
           id: 'cli-2',
@@ -326,7 +306,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Investigate errors and get AI-assisted guidance to help diagnose and resolve issues.',
           image: '/cora-cli/cora-cli-debug-terminal.png',
-          figure: 'termdebug',
         },
         {
           id: 'cli-3',
@@ -334,7 +313,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Get code-review feedback and optimization suggestions from your command-line workflow.',
           image: '/cora-cli/cora-cli-review-improve.png',
-          figure: 'review',
         },
         {
           id: 'cli-4',
@@ -342,7 +320,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Monitor development processes and get suggestions based on errors printed to the console.',
           image: '/cora-cli/cora-cli-process-monitoring.png',
-          figure: 'monitor',
         },
         {
           id: 'cli-5',
@@ -350,7 +327,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Access AI-assisted development from familiar terminal environments, including Bash, PowerShell, and Command Prompt.',
           image: '/cora-cli/cora-cli-existing-shell.png',
-          figure: 'shells',
         },
       ],
     },
@@ -415,7 +391,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Analyze pull requests and surface potential issues with structured, actionable feedback.',
           image: '/pr-review/pr-automated-reviews.png',
-          figure: 'prreview',
         },
         {
           id: 'pr-2',
@@ -423,7 +398,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Identify potential security concerns, code smells, complexity, and maintainability issues.',
           image: '/pr-review/pr-security-quality.png',
-          figure: 'prshield',
         },
         {
           id: 'pr-3',
@@ -431,7 +405,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Get AI-generated suggestions to improve readability, performance, and coding practices.',
           image: '/pr-review/pr-actionable-improvements.png',
-          figure: 'prsuggest',
         },
         {
           id: 'pr-4',
@@ -439,7 +412,6 @@ export const PRODUCT_TABS_DATA: ProductTabsSectionData = {
           description:
             'Generate pull request descriptions, code walkthroughs, labels, and changelog updates.',
           image: '/pr-review/pr-documentation.png',
-          figure: 'prdocs',
         },
       ],
     },
