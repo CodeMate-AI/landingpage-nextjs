@@ -26,7 +26,7 @@ import { DevBoxFrameCanvas } from './DevBoxFrameCanvas';
 import DevBoxStaticStory from './DevBoxStaticStory';
 import styles from './DevBoxSection.module.css';
 
-// Intro plus one stage per chapter, shown as "02 / 05" in the counter
+// Intro plus one stage per chapter, one tick each on the progress rail
 const STAGE_COUNT = DEVBOX_DATA.chapters.length + 1;
 const FINALE_BEAT = DEVBOX_DATA.chapters.length + 1;
 
@@ -83,26 +83,40 @@ function ChapterCopy({
   const y = useTransform(progress, [timing.enter, timing.exit], [30, -24]);
 
   return (
-    <motion.div className={styles.copy} style={{ opacity, y }} aria-hidden={!active}>
-      <span className={styles.eyebrow}>
-        <span className={styles.eyebrowNumber}>{pad(number)}</span>
-        {chapter.label}
-      </span>
-      <h3 className={styles.copyTitle}>{chapter.headline}</h3>
-      <p className={styles.copyBody}>{chapter.body}</p>
-      {chapter.showStack && (
-        <div className={styles.stack}>
-          <span className={styles.stackLabel}>{DEVBOX_DATA.stackLabel}</span>
-          <ul className={styles.stackList}>
-            {DEVBOX_DATA.stack.map((layer) => (
-              <li key={layer} className={styles.stackItem}>
-                {layer}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    // data-stack lets laptops lay the layer list out to the right of the copy
+    <motion.div
+      className={styles.copy}
+      style={{ opacity, y }}
+      aria-hidden={!active}
+      data-stack={chapter.showStack ? 'true' : undefined}
+    >
+      <div>
+        <span className={styles.eyebrow}>
+          <span className={styles.eyebrowNumber}>{pad(number)}</span>
+          {chapter.label}
+        </span>
+        <h3 className={styles.copyTitle}>{chapter.headline}</h3>
+        <p className={styles.copyBody}>{chapter.body}</p>
+      </div>
+      {chapter.showStack && <LayerList />}
     </motion.div>
+  );
+}
+
+// The coworker stack, top to bottom, ending on the hardware the film is showing
+function LayerList() {
+  return (
+    <div className={styles.layers}>
+      <span className={styles.layersLabel}>{DEVBOX_DATA.stackLabel}</span>
+      <ol className={styles.layerList}>
+        {DEVBOX_DATA.stack.map((layer) => (
+          <li key={layer} className={styles.layer}>
+            {layer}
+          </li>
+        ))}
+      </ol>
+      <p className={styles.layersTools}>{DEVBOX_DATA.stackTools}</p>
+    </div>
   );
 }
 
@@ -119,23 +133,25 @@ function FinaleCopy({ progress, active }: { progress: MotionValue<number>; activ
       <h3 className={styles.copyTitle}>{DEVBOX_DATA.finaleHeadline}</h3>
       <p className={styles.copyBody}>
         {/* Brand name kept out of Google Translate, per the language switcher rule */}
-        The full <span translate="no">CodeMate AI</span> coworker stack, ready to run on HP&apos;s{' '}
+        <span translate="no">CodeMate AI</span>, ready to run on HP&apos;s{' '}
         <span translate="no">ZGX Nano</span>.
       </p>
     </motion.div>
   );
 }
 
-// Small "02 / 05 Understand" readout in the corner; decorative, so hidden from screen readers
-function StageCounter({ stage }: { stage: number }) {
+// Five ticks plus "01 Dev Box" at the bottom of every stage; decorative, so hidden from screen readers
+function ProgressRail({ stage }: { stage: number }) {
   const label = stage === 0 ? DEVBOX_DATA.introLabel : DEVBOX_DATA.chapters[stage - 1].label;
 
   return (
-    <div className={styles.counter} aria-hidden="true">
-      <span className={styles.counterIndex}>
-        {pad(stage + 1)} / {pad(STAGE_COUNT)}
+    <div className={styles.rail} aria-hidden="true">
+      <span className={styles.railIndex}>{pad(stage + 1)}</span>
+      <span className={styles.railTicks}>
+        {Array.from({ length: STAGE_COUNT }, (_, index) => (
+          <span key={index} className={styles.railTick} data-on={index <= stage ? 'true' : undefined} />
+        ))}
       </span>
-      <span className={styles.counterLine} />
       <span>{label}</span>
     </div>
   );
@@ -223,7 +239,7 @@ export default function DevBoxSection() {
             />
           ))}
           <FinaleCopy progress={scrollYProgress} active={beat === FINALE_BEAT} />
-          <StageCounter stage={stage} />
+          <ProgressRail stage={stage} />
         </div>
       </section>
 

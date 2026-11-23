@@ -75,6 +75,8 @@ export default function DevBoxStaticStory() {
             </li>
           ))}
         </ul>
+        {/* The four tools fold into one line, matching the film's layer list */}
+        <p className="mt-3 text-[12px] text-white/55">{DEVBOX_DATA.stackTools}</p>
       </div>
     </section>
   );

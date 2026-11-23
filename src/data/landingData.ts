@@ -688,15 +688,16 @@ export const WATCH_ACTION_DATA: WatchActionSectionData = {
 
 
 // CodeMate Dev Box scroll film: one chapter per stage of the box coming apart and back together
+// Copy rule for this section: headline of 6 words at most, one line of 14 words at most
 export interface DevBoxChapter {
   id: string;
   label: string;
   headline: string;
   body: string;
-  showStack?: boolean; // Lists the stack layers under this chapter, timed to the fully exploded box
+  showStack?: boolean; // Shows the layer list under this chapter, timed to the fully exploded box
 }
 
-// The overline and closing body name HP's ZGX Nano and CodeMate AI, so they live in DevBoxSection with translate="no" spans
+// The overline and closing line name HP's ZGX Nano and CodeMate AI, so they live in DevBoxSection with translate="no" spans
 export interface DevBoxSectionData {
   titlePrefix: string;
   titleHighlight: string;
@@ -706,6 +707,7 @@ export interface DevBoxSectionData {
   chapters: DevBoxChapter[];
   stackLabel: string;
   stack: string[];
+  stackTools: string;
   finaleLabel: string;
   finaleHeadline: string;
 }
@@ -713,50 +715,40 @@ export interface DevBoxSectionData {
 export const DEVBOX_DATA: DevBoxSectionData = {
   titlePrefix: 'Sovereign AI. ',
   titleHighlight: 'On your desk.',
-  support:
-    'The AI Coworker for software teams, running on hardware you own. Your code and context stay with you.',
+  support: 'Your AI coworker, on hardware you own.',
   scrollCue: 'Scroll to look inside',
   introLabel: 'Dev Box',
   chapters: [
     {
       id: 'understand',
       label: 'Understand',
-      headline: 'It already knows your stack.',
-      body: 'Understands your code, tools, workflows and team knowledge, so the context AI needs is already where you work.',
+      headline: 'Context, from day one.',
+      body: 'It reads your code, tools and workflows, so you never start from zero.',
     },
     {
       id: 'remember',
       label: 'Remember',
-      headline: 'Sharper with every sprint.',
-      body: 'Remembers relevant context, team knowledge and working patterns over time. The more it works with you, the better it gets.',
+      headline: 'Gets sharper every sprint.',
+      body: 'It keeps team knowledge and learns how your team works.',
     },
     {
       id: 'work-with-you',
-      label: 'Work With You',
-      headline: 'Plan, build, test and review. Together.',
+      label: 'Work with you',
+      headline: 'Plans, builds, tests, reviews.',
+      body: 'Less time explaining. More time shipping.',
       showStack: true,
-      body: 'Uses that context to help developers plan, build, test and review software. Less time explaining, more time building.',
     },
     {
-      id: 'specialised',
-      label: 'Specialised Intelligence',
-      headline: 'A model for every task.',
-      body: 'Specialised proprietary models and agents for each task, with predictable fixed-fee pricing. No token-based bills.',
+      id: 'specialists',
+      label: 'Specialists',
+      headline: 'A specialist for every task.',
+      body: 'Purpose-built models and agents. Fixed-fee pricing, no token bills.',
     },
   ],
   stackLabel: 'Inside the box',
-  stack: [
-    'Your Hardware',
-    'AI System OS',
-    'Version Control',
-    'IDE',
-    'Design',
-    'Project Management',
-    'Context & Orchestration',
-    'Agent Runtime',
-    'Models',
-    'Memory',
-  ],
+  // Top to bottom, the way the slide stacks the coworker on the hardware
+  stack: ['Models & Memory', 'Agent Runtime', 'Context & Orchestration', 'AI System OS', 'Your Hardware'],
+  stackTools: 'Plugs into your IDE, repos and boards',
   finaleLabel: 'CodeMate Dev Box',
-  finaleHeadline: 'Your hardware. Your models. Your code.',
+  finaleHeadline: 'One box. A whole AI coworker.',
 };

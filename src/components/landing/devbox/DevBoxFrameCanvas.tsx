@@ -37,9 +37,10 @@ type CanvasState = {
 };
 
 const ASPECT = 16 / 9;
-const PORTRAIT_HERO_ZOOM = 1.18;
+// Phones open on a bigger box that fills the empty lower half (reference used 1.18 and 0.62)
+const PORTRAIT_HERO_ZOOM = 1.3;
 const PORTRAIT_STORY_ZOOM = 1.07;
-const PORTRAIT_HERO_FOCUS = 0.62;
+const PORTRAIT_HERO_FOCUS = 0.66;
 // Portrait screens put the chapter copy in the lower half, so the box rides in the upper third (reference used 0.535)
 const PORTRAIT_STORY_FOCUS = 0.34;
 const MAX_CONCURRENCY = 4;
