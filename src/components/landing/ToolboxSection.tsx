@@ -18,6 +18,11 @@ const TOOLBOX_LOGO_SCALES: Record<string, string> = {
   'pr-review': 'scale-[0.75]',
 };
 
+// Logos that are not square, by their real aspect at 28px wide (work logo file is 528x404), so the height attribute matches the drawn size
+const TOOLBOX_LOGO_HEIGHTS: Record<string, number> = {
+  work: 21,
+};
+
 // Motion-enabled Next.js Link for seamless SPA client routing on internal paths
 const MotionLink = motion.create(Link);
 
@@ -168,7 +173,7 @@ export default function ToolboxSection() {
                         src={product.logo}
                         alt={product.name}
                         width={28}
-                        height={28}
+                        height={TOOLBOX_LOGO_HEIGHTS[product.id] ?? 28} // A 28px height on a 4:3 logo trips the next/image "width or height modified" warning
                         quality={95}
                         sizes="56px"
                         style={{ width: 'auto', height: 'auto' }}

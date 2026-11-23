@@ -1,5 +1,5 @@
 @import "tailwindcss";
-@config "../../tailwind.config.ts";
+@config "../../tailwind.config.mts"; /* .mts tells Node it is an ES module, so it no longer re-parses it with a MODULE_TYPELESS_PACKAGE_JSON warning */
 @custom-variant dark (&:is(.dark *));
 
 body {
