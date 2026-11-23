@@ -686,3 +686,77 @@ export const WATCH_ACTION_DATA: WatchActionSectionData = {
   youtubeVideoId: 'ux5jJgNkslE',
 };
 
+
+// CodeMate Dev Box scroll film: one chapter per stage of the box coming apart and back together
+export interface DevBoxChapter {
+  id: string;
+  label: string;
+  headline: string;
+  body: string;
+  showStack?: boolean; // Lists the stack layers under this chapter, timed to the fully exploded box
+}
+
+// The overline and closing body name HP's ZGX Nano and CodeMate AI, so they live in DevBoxSection with translate="no" spans
+export interface DevBoxSectionData {
+  titlePrefix: string;
+  titleHighlight: string;
+  support: string;
+  scrollCue: string;
+  introLabel: string;
+  chapters: DevBoxChapter[];
+  stackLabel: string;
+  stack: string[];
+  finaleLabel: string;
+  finaleHeadline: string;
+}
+
+export const DEVBOX_DATA: DevBoxSectionData = {
+  titlePrefix: 'Sovereign AI. ',
+  titleHighlight: 'On your desk.',
+  support:
+    'The AI Coworker for software teams, running on hardware you own. Your code and context stay with you.',
+  scrollCue: 'Scroll to look inside',
+  introLabel: 'Dev Box',
+  chapters: [
+    {
+      id: 'understand',
+      label: 'Understand',
+      headline: 'It already knows your stack.',
+      body: 'Understands your code, tools, workflows and team knowledge, so the context AI needs is already where you work.',
+    },
+    {
+      id: 'remember',
+      label: 'Remember',
+      headline: 'Sharper with every sprint.',
+      body: 'Remembers relevant context, team knowledge and working patterns over time. The more it works with you, the better it gets.',
+    },
+    {
+      id: 'work-with-you',
+      label: 'Work With You',
+      headline: 'Plan, build, test and review. Together.',
+      showStack: true,
+      body: 'Uses that context to help developers plan, build, test and review software. Less time explaining, more time building.',
+    },
+    {
+      id: 'specialised',
+      label: 'Specialised Intelligence',
+      headline: 'A model for every task.',
+      body: 'Specialised proprietary models and agents for each task, with predictable fixed-fee pricing. No token-based bills.',
+    },
+  ],
+  stackLabel: 'Inside the box',
+  stack: [
+    'Your Hardware',
+    'AI System OS',
+    'Version Control',
+    'IDE',
+    'Design',
+    'Project Management',
+    'Context & Orchestration',
+    'Agent Runtime',
+    'Models',
+    'Memory',
+  ],
+  finaleLabel: 'CodeMate Dev Box',
+  finaleHeadline: 'Your hardware. Your models. Your code.',
+};
