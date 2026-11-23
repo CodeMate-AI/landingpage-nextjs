@@ -252,7 +252,7 @@
   line-height: 1.7;
 }
 
-/* Layer list: a thin vertical stack, top layer first, ending on the hardware in cyan */
+/* Layer list: a thin vertical stack, top layer first; the row the scroll has reached turns cyan */
 .layers {
   margin-top: 1.5rem;
   text-shadow: none;

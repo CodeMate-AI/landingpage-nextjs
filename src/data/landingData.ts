@@ -746,9 +746,9 @@ export const DEVBOX_DATA: DevBoxSectionData = {
     },
   ],
   stackLabel: 'Inside the box',
-  // Top to bottom, the way the slide stacks the coworker on the hardware
-  stack: ['Models & Memory', 'Agent Runtime', 'Context & Orchestration', 'AI System OS', 'Your Hardware'],
-  stackTools: 'Plugs into your IDE, repos and boards',
+  // Top to bottom, the way the slide stacks the coworker; the hardware itself is the box on screen, so it is not listed
+  stack: ['Local Models & Memory', 'Agent Runtime', 'Context & Orchestration', 'AI System OS'],
+  stackTools: 'Plugs into your IDE, Git, design and project tools', // Mirrors the slide's four tools; "boards" read like circuit boards next to hardware
   finaleLabel: 'CodeMate Dev Box',
   finaleHeadline: 'One box. A whole AI coworker.',
 };
