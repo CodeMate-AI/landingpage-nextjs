@@ -10,6 +10,7 @@ import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import ToolboxSection from '@/components/landing/ToolboxSection';
 import ProductTabsSection from '@/components/landing/ProductTabsSection';
+import DevBoxSection from '@/components/landing/devbox/DevBoxSection'; // Dev Box scroll film, placed between Toolbox and ProductTabs
 import SocialProofSection from '@/components/landing/SocialProofSection';
 import EnterpriseArchitectureSection from '@/components/landing/EnterpriseArchitectureSection';
 import WatchActionSection from '@/components/landing/WatchActionSection';
@@ -271,6 +272,11 @@ function Page() {
       {/* TOOLBOX SECTION                                                           */}
       {/* ========================================================================= */}
       <ToolboxSection />
+
+      {/* ========================================================================= */}
+      {/* CODEMATE DEV BOX: scroll film of HP's ZGX Nano with the AI Coworker story  */}
+      {/* ========================================================================= */}
+      <DevBoxSection />
 
       {/* ========================================================================= */}
       {/* PRODUCT TABS SHOWCASE                                                     */}
