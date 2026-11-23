@@ -39,23 +39,19 @@ function IntroCopy({ progress, active }: { progress: MotionValue<number>; active
 
   return (
     <motion.div className={styles.intro} style={{ opacity, y }} aria-hidden={!active}>
-      <div>
-        <span className={styles.overline}>
-          <span translate="no">CodeMate Dev Box</span>, powered by HP&apos;s{' '}
-          <span translate="no">ZGX Nano</span>
-        </span>
-        <h2 id="devbox-title" className={styles.title}>
-          <span className={styles.titlePlain}>{DEVBOX_DATA.titlePrefix}</span>
-          <span className={styles.titleHighlight}>{DEVBOX_DATA.titleHighlight}</span>
-        </h2>
-      </div>
-      {/* On laptops this column moves to the top right so the copy stays above the box */}
-      <div className={styles.introAside}>
-        <p className={styles.support}>{DEVBOX_DATA.support}</p>
-        <div className={styles.cue}>
-          <span>{DEVBOX_DATA.scrollCue}</span>
-          <span className={styles.cueLine} />
-        </div>
+      <span className={styles.overline}>
+        <span translate="no">CodeMate Dev Box</span>, powered by HP&apos;s{' '}
+        <span translate="no">ZGX Nano</span>
+      </span>
+      <h2 id="devbox-title" className={styles.title}>
+        <span className={styles.titlePlain}>{DEVBOX_DATA.titlePrefix}</span>
+        <span className={styles.titleHighlight}>{DEVBOX_DATA.titleHighlight}</span>
+      </h2>
+      {/* One left column at every width, so the support line and cue share the headline's edge */}
+      <p className={styles.support}>{DEVBOX_DATA.support}</p>
+      <div className={styles.cue}>
+        <span>{DEVBOX_DATA.scrollCue}</span>
+        <span className={styles.cueLine} />
       </div>
     </motion.div>
   );
@@ -98,19 +94,33 @@ function ChapterCopy({
         <h3 className={styles.copyTitle}>{chapter.headline}</h3>
         <p className={styles.copyBody}>{chapter.body}</p>
       </div>
-      {chapter.showStack && <LayerList />}
+      {chapter.showStack && <LayerList progress={progress} timing={timing} />}
     </motion.div>
   );
 }
 
-// The coworker stack, top to bottom, ending on the hardware the film is showing
-function LayerList() {
+// The coworker stack, top to bottom; the highlighted row follows the scroll while the chapter is fully shown
+function LayerList({ progress, timing }: { progress: MotionValue<number>; timing: BeatTiming }) {
+  const count = DEVBOX_DATA.stack.length;
+  const [activeLayer, setActiveLayer] = useState(0);
+
+  // Split the chapter's fully visible window into equal slices, one per row, so scrolling up walks back up the list
+  useMotionValueEvent(progress, 'change', (value) => {
+    const local = (value - timing.full) / (timing.exitStart - timing.full);
+    const next = Math.min(count - 1, Math.max(0, Math.floor(local * count)));
+    setActiveLayer((current) => (current === next ? current : next));
+  });
+
   return (
     <div className={styles.layers}>
       <span className={styles.layersLabel}>{DEVBOX_DATA.stackLabel}</span>
       <ol className={styles.layerList}>
-        {DEVBOX_DATA.stack.map((layer) => (
-          <li key={layer} className={styles.layer}>
+        {DEVBOX_DATA.stack.map((layer, index) => (
+          <li
+            key={layer}
+            className={styles.layer}
+            data-active={index === activeLayer ? 'true' : undefined}
+          >
             {layer}
           </li>
         ))}

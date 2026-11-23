@@ -273,9 +273,10 @@
 .layer {
   position: relative;
   padding: 0.3rem 0 0.3rem 1rem;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.55);
   font-size: 13px;
   line-height: 1.4;
+  transition: color 0.3s ease;
 }
 
 /* A short tick ties each row to the rail line */
@@ -287,13 +288,18 @@
   width: 0.5rem;
   height: 1px;
   background: rgba(255, 255, 255, 0.3);
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
 }
 
-.layer:last-child {
+/* The row the scroll has reached: cyan text and a longer tick, moving down or up with the scroll */
+.layer[data-active='true'] {
   color: #00bfff;
 }
 
-.layer:last-child::before {
+.layer[data-active='true']::before {
+  width: 0.75rem;
   background: #00bfff;
 }
 
@@ -374,33 +380,23 @@
     --edge: 3rem;
   }
 
-  /* Headline left, support line right, both in the band above the box */
+  /* One tight left column with a one-line headline, so the whole intro fits in the band above the box */
   .intro {
-    top: clamp(6.5rem, 13vh, 8.5rem);
+    top: clamp(6rem, 11vh, 8rem);
     max-width: none;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 3rem;
   }
 
   .title {
-    font-size: clamp(2.5rem, 4.2vw, 4.5rem);
-  }
-
-  .introAside {
-    width: min(20rem, 26vw);
-    padding-top: 2.25rem;
-    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.7);
+    font-size: clamp(2.5rem, 4vw, 4.25rem);
   }
 
   .support {
-    margin-top: 0;
-    font-size: 14px;
+    margin-top: 0.75rem;
+    font-size: 16px;
   }
 
   .cue {
-    margin-top: 1.25rem;
+    margin-top: 1rem;
   }
 
   /* The exploded stage spreads out: copy bottom left, layer list bottom right */
