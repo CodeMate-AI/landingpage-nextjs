@@ -4,8 +4,8 @@ import { DEVBOX_DATA } from '@/data/landingData';
 import { SEQUENCE, frameSrc } from '@/lib/devbox-film';
 import styles from './DevBoxSection.module.css';
 
-// Frame 90 of the desktop film shows the box fully taken apart
-const EXPLODED_FRAME = frameSrc(SEQUENCE.desktop.dir, 89);
+// The film ends fully taken apart, so its last frame shows every layer whatever the frame count
+const EXPLODED_FRAME = frameSrc(SEQUENCE.desktop.dir, SEQUENCE.desktop.count - 1);
 
 // Still version of the Dev Box film for visitors who turn off motion; CSS shows it only under prefers-reduced-motion
 export default function DevBoxStaticStory() {

@@ -1,11 +1,11 @@
 // Scroll film timing for the CodeMate Dev Box section (ported from the zgx-app reference).
 
 // Bump the folder version when frames change, since /devbox/* is cached as immutable for a year
-const FRAME_ROOT = '/devbox/v1';
+const FRAME_ROOT = '/devbox/v3'; // v3: the CodeMate AI lid logo film, every source frame on desktop (v2 was only ever cached locally)
 
 export const SEQUENCE = {
-  desktop: { count: 120, dir: `${FRAME_ROOT}/desktop` },
-  mobile: { count: 90, dir: `${FRAME_ROOT}/mobile` },
+  desktop: { count: 190, dir: `${FRAME_ROOT}/desktop` }, // All 190 source frames, so every scroll step moves the box by the same amount
+  mobile: { count: 95, dir: `${FRAME_ROOT}/mobile` }, // Every second source frame, even steps at a lighter download
   poster: `${FRAME_ROOT}/poster.webp`,
   posterBlur: `${FRAME_ROOT}/poster-blur.webp`,
 } as const;
