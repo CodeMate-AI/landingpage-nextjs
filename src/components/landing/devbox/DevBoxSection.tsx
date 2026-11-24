@@ -19,20 +19,17 @@ import {
   INTRO_EXIT,
   SCROLL_LENGTH_VH,
   SEQUENCE,
-  stageAtProgress,
   type BeatTiming,
 } from '@/lib/devbox-film';
 import { DevBoxFrameCanvas } from './DevBoxFrameCanvas';
 import DevBoxStaticStory from './DevBoxStaticStory';
 import styles from './DevBoxSection.module.css';
 
-// Intro plus one stage per chapter, one tick each on the progress rail
-const STAGE_COUNT = DEVBOX_DATA.chapters.length + 1;
 const FINALE_BEAT = DEVBOX_DATA.chapters.length + 1;
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
-// Overline, headline and scroll cue over the closed box; fades out as the lid lifts
+// Overline and headline over the closed box; fades out as the lid lifts
 function IntroCopy({ progress, active }: { progress: MotionValue<number>; active: boolean }) {
   const opacity = useTransform(progress, [0, INTRO_EXIT * 0.7, INTRO_EXIT], [1, 1, 0]);
   const y = useTransform(progress, [0, INTRO_EXIT], [0, -24]);
@@ -47,12 +44,8 @@ function IntroCopy({ progress, active }: { progress: MotionValue<number>; active
         <span className={styles.titlePlain}>{DEVBOX_DATA.titlePrefix}</span>
         <span className={styles.titleHighlight}>{DEVBOX_DATA.titleHighlight}</span>
       </h2>
-      {/* One left column at every width, so the support line and cue share the headline's edge */}
+      {/* The team found the animated scroll cue read like a loader, so the intro ends on the support line */}
       <p className={styles.support}>{DEVBOX_DATA.support}</p>
-      <div className={styles.cue}>
-        <span>{DEVBOX_DATA.scrollCue}</span>
-        <span className={styles.cueLine} />
-      </div>
     </motion.div>
   );
 }
@@ -146,24 +139,18 @@ function FinaleCopy({ progress, active }: { progress: MotionValue<number>; activ
         <span translate="no">CodeMate AI</span>, ready to run on HP&apos;s{' '}
         <span translate="no">ZGX Nano</span>.
       </p>
-    </motion.div>
-  );
-}
-
-// Five ticks plus "01 Dev Box" at the bottom of every stage; decorative, so hidden from screen readers
-function ProgressRail({ stage }: { stage: number }) {
-  const label = stage === 0 ? DEVBOX_DATA.introLabel : DEVBOX_DATA.chapters[stage - 1].label;
-
-  return (
-    <div className={styles.rail} aria-hidden="true">
-      <span className={styles.railIndex}>{pad(stage + 1)}</span>
-      <span className={styles.railTicks}>
-        {Array.from({ length: STAGE_COUNT }, (_, index) => (
-          <span key={index} className={styles.railTick} data-on={index <= stage ? 'true' : undefined} />
+      {/* The ZGX Nano hardware behind the coworker, in four short facts */}
+      <dl className={styles.specs}>
+        {DEVBOX_DATA.specs.map((spec) => (
+          <div key={spec.value} className={styles.spec}>
+            <dt className={styles.specValue} translate="no">
+              {spec.value}
+            </dt>
+            <dd className={styles.specLabel}>{spec.label}</dd>
+          </div>
         ))}
-      </span>
-      <span>{label}</span>
-    </div>
+      </dl>
+    </motion.div>
   );
 }
 
@@ -177,14 +164,11 @@ export default function DevBoxSection() {
   const isNear = useInView(sectionRef, { once: true, margin: '200% 0px 200% 0px' });
 
   const [beat, setBeat] = useState(0);
-  const [stage, setStage] = useState(0);
 
-  // Only re-render when the visible beat or stage actually changes, not on every scroll tick
+  // Only re-render when the visible beat actually changes, not on every scroll tick
   const sync = (value: number) => {
     const nextBeat = activeBeatAtProgress(value);
-    const nextStage = stageAtProgress(value);
     setBeat((current) => (current === nextBeat ? current : nextBeat));
-    setStage((current) => (current === nextStage ? current : nextStage));
   };
 
   useMotionValueEvent(scrollYProgress, 'change', sync);
@@ -244,12 +228,11 @@ export default function DevBoxSection() {
               progress={scrollYProgress}
               chapter={chapter}
               timing={CHAPTER_TIMINGS[index]}
-              number={index + 2}
+              number={index + 1} // The intro has no number now that the rail is gone, so chapters count from 01
               active={beat === index + 1}
             />
           ))}
           <FinaleCopy progress={scrollYProgress} active={beat === FINALE_BEAT} />
-          <ProgressRail stage={stage} />
         </div>
       </section>
 

@@ -41,8 +41,8 @@ const ASPECT = 16 / 9;
 const PORTRAIT_HERO_ZOOM = 1.3;
 const PORTRAIT_STORY_ZOOM = 1.07;
 const PORTRAIT_HERO_FOCUS = 0.66;
-// Portrait screens put the chapter copy in the lower half, so the box rides in the upper third (reference used 0.535)
-const PORTRAIT_STORY_FOCUS = 0.34;
+// Portrait screens put the chapter copy in the lower half, so the box rides high in the upper third to leave the copy room (reference used 0.535)
+const PORTRAIT_STORY_FOCUS = 0.28;
 // Netlify and nginx serve over HTTP/2, so six parallel frame requests share one connection (reference used 4)
 const MAX_CONCURRENCY = 6;
 // Extra low-priority requests that fill the browser cache with the whole film in the background

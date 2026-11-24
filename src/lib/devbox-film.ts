@@ -72,8 +72,3 @@ export function activeBeatAtProgress(progress: number) {
   const chapter = CHAPTER_TIMINGS.findIndex((t) => progress >= t.enter && progress < t.exit);
   return chapter === -1 ? -1 : chapter + 1;
 }
-
-// Counter stage: 0 for the intro, then the last chapter whose copy has started to enter
-export function stageAtProgress(progress: number) {
-  return CHAPTER_TIMINGS.filter((t) => progress >= t.enter).length;
-}

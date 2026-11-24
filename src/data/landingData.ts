@@ -702,22 +702,25 @@ export interface DevBoxSectionData {
   titlePrefix: string;
   titleHighlight: string;
   support: string;
-  scrollCue: string;
-  introLabel: string;
   chapters: DevBoxChapter[];
   stackLabel: string;
   stack: string[];
   stackTools: string;
   finaleLabel: string;
   finaleHeadline: string;
+  specs: DevBoxSpec[];
+}
+
+// One ZGX Nano hardware fact for the closing beat: a short value over a one-line label
+export interface DevBoxSpec {
+  value: string;
+  label: string;
 }
 
 export const DEVBOX_DATA: DevBoxSectionData = {
   titlePrefix: 'Sovereign AI. ',
   titleHighlight: 'On your desk.',
-  support: 'Your AI coworker, on hardware you own.',
-  scrollCue: 'Scroll to look inside',
-  introLabel: 'Dev Box',
+  support: 'Your AI Co-Worker, on hardware you own.',
   chapters: [
     {
       id: 'understand',
@@ -750,5 +753,12 @@ export const DEVBOX_DATA: DevBoxSectionData = {
   stack: ['Local Models & Memory', 'Agent Runtime', 'Context & Orchestration', 'AI System OS'],
   stackTools: 'Plugs into your IDE, Git, design and project tools', // Mirrors the slide's four tools; "boards" read like circuit boards next to hardware
   finaleLabel: 'CodeMate Dev Box',
-  finaleHeadline: 'One box. A whole AI coworker.',
+  finaleHeadline: 'One box. A whole AI Co-Worker.',
+  // HP ZGX Nano G1n published specs; the 128 GB is unified CPU and GPU memory, so the GPU can use all of it
+  specs: [
+    { value: 'Blackwell', label: 'NVIDIA GB10 Superchip' },
+    { value: '128 GB', label: 'Unified memory for AI' },
+    { value: '1 PFLOP', label: 'FP4 AI compute' },
+    { value: '200B', label: 'Parameter models, run locally' },
+  ],
 };

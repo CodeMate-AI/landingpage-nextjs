@@ -45,7 +45,7 @@ export default function DevBoxStaticStory() {
           {DEVBOX_DATA.chapters.map((chapter, index) => (
             <li key={chapter.id}>
               <span className="text-[12px] uppercase tracking-[0.16em] text-white/75">
-                <span className="text-[#00BFFF] mr-3">{String(index + 2).padStart(2, '0')}</span>
+                <span className="text-[#00BFFF] mr-3">{String(index + 1).padStart(2, '0') /* Chapters count from 01, as in the film */}</span>
                 {chapter.label}
               </span>
               <h3
@@ -77,6 +77,16 @@ export default function DevBoxStaticStory() {
         </ul>
         {/* The four tools fold into one line, matching the film's layer list */}
         <p className="mt-3 text-[12px] text-white/55">{DEVBOX_DATA.stackTools}</p>
+
+        {/* Same four ZGX Nano facts the film shows on its closing beat */}
+        <dl className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-4">
+          {DEVBOX_DATA.specs.map((spec) => (
+            <div key={spec.value}>
+              <dt className="text-2xl font-semibold text-white" translate="no">{spec.value}</dt>
+              <dd className="mt-1 text-[13px] text-white/60">{spec.label}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
     </section>
   );

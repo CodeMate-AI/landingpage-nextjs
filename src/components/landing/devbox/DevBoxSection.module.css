@@ -112,8 +112,7 @@
 
 /* Left edge matches the Toolbox section padding (px-4, sm:px-8, md:px-10, lg:px-12, xl:px-[90px]) */
 .intro,
-.copy,
-.rail {
+.copy {
   --edge: 1rem;
 }
 
@@ -165,44 +164,6 @@
   color: rgba(255, 255, 255, 0.7);
   font-size: 15px;
   line-height: 1.7;
-}
-
-.cue {
-  margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: rgba(255, 255, 255, 0.55);
-  font-size: 11px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.cueLine {
-  position: relative;
-  width: 3rem;
-  height: 1px;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.16);
-}
-
-/* A light runs along the cue line to hint at scrolling */
-.cueLine::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  width: 40%;
-  background: #00bfff;
-  animation: devboxCue 2.8s cubic-bezier(0.65, 0, 0.35, 1) infinite;
-}
-
-@keyframes devboxCue {
-  from {
-    transform: translateX(-100%);
-  }
-  to {
-    transform: translateX(260%);
-  }
 }
 
 /* Chapter and closing copy sit bottom-left, clear of the box in the centre */
@@ -309,55 +270,43 @@
   font-size: 12px;
 }
 
-/* Progress rail, centred at the bottom so it never meets the page's floating scroll arrow in the bottom right */
-.rail {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: clamp(1.5rem, 4vh, 2.75rem);
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  white-space: nowrap;
-  color: rgba(220, 220, 220, 0.7);
-  font-size: 10px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+/* ZGX Nano spec grid on the closing beat: two columns on phones, four in a row from tablets up */
+.specs {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  max-width: 40rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.railIndex {
-  color: #00bfff;
+.specValue {
+  color: #f5f5f5;
+  font-family: var(--font-montserrat, Montserrat, sans-serif);
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
-.railTicks {
-  display: flex;
-  gap: 4px;
+.specLabel {
+  margin-top: 0.25rem;
+  color: rgba(245, 245, 245, 0.6);
+  font-size: 12px;
+  line-height: 1.4;
 }
 
-.railTick {
-  width: 18px;
-  height: 2px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.16);
-  transition: background-color 0.4s ease;
-}
-
-.railTick[data-on='true'] {
-  background: #00bfff;
-}
-
-/* The closing beat has no stage of its own */
-.section[data-beat='5'] .rail {
-  display: none;
+@media (min-width: 768px) {
+  .specs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 /* ---------- Breakpoints (match Tailwind sm 640, md 768, lg 1024, xl 1280) ---------- */
 
 @media (min-width: 640px) {
   .intro,
-  .copy,
-  .rail {
+  .copy {
     --edge: 2rem;
   }
   .overline {
@@ -367,16 +316,14 @@
 
 @media (min-width: 768px) {
   .intro,
-  .copy,
-  .rail {
+  .copy {
     --edge: 2.5rem;
   }
 }
 
 @media (min-width: 1024px) {
   .intro,
-  .copy,
-  .rail {
+  .copy {
     --edge: 3rem;
   }
 
@@ -394,16 +341,11 @@
     margin-top: 0.75rem;
     font-size: 16px;
   }
-
-  .cue {
-    margin-top: 1rem;
-  }
 }
 
 @media (min-width: 1280px) {
   .intro,
-  .copy,
-  .rail {
+  .copy {
     --edge: 90px;
   }
 
@@ -483,14 +425,9 @@
     font-size: 14px;
   }
 
-  .rail {
-    bottom: 1.25rem;
-    gap: 0.5rem;
-  }
-
-  /* Phone copy sits above the rail, so leave it room */
+  /* No progress rail below any more, so phone copy can sit closer to the bottom edge */
   .copy {
-    bottom: 3.75rem;
+    bottom: 2rem;
   }
 
   .layers {
@@ -523,8 +460,5 @@
   }
   .staticOnly {
     display: block;
-  }
-  .cueLine::after {
-    animation: none;
   }
 }
