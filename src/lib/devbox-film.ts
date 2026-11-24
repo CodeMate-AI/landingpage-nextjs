@@ -1,7 +1,7 @@
-// Scroll film timing for the CodeMate Dev Box section (ported from the zgx-app reference).
+// Scroll film timing for the CodeMate Dev Box section.
 
 // Bump the folder version when frames change, since /devbox/* is cached as immutable for a year
-const FRAME_ROOT = '/devbox/v3'; // v3: the CodeMate AI lid logo film, every source frame on desktop (v2 was only ever cached locally)
+const FRAME_ROOT = '/devbox/v3'; // v3: the film with the CodeMate AI logo on the lid, every source frame on desktop
 
 export const SEQUENCE = {
   desktop: { count: 190, dir: `${FRAME_ROOT}/desktop` }, // All 190 source frames, so every scroll step moves the box by the same amount
@@ -10,7 +10,7 @@ export const SEQUENCE = {
   posterBlur: `${FRAME_ROOT}/poster-blur.webp`,
 } as const;
 
-// Pinned scroll length in vh; still being tuned (560 is the reference, about 300 is the shorter option)
+// Pinned scroll length in vh: how far the visitor scrolls while the film plays
 export const SCROLL_LENGTH_VH = { desktop: 560, mobile: 500 } as const;
 
 export const frameSrc = (dir: string, index: number) =>
@@ -149,11 +149,11 @@ export function portraitFraming(progress: number, stops: PortraitStops) {
 
 // Wider screens play the film in a smaller stage, so every beat's copy gets its own band and never sits on the box
 const STAGE_MAX_WIDTH = 0.86; // Share of the screen width
-const STAGE_MAX_HEIGHT = 0.7; // Share of the screen height, raised from 0.6 so the box reads larger on desktops
+const STAGE_MAX_HEIGHT = 0.7; // Share of the screen height the box may take on desktops
 const STAGE_TOP_STORY = 0.1; // Chapters and closing: just under the navbar, copy band below
 const STAGE_TOP_INTRO = 0.3; // Opening: under the centred title
 // Height kept free under the stage for chapter copy, so short laptops get a smaller box instead of copy on top of it
-const COPY_BAND = 240; // Trimmed from 300 so the larger stage still leaves the chapter copy its band
+const COPY_BAND = 240; // Leaves the chapter copy its own band under the stage
 
 // Size and position of the frame on screens wider than 4:5; the stage eases down for the opening title
 export function stageLayout(width: number, height: number, progress: number) {

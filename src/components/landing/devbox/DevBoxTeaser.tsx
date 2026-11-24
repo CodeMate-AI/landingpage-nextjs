@@ -91,7 +91,7 @@ export default function DevBoxTeaser() {
             height={720}
             unoptimized
             sizes="(min-width: 1024px) 58vw, 100vw"
-            className="relative w-full h-auto transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+            className="relative w-full h-auto" // No hover zoom, so the box holds still under the pointer
             style={PHOTO_FADE}
           />
         </Link>

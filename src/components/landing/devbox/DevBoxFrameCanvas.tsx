@@ -2,7 +2,7 @@
 
 // Canvas frame player for the Dev Box film (decode off the main thread, direction-biased prefetch).
 
-// The landing page animates with framer-motion, so the reference's motion/react import is swapped for it
+// Animates with framer-motion, the motion library the rest of the landing page uses
 import { useMotionValueEvent, type MotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -43,7 +43,7 @@ type CanvasState = {
   portraitStops: PortraitStops; // Where the section measured the box should sit for each beat on portrait screens
 };
 
-// Netlify and nginx serve over HTTP/2, so six parallel frame requests share one connection (reference used 4)
+// Netlify and nginx serve over HTTP/2, so six parallel frame requests share one connection
 const MAX_CONCURRENCY = 6;
 // Extra low-priority requests that fill the browser cache with the whole film in the background
 const WARM_CONCURRENCY = 3;

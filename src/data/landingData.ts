@@ -719,7 +719,7 @@ export interface DevBoxSpec {
 }
 
 export const DEVBOX_DATA: DevBoxSectionData = {
-  // Opening beat, the view the team picked to lead with
+  // Opening beat, shown over the closed box before the film starts
   introLabel: 'CodeMate Dev Box',
   introTitlePrefix: 'One box. A whole ', // Only the noun phrase is highlighted, so the plain part runs through "A whole"
   introTitleHighlight: 'AI Co-Worker.',
@@ -755,9 +755,9 @@ export const DEVBOX_DATA: DevBoxSectionData = {
     },
   ],
   stackLabel: 'Inside the box',
-  // Top to bottom, the way the slide stacks the coworker; the hardware itself is the box on screen, so it is not listed
+  // The AI Co-Worker's layers, top to bottom; the hardware itself is the box on screen, so it is not listed
   stack: ['Local Models & Memory', 'Agent Runtime', 'Context & Orchestration', 'AI System OS'],
-  stackTools: 'Plugs into your IDE, Git, design and project tools', // Mirrors the slide's four tools; "boards" read like circuit boards next to hardware
+  stackTools: 'Plugs into your IDE, Git, design and project tools', // The four tool kinds it connects to; "boards" is avoided since it reads like circuit boards next to hardware
   // HP ZGX Nano G1n published specs; the 128 GB is unified CPU and GPU memory, so the GPU can use all of it
   specs: [
     { value: 'Blackwell', label: 'NVIDIA GB10 Superchip' },

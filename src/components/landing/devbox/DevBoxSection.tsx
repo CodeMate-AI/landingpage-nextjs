@@ -37,7 +37,7 @@ const pad = (value: number) => String(value).padStart(2, '0');
 // Portrait screens pin each copy block at its measured top; wider screens keep the CSS anchor
 const placement = (top?: number) => (top === undefined ? {} : { top, bottom: 'auto' });
 
-// Opening beat, the team's chosen first view: label, headline and one line centred above the closed box; fades out as the lid lifts
+// Opening beat: label, headline and one line centred above the closed box; fades out as the lid lifts
 function IntroCopy({
   progress,
   active,
@@ -322,7 +322,7 @@ export default function DevBoxSection() {
               progress={scrollYProgress}
               chapter={chapter}
               timing={CHAPTER_TIMINGS[index]}
-              number={index + 1} // The intro has no number now that the rail is gone, so chapters count from 01
+              number={index + 1} // The intro has no number, so chapters count from 01
               active={beat === index + 1}
               ref={(element) => {
                 chapterRefs.current[index] = element;
