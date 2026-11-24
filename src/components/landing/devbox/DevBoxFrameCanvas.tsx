@@ -78,6 +78,28 @@ function imageLayout(
   return { ...stageLayout(width, height, progress), contained: true };
 }
 
+// Smoothstep alpha stops from 0 to 1, so a fade has no visible start or end line (a straight ramp shows its edges)
+const EASE_STOPS = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1].map((t) => [t, t * t * (3 - 2 * t)] as const);
+
+// Alpha mask along one axis: clear outside [start, end], fading in over `fadeIn` and out over `fadeOut`
+function axisMask(
+  ctx: CanvasRenderingContext2D,
+  gradient: CanvasGradient,
+  length: number,
+  fadeIn: number,
+  fadeOut: number,
+) {
+  const inShare = Math.min(0.5, fadeIn / length);
+  const outShare = Math.min(0.5, fadeOut / length);
+  for (const [t, alpha] of EASE_STOPS) {
+    gradient.addColorStop(t * inShare, `rgba(0,0,0,${alpha})`);
+    gradient.addColorStop(1 - t * outShare, `rgba(0,0,0,${alpha})`);
+  }
+  ctx.fillStyle = gradient;
+  ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+}
+
+// Fades the frame itself out to transparency on all four sides, so the page background shows through and no frame border is left
 function drawEdgeFades(
   ctx: CanvasRenderingContext2D,
   dx: number,
@@ -86,50 +108,17 @@ function drawEdgeFades(
   dh: number,
 ) {
   const portrait = isPortraitScreen(ctx.canvas.width, ctx.canvas.height);
-  // The stage floats on the dark ground, so its sides fade wide too, like a vignette
-  const fadeX = portrait ? Math.min(72, dw * 0.055) : dw * 0.14;
-  // Portrait frames are a strip across a tall screen, so their top and bottom fade much further to hide the seam
-  // Wider screens: a frame edge that lands mid-screen (box dropped or raised) gets a long fade, not a 48px one
-  const edgeOnScreen = dy > 1 || dy + dh < ctx.canvas.clientHeight - 1;
-  const fadeY = isPortraitScreen(ctx.canvas.width, ctx.canvas.height)
-    ? dh * 0.36
-    : edgeOnScreen
-      ? Math.min(240, dh * 0.24)
-      : Math.min(48, dh * 0.06);
+  // Portrait frames are a strip across a tall screen, so they fade mostly top and bottom; the stage fades like a vignette
+  const fadeX = portrait ? dw * 0.08 : dw * 0.18;
+  const fadeTop = dh * (portrait ? 0.36 : 0.3);
+  const fadeBottom = dh * (portrait ? 0.3 : 0.28);
 
   ctx.save();
-  ctx.beginPath();
-  ctx.rect(dx, dy, dw, dh);
-  ctx.clip();
-
-  const left = ctx.createLinearGradient(dx, 0, dx + fadeX, 0);
-  left.addColorStop(0, "rgba(5,5,5,1)");
-  left.addColorStop(1, "rgba(5,5,5,0)");
-  ctx.fillStyle = left;
-  ctx.fillRect(dx, dy, fadeX, dh);
-
-  const right = ctx.createLinearGradient(dx + dw, 0, dx + dw - fadeX, 0);
-  right.addColorStop(0, "rgba(5,5,5,1)");
-  right.addColorStop(1, "rgba(5,5,5,0)");
-  ctx.fillStyle = right;
-  ctx.fillRect(dx + dw - fadeX, dy, fadeX, dh);
-
-  const top = ctx.createLinearGradient(0, dy, 0, dy + fadeY);
-  // The studio backdrop is brightest at the frame top, so the fade holds solid first, then eases out without a visible edge
-  top.addColorStop(0, "rgba(5,5,5,1)");
-  top.addColorStop(0.2, "rgba(5,5,5,1)");
-  top.addColorStop(0.55, "rgba(5,5,5,0.6)");
-  top.addColorStop(0.85, "rgba(5,5,5,0.15)");
-  top.addColorStop(1, "rgba(5,5,5,0)");
-  ctx.fillStyle = top;
-  ctx.fillRect(dx, dy, dw, fadeY);
-
-  const bottom = ctx.createLinearGradient(0, dy + dh, 0, dy + dh - fadeY);
-  bottom.addColorStop(0, "rgba(5,5,5,1)");
-  bottom.addColorStop(1, "rgba(5,5,5,0)");
-  ctx.fillStyle = bottom;
-  ctx.fillRect(dx, dy + dh - fadeY, dw, fadeY);
-
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  const scale = ctx.canvas.width / ctx.canvas.clientWidth; // Layout is in CSS pixels, the mask paints in device pixels
+  ctx.globalCompositeOperation = "destination-in";
+  axisMask(ctx, ctx.createLinearGradient(dx * scale, 0, (dx + dw) * scale, 0), dw, fadeX, fadeX);
+  axisMask(ctx, ctx.createLinearGradient(0, dy * scale, 0, (dy + dh) * scale), dh, fadeTop, fadeBottom);
   ctx.restore();
 }
 

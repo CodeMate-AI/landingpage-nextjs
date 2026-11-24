@@ -141,6 +141,11 @@
     aspect-ratio: 16 / 9;
     object-fit: contain;
     transform: translateX(-50%);
+    /* Same four-side fade as the canvas mask, so the poster has no visible border either */
+    mask-image:
+      linear-gradient(to right, transparent, #000 18%, #000 82%, transparent),
+      linear-gradient(to bottom, transparent, #000 30%, #000 72%, transparent);
+    mask-composite: intersect;
   }
 }
 
