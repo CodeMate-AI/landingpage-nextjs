@@ -189,7 +189,8 @@ export default function Navbar() {
   const isBlogPage = pathname ? pathname.startsWith('/blog') : false;
   const isCommunityPage = pathname ? pathname.startsWith('/community') : false;
   const isShowcasePage = pathname ? pathname === '/achievements' || pathname === '/media' : false;
-  const shouldShowAnnouncement = showAnnouncement && !isBlogPage && !isCommunityPage && !isShowcasePage;
+  const isDevBoxPage = pathname === '/devbox'; // The Dev Box film opens right under the navbar, so the trial offer stays off it
+  const shouldShowAnnouncement = showAnnouncement && !isBlogPage && !isCommunityPage && !isShowcasePage && !isDevBoxPage;
 
   return (
     <div>
