@@ -6,9 +6,15 @@
 import { useMotionValueEvent, type MotionValue } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import {
+  DEFAULT_PORTRAIT_STOPS,
+  FRAME_ASPECT,
   frameIndexAtProgress,
   frameSrc,
+  isPortraitScreen,
+  portraitFraming,
   SEQUENCE,
+  stageLayout,
+  type PortraitStops,
 } from "@/lib/devbox-film"; // Dev Box frame paths and progress anchors
 
 type FrameImage = ImageBitmap | HTMLImageElement;
@@ -34,15 +40,9 @@ type CanvasState = {
   ready: boolean;
   disposed: boolean;
   onFirstPaint: () => void; // Reveals the canvas over the poster once it has drawn a real frame
+  portraitStops: PortraitStops; // Where the section measured the box should sit for each beat on portrait screens
 };
 
-const ASPECT = 16 / 9;
-// Phones open on a bigger box that fills the empty lower half (reference used 1.18 and 0.62)
-const PORTRAIT_HERO_ZOOM = 1.3;
-const PORTRAIT_STORY_ZOOM = 1.07;
-const PORTRAIT_HERO_FOCUS = 0.66;
-// Portrait screens put the chapter copy in the lower half, so the box rides high in the upper third to leave the copy room (reference used 0.535)
-const PORTRAIT_STORY_FOCUS = 0.28;
 // Netlify and nginx serve over HTTP/2, so six parallel frame requests share one connection (reference used 4)
 const MAX_CONCURRENCY = 6;
 // Extra low-priority requests that fill the browser cache with the whole film in the background
@@ -59,83 +59,23 @@ function clamp(value: number, min = 0, max = 1) {
   return Math.min(max, Math.max(min, value));
 }
 
-function smoothstep(start: number, end: number, value: number) {
-  const local = clamp((value - start) / (end - start));
-  return local * local * (3 - 2 * local);
-}
-
-function portraitFraming(progress: number) {
-  const story = smoothstep(0.06, 0.2, progress);
-  return {
-    zoom:
-      PORTRAIT_HERO_ZOOM +
-      (PORTRAIT_STORY_ZOOM - PORTRAIT_HERO_ZOOM) * story,
-    focus:
-      PORTRAIT_HERO_FOCUS +
-      (PORTRAIT_STORY_FOCUS - PORTRAIT_HERO_FOCUS) * story,
-  };
-}
-
 function imageLayout(
   width: number,
   height: number,
   progress: number,
+  portraitStops: PortraitStops,
 ): { dx: number; dy: number; dw: number; dh: number; contained: boolean } {
-  const viewport = width / height;
-  let dw = width;
-  let dh = height;
-
-  if (viewport >= 1.55 && viewport <= 2.05) {
-    const scale = Math.max(width / 1600, height / 900);
-    dw = 1600 * scale;
-    dh = 900 * scale;
-    return {
-      dx: (width - dw) / 2,
-      dy: (height - dh) / 2,
-      dw,
-      dh,
-      contained: false,
-    };
+  // Phones and portrait iPads: a strip as wide as the screen, placed per beat by the measured copy
+  if (isPortraitScreen(width, height)) {
+    const { zoom, focus } = portraitFraming(progress, portraitStops);
+    const dw = width * zoom;
+    const dh = dw / FRAME_ASPECT;
+    // No top clamp: a tall beat (the layer list) may push the frame's empty upper part off screen so its copy stays below the box
+    return { dx: (width - dw) / 2, dy: Math.min(height * focus - dh / 2, Math.max(0, height - dh)), dw, dh, contained: true };
   }
 
-  if (viewport > 2.05) {
-    dh = height;
-    dw = height * ASPECT;
-    return {
-      dx: (width - dw) / 2,
-      dy: 0,
-      dw,
-      dh,
-      contained: true,
-    };
-  }
-
-  if (viewport <= 0.8) {
-    const { zoom, focus } = portraitFraming(progress);
-    dw = width * zoom;
-    dh = dw / ASPECT;
-    return {
-      dx: (width - dw) / 2,
-      dy: clamp(
-        height * focus - dh / 2,
-        0,
-        Math.max(0, height - dh),
-      ),
-      dw,
-      dh,
-      contained: true,
-    };
-  }
-
-  dw = width;
-  dh = width / ASPECT;
-  return {
-    dx: 0,
-    dy: clamp(height * 0.55 - dh / 2, 0, Math.max(0, height - dh)),
-    dw,
-    dh,
-    contained: true,
-  };
+  // Everything wider: the smaller stage, so copy reads in its own band above or below the box
+  return { ...stageLayout(width, height, progress), contained: true };
 }
 
 function drawEdgeFades(
@@ -145,8 +85,17 @@ function drawEdgeFades(
   dw: number,
   dh: number,
 ) {
-  const fadeX = Math.min(72, dw * 0.055);
-  const fadeY = Math.min(48, dh * 0.06);
+  const portrait = isPortraitScreen(ctx.canvas.width, ctx.canvas.height);
+  // The stage floats on the dark ground, so its sides fade wide too, like a vignette
+  const fadeX = portrait ? Math.min(72, dw * 0.055) : dw * 0.14;
+  // Portrait frames are a strip across a tall screen, so their top and bottom fade much further to hide the seam
+  // Wider screens: a frame edge that lands mid-screen (box dropped or raised) gets a long fade, not a 48px one
+  const edgeOnScreen = dy > 1 || dy + dh < ctx.canvas.clientHeight - 1;
+  const fadeY = isPortraitScreen(ctx.canvas.width, ctx.canvas.height)
+    ? dh * 0.36
+    : edgeOnScreen
+      ? Math.min(240, dh * 0.24)
+      : Math.min(48, dh * 0.06);
 
   ctx.save();
   ctx.beginPath();
@@ -166,7 +115,11 @@ function drawEdgeFades(
   ctx.fillRect(dx + dw - fadeX, dy, fadeX, dh);
 
   const top = ctx.createLinearGradient(0, dy, 0, dy + fadeY);
+  // The studio backdrop is brightest at the frame top, so the fade holds solid first, then eases out without a visible edge
   top.addColorStop(0, "rgba(5,5,5,1)");
+  top.addColorStop(0.2, "rgba(5,5,5,1)");
+  top.addColorStop(0.55, "rgba(5,5,5,0.6)");
+  top.addColorStop(0.85, "rgba(5,5,5,0.15)");
   top.addColorStop(1, "rgba(5,5,5,0)");
   ctx.fillStyle = top;
   ctx.fillRect(dx, dy, dw, fadeY);
@@ -185,8 +138,13 @@ function drawFrame(
   image: FrameImage,
   state: CanvasState,
 ) {
-  const layout = imageLayout(state.width, state.height, state.progress);
+  const layout = imageLayout(state.width, state.height, state.progress, state.portraitStops);
   ctx.drawImage(image, layout.dx, layout.dy, layout.dw, layout.dh);
+}
+
+// Fades go on once over the finished composite; per frame, a blended second frame would lighten the first frame's fade
+function fadeFrameEdges(ctx: CanvasRenderingContext2D, state: CanvasState) {
+  const layout = imageLayout(state.width, state.height, state.progress, state.portraitStops);
   if (layout.contained) {
     drawEdgeFades(ctx, layout.dx, layout.dy, layout.dw, layout.dh);
   }
@@ -419,6 +377,7 @@ function paint(state: CanvasState): boolean {
     drawFrame(ctx, secondary, state);
     ctx.globalAlpha = 1;
   }
+  fadeFrameEdges(ctx, state);
 
   // Only evict after the composite. Closing an ImageBitmap that is still the
   // source of the current paint raises InvalidStateError in Chromium.
@@ -459,14 +418,26 @@ function measure(state: CanvasState) {
 // className comes from the section so the canvas styles live in its CSS module
 export function DevBoxFrameCanvas({
   progress,
+  portraitStops = DEFAULT_PORTRAIT_STOPS,
   className,
 }: {
   progress: MotionValue<number>;
+  portraitStops?: PortraitStops;
   className?: string;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stateRef = useRef<CanvasState | null>(null);
+  const focusRef = useRef(portraitStops);
   const [ready, setReady] = useState(false);
+
+  // The section re-measures its copy on resize; hand the new box position to the draw loop and repaint
+  useEffect(() => {
+    focusRef.current = portraitStops;
+    const state = stateRef.current;
+    if (!state) return;
+    state.portraitStops = portraitStops;
+    requestPaint(state);
+  }, [portraitStops]);
 
   useMotionValueEvent(progress, "change", (value) => {
     const state = stateRef.current;
@@ -511,6 +482,7 @@ export function DevBoxFrameCanvas({
       ready: false,
       disposed: false,
       onFirstPaint: () => setReady(true),
+      portraitStops: focusRef.current,
     };
 
     // ready already starts false; setting it again here would trip react-hooks/set-state-in-effect

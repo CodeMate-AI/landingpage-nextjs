@@ -697,8 +697,11 @@ export interface DevBoxChapter {
   showStack?: boolean; // Shows the layer list under this chapter, timed to the fully exploded box
 }
 
-// The overline and closing line name HP's ZGX Nano and CodeMate AI, so they live in DevBoxSection with translate="no" spans
+// Lines naming HP's ZGX Nano and CodeMate AI live in DevBoxSection with translate="no" spans
 export interface DevBoxSectionData {
+  introLabel: string;
+  introTitlePrefix: string;
+  introTitleHighlight: string;
   titlePrefix: string;
   titleHighlight: string;
   support: string;
@@ -706,8 +709,6 @@ export interface DevBoxSectionData {
   stackLabel: string;
   stack: string[];
   stackTools: string;
-  finaleLabel: string;
-  finaleHeadline: string;
   specs: DevBoxSpec[];
 }
 
@@ -718,6 +719,11 @@ export interface DevBoxSpec {
 }
 
 export const DEVBOX_DATA: DevBoxSectionData = {
+  // Opening beat, the view the team picked to lead with
+  introLabel: 'CodeMate Dev Box',
+  introTitlePrefix: 'One box. ',
+  introTitleHighlight: 'A whole AI Co-Worker.',
+  // Closing beat, above the ZGX Nano specs
   titlePrefix: 'Sovereign AI. ',
   titleHighlight: 'On your desk.',
   support: 'Your AI Co-Worker, on hardware you own.',
@@ -732,7 +738,7 @@ export const DEVBOX_DATA: DevBoxSectionData = {
       id: 'remember',
       label: 'Remember',
       headline: 'Gets sharper every sprint.',
-      body: 'It keeps team knowledge and learns how your team works.',
+      body: "It keeps your team's knowledge and learns how you work.",
     },
     {
       id: 'work-with-you',
@@ -752,13 +758,11 @@ export const DEVBOX_DATA: DevBoxSectionData = {
   // Top to bottom, the way the slide stacks the coworker; the hardware itself is the box on screen, so it is not listed
   stack: ['Local Models & Memory', 'Agent Runtime', 'Context & Orchestration', 'AI System OS'],
   stackTools: 'Plugs into your IDE, Git, design and project tools', // Mirrors the slide's four tools; "boards" read like circuit boards next to hardware
-  finaleLabel: 'CodeMate Dev Box',
-  finaleHeadline: 'One box. A whole AI Co-Worker.',
   // HP ZGX Nano G1n published specs; the 128 GB is unified CPU and GPU memory, so the GPU can use all of it
   specs: [
     { value: 'Blackwell', label: 'NVIDIA GB10 Superchip' },
-    { value: '128 GB', label: 'Unified memory for AI' },
+    { value: '128 GB', label: 'Unified memory' },
     { value: '1 PFLOP', label: 'FP4 AI compute' },
-    { value: '200B', label: 'Parameter models, run locally' },
+    { value: '200B', label: 'Parameters, run locally' },
   ],
 };

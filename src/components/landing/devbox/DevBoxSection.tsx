@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, useState, type CSSProperties } from 'react';
+import React, { useEffect, useRef, useState, type CSSProperties, type Ref } from 'react';
 import Image from 'next/image';
 import {
   motion,
@@ -17,9 +17,14 @@ import {
   FINALE_ENTER,
   FINALE_FULL,
   INTRO_EXIT,
+  isPortraitScreen,
   SCROLL_LENGTH_VH,
   SEQUENCE,
+  stackChapter,
+  stackFinale,
+  stackIntro,
   type BeatTiming,
+  type PortraitStops,
 } from '@/lib/devbox-film';
 import { DevBoxFrameCanvas } from './DevBoxFrameCanvas';
 import DevBoxStaticStory from './DevBoxStaticStory';
@@ -29,23 +34,45 @@ const FINALE_BEAT = DEVBOX_DATA.chapters.length + 1;
 
 const pad = (value: number) => String(value).padStart(2, '0');
 
-// Overline and headline over the closed box; fades out as the lid lifts
-function IntroCopy({ progress, active }: { progress: MotionValue<number>; active: boolean }) {
+// Portrait screens pin each copy block at its measured top; wider screens keep the CSS anchor
+const placement = (top?: number) => (top === undefined ? {} : { top, bottom: 'auto' });
+
+// Opening beat, the team's chosen first view: label, headline and one line centred above the closed box; fades out as the lid lifts
+function IntroCopy({
+  progress,
+  active,
+  ref,
+  stackTop,
+}: {
+  progress: MotionValue<number>;
+  active: boolean;
+  ref: Ref<HTMLDivElement>;
+  stackTop?: number;
+}) {
   const opacity = useTransform(progress, [0, INTRO_EXIT * 0.7, INTRO_EXIT], [1, 1, 0]);
   const y = useTransform(progress, [0, INTRO_EXIT], [0, -24]);
 
   return (
-    <motion.div className={styles.intro} style={{ opacity, y }} aria-hidden={!active}>
-      <span className={styles.overline}>
-        <span translate="no">CodeMate Dev Box</span>, powered by HP&apos;s{' '}
-        <span translate="no">ZGX Nano</span>
+    <motion.div
+      ref={ref}
+      className={styles.copy}
+      data-bookend="intro"
+      style={{ opacity, y, ...placement(stackTop) }}
+      aria-hidden={!active}
+    >
+      <span className={styles.eyebrow} translate="no">
+        {DEVBOX_DATA.introLabel}
       </span>
+      {/* White first half, cyan second half, the same two-tone headline as the Toolbox section */}
       <h2 id="devbox-title" className={styles.title}>
-        <span className={styles.titlePlain}>{DEVBOX_DATA.titlePrefix}</span>
-        <span className={styles.titleHighlight}>{DEVBOX_DATA.titleHighlight}</span>
+        <span className={styles.titlePlain}>{DEVBOX_DATA.introTitlePrefix}</span>
+        <span className={styles.titleHighlight}>{DEVBOX_DATA.introTitleHighlight}</span>
       </h2>
-      {/* The team found the animated scroll cue read like a loader, so the intro ends on the support line */}
-      <p className={styles.support}>{DEVBOX_DATA.support}</p>
+      <p className={styles.copyBody}>
+        {/* Brand names kept out of Google Translate, per the language switcher rule */}
+        <span translate="no">CodeMate AI</span>, ready to run on HP&apos;s{' '}
+        <span translate="no">ZGX Nano</span>.
+      </p>
     </motion.div>
   );
 }
@@ -57,12 +84,16 @@ function ChapterCopy({
   timing,
   number,
   active,
+  ref,
+  stackTop,
 }: {
   progress: MotionValue<number>;
   chapter: DevBoxChapter;
   timing: BeatTiming;
   number: number;
   active: boolean;
+  ref: Ref<HTMLDivElement>;
+  stackTop?: number;
 }) {
   const opacity = useTransform(
     progress,
@@ -74,8 +105,9 @@ function ChapterCopy({
   return (
     // data-stack lets laptops lay the layer list out to the right of the copy
     <motion.div
+      ref={ref}
       className={styles.copy}
-      style={{ opacity, y }}
+      style={{ opacity, y, ...placement(stackTop) }}
       aria-hidden={!active}
       data-stack={chapter.showStack ? 'true' : undefined}
     >
@@ -123,22 +155,37 @@ function LayerList({ progress, timing }: { progress: MotionValue<number>; timing
   );
 }
 
-// Closing line once the box has reassembled; it stays on screen until the section scrolls away
-function FinaleCopy({ progress, active }: { progress: MotionValue<number>; active: boolean }) {
+// Closing beat once the box has reassembled: the Sovereign AI line plus the ZGX Nano specs; it stays until the section scrolls away
+function FinaleCopy({
+  progress,
+  active,
+  ref,
+  stackTop,
+}: {
+  progress: MotionValue<number>;
+  active: boolean;
+  ref: Ref<HTMLDivElement>;
+  stackTop?: number;
+}) {
   const opacity = useTransform(progress, [FINALE_ENTER, FINALE_FULL], [0, 1]);
   const y = useTransform(progress, [FINALE_ENTER, 1], [26, 0]);
 
   return (
-    <motion.div className={styles.copy} style={{ opacity, y }} aria-hidden={!active}>
-      <span className={styles.eyebrow} translate="no">
-        {DEVBOX_DATA.finaleLabel}
-      </span>
-      <h3 className={styles.copyTitle}>{DEVBOX_DATA.finaleHeadline}</h3>
-      <p className={styles.copyBody}>
-        {/* Brand name kept out of Google Translate, per the language switcher rule */}
-        <span translate="no">CodeMate AI</span>, ready to run on HP&apos;s{' '}
-        <span translate="no">ZGX Nano</span>.
-      </p>
+    <motion.div
+      ref={ref}
+      className={styles.copy}
+      data-bookend="finale"
+      style={{ opacity, y, ...placement(stackTop) }}
+      aria-hidden={!active}
+    >
+      {/* Headline group and specs are two cells, so wide screens can set them side by side in one band */}
+      <div>
+        <h3 className={styles.copyTitle}>
+          <span className={styles.titlePlain}>{DEVBOX_DATA.titlePrefix}</span>
+          <span className={styles.titleHighlight}>{DEVBOX_DATA.titleHighlight}</span>
+        </h3>
+        <p className={styles.copyBody}>{DEVBOX_DATA.support}</p>
+      </div>
       {/* The ZGX Nano hardware behind the coworker, in four short facts */}
       <dl className={styles.specs}>
         {DEVBOX_DATA.specs.map((spec) => (
@@ -154,8 +201,16 @@ function FinaleCopy({ progress, active }: { progress: MotionValue<number>; activ
   );
 }
 
+// Where every beat's copy and box sit on portrait screens; null on wider screens, which keep the CSS layout
+type BeatStack = { introTop: number; chapterTops: number[]; finaleTop: number; stops: PortraitStops } | null;
+
 export default function DevBoxSection() {
   const sectionRef = useRef<HTMLElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
+  const introRef = useRef<HTMLDivElement>(null);
+  const finaleRef = useRef<HTMLDivElement>(null);
+  const chapterRefs = useRef<Array<HTMLDivElement | null>>([]);
+  const [stack, setStack] = useState<BeatStack>(null);
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start start', 'end end'] });
   // A slight push-in on the closed box at both ends of the film
   const scale = useTransform(scrollYProgress, [0, 0.15, 0.96, 1], [1.018, 1, 1, 1.012]);
@@ -179,10 +234,43 @@ export default function DevBoxSection() {
     return () => cancelAnimationFrame(frame);
   }, [scrollYProgress]);
 
-  // Scroll length lives in devbox-film.ts so it can be tuned in one place
-  const lengthVars = {
+  // Phones and portrait iPads: measure every beat's copy and pair it with the box so no beat leaves a blank band; re-runs on resize
+  useEffect(() => {
+    const sticky = stickyRef.current;
+    const intro = introRef.current;
+    const finale = finaleRef.current;
+    const chapters = chapterRefs.current.filter((element): element is HTMLDivElement => element !== null);
+    if (!sticky || !intro || !finale || chapters.length !== DEVBOX_DATA.chapters.length) return;
+
+    const measure = () => {
+      const width = sticky.clientWidth;
+      const height = sticky.clientHeight;
+      if (!isPortraitScreen(width, height)) {
+        setStack(null);
+        return;
+      }
+      const opening = stackIntro(width, height, intro.offsetHeight);
+      const middle = chapters.map((chapter) => stackChapter(width, height, chapter.offsetHeight));
+      const closing = stackFinale(width, height, finale.offsetHeight);
+      setStack({
+        introTop: opening.copyTop,
+        chapterTops: middle.map((pair) => pair.copyTop),
+        finaleTop: closing.copyTop,
+        stops: { intro: opening.focus, chapters: middle.map((pair) => pair.focus), finale: closing.focus },
+      });
+    };
+
+    // The observer also fires once on start, so the first layout needs no direct call here
+    const observer = new ResizeObserver(measure);
+    [sticky, intro, finale, ...chapters].forEach((element) => observer.observe(element));
+    return () => observer.disconnect();
+  }, []);
+
+  // Scroll length lives in devbox-film.ts so it can be tuned in one place; the focus var places the portrait poster
+  const sectionVars = {
     '--devbox-length': `${SCROLL_LENGTH_VH.desktop}vh`,
     '--devbox-length-mobile': `${SCROLL_LENGTH_VH.mobile}vh`,
+    ...(stack && { '--devbox-intro-focus': stack.stops.intro }),
   } as CSSProperties;
 
   return (
@@ -190,11 +278,11 @@ export default function DevBoxSection() {
       <section
         ref={sectionRef}
         className={`${styles.section} ${styles.motionOnly}`}
-        style={lengthVars}
+        style={sectionVars}
         data-beat={beat}
         aria-labelledby="devbox-title"
       >
-        <div className={styles.sticky}>
+        <div ref={stickyRef} className={styles.sticky}>
           <motion.div className={styles.media} style={{ scale }}>
             {/* Poster holds the frame until the canvas has painted its first frame */}
             <div className={styles.posterLayer}>
@@ -215,13 +303,19 @@ export default function DevBoxSection() {
                 className={styles.poster}
               />
             </div>
-            {isNear && <DevBoxFrameCanvas progress={scrollYProgress} className={styles.canvas} />}
+            {isNear && (
+              <DevBoxFrameCanvas
+                progress={scrollYProgress}
+                portraitStops={stack?.stops}
+                className={styles.canvas}
+              />
+            )}
           </motion.div>
 
           <div className={styles.scrim} />
           <div className={styles.grain} />
 
-          <IntroCopy progress={scrollYProgress} active={beat === 0} />
+          <IntroCopy ref={introRef} progress={scrollYProgress} active={beat === 0} stackTop={stack?.introTop} />
           {DEVBOX_DATA.chapters.map((chapter, index) => (
             <ChapterCopy
               key={chapter.id}
@@ -230,9 +324,18 @@ export default function DevBoxSection() {
               timing={CHAPTER_TIMINGS[index]}
               number={index + 1} // The intro has no number now that the rail is gone, so chapters count from 01
               active={beat === index + 1}
+              ref={(element) => {
+                chapterRefs.current[index] = element;
+              }}
+              stackTop={stack?.chapterTops[index]}
             />
           ))}
-          <FinaleCopy progress={scrollYProgress} active={beat === FINALE_BEAT} />
+          <FinaleCopy
+            ref={finaleRef}
+            progress={scrollYProgress}
+            active={beat === FINALE_BEAT}
+            stackTop={stack?.finaleTop}
+          />
         </div>
       </section>
 

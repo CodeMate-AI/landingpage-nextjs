@@ -97,6 +97,11 @@
   opacity: 1;
 }
 
+/* The closing headline sits over the closed box's lower left, so it gets the same extra shade */
+.section[data-beat='5'] .scrim::after {
+  opacity: 1;
+}
+
 .grain {
   position: absolute;
   inset: 0;
@@ -111,36 +116,90 @@
 /* ---------- Copy ---------- */
 
 /* Left edge matches the Toolbox section padding (px-4, sm:px-8, md:px-10, lg:px-12, xl:px-[90px]) */
-.intro,
 .copy {
   --edge: 1rem;
 }
 
-.intro {
-  position: absolute;
-  top: clamp(7rem, 16vh, 10rem);
-  left: var(--edge);
-  right: var(--edge);
-  z-index: 30;
-  max-width: 44rem;
-  pointer-events: none;
-}
-
-.overline {
-  display: block;
-  color: rgba(255, 255, 255, 0.75);
-  font-size: 14px;
-  line-height: 18px;
-}
-
 .title {
-  margin-top: 0.75rem;
+  margin-top: 1rem;
   font-family: var(--font-montserrat, Montserrat, sans-serif);
   font-size: clamp(2.25rem, 5vw, 4.5rem);
   font-weight: 600;
   letter-spacing: -0.025em;
   line-height: 1.02;
   text-wrap: balance;
+}
+
+/* Everything wider than 4:5: the poster sits where stageLayout() in devbox-film.ts draws the opening frame */
+@media (min-aspect-ratio: 4/5) {
+  .poster {
+    inset: auto;
+    left: 50%;
+    top: 30%; /* STAGE_TOP_INTRO */
+    width: min(86vw, 106.67vh, (90vh - 300px) * 16 / 9); /* STAGE_MAX_WIDTH, STAGE_MAX_HEIGHT or COPY_BAND, at 16:9 */
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    transform: translateX(-50%);
+  }
+}
+
+/* Laptops, desktops and landscape tablets: the closing copy is one band under the stage, headline left, specs right */
+@media (min-aspect-ratio: 4/5) and (min-width: 1024px) {
+  .copy[data-bookend='finale'] {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 3rem;
+  }
+
+  .copy[data-bookend='finale'] .specs {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+    max-width: none;
+    grid-template-columns: repeat(4, auto);
+    gap: 0;
+  }
+
+  /* Hairline dividers between the four facts instead of a rule above them */
+  .copy[data-bookend='finale'] .spec {
+    padding: 0.25rem 1.75rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .copy[data-bookend='finale'] .spec:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .copy[data-bookend='finale'] .specValue {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+  }
+
+  /* Box sits above the band now, so the bottom shade carries the copy instead of the left one */
+  .section[data-beat='5'] .scrim::after {
+    opacity: 0;
+  }
+}
+
+/* Opening copy: centred in the band above the closed box, like a product launch title */
+.copy[data-bookend='intro'] {
+  top: clamp(5.5rem, 12vh, 8rem);
+  bottom: auto;
+  max-width: 60rem;
+  margin-inline: auto;
+  text-align: center;
+  text-shadow: none;
+}
+
+.copy[data-bookend='intro'] .eyebrow {
+  justify-content: center;
+}
+
+.copy[data-bookend='intro'] .copyBody {
+  max-width: none;
 }
 
 .titlePlain {
@@ -158,15 +217,17 @@
   color: transparent;
 }
 
-.support {
-  margin-top: 1.25rem;
-  max-width: 34rem;
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 15px;
-  line-height: 1.7;
+/* Soft dark pool behind every copy block, so the words stay readable wherever the film is bright behind them */
+.copy::before {
+  content: '';
+  position: absolute;
+  inset: -2.5rem -3rem;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(5, 5, 5, 0.78), rgba(5, 5, 5, 0.45) 60%, rgba(5, 5, 5, 0));
+  pointer-events: none;
 }
 
-/* Chapter and closing copy sit bottom-left, clear of the box in the centre */
+/* Chapter and closing copy sit in the band under the stage, clear of the box */
 .copy {
   position: absolute;
   bottom: clamp(4.5rem, 10vh, 8rem);
@@ -305,51 +366,35 @@
 /* ---------- Breakpoints (match Tailwind sm 640, md 768, lg 1024, xl 1280) ---------- */
 
 @media (min-width: 640px) {
-  .intro,
   .copy {
     --edge: 2rem;
-  }
-  .overline {
-    font-size: 18px;
   }
 }
 
 @media (min-width: 768px) {
-  .intro,
   .copy {
     --edge: 2.5rem;
   }
 }
 
 @media (min-width: 1024px) {
-  .intro,
   .copy {
     --edge: 3rem;
   }
 
-  /* One tight left column with a one-line headline, so the whole intro fits in the band above the box */
-  .intro {
-    top: clamp(6rem, 11vh, 8rem);
-    max-width: none;
-  }
-
   .title {
-    font-size: clamp(2.5rem, 4vw, 4.25rem);
-  }
-
-  .support {
-    margin-top: 0.75rem;
-    font-size: 16px;
+    font-size: clamp(2.25rem, 3.6vw, 3.75rem);
   }
 }
 
 @media (min-width: 1280px) {
-  .intro,
   .copy {
     --edge: 90px;
   }
+}
 
-  /* Copy bottom left, layer list bottom right; only from 1280px, since narrower the list would sit on the box's side panels */
+/* Copy bottom left, layer list bottom right, both in the band under the stage; stacked, the list would climb onto the box */
+@media (min-width: 1024px) {
   .copy[data-stack='true'] {
     max-width: none;
     display: flex;
@@ -375,25 +420,30 @@
   }
 }
 
-/* Poster framing per aspect ratio, mirroring imageLayout() in the canvas so the swap is seamless */
-@media (min-aspect-ratio: 4/5) and (max-aspect-ratio: 31/20) {
-  .poster {
-    object-fit: contain;
-    object-position: center 55%;
-  }
-}
-
+/* Portrait screens: the frame is a strip as wide as the screen, centred where stackBookend() put the closed box */
 @media (max-aspect-ratio: 4/5) {
   .poster {
+    inset: auto;
+    left: 50%;
+    top: calc(var(--devbox-intro-focus, 0.42) * 100%);
+    width: 130%; /* BOOKEND_ZOOM in devbox-film.ts */
+    height: auto;
+    aspect-ratio: 16 / 9;
     object-fit: contain;
-    object-position: center 66%;
-    transform: scale(1.3); /* Matches PORTRAIT_HERO_ZOOM and FOCUS in DevBoxFrameCanvas */
+    transform: translate(-50%, -50%);
   }
-}
 
-@media (min-aspect-ratio: 41/20) {
-  .poster {
-    object-fit: contain;
+  /* iPads in portrait have the width for larger type, which also fills the extra height */
+  @media (min-width: 768px) {
+    .title {
+      font-size: 3.5rem;
+    }
+    .copyTitle {
+      font-size: 2.75rem;
+    }
+    .copyBody {
+      font-size: 17px;
+    }
   }
 }
 
@@ -407,14 +457,6 @@
     background:
       linear-gradient(to bottom, rgba(12, 12, 14, 1) 0%, rgba(12, 12, 14, 0.5) 8%, rgba(5, 5, 5, 0) 18%),
       linear-gradient(to top, rgba(5, 5, 5, 0.95) 0%, rgba(5, 5, 5, 0.72) 24%, rgba(5, 5, 5, 0.24) 44%, rgba(5, 5, 5, 0) 58%);
-  }
-
-  .intro {
-    top: 6.5rem;
-  }
-
-  .support {
-    font-size: 14px;
   }
 
   .copy {
@@ -435,13 +477,39 @@
   }
 }
 
+/* Tall phones (iPhone Pro and Pro Max): the 16:9 box leaves spare height, so the copy steps up a size and breathes more */
+@media (max-width: 767px) and (min-height: 800px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .copyTitle {
+    font-size: 2rem;
+  }
+  .copyBody {
+    font-size: 15px;
+  }
+  .copyTitle,
+  .copyBody,
+  .title {
+    margin-top: 1.25rem;
+  }
+  .specs {
+    margin-top: 1.75rem;
+    gap: 1.25rem 1.5rem;
+  }
+  .specValue {
+    font-size: 1.375rem;
+  }
+}
+
 /* Short laptop screens: pull the copy in so it clears the fixed navbar and the bottom edge */
 @media (max-height: 760px) and (min-width: 1024px) {
-  .intro {
-    top: 6.5rem;
-  }
   .title {
-    font-size: clamp(2.25rem, 4vw, 3.75rem);
+    font-size: clamp(2rem, 3.4vw, 3.25rem);
+  }
+  /* The closing band shares the short screen with the raised box, so its headline steps down a size */
+  .copy[data-bookend='finale'] .copyTitle {
+    font-size: 2.25rem;
   }
   .copy {
     bottom: clamp(3.5rem, 8vh, 5rem);

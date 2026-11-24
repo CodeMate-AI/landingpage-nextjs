@@ -23,14 +23,17 @@ export default function DevBoxStaticStory() {
           className="mt-2 sm:mt-3 text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl lg:text-[60px] lg:leading-[60px]"
           style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
         >
+          {/* Opens on the same headline as the film's first view */}
           <span className="bg-linear-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
-            {DEVBOX_DATA.titlePrefix}
+            {DEVBOX_DATA.introTitlePrefix}
           </span>
           <span className="bg-linear-to-r from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
-            {DEVBOX_DATA.titleHighlight}
+            {DEVBOX_DATA.introTitleHighlight}
           </span>
         </h2>
-        <p className="mt-4 max-w-[34rem] text-[15px] leading-[1.7] text-white/70">{DEVBOX_DATA.support}</p>
+        <p className="mt-4 max-w-[34rem] text-[15px] leading-[1.7] text-white/70">
+          <span translate="no">CodeMate AI</span>, ready to run on HP&apos;s <span translate="no">ZGX Nano</span>.
+        </p>
 
         <Image
           src={SEQUENCE.poster}
@@ -78,8 +81,20 @@ export default function DevBoxStaticStory() {
         {/* The four tools fold into one line, matching the film's layer list */}
         <p className="mt-3 text-[12px] text-white/55">{DEVBOX_DATA.stackTools}</p>
 
-        {/* Same four ZGX Nano facts the film shows on its closing beat */}
-        <dl className="mt-10 grid grid-cols-2 gap-6 lg:grid-cols-4">
+        {/* Closes like the film: the Sovereign AI line over the four ZGX Nano facts */}
+        <h3
+          className="mt-12 text-2xl font-semibold tracking-tight sm:text-3xl"
+          style={{ fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)' }}
+        >
+          <span className="bg-linear-to-b from-white to-[#D1D5DB]/80 bg-clip-text text-transparent">
+            {DEVBOX_DATA.titlePrefix}
+          </span>
+          <span className="bg-linear-to-r from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+            {DEVBOX_DATA.titleHighlight}
+          </span>
+        </h3>
+        <p className="mt-3 text-[15px] leading-[1.7] text-white/70">{DEVBOX_DATA.support}</p>
+        <dl className="mt-6 grid grid-cols-2 gap-6 lg:grid-cols-4">
           {DEVBOX_DATA.specs.map((spec) => (
             <div key={spec.value}>
               <dt className="text-2xl font-semibold text-white" translate="no">{spec.value}</dt>
