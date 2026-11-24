@@ -402,6 +402,9 @@ function measure(state: CanvasState) {
 
   if (state.canvas.width !== pixelWidth) state.canvas.width = pixelWidth;
   if (state.canvas.height !== pixelHeight) state.canvas.height = pixelHeight;
+  // Resizing a canvas resets its context to low quality smoothing, which made thin detail like the lid logo jagged
+  state.ctx.imageSmoothingEnabled = true;
+  state.ctx.imageSmoothingQuality = "high";
 
   paint(state);
 }
