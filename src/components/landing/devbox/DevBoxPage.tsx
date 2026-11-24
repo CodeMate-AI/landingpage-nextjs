@@ -19,10 +19,10 @@ export default function DevBoxPage() {
       <div style={{ cursor: ARROW_CURSOR }} className="relative bg-zinc-950">
         <Navbar />
         <main className="relative">
-          {/* Same plain "Back to Home" link as the contact page, under the navbar logo's left edge on the film's opening label row; it scrolls away with the page.
-              Wider than 4:5 its top repeats --devbox-intro-space from DevBoxSection.module.css plus half the label's height */}
+          {/* Same plain "Back to Home" link as the contact page, under the navbar logo's left edge; it scrolls away with the page.
+              Portrait screens centre the opening title lower down, so there it sits alone just under the navbar.
+              Wider than 4:5 it shares the title's label row: its top repeats --devbox-intro-space from DevBoxSection.module.css plus half the label's height */}
           <BackToHome
-            iconOnlyOnPhones
             className="absolute z-20 left-5 md:left-8 lg:left-[calc(7vw+1rem)] top-[97px] [@media(min-aspect-ratio:4/5)]:top-[calc(clamp(5.5rem,12vh,8rem)+clamp(1.5rem,4vh,3rem)+9px)] -translate-y-1/2"
           />
           <DevBoxSection />

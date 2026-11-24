@@ -439,12 +439,17 @@
   .poster {
     inset: auto;
     left: 50%;
-    top: calc(var(--devbox-intro-focus, 0.42) * 100%);
+    top: calc(var(--devbox-intro-focus, 0.6) * 100%); /* Fallback is DEFAULT_PORTRAIT_STOPS.intro */
     width: 130%; /* BOOKEND_ZOOM in devbox-film.ts */
     height: auto;
     aspect-ratio: 16 / 9;
     object-fit: contain;
     transform: translate(-50%, -50%);
+  }
+
+  /* Close to where stackIntro() centres the opening title (11rem of copy over a 43.9vw closed box), so it barely moves once measured */
+  .copy[data-bookend='intro'] {
+    top: max(88px, 88px + 0.45 * (100vh - 140px - 11rem - 43.9vw));
   }
 
   /* iPads in portrait have the width for larger type, which also fills the extra height */

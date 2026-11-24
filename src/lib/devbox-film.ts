@@ -102,7 +102,7 @@ const OPTICAL_BIAS = 0.45;
 export type PortraitStops = { intro: number; chapters: number[]; finale: number };
 // Used until the copy has been measured
 export const DEFAULT_PORTRAIT_STOPS: PortraitStops = {
-  intro: 0.42,
+  intro: 0.6, // The centred opening pair puts a phone's closed box just below the middle of the screen
   chapters: CHAPTER_TIMINGS.map(() => 0.3),
   finale: 0.36,
 };
@@ -178,9 +178,9 @@ function stackPair(width: number, height: number, copyHeight: number, shape: Pai
   const pairTop = NAV_CLEARANCE + Math.max(0, (room - boxSpan - gap - copyHeight) * OPTICAL_BIAS);
 
   if (shape.copyFirst) {
-    // The opening title starts right under the navbar, so no empty band opens up after the Toolbox section above
-    const boxStart = NAV_CLEARANCE + copyHeight + gap;
-    return { copyTop: NAV_CLEARANCE, focus: (boxStart - frameHeight * shape.boxTop + frameHeight / 2) / height };
+    // The opening title and the closed box under it sit as one pair just above centre, so neither end of a tall screen is left empty
+    const boxStart = pairTop + copyHeight + gap;
+    return { copyTop: pairTop, focus: (boxStart - frameHeight * shape.boxTop + frameHeight / 2) / height };
   }
 
   // Short phones: the copy never drops below the bottom margin, the box rides up instead
