@@ -219,6 +219,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  text-shadow: none; /* The copy's dark text-shadow paints over a text-clipped gradient and greys it out */
 }
 
 /* Same cyan-to-blue gradient as the Toolbox headline highlight */
@@ -227,6 +228,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  text-shadow: none; /* The copy's dark text-shadow paints over a text-clipped gradient and dulls the blue */
 }
 
 /* Soft dark pool behind every copy block, so the words stay readable wherever the film is bright behind them */
