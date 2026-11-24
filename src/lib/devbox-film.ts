@@ -152,15 +152,18 @@ const STAGE_MAX_WIDTH = 0.86; // Share of the screen width
 const STAGE_MAX_HEIGHT = 0.7; // Share of the screen height the box may take on desktops
 const STAGE_TOP_STORY = 0.1; // Chapters and closing: just under the navbar, copy band below
 const STAGE_TOP_INTRO = 0.3; // Opening: under the centred title
+const STAGE_ZOOM_INTRO = 1.2; // Opening: the closed box leaves room below the title, so the stage is drawn this much larger there
 // Height kept free under the stage for chapter copy, so short laptops get a smaller box instead of copy on top of it
 const COPY_BAND = 240; // Leaves the chapter copy its own band under the stage
 
 // Size and position of the frame on screens wider than 4:5; the stage eases down for the opening title
 export function stageLayout(width: number, height: number, progress: number) {
   const maxHeight = Math.min(height * STAGE_MAX_HEIGHT, height * (1 - STAGE_TOP_STORY) - COPY_BAND);
-  const dw = Math.min(width * STAGE_MAX_WIDTH, maxHeight * FRAME_ASPECT);
-  const dh = dw / FRAME_ASPECT;
   const intro = progress < 0.5 ? bookendAmount(progress) : 0;
+  // The opening zoom eases back to 1 as the lid lifts, and never makes the stage wider than the screen
+  const zoom = lerp(1, STAGE_ZOOM_INTRO, intro);
+  const dw = Math.min(width, Math.min(width * STAGE_MAX_WIDTH, maxHeight * FRAME_ASPECT) * zoom);
+  const dh = dw / FRAME_ASPECT;
   return { dx: (width - dw) / 2, dy: height * lerp(STAGE_TOP_STORY, STAGE_TOP_INTRO, intro), dw, dh };
 }
 
