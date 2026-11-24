@@ -1,16 +1,17 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useScroll } from 'framer-motion';
-import Lenis from 'lenis';
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import ToolboxSection from '@/components/landing/ToolboxSection';
 import ProductTabsSection from '@/components/landing/ProductTabsSection';
-import DevBoxSection from '@/components/landing/devbox/DevBoxSection'; // Dev Box scroll film, placed between Toolbox and ProductTabs
+import DevBoxTeaser from '@/components/landing/devbox/DevBoxTeaser'; // Still Dev Box teaser between Toolbox and ProductTabs; the film moved to /devbox
+import { useLenis } from '@/hooks/use-lenis';
+import { ARROW_CURSOR } from '@/lib/cursor';
 import SocialProofSection from '@/components/landing/SocialProofSection';
 import EnterpriseArchitectureSection from '@/components/landing/EnterpriseArchitectureSection';
 import WatchActionSection from '@/components/landing/WatchActionSection';
@@ -31,26 +32,8 @@ function Page() {
   const [isArrowV, setIsArrowV] = useState(false);
   const [isArrow, setIsArrow] = useState(false);
 
-  // Lenis smooth scroll initialization
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const lenis = new Lenis({ duration: 1.1 });
-    (window as any).__lenis = lenis;
-    let rafId: number;
-
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-
-    return () => {
-      delete (window as any).__lenis;
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-    };
-  }, []);
+  // Lenis smooth scroll, shared with the /devbox page
+  useLenis();
 
   // Main page scroll progress for scroll-to-top arrow indicator
   const { scrollYProgress: MYProg } = useScroll({
@@ -79,7 +62,7 @@ function Page() {
     <MotionConfig reducedMotion="user">
     <div
       style={{
-        cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 2 1, auto`,
+        cursor: ARROW_CURSOR, // Shared with the /devbox page
       }}
       ref={mainRef}
       className="relative bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]"
@@ -274,9 +257,9 @@ function Page() {
       <ToolboxSection />
 
       {/* ========================================================================= */}
-      {/* CODEMATE DEV BOX: scroll film of HP's ZGX Nano with the AI Coworker story  */}
+      {/* CODEMATE DEV BOX: still teaser linking to the full film on /devbox         */}
       {/* ========================================================================= */}
-      <DevBoxSection />
+      <DevBoxTeaser />
 
       {/* ========================================================================= */}
       {/* PRODUCT TABS SHOWCASE                                                     */}
