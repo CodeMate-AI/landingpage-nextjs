@@ -113,6 +113,8 @@ function drawEdgeFades(
   const fadeTop = dh * (portrait ? 0.36 : 0.3);
   const fadeBottom = dh * (portrait ? 0.3 : 0.28);
 
+  // A hidden or not yet laid out canvas has no width, which would make the scale infinite and the gradient throw
+  if (!ctx.canvas.clientWidth || !dw || !dh) return;
   ctx.save();
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   const scale = ctx.canvas.width / ctx.canvas.clientWidth; // Layout is in CSS pixels, the mask paints in device pixels
