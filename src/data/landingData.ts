@@ -16,8 +16,6 @@ export interface ToolboxSectionData {
   titlePrefix: string;
   titleHighlight: string;
   titleSuffix: string;
-  ctaText: string;
-  ctaLink: string;
   products: ToolboxProduct[];
 }
 
@@ -26,8 +24,6 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
   titlePrefix: 'One ',
   titleHighlight: 'Toolbox.',
   titleSuffix: ' Your entire SDLC.',
-  ctaText: 'Download Toolbox',
-  ctaLink: '/download',
   products: [
     {
       id: 'work',
