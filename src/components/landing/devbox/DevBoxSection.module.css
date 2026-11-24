@@ -136,7 +136,7 @@
     inset: auto;
     left: 50%;
     top: 30%; /* STAGE_TOP_INTRO */
-    width: min(86vw, 106.67vh, (90vh - 300px) * 16 / 9); /* STAGE_MAX_WIDTH, STAGE_MAX_HEIGHT or COPY_BAND, at 16:9 */
+    width: min(86vw, 113.78vh, (90vh - 270px) * 16 / 9); /* STAGE_MAX_WIDTH, STAGE_MAX_HEIGHT or COPY_BAND, at 16:9; matches the larger stage */
     height: auto;
     aspect-ratio: 16 / 9;
     object-fit: contain;

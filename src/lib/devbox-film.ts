@@ -149,11 +149,11 @@ export function portraitFraming(progress: number, stops: PortraitStops) {
 
 // Wider screens play the film in a smaller stage, so every beat's copy gets its own band and never sits on the box
 const STAGE_MAX_WIDTH = 0.86; // Share of the screen width
-const STAGE_MAX_HEIGHT = 0.6; // Share of the screen height
+const STAGE_MAX_HEIGHT = 0.64; // Share of the screen height, raised from 0.6 so the box reads larger on big screens
 const STAGE_TOP_STORY = 0.1; // Chapters and closing: just under the navbar, copy band below
 const STAGE_TOP_INTRO = 0.3; // Opening: under the centred title
 // Height kept free under the stage for chapter copy, so short laptops get a smaller box instead of copy on top of it
-const COPY_BAND = 300;
+const COPY_BAND = 270; // Trimmed from 300 so the larger stage still leaves the chapter copy its band
 
 // Size and position of the frame on screens wider than 4:5; the stage eases down for the opening title
 export function stageLayout(width: number, height: number, progress: number) {
