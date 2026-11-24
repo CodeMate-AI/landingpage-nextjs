@@ -175,8 +175,9 @@ function stackPair(width: number, height: number, copyHeight: number, shape: Pai
   const pairTop = NAV_CLEARANCE + Math.max(0, (room - boxSpan - gap - copyHeight) * OPTICAL_BIAS);
 
   if (shape.copyFirst) {
-    const boxStart = pairTop + copyHeight + gap;
-    return { copyTop: pairTop, focus: (boxStart - frameHeight * shape.boxTop + frameHeight / 2) / height };
+    // The opening title starts right under the navbar, so no empty band opens up after the Toolbox section above
+    const boxStart = NAV_CLEARANCE + copyHeight + gap;
+    return { copyTop: NAV_CLEARANCE, focus: (boxStart - frameHeight * shape.boxTop + frameHeight / 2) / height };
   }
 
   // Short phones: the copy never drops below the bottom margin, the box rides up instead
@@ -194,5 +195,9 @@ export const stackChapter = (width: number, height: number, copyHeight: number) 
   stackPair(width, height, copyHeight, { zoom: STORY_ZOOM, boxTop: OPEN_BOX_TOP, floor: OPEN_FLOOR, copyFirst: false });
 
 // Closing beat: the closed box, the copy and specs straight under it
-export const stackFinale = (width: number, height: number, copyHeight: number) =>
-  stackPair(width, height, copyHeight, { zoom: BOOKEND_ZOOM, boxTop: CLOSED_BOX_TOP, floor: CLOSED_FLOOR, copyFirst: false });
+// The closing copy ends as far above the section bottom as the opening title starts below its top, so both ends match
+export function stackFinale(width: number, height: number, copyHeight: number) {
+  const pair = stackPair(width, height, copyHeight, { zoom: BOOKEND_ZOOM, boxTop: CLOSED_BOX_TOP, floor: CLOSED_FLOOR, copyFirst: false });
+  const copyTop = height - NAV_CLEARANCE - copyHeight;
+  return { copyTop, focus: pair.focus + (copyTop - pair.copyTop) / height };
+}
