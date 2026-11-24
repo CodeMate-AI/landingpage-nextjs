@@ -721,8 +721,8 @@ export interface DevBoxSpec {
 export const DEVBOX_DATA: DevBoxSectionData = {
   // Opening beat, the view the team picked to lead with
   introLabel: 'CodeMate Dev Box',
-  introTitlePrefix: 'One box. ',
-  introTitleHighlight: 'A whole AI Co-Worker.',
+  introTitlePrefix: 'One box. A whole ', // Only the noun phrase is highlighted, so the plain part runs through "A whole"
+  introTitleHighlight: 'AI Co-Worker.',
   // Closing beat, above the ZGX Nano specs
   titlePrefix: 'Sovereign AI. ',
   titleHighlight: 'On your desk.',
