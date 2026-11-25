@@ -95,10 +95,11 @@ export const BackgroundGradientAnimation = ({
         </defs>
       </svg>
       <div className={cn("", className)}>{children}</div>
+      {/* Below lg the hero has auto height, so a desktop-sized layer with a negative margin shows just the glow's top crest */}
       <div
         data-paused={!isOnScreen}
         className={cn(
-          "gradients-container h-full w-full blur-lg",
+          "gradients-container h-[740px] -mb-[640px] lg:h-full lg:mb-0 w-full blur-lg",
           isSafari ? "blur-2xl" : "filter-[url(#blurMe)_blur(40px)]"
         )}
       >
