@@ -1,8 +1,10 @@
 import React from 'react';
+import { preload } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { DEVBOX_DATA } from '@/data/landingData';
+import { SEQUENCE } from '@/lib/devbox-film';
 
 // Still of the ZGX Nano with the CodeMate AI logo on the lid; a new file name, since /devbox/* is cached as immutable
 const TEASER_IMAGE = '/devbox/teaser/zgx-nano-codemate.webp';
@@ -21,6 +23,10 @@ const PHOTO_FADE = {
 
 // Home page stand-in for the Dev Box film: heading, one big still of the box, its facts and a link to the film on /devbox
 export default function DevBoxTeaser() {
+  // Fetch the film's opening posters in the background, so /devbox opens on the sharp box instead of popping it in after the blur
+  preload(SEQUENCE.posterBlur, { as: 'image', fetchPriority: 'low' });
+  preload(SEQUENCE.poster, { as: 'image', fetchPriority: 'low' });
+
   return (
     <section
       className="relative w-full bg-[#050505] overflow-hidden py-12 px-4 sm:py-16 sm:px-8 md:py-20 md:px-10 lg:py-24 lg:px-12 xl:py-[120px] xl:px-[90px]"

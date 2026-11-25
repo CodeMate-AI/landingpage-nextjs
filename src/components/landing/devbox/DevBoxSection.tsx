@@ -300,6 +300,8 @@ export default function DevBoxSection() {
                 width={1600}
                 height={900}
                 unoptimized
+                loading="eager" // The opening frame: load it at once instead of lazily, so the stage never sits on the blur alone
+                fetchPriority="high"
                 className={styles.poster}
               />
             </div>
