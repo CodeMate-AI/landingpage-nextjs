@@ -139,6 +139,7 @@ function Page() {
             />
 
             <div className="relative z-50 w-full px-5 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start">
+              {/* Entrance pacing: headline words about 0.1s apart, then description, announcement and buttons overlap, so all is in place by about 1.1s */}
               <h1 className="text-[min(clamp(1.65rem,6.8vw,2.25rem),7.3vw)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5">
                 <span className="xxlHero z-50 block whitespace-nowrap">
                   <motion.span
@@ -152,7 +153,7 @@ function Page() {
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.3, delay: 0.25 }}
+                    transition={{ duration: 0.3, delay: 0.12 }}
                     className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     AI
@@ -160,7 +161,7 @@ function Page() {
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.2, delay: 0.5 }}
+                    transition={{ duration: 0.2, delay: 0.24 }}
                     className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     for
@@ -170,7 +171,7 @@ function Page() {
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.3, delay: 0.7 }}
+                    transition={{ duration: 0.3, delay: 0.34 }}
                     className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     Software
@@ -178,7 +179,7 @@ function Page() {
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.3, delay: 0.9 }}
+                    transition={{ duration: 0.3, delay: 0.44 }}
                     className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     Development
@@ -189,7 +190,7 @@ function Page() {
               <motion.div
                 initial={{ opacity: 0, filter: 'blur(10px)' }}
                 animate={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ duration: 0.4, delay: 1.15 }}
+                transition={{ duration: 0.35, delay: 0.55 }}
                 className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl sm:leading-[1.5rem] md:leading-[1.75rem] lg:leading-[1.75rem]"
               >
                 <p>
@@ -201,7 +202,7 @@ function Page() {
               <motion.div
                 initial={{ y: -12, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.3, delay: 1.35 }}
+                transition={{ duration: 0.3, delay: 0.65 }}
                 className="w-full flex justify-start mt-3 sm:mt-4 z-[100]"
               >
                 <a
@@ -221,7 +222,7 @@ function Page() {
               <motion.div
                 initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
                 animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                transition={{ duration: 0.6, delay: 1.5 }}
+                transition={{ duration: 0.4, delay: 0.7 }}
                 className="flex flex-col sm:flex-row justify-start items-center gap-3 sm:gap-4 text-sm md:text-base mt-4 sm:mt-5 w-full sm:w-auto"
               >
                 <Link href="/download" aria-label="Download CodeMate AI's ToolBox" className="w-full sm:w-auto">
