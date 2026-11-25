@@ -90,11 +90,12 @@ export default function ProductTabsSection() {
     if (scrollContainerRef.current) scrollCarouselByCard(scrollContainerRef.current, direction);
   };
 
+  // Header, cards and tab switcher sit 40px apart (28px from 768px to 1279px, where card text wraps taller) so the section fits one screen
   return (
     <section
       id="features"
       aria-label="CodeMate Product Details"
-      className="relative w-full bg-[#0C0C0E] text-white flex flex-col items-center box-border overflow-hidden py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[140px] xl:px-[90px] gap-6 sm:gap-8 md:gap-10 xl:gap-[80px] scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28"
+      className="relative w-full bg-[#0C0C0E] text-white flex flex-col items-center box-border overflow-hidden py-12 px-4 sm:py-16 md:py-20 sm:px-8 md:px-10 lg:py-24 lg:px-12 xl:py-[140px] xl:px-[90px] gap-6 sm:gap-8 md:gap-7 xl:gap-10 scroll-mt-24 sm:scroll-mt-24 lg:scroll-mt-28"
     >
       {/* ========================================================================= */}
       {/* Product Header (Responsive Left / Right layout with Navigation Controls)  */}
