@@ -197,24 +197,23 @@ function Page() {
                 </p>
               </motion.div>
 
-              {/* SOTA Announcement Badge */}
+              {/* SOTA announcement as a plain text link, not a box, so Download and Try for Free stay the only buttons; 44px tall for touch */}
               <motion.div
                 initial={{ y: -12, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.3, delay: 1.35 }}
-                className="w-full flex justify-start mt-4 sm:mt-6 z-[100]"
+                className="w-full flex justify-start mt-3 sm:mt-4 z-[100]"
               >
                 <a
                   href={SWE_BENCH_BLOG_URL}
                   aria-label="Read announcement: Cora is now State-of-the-Art"
-                  className="relative p-px rounded-md bg-linear-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group"
+                  className="group inline-flex min-h-11 max-w-full items-center gap-1.5 text-xs sm:text-sm text-neutral-400 transition-colors hover:text-white"
                 >
-                  <div className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-black px-3.5 py-2 sm:px-4 sm:py-2.5 text-white">
-                    <p className="text-xs sm:text-sm font-medium leading-snug text-neutral-300 sm:leading-[1.25rem]">
-                      <span translate="no">Cora</span> is now <span className="text-white font-semibold">State-of-the-Art</span>
-                    </p>
-                    <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
-                  </div>
+                  {/* The underline draws in from the left on hover, the site's link cue */}
+                  <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-300 group-hover:bg-[length:100%_1px]">
+                    <span translate="no">Cora</span> is now <span className="font-semibold text-white">State-of-the-Art</span>
+                  </span>
+                  <ChevronRight className="shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" size={14} strokeWidth={2} aria-hidden="true" />
                 </a>
               </motion.div>
 
