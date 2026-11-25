@@ -68,7 +68,7 @@ export default function DevBoxTeaser() {
             href="/devbox"
             className="group inline-flex h-12 w-full sm:w-auto items-center justify-center gap-2 rounded-md bg-white px-7 sm:px-8 text-sm md:text-base font-semibold text-black transition-[background-color,transform] duration-200 hover:bg-neutral-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00BFFF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050505]"
           >
-            See how it works
+            Learn more
             <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true" />
           </Link>
         </div>
