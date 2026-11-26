@@ -40,7 +40,7 @@ export default function CommunityGallery() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ duration: 0.6, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-        className="mt-3 max-w-2xl text-center text-sm leading-relaxed text-zinc-400 sm:text-base"
+        className="mt-3 max-w-2xl text-center text-sm leading-relaxed text-zinc-400 sm:text-base sm:leading-[1.5rem]"
       >
         Production-grade platforms and dev utilities shipped autonomously by our team using CodeMate's AI-native pipeline.
       </motion.p>

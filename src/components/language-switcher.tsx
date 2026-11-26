@@ -420,7 +420,7 @@ export function LanguageSwitcher({
   }
 
   return (
-    <div ref={containerRef} translate="no" className="relative z-[999999]">
+    <div ref={containerRef} translate="no" className="relative z-999999">
       <button
         type="button"
         onClick={() => {

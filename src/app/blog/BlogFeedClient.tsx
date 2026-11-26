@@ -4,6 +4,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import type { BlogDetailPost } from "@/types/blog";
+import BackToHome from "@/components/back-to-home";
 
 interface FilterOptions {
   categories: string[];
@@ -558,6 +559,11 @@ export default function BlogFeedClient({
     <>
       {/* Hero */}
       <section className="hero container">
+        {/* Back to Home above the eyebrow, on the hero's left edge like the community and showcase pages.
+            Its colours are marked important because blog.css's unlayered ".blog-body a { color: inherit }" beats utility classes */}
+        {/* Lifted 12px (20px from sm) with 24px (32px) below it, so it sits clear above the eyebrow.
+            Margins are important too: blog.css resets every margin inside .blog-body with an unlayered rule */}
+        <BackToHome className="-mt-3! mb-6! sm:-mt-5! sm:mb-8! text-zinc-500! hover:text-white!" />
         <div className="hero-label">The Codemate Blog</div>
         <h1>
           Where engineering teams

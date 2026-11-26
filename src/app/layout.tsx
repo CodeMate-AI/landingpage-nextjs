@@ -125,7 +125,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    // data-scroll-behavior lets the router turn off the smooth scroll from globals.css on page changes, so a new page opens at its top instead of gliding there
+    <html lang="en" data-scroll-behavior="smooth">
       <head>
         {/* Scroll reveals start hidden through inline styles, which need JavaScript to clear */}
         <noscript>

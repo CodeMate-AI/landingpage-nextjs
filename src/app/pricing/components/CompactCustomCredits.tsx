@@ -53,7 +53,7 @@ const CompactCustomCredits = () => {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-gradient-to-br from-zinc-900 to-zinc-950 rounded-2xl p-6 border border-zinc-800"
+                className="bg-linear-to-br from-zinc-900 to-zinc-950 rounded-2xl p-6 border border-zinc-800"
             >
                 <div className="grid md:grid-cols-2 gap-6">
                     {/* Left: Price Display & Slider */}

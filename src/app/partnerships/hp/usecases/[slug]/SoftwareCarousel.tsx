@@ -91,7 +91,7 @@ export default function SoftwareCarousel({ softwares }: { softwares: readonly Us
         role="region"
         aria-label="Software built with CodeMate"
         tabIndex={0}
-        className="flex gap-5 overflow-x-auto snap-x snap-mandatory mr-[calc(50%-50vw)] pr-[calc(50vw-50%)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue"
+        className="flex gap-5 overflow-x-auto snap-x snap-mandatory mr-[calc(50%-50vw)] pr-[calc(50vw-50%)] scrollbar-none [&::-webkit-scrollbar]:hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-accent-blue"
       >
         {softwares.map((software, index) => (
           <article

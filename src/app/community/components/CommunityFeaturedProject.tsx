@@ -106,11 +106,11 @@ export default function CommunityFeaturedProject() {
           </div>
 
           <div className="flex w-full flex-col gap-5 lg:w-[42%] lg:pl-2">
-            <h3 className="text-2xl font-bold leading-snug tracking-tight text-white sm:text-3xl">
+            <h3 className="text-2xl font-bold leading-snug tracking-tight text-white sm:text-3xl sm:leading-[2.25rem]">
               Orbit CRM
             </h3>
 
-            <p className="text-sm leading-relaxed text-zinc-300 sm:text-base">
+            <p className="text-sm leading-relaxed text-zinc-300 sm:text-base sm:leading-[1.5rem]">
               Orbit CRM showcases CodeMate AI in action, with BUILD and CORA generating, reviewing, and refining code from idea to production.
             </p>
 
@@ -183,14 +183,14 @@ export default function CommunityFeaturedProject() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-black/80 px-4 backdrop-blur-xl"
+              className="fixed inset-0 z-999999999999 flex items-center justify-center bg-black/80 px-4 backdrop-blur-xl"
               onClick={() => setIsVideoOpen(false)}
             >
               <div className="relative w-full max-w-4xl aspect-video mx-4 md:mx-0">
                 <button
                   type="button"
                   onClick={() => setIsVideoOpen(false)}
-                  className="absolute -top-16 right-0 z-[10000] rounded-full border border-white/10 bg-neutral-900/50 p-2 text-white/70 backdrop-blur-md transition-colors hover:bg-neutral-900/80 hover:text-white"
+                  className="absolute -top-16 right-0 z-10000 rounded-full border border-white/10 bg-neutral-900/50 p-2 text-white/70 backdrop-blur-md transition-colors hover:bg-neutral-900/80 hover:text-white"
                   aria-label="Close video modal"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">

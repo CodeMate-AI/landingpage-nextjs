@@ -61,14 +61,14 @@ export const SuccessStoriesInfiniteMovingCards = () => {
   return (
     <div
       ref={containerRef}
-      className="scroller relative z-20 max-w-screen overflow-hidden [mask-image:linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]"
+      className="scroller relative z-20 max-w-screen overflow-hidden mask-[linear-gradient(to_right,transparent,white_20%,white_80%,transparent)]"
     >
       <ul
         ref={scrollerRef}
         className={cn(
           "flex min-w-full shrink-0 gap-10 py-4 w-max flex-nowrap",
           start && "animate-scroll",
-          "hover:[animation-play-state:paused]"
+          "hover:paused"
         )}
       >
         {items.map((item, idx) => (

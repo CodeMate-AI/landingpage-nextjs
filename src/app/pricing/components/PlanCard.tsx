@@ -304,7 +304,7 @@ const PlanCard = ({
                   transition={{ delay: index * 0.03 }}
                   className="flex items-start gap-2"
                 >
-                  <div className="flex-shrink-0 mt-0.5">
+                  <div className="shrink-0 mt-0.5">
                     <Check className="w-3 h-3 text-zinc-400" strokeWidth={2.5} />
                   </div>
                   <span className="text-xs text-zinc-300 leading-relaxed">{feature}</span>

@@ -74,7 +74,7 @@ export const TextRevealCard = ({
       onTouchMove={touchMoveHandler}
       ref={cardRef}
       className={cn(
-        "bg-transparent  max-w-[80rem] rounded-lg p-4 sm:p-8 relative overflow-hidden flex justify-center items-center",
+        "bg-transparent  max-w-7xl rounded-lg p-4 sm:p-8 relative overflow-hidden flex justify-center items-center",
         className
       )}
     >
@@ -102,7 +102,7 @@ export const TextRevealCard = ({
             style={{
               textShadow: "4px 4px 15px rgba(0,0,0,0.5)",
             }}
-            className="text-xl sm:text-[3rem] py-10 font-bold text-white bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-300 text-center px-4"
+            className="text-xl sm:text-[3rem] py-10 font-bold text-white bg-clip-text text-transparent bg-linear-to-b from-white to-neutral-300 text-center px-4"
           >
             {revealText}
           </p>
@@ -113,10 +113,10 @@ export const TextRevealCard = ({
             rotate: `${rotateDeg}deg`,
           }}
           transition={isMouseOver ? { duration: 0 } : { duration: 0.2 }}
-          className="h-40 w-[7px] bg-black absolute z-50 will-change-transform [mask-image:linear-gradient(to_bottom,transparent,white,transparent)]"
+          className="h-40 w-[7px] bg-black absolute z-50 will-change-transform mask-[linear-gradient(to_bottom,transparent,white,transparent)]"
         ></motion.div>
 
-        <div className="overflow-hidden [mask-image:linear-gradient(to_bottom,transparent,white,transparent)] w-full">
+        <div className="overflow-hidden mask-[linear-gradient(to_bottom,transparent,white,transparent)] w-full">
           <p className="text-xl sm:text-[3rem] py-10 font-bold bg-clip-text text-transparent bg-slate-300 text-center px-4">
             {text}
           </p>

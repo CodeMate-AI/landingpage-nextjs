@@ -1,0 +1,551 @@
+/* CodeMate Dev Box scroll film. #050505 matches the studio backdrop baked into the frames and the canvas edge fades. */
+
+.section {
+  position: relative;
+  height: var(--devbox-length, 560vh);
+  background: #050505;
+}
+
+/* The stage that stays pinned while the section scrolls past */
+.sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+  overflow: hidden;
+  background: #050505;
+}
+
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  transform-origin: center;
+  transition: translate 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+.posterLayer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.posterBlur {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  object-fit: cover;
+  opacity: 0.55;
+  filter: blur(38px);
+  transform: scale(1.04);
+}
+
+.poster {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cross-fade from the poster to the canvas once the first frame has painted */
+.canvas[data-ready='true'] {
+  opacity: 1;
+}
+
+.media:has(.canvas[data-ready='true']) .posterLayer {
+  opacity: 0;
+}
+
+/* Darkens the edges so copy stays readable; the top band blends in from the Toolbox ground (#0C0C0E) */
+.scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(12, 12, 14, 1) 0%, rgba(12, 12, 14, 0.55) 6%, rgba(5, 5, 5, 0) 20%),
+    linear-gradient(to top, rgba(5, 5, 5, 0.82) 0%, rgba(5, 5, 5, 0.38) 22%, rgba(5, 5, 5, 0) 46%),
+    linear-gradient(to right, rgba(5, 5, 5, 0.6) 0%, rgba(5, 5, 5, 0.2) 24%, rgba(5, 5, 5, 0) 44%);
+}
+
+/* The exploded box is the busiest frame and its chapter the tallest copy, so darken the left side further while it shows */
+.scrim::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgba(5, 5, 5, 0.78) 0%, rgba(5, 5, 5, 0.5) 30%, rgba(5, 5, 5, 0) 52%);
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section[data-beat='3'] .scrim::after {
+  opacity: 1;
+}
+
+/* The closing headline sits over the closed box's lower left, so it gets the same extra shade */
+.section[data-beat='5'] .scrim::after {
+  opacity: 1;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* ---------- Copy ---------- */
+
+/* Left edge matches the Toolbox section padding (px-4, sm:px-8, md:px-10, lg:px-12, xl:px-[90px]) */
+.copy {
+  --edge: 1rem;
+}
+
+.title {
+  margin-top: 1rem;
+  font-family: var(--font-montserrat, Montserrat, sans-serif);
+  font-size: clamp(2.25rem, 5vw, 4.5rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+  text-wrap: balance;
+}
+
+/* Everything wider than 4:5: the poster sits where stageLayout() in devbox-film.ts draws the opening frame */
+@media (min-aspect-ratio: 4/5) {
+  .poster {
+    inset: auto;
+    left: 50%;
+    top: 30%; /* STAGE_TOP_INTRO */
+    width: min(100vw, 1.2 * min(86vw, 124.44vh, (90vh - 240px) * 16 / 9)); /* The stage from STAGE_MAX_WIDTH, STAGE_MAX_HEIGHT or COPY_BAND at 16:9, times STAGE_ZOOM_INTRO, capped at the screen width */
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    transform: translateX(-50%);
+    /* Same four-side fade as the canvas mask, so the poster has no visible border either */
+    mask-image:
+      linear-gradient(to right, transparent, #000 18%, #000 82%, transparent),
+      linear-gradient(to bottom, transparent, #000 30%, #000 72%, transparent);
+    mask-composite: intersect;
+  }
+}
+
+/* Laptops, desktops and landscape tablets: the closing copy is one band under the stage, headline left, specs right */
+@media (min-aspect-ratio: 4/5) and (min-width: 1024px) {
+  .copy[data-bookend='finale'] {
+    bottom: var(--devbox-end-space); /* The section's end padding */
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: 3rem;
+  }
+
+  .copy[data-bookend='finale'] .specs {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
+    max-width: none;
+    grid-template-columns: repeat(4, auto);
+    gap: 0;
+  }
+
+  /* Hairline dividers between the four facts instead of a rule above them */
+  .copy[data-bookend='finale'] .spec {
+    padding: 0.25rem 1.75rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .copy[data-bookend='finale'] .spec:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .copy[data-bookend='finale'] .specValue {
+    font-size: clamp(1.5rem, 2vw, 2rem);
+  }
+
+  /* Box sits above the band now, so the bottom shade carries the copy instead of the left one */
+  .section[data-beat='5'] .scrim::after {
+    opacity: 0;
+  }
+}
+
+/* Opening copy: centred in the band above the closed box, like a product launch title */
+/* Section padding under the closing copy; the opening title sits a little lower, so it has room under the navbar */
+.section {
+  --devbox-end-space: clamp(5.5rem, 12vh, 8rem);
+  --devbox-intro-space: calc(var(--devbox-end-space) + clamp(1.5rem, 4vh, 3rem)); /* Mirrored by the Back to Home link in DevBoxPage.tsx */
+}
+
+.copy[data-bookend='intro'] {
+  top: var(--devbox-intro-space);
+  bottom: auto;
+  max-width: 60rem;
+  margin-inline: auto;
+  text-align: center;
+  text-shadow: none;
+}
+
+.copy[data-bookend='intro'] .eyebrow {
+  justify-content: center;
+}
+
+.copy[data-bookend='intro'] .copyBody {
+  max-width: none;
+}
+
+.titlePlain {
+  background: linear-gradient(to bottom, #ffffff, rgba(209, 213, 219, 0.8));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none; /* The copy's dark text-shadow paints over a text-clipped gradient and greys it out */
+}
+
+/* Same cyan-to-blue gradient as the Toolbox headline highlight */
+.titleHighlight {
+  background: linear-gradient(to right, #00bfff, #1e90ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none; /* The copy's dark text-shadow paints over a text-clipped gradient and dulls the blue */
+}
+
+/* Soft dark pool behind every copy block, so the words stay readable wherever the film is bright behind them */
+.copy::before {
+  content: '';
+  position: absolute;
+  inset: -2.5rem -3rem;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(5, 5, 5, 0.78), rgba(5, 5, 5, 0.45) 60%, rgba(5, 5, 5, 0));
+  pointer-events: none;
+}
+
+/* Chapter and closing copy sit in the band under the stage, clear of the box */
+.copy {
+  position: absolute;
+  bottom: clamp(4.5rem, 10vh, 8rem);
+  left: var(--edge);
+  right: var(--edge);
+  z-index: 30;
+  max-width: 34rem;
+  pointer-events: none;
+  text-shadow:
+    0 2px 26px rgba(0, 0, 0, 0.55),
+    0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.eyebrowNumber {
+  color: #00bfff;
+}
+
+.copyTitle {
+  margin-top: 1rem;
+  color: #f5f5f5;
+  font-family: var(--font-montserrat, Montserrat, sans-serif);
+  font-size: clamp(1.75rem, 3.2vw, 3.25rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+.copyBody {
+  margin-top: 1rem;
+  max-width: 40ch;
+  color: rgba(245, 245, 245, 0.76);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+/* Layer list: a thin vertical stack, top layer first; the row the scroll has reached turns cyan */
+.layers {
+  margin-top: 1.5rem;
+  text-shadow: none;
+}
+
+.layersLabel {
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.layerList {
+  margin-top: 0.75rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.layer {
+  position: relative;
+  padding: 0.3rem 0 0.3rem 1rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 13px;
+  line-height: 1.4;
+  transition: color 0.3s ease;
+}
+
+/* A short tick ties each row to the rail line */
+.layer::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 0.5rem;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  transition:
+    width 0.3s ease,
+    background-color 0.3s ease;
+}
+
+/* The row the scroll has reached: cyan text and a longer tick, moving down or up with the scroll */
+.layer[data-active='true'] {
+  color: #00bfff;
+}
+
+.layer[data-active='true']::before {
+  width: 0.75rem;
+  background: #00bfff;
+}
+
+.layersTools {
+  margin-top: 0.75rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 12px;
+}
+
+/* ZGX Nano spec grid on the closing beat: two columns on phones, four in a row from tablets up */
+.specs {
+  margin-top: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  max-width: 40rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.specValue {
+  color: #f5f5f5;
+  font-family: var(--font-montserrat, Montserrat, sans-serif);
+  font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.specLabel {
+  margin-top: 0.25rem;
+  color: rgba(245, 245, 245, 0.6);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .specs {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Breakpoints (match Tailwind sm 640, md 768, lg 1024, xl 1280) ---------- */
+
+@media (min-width: 640px) {
+  .copy {
+    --edge: 2rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .copy {
+    --edge: 2.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .copy {
+    --edge: 3rem;
+  }
+
+  .title {
+    font-size: clamp(2.25rem, 3.6vw, 3.75rem);
+  }
+}
+
+@media (min-width: 1280px) {
+  .copy {
+    --edge: 90px;
+  }
+}
+
+/* Copy bottom left, layer list bottom right, both in the band under the stage; stacked, the list would climb onto the box */
+@media (min-width: 1024px) {
+  .copy[data-stack='true'] {
+    max-width: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 3rem;
+  }
+
+  .copy[data-stack='true'] > div:first-child {
+    max-width: 34rem;
+  }
+
+  .copy[data-stack='true'] .layers {
+    margin-top: 0;
+    min-width: 15rem;
+  }
+
+  /* Darken the right side too, behind the layer list */
+  .section[data-beat='3'] .scrim::after {
+    background:
+      linear-gradient(to right, rgba(5, 5, 5, 0.78) 0%, rgba(5, 5, 5, 0.5) 30%, rgba(5, 5, 5, 0) 52%),
+      linear-gradient(to left, rgba(5, 5, 5, 0.72) 0%, rgba(5, 5, 5, 0.4) 22%, rgba(5, 5, 5, 0) 40%);
+  }
+}
+
+/* Portrait screens: the frame is a strip as wide as the screen, centred where stackBookend() put the closed box */
+@media (max-aspect-ratio: 4/5) {
+  .poster {
+    inset: auto;
+    left: 50%;
+    top: calc(var(--devbox-intro-focus, 0.6) * 100%); /* Fallback is DEFAULT_PORTRAIT_STOPS.intro */
+    width: 130%; /* BOOKEND_ZOOM in devbox-film.ts */
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Close to where stackIntro() centres the opening title (11rem of copy over a 43.9vw closed box), so it barely moves once measured */
+  .copy[data-bookend='intro'] {
+    top: max(88px, 88px + 0.45 * (100vh - 140px - 11rem - 43.9vw));
+  }
+
+  /* iPads in portrait have the width for larger type, which also fills the extra height */
+  @media (min-width: 768px) {
+    .title {
+      font-size: 3.5rem;
+    }
+    .copyTitle {
+      font-size: 2.75rem;
+    }
+    .copyBody {
+      font-size: 17px;
+    }
+  }
+}
+
+/* Phones: copy moves into a darker bottom band under the box */
+@media (max-width: 767px) {
+  .section {
+    height: var(--devbox-length-mobile, 500vh);
+  }
+
+  .scrim {
+    background:
+      linear-gradient(to bottom, rgba(12, 12, 14, 1) 0%, rgba(12, 12, 14, 0.5) 8%, rgba(5, 5, 5, 0) 18%),
+      linear-gradient(to top, rgba(5, 5, 5, 0.95) 0%, rgba(5, 5, 5, 0.72) 24%, rgba(5, 5, 5, 0.24) 44%, rgba(5, 5, 5, 0) 58%);
+  }
+
+  .copy {
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.62);
+  }
+
+  .copyBody {
+    font-size: 14px;
+  }
+
+  /* No progress rail below any more, so phone copy can sit closer to the bottom edge */
+  .copy {
+    bottom: 2rem;
+  }
+
+  .layers {
+    margin-top: 1rem;
+  }
+}
+
+/* Tall phones (iPhone Pro and Pro Max): the 16:9 box leaves spare height, so the copy steps up a size and breathes more */
+@media (max-width: 767px) and (min-height: 800px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  .copyTitle {
+    font-size: 2rem;
+  }
+  .copyBody {
+    font-size: 15px;
+  }
+  .copyTitle,
+  .copyBody,
+  .title {
+    margin-top: 1.25rem;
+  }
+  .specs {
+    margin-top: 1.75rem;
+    gap: 1.25rem 1.5rem;
+  }
+  .specValue {
+    font-size: 1.375rem;
+  }
+}
+
+/* Short laptop screens: pull the copy in so it clears the fixed navbar and the bottom edge */
+@media (max-height: 760px) and (min-width: 1024px) {
+  .title {
+    font-size: clamp(2rem, 3.4vw, 3.25rem);
+  }
+  /* The closing band shares the short screen with the raised box, so its headline steps down a size */
+  .copy[data-bookend='finale'] .copyTitle {
+    font-size: 2.25rem;
+  }
+  .copy {
+    bottom: clamp(3.5rem, 8vh, 5rem);
+  }
+}
+
+/* ---------- Reduced motion: swap the film for the static story ---------- */
+
+.staticOnly {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motionOnly {
+    display: none;
+  }
+  .staticOnly {
+    display: block;
+  }
+}

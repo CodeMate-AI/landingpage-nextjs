@@ -95,7 +95,7 @@ export function HeroVideoDialog({
 
   return (
     <div className={cn("relative w-full aspect-video rounded-xl shadow-2xl group", className)}>
-      <div className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-50 blur transition duration-500 pointer-events-none"></div>
+      <div className="absolute -inset-0.5 rounded-xl bg-linear-to-r from-cyan-500 to-blue-500 opacity-0 group-hover:opacity-50 blur transition duration-500 pointer-events-none"></div>
       <div className="relative w-full h-full rounded-xl overflow-hidden">
         <button
           type="button"
@@ -113,7 +113,7 @@ export function HeroVideoDialog({
           <div className="absolute inset-0 flex scale-[0.9] items-center justify-center transition-all duration-300 ease-out group-hover:scale-100">
             <div className="bg-white/10 flex size-20 items-center justify-center rounded-full backdrop-blur-md transition-all duration-300">
               <div
-                className={`from-white/20 to-white/5 relative flex size-14 scale-100 items-center justify-center rounded-full bg-gradient-to-tr shadow-xl transition-all duration-300 ease-out group-hover:scale-[1.1]`}
+                className={`from-white/20 to-white/5 relative flex size-14 scale-100 items-center justify-center rounded-full bg-linear-to-tr shadow-xl transition-all duration-300 ease-out group-hover:scale-[1.1]`}
               >
                 <Play
                   className="size-6 scale-100 fill-white text-white transition-transform duration-300 ease-out group-hover:scale-110"
@@ -134,13 +134,13 @@ export function HeroVideoDialog({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-md p-4 md:p-10"
+            className="fixed inset-0 z-9999 flex items-center justify-center bg-black/50 backdrop-blur-md p-4 md:p-10"
             onClick={() => setIsVideoOpen(false)}
           >
             <div className="relative w-full max-w-4xl aspect-video mx-4 md:mx-0">
               <button
                 onClick={() => setIsVideoOpen(false)}
-                className="absolute -top-16 right-0 p-2 bg-neutral-900/50 hover:bg-neutral-900/80 rounded-full text-white/70 hover:text-white transition-colors backdrop-blur-md border border-white/10 z-[10000]"
+                className="absolute -top-16 right-0 p-2 bg-neutral-900/50 hover:bg-neutral-900/80 rounded-full text-white/70 hover:text-white transition-colors backdrop-blur-md border border-white/10 z-10000"
               >
                 <XIcon className="size-6" />
               </button>

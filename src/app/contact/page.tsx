@@ -349,9 +349,9 @@ export default function ContactPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent"
+          className="text-4xl md:text-5xl lg:text-6xl font-semibold bg-linear-to-b from-white to-gray-300/80 bg-clip-text text-transparent"
         >
-          <span className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Contact</span> Us
+          <span className="bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">Contact</span> Us
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
@@ -454,7 +454,7 @@ export default function ContactPage() {
             className="lg:col-span-7"
           >
             <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 md:p-8 flex flex-col shadow-xl">
-              <h2 className="text-xl md:text-2xl font-semibold mb-6 bg-gradient-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
+              <h2 className="text-xl md:text-2xl font-semibold mb-6 bg-linear-to-b from-white to-gray-300/80 bg-clip-text text-transparent">
                 Get in Touch
               </h2>
 

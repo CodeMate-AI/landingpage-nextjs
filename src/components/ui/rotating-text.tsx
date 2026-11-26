@@ -10,10 +10,10 @@ import React,
 import {
   motion,
   AnimatePresence,
+  useAnimationControls,
   Transition,
   type VariantLabels,
   type Target,
-  type AnimationControls,
   type TargetAndTransition,
 } from "framer-motion";
 
@@ -27,6 +27,8 @@ export interface RotatingTextRef {
   jumpTo: (index: number) => void;
   reset: () => void;
 }
+
+type AnimationControls = ReturnType<typeof useAnimationControls>;
 
 export interface RotatingTextProps
   extends Omit<

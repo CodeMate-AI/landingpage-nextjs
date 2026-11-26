@@ -79,7 +79,7 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
           {project.name}
         </h3>
 
-        <p className="text-xs leading-relaxed text-zinc-400 sm:text-sm">{project.description}</p>
+        <p className="text-xs leading-relaxed text-zinc-400 sm:text-sm sm:leading-[1.25rem]">{project.description}</p>
 
         <div className="mt-auto flex items-center gap-4 border-t border-zinc-800/80 pt-3">
           <a href={project.demoUrl || "https://app.codemate.ai"} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-cyan-400 transition-colors hover:text-cyan-300">
@@ -107,14 +107,14 @@ export default function CommunityProjectCard({ project, index = 0 }: ProjectCard
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
-              className="fixed inset-0 z-[999999999999] flex items-center justify-center bg-black/80 px-4 backdrop-blur-xl"
+              className="fixed inset-0 z-999999999999 flex items-center justify-center bg-black/80 px-4 backdrop-blur-xl"
               onClick={() => setIsVideoOpen(false)}
             >
               <div className="relative w-full max-w-4xl aspect-video mx-4 md:mx-0">
                 <button
                   type="button"
                   onClick={() => setIsVideoOpen(false)}
-                  className="absolute -top-16 right-0 z-[10000] rounded-full border border-white/10 bg-neutral-900/50 p-2 text-white/70 backdrop-blur-md transition-colors hover:bg-neutral-900/80 hover:text-white"
+                  className="absolute -top-16 right-0 z-10000 rounded-full border border-white/10 bg-neutral-900/50 p-2 text-white/70 backdrop-blur-md transition-colors hover:bg-neutral-900/80 hover:text-white"
                   aria-label="Close video modal"
                 >
                   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">

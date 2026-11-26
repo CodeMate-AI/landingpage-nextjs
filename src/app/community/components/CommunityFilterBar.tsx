@@ -130,7 +130,7 @@ export default function CommunityFilterBar({ activeCategory, onCategoryChange }:
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
-                className="fixed inset-0 z-[999999999999] bg-black/80 backdrop-blur-md"
+                className="fixed inset-0 z-999999999999 bg-black/80 backdrop-blur-md"
                 onClick={() => setIsDrawerOpen(false)}
                 aria-hidden="true"
               />
@@ -141,7 +141,7 @@ export default function CommunityFilterBar({ activeCategory, onCategoryChange }:
                 animate={{ x: 0 }}
                 exit={{ x: "-100%" }}
                 transition={{ type: "tween", duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                className="fixed bottom-0 left-0 top-0 z-[999999999999] flex w-[85%] max-w-[340px] flex-col border-r border-zinc-800 bg-zinc-950 p-6 shadow-2xl"
+                className="fixed bottom-0 left-0 top-0 z-999999999999 flex w-[85%] max-w-[340px] flex-col border-r border-zinc-800 bg-zinc-950 p-6 shadow-2xl"
                 onClick={(e) => e.stopPropagation()}
               >
                 {/* Header */}

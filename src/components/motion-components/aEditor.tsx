@@ -32,9 +32,9 @@ useEffect(() => {
 }, []);
 
   return(
-    <div className='relative h-full w-full bg-gradient-to-br from-[#0b0b0d]/95 to-[#161619]/90 backdrop-blur-2xl border border-white/10 hover:border-[#00BFFF]/20 shadow-[0_20px_50px_rgba(0,0,0,0.65)] hover:shadow-[0_20px_50px_rgba(0,191,255,0.06)] rounded-xl flex overflow-hidden transition-all duration-700 group/editor' translate="no">
+    <div className='relative h-full w-full bg-linear-to-br from-[#0b0b0d]/95 to-[#161619]/90 backdrop-blur-2xl border border-white/10 hover:border-[#00BFFF]/20 shadow-[0_20px_50px_rgba(0,0,0,0.65)] hover:shadow-[0_20px_50px_rgba(0,191,255,0.06)] rounded-xl flex overflow-hidden transition-all duration-700 group/editor' translate="no">
        {/* Ambient glow backdrop */}
-       <div className="absolute inset-0 bg-radial-gradient from-[#00BFFF]/5 via-transparent to-transparent opacity-0 group-hover/editor:opacity-100 transition-opacity duration-700 pointer-events-none blur-[40px]" />
+       <div className="absolute inset-0 bg-radial-gradient from-[#00BFFF]/5 via-transparent to-transparent opacity-0 group-hover/editor:opacity-100 transition-opacity duration-700 pointer-events-none blur-2xl" />
        
        <div className='absolute h-8 lg:h-[7%] w-full top-0 bg-[#161618] rounded-t-xl z-50 flex gap-5 items-center border-b-[0.1px] border-white/5'>
         <div className='flex gap-1.5 ml-5 opacity-20'>
@@ -44,7 +44,7 @@ useEffect(() => {
         </div>
         
         <div className='flex gap-2 opacity-30 items-center'>
-          <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-git-branch size-3 lg:size-4 flex-shrink-0 text-zinc-400"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 8l0 8" /><path d="M9 18h6a2 2 0 0 0 2 -2v-5" /><path d="M14 14l3 -3l3 3" /></svg>
+          <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-git-branch size-3 lg:size-4 shrink-0 text-zinc-400"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 18m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M17 6m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" /><path d="M7 8l0 8" /><path d="M9 18h6a2 2 0 0 0 2 -2v-5" /><path d="M14 14l3 -3l3 3" /></svg>
           <h1 className='text-[10px] md:text-sm font-semibold text-zinc-400'>main</h1>
         </div>
        </div>
@@ -73,7 +73,7 @@ useEffect(() => {
          </div>
        </div>
 
-     <div className='bg-[#121214] h-full w-8 lg:w-[4%] rounded-l-xl flex flex-col p-2 pt-12 lg:pt-14 justify-between flex-shrink-0 items-center border-r-[0.1px] border-white/5'>
+     <div className='bg-[#121214] h-full w-8 lg:w-[4%] rounded-l-xl flex flex-col p-2 pt-12 lg:pt-14 justify-between shrink-0 items-center border-r-[0.1px] border-white/5'>
       <div className='flex flex-col gap-3.5 justify-center items-center text-zinc-500'>
        <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-folders size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 3h3l2 2h5a2 2 0 0 1 2 2v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2" /><path d="M17 16v2a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-9a2 2 0 0 1 2 -2h2" /></svg>
        <svg  xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  strokeWidth="2"  strokeLinecap="round"  strokeLinejoin="round"  className="icon icon-tabler icons-tabler-outline icon-tabler-cube-unfolded size-3 lg:size-4 opacity-20 hover:opacity-40 transition-opacity"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M2 15h10v5h5v-5h5v-5h-10v-5h-5v5h-5z" /><path d="M7 15v-5h5v5h5v-5" /></svg>
@@ -112,7 +112,7 @@ useEffect(() => {
   
         <div className='absolute top-8 h-8 lg:h-[7%] w-full bg-zinc-900 z-40 border-b-[0.7px] border-white/5 flex items-center'>
         <div className='flex  w-fit   gap-1 ml-4 border-b-2 border-[#00BFFF] items-center pb-1'>
- <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 48 48" className="size-4 lg:size-[30px] flex-shrink-0">
+ <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="0 0 48 48" className="size-4 lg:size-[30px] shrink-0">
  <rect width="36" height="36" x="6" y="6" fill="#1976d2"></rect><polygon fill="#fff" points="27.49,22 14.227,22 14.227,25.264 18.984,25.264 18.984,40 22.753,40 22.753,25.264 27.49,25.264"></polygon><path fill="#fff" d="M39.194,26.084c0,0-1.787-1.192-3.807-1.192s-2.747,0.96-2.747,1.986 c0,2.648,7.381,2.383,7.381,7.712c0,8.209-11.254,4.568-11.254,4.568V35.22c0,0,2.152,1.622,4.733,1.622s2.483-1.688,2.483-1.92 c0-2.449-7.315-2.449-7.315-7.878c0-7.381,10.658-4.469,10.658-4.469L39.194,26.084z"></path>
  </svg>
  
@@ -137,7 +137,7 @@ useEffect(() => {
       </div> 
 
 
-      <div className='relative flex flex-col gap-[0.25rem] md:gap-[0.37rem] font-mono w-full text-[8px] xs:text-[10px] sm:text-xs md:text-sm lg:text-base'>
+      <div className='relative flex flex-col gap-1 md:gap-[0.37rem] font-mono w-full text-[8px] xs:text-[10px] sm:text-xs md:text-sm lg:text-base'>
       {!isComplete && comp1
   .filter((_: any, idx: number) => idx !== 6 && idx !== 7)
   .map((e: any, idx: number) => (

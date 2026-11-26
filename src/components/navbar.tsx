@@ -12,6 +12,17 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  // router.push('/') does nothing when already on '/', so on the home page the logo scrolls back to the top instead
+  const goHome = () => {
+    // The home page's Lenis instance overrides native scrolling, so scroll through it when it exists
+    if (pathname === '/') {
+      const lenis = (window as any).__lenis;
+      if (lenis) lenis.scrollTo(0);
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    else router.push('/');
+  };
+
   // Handles smooth scrolling to the features section without page-jump scroll restoration issues
   const handleFeaturesClick = () => {
     if (pathname === '/') {
@@ -178,7 +189,8 @@ export default function Navbar() {
   const isBlogPage = pathname ? pathname.startsWith('/blog') : false;
   const isCommunityPage = pathname ? pathname.startsWith('/community') : false;
   const isShowcasePage = pathname ? pathname === '/achievements' || pathname === '/media' : false;
-  const shouldShowAnnouncement = showAnnouncement && !isBlogPage && !isCommunityPage && !isShowcasePage;
+  const isDevBoxPage = pathname === '/devbox'; // The Dev Box film opens right under the navbar, so the trial offer stays off it
+  const shouldShowAnnouncement = showAnnouncement && !isBlogPage && !isCommunityPage && !isShowcasePage && !isDevBoxPage;
 
   return (
     <div>
@@ -192,9 +204,9 @@ export default function Navbar() {
           initial={{ y: -12, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.3, delay: 0.4 }}
-          className="w-full flex justify-center px-1 sm:px-2 z-[999999]"
+          className="w-full flex justify-center px-1 sm:px-2 z-999999"
         >
-          <div className="relative p-[1px] rounded-md bg-gradient-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-1.5rem)] shadow-lg hover:shadow-xl transition group mt-2">
+          <div className="relative p-px rounded-md bg-linear-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-1.5rem)] shadow-lg hover:shadow-xl transition group mt-2">
             <div
               role="button"
               tabIndex={0}
@@ -225,7 +237,7 @@ export default function Navbar() {
       <div
         style={{ top: 0 }}
         className={cn(
-          "hidden lg:flex fixed justify-center items-center w-full cursor-default z-[999999] transition-all duration-300 ease-out",
+          "hidden lg:flex fixed justify-center items-center w-full cursor-default z-999999 transition-all duration-300 ease-out",
           isCompact ? "opacity-0 -translate-y-6 pointer-events-none" : "opacity-100 translate-y-0 pointer-events-auto"
         )}>
         <motion.div
@@ -240,14 +252,14 @@ export default function Navbar() {
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
           }}
-          className="mt-3 w-[90%] rounded-lg bg-opacity-65 transition-all duration-300 ease-out transform-gpu z-[9999999999]">
-          <div className="flex h-full w-full text-white px-[1rem] py-2">
+          className="mt-3 w-[90%] rounded-lg bg-opacity-65 transition-all duration-300 ease-out transform-gpu z-9999999999">
+          <div className="flex h-full w-full text-white px-4 py-2">
             <div className="flex justify-between items-center w-full h-10">
 
               {/* Logo */}
               <div
                 className="h-fit w-[15vw] flex justify-center cursor-pointer overflow-hidden"
-                onClick={() => router.push("/")}
+                onClick={goHome}
               >
                 <img
                   src="/logos/brand/codemate-logo.svg"
@@ -269,7 +281,7 @@ export default function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={isProducts}
                     onClick={() => { setIsProducts(state => !state); setIsOS(false); setIsResources(false); setIsPartnerships(false); }}
-                    onMouseEnter={() => { setIsProducts(true); setIsOS(false); setIsResources(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center z-50 ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
+                    onMouseEnter={() => { setIsProducts(true); setIsOS(false); setIsResources(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center gap-[0.20rem] justify-center items-center z-50 ${isProducts ? 'opacity-100' : 'opacity-65'}`}>Products  <motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isProducts ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -284,7 +296,7 @@ export default function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={isOS}
                     onClick={() => { setIsOS(state => !state); setIsProducts(false); setIsResources(false); setIsPartnerships(false); }}
-                    onMouseEnter={() => { setIsOS(true); setIsProducts(false); setIsResources(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isOS ? '' : 'opacity-65'}`}>Open-Source  <motion.span
+                    onMouseEnter={() => { setIsOS(true); setIsProducts(false); setIsResources(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isOS ? 'opacity-100' : 'opacity-65'}`}>Open-Source  <motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isOS ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -298,7 +310,7 @@ export default function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={isResources}
                     onClick={() => { setIsResources(state => !state); setIsProducts(false); setIsOS(false); setIsPartnerships(false); }}
-                    onMouseEnter={() => { setIsResources(true); setIsProducts(false); setIsOS(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isResources ? '' : 'opacity-65'}`}>Resources<motion.span
+                    onMouseEnter={() => { setIsResources(true); setIsProducts(false); setIsOS(false); setIsPartnerships(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isResources ? 'opacity-100' : 'opacity-65'}`}>Resources<motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isResources ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -316,7 +328,7 @@ export default function Navbar() {
                     aria-haspopup="true"
                     aria-expanded={isPartnerships}
                     onClick={() => { setIsPartnerships(state => !state); setIsProducts(false); setIsOS(false); setIsResources(false); }}
-                    onMouseEnter={() => { setIsPartnerships(true); setIsProducts(false); setIsOS(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center opacity-100 gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isPartnerships ? '' : 'opacity-65'}`}>Partnerships<motion.span
+                    onMouseEnter={() => { setIsPartnerships(true); setIsProducts(false); setIsOS(false); setIsResources(false); }} whileHover={{ opacity: 1 }} transition={{ duration: 0.2 }} className={`flex text-center gap-[0.20rem] justify-center items-center text-nowrap z-50 ${isPartnerships ? 'opacity-100' : 'opacity-65'}`}>Partnerships<motion.span
                       initial={{ rotate: 180 }}
                       animate={{ rotate: !isPartnerships ? 180 : 0 }}
                       transition={{ duration: 0.3 }}
@@ -336,8 +348,8 @@ export default function Navbar() {
 
                 {isProducts && (
                   <div className={cn(
-                    'absolute h-[20rem] w-[14.5rem] rounded-md -z-10',
-                    'mt-[22rem] -left-[1.2rem]'
+                    'absolute h-80 w-58 rounded-md -z-10',
+                    'mt-88 left-[-1.2rem]'
                   )}>
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -428,7 +440,7 @@ export default function Navbar() {
                 )}
 
                 {isOS && !isCompact &&
-                  <div className='absolute  h-[20rem] w-[12rem] mt-[22rem] left-[5.8rem] rounded-md -z-10 '>
+                  <div className='absolute  h-80 w-48 mt-88 left-[5.8rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -461,7 +473,7 @@ export default function Navbar() {
                 }
 
                 {isResources && !isCompact &&
-                  <div className='absolute  h-[20rem] w-[12rem] mt-[22rem] left-[14.8rem] rounded-md -z-10 '>
+                  <div className='absolute  h-80 w-48 mt-88 left-[14.8rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -518,7 +530,7 @@ export default function Navbar() {
                 }
 
                 {isPartnerships && !isCompact &&
-                  <div className='absolute  h-[20rem] w-[9rem] mt-[22rem] left-[33.2rem] rounded-md -z-10 '>
+                  <div className='absolute  h-80 w-36 mt-88 left-[33.2rem] rounded-md -z-10 '>
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -579,7 +591,7 @@ export default function Navbar() {
               damping: 30,
               mass: 0.8,
             }}
-            className="fixed top-3 inset-x-0 mx-auto z-[999999999] flex justify-center items-center pointer-events-none px-4"
+            className="fixed top-3 inset-x-0 mx-auto z-999999999 flex justify-center items-center pointer-events-none px-4"
           >
             <div
               style={{
@@ -588,11 +600,11 @@ export default function Navbar() {
                 backdropFilter: 'blur(20px)',
                 WebkitBackdropFilter: 'blur(20px)',
               }}
-              className="pointer-events-auto flex items-center gap-3.5 sm:gap-5 rounded-full pl-3.5 pr-1.5 py-1.5 sm:pl-4 sm:pr-2 sm:py-1.5 border border-white/[0.08] transition-all hover:border-white/15"
+              className="pointer-events-auto flex items-center gap-3.5 sm:gap-5 rounded-full pl-3.5 pr-1.5 py-1.5 sm:pl-4 sm:pr-2 sm:py-1.5 border border-white/8 transition-all hover:border-white/15"
             >
               {/* CodeMate Icon Mark */}
               <div
-                onClick={() => router.push("/")}
+                onClick={goHome}
                 className="flex items-center justify-center cursor-pointer shrink-0 pl-1 h-6 w-auto"
               >
                 <img
@@ -629,7 +641,7 @@ export default function Navbar() {
         <div
           style={{ top: 0 }}
           className={cn(
-            "lg:hidden fixed inset-x-0 flex justify-center items-center w-full z-[99999999999] pointer-events-none transition-all duration-300 ease-out",
+            "lg:hidden fixed inset-x-0 flex justify-center items-center w-full z-99999999999 pointer-events-none transition-all duration-300 ease-out",
             isCompact && !isMenu ? "opacity-0 -translate-y-6 pointer-events-none" : "opacity-100 translate-y-0"
           )}
         >
@@ -648,14 +660,15 @@ export default function Navbar() {
               backdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
               WebkitBackdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
             }}
-            className="w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5 pointer-events-auto transition-all duration-300 ease-out transform-gpu flex justify-between items-center"
+            // While the compact pill shows, this hidden full bar must not catch taps meant for the pill on phones and iPads
+            className={cn("w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5 transition-all duration-300 ease-out transform-gpu flex justify-between items-center", isCompact && !isMenu ? "pointer-events-none" : "pointer-events-auto")}
           >
             {/* Left side: CodeMate logo */}
             <div
               className="flex items-center justify-start overflow-hidden cursor-pointer shrink-0"
               onClick={() => {
                 if (isMenu) setMenu(false);
-                router.push('/');
+                goHome();
               }}
             >
               <img
@@ -698,16 +711,16 @@ export default function Navbar() {
         {isMenu && (
           <div
             key="mobile-menu-overlay"
-            className="fixed top-0 h-screen w-full left-0 z-[999999999] flex"
+            className="fixed top-0 h-screen w-full left-0 z-999999999 flex"
           >
-            <div className='h-full w-[100%]'>
+            <div className='h-full w-full'>
               <motion.div
                 key={1}
                 initial={{ x: -400 }}
                 animate={{ x: 0 }}
                 exit={{ x: -400 }}
                 transition={{ duration: 0.2 }}
-                className="absolute h-full w-[100%] bg-white"
+                className="absolute h-full w-full bg-white"
               />
               <motion.div
                 key={2}
@@ -715,7 +728,7 @@ export default function Navbar() {
                 animate={{ x: 0 }}
                 exit={{ x: -400 }}
                 transition={{ duration: 0.2, delay: 0.1 }}
-                className="absolute h-full w-[100%] bg-cyan-600 z-10"
+                className="absolute h-full w-full bg-cyan-600 z-10"
               />
               <motion.div
                 key={3}
@@ -723,11 +736,11 @@ export default function Navbar() {
                 animate={{ x: 0 }}
                 exit={{ x: -400 }}
                 transition={{ duration: 0.2, delay: 0.2 }}
-                className="absolute h-full  w-[100%] bg-zinc-900  z-[999999999999]"
+                className="absolute h-full  w-full bg-zinc-900  z-999999999999"
               >
-                <div data-lenis-prevent className='relative h-full w-full overflow-y-auto overscroll-contain z-[9999999999]'>
-                <div className='flex flex-col leading-[1] text-[8vw] pt-24 pl-5 gap-10 '>
-                  <motion.div onClick={() => { setMenu(false); router.push('/'); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
+                <div data-lenis-prevent className='relative h-full w-full overflow-y-auto overscroll-contain z-9999999999'>
+                <div className='flex flex-col leading-none text-[8vw] pt-24 pl-5 gap-10 '>
+                  <motion.div onClick={() => { setMenu(false); goHome(); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
                   <motion.div className='flex flex-col gap-2 cursor-pointer'>
                     <motion.div onClick={() => { setIsProducts(state => !state); }} whileHover={{ opacity: 0.6 }} className='flex justify-between items-center'>
                       <div className='flex gap-2'>
@@ -1001,18 +1014,18 @@ export default function Navbar() {
                     <motion.div onClick={() => { setMenu(false); router.push('/contact'); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><div className='MenuText'>CONTACT US</div><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>09</p></motion.div>
                   </div>
 
-                  <div className='mt-[15rem] w-full bg-zinc-900'>
+                  <div className='mt-60 w-full bg-zinc-900'>
                     <div className='pl-5 pb-8'>
                       <div className='text-[6vw]  opacity-65 mb-3'>Socials</div>
                       <div className='flex text-[5vw] gap-4 opacity-90 group'>
                         <a href="https://www.instagram.com/codemateai" target='_blank'>
-                          <div className='group-hover:opacity-20 hover:!opacity-100 hover:text-[#00BFFF]'><FaInstagram size={40} className="md:w-10 md:h-10" /></div>
+                          <div className='group-hover:opacity-20 hover:opacity-100! hover:text-[#00BFFF]'><FaInstagram size={40} className="md:w-10 md:h-10" /></div>
                         </a>
                         <a href='https://twitter.com/codemateai' target='_blank'>
-                          <div className='group-hover:opacity-20 hover:!opacity-100 hover:text-[#00BFFF]'><FaXTwitter size={40} className="md:w-10 md:h-10" /></div>
+                          <div className='group-hover:opacity-20 hover:opacity-100! hover:text-[#00BFFF]'><FaXTwitter size={40} className="md:w-10 md:h-10" /></div>
                         </a>
                         <a href='https://www.linkedin.com/company/codemateai/' target='_blank'>
-                          <div className='group-hover:opacity-20 hover:!opacity-100 hover:text-[#00BFFF]'><FaLinkedin size={40} className="md:w-10 md:h-10" /></div>
+                          <div className='group-hover:opacity-20 hover:opacity-100! hover:text-[#00BFFF]'><FaLinkedin size={40} className="md:w-10 md:h-10" /></div>
                         </a>
                       </div>
                     </div>

@@ -1,11 +1,8 @@
-import { withNextVideo } from "next-video/process";
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   devIndicators: false,
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
+  agentRules: false,
   serverExternalPackages: ["mongodb", "bcryptjs"],
 
   images: {
@@ -57,6 +54,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Dev Box film frames never change in place (new frames ship under a new /devbox/vN folder), so cache them for a year
+        source: "/devbox/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
 
@@ -91,4 +98,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextVideo(nextConfig, { folder: "video" });
+export default nextConfig;

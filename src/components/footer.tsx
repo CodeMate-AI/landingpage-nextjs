@@ -65,7 +65,7 @@ function GeminiIcon() {
 
 function Footer() {
   return (
-    <motion.footer className="relative text-gray-200 pb-0 pt-16 overflow-hidden bg-[#121214] border-t-[1px] border-zinc-800/80 rounded-t-[3rem] z-[999999] lg:z-[9999999999]">
+    <motion.footer className="relative text-gray-200 pb-0 pt-16 overflow-hidden bg-[#121214] border-t border-zinc-800/80 rounded-t-[3rem] z-999999 lg:z-9999999999">
       <motion.div className="w-full max-w-7xl px-6 md:px-10 mx-auto">
         {/* Top Section: Brand + Navigation Grid */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 pb-12">
@@ -74,7 +74,7 @@ function Footer() {
             <div>
               <img src="/logos/brand/codemate-logo.svg" alt="codemate Logo" className="w-auto h-20 -ml-10" />
             </div>
-            <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed -mt-4">
+            <p className="text-zinc-400 text-sm md:text-base max-w-sm leading-relaxed -mt-4 md:leading-[1.5rem]">
               <span translate="no">CodeMate AI</span>, your smart coding partner. Review, debug, and complete code faster with AI-powered assistance.
             </p>
 

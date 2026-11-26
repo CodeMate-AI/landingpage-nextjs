@@ -397,14 +397,14 @@ function Achivements() {
 
 
       className='relative flex flex-col justify-center items-center mb-12'>
-      <div className='leading-[1] text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-gradient-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center'>We're the <span className='bg-gradient-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent md:text-6xl lg:text-7xl'>Talk</span> of the Town</div>
+      <div className='leading-none text-[10vw] md:text-5xl lg:text-6xl font-semibold bg-linear-to-b from-white to-gray-300/80 bg-clip-text  text-transparent lg:pl-10 pt-8 text-center md:leading-[1] lg:leading-[1]'>We're the <span className='bg-linear-to-b  from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent md:text-6xl lg:text-7xl'>Talk</span> of the Town</div>
       <p className='text-xs md:text-xl lg:text-lg w-[80%] md:w-[85%] lg:w-[50%] mt-3 lg:mt-0 text-center text-zinc-500 '>We are recognized by some of the most recognised tech and content platforms, organisations, and industry experts around the globe.</p>
 
       <div
         ref={carouselRef}
         onMouseEnter={() => setIsPaused(true)} // pause on hover
         onMouseLeave={() => setIsPaused(false)} // resume when hover ends
-        className='mt-20 flex w-[20rem] md:w-[44rem] lg:w-[728px] xl:w-[1104px] overflow-hidden'>
+        className='mt-20 flex w-[20rem] md:w-176 lg:w-[728px] xl:w-[1104px] overflow-hidden'>
         <motion.div animate={{ x: currCards }} transition={{ type: "spring", stiffness: 300, damping: 30 }} className='flex gap-6'>
           {cards.map((e, idx) => (
             <div key={idx}>
@@ -442,12 +442,12 @@ export default Achivements
 
 function Card({ image, alt, title, description, link, imagePosition }: { image: String, alt: String, title: String, description: String, link: String, imagePosition?: string }) {
   return (
-    <motion.div className='relative h-[33rem] md:h-[48rem] lg:h-[33rem] w-[20rem] md:w-[44rem] lg:w-[22rem] bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl flex-shrink-0'>
+    <motion.div className='relative h-132 md:h-192 lg:h-132 w-[20rem] md:w-176 lg:w-88 bg-zinc-900 rounded-3xl overflow-hidden shadow-2xl shrink-0'>
       <img src={image as string} alt={alt as string} className={`h-[40%] md:h-[50%] lg:h-[40%] w-full object-cover ${imagePosition === 'top' ? 'object-top' : imagePosition === 'bottom' ? 'object-bottom' : ''}`} />
 
       <div className='px-5 md:px-10 flex flex-col gap-2 md:gap-4 mt-4 md:mt-8'>
-        <h3 className='text-xl md:text-[2rem] md:leading-[2.5rem] lg:text-xl font-semibold '>{title}</h3>
-        <p className='text-zinc-500 text-xs md:text-[1.3rem] md:leading-relaxed lg:text-xs'>{description}</p>
+        <h3 className='text-xl md:text-[2rem] md:leading-10 lg:text-xl font-semibold  lg:leading-[1.75rem]'>{title}</h3>
+        <p className='text-zinc-500 text-xs md:text-[1.3rem] md:leading-relaxed lg:text-xs lg:leading-[1rem]'>{description}</p>
       </div>
 
       {link && link !== "" && (

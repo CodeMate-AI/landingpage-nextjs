@@ -35,7 +35,7 @@ export default function WatchActionSection() {
     <section
       id="watch-action"
       aria-label="Watch CodeMate in Action"
-      className="relative w-full bg-[#000000] text-white flex flex-col items-center justify-center [box-sizing:border-box] pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 2xl:py-[110px] px-4 sm:px-8 2xl:px-[80px] gap-8 sm:gap-10 2xl:gap-[40px] overflow-hidden"
+      className="relative w-full bg-[#000000] text-white flex flex-col items-center justify-center box-border pt-10 sm:pt-14 lg:pt-16 pb-16 sm:pb-20 lg:pb-24 2xl:py-[110px] px-4 sm:px-8 2xl:px-[80px] gap-8 sm:gap-10 2xl:gap-[40px] overflow-hidden"
     >
       {/* ========================================================================= */}
       {/* Title: Watch CodeMate in Action                                           */}
@@ -47,13 +47,13 @@ export default function WatchActionSection() {
         transition={{ duration: 0.5 }}
         className="text-3xl sm:text-4xl md:text-5xl lg:text-[54px] lg:leading-[60px] font-semibold text-center tracking-tight max-w-[850px] z-10"
       >
-        <span className="bg-gradient-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent">
+        <span className="bg-linear-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent">
           {WATCH_ACTION_DATA.titlePrefix}
         </span>
-        <span translate="no" className="bg-gradient-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
+        <span translate="no" className="bg-linear-to-b from-[#00BFFF] to-[#1E90FF] bg-clip-text text-transparent">
           {WATCH_ACTION_DATA.titleHighlight}
         </span>
-        <span className="bg-gradient-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent">
+        <span className="bg-linear-to-b from-[#FFFFFF] to-[#B0B8C6] bg-clip-text text-transparent">
           {WATCH_ACTION_DATA.titleSuffix}
         </span>
       </motion.h2>

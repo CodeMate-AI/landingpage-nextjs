@@ -95,45 +95,46 @@ export const BackgroundGradientAnimation = ({
         </defs>
       </svg>
       <div className={cn("", className)}>{children}</div>
+      {/* Below lg the hero has auto height, so a desktop-sized layer with a negative margin shows just the glow's top crest */}
       <div
         data-paused={!isOnScreen}
         className={cn(
-          "gradients-container h-full w-full blur-lg",
-          isSafari ? "blur-2xl" : "[filter:url(#blurMe)_blur(40px)]"
+          "gradients-container h-[740px] -mb-[640px] lg:h-full lg:mb-0 w-full blur-lg",
+          isSafari ? "blur-2xl" : "filter-[url(#blurMe)_blur(40px)]"
         )}
       >
         <div
           className={cn(
-            `absolute [background:radial-gradient(circle_at_center,_rgba(var(--second-color),_0.8)_0,_rgba(var(--second-color),_0)_50%)_no-repeat]`,
-            `[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]`,
-            `[transform-origin:calc(50%-400px)]`,
+            `absolute [background:radial-gradient(circle_at_center,rgba(var(--second-color),0.8)_0,rgba(var(--second-color),0)_50%)_no-repeat]`,
+            `[mix-blend-mode:var(--blending-value)] w-(--size) h-(--size) top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]`,
+            `origin-[calc(50%-400px)]`,
             `animate-second`,
             `opacity-100`
           )}
         ></div>
         <div
           className={cn(
-            `absolute [background:radial-gradient(circle_at_center,_rgba(var(--third-color),_0.8)_0,_rgba(var(--third-color),_0)_50%)_no-repeat]`,
-            `[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]`,
-            `[transform-origin:calc(50%+400px)]`,
+            `absolute [background:radial-gradient(circle_at_center,rgba(var(--third-color),0.8)_0,rgba(var(--third-color),0)_50%)_no-repeat]`,
+            `[mix-blend-mode:var(--blending-value)] w-(--size) h-(--size) top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]`,
+            `origin-[calc(50%+400px)]`,
             `animate-third`,
             `opacity-100`
           )}
         ></div>
         <div
           className={cn(
-            `absolute [background:radial-gradient(circle_at_center,_rgba(var(--fourth-color),_0.8)_0,_rgba(var(--fourth-color),_0)_50%)_no-repeat]`,
-            `[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]`,
-            `[transform-origin:calc(50%-200px)]`,
+            `absolute [background:radial-gradient(circle_at_center,rgba(var(--fourth-color),0.8)_0,rgba(var(--fourth-color),0)_50%)_no-repeat]`,
+            `[mix-blend-mode:var(--blending-value)] w-(--size) h-(--size) top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]`,
+            `origin-[calc(50%-200px)]`,
             `animate-fourth`,
             `opacity-70`
           )}
         ></div>
         <div
           className={cn(
-            `absolute [background:radial-gradient(circle_at_center,_rgba(var(--fifth-color),_0.8)_0,_rgba(var(--fifth-color),_0)_50%)_no-repeat]`,
-            `[mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]`,
-            `[transform-origin:calc(50%-800px)_calc(50%+800px)]`,
+            `absolute [background:radial-gradient(circle_at_center,rgba(var(--fifth-color),0.8)_0,rgba(var(--fifth-color),0)_50%)_no-repeat]`,
+            `[mix-blend-mode:var(--blending-value)] w-(--size) h-(--size) top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)]`,
+            `origin-[calc(50%-800px)_calc(50%+800px)]`,
             `animate-fifth`,
             `opacity-100`
           )}
@@ -142,7 +143,7 @@ export const BackgroundGradientAnimation = ({
         {interactive && (
           <div
             className={cn(
-              `absolute [background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_60%)_no-repeat]`,
+              `absolute [background:radial-gradient(circle_at_center,rgba(var(--pointer-color),0.8)_0,rgba(var(--pointer-color),0)_60%)_no-repeat]`,
               `[mix-blend-mode:var(--blending-value)] w-full h-full -top-1/3 -right-1/2`,
               `opacity-70`
             )}
@@ -152,7 +153,7 @@ export const BackgroundGradientAnimation = ({
                         {interactive && (
           <div
             className={cn(
-              `absolute [background:radial-gradient(ellipse_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_70%)_no-repeat]`,
+              `absolute [background:radial-gradient(ellipse_at_center,rgba(var(--pointer-color),0.8)_0,rgba(var(--pointer-color),0)_70%)_no-repeat]`,
               `[mix-blend-mode:var(--blending-value)] w-full h-full -top-1/3`,
               `opacity-70`
             )}
@@ -161,7 +162,7 @@ export const BackgroundGradientAnimation = ({
                 {interactive && (
           <div
             className={cn(
-              `absolute [background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.8)_0,_rgba(var(--pointer-color),_0)_60%)_no-repeat]`,
+              `absolute [background:radial-gradient(circle_at_center,rgba(var(--pointer-color),0.8)_0,rgba(var(--pointer-color),0)_60%)_no-repeat]`,
               `[mix-blend-mode:var(--blending-value)] w-full h-full -top-1/3 -left-1/2`,
               `opacity-70`
             )}
