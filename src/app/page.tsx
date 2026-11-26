@@ -1,15 +1,17 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { ChevronRight } from 'lucide-react';
 import { AnimatePresence, MotionConfig, motion, useMotionValueEvent, useScroll } from 'framer-motion';
-import Lenis from 'lenis';
 import { BackgroundGradientAnimation } from '@/components/ui/background-gradient-animation';
 import Navbar from '@/components/navbar';
 import Footer from '@/components/footer';
 import ToolboxSection from '@/components/landing/ToolboxSection';
 import ProductTabsSection from '@/components/landing/ProductTabsSection';
+import DevBoxTeaser from '@/components/landing/devbox/DevBoxTeaser'; // Still Dev Box teaser between Toolbox and ProductTabs; the film moved to /devbox
+import { useLenis } from '@/hooks/use-lenis';
+import { ARROW_CURSOR } from '@/lib/cursor';
 import SocialProofSection from '@/components/landing/SocialProofSection';
 import EnterpriseArchitectureSection from '@/components/landing/EnterpriseArchitectureSection';
 import WatchActionSection from '@/components/landing/WatchActionSection';
@@ -30,26 +32,8 @@ function Page() {
   const [isArrowV, setIsArrowV] = useState(false);
   const [isArrow, setIsArrow] = useState(false);
 
-  // Lenis smooth scroll initialization
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    const lenis = new Lenis({ duration: 1.1 });
-    (window as any).__lenis = lenis;
-    let rafId: number;
-
-    function raf(time: number) {
-      lenis.raf(time);
-      rafId = requestAnimationFrame(raf);
-    }
-    rafId = requestAnimationFrame(raf);
-
-    return () => {
-      delete (window as any).__lenis;
-      cancelAnimationFrame(rafId);
-      lenis.destroy();
-    };
-  }, []);
+  // Lenis smooth scroll, shared with the /devbox page
+  useLenis();
 
   // Main page scroll progress for scroll-to-top arrow indicator
   const { scrollYProgress: MYProg } = useScroll({
@@ -78,7 +62,7 @@ function Page() {
     <MotionConfig reducedMotion="user">
     <div
       style={{
-        cursor: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 397 433" width="22" height="22"><path d="M40.31 32.13c-1.76-8.4 7.23-14.92 14.67-10.66l296.47 169.91c7.54 4.32 6.29 15.56-2.02 18.12L205.54 253.76c-2.23.69-4.15 2.13-5.42 4.09l-72.01 110.94c-4.83 7.44-16.25 5.3-18.07-3.38L40.31 32.13z" fill="black" stroke="white" stroke-width="25"/></svg>') 2 1, auto`,
+        cursor: ARROW_CURSOR, // Shared with the /devbox page
       }}
       ref={mainRef}
       className="relative bg-zinc-950 pt-[92px] sm:pt-[104px] lg:pt-[110px]"
@@ -155,6 +139,7 @@ function Page() {
             />
 
             <div className="relative z-50 w-full px-5 sm:px-8 lg:px-0 lg:pl-[calc(3.3vw+3rem)] lg:pr-12 flex flex-col items-start">
+              {/* Entrance pacing: headline words about 0.1s apart, then description, announcement and buttons overlap, so all is in place by about 1.1s */}
               <h1 className="text-[min(clamp(1.65rem,6.8vw,2.25rem),7.3vw)] sm:text-[clamp(2.5rem,5.5vw,3.75rem)] lg:text-[clamp(3.5rem,5.8vw,6rem)] leading-[1.08] font-semibold flex flex-col gap-0.5 z-50 xxlHerotext text-left mt-1 sm:mt-3 lg:mt-1.5">
                 <span className="xxlHero z-50 block whitespace-nowrap">
                   <motion.span
@@ -168,7 +153,7 @@ function Page() {
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.3, delay: 0.25 }}
+                    transition={{ duration: 0.3, delay: 0.12 }}
                     className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     AI
@@ -176,7 +161,7 @@ function Page() {
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.2, delay: 0.5 }}
+                    transition={{ duration: 0.2, delay: 0.24 }}
                     className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     for
@@ -186,7 +171,7 @@ function Page() {
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.3, delay: 0.7 }}
+                    transition={{ duration: 0.3, delay: 0.34 }}
                     className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     Software
@@ -194,7 +179,7 @@ function Page() {
                   <motion.span
                     initial={{ opacity: 0, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, filter: 'blur(0px)' }}
-                    transition={{ duration: 0.3, delay: 0.9 }}
+                    transition={{ duration: 0.3, delay: 0.44 }}
                     className="bg-linear-to-b from-white to-gray-300/60 bg-clip-text text-transparent inline-block pb-[0.2em] mb-[-0.2em]"
                   >
                     Development
@@ -205,7 +190,7 @@ function Page() {
               <motion.div
                 initial={{ opacity: 0, filter: 'blur(10px)' }}
                 animate={{ opacity: 1, filter: 'blur(0px)' }}
-                transition={{ duration: 0.4, delay: 1.15 }}
+                transition={{ duration: 0.35, delay: 0.55 }}
                 className="flex flex-col font-normal text-sm sm:text-base md:text-lg lg:text-xl gap-1 leading-relaxed mt-4 lg:mt-6 text-neutral-300 text-left max-w-3xl sm:leading-[1.5rem] md:leading-[1.75rem] lg:leading-[1.75rem]"
               >
                 <p>
@@ -213,24 +198,23 @@ function Page() {
                 </p>
               </motion.div>
 
-              {/* SOTA Announcement Badge */}
+              {/* SOTA announcement as a plain text link, not a box, so Download and Try for Free stay the only buttons; 44px tall for touch */}
               <motion.div
                 initial={{ y: -12, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.3, delay: 1.35 }}
-                className="w-full flex justify-start mt-4 sm:mt-6 z-[100]"
+                transition={{ duration: 0.3, delay: 0.65 }}
+                className="w-full flex justify-start mt-3 sm:mt-4 z-[100]"
               >
                 <a
                   href={SWE_BENCH_BLOG_URL}
                   aria-label="Read announcement: Cora is now State-of-the-Art"
-                  className="relative p-px rounded-md bg-linear-to-r from-neutral-800 to-neutral-700 w-fit max-w-[calc(100vw-3rem)] shadow-lg hover:shadow-xl transition group"
+                  className="group inline-flex min-h-11 max-w-full items-center gap-1.5 text-xs sm:text-sm text-neutral-400 transition-colors hover:text-white"
                 >
-                  <div className="flex items-center gap-1.5 sm:gap-2 rounded-md bg-black px-3.5 py-2 sm:px-4 sm:py-2.5 text-white">
-                    <p className="text-xs sm:text-sm font-medium leading-snug text-neutral-300 sm:leading-[1.25rem]">
-                      <span translate="no">Cora</span> is now <span className="text-white font-semibold">State-of-the-Art</span>
-                    </p>
-                    <ChevronRight className="text-neutral-400 group-hover:text-white transition-colors shrink-0" size={14} strokeWidth={2} />
-                  </div>
+                  {/* The underline draws in from the left on hover, the site's link cue */}
+                  <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-300 group-hover:bg-[length:100%_1px]">
+                    <span translate="no">Cora</span> is now <span className="font-semibold text-white">State-of-the-Art</span>
+                  </span>
+                  <ChevronRight className="shrink-0 transition-transform duration-200 group-hover:translate-x-0.5" size={14} strokeWidth={2} aria-hidden="true" />
                 </a>
               </motion.div>
 
@@ -238,7 +222,7 @@ function Page() {
               <motion.div
                 initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }}
                 animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                transition={{ duration: 0.6, delay: 1.5 }}
+                transition={{ duration: 0.4, delay: 0.7 }}
                 className="flex flex-col sm:flex-row justify-start items-center gap-3 sm:gap-4 text-sm md:text-base mt-4 sm:mt-5 w-full sm:w-auto"
               >
                 <Link href="/download" aria-label="Download CodeMate AI's ToolBox" className="w-full sm:w-auto">
@@ -271,6 +255,11 @@ function Page() {
       {/* TOOLBOX SECTION                                                           */}
       {/* ========================================================================= */}
       <ToolboxSection />
+
+      {/* ========================================================================= */}
+      {/* CODEMATE DEV BOX: still teaser linking to the full film on /devbox         */}
+      {/* ========================================================================= */}
+      <DevBoxTeaser />
 
       {/* ========================================================================= */}
       {/* PRODUCT TABS SHOWCASE                                                     */}

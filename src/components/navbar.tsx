@@ -12,6 +12,17 @@ export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
 
+  // router.push('/') does nothing when already on '/', so on the home page the logo scrolls back to the top instead
+  const goHome = () => {
+    // The home page's Lenis instance overrides native scrolling, so scroll through it when it exists
+    if (pathname === '/') {
+      const lenis = (window as any).__lenis;
+      if (lenis) lenis.scrollTo(0);
+      else window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+    else router.push('/');
+  };
+
   // Handles smooth scrolling to the features section without page-jump scroll restoration issues
   const handleFeaturesClick = () => {
     if (pathname === '/') {
@@ -178,7 +189,8 @@ export default function Navbar() {
   const isBlogPage = pathname ? pathname.startsWith('/blog') : false;
   const isCommunityPage = pathname ? pathname.startsWith('/community') : false;
   const isShowcasePage = pathname ? pathname === '/achievements' || pathname === '/media' : false;
-  const shouldShowAnnouncement = showAnnouncement && !isBlogPage && !isCommunityPage && !isShowcasePage;
+  const isDevBoxPage = pathname === '/devbox'; // The Dev Box film opens right under the navbar, so the trial offer stays off it
+  const shouldShowAnnouncement = showAnnouncement && !isBlogPage && !isCommunityPage && !isShowcasePage && !isDevBoxPage;
 
   return (
     <div>
@@ -247,7 +259,7 @@ export default function Navbar() {
               {/* Logo */}
               <div
                 className="h-fit w-[15vw] flex justify-center cursor-pointer overflow-hidden"
-                onClick={() => router.push("/")}
+                onClick={goHome}
               >
                 <img
                   src="/logos/brand/codemate-logo.svg"
@@ -592,7 +604,7 @@ export default function Navbar() {
             >
               {/* CodeMate Icon Mark */}
               <div
-                onClick={() => router.push("/")}
+                onClick={goHome}
                 className="flex items-center justify-center cursor-pointer shrink-0 pl-1 h-6 w-auto"
               >
                 <img
@@ -648,14 +660,15 @@ export default function Navbar() {
               backdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
               WebkitBackdropFilter: isMenu ? 'blur(20px)' : 'blur(10px)',
             }}
-            className="w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5 pointer-events-auto transition-all duration-300 ease-out transform-gpu flex justify-between items-center"
+            // While the compact pill shows, this hidden full bar must not catch taps meant for the pill on phones and iPads
+            className={cn("w-full px-5 md:px-8 py-[0.9rem] md:py-4 border-b border-white/5 transition-all duration-300 ease-out transform-gpu flex justify-between items-center", isCompact && !isMenu ? "pointer-events-none" : "pointer-events-auto")}
           >
             {/* Left side: CodeMate logo */}
             <div
               className="flex items-center justify-start overflow-hidden cursor-pointer shrink-0"
               onClick={() => {
                 if (isMenu) setMenu(false);
-                router.push('/');
+                goHome();
               }}
             >
               <img
@@ -727,7 +740,7 @@ export default function Navbar() {
               >
                 <div data-lenis-prevent className='relative h-full w-full overflow-y-auto overscroll-contain z-9999999999'>
                 <div className='flex flex-col leading-none text-[8vw] pt-24 pl-5 gap-10 '>
-                  <motion.div onClick={() => { setMenu(false); router.push('/'); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
+                  <motion.div onClick={() => { setMenu(false); goHome(); }} whileHover={{ opacity: 0.6 }} className='flex gap-2 cursor-pointer'><span className='MenuText'>HOME</span><p className='text-[3vw] mt-1 opacity-60 text-[#00FFFF]'>01</p></motion.div>
                   <motion.div className='flex flex-col gap-2 cursor-pointer'>
                     <motion.div onClick={() => { setIsProducts(state => !state); }} whileHover={{ opacity: 0.6 }} className='flex justify-between items-center'>
                       <div className='flex gap-2'>

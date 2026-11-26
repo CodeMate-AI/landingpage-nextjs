@@ -18,6 +18,11 @@ const TOOLBOX_LOGO_SCALES: Record<string, string> = {
   'pr-review': 'scale-[0.75]',
 };
 
+// Logos that are not square, by their real aspect at 28px wide (work logo file is 528x404), so the height attribute matches the drawn size
+const TOOLBOX_LOGO_HEIGHTS: Record<string, number> = {
+  work: 21,
+};
+
 // Motion-enabled Next.js Link for seamless SPA client routing on internal paths
 const MotionLink = motion.create(Link);
 
@@ -168,7 +173,7 @@ export default function ToolboxSection() {
                         src={product.logo}
                         alt={product.name}
                         width={28}
-                        height={28}
+                        height={TOOLBOX_LOGO_HEIGHTS[product.id] ?? 28} // A 28px height on a 4:3 logo trips the next/image "width or height modified" warning
                         quality={95}
                         sizes="56px"
                         style={{ width: 'auto', height: 'auto' }}
@@ -282,33 +287,7 @@ export default function ToolboxSection() {
             );
           })}
         </div>
-
-
-
-        {/* Bottom CTA Button: Centered below the product cards */}
-        <motion.div
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.1 }}
-          className="flex justify-center w-full max-w-[1740px] mt-3 sm:mt-4 md:mt-6 xl:mt-0"
-        >
-          <Link href={TOOLBOX_DATA.ctaLink} className="inline-block">
-            <motion.button
-              type="button"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="flex h-[50px] w-[168px] items-center justify-center rounded-[6px] bg-white font-semibold text-black transition-colors duration-200 hover:bg-neutral-200 cursor-pointer"
-              style={{
-                fontFamily: 'var(--font-montserrat, Montserrat, sans-serif)',
-                fontSize: '14px',
-                lineHeight: '20px',
-              }}
-            >
-              {TOOLBOX_DATA.ctaText}
-            </motion.button>
-          </Link>
-        </motion.div>
+        {/* No button under the cards: Download Toolbox already sits in the hero and the compact navbar, and the section's equal top and bottom padding closes it */}
     </section>
   );
 }

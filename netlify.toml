@@ -1,0 +1,6 @@
+# Netlify ignores next.config.ts headers() for files in public/, so the Dev Box film frames
+# were served with max-age=0 and re-downloaded mid-scroll. New frames ship under a new /devbox/vN folder.
+[[headers]]
+  for = "/devbox/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

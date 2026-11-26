@@ -70,6 +70,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // Dev Box film frames never change in place (new frames ship under a new /devbox/vN folder), so cache them for a year
+        source: "/devbox/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable",
+          },
+        ],
+      },
     ];
   },
 

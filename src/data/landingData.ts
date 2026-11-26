@@ -14,8 +14,6 @@ export interface ToolboxSectionData {
   titlePrefix: string;
   titleHighlight: string;
   titleSuffix: string;
-  ctaText: string;
-  ctaLink: string;
   products: ToolboxProduct[];
 }
 
@@ -24,8 +22,6 @@ export const TOOLBOX_DATA: ToolboxSectionData = {
   titlePrefix: 'One ',
   titleHighlight: 'Toolbox.',
   titleSuffix: ' Your entire SDLC.',
-  ctaText: 'Download Toolbox',
-  ctaLink: '/download',
   products: [
     {
       id: 'work',
@@ -658,3 +654,83 @@ export const WATCH_ACTION_DATA: WatchActionSectionData = {
   youtubeVideoId: 'ux5jJgNkslE',
 };
 
+
+// CodeMate Dev Box scroll film: one chapter per stage of the box coming apart and back together
+// Copy rule for this section: headline of 6 words at most, one line of 14 words at most
+export interface DevBoxChapter {
+  id: string;
+  label: string;
+  headline: string;
+  body: string;
+  showStack?: boolean; // Shows the layer list under this chapter, timed to the fully exploded box
+}
+
+// Lines naming HP's ZGX Nano and CodeMate AI live in DevBoxSection with translate="no" spans
+export interface DevBoxSectionData {
+  introLabel: string;
+  introTitlePrefix: string;
+  introTitleHighlight: string;
+  titlePrefix: string;
+  titleHighlight: string;
+  support: string;
+  chapters: DevBoxChapter[];
+  stackLabel: string;
+  stack: string[];
+  stackTools: string;
+  specs: DevBoxSpec[];
+}
+
+// One ZGX Nano hardware fact for the closing beat: a short value over a one-line label
+export interface DevBoxSpec {
+  value: string;
+  label: string;
+}
+
+export const DEVBOX_DATA: DevBoxSectionData = {
+  // Opening beat, shown over the closed box before the film starts
+  introLabel: 'CodeMate Dev Box',
+  introTitlePrefix: 'One box. A whole ', // Only the noun phrase is highlighted, so the plain part runs through "A whole"
+  introTitleHighlight: 'AI Co-Worker.',
+  // Closing beat, above the ZGX Nano specs
+  titlePrefix: 'Sovereign AI. ',
+  titleHighlight: 'On your desk.',
+  support: 'Your AI Co-Worker, on hardware you own.',
+  chapters: [
+    {
+      id: 'understand',
+      label: 'Understand',
+      headline: 'Context, from day one.',
+      body: 'It reads your code, tools and workflows, so you never start from zero.',
+    },
+    {
+      id: 'remember',
+      label: 'Remember',
+      headline: 'Gets sharper every sprint.',
+      body: "It keeps your team's knowledge and learns how you work.",
+    },
+    {
+      id: 'work-with-you',
+      label: 'Work with you',
+      headline: 'Plans, builds, tests, reviews.',
+      body: 'Less time explaining. More time shipping.',
+      showStack: true,
+    },
+    {
+      id: 'specialists',
+      label: 'Specialists',
+      headline: 'A specialist for every task.',
+      body: 'Purpose-built models and agents. Fixed-fee pricing, no token bills.',
+    },
+  ],
+  stackLabel: 'Inside the box',
+  // The AI Co-Worker's layers, top to bottom; the hardware itself is the box on screen, so it is not listed
+  stack: ['Local Models & Memory', 'Agent Runtime', 'Context & Orchestration', 'AI System OS'],
+  stackTools: 'Plugs into your IDE, Git, design and project tools', // The four tool kinds it connects to; "boards" is avoided since it reads like circuit boards next to hardware
+  // HP ZGX Nano G1n published specs; the 128 GB is unified CPU and GPU memory, so the GPU can use all of it
+  specs: [
+    { value: 'Blackwell', label: 'NVIDIA GB10 Superchip' },
+    { value: '128 GB', label: 'Unified memory' },
+    { value: '1 PFLOP', label: 'FP4 AI compute' },
+    { value: '200B', label: 'Parameters, run locally' },
+  ],
+};

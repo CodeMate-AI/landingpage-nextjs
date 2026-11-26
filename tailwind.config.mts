@@ -1,5 +1,6 @@
 import type { Config } from "tailwindcss";
-import animate from "tailwindcss-animate";
+// ES import instead of require(): an .mts file is an ES module, where require does not exist
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
   darkMode: "class",
@@ -175,6 +176,6 @@ export default {
       },
     }
   },
-  plugins: [animate],
+  plugins: [tailwindcssAnimate],
 } satisfies Config;
 

@@ -2,6 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
+import BackToHome from "@/components/back-to-home";
 import { projects, ORBIT_CRM_DEMO_URL } from "../lib/communityProjects";
 
 const tickerProjects = [
@@ -28,6 +29,8 @@ export default function CommunityHero() {
   return (
     <section className="w-full overflow-hidden pb-4 pt-8 sm:pb-6 sm:pt-12">
       <div className="mx-auto mb-10 w-full max-w-7xl px-5 sm:mb-14 sm:px-8 lg:px-12">
+        {/* Back to Home above the eyebrow, on the hero's left edge like the other inner pages */}
+        <BackToHome className="mb-3 sm:mb-4" />
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
