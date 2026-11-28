@@ -71,7 +71,13 @@ html:has(.docs-shell) { scroll-padding-top: calc(var(--docs-header-height, 64px)
 .docs-scroll,
 [data-docs-content] pre,
 [data-docs-content] .docs-code,
-[data-docs-content] [role="region"] { scrollbar-width: thin; scrollbar-color: var(--color-fd-border) transparent; }
+[data-docs-content] [role="region"],
+.clean-table-container { scrollbar-width: thin; scrollbar-color: var(--color-fd-border) transparent; }
+
+/* A table wider than a phone screen scrolls sideways inside its own box instead of running past the page edge */
+@layer components {
+  .docs-shell .clean-table-container { overflow-x: auto; }
+}
 
 /* Search dialog entrance (kept in a layer so utilities still win) */
 @layer components {
