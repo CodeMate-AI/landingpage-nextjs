@@ -1,10 +1,12 @@
 "use client";
 
-// Page sizes offered in the admin lists; the first one is the default
-export const PAGE_SIZES = [10, 25, 50];
+// The list lives in a plain module that server code can read; it is used here and re-exported so existing imports keep working
+import { PAGE_SIZES } from "./page-sizes";
+export { PAGE_SIZES };
 
+// Phones get 44px-tall targets; from the sm breakpoint the bar keeps its compact desktop size
 const navBtn =
-  "rounded-lg border border-[#27272a] bg-[#09090b] px-3 py-1.5 text-xs font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer";
+  "min-h-11 sm:min-h-0 rounded-lg border border-[#27272a] bg-[#09090b] px-3 py-1.5 text-xs font-medium text-neutral-300 transition hover:bg-[#27272a] hover:text-white disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer";
 
 type Props = {
   page: number;
@@ -29,14 +31,16 @@ export function AdminPagination({ page, totalPages, total, limit, noun, onPageCh
       <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-400">
         <span>
           Showing <strong className="text-white">{start}</strong> to <strong className="text-white">{end}</strong> of{" "}
-          <strong className="text-white">{total}</strong> {noun}
+          {/* Every noun passed in is a plain plural, so one item drops the trailing "s" ("1 chat", not "1 chats") */}
+          <strong className="text-white">{total}</strong> {total === 1 ? noun.replace(/s$/, "") : noun}
         </span>
         <div className="flex items-center gap-1.5 border-l border-[#27272a] pl-3">
           <span>Per page:</span>
           <select
             value={limit}
             onChange={(e) => onLimitChange(Number(e.target.value))}
-            className="rounded border border-[#27272a] bg-[#09090b] px-2 py-1 text-xs text-white focus:border-blue-500 focus:outline-none cursor-pointer"
+            // 44px tall on phones like the page buttons; compact from the sm breakpoint
+            className="min-h-11 sm:min-h-0 rounded border border-[#27272a] bg-[#09090b] px-2 py-1 text-xs text-white focus:border-blue-500 focus:outline-none cursor-pointer"
           >
             {PAGE_SIZES.map((n) => (
               <option key={n} value={n}>{n}</option>
@@ -45,7 +49,8 @@ export function AdminPagination({ page, totalPages, total, limit, noun, onPageCh
         </div>
       </div>
 
-      <div className="flex items-center gap-1.5">
+      {/* Wraps instead of overflowing on the narrowest phones */}
+      <div className="flex flex-wrap items-center justify-center gap-1.5">
         <button type="button" disabled={page <= 1} onClick={() => onPageChange(page - 1)} className={navBtn}>
           &larr; Previous
         </button>
@@ -55,7 +60,7 @@ export function AdminPagination({ page, totalPages, total, limit, noun, onPageCh
               key={n}
               type="button"
               onClick={() => onPageChange(n)}
-              className={`min-w-[32px] rounded-lg px-2.5 py-1.5 text-xs font-semibold transition cursor-pointer ${
+              className={`min-h-11 min-w-11 sm:min-h-0 sm:min-w-[32px] rounded-lg px-2.5 py-1.5 text-xs font-semibold transition cursor-pointer ${
                 page === n
                   ? "bg-blue-600 text-white shadow-sm"
                   : "border border-[#27272a] bg-[#09090b] text-neutral-300 hover:bg-[#27272a] hover:text-white"

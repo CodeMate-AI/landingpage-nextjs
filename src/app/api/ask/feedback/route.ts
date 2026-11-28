@@ -4,6 +4,8 @@ import { z } from "zod";
 import { getDocsDatabase } from "@/lib/mongodb";
 import { checkRate, clientIp } from "@/lib/docs-ai/rate-limit";
 import { ID, Vote } from "@/lib/docs-ai/messages";
+// Keeps each chat's helpful and not-helpful totals in step with its answers' ratings
+import { recordRating } from "@/lib/docs-chat-rollups";
 
 // vote 0 takes a vote back. The visitor id must match the one stored when the question was
 // asked, so a guessed event id cannot change someone else's vote.
@@ -20,7 +22,10 @@ export async function POST(req: Request) {
   const { id, vote, visitorId } = parsed.data;
   try {
     const col = (await getDocsDatabase()).collection("chat_events");
-    await col.updateOne({ _id: new ObjectId(id), visitorId }, vote === 0 ? { $unset: { rating: "" } } : { $set: { rating: vote } });
+    // The event as it was before this vote, so the chat's helpful and not-helpful totals move by exactly the change
+    const before = await col.findOneAndUpdate({ _id: new ObjectId(id), visitorId }, vote === 0 ? { $unset: { rating: "" } } : { $set: { rating: vote } }, { returnDocument: "before", projection: { threadId: 1, rating: 1 } });
+    // The rating itself is saved; a failed total update is logged rather than reported to the visitor as a failed vote
+    if (before) await recordRating({ _id: before._id, threadId: before.threadId, rating: before.rating }, vote).catch((error) => console.error("Ask AI rating totals failed:", error));
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Ask AI feedback failed:", error);

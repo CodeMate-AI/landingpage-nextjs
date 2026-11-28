@@ -29,7 +29,11 @@ export async function POST(req: Request) {
     await ensureIndexes();
     const col = (await getDocsDatabase()).collection("page_feedback");
     if (vote === 0) await col.deleteOne({ page, visitorId });
-    else await col.updateOne({ page, visitorId }, { $set: { vote, createdAt: new Date() } }, { upsert: true });
+    else {
+      const now = new Date();
+      // createdAt is the first vote (the 90-day TTL counts from it); updatedAt is the latest change, used by analytics
+      await col.updateOne({ page, visitorId }, { $set: { vote, updatedAt: now }, $setOnInsert: { createdAt: now } }, { upsert: true });
+    }
     return NextResponse.json({ ok: true });
   } catch (error) {
     console.error("Page feedback failed:", error);

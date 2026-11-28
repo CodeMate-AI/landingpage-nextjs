@@ -139,6 +139,10 @@ export default function AdminDocsDashboard() {
               New Page
             </Link>
             <Link href="/admin/docs/sidebar" className={btn}>Edit Sidebar</Link>
+            {/* Page votes, Ask AI chats and answer ratings for the docs */}
+            <Link href="/admin/docs/analytics" className={btn}>Analytics</Link>
+            {/* Ask AI rate limits and their last 24 hours of use */}
+            <Link href="/admin/docs/settings" className={btn}>Ask AI Settings</Link>
             <Link href="/admin" className={btn}>Switch</Link>
             <button onClick={handleLogout} className={btn}>Log Out</button>
           </div>

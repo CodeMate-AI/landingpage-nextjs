@@ -2,6 +2,10 @@ import { z } from "zod";
 import { TiptapNodeSchema } from "@/lib/validation";
 import { extractSectionsFromTiptapJson } from "@/lib/blog-compiler";
 import { buildSearchData } from "@/lib/docs-search-text";
+// Docs analytics query validation: id format, allowed page sizes and range presets
+import { ID } from "@/lib/docs-ai/messages";
+import { PAGE_SIZES } from "@/components/admin/page-sizes";
+import { MAX_CHAT_PAGE, RANGE_PRESETS, type RangePreset } from "@/lib/docs-analytics-core";
 
 export const DocPageSchema = z.object({
   slug: z
@@ -69,6 +73,41 @@ export function draftDiffers(draft: DocPageInput, published: any): boolean {
     JSON.stringify(draft.content) !== JSON.stringify(published.content)
   );
 }
+
+// Docs analytics range from the URL: a preset, or custom ISO dates, plus the admin's IANA time zone
+export const AnalyticsRangeQuery = z.object({
+  range: z.enum(Object.keys(RANGE_PRESETS) as [RangePreset, ...RangePreset[]]).optional(),
+  from: z.coerce.date().optional(),
+  to: z.coerce.date().optional(),
+  tz: z.string().max(64).optional(),
+});
+
+// Page number and page size shared by every paged analytics list
+const Paging = {
+  // Capped so a hand-edited page number cannot overflow the database skip; real lists never get near it
+  page: z.coerce.number().int().min(1).max(MAX_CHAT_PAGE).default(1),
+  limit: z.coerce
+    .number()
+    .int()
+    .refine((n) => PAGE_SIZES.includes(n), "Unsupported page size")
+    .default(PAGE_SIZES[0]),
+};
+
+// Docs analytics chat list: the range plus feedback filter, paging, and an optional "chats of the visitor behind this chat"
+export const ChatListQuery = AnalyticsRangeQuery.extend({
+  feedback: z.enum(["any", "down", "up"]).default("any"),
+  ...Paging,
+  visitorOf: ID.optional(),
+});
+
+// The answers rated not helpful in a range, one page at a time
+export const DownvotedQuery = AnalyticsRangeQuery.extend(Paging);
+
+// One page of the questions inside a single chat
+export const ChatPageQuery = z.object(Paging);
+
+// A chat id in the analytics URLs: a client thread id, or the event id of a chat saved without one (both match ID)
+export const ChatIdParam = ID;
 
 // Removes a page slug from a nav tree, dropping nothing else
 export function removeSlug(tree: NavItem[], slug: string): NavItem[] {

@@ -1,11 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
 import { invalidateDocs, publishedSlugTaken } from "@/lib/docs-data";
-import { ObjectId } from "mongodb";
+import { ObjectId, type Db } from "mongodb";
 import { withAuth } from "@/lib/authWrapper";
 import { getDocsDatabase } from "@/lib/mongodb";
 import { DocPageSchema, buildSnapshot, draftDiffers, removeSlug, versionFilter } from "@/lib/docs-validation";
 
 type Ctx = { params: Promise<{ id: string }> };
+
+// Page votes are stored per slug, so a renamed page takes its votes along instead of splitting into two rows in analytics.
+// One vote per visitor per page is a unique index: when a visitor voted on both slugs, their latest vote is the one kept.
+// The page is already saved when this runs, so a failure is logged instead of turning a good publish into an error.
+async function moveVotes(db: Db, from: string, to: string) {
+  const votes = db.collection("page_feedback");
+  const changedAt = { $ifNull: ["$updatedAt", "$createdAt"] };
+  try {
+    await votes
+      .aggregate([
+        { $match: { page: from } },
+        { $project: { _id: 0, page: { $literal: to }, visitorId: 1, vote: 1, createdAt: 1, updatedAt: changedAt } },
+        {
+          $merge: {
+            into: "page_feedback",
+            on: ["page", "visitorId"],
+            // $$new is the vote moving over; the stored vote on the new slug stays when it is the more recent one
+            whenMatched: [{ $replaceWith: { $cond: [{ $gt: ["$$new.updatedAt", changedAt] }, { $mergeObjects: ["$$new", { _id: "$_id" }] }, "$$ROOT"] } }],
+            whenNotMatched: "insert",
+          },
+        },
+      ])
+      .toArray();
+    await votes.deleteMany({ page: from });
+  } catch (error) {
+    console.error(`Moving page votes from ${from} to ${to} failed:`, error);
+  }
+}
 
 async function getDoc(_req: NextRequest, _session: any, { params }: Ctx) {
   const { id } = await params;
@@ -100,6 +128,7 @@ async function updateDoc(req: NextRequest, session: any, { params }: Ctx) {
           { $set: { draft: rename(nav.draft || []), published: rename(nav.published || []) }, $inc: { version: 1 } }
         );
       }
+      await moveVotes(db, old, draft.slug);
     }
 
     if (publish) invalidateDocs();
@@ -135,6 +164,11 @@ async function deleteDoc(_req: NextRequest, _session: any, { params }: Ctx) {
     } finally {
       // The page is already gone, so caches must drop it even if the nav cleanup failed
       invalidateDocs();
+    }
+    // Its votes go too, so a later page published at the same URL starts from zero (older slugs' votes were moved here on rename)
+    const publishedSlug = page.publishedVersion?.slug;
+    if (publishedSlug) {
+      await db.collection("page_feedback").deleteMany({ page: publishedSlug }).catch((error) => console.error(`Removing votes of ${publishedSlug} failed:`, error));
     }
     return NextResponse.json({ success: true });
   } catch (error) {

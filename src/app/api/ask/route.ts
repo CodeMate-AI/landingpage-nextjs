@@ -9,6 +9,10 @@ import { MAX_BODY_BYTES, parseAskRequest } from "@/lib/docs-ai/messages";
 import { once } from "@/lib/docs-ai/once";
 import { checkRate, clientIp } from "@/lib/docs-ai/rate-limit";
 import { getDocsDatabase } from "@/lib/mongodb";
+// Picks the docs tool calls out of a finished answer's steps for the analytics log
+import { toolsFromSteps } from "@/lib/docs-analytics-core";
+// Keeps the per-chat and per-15-minute question totals the analytics page reads
+import { recordQuestion } from "@/lib/docs-chat-rollups";
 
 export const maxDuration = 60;
 
@@ -75,8 +79,11 @@ export async function POST(req: Request) {
   let eventKey: ObjectId | null = null;
   try {
     events = await eventsCollection();
-    eventKey = (await events.insertOne({ question, page: page || null, threadId: threadId ?? null, visitorId: visitorId ?? null, createdAt: new Date() })).insertedId;
+    const logged = { question, page: page || null, threadId: threadId ?? null, visitorId: visitorId ?? null, createdAt: new Date() };
+    eventKey = (await events.insertOne(logged)).insertedId;
     eventId = String(eventKey);
+    // The running totals the analytics page reads; same try, so a failed count never breaks the chat
+    await recordQuestion({ _id: eventKey, ...logged });
   } catch (error) {
     console.error("Ask AI could not log the question:", error);
   }
@@ -95,9 +102,10 @@ export async function POST(req: Request) {
     abortSignal: req.signal,
     // The model copies plain "CodeMate" from the docs; the stream rewrites it to "CodeMate AI"
     experimental_transform: brandTransform(),
-    onFinish: async ({ text }) => {
+    onFinish: async ({ text, steps }) => {
       if (!events || !eventKey) return;
-      await events.updateOne({ _id: eventKey },{ $set: { answer: text.slice(0, 4000) } }).catch(() => {});
+      // The tool calls go in the same write as the answer, so analytics can show how each answer was found
+      await events.updateOne({ _id: eventKey },{ $set: { answer: text.slice(0, 4000), tools: toolsFromSteps(steps) } }).catch(() => {});
     },
     onError: ({ error }) => console.error("Ask AI stream error:", error),
   });
