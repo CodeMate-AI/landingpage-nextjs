@@ -9,7 +9,7 @@ A modern, high-performance web application built with **Next.js 16 (App Router)*
 ### Public Landing Page & Suites
 - **Interactive UI**: Rich animations with Framer Motion, GSAP, and smooth inertial scrolling via Lenis.
 - **Announcement Banner**: Sticky banner highlighting the SWE-bench SOTA achievement and limited offers.
-- **Dynamic Frosted-Glass Navbars**: Custom mega-menu support for Products, Open-Source, and Resources (**HP** -> **Docs** -> **Blogs** -> **Community**).
+- **Dynamic Frosted-Glass Navbars**: Custom mega-menus for Products, Open-Source and Resources (**Docs**, **Blogs**, **Media**, **Community**, **Achievements**), plus Pricing and Partnerships (**HP**).
 - **Achievements Carousel**: Auto-sliding carousel housing major milestones and summit achievements with slide controls.
 - **HP x CodeMate AI Landing Page (`/partnerships/hp`)**: Dedicated partnership page featuring product guides, interactive video demonstrations, and an exclusive trial registration form.
 - **Community Showcase (`/community`)**: Live gallery of production-grade platforms shipped autonomously using CodeMate AI. Includes responsive video modal previews with touch shielding, PDF documentation viewer, and category filtering.
@@ -18,9 +18,10 @@ A modern, high-performance web application built with **Next.js 16 (App Router)*
 
 ### Documentation Site (`/docs`)
 - **First-party docs**: Fumadocs UI with sidebar, table of contents, full-text search, light/dark toggle, and legacy GitBook redirects. Pages are written in the admin panel (`/admin/docs`) with the Tiptap editor, with a draft then publish flow and a drag-and-drop sidebar tree.
-- **Ask AI**: an assistant panel (header button, bottom ask bar, or Cmd/Ctrl+I). It searches and reads the published docs itself through tool calling, streams a grounded answer with links, and says "This is not covered in the docs." otherwise. It keeps the newest 30 messages of the conversation (older turns drop off), supports Stop, Retry, New chat, thumbs votes and browser voice input. Details in [`ASK_AI_IMPLEMENTATION.md`](ASK_AI_IMPLEMENTATION.md).
+- **Ask AI**: an assistant panel (header button, bottom ask bar, or Cmd/Ctrl+I). It searches and reads the published docs itself through tool calling, streams a grounded answer with links, and says "This is not covered in the docs." otherwise. It keeps the newest 30 messages of the conversation (older turns drop off), supports Stop, Retry, New chat, thumbs votes and browser voice input.
 - **Page feedback**: a "Was this page helpful?" vote per page.
-- Plan and status: [`DOCS_PLAN.md`](DOCS_PLAN.md).
+- **Docs analytics (`/admin/docs/analytics`)**: page votes, Ask AI questions over time, every chat with its tool calls and answer ratings, and the answers rated not helpful, for a range kept in the URL (24h, 7d, 30d, 90d or custom dates, up to 90 days).
+- **Ask AI settings (`/admin/docs/settings`)**: the admin sets the Ask AI rate limits (questions per visitor per minute and per day, ratings per visitor per minute, questions overall per minute) and sees the last 24 hours of traffic against each one. Changes apply on every server within 15 seconds; there are no env variables for these limits.
 
 ### CodeMate CMS Admin Portal
 - **Role and Route Protection**: Strict tab-isolated session architecture with client-side `AdminLayout` route guards and the Next.js proxy (`src/proxy.ts`, formerly middleware) protecting `/api/admin/*` routes via stateless `Authorization: Bearer <token>` JWT authentication (`sessionStorage`).
@@ -30,7 +31,7 @@ A modern, high-performance web application built with **Next.js 16 (App Router)*
 - **Smart Draft Diffing Engine**: Deeply analyzes article content, metadata, taxonomies, and outlines to display the "Draft Pending" indicator only when genuine differences exist between the draft and published version.
 - **Dynamic Reading Duration Engine**: Recursively walks the Tiptap AST node tree to estimate reading time (200 wpm) automatically, with optional custom admin overrides.
 - **Automatic TOC Generator**: Auto-scans H2-H4 headings to create unique anchor slugs for in-article side navigation.
-- **Media Asset Pipeline**: Uploads to CodeMate custom media hosting endpoint (`https://backend.codemate.ai/upload/image`) with MIME validation and size limits (5MB images / 50MB videos).
+- **Media Asset Pipeline**: Uploads to CodeMate custom media hosting endpoint (`https://backend.codemate.ai/upload/image`) with MIME validation and size limits (5MB images / 15MB GIFs / 50MB videos).
 - **Dynamic Taxonomy Management**: Inline CRUD for categories, product filters, and use cases persisted in MongoDB.
 
 ---
@@ -40,7 +41,7 @@ A modern, high-performance web application built with **Next.js 16 (App Router)*
 | Layer | Technologies |
 |---|---|
 | **Framework** | Next.js 16 (App Router, Turbopack), React 19, TypeScript 5 |
-| **Styling** | Tailwind CSS 4 (theme in `tailwind.config.ts` via `@config`), Vanilla SCSS, Radix UI Primitives |
+| **Styling** | Tailwind CSS 4 (theme in `tailwind.config.mts` via `@config`), Vanilla SCSS, Radix UI Primitives |
 | **Animations** | Framer Motion 14, GSAP 3, Lenis 1.3 Smooth Scroll |
 | **CMS & Editor** | Tiptap v3 Headless Rich-Text Engine |
 | **Database** | MongoDB (Native Node.js Driver) |
@@ -64,39 +65,39 @@ The blog, admin users and login rate limits live in `codemate_blog`. The docs si
 |---|---|---|
 | **`blogs`** | `title`, `slug`, `category`, `tags[]`, `content` (Tiptap AST JSON), `published`, `publishedVersion`, `hasDraftChanges`, `author`, `readTime`, `sections[]`, `createdAt`, `updatedAt` | Stores articles with dual draft/live snapshots. **Indexes**: `{ slug: 1 }` (unique), `{ published: 1, publishedAt: -1 }`. |
 | **`users`** | `email`, `password` (bcrypt hash), `tokenVersion`, `name`, `createdAt` | Stores administrator credentials. **Index**: `{ email: 1 }` (unique). |
-| **`login_attempts`** | `key` (`"ip:<ip>"` or `"email:<email>"`), `count`, `firstAttempt` | Brute-force rate limiting (5 attempts/15m). **Indexes**: `{ key: 1 }`, `{ firstAttempt: 1 }` (TTL: 900s). |
+| **`login_attempts`** | `key` (`"ip:<ip>"` or `"email:<email>"`), `count`, `firstAttempt` | Brute-force rate limiting (5 attempts/15m). **Indexes** (created by `scripts/setup-db.ts`): `{ key: 1 }` (unique), `{ ip: 1, email: 1 }` (older records), `{ firstAttempt: 1 }` (TTL: 900s). |
 | **`filter_options`** | `_id: "global_filters"`, `categories[]`, `productFilters[]`, `useCaseFilters[]` | Dynamic taxonomy configuration document for article filters and categories. |
 
 ### MongoDB Collections Reference Map
 
 | Collection | File Name | Line Number | Operation / Context |
 | :--- | :--- | :--- | :--- |
-| **`users`** | `src/lib/authWrapper.ts` | Line 19 | `findOne` (validate token session & tokenVersion) |
+| **`users`** | `src/lib/authWrapper.ts` | Line 22 | `findOne` (validate token session & tokenVersion) |
 | **`users`** | `src/app/api/admin/login/route.ts` | Line 48 | `findOne` (find user by email) |
 | **`users`** | `src/app/api/admin/login/route.ts` | Line 63 | `updateOne` (seed / initialize tokenVersion) |
 | **`users`** | `src/app/api/admin/logout/route.ts` | Line 13 | `updateOne` (increment tokenVersion to logout) |
 | **`blogs`** | `src/app/blog/page.tsx` | Line 30 | `countDocuments` (total published posts) |
-| **`blogs`** | `src/app/blog/page.tsx` | Line 32 | `find` (fetch published posts for SSR) |
-| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 18 | `find` (generate static params slugs) |
-| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 35 | `findOne` (fetch single published article) |
-| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 46 | `find` (fetch related blog articles) |
-| **`blogs`** | `src/app/sitemap.ts` | Line 58 | `find` (fetch slugs for sitemap generation) |
+| **`blogs`** | `src/app/blog/page.tsx` | Line 33 | `find` (fetch published posts for SSR) |
+| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 21 | `find` (generate static params slugs) |
+| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 37 | `findOne` (fetch single published article) |
+| **`blogs`** | `src/app/blog/[slug]/page.tsx` | Line 49 | `find` (fetch related blog articles) |
+| **`blogs`** | `src/app/sitemap.ts` | Line 86 | `find` (fetch slugs for sitemap generation) |
 | **`blogs`** | `src/app/api/posts/route.ts` | Line 70 | `countDocuments` (search/filtered count) |
-| **`blogs`** | `src/app/api/posts/route.ts` | Line 72 | `find` (fetch paginated/filtered posts) |
+| **`blogs`** | `src/app/api/posts/route.ts` | Line 73 | `find` (fetch paginated/filtered posts) |
 | **`blogs`** | `src/app/api/admin/posts/route.ts` | Line 22 | `countDocuments` (admin total count) |
-| **`blogs`** | `src/app/api/admin/posts/route.ts` | Line 24 | `find` (admin paginated post list) |
-| **`blogs`** | `src/app/api/admin/posts/route.ts` | Line 136 | `insertOne` (create new blog post) |
+| **`blogs`** | `src/app/api/admin/posts/route.ts` | Line 25 | `find` (admin paginated post list) |
+| **`blogs`** | `src/app/api/admin/posts/route.ts` | Line 146 | `insertOne` (create new blog post) |
 | **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 20 | `findOne` (fetch single post by ID for editor) |
 | **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 47 | `findOne` (check existing post before update) |
-| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 63 | `findOne` (slug collision verification) |
-| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 163 | `updateOne` (update blog post content / draft) |
-| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 194 | `findOne` (check post existence before delete) |
-| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 196 | `deleteOne` (delete blog post by ID) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 88 | `findOne` (slug collision verification) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 201 | `updateOne` (update blog post content / draft) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 234 | `findOne` (check post existence before delete) |
+| **`blogs`** | `src/app/api/admin/posts/[id]/route.ts` | Line 236 | `deleteOne` (delete blog post by ID) |
 | **`filter_options`** | `src/app/blog/page.tsx` | Line 41 | `findOne` (fetch `global_filters` for sidebar) |
 | **`filter_options`** | `src/app/api/admin/filters/route.ts` | Line 44 | `findOne` (fetch current `global_filters`) |
 | **`filter_options`** | `src/app/api/admin/filters/route.ts` | Line 53 | `insertOne` (seed default filters if not found) |
 | **`filter_options`** | `src/app/api/admin/filters/route.ts` | Line 110 | `updateOne` (update filter categories) |
-| **`login_attempts`** | `src/lib/rateLimit.ts` | Line 19 | `createIndex` (create TTL index for auto-expiry) |
+| **`login_attempts`** | `src/lib/rateLimit.ts` | Line 20 | `find` (read the IP and email attempt counters) |
 | **`login_attempts`** | `src/lib/rateLimit.ts` | Line 37 | `findOne` (check recent failed attempts) |
 | **`login_attempts`** | `src/lib/rateLimit.ts` | Line 63 | `updateOne` (increment attempt count) |
 | **`login_attempts`** | `src/lib/rateLimit.ts` | Line 70 | `updateOne` (set lock until timestamp) |
@@ -117,8 +118,8 @@ The blog, admin users and login rate limits live in `codemate_blog`. The docs si
 ## SEO and Discoverability
 
 The website automatically enforces modern technical SEO standards across all routes:
-1. **Dynamic Sitemap Indexing (`/sitemap.xml`)**: Generated dynamically via `src/app/sitemap.ts` covering all primary static routes (`/`, `/partnerships/hp` and its use-case pages, `/pricing`, `/download`, `/contact`, `/blog`, `/community`) dynamic blog post slugs (`/blog/[slug]`) and published docs pages (`/docs/[slug]`).
-2. **Crawl Directives (`robots.txt`)**: Located at `public/robots.txt` allowing indexing and pointing search engines directly to `https://codemate.ai/sitemap.xml`.
+1. **Dynamic Sitemap Indexing (`/sitemap.xml`)**: Generated dynamically via `src/app/sitemap.ts` covering all primary static routes (`/`, `/partnerships/hp` and its use-case pages, `/pricing`, `/download`, `/devbox`, `/contact`, `/blog`, `/community`, `/achievements`, `/media`), dynamic blog post slugs (`/blog/[slug]`) and published docs pages (`/docs/[slug]`).
+2. **Crawl Directives (`/robots.txt`)**: Generated by `src/app/robots.ts`, allowing indexing except `/api/` and pointing search engines directly to `https://codemate.ai/sitemap.xml`.
 3. **Structured Data (JSON-LD)**: Injected via root layout (`src/app/layout.tsx`) using Schema.org `SoftwareApplication` definitions for rich search snippets.
 4. **OpenGraph and Twitter Card Metadata**: Dedicated server layout definitions across root, `/partnerships/hp`, `/community`, and `/blog`.
 5. **Canonical URL Protection**: Explicit canonical tags on every route to prevent duplicate content indexing.
@@ -130,33 +131,37 @@ The website automatically enforces modern technical SEO standards across all rou
 ```text
 landingpage-nextjs/
 ├── public/                  # Brand assets, static mocks, PDFs, and logos
-├── scripts/                 # Database initialization and seed scripts
+├── scripts/                 # Database setup, seed and check scripts (gitignored: kept locally, not in the repo)
 │   ├── setup-db.ts          # MongoDB index creation (slug, TTL rate limits)
 │   ├── seed-admin.ts        # Admin user creation script (syncs .env credentials)
-│   └── seed-blogs.ts        # Starter blog articles seed script
+│   ├── seed-blogs.ts        # Starter blog articles seed script
+│   └── setup-docs-db.ts     # Indexes for the codemate_docs database
 ├── src/
 │   ├── app/                 # Next.js App Router
-│   │   ├── admin/           # Admin pages (login, dashboard, editor)
+│   │   ├── admin/           # Admin pages: Blogs/Docs chooser, login, blog dashboard and editor, docs/ (pages, editor, sidebar, analytics, settings)
 │   │   ├── api/             # Backend API routes (/api/admin/*, /api/posts, etc.)
 │   │   ├── achievements/    # Achievements page
 │   │   ├── blog/            # Public blog feed and [slug] reader views
 │   │   ├── community/       # Community showcase page
 │   │   ├── docs/            # Docs site (Fumadocs) and the Ask AI panel (docs/ask-ai/)
 │   │   ├── contact/         # Contact page
+│   │   ├── devbox/          # Dev Box scroll film page
+│   │   ├── media/           # Media showcase page
 │   │   ├── download/        # Download page
-│   │   ├── partnerships/    # Partnership pages: hub, hp (bespoke subsite), hpe, qualcomm
+│   │   ├── partnerships/    # Partnership pages: hp (bespoke subsite with promo and use-case pages)
 │   │   ├── pricing/         # Pricing tiers and checkout components
 │   │   ├── page.tsx         # Main Landing Page client component
 │   │   ├── layout.tsx       # Root layout with SEO metadata & Analytics
 │   │   ├── globals.css      # Core style tokens & keyframe animations
 │   │   └── sitemap.ts       # Dynamic sitemap indexer
 │   ├── components/          # Reusable UI & Tiptap editor components
+│   │   ├── admin/           # Shared admin pieces (AdminPagination, page sizes)
 │   │   ├── tiptap-templates/# SimpleEditor workspace layout
 │   │   ├── tiptap-node/     # Custom nodes (VideoNode, ImageNode, CodeBlock)
 │   │   └── ui/              # Buttons, modals, carousels, cards
 │   ├── hooks/               # Custom hooks (window size, breakpoints, editor)
 │   ├── lib/                 # Server utilities (auth, mongodb, rateLimit, validation, blog-compiler, docs-*)
-│   │   └── docs-ai/         # Ask AI server code (model, prompt, tools, messages, rate-limit)
+│   │   └── docs-ai/         # Ask AI server code (model, prompt, tools, messages, rate-limit, limits)
 │   ├── styles/              # Global styles, variables, and typography
 │   ├── types/               # TypeScript interfaces (BlogDetailPost, Tag, etc.)
 │   ├── utils/               # Helper utilities (slugify, cn)
@@ -172,11 +177,16 @@ landingpage-nextjs/
 |---|---|---|
 | **`pages`** | Docs pages: slug (unique), title, Tiptap content, published snapshot, draft flag | |
 | **`nav`** | Sidebar tree, draft and published copies | |
-| **`chat_events`** | Ask AI question, page, thread and visitor id, answer, thumbs rating | 90 days (TTL) |
-| **`page_feedback`** | "Was this page helpful?" vote per visitor and page | 90 days (TTL) |
-| **`ask_rate`** | Hashed-IP counters for Ask AI rate limits | 1 day (TTL) |
+| **`chat_events`** | Ask AI question, page, thread and visitor id, answer, thumbs rating, `tools` (the `search_docs` / `read_page` calls behind each answer) | 90 days (TTL) |
+| **`chat_threads`** | One running total per Ask AI chat (`_id` is the threadId, or the event id of a question saved without one): first question and page, visitor id, `firstAt`, `lastAt`, `questions`, `up`, `down`, `hasUp`, `hasDown`. Kept by `/api/ask` and `/api/ask/feedback` so the chats table never scans `chat_events` | 90 days after `lastAt` (TTL) |
+| **`question_counts`** | Ask AI questions per 15-minute slot (`_id` and `at` are the slot start), read by the analytics chart and totals | 90 days (TTL on `at`) |
+| **`page_feedback`** | "Was this page helpful?" vote per visitor and page; `createdAt` is the first vote, `updatedAt` the latest change | 90 days (TTL, from the first vote) |
+| **`ask_rate`** | Hashed-IP counters for Ask AI rate limits, plus `b:<limit>:<minute>` counts of turned-away requests | 1 day (TTL) |
+| **`settings`** | `_id: "ask_rate_limits"`: the Ask AI limits saved in `/admin/docs/settings`, with who saved them and when; the defaults in `src/lib/docs-ai/limits.ts` apply until the first save. | |
 
 Create the docs indexes with `npx tsx scripts/setup-docs-db.ts`. The Ask AI collections also create their own indexes on first use.
+
+The docs analytics page (`/admin/docs/analytics`) reads `page_feedback` and `chat_events` live and the chat totals from `chat_threads` and `question_counts` (`src/lib/docs-chat-rollups.ts` creates their indexes and, when `chat_events` holds chats older than the oldest total, as on the first analytics request after they ship, builds them from the stored events). It relies on the indexes `chat_events` `{ threadId: 1, createdAt: 1 }`, `{ rating: 1, createdAt: -1 }`, `{ visitorId: 1, createdAt: -1 }` and `page_feedback` `{ updatedAt: 1 }`; the app creates them (and fills `updatedAt` on older votes) on the first analytics request, and `setup-docs-db.ts` creates them too.
 
 ---
 
@@ -203,7 +213,9 @@ cp .env.example .env.local
 | `DOCS_AI_TOKEN` | For Ask AI | Sent as the `authorization` header, include the `Bearer ` prefix. Server only. |
 | `DOCS_AI_API_KEY` | For Ask AI | Sent as the `api-key` header; must be non-empty. Server only. |
 | `DOCS_AI_MODEL` | No | Model name, default `bodh-b0`. Server only. |
-| `DOCS_AI_RATE_LIMIT_PER_MINUTE` / `DOCS_AI_GLOBAL_PER_MINUTE` | No | Per-IP (default 10) and all-visitors (default 60) question limits. |
+| `NEXT_PUBLIC_SITE_URL` | No | Site URL for metadata; falls back to Netlify's `DEPLOY_PRIME_URL` / `URL`. |
+| `GOOGLE_TRIAL_FORM_URL` | No | Google Form that receives the HP trial form (`/api/submit-trial`); a built-in form URL is the default. |
+| `NEXT_PUBLIC_IAM_API_URL` | No | Identity API used by the HP promo page, default `https://api.identity.codemate.ai`. |
 
 The `DOCS_AI_*` values are read only in server code and never reach the browser. Without them the Ask AI endpoint answers 503 and the rest of the site is unaffected.
 
@@ -236,6 +248,9 @@ npx tsx scripts/seed-admin.ts
 
 # 3. (Optional) Seed Sample Blog Articles
 npx tsx scripts/seed-blogs.ts
+
+# 4. Initialize the docs database indexes (the docs and Ask AI routes also create their own on first use)
+npx tsx scripts/setup-docs-db.ts
 ```
 
 ### 4. Running Locally
@@ -260,6 +275,8 @@ Open [http://localhost:3000](http://localhost:3000) to view the CodeMate AI land
 3. **Workspace Navigation**:
    - **Dashboard** (`/admin/dashboard`): View articles, review real-time publication badges, and perform safe deletions.
    - **Editor** (`/admin/editor`): Author articles with real-time auto-save, tag deduplication, taxonomy controls, and live preview.
+   - **Admin home** (`/admin`): chooser between Blogs and Docs, behind the same login.
+   - **Docs** (`/admin/docs`): docs page list, page editor (`/admin/docs/editor`), sidebar editor (`/admin/docs/sidebar`), analytics (`/admin/docs/analytics`) and Ask AI settings (`/admin/docs/settings`).
 4. **Session Security & Tab Isolation**:
    - Sessions are tab-isolated via `sessionStorage` and Bearer tokens. Opening admin URLs in a new browser tab requires authenticating on that tab, preventing unauthorized cross-tab session leakage.
 
